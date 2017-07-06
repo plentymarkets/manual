@@ -1,0 +1,165 @@
+= Scheduler
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Scheduler, Settings, Subscription
+:position: 140
+
+**plentymarkets » Settings » Orders » Scheduler**
+
+toc::[]
+== General information about the scheduler
+
+The scheduler is a subscription module. This module allows your customers to subscribe to certain items in your online store. The module is <<start/plentymarkets-account/service-center/contract#2-5, **an additional add-on** >> and only visible in your plentymarkets system if you booked this module. In the **Settings » Orders » Scheduler** menu, you can configure the scheduler module for your online store. After configuring the module, the <<orders/scheduler/subscription-sales-orders#, **Orders » Scheduler » Scheduled orders**  >> menu provides you with an overview of your subscriptions.
+
+[IMPORTANT]
+.Not for items with order properties
+====
+The scheduler module is not for items with **<</#, order properties >>**.
+====
+
+== Carrying out the basic settings
+
+First, you determine which basic settings are to be valid for this module.
+
+image::orders/settings/assets/EN-Settings-Orders-Scheduler-01.png[]
+
+__Image 1: settings for the scheduler module__
+
+[.instruction]
+Configuring the basic settings:
+
+. Go to **Settings » Orders » Scheduler**.
+. Pay attention to the explanations given in table 1 and carry out the settings as desired.
+. Click on the **save icon** to save the settings.
+
+The following table explains the settings in the **Settings » Orders » Scheduler** menu:
+
+[cols="a,a"]
+|====
+|Setting
+|Explanation
+
+|**Intervals**
+|Select the intervals for the subscription function. Press Ctrl+C or cmd+C for multiple selection. The intervals which you select here will be available for customers in the online store. During the order process, this will allow the customer to select the intervals that he or she wants to receive the item in. In order to have the options displayed in the online store, you have to insert the corresponding template variable (section 4).
+
+|**Number of orders**
+|Determines how often the subscription is to be processed. Select all of the options that should be available for customers to choose. Press Ctrl+C or cmd+C for multiple selection. The values which you select here will be available for selection in the online store. During the order process, this will allow the customer to select how often he or she wants to receive the item. In order to have the options displayed in the online store, you have to insert the corresponding template variable (section 4).
+
+|**Permitted payment methods**
+|Select the payment methods that you want to make available for the subscription function. Press Ctrl+C or cmd+C for multiple selection.
+
+|**Changes to items**
+|Select whether changes concerning the order options, e.g. the quantity, should be permitted during the order process.
+
+|**Item number per interval**
+|Select which quantity of the item is to be delivered in the interval. This is an optional setting which can be used to compensate for missing items. For example, if an item quantity only suffices for one week, yet the customer selected an interval of two weeks, then you could enter 2 as the item number per interval. Of course, this is assuming that you are certain the customer will agree to receiving the corrected quantity.
+
+|**Minimum runtime**
+|Select a minimum runtime for the subscription function. It is only possible to subscribe to the item for this period of time or longer. The minimum runtime is optional.
+
+|**Maximum runtime**
+|Select the maximum runtime for a subscription. The maximum runtime is optional.
+
+|**Order referrer of generated orders**
+|Determine the order referrer for subscriptions.
+|====
+
+__Table 1: explanations of the scheduler module's settings__
+
+== Carrying out settings for subscription items
+
+First, carry out the settings for your subscription items. Integrate the subscription items into your stock. Then activate the subscription function. To do so, proceed as follows.
+
+=== Categorizing subscription items
+
+You have different options for integrating subscription items in your stock. It is recommended that you create a <<item/categories/editing-categories#, **category**  >> for subscription items only and link all items desired to this category. Another option is that you create the items again as <</#, **item bundles** >> so that they are linked to the main item. This is important for reasons of stock-keeping.
+
+=== Activating the subscription function
+
+The subscription function first needs to be activated globally and then separately for each item that you wish to offer as a subscription item. The global activation makes it possible for customers to place subscription orders in general. The activation for individual items defines which items customers are allowed to order as subscriptions. In order to activate the subscription function globally, proceed as described below.
+
+[.instruction]
+Globally activating the subscription function:
+
+. Go to **<<client-store/standard/my-account/basic-settings#, Settings » Client (store) » Standard » My Account » Basic settings  >>**.
+. Select the setting **activated** for the option **Subscriptions**.
+. Click on the **save icon** to save the settings.
+
+Now activate the subscription function for each item that the customer should be allowed to order as a subscription.
+
+[.instruction]
+Activating the subscription function for individual items:
+
+. Go to **Item » Edit item**.
+. Open the desired item.
+. Click on the **<<orders/settings/scheduler#1-1, Other » Other >>** tab.
+. Select the setting **Yes** for the option **Subscription**.
+. Click on the **save icon** to save the settings.
+
+[IMPORTANT]
+.Deactivating the subscription function
+====
+Set the global function to **deactivated** and set the function within individual items to **No** if you do not want to use the subscription function anymore. Remove the code from your online store's layout (section 4).
+====
+
+== Inserting template variables into the online store's layout
+
+Before customers can select the subscription function in the online store, you have to insert the template variables and code into your store's layout.
+
+[.instruction]
+Inserting template variables:
+
+. Go to **CMS » Web design » Layout » ItemView » ItemViewSingleItem**.
+. Insert the template variables and code (example further below) between **$FormOpenOrder** and **$FormCloseOrder**.
+. Click on the **save icon** to save the settings.
+
+The following table explains the template variables needed to insert the subscription function into the online store:
+
+[cols="a,a"]
+|====
+|Template variable
+|Function
+
+|**$IsSubscriptionItem**
+|Returns a boolean value (TRUE or FALSE depending on the item's setting). Use this template variable for an IF query in the layout. This will determine whether or not an item is a subscription item. Otherwise the subscription function will be displayed for all of the items instead of only for those items that are actually subscription items. An example with an IF query can be found underneath the table.
+
+|**$SchedulerDateSelector**
+|Inserts a calendar selection box, which customers can use to select the date of the first delivery.
+
+|**$SchedulerInterval**
+|Inserts a drop-down menu for selecting the interval for the subscription. Here you can select the intervals that were saved in the settings (section 2).
+
+|**$SchedulerRepeating**
+|Inserts a drop-down menu for selecting the number of deliveries. Here you can select the options for the number of orders that were saved in the settings (section 2).
+|====
+
+__Table 2: explanations of the scheduler module's template variables__
+
+The following code is an example of how to arrange and name the template variables:
+
+[cols=""]
+|====
+|
+[source,xml]
+----
+{% if $IsSubscriptionItem %}
+<!--  Box Filter -->
+<div class="ff01_pagenav" style="margin-top:5px;"<h2Subscription</h2></div>
+First delivery: $SchedulerDateSelector<br />
+Interval: $SchedulerInterval<br />
+Deliveries: $SchedulerRepeating<br />
+<!--  End Box Filter -->
+{% endif %}
+
+----
+
+|====
+
+== The subscription function displayed in the online store
+
+After you have configured the settings described on this page, subscription items are displayed in your online store. The purchaser can customize the timing of the first delivery, the interval and the number of deliveries before placing the item in the shopping cart (image 2). If needed, these settings can be changed during the order process and before the order is sent. The example code in section 4 will be displayed in the online store in the following way:
+
+image::orders/settings/assets/EN-Settings-Orders-Scheduler-02.png[]
+
+__Image 2: subscription function: how the template variables are displayed in the online store__
+

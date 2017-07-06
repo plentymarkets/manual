@@ -1,0 +1,39 @@
+<script type="text/javascript">
+	{# 
+		Retrieves the current status of the shopping cart.
+
+		This example code demonstrates how to calculate the number of items
+		within the shopping cart and how to manipulate the frontend
+		to update the shopping cart preview.
+	#}
+	$.ajax(
+		"/rest/checkout/basketitemslist/",
+		{ 
+			type: 'GET',
+			dataType: 'json',
+			{#
+				The success function is carried out if the current status
+				of the shopping cart was successfully retrieved.
+			#}
+			success: function(response)
+			{
+				{# Calculates the number of items in the shopping cart. #}
+				var count = 0;
+				$.each(response.data, function(i, el)
+				{
+					count += el.BasketItemQuantity;
+				});
+
+				{# Replaces number of items in the shopping cart in the header menu. #}
+				$('#basket_quantity').text(count);
+
+				{# Unlocks shopping cart menu if shopping cart was previously empty. #}
+				$("[data-plenty-basket-empty]").removeClass("disabled");
+			},
+			error: function()
+			{
+				{# Troubleshooting #}
+			}
+		}
+	);
+</script>

@@ -1,0 +1,276 @@
+= Inventur vornehmen
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Inventur, Bestandsinventur, Lagerinventur
+:position: 70
+
+Inventur bezeichnet die Erfassung des Lagerbestandes, d.h. sowohl des Soll- als auch des Ist-Bestandes, zu einem bestimmten Zeitpunkt. Dabei wird ein Bestandsverzeichnis angelegt, das alle Artikelbestände auflistet.
+
+Diese Seite beschreibt, wie Sie eine Inventur durchführen. Zum einen wird beschrieben, wie Sie eine Inventur im Menü **Datenaustausch** durchführen. Zum anderen erfahren Sie, wie der **Inventurmodus** funktioniert und wie Sie diesen Modus verwenden, wenn Sie Ihren gesamten Warenbestand löschen und neu einbuchen möchten.
+
+toc::[]
+[#100]
+== Inventur per Export und Import erfassen
+
+Die Inventur per Datenaustausch erfolgt in mehreren Schritten. Zunächst exportieren Sie die aktuellen Warenbestände des Systems. In der Datei oder einer Kopie davon passen Sie die Bestandsmengen anschließend an den tatsächlichen Istzustand Ihres Lagers an und importieren die korrigierten Daten wieder in Ihr System.
+
+[IMPORTANT]
+.Datenformat Stock vorab kennenlernen und Testlauf durchführen
+====
+Beachten Sie die Hinweise im Handbuch zum Datenformat <<datenaustausch/datenformate/stock#, **Stock**  >> – insbesondere bevor Sie durch einen Import Bestände überschreiben. Anhand eines Testimports mit nur einer Variante können Sie prüfen, ob der Import das gewünschte Ergebnis liefert.
+====
+
+[#200]
+=== Warenbestände exportieren
+
+Im ersten Schritt exportieren Sie Ihre aktuellen Warenbestände im Menü **Datenaustausch » Export » Dynamischer Export** mit dem Datenformat **Stock**.
+
+[TIP]
+.Stock-Export erfolgt nur für ein Lager
+====
+Mit dem Datenformat **Stock** kann nur der Bestand eines Lagers exportiert werden, deshalb muss eine Lager-ID angegeben werden. Das Lager wählen Sie im Tab **Filter** des Datenformats. Wenn Sie kein Lager angeben, wird standardmäßig der Bestand des Lagers mit der niedrigsten ID exportiert.
+====
+
+[.instruction]
+Datenexport durchführen:
+
+. Öffnen Sie das Menü <<datenaustausch/daten-exportieren#, **Datenaustausch » Export » Dynamischer Export**  >>.
+. Öffnen Sie das Untermenü des Datenformats <<datenaustausch/datenformate/stock#, **Stock**  >> oder legen Sie dieses **<<datenaustausch/datenformate#2-2, Datenformat >>** an, wenn das Untermenü noch nicht vorhanden ist.
+. Wählen Sie die Einstellungen für den Datenexport.
+. Wechseln Sie in das Tab **Filter**.
+. Wählen Sie für das Datenfeld **WarehouseID** ein Lager aus dem Dropdown-Menü.  +
+→ Standardmäßig ist das Lager mit der niedrigsten Lager-ID (WarehouseID) eingestellt.
+. **Speichern** Sie die Einstellungen.
+. Klicken Sie auf **Daten exportieren**, um eine CSV-Datei zu exportieren.
+
+[TIP]
+.Unterschied zwischen dem Datenfeld **WarehouseID** und dem Filter **Lager**
+====
+Mit dem Filter **Lager** wählen Sie, für welches Lager der Bestand exportiert wird. Das Datenfeld **WarehouseID** gibt lediglich die ID des Lagers aus. Das Datenfeld **WarehouseID** hat aber keinen Einfluss darauf, für welches Lager Bestand exportiert wird.
+====
+
+Sie erhalten eine CSV-Datei, die Sie für den anschließenden Import anpassen müssen.
+
+[#300]
+=== Warenbestände anpassen
+
+Die Datei, die Sie soeben exportiert haben, passen Sie jetzt an. Bei einer Inventur prüfen Sie den physischen Bestand Ihrer Lager und gleichen ihn mit dem physischen Bestand ab, der im System gespeichert ist. Die Spalte **Stock** im Datenformat **Stock** enthält den physischen Bestand und ist die Spalte, die Sie anpassen müssen.
+
+[.instruction]
+Stock-Datei anpassen:
+
+. Ermitteln Sie den Ist-Zustand Ihres Bestandes.
+. Öffnen Sie die exportierte Stock-Datei.
+. Tragen Sie die aktuellen physischen Bestandswerte in die Spalte **Stock** ein.
+. Speichern Sie die Änderungen an der Datei.
+
+[#400]
+=== Warenbestände importieren
+
+Nun importieren Sie den in der CSV-Datei berichtigten Bestand in Ihr plentymarkets-System. Der Import erfolgt mit einer CSV- oder Text-Datei.
+
+[WARNING]
+.Physischer Warenbestand wird überschrieben!
+====
+Beim Import werden die aktuellen physischen Warenbestände überschrieben, d.h. Ihr vorheriger Warenbestand ist nicht wieder herstellbar! Reservierte Warenbestände bleiben erhalten und werden nicht importiert. Wenn Sie nicht den kompletten physischen Warenbestand importieren möchten, sondern nur bei einzelnen Varianten den Bestand nach oben korrigieren, können Sie Wareneingänge per Datenimport hinzufügen. Verwenden Sie das Spezialformat **<<datenaustausch/datenformate/incomingitems#, IncomingItems  >>**.
+====
+
+[.instruction]
+Datenimport durchführen:
+
+. Öffnen Sie das Menü <<datenaustausch/daten-importieren#, **Datenaustausch » Import » Dynamischer Import**  >>.
+. Wählen Sie die Einstellungen gemäß Tabelle 1.
+. Klicken Sie auf **Import**.
+
+.Importeinstellungen für dynamischen Import
+[cols="a,a"]
+|====
+|Einstellung |Erläuterung
+
+|**Feldtrennzeichen**
+|Trennzeichen wählen.
+
+|**Format**
+|Datenformat Stock wählen. +
+Wenn Sie mehrere Stock-Formate haben, achten Sie darauf, dass jedes Format eine Lagereinstellung enthält und nur die Daten dieses Lagers geändert werden.
+
+|**Lager**
+|Wenn die Spalte **WarehouseID** in der Datei nicht enthalten oder leer ist, wird der Bestand für das hier gewählte Lager importiert. Wenn die Spalte **WarehouseID** Werte enthält, die größer als 0 sind, wird der Bestand für dieses Lager importiert. Auf diese Weise kann gleichzeitig auch Bestand für mehrere Lager importiert werden.
+
+|**Barcode**
+|Barcode ist ein optionales Abgleichfeld. Ein Barcode-Format wählen, anhand dessen die Varianten aus dem Datenformat mit den Varianten im System abgeglichen werden sollen. Wenn keine Zuordnung zu einer Variante erfolgt, wird die Zeile übersprungen. Wenn die Import-Datei die Varianten-ID enthält, muss kein Barcode gewählt werden, da die ID zur Zuordnung genügt.
+
+|**Datei**
+|Die zu importierende Datei wählen.
+|====
+
+Unter **Datenaustausch » Import » Dynamischer Import » Untermenü: Bearbeitungsstatus** erhalten Sie detaillierte Meldungen zum Datenimport.
+
+Die bei der Inventur vorgenommenen Korrekturen können Sie für einen Artikel im **Tab: Bestand » Tab: Warenbewegung** des Artikels einsehen.
+Der Import wird außerdem unter **Waren » Wareneingänge** als ein Eintrag aufgelistet und die geänderten Warenbestände können im Eintrag nachvollzogen werden (Bild 1).
+
+.Variantenliste eines Wareneingangs einsehen
+image::warenwirtschaft/assets/DE-Inventur-vornehmen-01.png[]
+[#500]
+== Inventur bei aktiviertem Inventurmodus vornehmen
+
+In den Einstellungen eines Lagers gibt es die Option **Inventurmodus aktiv**. Damit können Sie den Warenbestand eines Lagers für die Dauer der Inventur einfrieren. Einfrieren bedeutet, dass der physische Bestand, der für Varianten gespeichert ist, unverändert bleibt und keine Warenbewegungen registriert oder Warenberechnungen durchgeführt werden.  +
+Die Inventur im Inventurmodus erfolgt am besten in vier Schritten. Zunächst wird der Inventurmodus aktiviert. Dann wird der aktuelle Bestand exportiert. Anschließend werden alle Warenbestände geleert und neu eingebucht. Dank des Einfrierens der Bestände werden im Inventurmodus weder die geleerten Bestände noch die neuen Bestände an Varianten übertragen. Wenn Sie alle Inventurbestände ins System eingebucht haben und den Inventurmodus deaktivieren, werden die neuen Bestände an die Varianten übertragen. Der zuvor eingefrorene Bestand wird also überschrieben. Der reservierte Bestand wird auch im Inventurmodus korrekt geführt. Beim Eingang neuer Aufträge erfolgt also eine Reservierung. Beachten Sie zwei Punkte, wenn der Inventurmodus aktiviert ist:
+
+* Da der physische Bestand im Inventurmodus nicht aktualisiert wird, kann es zu Überverkäufen kommen.
+* Buchen Sie trotzdem keinen Warenausgang, während der Inventurmodus aktiv ist, da die Warenberechnung nicht erfolgt.
+
+[WARNING]
+.Inventurmodus erst nach Einbuchen der Inventurbestände deaktivieren
+====
+Wenn der Inventurmodus deaktiviert wird, während der Bestand leer ist, können Listings und Verkäufe auf Märkten deaktiviert werden. Deaktivieren Sie deshalb den Inventurmodus erst, wenn Sie die Bestände, die Sie bei der Inventur aufgenommen haben, eingebucht haben.
+====
+
+[#600]
+=== Inventurmodus aktivieren
+
+Aktivieren Sie den Inventurmodus für Lager, in denen Sie eine Inventur durchführen möchten. Der Inventurmodus friert den physischen Warenbestand ein.
+
+[.instruction]
+Inventurmodus aktivieren:
+
+. Öffnen Sie das Menü **Einstellungen » Waren » Lager » Lager auswählen » Untermenü: Einstellungen**.
+. Aktivieren Sie die Option **Inventur-Modus aktiv** (Häkchen setzen).
+. **Speichern** Sie die Einstellung.
+
+.Inventurmodus aktivieren
+image::warenwirtschaft/assets/DE-Inventur-vornehmen-02.png[]
+[IMPORTANT]
+.Lager im Inventurmodus werden gekennzeichnet
+====
+Der Name Ihres Lagers wird erweitert. Dabei wird je nach Länge des Lagernamens entweder **(INVENTORY MOD)**, **(INVENTORY)** oder **(I)** an den Namen angehängt, damit an allen Stellen ersichtlich ist, dass sich dieses Lager im Inventurmodus befindet.
+====
+
+.Kennzeichnung für Lager im Inventurmodus
+image::warenwirtschaft/assets/DE-Inventur-vornehmen-03.png[]
+[#700]
+=== Warenbestand exportieren
+
+Exportieren Sie zunächst die Bestände der Lager, in denen Sie eine Inventur durchführen. Nutzen Sie hierfür das Datenformat **Stock**. Sie müssen für jedes Lager einen Export durchführen.
+
+[.instruction]
+Bestand exportieren:
+
+. Öffnen Sie das Menü <<datenaustausch/daten-exportieren#, **Datenaustausch » Export » Dynamischer Export**  >>.
+. Öffnen Sie das Tab **Neues Datenformat**.
+. Wählen Sie den Datenformat-Typ **Stock**.
+. Tragen Sie einen Namen für das Datenformat ein.
+. Wählen Sie die Einstellungen gemäß Tabelle 2.  +
+→ Weitere Datenfelder und Filter sind optional.
+
+.Notwendige Datenfelder für eine Inventur
+[cols="a,a,a"]
+|====
+|Feld |Beschreibung |Importaktion
+
+|**VariationID**
+|Gibt die plenty-ID einer Variante aus und ist deshalb Pflicht für die Zuordnung des Bestands.
+|Import
+
+|**Stock**
+|Gibt die physische Bestandsmenge aus und durch die Einstellung **Import** im Datenformat wird beim Import der bisherige physische Bestand überschrieben.
+|Import
+
+|**WarehouseID**
+|Gibt die ID des Lagers aus und sorgt dafür, dass der Bestand einem Lager zugeordnet werden kann.
+|Import
+
+|**LocationID**
+|Gibt die ID des Lagerorts aus und ist notwendig, damit der Bestand einem Lagerort zugeordnet werden kann.
+|Import
+
+|**VariationString**
+|Gibt den Namen einer Variante komplett aus. Das Datenfeld hilft häufig beim Erkennen der Variante.
+|Import
+
+3+|Tab Filter des Datenformats
+
+|**WarehouseID**
+|Legt fest, von welchem Lager der Bestand exportiert wird. Ohne diesen Filter wird immer der Bestand des Lagers mit der niedrigsten ID exportiert.
+|
+|====
+
+[#800]
+=== Warenbestand im Inventurmodus leeren
+
+Im ersten Schritt leeren Sie nun alle Bestände und Warenbewegungen. Der reservierte Bestand bleibt erhalten. Kopieren Sie die so eben exportierte Datei.
+
+[TIP]
+.Warenbestände vor dem Löschen als Backup exportieren
+====
+Bei diesem Verfahren werden alle Warenbestände gelöscht! Das bedeutet, dass das Lager zunächst komplett geleert wird. Kopieren Sie daher Ihren soeben ausgeführten Stock-Export, bevor Sie mit diesem Verfahren beginnen (siehe Kapitel 2.1). Damit stellen Sie, wenn nötig, den alten Warenbestand wieder her.
+====
+
+[.instruction]
+Warenbestand leeren:
+
+. Öffnen Sie eine Kopie Ihres Stock-Exports.
+. Tragen Sie 0 im Datenfeld **Stock** für alle Varianten ein.
+. Speichern Sie die Datei mit dem genullten physischen Bestand.
+. Öffnen Sie das Menü **Datenaustausch » Import » Dynamischer Import**.
+. Wählen Sie unter **Format** das Datenformat Stock, das Sie für die Inventur exportiert haben.
+. Beachten Sie für weitere Einstellungen Tabelle 3.
+. Wählen Sie unter **Datei** Ihre Datei mit den genullten Beständen.
+. Klicken Sie auf **Import**.
+
+.Dynamischer Import des Formats **Stock**
+[cols="a,a"]
+|====
+|Einstellung |Erläuterung
+
+|**Feldtrennzeichen**
+|Trennzeichen wählen
+
+|**Format**
+|Datenformat Stock wählen. +
+Wenn Sie mehrere Stock-Formate haben, achten Sie darauf, dass jedes Format eine Lagereinstellung enthält und nur die Daten dieses Lagers geändert werden.
+
+|**Lager**
+|Kann leer bleiben für diesen Import, da die Spalte WarehouseID im Datenformat enthalten sein sollte.  +
+Wenn die Spalte **WarehouseID** in der Datei nicht enthalten oder leer ist, wird der Bestand für das hier gewählte Lager importiert. Wenn die Spalte **WarehouseID** Werte enthält, die größer als 0 sind, wird der Bestand für dieses Lager importiert. Auf diese Weise kann gleichzeitig auch Bestand für mehrere Lager importiert werden.
+
+|**Barcode**
+|Kann leer bleiben für diesen Import.  +
+Barcode ist ein optionales Abgleichfeld. Ein Barcode-Format wählen, anhand dessen die Varianten aus dem Datenformat mit den Varianten im System abgeglichen werden sollen. Wenn keine Zuordnung zu einer Variante erfolgt, wird die Zeile übersprungen. Wenn die Import-Datei die Varianten-ID enthält, muss kein Barcode gewählt werden, da die ID zur Zuordnung genügt.
+
+|**Datei**
+|Die zu importierende Datei wählen.
+|====
+
+[#900]
+=== Warenbestand buchen
+
+Nun übertragen Sie die aktuellen Lagerbestände, die Sie bei der Inventur aufgenommen haben, in das System. Hierfür nutzen Sie wieder das Datenformat Stock. Tragen Sie die aktuellen physischen Bestände in die genullte Kopie Ihres Stock-Exports ein und speichern die Datei mit den aktuellen Beständen. Der physische Bestand muss in der Spalte **Stock** eingetragen werden.
+
+[.instruction]
+Warenbestand buchen:
+
+. Öffnen Sie eine Kopie Ihres Stock-Exports.
+. Tragen Sie die aktuellen physischen Bestandsmengen im Datenfeld **Stock** für alle Varianten ein.
+. Speichern Sie die Datei mit den aktuellen physischen Beständen.
+. Öffnen Sie das Menü **Datenaustausch » Import » Dynamischer Import**.
+. Wählen Sie das Datenformat Stock, das Sie für die Inventur exportiert haben.
+. Beachten Sie für weitere Einstellungen die Tabelle 3.
+. Wählen Sie unter **Datei** Ihre Datei mit den aktuellen Beständen.
+. Klicken Sie auf **Import**.
+
+[#1000]
+=== Inventurmodus aufheben
+
+Im letzten Schritt heben Sie den Inventurmodus wieder auf und die aktuellen Bestände werden an die Varianten übertragen.
+
+[.instruction]
+Inventurmodus deaktivieren:
+
+. Öffnen Sie das Menü **Einstellungen » Waren » Lager » Lager auswählen » Untermenü: Einstellungen**.
+. Entfernen Sie das Häkchen bei **Inventur-Modus aktiv**.
+. **Speichern** Sie die Einstellung.  +
+→ Ihr physischer Warenbestand wird neu berechnet.
+
+Deaktivieren Sie den Inventurmodus erst, wenn die Inventur abgeschlossen ist. Wird der Inventurmodus vorzeitig beendet, kann dies zu Fehlern im Warenbestand führen sowie Angebote auf Märkten oder im Webshop beenden.
+

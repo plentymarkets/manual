@@ -1,0 +1,2417 @@
+= Item
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Data format
+:description: Data format Item
+:position: 110
+
+The data format **Item** contains all of the data fields for item data. You can use this data format to export, edit and import the item data. Create and export the data format in the **Data exchange » Export » Dynamic export** menu. Import the data format in the **Data exchange » Import » Dynamic import** menu. The **<<data-exchange/exporting-data#, Exporting data  >>** and **<<data-exchange/importing-data#, Importing data  >>** pages of the manual describe how you export and import the data format.
+
+Pay close attention to the exact spelling of the data fields. The data cannot be processed if the data fields are spelled incorrectly.
+
+toc::[]
+[#10]
+== Important notes
+
+Each item is given a number (ID) and as such is also uniquely defined by the data field **ItemID**. The following three scenarios could occur for the export and import:
+
+* If the field **ItemID** is neither exported along with the export of item fields nor imported later on, then new items will be created with available item IDs.
+* If the data record **ItemID** is exported and later imported again, then changes will be made to the corresponding items.
+* If item data is imported with item IDs that do not yet exist in plentymarkets, then new items will be created with these item IDs.
+
+If the import procedure **Synchronisation** is selected in the data export settings, then the item data will be synchronised during the import.
+
+[#20]
+== The 1:n problem
+
+The 1:n problem, i.e. one to n, occurs when several characteristics were defined for one item. The following characteristics can be allocated to an item multiple times in plentymarkets:
+
+* **Price lines**
+
+Every price set is uniquely defined by the field **PriceID**. If this ID is not specified, then a new price set will always be added and the existing prices will be deleted. If available, the existing price will be changed.
+
+* **Categories**
+
+An item can be available in multiple categories at the same time. However, if category data fields (CategoryLevel) were entered during the import, then all of the previous category links for this item will be deleted.
+
+[IMPORTANT]
+.Use the data format **Category** for new categories
+====
+It is not possible to use the data format **Item** for creating new categories. With the data format **Item**, you can only create new category links within the item. Use the data format **<<data-exchange/data-formats/category#, Category  >>** instead to create new categories.
+====
+
+* **Item images**
+
+This data format allows you to import external images with the help of URLs. Existing item images will be replaced in the process. If multiple item images are imported, then these item images have to be separated by a comma without spaces when they are entered. If you do not want to replace the existing images, then import the **<<item/managing-items#680., images >>** via FTP upload.
+
+[#30]
+== Overview of the data fields
+
+Table 1 explains the data fields for the **Item** data format in alphabetical order as well as filter options that you set in the **Filter** tab of the data format.
+
+[cols="a,a,a"]
+|====
+|Field name |Explanation |Filter
+
+|**CategoryExtend**
+|**0** = replace the existing category assignment (default)  +
+**1** = keep the existing category assignment and add a new one
+|
+
+|**CategoryLevel1Name - CategoryLevel6Name**
+|Category name of the corresponding level 1 - 6 +
+During the data import, only one category link will be imported per item. If an item has multiple category levels, then these levels may be deleted during the import or re-import. Therefore, do not use these data fields for the category import.  +
+The data format **ItemCategories** is available for categories.
+|Activate the filter and select the name of the category level from the drop-down menu.
+
+|**CategoryRakuten**
+|Rakuten category
+|
+
+|**CategoryYatego**
+|List of the Yatego categories for these items (separated by commas)
+|
+
+|**IsNet**
+|**True** = Prices (ItemPrices) will be exported as net.  +
+**False** = Prices (ItemPrices) will be exported as gross.
+|
+
+|**ItemAction**
+|Sales specials, special display mode  +
+**1** = Special offer  +
+**2** = New items  +
+**3** = Top items
+|
+
+|**ItemAgeRestriction**
+|Age rating; numerical value +
+**0** = None available +
+**3** = Released for ages 3 and up +
+**6** = Ages 6 and up +
+**12** = Ages 12 and up +
+**16** = Ages 16 and up +
+**18** = Ages 18 and up +
+**50** = Not marked +
+**88** = Not required +
+**99** = Still unknown
+|
+
+|**ItemAmazonFBA**
+|Fulfillment by Amazon (FBA)  +
+**0** = Do not use  +
+**1** = AMAZON EU  +
+**2** = AMAZON FE  +
+**3** = AMAZON NA  +
+**-1** = FBA and SellerCentral
+|
+
+|**ItemAmazonProductType**
+|Amazon product type; for possible values, see <<data-exchange/data-formats/item#50., **amazon_product_type value table** >>.
+|Activate the filter and select the Amazon product type for the item from the drop-down menu.
+
+|**ItemAPICondition**
+|Item condition. This is transferred via the API to other markets +
+**0** = New +
+**1** = Used but as new +
+**2** = Used but very good +
+**3** = Used but good +
+**4** = Used but acceptable +
+**5** = Factory seconds
+|
+
+|**ItemAttributes**
+|List of the attributes that are linked to the item. The ID list is found under **Settings » Item » Attributes**.
+|
+
+|**ItemAutoInvisible**
+|Automatically invisible in the online store. Set store to 0 if the stock is missing. +
+**0** = No +
+**1** = Yes
+|
+
+|**ItemAutoStockIconGreen**
+|The item's availability icon +
+**0** = Has to be activated manually +
+**1** = Display when the net stock is positive
+|
+
+|**ItemAutoStockIconGreenVariation**
+|See above, data field for variations
+|
+
+|**ItemAutoStockIconRed**
+|The item's availability icon +
+**0** = Has to be deactivated manually +
+**1** = Hide when there is no net stock
+|
+
+|**ItemAutoStockIconRedVariation**
+|See above, data field for variations
+|
+
+|**ItemAutoVisible**
+|Automatically visible in the online store. Set store to 1 if the stock is available. +
+**0** = No +
+**1** = Yes
+|
+
+|**ItemAvailability**
+|The item's availability (values 1 - 5)
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemAvailableUntil**
+|**Available until**. The option is found in the area for editing items in the **Settings** tab of the variation in the **Availability** area.
+|
+
+|**ItemBasketInterval**
+|Interval for a subscription order
+|
+
+|**ItemBasketMaxCount**
+|Maximum order quantity
+|
+
+|**ItemBasketMinCount**
+|Minimum order quantity
+|
+
+|**ItemBestofferAutoDeclinePrice**
+|All of the best offers that are below this amount will automatically be rejected.
+|
+
+|**ItemCondition**
+|Item condition +
+**0** = New +
+**1** = Used +
+**2** = New and in original packaging +
+**3** = New with label +
+**4** = Factory seconds
+|
+
+|**ItemCrossList**
+|Comma separated list of item IDs that should be offered as cross-selling items. A list of item numbers, GTINs or external item IDs can also be used for the import. This can be done by placing the text **article_no: ean:** or **external_article_id:** in front of the list.
+|
+
+|**ItemCustomsTariffNumber**
+|Customs tariff number
+|
+
+|**ItemDeepLink**
+|The item's URL
+|
+
+|**ItemDelete**
+|**1** = Delete item +
+Deletes items, incl. images, completely and irreversibly when the value **1** is entered.
+|
+
+|**ItemDirectCross**
+|Item link 1:1, optional
+|
+
+|**ItemDraft**
+|Item template ID. The ID of a category, which was defined as an item template
+|
+
+|**ItemEAN1**
+|GTIN code for an item
+|
+
+|**ItemEAN2** - **ItemEAN4**
+|Additional GTIN codes for an item
+|
+
+|**ItemEbayCategory**
+|eBay category; used when a new listing is created.
+|
+
+|**ItemEbayCategory2**
+|eBay category 2; used when a new listing is created.
+|
+
+|**ItemEbayPreset**
+|ID of the listing's option template. The listing template settings are used when creating new listings.
+|
+
+|**ItemEbayShopCategory**
+|ID of the first eBay shop category. This value is used for new listings.
+|
+
+|**ItemEbayShopCategory2**
+|ID of the second eBay shop category. This value is used for new listings.
+|
+
+|**ItemExternalItemID**
+|Item ID for other markets
+|
+
+|**ItemFEDAS**
+|FEDAS product classification key. The setting is found under **Item » Edit item » Open item » Open variation » Tab: Multi-Channel**
+|
+
+|**ItemFreeTextField1 - ItemFreeTextField20**
+|Free text fields that can be displayed in the online store or on eBay. The setting is found under **Item » Edit item » Open item » Open variation » Tab: Fields**
+|
+
+|**ItemID**
+|Unique item ID; maximum numerical value 2^31
+|Activate the filter, select the operator and enter the value.
+
+|**ItemImageURL**
+|Image URL; format: JPG +
+The image will be imported and saved on the plentymarkets server. +
+Separate multiple URLs with a comma. +
+**__Note__**: When importing item images, the new images will not be added to the already existing images. Rather, they will replace the existing images.
+|
+
+|**ItemInactive**
+|Inactive item. The setting is found under **Item » Edit item » Open item » Open variation » Tab: Settings** in the **Availability** area.
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemInsertedTimestamp**
+|Date and time when the item was created. Format: dd.mm.yyyy hh:mm +
+**__Note:__** The field is only available for the export.
+|
+
+|**ItemISBN**
+|Item ISBN code
+|
+
+|**ItemLastUpdateTimestamp**
+|Last change to an item; date and time. Format: dd.mm.yyyy hh:mm
+|
+
+|**ItemLimitOrderByStock**
+|Limit the item to the stock +
+**0** = No limitation +
+**1** = Limited to net stock +
+**2** = Do not administer stock for this item
+|
+
+|**ItemFlag1**
+|Flag 1 as ID (**1-31**), symbols. +
+**0** = no flag
+|Activate the filter, select the operator and the flag from the drop-down menu.
+
+|**ItemFlag2**
+|Flag 2 as ID (**1-11**), personal icons +
+**0** = no flag
+|Activate the filter, select the operator and the flag from the drop-down menu.
+
+|**ItemModel**
+|Item model name
+|
+
+|**ItemMRP**
+|MRP, RRP; manufacturer's retail price, recommended retail price
+|
+
+|**ItemNo**
+|Item number; letters and numbers are possible.
+|Activate the filter, select the operator and enter the value.
+
+|**ItemNoCoupon**
+|Coupon +
+**0** = Possible +
+**1** = Prohibited +
+**2** = Purchasable with coupon only
+|
+
+|**ItemOriginCountry**
+|The item's manufacturing country
+|
+
+|**ItemPosition**
+|This position number is used to sort the items within the item list in the online store.
+|
+
+|**ItemPrimaryWarehouse**
+|The main warehouse's ID reference number. The setting is found under **Item » Edit item » Open item » Open variation » Tab: Stock**.
+|Activate the filter and select the warehouse from the drop-down menu.
+
+|**ItemProducer**
+|The item's manufacturer +
+A manufacturer is not automatically created in the system when using this data format. Rather, the manufacturer has to already be available in the system. +
+Make sure that you correctly spell the name of the manufacturer when using this data field.
+|
+
+|**ItemProducerID**
+|The item's manufacturer ID
+|Activate the filter and select the manufacturer from the drop-down menu.
+
+|**ItemProductType**
+|Item type +
+**0** = Stocked item +
+**1** = Production item +
+**2** = Colli +
+**3** = Special order item
+|
+
+|**ItemPurchasePrice**
+|Purchase price (net)
+|
+
+|**ItemReleaseDate**
+|Release date
+|
+
+|**ItemRevenueAccount**
+|Revenue account
+|
+
+|**ItemSCOMinPrice**
+|All of the Second Chance Offers and best offers that are above this minimum price will automatically be accepted.
+|
+
+|**ItemSerialNumber**
+|The item's serial number
+|
+
+|**ItemShippingWithAmazonFBA**
+|**<<multi-channel/amazon#370., Amazon Multi-Channel >>** +
+**1** = Yes +
+**0** = No
+|
+
+|**ItemStoreIDs**
+|IDs of the stores or clients. Separate multiple IDs with commas
+|
+
+|**ItemSubscription**
+|Can the item be ordered as a subscription? +
+**0** = No +
+**1** = Yes
+|
+
+|**ItemTextDescription**
+|Item description
+|
+
+|**ItemTextKeywords**
+|HTML meta keywords (search terms); separated by commas (word1,word2,word3).
+|
+
+|**ItemTextLang**
+|Available languages: de / en / fr / it / es / tr / nl / pl / nn / da / se / cz (German, English, French, Italian, Spanish, Turkish, Dutch, Polish, Norwegian, Danish, Swedish, Czech)
+|
+
+|**ItemTextMeta**
+|Item description in the source text; important for search machines
+|
+
+|**ItemTextName**
+|Item name
+|
+
+|**ItemTextName2** and **ItemTextName3**
+|Additional names of the item
+|
+
+|**ItemTextShort**
+|Short item description; preview text
+|
+
+|**ItemTextTechnicalData**
+|The item's technical data
+|
+
+|**ItemTextURLContent**
+|The item's URL path
+|
+
+|**ItemVAT**
+|VAT code (Value added tax); menu **Settings » Client (store) » Standard » Accounting** +
+**0** = Data record A +
+**1** = Data record B +
+**2** = Data record C +
+**3** = Data record D
+|
+
+|**ItemVisibilityCdiscount**
+|Market Cdiscount  +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityCouchCommerce</strong></td> <td>Marktplatz CouchCommerce<br /> <strong>0</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilityGartenxxlDe**
+|Market Garten XXL DE +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityGimahhot**
+|Market Gimahhot +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityGoogleBase**
+|Market Google Shopping +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityGrosshandel**
+|Market grosshandel.eu +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityHerti**
+|Market Herti +
+**0** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityHitmeister**
+|Market Hitmeister +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityHood**
+|Market Hood.de +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityLaary</strong></td> <td>Marktplatz Laary<br /> <strong>0</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilityLaRedoute**
+|Market La Redoute +
+**0** = Invisible  +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityMeinPaketDE</strong></td> <td>Marktplatz MeinPaket<br /> <strong>0</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilityMercateo**
+|Items available for Mercateo export +
+**0** = No +
+**1** = Yes
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityMoebelprofi</strong></td> <td>Marktplatz Möbelprofi<br /> <strong>False</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+//  tr> <td><strong>ItemVisibilityNeckermannDE</strong></td> <td>Marktplatz Neckermann<br /> <strong>0</strong> = Nicht sichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilityNeckermannCdAT**
+|Market Neckermann, Cross-Docking version Austria +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityNeckermannEpAT**
+|Market Neckermann, Enterprise version Austria +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityOtto**
+|Market OTTO +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityPlayCom</strong></td> <td>Marktplatz Play.com<br /> <strong>False</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilityPlusDE**
+|Market Plus.de +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityQuelle</strong></td> <td>Marktplatz Quelle<br /> <strong>False</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilityRakuten**
+|Market Rakuten +
+**0** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityRestposten**
+|Market Restposten.de +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityShopgate**
+|Market Shopgate +
+**0** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityShopshare</strong></td> <td>Marktplatz Shopshare<br /> <strong>False</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+|**ItemVisibilitySumoscout**
+|Market SumoNet +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityTracdelight**
+|Market Tracdelight +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityTwenga**
+|Market Twenga +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityWebAPI**
+|Items available via WebAPI; data interface for exchanging data with **<<data-exchange/exporting-data#30., price search engines >>** +
+**0** = No +
+**1** = Yes
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityWebshop**
+|Item is visible in the online store +
+**0** = No +
+**1** = Yes
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityYatego**
+|Market Yatego; items available for **<<multi-channel/yatego#, Yatego  >>** export +
+**0** = No +
+**1** = Yes
+|Activate the filter and select the value from the drop-down menu.
+
+|**ItemVisibilityZalando**
+|Market Zalando +
+**False** = Invisible +
+**1** = Visible
+|Activate the filter and select the value from the drop-down menu.
+
+//  tr> <td><strong>ItemVisibilityZentralverkauf</strong></td> <td>Marktplatz Zentralverkauf<br /> <strong>False</strong> = Unsichtbar<br /> <strong>1</strong> = Sichtbar</td> <td>Filter aktivieren und Wert aus dem Dropdown-Menü wählen.</td> </tr
+
+//  tr> <td><strong>NeckermannProductTypeDE</strong></td> <td>Neckermann-Produkttyp</td> <td>&nbsp;</td> </tr
+
+|**NeckermannProductTypeEpAT**
+|Neckermann product type; Enterprise version Austria
+|
+
+|**NeckermannProductTypeCdAT**
+|Neckermann product type; Cross-Docking version Austria
+|
+
+|**Price**
+|Standard price; decimal value
+|
+
+|**Price1**
+|Price column 1; corresponds to customer class 1; decimal value
+|
+
+|**Price2**
+|Price column 2; corresponds to customer class 2; decimal value
+|
+
+|**Price3**
+|Price column 3; corresponds to customer class 3; decimal value
+|
+
+|**Price4**
+|Price column 4; corresponds to customer class 4; decimal value
+|
+
+|**Price5 - Price12**
+|Price column 5 through price column 12; decimal values
+|
+
+|**PriceHeight**
+|The item's height in mm
+|
+
+|**PriceID**
+|Unique ID of the Price sets
+|
+
+|**PriceItemShipping**
+|Extra shipping charge 1st item
+|
+
+|**PriceItemShipping2**
+|Extra shipping charge 2nd item
+|
+
+|**PriceLength**
+|The item's length in mm
+|
+
+|**PriceLot**
+|Content; numerical value; determines the number of packaging units that are included in each unit.
+|
+
+|**PricePackingUnit**
+|Packaging units; numerical value
+|
+
+|**PricePosition**
+|Position for the price set (when using multiple price sets)
+|
+
+|**PriceDiscountLevel6 -** +
+**PriceDiscountLevel8**
+|Discount scale prices for price columns 6, 7 and 8
+|
+
+|**PriceShowOnly**
+|Limit the price line to: +
+**0** = All +
+**1** = End customers +
+**2** = Customer class
+|
+
+|**PriceUnit**
+|The item's standard unit +
+Piece (C62), Kilogram (KGM), Gram (GRM), Litre (LTR), Dozen piece (DPC), Two pack (OP), Bale (BL), Dispenser (DI), Bag (BG), Sheet (ST), Block (D64), Pad (PD), Quire (QR), Box (BX), Coil (CL), Container (CH), Tin (TN), Can (CA), Dozen (DZN), Bucket (BJ), Case (CS), Cask (Z3), Bottle (BO), Jar (JR), Card (CG), Carton (CT), Kit (KT), Ball (AA), Metre (MTR), Millilitre (MLT), Millimetre (MMT), Pair (PR), Packet (PA), Pack (PK), Pallet (D97), Square metre (MTK), Roll (RO), Sack (SA), Set (SET), Reel (RL), Each (EA), Tube (TU), Centimetre (CMT)
+|
+
+|**PriceUnit0**
+|Unit 1; content can be defined freely; max. 48 characters
+|
+
+|**PriceUnit1**
+|Unit 2; content can be defined freely; max. 32 characters
+|
+
+|**PriceWeight**
+|The gross weight of the item (with packaging) in grams; numerical value
+|
+
+|**PriceWeightNet**
+|The net weight of the item (without packaging) in grams; numerical value
+|
+
+|**PriceWidth**
+|The item's width in mm
+|
+
+|**PriceCarryingCosts**
+|The item's transportation costs
+|
+
+|**PriceInventoryCost**
+|The item's storage costs
+|
+
+|**PriceTollPercental**
+|The item's tax rate for customs
+|
+
+|**PriceOperatingCostsPercental**
+|The percentage of the entire operating costs that this item accounts for.
+|
+
+|**PrimaryVariationActive**
+|**Y** = Main variation is active, i.e. it is available in the online store and on markets. +
+**N** = The main variation is not active. +
+Setting **Active** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationAutoStockInvisible**
+|**Y** = Main variation becomes invisible automatically in the online store if no positive net stock is available. +
+**N** = Main variation stay visible in the online store if no positive net stock is available. +
+Setting **Not available if net stock is 0 or negative** in the **Settings** tab of the main variation +
+
+|
+
+|**PrimaryVariationAutoStockNoPositiveStockIcon**
+|The item's availability icon +
+**0** = Has to be deactivated manually. +
+**1** = Hide when there is no net stock.
+|
+
+|**PrimaryVariationAutoStockPositiveStockIcon**
+|The item's availability icon +
+**0** = Main variation has to be activated manually. +
+**1** = Main variation is displayed if net stock is positive.
+|
+
+|**PrimaryVariationAutoStockVisible**
+|Main variation automatically is visible in the online store if stock is available. +
+**0** = No +
+**1** = Yes
+|
+
+|**PrimaryVariationAvailability**
+|ID of the availability of the main variation; **Settings » Items » Item availability** +
+Setting **Availability** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationAvailableUntil**
+|Last date that the main variation is available. +
+Setting **Available until** in the **Settings** tab of the main variation +
+Format: DD.MM.YYYY
+|
+
+|**PrimaryVariationCustomNumber**
+|Number of the main variation +
+Setting **Variation No** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationExternalID**
+|External ID of the main variation +
+Setting **External variation ID** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationExtraShippingCharge1**; +
+**PrimaryVariationExtraShippingCharge2**
+|Extra shipping charge of the main variation +
+Settings **Extra shipping charge 1** and **Extra shipping charge 2** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationHeightMM**
+|Height of the main variation in millimetres (mm)
+|
+
+|**PrimaryVariationIntervalOrderQuantity**
+|The quantity intervals the main variation can be ordered in. Decimal values are possible to allow for orders by weight or length. +
+Setting **Interval order quantity** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationLengthMM**
+|Length of the main variation in millimetres (mm)
+|
+
+|**PrimaryVariationLimitOrderByStockSelect**
+|Limit the main variation to stock +
+**0** = No limitation +
+**1** = Limited to net stock +
+**2** = Do not administer stock for this item +
+Setting **Limitation** in the **Settings** tab of the main variation.
+|
+
+|**PrimaryVariationMainWarehouse**
+|ID of the main warehouse of the main variation +
+Setting **Main warehouse** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationMaximumOrderQuantity**
+|Maximum order quantity of the main variation +
+Setting **Max. order quantity** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationMinimumOrderQuantity**
+|Minimum order quantity of the main variation +
+Setting **Min. order quantity** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationModel**
+|Model name of the main variation
+|
+
+|**PrimaryVariationName**
+|Name of the main variation +
+Setting **Variation name** in the **Settins** tab of the main variation
+|
+
+|**PrimaryVariationPurchasePrice**
+|Net purchase price of the main variation +
+Setting **Purchase price (net)** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationReleaseDate**
+|Date on which the main variation becomes available. +
+Setting **Release date** in the **Settings** tab of the main variation +
+Format: YYYY-MM-DD hh:mm:ss
+|
+
+|**PrimaryVariationStorageCosts**
+|Storage costs of the main variation +
+Setting **Storage costs (net)** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationTransportationCosts**
+|Net transportation costs of the main variation
+|
+
+|**PrimaryVariationUnitCombinationContent**
+|Quantity contained within the unit +
+Value of the **Content** filed in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationUnitContained**
+|Units contained +
+Setting **Units contained** in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationUnitID**
+|ID of the unit of the main variation; list of IDs can be found in the **Settings » Items » Item availability** menu +
+Selection in the **Content** dropdown list in the **Settings** tab of the main variation
+|
+
+|**PrimaryVariationVAT**
+|ID of the main variation's VAT code (Value added tax); menu **Settings » Client (store) » Standard » Accounting** +
+**0** = Data record A +
+**1** = Data record B +
+**2** = Data record C +
+**3** = Data record D
+|
+
+|**PrimaryVariationWeightG**
+|Main variation's gross weight in grams (g)
+|
+
+|**PrimaryVariationWeightNetG**
+|Main variation's net weight in grams (g)
+|
+
+|**PrimaryVariationWidthMM**
+|Width of the main variation in millimetres (mm)
+|
+
+|**VariationAttributes**
+|List of the attributes and attribute values linked to the main variation. +
+The internal attribute name is followed by a colon and then the internal name of the attribute value. More than one attribute values are separated by a semicolon. +
+**__Example:__** colour:red;purple
+|
+|====
+
+__Table 1: data fields of the data format **Item**__
+
+[#40]
+== Overview of the synchronisation fields
+
+The data fields that are listed in table 2 are available for <<data-exchange/importing-data#25., **data synchronisation** >>. These data fields are compulsory synchronisation fields. At least one of the data fields from the following table must be selected for synchronisation. For the selected data field, select the option **Synchronisation** as **Import procedure**.
+
+[cols="a,a"]
+|====
+|Field name |Explanation
+
+|**ItemEAN**
+|GTIN code for an item
+
+|**ItemEAN2 - ItemEAN4**
+|Additional GTIN codes for an item
+
+|**ItemExternalItemID**
+|Item ID for other markets
+
+|**ItemID**
+|Item ID
+
+|**ItemISBN**
+|Item ISBN code
+
+|**ItemNo**
+|Item number
+|====
+
+__Table 2: data fields with the import procedure set to **Synchronisation**__
+
+[IMPORTANT]
+.ItemID field
+====
+The field **ItemID** is usually a mandatory synchronisation field. However, this field does not necessarily have to be used for this data format. You can use any of the fields listed. One field is sufficient for the synchronisation.
+====
+
+[#45]
+== Overview of the procedures
+
+In the **Procedures** tab, select which procedures you want to be carried out during the data export. Activate the **ItemLastUpdateTimestamp** procedure. Select the **set the current date** option from the drop-down menu. A timestamp will be added to items during the import, indicating when the items were last changed.
+
+[#50]
+== amazon_product_type value table
+
+[cols="a,a,a,a,a"]
+|====
+|ID |Export format |Product type |Name of the main category (export format) in plentymarkets |Name of the subcategory (product type) in plentymarkets
+
+|**1**
+|ToysBaby
+|ToysAndGames
+|ToysBaby
+|ToysAndGames
+
+|**2**
+|ToysBaby
+|BabyProducts
+|ToysBaby
+|BabyProducts
+
+|**3**
+|Home
+|BedAndBath
+|Home
+|BedAndBath
+
+|**4**
+|Home
+|FurnitureAndDecor
+|Home
+|FurnitureAndDecor
+
+|**5**
+|Home
+|Kitchen
+|Home
+|Kitchen
+
+|**6**
+|Home
+|OutdoorLiving
+|Home
+|OutdoorLiving
+
+|**7**
+|Home
+|SeedsAndPlants
+|Home
+|SeedsAndPlants
+
+|**8**
+|ConsumerElectronics
+|PC
+|ConsumerElectronics
+|PC
+
+|**9**
+|ConsumerElectronics
+|PDA
+|ConsumerElectronics
+|PDA
+
+|**10**
+|ConsumerElectronics
+|ConsumerElectronics
+|ConsumerElectronics
+|ConsumerElectronics
+
+|**11**
+|Watches
+|
+|Watches
+|
+
+|**12**
+|Sports
+|
+|Sports
+|
+
+|**13**
+|Clothing
+|Shirt
+|Clothing
+|Shirt
+
+|**14**
+|Clothing
+|Sweater
+|Clothing
+|Sweater
+
+|**15**
+|Clothing
+|Pants
+|Clothing
+|Pants
+
+|**16**
+|Clothing
+|Shorts
+|Clothing
+|Shorts
+
+|**17**
+|Clothing
+|Eyewear
+|Clothing
+|Eyewear
+
+|**18**
+|Clothing
+|Dress
+|Clothing
+|Dress
+
+|**19**
+|Clothing
+|Suit
+|Clothing
+|Suit
+
+|**20**
+|Clothing
+|Blazer
+|Clothing
+|Blazer
+
+|**21**
+|Clothing
+|Outerwear
+|Clothing
+|Outerwear
+
+|**22**
+|Clothing
+|SocksHosiery
+|Clothing
+|SocksHosiery
+
+|**23**
+|Clothing
+|Underwear
+|Clothing
+|Underwear
+
+|**24**
+|Clothing
+|Bra
+|Clothing
+|Bra
+
+|**25**
+|Clothing
+|Shoes
+|Clothing
+|Shoes
+
+|**26**
+|Clothing
+|Hat
+|Clothing
+|Hat
+
+|**27**
+|Clothing
+|Bag
+|Clothing
+|Bag
+
+|**28**
+|Clothing
+|Accessory
+|Clothing
+|Accessory
+
+|**29**
+|Clothing
+|Sleepwear
+|Clothing
+|Sleepwear
+
+|**30**
+|Clothing
+|Swimwear
+|Clothing
+|Swimwear
+
+|**31**
+|SWVG
+|VideoGames
+|SWVG
+|VideoGames
+
+|**32**
+|SWVG
+|VideoGamesHardware
+|SWVG
+|VideoGamesHardware
+
+|**33**
+|SWVG
+|VideoGamesAccessories
+|SWVG
+|VideoGamesAccessories
+
+|**34**
+|SWVG
+|Software
+|SWVG
+|Software
+
+|**35**
+|SWVG
+|SoftwareGames
+|SWVG
+|SoftwareGames
+
+|**36**
+|Health
+|PersonalCareAppliances
+|Health
+|PersonalCareAppliances
+
+|**37**
+|Health
+|HealthMisc
+|Health
+|HealthMisc
+
+|**38**
+|HomeImprovement
+|BuildingMaterials
+|HomeImprovement
+|BuildingMaterials
+
+|**39**
+|HomeImprovement
+|Hardware
+|HomeImprovement
+|Hardware
+
+|**40**
+|HomeImprovement
+|MajorHomeAppliances
+|HomeImprovement
+|MajorHomeAppliances
+
+|**41**
+|HomeImprovement
+|OrganizersAndStorage
+|HomeImprovement
+|OrganizersAndStorage
+
+|**42**
+|HomeImprovement
+|PlumbingFixtures
+|HomeImprovement
+|PlumbingFixtures
+
+|**43**
+|HomeImprovement
+|SecurityElectronics
+|HomeImprovement
+|SecurityElectronics
+
+|**44**
+|HomeImprovement
+|Tools
+|HomeImprovement
+|Tools
+
+|**45**
+|AutoAccessory
+|AutoPart
+|AutoAccessory
+|AutoPart
+
+|**46**
+|AutoAccessory
+|AutoAccessoryMisc
+|AutoAccessory
+|AutoAccessoryMisc
+
+|**47**
+|Jewelry
+|FashionNecklaceBraceletAnklet
+|Jewelry
+|FashionNecklaceBraceletAnklet
+
+|**48**
+|Jewelry
+|FashionRing
+|Jewelry
+|FashionRing
+
+|**49**
+|Jewelry
+|FashionEarring
+|Jewelry
+|FashionEarring
+
+|**50**
+|Jewelry
+|FashionOther
+|Jewelry
+|FashionOther
+
+|**51**
+|Jewelry
+|FineNecklaceBraceletAnklet
+|Jewelry
+|FineNecklaceBraceletAnklet
+
+|**52**
+|Jewelry
+|FineRing
+|Jewelry
+|FineRing
+
+|**53**
+|Jewelry
+|FineEarring
+|Jewelry
+|FineEarring
+
+|**54**
+|Jewelry
+|FineOther
+|Jewelry
+|FineOther
+
+|**55**
+|Lighting
+|LightsAndFixtures
+|Lighting
+|LightsAndFixtures
+
+|**56**
+|Lighting
+|LightBulbs
+|Lighting
+|LightBulbs
+
+|**57**
+|Lighting
+|LightingAccessories
+|Lighting
+|LightingAccessories
+
+|**60**
+|Office
+|OfficeProducts
+|Office
+|OfficeProducts
+
+|**61**
+|Office
+|EducationalSupplies
+|Office
+|EducationalSupplies
+
+|**62**
+|Office
+|PaperProducts
+|Office
+|PaperProducts
+
+|**63**
+|Office
+|WritingInstruments
+|Office
+|WritingInstruments
+
+|**64**
+|FoodAndBeverages
+|Food
+|FoodAndBeverages
+|Food
+
+|**65**
+|FoodAndBeverages
+|Beverages
+|FoodAndBeverages
+|Beverages
+
+|**66**
+|FoodAndBeverages
+|AlcoholicBeverages
+|FoodAndBeverages
+|AlcoholicBeverages
+
+|**67**
+|FoodAndBeverages
+|Wine
+|FoodAndBeverages
+|Wine
+
+|**68**
+|FoodAndBeverages
+|HardLiquor
+|FoodAndBeverages
+|HardLiquor
+
+|**69**
+|FoodAndBeverages
+|HouseholdSupplies
+|FoodAndBeverages
+|HouseholdSupplies
+
+|**70**
+|MusicalInstruments
+|BrassAndWoodwindInstruments
+|MusicalInstruments
+|BrassAndWoodwindInstruments
+
+|**71**
+|MusicalInstruments
+|Guitars
+|MusicalInstruments
+|Guitars
+
+|**72**
+|MusicalInstruments
+|InstrumentPartsAndAccessories
+|MusicalInstruments
+|InstrumentPartsAndAccessories
+
+|**73**
+|MusicalInstruments
+|KeyboardInstruments
+|MusicalInstruments
+|KeyboardInstruments
+
+|**74**
+|MusicalInstruments
+|MiscWorldInstruments
+|MusicalInstruments
+|MiscWorldInstruments
+
+|**75**
+|MusicalInstruments
+|PercussionInstruments
+|MusicalInstruments
+|PercussionInstruments
+
+|**76**
+|MusicalInstruments
+|SoundAndRecordingEquipment
+|MusicalInstruments
+|SoundAndRecordingEquipment
+
+|**77**
+|MusicalInstruments
+|StringedInstruments
+|MusicalInstruments
+|StringedInstruments
+
+|**78**
+|Computers
+|NotebookComputer
+|Computers
+|NotebookComputer
+
+|**79**
+|Computers
+|PersonalComputer
+|Computers
+|PersonalComputer
+
+|**80**
+|Computers
+|Monitor
+|Computers
+|Monitor
+
+|**81**
+|Computers
+|VideoProjector
+|Computers
+|VideoProjector
+
+|**82**
+|Computers
+|Printer
+|Computers
+|Printer
+
+|**83**
+|Computers
+|Scanners
+|Computers
+|Scanners
+
+|**84**
+|Computers
+|InkOrToner
+|Computers
+|InkOrToner
+
+|**85**
+|Computers
+|ComputerComponent
+|Computers
+|ComputerComponent
+
+|**86**
+|Computers
+|ComputerDriveOrStorage
+|Computers
+|ComputerDriveOrStorage
+
+|**87**
+|Beauty
+|BeautyMisc
+|Beauty
+|BeautyMisc
+
+|**88**
+|PetSupplies
+|PETSUPPLIES
+|PetSupplies
+|PETSUPPLIES
+
+|**89**
+|Shoes
+|Shoes
+|Shoes
+|Shoes
+
+|**90**
+|Shoes
+|Handbag
+|Shoes
+|Handbag
+
+|**91**
+|Shoes
+|Shoeaccessory
+|Shoes
+|Shoeaccessory
+
+|**92**
+|AutoAccessory
+|Abbigliamento moto
+|AutoAccessory
+|Abbigliamento moto
+
+|**93**
+|AutoAccessory
+|Accessories
+|AutoAccessory
+|Accessories
+
+|**94**
+|AutoAccessory
+|Accessorio auto
+|AutoAccessory
+|Accessorio auto
+
+|**95**
+|AutoAccessory
+|Calzado de moto
+|AutoAccessory
+|Calzado de moto
+
+|**96**
+|AutoAccessory
+|Gloves
+|AutoAccessory
+|Gloves
+
+|**97**
+|AutoAccessory
+|Helmet
+|AutoAccessory
+|Helmet
+
+|**98**
+|AutoAccessory
+|Helmets
+|AutoAccessory
+|Helmets
+
+|**99**
+|AutoAccessory
+|Jantes
+|AutoAccessory
+|Jantes
+
+|**100**
+|AutoAccessory
+|Montaje de ruedas y neumáticos
+|AutoAccessory
+|Montaje de ruedas y neumáticos
+
+|**101**
+|AutoAccessory
+|Moto
+|AutoAccessory
+|Moto
+
+|**102**
+|AutoAccessory
+|Neumático
+|AutoAccessory
+|Neumático
+
+|**103**
+|AutoAccessory
+|Parte auto
+|AutoAccessory
+|Parte auto
+
+|**104**
+|AutoAccessory
+|Parts
+|AutoAccessory
+|Parts
+
+|**105**
+|AutoAccessory
+|Pièces motocyclette
+|AutoAccessory
+|Pièces motocyclette
+
+|**106**
+|AutoAccessory
+|Pieza de moto
+|AutoAccessory
+|Pieza de moto
+
+|**107**
+|AutoAccessory
+|Pieza para coche
+|AutoAccessory
+|Pieza para coche
+
+|**108**
+|AutoAccessory
+|Pneumatici
+|AutoAccessory
+|Pneumatici
+
+|**109**
+|AutoAccessory
+|Pneus
+|AutoAccessory
+|Pneus
+
+|**110**
+|AutoAccessory
+|Pneus montés sur jantes
+|AutoAccessory
+|Pneus montés sur jantes
+
+|**111**
+|AutoAccessory
+|PowersportsPart
+|AutoAccessory
+|PowersportsPart
+
+|**112**
+|AutoAccessory
+|ProtectiveClothing
+|AutoAccessory
+|ProtectiveClothing
+
+|**113**
+|AutoAccessory
+|ProtectiveGear
+|AutoAccessory
+|ProtectiveGear
+
+|**114**
+|AutoAccessory
+|RidingApparel
+|AutoAccessory
+|RidingApparel
+
+|**115**
+|AutoAccessory
+|Ridingboots
+|AutoAccessory
+|Ridingboots
+
+|**116**
+|AutoAccessory
+|Rims
+|AutoAccessory
+|Rims
+
+|**117**
+|AutoAccessory
+|TireAndWheelAssemblies
+|AutoAccessory
+|TireAndWheelAssemblies
+
+|**118**
+|AutoAccessory
+|Tires
+|AutoAccessory
+|Tires
+
+|**119**
+|AutoAccessory
+|Vehicles
+|AutoAccessory
+|Vehicles
+
+|**120**
+|Baby
+|BabyProducts
+|Baby
+|BabyProducts
+
+|**121**
+|Clothing
+|AdultCostume
+|Clothing
+|AdultCostume
+
+|**122**
+|Clothing
+|BabyCostume
+|Clothing
+|BabyCostume
+
+|**123**
+|Clothing
+|Skirt
+|Clothing
+|Skirt
+
+|**124**
+|Computers
+|CarryingCaseOrBag
+|Computers
+|CarryingCaseOrBag
+
+|**125**
+|Computers
+|Computer
+|Computers
+|Computer
+
+|**126**
+|Computers
+|ComputerAddOn
+|Computers
+|ComputerAddOn
+
+|**127**
+|Computers
+|ComputerCoolingDevice
+|Computers
+|ComputerCoolingDevice
+
+|**128**
+|Computers
+|ComputerInputDevice
+|Computers
+|ComputerInputDevice
+
+|**129**
+|Computers
+|ComputerProcessor
+|Computers
+|ComputerProcessor
+
+|**130**
+|Computers
+|ComputerSpeaker
+|Computers
+|ComputerSpeaker
+
+|**131**
+|Computers
+|FlashMemory
+|Computers
+|FlashMemory
+
+|**132**
+|Computers
+|Keyboards
+|Computers
+|Keyboards
+
+|**133**
+|Computers
+|MemoryReader
+|Computers
+|MemoryReader
+
+|**134**
+|Computers
+|Motherboard
+|Computers
+|Motherboard
+
+|**135**
+|Computers
+|NetworkingDevice
+|Computers
+|NetworkingDevice
+
+|**136**
+|Computers
+|RAMMemory
+|Computers
+|RAMMemory
+
+|**137**
+|Computers
+|SoundCard
+|Computers
+|SoundCard
+
+|**138**
+|Computers
+|SystemCabinet
+|Computers
+|SystemCabinet
+
+|**139**
+|Computers
+|SystemPowerDevice
+|Computers
+|SystemPowerDevice
+
+|**140**
+|Computers
+|TabletComputer
+|Computers
+|TabletComputer
+
+|**141**
+|Computers
+|VideoCard
+|Computers
+|VideoCard
+
+|**142**
+|Computers
+|Webcam
+|Computers
+|Webcam
+
+|**143**
+|ConsumerElectronics
+|AccessoryOrPartOrSupply
+|ConsumerElectronics
+|AccessoryOrPartOrSupply
+
+|**144**
+|ConsumerElectronics
+|Antenna
+|ConsumerElectronics
+|Antenna
+
+|**145**
+|ConsumerElectronics
+|AudioOrVideo
+|ConsumerElectronics
+|AudioOrVideo
+
+|**146**
+|ConsumerElectronics
+|AudioVideoAccessory
+|ConsumerElectronics
+|AudioVideoAccessory
+
+|**147**
+|ConsumerElectronics
+|AVFurniture
+|ConsumerElectronics
+|AVFurniture
+
+|**148**
+|ConsumerElectronics
+|Battery
+|ConsumerElectronics
+|Battery
+
+|**149**
+|ConsumerElectronics
+|Binocular
+|ConsumerElectronics
+|Binocular
+
+|**150**
+|ConsumerElectronics
+|BlankMedia
+|ConsumerElectronics
+|BlankMedia
+
+|**151**
+|ConsumerElectronics
+|CableOrAdapter
+|ConsumerElectronics
+|CableOrAdapter
+
+|**152**
+|ConsumerElectronics
+|Camcorder
+|ConsumerElectronics
+|Camcorder
+
+|**153**
+|ConsumerElectronics
+|camerabagsandcases
+|ConsumerElectronics
+|camerabagsandcases
+
+|**154**
+|ConsumerElectronics
+|CameraFlash
+|ConsumerElectronics
+|CameraFlash
+
+|**155**
+|ConsumerElectronics
+|CameraLenses
+|ConsumerElectronics
+|CameraLenses
+
+|**156**
+|ConsumerElectronics
+|CameraOtherAccessories
+|ConsumerElectronics
+|CameraOtherAccessories
+
+|**157**
+|ConsumerElectronics
+|CameraPowerSupply
+|ConsumerElectronics
+|CameraPowerSupply
+
+|**158**
+|ConsumerElectronics
+|CarAlarm
+|ConsumerElectronics
+|CarAlarm
+
+|**159**
+|ConsumerElectronics
+|CarAudioOrTheater
+|ConsumerElectronics
+|CarAudioOrTheater
+
+|**160**
+|ConsumerElectronics
+|CarElectronics
+|ConsumerElectronics
+|CarElectronics
+
+|**161**
+|ConsumerElectronics
+|DigitalCamera
+|ConsumerElectronics
+|DigitalCamera
+
+|**162**
+|ConsumerElectronics
+|DigitalPictureFrame
+|ConsumerElectronics
+|DigitalPictureFrame
+
+|**163**
+|ConsumerElectronics
+|DigitalVideoRecorder
+|ConsumerElectronics
+|DigitalVideoRecorder
+
+|**164**
+|ConsumerElectronics
+|DVDPlayerOrRecorder
+|ConsumerElectronics
+|DVDPlayerOrRecorder
+
+|**165**
+|ConsumerElectronics
+|FilmCamera
+|ConsumerElectronics
+|FilmCamera
+
+|**166**
+|ConsumerElectronics
+|GPSOrNavigationAccessory
+|ConsumerElectronics
+|GPSOrNavigationAccessory
+
+|**167**
+|ConsumerElectronics
+|GpsOrNavigationSystem
+|ConsumerElectronics
+|GpsOrNavigationSystem
+
+|**168**
+|ConsumerElectronics
+|HandheldOrPDA
+|ConsumerElectronics
+|HandheldOrPDA
+
+|**169**
+|ConsumerElectronics
+|Headphones
+|ConsumerElectronics
+|Headphones
+
+|**170**
+|ConsumerElectronics
+|HomeTheaterSystemOrHTIB
+|ConsumerElectronics
+|HomeTheaterSystemOrHTIB
+
+|**171**
+|ConsumerElectronics
+|MediaPlayer
+|ConsumerElectronics
+|MediaPlayer
+
+|**172**
+|ConsumerElectronics
+|MediaPlayerOrEReaderAccessory
+|ConsumerElectronics
+|MediaPlayerOrEReaderAccessory
+
+|**173**
+|ConsumerElectronics
+|MediaStorage
+|ConsumerElectronics
+|MediaStorage
+
+|**174**
+|ConsumerElectronics
+|MiscAudioComponents
+|ConsumerElectronics
+|MiscAudioComponents
+
+|**175**
+|ConsumerElectronics
+|Phone
+|ConsumerElectronics
+|Phone
+
+|**176**
+|ConsumerElectronics
+|PhoneAccessory
+|ConsumerElectronics
+|PhoneAccessory
+
+|**177**
+|ConsumerElectronics
+|PhotographicStudioItems
+|ConsumerElectronics
+|PhotographicStudioItems
+
+|**178**
+|ConsumerElectronics
+|PortableAudio
+|ConsumerElectronics
+|PortableAudio
+
+|**179**
+|ConsumerElectronics
+|PortableAvDevice
+|ConsumerElectronics
+|PortableAvDevice
+
+|**180**
+|ConsumerElectronics
+|PowerSuppliesOrProtection
+|ConsumerElectronics
+|PowerSuppliesOrProtection
+
+|**181**
+|ConsumerElectronics
+|RadarDetector
+|ConsumerElectronics
+|RadarDetector
+
+|**182**
+|ConsumerElectronics
+|Radio
+|ConsumerElectronics
+|Radio
+
+|**183**
+|ConsumerElectronics
+|RadioOrClockRadio
+|ConsumerElectronics
+|RadioOrClockRadio
+
+|**184**
+|ConsumerElectronics
+|ReceiverOrAmplifier
+|ConsumerElectronics
+|ReceiverOrAmplifier
+
+|**185**
+|ConsumerElectronics
+|RemoteControl
+|ConsumerElectronics
+|RemoteControl
+
+|**186**
+|ConsumerElectronics
+|Speakers
+|ConsumerElectronics
+|Speakers
+
+|**187**
+|ConsumerElectronics
+|StereoShelfSystem
+|ConsumerElectronics
+|StereoShelfSystem
+
+|**188**
+|ConsumerElectronics
+|Telescope
+|ConsumerElectronics
+|Telescope
+
+|**189**
+|ConsumerElectronics
+|Television
+|ConsumerElectronics
+|Television
+
+|**190**
+|ConsumerElectronics
+|Tuner
+|ConsumerElectronics
+|Tuner
+
+|**191**
+|ConsumerElectronics
+|TVCombos
+|ConsumerElectronics
+|TVCombos
+
+|**192**
+|ConsumerElectronics
+|TwoWayRadio
+|ConsumerElectronics
+|TwoWayRadio
+
+|**193**
+|ConsumerElectronics
+|VCR
+|ConsumerElectronics
+|VCR
+
+|**194**
+|ConsumerElectronics
+|VideoProjector
+|ConsumerElectronics
+|VideoProjector
+
+|**195**
+|FoodAndBeverages
+|Beer
+|FoodAndBeverages
+|Beer
+
+|**196**
+|FoodAndBeverages
+|Spirits
+|FoodAndBeverages
+|Spirits
+
+|**199**
+|Home
+|Type
+|Home
+|Type
+
+|**200**
+|Home
+|Home
+|Home
+|Home
+
+|**201**
+|HomeImprovement
+|Electrical
+|HomeImprovement
+|Electrical
+
+|**202**
+|Jewelry
+|BigiotteriaAltro
+|Jewelry
+|BigiotteriaAltro
+
+|**203**
+|Jewelry
+|BigiotteriaAnello
+|Jewelry
+|BigiotteriaAnello
+
+|**204**
+|Jewelry
+|BigiotteriaCollanaBraccialeCavig
+|Jewelry
+|BigiotteriaCollanaBraccialeCavig
+
+|**205**
+|Jewelry
+|BigiotteriaOrecchini
+|Jewelry
+|BigiotteriaOrecchini
+
+|**206**
+|Jewelry
+|GioielleriaAltro
+|Jewelry
+|GioielleriaAltro
+
+|**207**
+|Jewelry
+|GioielleriaAnello
+|Jewelry
+|GioielleriaAnello
+
+|**208**
+|Jewelry
+|GioielleriaCollanaBraccialeCavig
+|Jewelry
+|GioielleriaCollanaBraccialeCavig
+
+|**209**
+|Jewelry
+|GioielleriaOrecchini
+|Jewelry
+|GioielleriaOrecchini
+
+|**210**
+|LargeAppliances
+|CookingOven
+|LargeAppliances
+|CookingOven
+
+|**211**
+|LargeAppliances
+|Cooktop
+|LargeAppliances
+|Cooktop
+
+|**212**
+|LargeAppliances
+|Dishwasher
+|LargeAppliances
+|Dishwasher
+
+|**213**
+|LargeAppliances
+|LaundryAppliance
+|LargeAppliances
+|LaundryAppliance
+
+|**214**
+|LargeAppliances
+|MicrowaveOven
+|LargeAppliances
+|MicrowaveOven
+
+|**215**
+|LargeAppliances
+|Range
+|LargeAppliances
+|Range
+
+|**216**
+|LargeAppliances
+|RefrigerationAppliance
+|LargeAppliances
+|RefrigerationAppliance
+
+|**217**
+|LargeAppliances
+|TrashCompactor
+|LargeAppliances
+|TrashCompactor
+
+|**218**
+|LargeAppliances
+|VentHood
+|LargeAppliances
+|VentHood
+
+|**219**
+|Luggage
+|luggage
+|Luggage
+|luggage
+
+|**220**
+|Motorcycles
+|Vehicles
+|Motorcycles
+|Vehicles
+
+|**221**
+|Motorcycles
+|Fahrzeugteile
+|Motorcycles
+|Fahrzeugteile
+
+|**222**
+|Motorcycles
+|Fahrzeugzubehör
+|Motorcycles
+|Fahrzeugzubehör
+
+|**223**
+|Motorcycles
+|Felgen
+|Motorcycles
+|Felgen
+
+|**224**
+|Motorcycles
+|Handschuhe
+|Motorcycles
+|Handschuhe
+
+|**225**
+|Motorcycles
+|Helme
+|Motorcycles
+|Helme
+
+|**226**
+|Motorcycles
+|Kompletträder
+|Motorcycles
+|Kompletträder
+
+|**227**
+|Motorcycles
+|Reifen
+|Motorcycles
+|Reifen
+
+|**228**
+|Motorcycles
+|Schutzkleidung
+|Motorcycles
+|Schutzkleidung
+
+|**229**
+|Motorcycles
+|Stiefel
+|Motorcycles
+|Stiefel
+
+|**230**
+|Office
+|ArtSupplies
+|Office
+|ArtSupplies
+
+|**231**
+|Office
+|BarCodeReader
+|Office
+|BarCodeReader
+
+|**232**
+|Office
+|Calculator
+|Office
+|Calculator
+
+|**233**
+|Office
+|inkortoner
+|Office
+|inkortoner
+
+|**234**
+|Office
+|MultiFunctionDevice
+|Office
+|MultiFunctionDevice
+
+|**235**
+|Office
+|OfficeElectronics
+|Office
+|OfficeElectronics
+
+|**236**
+|Office
+|Phone
+|Office
+|Phone
+
+|**237**
+|Office
+|Printer
+|Office
+|Printer
+
+|**238**
+|Office
+|Scanners
+|Office
+|Scanners
+
+|**239**
+|Office
+|VoiceRecorder
+|Office
+|VoiceRecorder
+
+|**240**
+|PetSupplies
+|PetSuppliesMisc
+|PetSupplies
+|PetSuppliesMisc
+
+|**241**
+|Shoes
+|Eyewear
+|Shoes
+|Eyewear
+
+|**242**
+|Sports
+|GolfClubHybrid
+|Sports
+|GolfClubHybrid
+
+|**243**
+|Sports
+|GolfClubIron
+|Sports
+|GolfClubIron
+
+|**244**
+|Sports
+|GolfClubPutter
+|Sports
+|GolfClubPutter
+
+|**245**
+|Sports
+|GolfClubIron
+|Sports
+|GolfClubIron
+
+|**246**
+|Sports
+|GolfClubWedge
+|Sports
+|GolfClubWedge
+
+|**247**
+|Sports
+|GolfClubWood
+|Sports
+|GolfClubWood
+
+|**248**
+|Sports
+|SportingGoods
+|Sports
+|SportingGoods
+
+|**249**
+|Toys
+|ToysAndGames
+|Toys
+|ToysAndGames
+
+|**250**
+|Kitchen
+|Kitchen
+|Kitchen
+|Kitchen
+
+|**251**
+|LawnAndGarden
+|OutdoorLiving
+|LawnAndGarden
+|OutdoorLiving
+
+|**252**
+|LawnAndGarden
+|SeedsAndPlants
+|LawnAndGarden
+|SeedsAndPlants
+|====
+
+__Table 3: **amazon_product_type** value table__
+
