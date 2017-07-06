@@ -1,0 +1,90 @@
+<div class="row equal margin-bottom-1">
+	{% if $CheckoutMethodOfPaymentID == 50 %}
+		{% $_pppWall = Container_CheckoutPayPalPlus()  %}
+	{% endif %}
+	{% if strlen($_pppWall)>0 %}
+		<div class="panel panel-paypal-plus">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Zahlung</h3>
+				</div>
+				<div class="panel-body" style="width: 100%; margin: 0 auto;">
+					<div data-plenty-checkout-template="Totals">
+						{% Container_CheckoutTotals() %}
+					</div>
+					<div data-plenty-checkout-template="Payment">
+						$_pppWall
+					</div>
+				</div>
+			</div>
+		</div>
+</div>
+<script>
+(function($) {
+		$(document).ready(function() {
+			$('#checkoutPanelPayment').show(function() {
+        		$('#ppplus').width('100%');
+        	});
+        	// Größe vom iFrame neu anpassen
+        	$("iframe[id^='iframe_']").load(function() {
+    			$(this).width("100%");
+			});
+        });
+	}(jQuery));
+</script>
+{% else %}
+	<div class="col-lg-6 col-md-6 col-sm-6" data-plenty-checkout-template="MethodsOfPaymentList">
+		{% Container_CheckoutMethodsOfPaymentList() %}
+	</div>
+</div>
+<div class="text-right">
+	<button class="btn btn-primary btn-lg btn-block-xs" data-plenty-checkout-href="next">
+		<span>Weiter</span><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+	</button>
+</div>
+<script>
+	(function($) {
+		$(document).ready(function() {
+			plenty.NavigatorService.beforeChange(function(currentContainer, targetContainer) {
+				// Bestellschritt "Zahlung & Versand" verlassen
+				if ( currentContainer.id === "payment" && targetContainer.id !== "payment" && targetContainer.index > currentContainer.index ) {
+					// Zahlung vorbereiten
+					plenty.CheckoutService.preparePayment().done(function(response) {
+						if ( response.data.CheckoutMethodOfPaymentRedirectURL == '' && response.data.CheckoutMethodOfPaymentAdditionalContent == '' ) {
+							// Nächsten Bestellschritt anzeigen, wenn erfolgreich
+							plenty.NavigatorService.continueChange( targetContainer );
+						}
+					});
+					// Bestellschritt nicht wechseln
+					return false;
+				}
+				return true;				
+			});
+
+			plenty.NavigatorService.afterChange(function(currentContainer, targetContainer) {
+				if (currentContainer.id === "payment" && $('#ppplus').length <= 0) {
+
+					// Liste der Zahlungsarten (nicht PayPal PLUS) ausblenden
+					$('[data-plenty-checkout-template="MethodsOfPaymentList"]').hide();
+					var waitscreen = $("#PlentyWaitScreen");
+
+					// Ladebildschirm anzeigen, bis PayPal PLUS geladen wurde
+					if( waitScreen.length <= 0 ) {
+		                waitScreen = $('<div id="PlentyWaitScreen" class="overlay overlay-wait in"></div>');
+		                $('body').append(waitScreen);
+		            } else {
+		                // Ladebildschirm anzeigen, wenn nicht bereits sichtbar
+		                waitScreen.addClass('in');
+		            }
+					
+					// Bestellschritt für Zahlung neu laden. WARNUNG: Eigene Bestellschritte prüfen und ggf. Bestellschritt 7 durch den verwendeten Bestellschritt ersetzen.
+					PlentyFramework.factories.CMSFactory.getCategoryContent({% CheckoutStepPageID(7) %}).done(function(response) {
+						$('#checkoutPanelPayment').html(response.data[0]);
+						waitScreen.removeClass('in');
+					});
+				}
+			});
+		});
+	}(jQuery));	
+</script>
+{% endif %}

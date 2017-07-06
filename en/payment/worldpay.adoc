@@ -1,0 +1,288 @@
+= Worldpay
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Worldpay, payment method
+:description: Payment in plentymarkets: Set up the interface to Worldpay in your plentymarkets system.
+:position: 62
+
+Worldpay is a payment provider based in the USA and the United Kingdom that allows online sellers to accept card payments online. UK sellers can use all services offered by Worldpay whilst German online sellers can take advantage of most of the payment provider's service portfolio. Contact the Worldpay support to select the cards you want to accept for payment.
+
+toc::[]
+[#10]
+== Important notes
+
+This chapter provides you with important information about integrating the payment provider in plentymarkets.
+
+[.subhead]
+Payment process
+Your customers can select a payment method during the order process as usual. If they decide to pay using Worldpay, they select the desired card in a new window and enter the card data. End customers do not have to register with Worldpay. After the data has been authorised, customers are forwarded back to your online store.
+
+[IMPORTANT]
+.Corporate Gateway
+====
+The interface between Worldpay and plentymarkets is based on the **Corporate Gateway** contract model. The CardPay interface is not supported.
+====
+
+[#20]
+== Registering with Worldpay
+
+To integrate Worldpay into your online store as a payment method, you need to register with Worldpay and activate an account. To do so, fill in and send the **link:https://secure.worldpay.com/app/[WorldPay application form, window="_blank"]**. You will receive an email from WorldPay containing information about the next steps. Once Worldpay accepts your application, you will receive your Worldpay login details and a link to an online activation request where you enter and send the URL of your online store. Worldpay then checks if the payment page of your online store is fully functional and activates you for online transactions in the Worldpay systems.
+
+[#30]
+== Setting up Worldpay in plentymarkets
+
+To set up Worldpay in plentymarkets you need the access data that is stored in the Worldpay back end under **Profiles**. Proceed as described below to set up the interface to Worldpay.
+
+[.instruction]
+Setting up the Worldpay interface:
+
+. Go to **Settings » Orders » Payment » Payment methods**.
+. Place a check mark next to the setting **Also show inactive**.
+. Open the folder **International**.
+.  Click on **Worldpay**. +
+→ The **Settings** tab will open.
+. Click on the **Interface** tab.
+.  Expand the client.
+.  Carry out the settings as desired. Pay attention to the information given in table 1.
+. **Save** the settings.
+
+.setting up the Worldpay interface
+[cols="a,a"]
+|====
+|Setting |Explanation
+
+|**Admin ID**
+|Enter the Admin ID as received from Worldpay.
+
+|**Merchant ID**
+|Enter the Merchant ID as received from Worldpay.
+
+|**XML password**
+|Enter password as saved in the Worldpay back end.
+
+|**Max. order amount in GBP**
+|Enter the maximum order amount in GBP.
+
+|**Activate test mode**
+|Activate the test mode and check the Worldpay functions before working live with the system.
+
+2+|Client (store) - options
+
+|**Activate access data for all clients (stores)**
+|Only visible if clients (stores) were set up. Activate to apply the account settings saved for the main store by clicking on **Add account** for all clients (shops). This setting is dominant over the settings saved for each client. Deactivate to use separate access data for your clients (stores). Online stores that do not have account settings saved for them cannot be used with Worldpay. +
+Go to **<<client-store/standard/online-store/basic-settings#, Settings » Client (store) » Standard » Online store » Basic settings  >>** and make sure that you have selected the option **Enable login for every store** in the line **Login**. This makes it possible to support several clients.
+|====
+
+[#40]
+== Activating the payment method
+
+Set up and activate the Worldpay **<<payment/managing-payment-methods#20., payment method >>** in the **Settings** tab of the payment method. In addition, check the settings for **Permitted payment methods** in the **<<payment/managing-payment-methods#30., customer classes >>** and for **Blocked payment methods** in the **<<fulfilment/preparing-the-shipment#1000., shipping profiles >>**.
+
+[#50]
+== Carrying out settings in the Worldpay account
+
+You have to save some data in your Worldpay back end to make sure the interface is fully functional. To do so, log into your Worldpay account and carry out the following settings in the **Merchant Channel** menu in your profile.
+
+[#60]
+=== Setting up the merchant channel
+
+Set up the merchant channel in the Worldpay back end.
+
+* Select **yes** under **Active** in the **http** row of the **Merchant Channels** area.
+* Select **cgi** from the **Content** drop-down menu.
+* Enter the plentymarkets URL into the **Address** field: **http://**your-plentystore.co.uk**/plenty/api/payment_notification.php?payment=worldpay** +
+→ Replace "your-plentystore" with your own store.
+* Select **POST** from the drop-down menu under **Method**.
+* Click on **Save the settings**.
+
+[#70]
+=== Setting up the data exchange with plentymarkets
+
+In the **Merchant Channel** menu, you also set the information you want to receive and via which Worldpay channel you want to receive it. The recommended method for plentymarkets is described below. Using this method, the data will be added to your system directly.
+
+* Activate the options that you want to transfer to plentymarkets in the **http** row of the **Merchant Channel Events** area.
+* Click on **Save the settings**.
+
+[#80]
+== Automatically sending shipping confirmations
+
+Set up an <<orders/settings/event-procedures#, **event procedure**  >> to automatically send shipping confirmations when the outgoing items are booked. The shipping confirmation will automatically trigger a transfer of the payment made by the customer from Worldpay to you. The Worldpay payment status will change from **authorised** to **captured**.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+.  Go to **Settings » Orders » Event procedures**.
+.  Click on **Add event procedure**. +
+→ The **Create new event procedure** window will open.
+.  Enter a name.
+.  Select the **event** listed in table 2.
+. **Save** the settings.
+.  Pay attention to the explanations given in table 2 and carry out the settings as desired.
+.  Place a check mark next to the option **Active**.
+. **Save** the settings.
+--
+.event procedure for sending automatic shipping confirmations to Worldpay
+[cols="a,a,a"]
+|====
+| Setting | Option | Selection
+
+|**Event**
+|**Order change: Outgoing items booked**
+|
+
+|**Filter 1**
+|**Order &gt; Payment method**
+|**WorldPay**
+
+|**Filter 2**
+|**Order &gt; Order type**
+|**Order**
+
+|**Procedure**
+|**Shipping &gt; Send shipping confirmation to Worldpay**
+|
+|====
+
+[#90]
+== Automatically sending cancellations or credit notes
+
+Set up an <<orders/settings/event-procedures#, **event procedure**  >> to automatically inform Worldpay of cancellations or credit notes.
+
+[TIP]
+.Tip: One event procedure for two events
+====
+Set up one event procedure for two events. The event procedure will change according to the payment status on Worldpay. If the Worldpay payment status for the payment is still **authorised** (i.e. the payment was not transferred yet), a cancellation is sent automatically. If the Worldpay payment status has changed to **captured** (i.e. the payment has already been transferred), a credit note is sent automatically.
+====
+
+[.collapseBox]
+.Setting up an event procedure
+--
+.  Go to **Settings » Orders » Event procedures**.
+.  Click on **Add event procedure**. +
+→ The **Create new event procedure** window will open.
+.  Enter a name.
+.  Select the **event** listed in table 3.
+. **Save** the settings.
+.  Pay attention to the explanations given in table 3 and carry out the settings as desired.
+.  Place a check mark next to the option **Active**.
+. **Save** the settings.
+--
+.event procedure for automatically sending cancellations or credit notes to Worldpay
+[cols="a,a,a"]
+|====
+| Setting | Option | Selection
+
+|**Event**
+|**Order change: Status change**
+| Select status for **cancelled orders**.
+
+|**Filter 1**
+|**Order &gt; Order type**
+|**Order**
+
+|**Filter 2**
+|**Order &gt; Payment method**
+|**WorldPay**
+
+|**Procedure**
+|**Payment methods &gt; Send cancellation or credit note to Worldpay**
+|
+|====
+
+[#100]
+== Automatically sending cancellations
+
+As an alternative to the previous event procedure, set up an <<orders/settings/event-procedures#, **event procedure**  >> to automatically inform Worldpay of cancellations. You can only use this event procedure to cancel a payment if it has not been collected using the event procedure above, i.e. if it is still in the Worldpay status **authorised**. Subsequently, set up a second event procedure to automatically inform Worldpay of <<payment/worldpay#110., **credit notes** >>.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+.  Go to **Settings » Orders » Event procedures**.
+.  Click on **Add event procedure**. +
+→ The **Create new event procedure** window will open.
+.  Enter a name.
+.  Select the **event** listed in table 4.
+. **Save** the settings.
+.  Pay attention to the explanations given in table 4 and carry out the settings as desired.
+.  Place a check mark next to the option **Active**.
+. **Save** the settings.
+--
+.event procedure for automatically sending cancellations to Worldpay
+[cols="a,a,a"]
+|====
+| Setting | Option | Selection
+
+|**Event**
+|**Order change: Status change**
+| Select status for **cancelled orders**.
+
+|**Filter 1**
+|**Order &gt; Order type**
+|**Order**
+
+|**Filter 2**
+|**Order &gt; Payment method**
+|**WorldPay**
+
+|**Procedure**
+|**Payment methods &gt; Send cancellation to Worldpay**
+|
+|====
+
+[#110]
+== Automatically sending credit notes
+
+Once you have collected a payment from Worldpay and the Worldpay status has changed to **captured**, you can no longer send a cancellation. You need to send a credit note instead. Set up an <<orders/settings/event-procedures#, **event procedure**  >> to automatically send credit notes to Worldpay.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+.  Go to **Settings » Orders » Event procedures**.
+.  Click on **Add event procedure**. +
+→ The **Create new event procedure** window will open.
+.  Enter a name.
+.  Select the **event** listed in table 5.
+. **Save** the settings.
+.  Pay attention to the explanations given in table 5 and carry out the settings as desired.
+.  Place a check mark next to the option **Active**.
+. **Save** the settings.
+--
+.event procedure for automatically sending credit notes to Worldpay
+[cols="a,a,a"]
+|====
+| Setting | Option | Selection
+
+|**Event**
+|**Order generation: New credit note**
+|
+
+// tr> <td> <strong>Filter 1</strong></td> <td> <strong>Auftrag > Auftragstyp</strong></td> <td> <strong>Gutschrift</strong></td> </tr
+
+|**Filter**
+|**Order &gt; Payment method**
+|**WorldPay**
+
+|**Procedure**
+|**Payment methods &gt; Send credit note to Worldpay**
+|
+|====
+
+[#120]
+== Manually creating credit notes
+
+It may be necessary to manually create credit notes for individual orders that are processed with Worldpay. You can report individual credit note amounts to Worldpay. To do so, proceed as follows.
+
+[.instruction]
+Send credit note to Worldpay:
+
+. Go to **Orders » Edit orders**.
+. Open the Worldpay order. +
+→ The **Overview** tab will open.
+. Select the option **create** from the **Credit note...** drop-down menu. +
+→ The credit note will be created.
+. Open the newly created **credit note**.
+. Click on the **Settings** tab.
+. Enter the amount into the **Send Worldpay credit note** field.
+. Click on **Send credit note to Worldpay**. +
+→ The credit note will be sent to Worldpay.
+

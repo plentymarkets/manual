@@ -1,0 +1,533 @@
+= Entwurf_KB_2alt
+:lang: de
+include::{includedir}/_header.adoc[]
+:position: 3
+
+Fulfillment beschreibt die einzelnen Schritte der Auftragsabwicklung, wie die Erzeugung von Rechnungen oder den Druck von Etiketten. Es wird auch beschrieben, wie Sie automatische Statuswechsel einstellen, die dann beim Durchlauf des Fulfillments automatisch ausgeführt werden. Diese Seite beschreibt die Funktionen der verschiedenen Bereiche des Fulfillments, die in den Untermenüs einstellbar sind. Das Ziel ist, Ihnen zu zeigen, wie Sie Ihren <</#, **Fulfillmentprozess möglichst effektiv gestalten** >>. Dadurch gewährleisten Sie einen schnellen und somit optimalen Service, was im Onlinehandel enorm wichtig ist und u.a. dazu führt, dass aus Gelegenheitskäufern in Ihrem Webshop Stammkunden werden.
+
+Diese Handbuchseite beschreibt die Konfiguration der wichtigsten Untermenüs im Menü **Aufträge » Fulfillment** und umfasst die Schritte, die ab der **Freigabe zum Warenversand** bis zum tatsächlichen **Warenausgang** durchlaufen werden. Die folgende Beschreibung ist als Beispiel zu verstehen, wie Sie die Vorgänge sinnvoll konfigurieren und einfach und schnell abarbeiten können.
+
+Erfasst werden **Aufträge ab dem Status 5**. Bei diesen Aufträgen wurde bereits ein Zahlungseingang gebucht (Wechsel von Statusbereich 3 in 4) und außerdem ist die Ware verfügbar (Wechsel von Statusbereich 4 in 5).
+
+Sie haben alternativ die Möglichkeit, diese Schritte weiter zu automatisieren indem Sie für bestimmte Schritte **<<auftraege/einstellungen/ereignis-aktionen#, Ereignisaktionen  >>** einrichten. Diese Seite enthält Beispiele dazu. Weiterhin können Sie Bereiche des Fulfillments über einen **<</#, Versanddienstleister >>**, z.B. DHL Intraship, oder z.B. mit dem **<<tools/plentymarkets-client#, plentymarkets Client  >>** automatisieren.
+
+toc::[]
+== Vorbereitung
+
+Damit Ihre Fulfillmentprozesse reibungslos ablaufen, müssen Sie die nachfolgend beschriebenen Bereiche prüfen und bei Bedarf bearbeiten.
+
+=== Auftragsstatus anlegen
+
+Legen Sie zunächst im Menü <<auftraege/einstellungen/auftragsstatus#, **Einstellungen » Aufträge » Auftragsstatus**  >> für jeden Schritt einen **Unterstatus** an, in den Aufträge dann jeweils geändert werden (Tabelle 1). Wir verwenden im Beispiel in Bild 1 die Standardbezeichnungen des Systems. Sie können diese Bezeichnungen auch ändern.
+
+image::entwurfsseiten/entwurf-kb/assets/DE-Auftraege-BestPractice-Fulfillment-01.png[]
+
+__Bild 1: **Status 5** und **beispielhafte Unterstatus**__
+
+[TIP]
+.Beispiel
+====
+Wenn für einen Auftrag im Status **5 Freigabe Versand** die Rechnung erzeugt wurde, sollte dieser in den Status **Rechnung erzeugt** geändert werden, in unserem Beispiel (Bild 1) ist das **Status 5.2**. +
+Das gewährleistet, dass der Bearbeitungsstand eines Auftrags jeweils am Status zu erkennen ist. Außerdem ist das die Voraussetzung dafür, dass Aufträge vom System für den jeweils nächsten Schritt eindeutig erkannt und erfasst werden können. Bild 1 und Tabelle 1 zeigen ein Beispiel für eine Standard-Konfiguration.
+====
+
+Die folgende Tabelle erläutert die Statuseinstellungen im Menü **Aufträge » Fulfillment**:
+
+[cols="a,a,a,a"]
+|====
+|Untermenü |Auftragsstatus |Ändere Auftragsstatus |Ereignisaktion
+
+|**Rechnungen erzeugen**
+|Freigabe Versand
+|Rechnung erzeugt
+|Automatische Rechnungserzeugung +
+Automatischer Rechnungsversand per E-Mail
+
+|**Lieferscheine erzeugen**
+|Rechnung erzeugt
+|Lieferschein erzeugt
+|
+
+|**Pickliste**
+|Lieferschein erzeugt
+|Pickliste erzeugt
+|
+
+|**Packliste**
+|Pickliste erzeugt
+|Packliste erzeugt
+|
+
+|**Lieferanschriftenliste**
+|Packliste erzeugt
+|Warenausgang gebucht
+|Automatische Buchung des Warenausgangs bei Statuswechsel auf Status **7 Warenausgang gebucht**
+
+|**Adressetiketten**
+|Packliste erzeugt
+|Warenausgang gebucht
+|Automatische Buchung des Warenausgangs durch gleiche Ereignisaktion wie Lieferanschriftenliste
+
+|**Import Paketnummern**
+|
+|
+|Automatischer Versand der E-Mail-Vorlage **Versandbestätigung zur Bestellung** bei Statuswechsel auf Status **Auftragseingabe Paketnummer**
+|====
+
+__Tab. 1: **Auftragsstatus**__
+
+[TIP]
+.Tipp: Zeitsparende Vorgehensweise
+====
+In der Grundeinstellung werden **alle Aufträge** eines gewählten Status bearbeitet. Wenn Sie keine weitere Filterung benötigen, wählen Sie die Status in den Untermenüs gemäß Tabelle 1 sowie die Anzahl der Aufträge unter **Limit** und starten nacheinander die Prozesse. So durchlaufen Sie den gesamten hier beschriebenen Fulfillmentprozess in kürzester Zeit.
+====
+
+=== Dokumentenvorlagen einstellen
+
+Prüfen Sie die **<<auftraege/einstellungen/dokumente#, Dokumentenvorlagen  >>** in Ihrem plentymarkets-System, bevor Sie PDF-Dokumente wie Rechnungen oder Lieferscheine erzeugen. Dort besteht auch die Möglichkeit, sich über das **Auge** eine Vorschau der Dokumente anzeigen zu lassen. Einige Dokumentenvorlagen erreichen Sie über einen Link im entsprechenden Untermenü, z.B. **Packliste ändern**.
+
+== Allgemeine Einstellungen
+
+Die Optionen in Tabelle 2 kommen in allen Untermenüs aus Tabelle 1 vor und werden daher nur an dieser Stelle erläutert. Besondere Optionen eines Untermenüs werden direkt im entsprechenden Kapitel erläutert.
+
+Die folgende Tabelle erläutert die gemeinsamen Einstellungen der Untermenüs im Menü **Aufträge » Fulfillment**:
+
+[cols="a,a"]
+|====
+|Einstellung |Erläuterung
+
+|**Auftragsstatus**
+|Jeweils den Status der Aufträge wählen, die gesucht und dann im jeweiligen Menü bearbeitet werden sollen, siehe auch Tabelle 1. +
+Diese Einstellung ist wichtig, weil die zu bearbeitenden Aufträge jeweils anhand des Status ausgewählt werden.
+
+|**Eigner**
+|Einen **Eigner** wählen, für dessen Aufträge Dokumente erzeugt werden sollen oder die Option **ALLE**, wenn für alle Eigner die Dokumente erzeugt werden sollen.
+
+|**Mandant (Shop)**
+|**Standard** = nur Standard-Webshop +
+**ALLE** = Webshop und Mandanten
+
+|**Lager**
+|Ein Lager oder die Option **ALLE** wählen.
+
+|**Zahlungsart**
+|Eine Zahlungsart oder die Option **ALLE** wählen.
+
+|**Sortierung**
+|Option wählen, nach der die erzeugten Dokumente **sortiert** werden sollen oder die Option **Keine**, wenn keine Sortierung gewünscht wird. Optionen: **Auftrags-ID**, **Kunden-ID**, **Artikel-ID**.
+
+|**Limit**
+|Wählen, wie viele **Aufträge pro Durchgang** bearbeitet werden sollen. +
+Es kann pro Durchgang höchstens **das maximal einstellbare Limit** an Aufträgen bearbeitet werden. Wenn die Anzahl der Aufträge, die bearbeitet werden sollen, größer ist, als das höchste einstellbare Limit, muss der Prozess entsprechend oft wiederholt werden. In der Grundeinstellung ist in manchen der Untermenüs das geringste Limit eingestellt, um eine optimale Systemleistung zu gewährleisten.
+
+|**Ändere Auftragsstatus**
+|Jeweils den Status wählen, in den die Aufträge nach dem jeweiligen Schritt wechseln sollen, siehe auch Tabelle 1. +
+Der Statuswechsel ist wichtig, damit für bereits bearbeitete Aufträge ein Prozess nicht noch einmal durchgeführt wird. +
+Wird keine Änderung gewünscht, z.B. wenn kein Prozess mehr folgt und der Auftrag im aktuellen Status bleiben kann, die Option **Keine Änderung** wählen.
+|====
+
+__Tab. 2: **Optionen**__
+
+== Schritte mit Ereignisaktionen automatisieren
+
+Sie haben alternativ zu den Prozessen in den Untermenüs die Möglichkeit, die Schritte Ihres Fulfillments weiter zu automatisieren, indem Sie für bestimmte Schritte **<<auftraege/einstellungen/ereignis-aktionen#, Ereignisaktionen  >>** einrichten. Diese Seite enthält Beispiele dazu, z.B. für den automatischen Versand der Rechnungsdokumente. Weiterhin können Sie Bereiche des Fulfillments über einen **<</#, Versanddienstleister >>**, z.B. DHL Intraship, oder z.B. mit dem **<<tools/plentymarkets-client#, plentymarkets Client  >>** automatisieren.
+
+== Rechnungen erzeugen
+
+In diesem Menü werden Rechnungen erzeugt, um diese zu drucken oder einer Sendung beizulegen. +
+Zusätzlich haben Sie nach der Rechnungserzeugung die Möglichkeit, die Rechnungen automatisch per E-Mail als **PDF-Anhang** an den Käufer zu verschicken.
+
+Nach den Erläuterungen zur Rechnungserzeugung in diesem Menü finden Sie Informationen zur Erstellung von entsprechenden Ereignisaktionen.
+
+=== Rechnungen manuell über das Menü erzeugen
+
+[.instruction]
+Rechnungen über das Menü erzeugen:
+
+. Öffnen Sie das Menü **Aufträge » Fulfillment » Rechnungen erzeugen**.
+. Nehmen Sie die Einstellungen für den **Suchfilter** gemäß Tabelle 1, 2 und 3 vor.
+. Wählen Sie unter **Aktion** einen neuen Auftragsstatus, der den gewählten Aufträgen nach erfolgreicher Rechnungserstellung zugewiesen werden soll.
+. Klicken Sie nach Auswahl aller Optionen auf das **Zahnrad**. +
+→ Sie erhalten eine PDF-Datei, in der die Rechnungen aller von Ihnen durch die Filteroptionen bestimmten Aufträge enthalten ist.
+
+Die folgende Tabelle erläutert ergänzend zu Tabelle 2 die Einstellungen im Untermenü **Rechnungen erzeugen**:
+
+[cols="a,a"]
+|====
+|Einstellung |Erläuterung
+
+|**Auftragsstatus**
+|Den Status wählen, anhand dessen die Aufträge zur Rechnungserzeugung gesucht werden sollen, in unserem Beispiel **Freigabe Versand** wählen.
+
+|**Rechnungsdatum**
+|Das **Datum** wählen, das in den erzeugten Rechnungen als Rechnungsdatum stehen soll.
+
+|**Ändere Auftragsstatus**
+|Den gewünschten Status wählen, in unserem Beispiel den Status **[5.2] Rechnung erzeugt**.
+|====
+
+__Tab. 3: **Rechnungen** erzeugen__
+
+=== Rechnungen per Ereignisaktion automatisch erzeugen
+
+Um entsprechend der Erzeugung im Menü die Rechnungen per Ereignisaktion zu erzeugen, legen Sie diese wie folgt beschrieben an.
+
+[.collapseBox]
+.Ereignisaktion für die automatische Rechnungserzeugung einrichten
+--
+. Öffnen Sie das Menü **Einstellungen » Aufträge » Ereignisaktionen**.
+. Klicken Sie auf **Ereignisaktion hinzufügen**. +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Tragen Sie einen Namen ein, z.B. **Rechnungserzeugung**.
+. Wählen Sie das **Ereignis** gemäß Tabelle 4.
+. **Speichern** Sie die Einstellungen.
+. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 4 vor.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. **Speichern** Sie die Einstellungen.
+--
+[cols="a,a,a"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Auftragsänderung &gt; Statuswechsel**
+|**[5] Freigabe Versand**
+
+|**Filter**
+|**Auftrag &gt; Auftragstyp**
+|**Auftrag**
+
+|**Aktion 1**
+|**Dokumente &gt; Rechnung erzeugen**
+|Wenn gewünscht Zahlungsziel und Skonto sowie einen Kommentar hinterlegen.
+
+|**Aktion 2**
+|**Auftrag &gt; Status ändern**
+|**[5.2] Rechnung erzeugt**
+|====
+
+__Tab. 4: Ereignisaktion für die automatische Rechnungserzeugung__
+
+=== Rechnungen automatisch versenden
+
+Nun richten Sie wenn gewünscht eine Ereignisaktion für den automatischen Rechnungsversand per E-Mail ein. Die entsprechenden Aufträge werden anhand des Status **Rechnung erzeugt** ausgewählt, in den die Aufträge nach der Rechnungserzeugung versetzt wurden (Tabelle 3 und 4).
+
+[.collapseBox]
+.Ereignisaktion für den automatischen Rechnungsversand per E-Mail einrichten
+--
+. Öffnen Sie das Menü **Einstellungen » Aufträge » Ereignisaktionen**.
+. Klicken Sie auf **Ereignisaktion hinzufügen**. +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Tragen Sie einen Namen ein, z.B. **Rechnungsversand per E-Mail**.
+. Wählen Sie das **Ereignis** gemäß Tabelle 5.
+. **Speichern** Sie die Einstellungen.
+. Nehmen Sie die weiteren Einstellungen gemäß Tabelle 5 vor.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. **Speichern** Sie die Einstellungen.
+--
+[cols="a,a,a"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Dokumente &gt;Rechnung erzeugt**
+|
+
+|**Filter**
+|**Auftrag &gt; Auftragstyp**
+|**Auftrag**
+
+|**Aktion**
+|**Kunde &gt; E-Mail versenden**
+|**Weitere Vorlagen &gt; Rechnung PDF-Anhang** +
+**Empfänger:**E-Mail-Adresse wählen
+|====
+
+__Tab. 5: Ereignisaktion für den automatischen Rechnungsversand per E-Mail__
+
+[WARNING]
+.Rechnung per E-Mail
+====
+Der Versand der Rechnung ausschließlich per E-Mail oder die Verfügbarkeitsstellung per Download-Link ist rechtlich umstritten, wird allerdings inzwischen von immer mehr Händlern so praktiziert. Holen Sie sich dazu ggf. eine Rechtsberatung bei Ihrem Steuerberater ein.
+====
+
+== Lieferscheine erzeugen
+
+Für die Erstellung der Lieferscheine konfigurieren Sie das Menü so, dass alle Aufträge erfasst werden, für die bereits Rechnungen erzeugt wurden und die sich im Status **Rechnungen erzeugt** befinden.
+
+[TIP]
+.Tipp: Keine Lieferscheine?
+====
+Wenn Sie keine Lieferscheine benötigen oder z.B. aus Kostengründen darauf verzichten möchten, lassen Sie diesen Schritt aus. Holen Sie diesbezüglich ggf. rechtlichen Rat ein.
+====
+
+[.instruction]
+Lieferscheine über das Menü erzeugen:
+
+. Öffnen Sie das Menü **Aufträge » Fulfillment » Lieferscheine erzeugen**.
+. Nehmen Sie die **Einstellungen** für den **Suchfilter** gemäß Tabelle 1, 2 und 6 vor.
+. Wählen Sie unter **Aktion** einen neuen Auftragsstatus, der den gewählten Aufträgen nach erfolgreicher Lieferscheinerstellung zugewiesen werden soll und geben Sie, wenn gewünscht, einen **Kommentar** ein.
+. Klicken Sie nach Auswahl aller Optionen auf das **Zahnrad**. +
+→ Sie erhalten eine PDF-Datei, welche die zugehörigen Lieferscheine aller von Ihnen durch die Filteroptionen bestimmten Aufträge beinhaltet.
+
+Die folgende Tabelle erläutert ergänzend zu Tabelle 2 die Einstellungen im Untermenü **Lieferscheine erzeugen**:
+
+[cols="a,a"]
+|====
+|Einstellung |Erläuterung
+
+|**Auftragsstatus**
+|Den Status **Rechnung erzeugt** wählen.
+
+|**Ausdruck**
+|Wählen, ob für **ALLE** Aufträge Lieferscheine gedruckt werden sollen oder nur dann, wenn die Lieferanschrift vorhanden ist.
+
+|**Warenausgangsdatum**
+|Das Warenausgangsdatum wählen, das auf den Lieferscheinen hinterlegt werden soll.
+
+|**Sortierung**
+|Bestimmen, nach welcher Option die erzeugten Lieferscheine sortiert werden sollen. Optionen: **Rechnungsnummer**, **Auftrags-ID**, **Kunden-ID**, **Artikel-ID**. +
+Bei der Sortierungsoption **Artikel-ID** werden die Lieferscheine automatisch auch nach der **Auftrags-ID** sortiert.
+
+|**Ändere Auftragsstatus**
+|Den Status **Lieferschein erzeugt** wählen.
+
+|**Kommentar**
+|Einen Kommentar für den Käufer eintragen. Der Kommentar wird unter den Textelemente in den Lieferschein eingefügt.
+|====
+
+__Tab. 6: **Lieferscheine** erzeugen__
+
+== Pickliste erzeugen
+
+Die Pickliste dient der **Vorkommissionierung**. Die Pickliste enthält die Informationen der Artikel, die Sie für den jeweiligen Fulfillment-Prozess benötigen mit Angabe der **Menge** sowie des **Lagerortes**, damit die Artikel im Lager unmittelbar gefunden werden. Die nach der Pickliste im Lager entnommenen Artikel werden dann zentral, z.B. am Packtisch, auftragsweise gesammelt und verpackt.
+
+[TIP]
+.Tipp: Layout
+====
+Öffnen Sie über den Link **PDF-Pickliste ändern** die Pickliste und stellen Sie einen **oberen Seitenrand** von mindestens **25 mm** ein.
+====
+
+[.instruction]
+Pickliste erzeugen:
+
+. Öffnen Sie das Menü **Aufträge » Fulfillment » Pickliste**.
+. Nehmen Sie die **Einstellungen** für den **Suchfilter** gemäß Tabelle 1, 2 und 7 vor.
+. Wählen Sie unter **Aktion** einen neuen Auftragsstatus, der den gewählten Aufträgen nach erfolgreicher Erstellung der Pickliste zugewiesen werden soll.
+. Klicken Sie nach Auswahl aller Optionen auf das **Zahnrad**. +
+→ Sie erhalten eine **PDF-Datei**, welche die Pickliste aller von Ihnen durch die Filteroptionen bestimmten Aufträge enthält.
+
+Die folgende Tabelle erläutert ergänzend zu Tabelle 2 die Einstellungen im Untermenü **Pickliste**:
+
+[cols="a,a"]
+|====
+|Einstellung |Erläuterung
+
+|**Auftragsstatus**
+|Den Status **Lieferschein erzeugt** wählen. +
+__**Info**__: Mehrfachauswahl möglich.
+
+|**Sortierung**
+|Wählen zwischen **Artikel-ID**, **Artikelnummer**, **Position Lagerort** und **Kategoriename der Standardkategorie aus dem Hauptshop (nur erste Ebene)** +
+**Sortierung Position Lagerort** = Es wird nach der **<<entwurfsseiten/entwurf-kb/entwurf-kb-2alt#2-3-3, Positionsnummer >>** des Lagerortes sortiert.
+
+|**Ausgabeformat**
+|Wählen Sie das Ausgabeformat: +
+**PDF** = Erzeugt eine PDF-Datei +
+**CSV** = Erzeugt eine CSV-Datei
+
+|**Ändere Auftragsstatus**
+|Den Status **Pickliste erzeugt** wählen.
+|====
+
+__Tab. 7: **Pickliste** erzeugen__
+
+== Packliste erzeugen
+
+Die Packliste enthält u.a. Informationen zur Versandart, damit Sie die Aufträge entsprechend verpacken können. Wenn Sie z.B. Aufträge haben, die als **Warensendung** verschickt werden sollen, sehen Sie das in der Packliste auf einen Blick. Damit das gewährleistet ist, muss das entsprechende **Versandprofil** so konfiguriert sein, dass aus der Bezeichnung bzw. dem Namen hervorgeht, dass es dazu verwendet werden soll, Warensendungen zu verschicken.
+
+**image::entwurfsseiten/entwurf-kb/assets/DE-Auftraege-BestPractice-Fulfillment-05.png[]**
+
+__Bild 2: **Packliste**; Beispiel__
+
+Dieses **Versandprofil** müssen Sie dann bei den Artikeln, die per Warensendung verschickt werden sollen im Tab **Base** unter **Versandprofile** verknüpfen. +
+Das Versandprofil wird auf der Packliste unter **Versender** angezeigt und Sie sehen dann sofort, welche Aufträge z.B. als **Paket** und welche als **Warensendung** verschickt werden sollen.
+
+[TIP]
+.Tipp: Layout
+====
+Öffnen Sie über den Link **Packliste ändern** die Packliste und stellen Sie einen **oberen Seitenrand** von mindestens **25 mm** ein.
+====
+
+[.instruction]
+Packliste erzeugen:
+
+. Öffnen Sie das Menü **Auftträge » Fulfillment » Packliste**.
+. Nehmen Sie die **Einstellungen** für den **Suchfilter** gemäß Tabelle 1, 2 und 8 vor.
+. Wählen Sie unter **Aktion** einen neuen Auftragsstatus, der den gewählten Aufträgen nach erfolgreicher Erstellung der Packliste zugewiesen werden soll.
+. Klicken Sie nach Auswahl aller Optionen auf das **Zahnrad**. +
+→ Sie erhalten eine **PDF-Datei**, welche die Packliste aller von Ihnen durch die Filteroptionen bestimmten Aufträge enthält.
+
+Die folgende Tabelle erläutert ergänzend zu Tabelle 2 die Einstellungen im Untermenü **Packliste**:
+
+[cols="a,a"]
+|====
+|**Einstellung** |**Erläuterung**
+
+|**Auftragsstatus**
+|Den Status **Pickliste****erzeugt** wählen.
+
+|**Ausgabeformat**
+|Das **Ausgabeformat** wählen: +
+**PDF** = Erzeugt eine PDF-Datei +
+**CSV** = Erzeugt eine CSV-Datei
+
+|**Sortierung**
+|Bestimmen, nach welcher Option die erzeugten Packliste **sortiert** werden sollen. Optionen: **Rechnungsnummer**, **Auftrags-ID**, **Artikel-ID**. +
+Bei der Sortierungsoption **Artikel-ID** werden die Positionen automatisch auch nach der **Auftrags-ID** sortiert.
+
+|**Ändere Auftragsstatus**
+|Den Status **Packliste****erzeugt** wählen.
+|====
+
+__Tab. 8: **Packliste** erzeugen__
+
+== Lieferanschriftenliste
+
+Wenn Sie Pakete über einen Versanddienstleister versenden, benötigen Sie eine **Lieferanschriftenliste**. Es handelt sich dabei um einen **Export mit Sendungsinformationen**, den Sie dem jeweiligen Versanddienstleister anschließend bereitstellen, so dass dieser Ihnen wiederum gültige **Versandetiketten** für Ihre Pakete zur Verfügung stellen kann.
+
+In diesem Menü exportieren Sie die **Lieferanschriften Ihrer Aufträge** in eine Datei, die Sie für die Software Ihres Versanddienstleisters benötigen.
+
+Bereiten Sie die im Folgenden beschriebene Ereignisaktion vor, diese greift automatisch nach den in Kapitel 7 und 8 durchzuführenden Schritten.
+
+[.collapseBox]
+.Ereignisaktion für das automatische Buchen des Warenausgangs erstellen:
+--
+. Öffnen Sie das Menü **Einstellungen » Aufträge » Ereignisaktionen**.
+. Klicken Sie links unten auf das **grüne Plus**, um eine **neue Ereignisaktion** zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen **Namen** ein, z.B. **Warenausgang automatisch buchen** und wählen Sie unter **Ereignis** die Option **Auftragsänderung &gt; Statuswechsel** und als **Status****[7] Warenausgang gebucht**.
+. Klicken Sie auf **Speichern**. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragstyp** hinzu, markieren Sie im Filter die Option **Auftrag**.
+. Fügen Sie mit dem **grünen Plus** eine **Aktion** des Aktionstyps **Auftrag &gt; Warenausgang buchen** hinzu.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. Klicken Sie auf **Speichern**, um die Einstellungen zu sichern.
+--
+[cols="a,a,a"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Auftragsänderung &gt; Statuswechsel**
+|**[7] Warenausgang gebucht**
+
+|**Filter**
+|**Auftrag &gt; Auftragstyp**
+|**Auftrag**
+
+|**Aktion 1**
+|**Auftrag &gt; Warenausgang buchen**
+|
+|====
+
+hier noch hinführenden Satz einbauen
+
+[.instruction]
+Lieferanschriftenliste exportieren:
+
+. Öffnen Sie das Menü **Aufträge » Fulfillment » Lieferanschriftenliste**.
+. Nehmen Sie die **Einstellungen** für den **Suchfilter** gemäß Tabelle 1, 2 und 9 vor.
+. Wählen Sie das **Datenformat** und das **Trennzeichen**. +
+→ Beachten Sie dazu den Hinweis in Tabelle 7.
+. Klicken Sie nach Auswahl aller Optionen auf das **Zahnrad**. +
+→ Sie erhalten eine **Datei**, die Sie für den Import in die Software Ihres Versanddienstleisters auf Ihrem Rechner speichern.
+. **Importieren** Sie die Datei dann mit der Software Ihres Versanddienstleisters.
+
+[NOTE]
+.Für alle Versandarten wiederholen
+====
+Wiederholen Sie die Schritte 3 bis 5 für alle Versandarten der zu bearbeitenden Aufträge.
+====
+
+Die folgende Tabelle erläutert ergänzend zu Tabelle 2 die Einstellungen im Untermenü **Lieferanschriftenliste**:
+
+[cols="a,a"]
+|====
+|**Einstellung** |**Erläuterung**
+
+|**Auftragsstatus**
+|Den Status **Packliste****erzeugt** wählen.
+
+|**Datenformat**
+|Das **Datenformat** der Software Ihres Versanddienstleisters wählen. +
+Wenn für die bearbeiteten Aufträge mehrere Versanddienstleister relevant sind, den **Exportprozess nacheinander für alle diesbezüglichen Datenformate** durchführen. +
+Mehrfachauswahl möglich? prüfen!
+
+|**Trennzeichen**
+|Das zutreffende **Trennzeichen** wählen. +
+Dieses Trennzeichen auch beim **Import** der Datei in die Software Ihres Versanddienstleisters wählen.
+
+|**Ändere Auftragsstatus**
+|Den Status **Warenausgang gebucht** wählen.
+|====
+
+__Tab. 9: **Lieferanschriftenliste** erzeugen__
+
+== Adressetiketten
+
+Im Gegensatz zu Versandetiketten können Sie für **<</#, Adressetiketten >>** in plentymarkets genau festlegen, welche Informationen an welcher Stelle enthalten sein sollen. Da Sie Adressetiketten nicht vorgefertigt von einem Versanddienstleister erhalten, ist hier weder das Porto bereits abgerechnet, noch eine Sendungsnummer enthalten. Die Verwendung von Adressetiketten eignet sich besonders für **Warensendungen**, z.B. den Versand von Büchern, die Sie durch den individuellen Aufdruck **Büchersendung** u.U. günstiger versenden können als über das Gewicht des Pakets. Sie können in plentymarkets die benötigten Adressetiketten konfigurieren, eine PDF-Datei erzeugen und mit dieser dann Etiketten ausdrucken.
+
+[NOTE]
+.Ereignisaktion zum automatischen Buchen des Warenausgangs
+====
+Verwenden Sie hier die in Kapitel 7 beschriebene Ereignisaktion zum automatischen Buchen des Warenausgangs.
+====
+
+[.instruction]
+Adressetiketten generieren:
+
+. Öffnen Sie das Menü **Aufträge » Fulfillment » Adressetiketten**.
+. Nehmen Sie die **Einstellungen** für den **Suchfilter** gemäß Tabelle 1, 2 und 10 vor.
+. Klicken Sie nach Auswahl aller Optionen auf das **Zahnrad.** +
+→ Sie erhalten eine PDF-Datei mit der Sie nun Adressetiketten auf Etikettenpapier drucken können.
+
+Die folgende Tabelle erläutert ergänzend zu Tabelle 2 die Einstellungen im Untermenü **Adressetiketten**:
+
+[cols="a,a"]
+|====
+|**Einstellung** |**Erläuterung**
+
+|**Etiketten-Vorlage**
+|Die **Etiketten-Vorlage** wählen. +
+**Etiketten-Vorlagen erstellen**: Auf den Link **Etiketten-Layout bearbeiten** klicken. +
+Mindestens eine Etiketten-Vorlage erstellen, um diese Auswahl verfügbar zu haben.
+
+|**Auftragsstatus**
+|Den Status **Packliste erzeugt** wählen.
+
+|**Auftrags-ID**
+|Wenn die Etiketten nur für bestimmte Aufträge gedruckt werden sollen, hier die **Auftrags-IDs** eingeben, jeweils getrennt durch ein Komma.
+
+|**Artikel**
+|Wenn die Etiketten nur für bestimmte Artikel gedruckt werden sollen, hier die **Artikel-IDs** eingeben, jeweils getrennt durch ein Komma.
+
+|**Typ**
+|Den Auftragstyp **Auftrag** oder die Option **Alle** wählen, wenn alle Auftragstypen berücksichtigt werden sollen.
+
+|**Starten ab Zeile**
+|Für den Druck ab einer bestimmten **Zeile** hier eintragen, mit welcher Zeile der Druck starten soll. +
+In Kombination mit der Option **Limit** den Etikettendruck steuern: z.B. den ersten Druck auf 50 begrenzen (Limit) und dann für den folgenden Druck hier den Startwert **51** eingeben.
+
+|**Gruppierung**
+|Wählen, ob ein **Etikett pro Auftrag**, **pro Auftragsposition**, **pro Artikel** oder **pro Versandpaket** erzeugt werden soll.
+
+|**Ändere Auftragsstatus**
+|Den Status **Warenausgang gebucht** wählen.
+|====
+
+__Tab. 10: **Adressetiketten** generieren__
+
+== Paketnummern importieren
+
+Mit einem Paketnummernimport per CSV-Datei im Menü <</#, **Aufträge » Fulfillment » Tab: Import Paketnummern** >> können Sie auch größere Mengen an Paketnummern komfortabel in Ihrem plentymarkets System bearbeiten. Außerdem ist über eine Ereignisaktion eine Information des Empfängers und über eine Tracking-URL eine Sendungsverfolgung im Internet möglich.
+

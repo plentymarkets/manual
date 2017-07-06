@@ -1,0 +1,203 @@
+= Waren ausbuchen
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Warenausgang
+:position: 60
+
+Der Warenausgang ist neben dem Wareneingang das zweite zentrale Ereignis Ihrer Warenwirtschaft. Nur wenn Wareneingänge und Warenausgänge korrekt gebucht werden, stimmen die im System geführten Warenbestände auch mit den tatsächlichen physischen Lagerbeständen überein.  +
+Hauptgrund für Warenausgänge ist das Ausliefern von Aufträgen, aber auch andere Lagerentnahmen müssen korrekt erfasst werden. Zudem bedürfen Sonderfälle wie Stornierungen, Retouren und Gewährleistungen einer besonderen Beachtung, da diese sonst systematisch Fehlbestände in Ihrem Lager erzeugen können.  +
+Das Buchen des Warenausgangs kann manuell oder automatisch erfolgen. Das manuelle Buchen je Auftrag erfordert jedoch einen hohen Einzelaufwand und birgt die Gefahr, dass dieser wichtige Schritt nicht systematisch ausgeführt wird. Wenn Sie das Buchen automatisieren, wird ein Auslöser benötigt, d.h. Sie müssen wissen, was bei Ihnen vor dem Warenausgang erfolgt.
+Geben Sie die Paketnummer ein, bevor der Warenausgang gebucht wird? Dann nutzen Sie z.B. die Eingabe einer Paketnummer als Auslöser für das Buchen des Warenausgangs. Am Ende dieser Seite finden Sie das manuelle Buchen, damit Sie im Einzelfall die Aktion manuell ausführen können. Wenn beispielsweise ein Kunde Waren direkt bei Ihnen abholt, gibt es keine Paketnummer und der Auslöser fehlt. In einem solchen Fall kann das manuelle Buchen am einzelnen Auftrag notwendig sein.
+
+toc::[]
+== Abhängigkeiten beim Buchen des Warenausgangs
+
+Es gibt zwei Punkte, die für das Verstehen der Arbeitsweise Ihres Systems besonders wichtig sind:
+
+* **Warenausgang buchen** ist eine Aktion und kein Auftragsstatus.
+* Status 7 – **Warenausgang gebucht** lässt sich nicht umkehren.
+
+[.subhead]
+Unterschied zwischen der Aktion Warenausgang buchen und dem Status Warenausgang gebucht
+Mit der Auslieferung von Aufträgen muss der Warenausgang gebucht werden, damit der Warenbestand reduziert wird.
+Das Buchen des Warenausgangs ist eine Aktion und nicht nur eine Statusänderung. Die Aktion **Warenausgang buchen** sorgt dafür, dass der Warenbestand reduziert wird und der Status eines Auftrags in Status 7 – **Warenausgang gebucht** wechselt. Wenn jedoch nur der Status eines Auftrags in Status 7 – **Warenausgang gebucht** geändert wird, löst das nicht die Aktion **Warenausgang buchen** aus. Deshalb wird bei einem reinen Statuswechsel auch der Bestand nicht reduziert und die Bestandsführung wird fehlerhaft.
+
+[.subhead]
+Statusbereich 7 ist endgültig
+Aufträge im Statusbereich 7.0 bis 7.9, bei denen der Warenausgang gebucht wurde, lassen sich nicht mehr auf einen Status kleiner als 7.0 setzen. +
+Warenausgang zurücksetzen: Wenn Sie das Buchen des Warenausgangs zurücksetzen, ist eine Statusänderung nach unten wieder möglich. Gleichzeitig erhalten Sie auch die Option, den Auftrag zu löschen, um z. B. einen neuen bzw. korrigierten Auftrag anzulegen. Wenn Dokumente wie eine Rechnung existieren, löschen Sie den Auftrag nicht, sondern stornieren ihn und legen Sie Korrekturdokumente an, um dem Finanzamt bei einer Prüfung alle Nachweise und Dokumente vorlegen zu können.
+
+== Warenausgang automatisch buchen
+
+Damit das Tagesgeschäft Ihres Online-Handels möglichst effizient und gleichzeitig fehlerlos vonstattengeht, ist es sinnvoll, Routineaufgaben wie das Buchen des Warenausgangs zu automatisieren.
+plentymarkets bietet hierfür verschiedene Möglichkeiten. Wählen Sie das für Ihre Arbeitsweise am besten geeignete Vorgehen. Nachfolgend werden zwei mögliche Vorgehen beschrieben: das Buchen des Warenausgangs beim Erstellen der Rechnung und beim Eingeben der Paketnummer.
+
+[WARNING]
+.Kein manuelles Buchen bei eingestellter Automatik vornehmen
+====
+Das System arbeitet Aufträge der Reihe nach ab.
+So ist sichergestellt, dass der Kunde, der zuerst bestellt hat, auch zuerst seine Bestellung erhält.
+Wenn Sie manuell den Warenausgang für einen Auftrag buchen, der sich in einem Status kleiner als 5, &lt; 5 Freigabe Versand, befindet oder den Sie manuell auf Status 5 oder höher gesetzt haben, heben Sie die Automatik auf und das System arbeitet die Aufträge nicht mehr korrekt ab.
+Je nachdem, wie viele Aufträge zwischen dem eigentlich vom System als Nächsten bearbeiteten Auftrag und dem von Ihnen manuell bearbeiteten Auftrag liegen, kann die Automatik über Wochen oder Monate fehlerhaft arbeiten.
+====
+
+=== Warenausgang automatisch beim Eingeben der Paketnummer buchen
+
+Das Buchen des Warenausgangs beim Eingaben der Paketnummer hat den Vorteil, dass die Versandetiketten erst am Ende des Fulfillment-Prozesses erstellt werden. So kann davon ausgegangen werden, dass alle Aufträge, zu denen ein Versandetikett mit Paketnummer vorliegt, sich auch wirklich im Versand befinden.
+
+Das Buchen des Warenausgangs lässt sich mithilfe einer Ereignisaktion automatisieren. Zusätzlich kann mittels derselben Ereignisaktion auch eine E-Mail mit der Versandbestätigung an den Kunden gesendet werden.
+Der Versand der E-Mail kann auch mit einer separaten Ereignisaktion erfolgen. Nach dem Einrichten der Ereignisaktion wird das Importieren der Paketnummern beschrieben.
+
+[.collapseBox]
+.Buchen des Warenausgangs beim Eingeben der Paketnummer:
+--
+. Öffnen Sie das Menü **Einstellungen » Aufträge » Ereignisaktionen**.
+. Klicken Sie auf **Ereignisaktion hinzufügen**.  +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Geben Sie einen Namen ein.
+. Wählen Sie das **Ereignis** gemäß Tabelle 1.
+. **Speichern** Sie die Einstellungen.
+. Nehmen Sie die Einstellungen gemäß Tabelle 1 vor.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. **Speichern** Sie die Einstellungen.
+--
+.Ereignisaktion zum automatischen Buchen des Warenausgangs beim Eingeben der Paketnummer
+[cols="a,a,a"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Auftragsänderung: Paketnummer**
+|
+
+|**Filter 1**
+|**Auftrag &gt; Auftragstyp**
+|**Auftrag**
+
+|**Aktion**
+|**Auftrag &gt; Warenausgang buchen**
+|
+|====
+
+Um das Speichern der Paketnummern im Auftrag zu automatisieren und nicht jede Paketnummer manuell im Auftrag einzugeben, importieren Sie die Paketnummern.
+Der schnellste und einfachste Weg, die täglich neu erzeugten Paketnummern auch täglich in Ihr System zurückzuschreiben, führt über das Untermenü **Aufträge &gt; Fulfillment &gt; Tab: Import Paketnummern**.
+Idealerweise haben Sie für die Auftragsbearbeitung eine **<<auftraege/fulfillment/pickliste#, Pickliste  >>** erstellt und ausgedruckt, dort bereits alle bearbeiteten Aufträge abgehakt und die kleinen Barcodestreifen Ihrer Versandetiketten neben den Auftrag geklebt.
+
+[.instruction]
+Paketnummern einscannen:
+
+. Öffnen Sie Das Menü **Aufträge &gt; Fulfillment &gt; Tab: Import Paketnummern**.
+. Wählen Sie das Untermenü **Listen-Import**.
+. Klicken Sie unter **Auftrags-ID** in die erste Zeile.
+. Scannen Sie die Auftrags-ID.
+. Springen Sie unter **Paketnummer** in die erste Zeile.
+. Scannen Sie die Paketnummer.
+. Fahren Sie mit weiteren Aufträgen genauso fort.
+. **Speichern** Sie die Einstellungen.
+
+plentymarkets speichert nun die Paketnummer im Auftrag, was die soeben eingerichtete Ereignisaktion auslöst, sodass der Warenausgang gebucht und eine Versandbestätigung an den Kunden verschickt wird.
+Beim Buchen des Warenausgangs wird durch das System automatisch der Auftragsstatus **Warenausgang gebucht** gesetzt.
+Es handelt sich hierbei um einen Systemautomatismus.
+Sie können den Status nutzen, um zu prüfen, ob nach dem Import alle Warenausgänge gebucht wurden.
+
+Eine weitere Möglichkeit, die Paketnummern zu importieren, ist per **<<fulfillment/dokumente-erzeugen#900., CSV-Datei >>**.
+
+=== Warenausgang automatisch beim Erstellen der Rechnung buchen
+
+Das automatische Buchen des Warenausgangs beim Erstellen der Rechnung, setzt voraus, dass Sie ohne Rechnung keine Ware ausliefern. Allerdings ist eine Rechnung nicht in jedem Fall die Garantie für einen realen Warenausgang. Bei der Zahlungsart Vorkasse kommt es z.B. vor, dass die Rechnung vor dem Warenausgang erstellt wird. Ein weiterer Fall, in dem die Rechnung erstellt wurde, aber kein Warenausgang erfolgt, liegt dann vor, wenn beim Kommissionieren festgestellt wird, dass Ware beschädigt ist und daher nicht ausgeliefert wird.
+Wenn Sie sich für diese Vorgehensweise entscheiden, filtern Sie auch nach Zahlungsarten, um so z.B. Vorkasse auszuschließen.
+
+Das automatische Buchen des Warenausgangs beim Erstellen von Rechnungen erfolgt über eine Ereignisaktion. Legen Sie diese folgendermaßen an:
+
+[.collapseBox]
+.Buchen des Warenausgangs beim Erstellen der Rechnung:
+--
+. Öffnen Sie das Menü **Einstellungen » Aufträge » Ereignisaktionen**.
+. Klicken Sie auf **Ereignisaktion hinzufügen**.  +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Geben Sie einen Namen ein.
+. Wählen Sie das **Ereignis** gemäß Tabelle 2.
+. **Speichern** Sie die Einstellungen.
+. Nehmen Sie die Einstellungen gemäß Tabelle 2 vor.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. **Speichern** Sie die Einstellungen.
+--
+.Ereignisaktion zum automatischen Buchen des Warenausgangs beim Erstellen einer Rechnung
+[cols="a,a,a"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Dokumente: Rechnung generiert**
+|
+
+|**Filter 1**
+|**Auftrag &gt; Auftragstyp**
+|**Auftrag**
+
+|**Filter 2**
+|**Auftrag &gt; Zahlungsart**
+|
+
+|**Aktion**
+|**Auftrag &gt; Warenausgang buchen**
+|
+|====
+
+== Warenausgang bei Stornierungen, Retouren und Gewährleistungen
+
+Zuletzt noch einige Hinweise zu den Sonderfällen **Stornierungen**, **Retouren** sowie **Gewährleistungen** und ihre Auswirkungen auf die Warenbestandsführung.
+
+=== Stornierungen
+
+Wird ein Auftrag vor dem Warenausgang widerrufen, setzen Sie diesen manuell auf den Status 8 – **Storniert**. Wenn ein Auftrag storniert wird, werden die reservierten Warenbestände wieder freigegeben. Ein Auftrag kann nur so lange storniert werden, wie kein Warenausgang gebucht wurde.  +
+Was reservierter Bestand ist und wann Ihr System Bestand reserviert, erfahren Sie unter **<<warenwirtschaft/warenbestaende-verwalten#, Warenbestände verwalten  >>**.
+
+=== Retouren
+
+Wird ein Auftrag erst nach dem Warenausgang widerrufen bzw. stellt der Kunde fest, dass er den Artikel doch nicht möchte und sendet ihn zurück, handelt es sich um eine **Retoure**. Legen Sie in diesem Fall eine Retoure zum Auftrag an.  +
+Wenn Sie eine Retoure anlegen, öffnet sich ein Fenster, in dem Sie einen Retourengrund angeben und die retournierten Artikel auswählen.
+Die Retoure erhält eine eigene Auftrags-ID.
+Der Warenbestand wird nicht automatisch zurückgebucht, denn die zurückgesandten Artikel können defekt oder unvollständig sein.
+Stellt sich nach dem Prüfen heraus, dass Sie retournierte Artikel wieder verkaufen können, buchen Sie den Warenbestand manuell ins System zurück.
+
+.Retourengrund und retournierte Artikel angeben
+image::warenwirtschaft/assets/DE-Waren-ausbuchen-01.png[]
+Wie Sie Retouren anlegen und Warenbestand zurückbuchen, erfahren Sie ausführlich unter **<<auftraege/auftraege-bearbeiten/retoure#, Retoure  >>**.
+
+=== Gewährleistungen
+
+Die Vorgehensweise bei Gewährleistungen ist der Vorgehensweise bei Retouren ähnlich. In beiden Fällen erhalten Sie Waren eines Auftrags zurück, bei dem der Warenausgang gebucht ist. Bei einer Gewährleistung ist der Artikel meist defekt. Kunden möchten im Fall einer Gewährleistung entweder einen Ersatzartikel oder den Rechnungsbetrag erstattet bekommen (Gutschrift). Da der Artikel bei Gewährleistungen meist defekt ist, wird der retournierte Artikel im Regelfall nicht wieder eingebucht. Jedoch ist häufig eine zweite Lieferung mit eigener Auftrags-ID und eigenem Warenausgang notwendig.
+
+Wie Sie Gewährleistungen anlegen, erfahren Sie ausführlich unter **<<auftraege/auftraege-bearbeiten/gewaehrleistung#, Gewährleistung  >>**.
+
+== Warenausgang manuell buchen
+
+Das manuelle Buchen des Warenausgangs muss für jeden Auftrag separat erfolgen und erfordert einen hohen Zeitaufwand. Sie haben zwei Möglichkeiten, den Warenausgang manuell zu buchen. Jedoch ist es sinnvoll, das Buchen des Warenausgangs wie beschrieben zu automatisieren.
+
+[WARNING]
+.Kein manuelles Buchen bei eingestellter Automatik vornehmen
+====
+Das System arbeitet Aufträge der Reihe nach ab.
+So ist sichergestellt, dass der Kunde, der zuerst bestellt hat, auch zuerst seine Bestellung erhält.
+Wenn Sie manuell den Warenausgang für einen Auftrag buchen, der sich in einem Status kleiner als 5, &lt; 5 Freigabe Versand, befindet oder den Sie manuell auf Status 5 oder höher gesetzt haben, heben Sie die Automatik auf und das System arbeitet die Aufträge nicht mehr korrekt ab.
+Je nachdem, wie viele Aufträge zwischen dem eigentlich vom System als Nächsten bearbeiteten Auftrag und dem von Ihnen manuell bearbeiteten Auftrag liegen, kann die Automatik über Wochen oder Monate fehlerhaft arbeiten.
+====
+
+=== Warenausgang in der Auftragsübersicht buchen
+
+Bei Aufträgen, bei denen der Warenausgang noch offen ist, wird direkt in der Auftragsübersicht ein Symbol zum Buchen des Warenausgangs angezeigt (Bild 4).
+Wurde der Warenausgang bereits gebucht, wird das Symbol mit einem Häkchen daran in der Titelzeile des Auftrags angezeigt.
+
+Ein Klick auf **Warenausgang buchen** bucht den Warenausgang mit aktuellem Datum.
+
+.Manuelles Buchen des Warenausgangs in der Auftragsübersicht
+image::warenwirtschaft/assets/DE-Waren-ausbuchen-02.png[]
+=== Warenausgang im geöffneten Auftrag buchen
+
+In einem geöffneten Auftrag sehen Sie im Tab **Einstellungen** unter **Warenausgang**, ob der Warenausgang gebucht oder nicht gebucht ist.
+Wenn der Warenausgang noch nicht gebucht wurde, wird ein Symbol zum Buchen des Warenausgangs angezeigt (Bild 5, Pfeil).
+Hier können Sie auch ein vom aktuellem Datum abweichendes Ausgangsdatum eintragen, falls der Warenausgang nachträglich zum tatsächlichen Warenausgang gebucht werden muss.
+
+.Manuelles Buchen des Warenausgangs im geöffneten Auftrag
+image::warenwirtschaft/assets/DE-Waren-ausbuchen-03.png[]

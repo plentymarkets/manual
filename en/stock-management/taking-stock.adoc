@@ -1,0 +1,276 @@
+= Taking stock
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: stock-taking, inventory taking, physical stock
+:position: 60
+
+Taking stock, or taking inventory, is the process of checking how much stock is in a warehouse at a particular time. Both the target and the actual stock are analyzed in the process. This is done with the help of a stock index, which lists the stock of every item.
+
+This page teaches you how to take stock. You will learn how to use the **Data exchange** menu to take stock. Then you will also learn how the **stocktaking mode** works and how to use this mode to completely delete and rebook your entire stock.
+
+toc::[]
+[#100]
+== Registering stocktaking with the export and import functions
+
+The stocktaking via data exchange requires several steps. First you need to export the current stock quantities saved in your system. Next you need to edit the stock quantities so that they reflect the actual quantities available in your warehouse and then you need to reimport the corrected data into your system. You can either work in the file that you exported or you can make a copy of that file to ecit the actual quantities.
+
+[IMPORTANT]
+.Getting to know the data format Stock and testing the data exchange
+====
+Please pay attention to the notes specified on the <<data-exchange/data-formats/stock#, **Stock**  >> data format page of the manual – especially before you start to overwrite the stock quantities in your system. To test the import use a test file that only contains one variation and overwrite the stock of that variation. This way you can easily check the result and see if it turned out as desired.
+====
+
+[#200]
+=== Exporting stock
+
+In the first step, go to **Data exchange » Export » Dynamic export** and use the data format **Stock** to export your current stock.
+
+[TIP]
+.The stock export is for one warehouse only
+====
+The data format **Stock** can only export the stock of one warehouse at a time. You can select the warehouse from the warehouseID filter. Click on the **Filter** tab of the data format. If you do not select any warehouse, then the warehouse with the lowest ID will be selected by default.
+====
+
+[.instruction]
+Carrying out the data export:
+
+. Go to <<data-exchange/exporting-data#, **Data exchange » Export » Dynamic export**  >>.
+. Open the submenu for the data format <<data-exchange/data-formats/stock#, **Stock**  >> or set this **<<data-exchange/data-formats#2-2, data format >>** up if the submenu is not yet available.
+. Select the settings for the data export.
+. Click on the **Filter** tab.
+. Select a warehouse from the **WarehouseID** drop-down menu.  +
+→ The warehouse with the lowest warehouse ID is selected by default.
+. **Save** the settings.
+. Click on **Export data**.
+
+[TIP]
+.What is the difference between the data field **WarehouseID** and the **WarehouseID** filter?
+====
+The **WarehouseID** filter let's you define from which warehouse the stock will be exported. The **WarehouseID** data field simply contains the ID of a warehouse. The **WarehouseID** data field does not influence the content of the export.
+====
+
+You will receive a CSV file, which you will need to edit and then import again afterwards.
+
+[#300]
+=== Editing stock quantities
+
+Now you need to edit the file that you just exported. When taking stock you need to count the actual stock in your warehouse and compare it to the quantities saved as physical stock in your system. The quantities displayed in **Stock** column of your **Stock** data export are the physical stock saved in your system.
+
+[.instruction]
+Making changes to the stock file:
+
+. Determine the actual stock.
+. Open the stock file that you exported.
+. Enter the actual stock into the **Stock** column.
+. Save the changes to the file.
+
+[#400]
+=== Importing stocks
+
+The file now contains the corrected stock values and needs to be imported back into your plentymarkets system. A CSV file or text file is used for the import.
+
+[WARNING]
+.The physical stock will be overwritten!
+====
+The import will overwrite the current physical stock and this means the stock that was overwritten can not be restored. Reserved stock quantities remain untouched and will not be imported. If you do not want to import your entire stock, because you only need to add incoming stock to correct your stock quantities, you can also add incoming stock via data import. Use the special format **<<data-exchange/data-formats/incomingitems#, IncomingItems  >>** to add incoming stock.
+====
+
+[.instruction]
+Carrying out the data import:
+
+. Go to <<data-exchange/importing-data#, **Data exchange » Import » Dynamic import**  >>.
+. Pay attention to the explanations given in table 1 and select the settings as desired.
+. Click on **Import**.
+
+.Import settings for dynamic import
+[cols="a,a"]
+|====
+|Setting |Explanation
+
+|**Field separator**
+|Select the separator.
+
+|**Format**
+|Select the data format Stock. +
+If you have set up several stock formats and the file contains the warehouse ID column then the import will only change the stock quantities for the warehouse specified by the ID.
+
+|**Warehouse**
+|If the file that you want to import does not include a **WarehouseID** column, then the import will overwrite the stock of the warehouse that you have selected here. If the file includes a **WarehouseID** column and the ID in the column is 1 or higher, then your setting will not have an impact on the import. Instead the import will be carried out based on the ID. The ID allows you to import stock for several warehouses at once.
+
+|**Barcode**
+|The barcode is an optional field for synchronisation. Select the barcode format that should be used to synchronise the variation included in your file with the variations in your system. If the information included in the file do not match a variation in your system, then the row in the file will be skipped. It is not necessary to select a barcode for data synchronisation if the variation ID is included in the file. The variation ID is unique and is therefore enough to match the data.
+
+|**File**
+|Select the file that you wish to import.
+|====
+
+You can see detailed information about the data import in the **Data exchange » Import » Dynamic import » Submenu: Processing status** menu.
+
+You can see the corrections that you made during the stocktaking process by opening the item and clicking on **Tab: Stock » Tab: Item movement**.
+In addition the import will be listed as an entry in the **Stock » Incoming items** menu. You can open the entry to see a list of the item that were changed (image 1).
+
+.list of variations that received stock
+image::stock-management/assets/EN-taking-stock-01.png[]
+[#500]
+== Taking stock while stocktaking mode is active
+
+There is an option in the warehouse settings called **Active stocktaking mode**. You can use it to freeze the stock of a warehouse while you are busy taking stock. While the stocktaking mode is active the physical stock remains the same and no item movements will be registered nor will stock be newly calculated.  +
+Taking stock while the stocktaking mode is active can be carried out in 4 steps. First you need to activate the stocktaking mode. Next you need to export the current stock. Then you need to clear all stock and book the new stock quantities in. While the stocktaking mode is active your system will not change the stock quantities saved in a variation's data record. When you have booked in the new stock quantities and then you deactivate the stocktaking mode, your new stock quantities will be saved for variations. The old stock quantity will be overwritten. While stocktaking mode is active your reserved stock will still be calculated correctly. This means that stock will be reserved whenever you receive a new order. When you use the stocktaking mode, you need to know the following:
+
+* While the stocktaking mode is active, the physical stock remains frozen and this may lead to overselling.
+* Nonetheless, you should not book stock out either, if the stocktaking mode is active, because the stock will not be calculated.
+
+[WARNING]
+.Deactivate the stocktaking mode only if you have already booked in the new stock quantities
+====
+If you deactivate the stocktaking mode while your stock is cleared, listings and offers on markets may be deactivated. To avoid that offers are aborted you need to book in the new stock quantities first and then deactivate the stocktaking mode.
+====
+
+[#600]
+=== Activating the stocktaking mode
+
+Activate the stocktaking mode for the warehouse that you want to carry out the stocktaking in. The stocktaking mode will freeze all stock quantities of the warehouse.
+
+[.instruction]
+Activating the stocktaking mode:
+
+. Go to **Settings » Stock » Warehouse » Select warehouse » Submenu: Settings**
+. Place a check mark next to the option **active stocktaking mode**.
+. **Save** the setting.
+
+.activating the stocktaking mode
+image::stock-management/assets/EN-taking-stock-02.png[]
+[IMPORTANT]
+.A warehouse that is in stocktaking mode will be labeled
+====
+Additional information is added to the name of your warehouse. Depending on how long the warehouse's name is, either **(INVENTORY MOD)**, **(INVENTORY)** or **(I)** is added to the end of the name. This way, you can tell that the warehouse is currently in stocktaking mode.
+====
+
+.identifying a warehouse that is in stocktaking mode
+image::stock-management/assets/EN-taking-stock-03.png[]
+[#700]
+=== Exporting stock
+
+Activate the stocktaking mode for the warehouse that you want to carry out the stocktaking in. To do so, use the data format **Stock**. You need one export per warehouse.
+
+[.instruction]
+Exporting stock:
+
+. Go to <<data-exchange/exporting-data#, **Data exchange » Export » Dynamic export**  >>.
+. Click on the **New data format** tab.
+. Select the data format type **Stock**.
+. Enter a name for the data format.
+. Pay attention to the explanations given in table 2 and select the settings as desired.  +
+→ Further data fields and filters are optional.
+
+.Data fields that are required for stocktaking
+[cols="a,a,a"]
+|====
+|Field |Description |Import procedure
+
+|**VariationID**
+|Contains the ID of a variation and is required for stock synchronisation.
+|Import
+
+|**Stock**
+|Contains the physical stock and the import procedure setting **Import** ensures that the physical stock will be overwritten if the file is imported.
+|Import
+
+|**WarehouseID**
+|Contains the ID of a warehouse and ensures that the stock can be assigned to a warehouse.
+|Import
+
+|**LocationID**
+|Contains the ID of a storage location and ensures that the stock can be assigned to a storage location.
+|Import
+
+|**VariationString**
+|Contains the name of a variation. This data field can often help to easily identify variations.
+|Import
+
+3+|Filter tab of the data format
+
+|**WarehouseID**
+|Defines the warehouse that the stock is exported from. If you do not select any warehouse, then the stock of the warehouse with the lowest ID will be exported.
+|
+|====
+
+[#800]
+=== Clearing stock while stocktaking mode is active
+
+As a first step you will now clear all your stocks and item movements. The reserved stock quantities are preserved. Make a copy of the file that you just exported.
+
+[TIP]
+.Export serves as backup of your stock quantities before you clear them
+====
+This process deletes all of the stock and item movements! This means that the warehouse will be completly cleared of any digital stock. Therefore, be sure to copy your stock export and to leave the original without any changes until you have successfully completed the process (see section 2.1). This file can help you to restore your stock if an error occurs.
+====
+
+[.instruction]
+Clearing stock:
+
+. Open the copy of your stock export.
+. Enter 0 into the **Stock** data field of each variation.
+. Save the file.
+. Go to **Data exchange » Import » Dynamic import**.
+. Under **format**, select the data format Stock, which you used for your export.
+. Pay attention to the information given in table 3.
+. Select the **file** that is filled with 0 for the stock.
+. Click on **Import**.
+
+.dynamic import of the **Stock** format
+[cols="a,a"]
+|====
+|Setting |Explanation
+
+|**Field separator**
+|Select a separator
+
+|**Format**
+|Select the data format Stock. +
+If you have set up several stock formats and the file contains the warehouse ID column then the import will only change the stock quantities for the warehouse specified by the ID.
+
+|**Warehouse**
+|Can be left empty because the WarehouseID column should be included in the data export and therefore also in the import file.  +
+If the file that you want to import does not include a **WarehouseID** column, then the import will overwrite the stock of the warehouse that you have selected here. If the file includes a **WarehouseID** column and the ID in the column is 1 or higher, then your setting will not have an impact on the import. Instead the import will be carried out based on the ID. The ID allows you to import stock for several warehouses at once.
+
+|**Barcode**
+|Can remain empty for this import.  +
+The barcode is an optional field for synchronisation. Select the barcode format that should be used to synchronise the variation included in your file with the variations in your system. If the information included in the file do not match a variation in your system, then the row in the file will be skipped. It is not necessary to select a barcode for data synchronisation if the variation ID is included in the file. The variation ID is unique and is therefore enough to match the data.
+
+|**File**
+|Select the file that you wish to import.
+|====
+
+[#900]
+=== Booking stock
+
+Now you will import the stock quantities that you counted during the stocktaking into your system. To do so, use the data format Stock. Open the stock file that you filled in 0 for every stock. Enter the current physical stock of each variation into the stock column and save the file with the current stock quantities. The physical stock must be entered into the **Stock** column.
+
+[.instruction]
+Booking stock:
+
+. Open the copy of your stock export.
+. Enter the actual stock quantity into the **Stock** data field of each variation.
+. Save the file that now contains the current stock.
+. Go to **Data exchange » Import » Dynamic import**.
+. Select the same data format Stock that you have used for the export.
+. Pay attention to the information given in table 3.
+. Select the **file** that is filled with your current stock quantities.
+. Click on **Import**.
+
+[#1000]
+=== Deactivating the stocktaking mode
+
+Last you need to deactivate the stocktaking mode and when you do this, the stock that you just imported will be saved for each variation.
+
+[.instruction]
+Deactivating the stocktaking mode:
+
+. Go to **Settings » Stock » Warehouse » Select warehouse » Submenu: Settings**
+. Remove the check mark next to the option **Stocktaking mode active**.
+. **Save** the setting.  +
+→ Your physical stock will be recalculated.
+
+Deactivate the stocktaking mode only if you have really completed all steps of the stocktaking process. If you deactivate the stocktaking mode early, stock may be calculated wrong and offers and markets may be ended without your intention to actually end them.
+

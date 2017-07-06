@@ -1,0 +1,306 @@
+= Lieferauftrag
+:lang: de
+include::{includedir}/_header.adoc[]
+:position: 80
+
+**Einstellungen » Aufträge » Ereignisaktionen**
+
+**Aufträge » Aufträge bearbeiten**
+
+toc::[]
+== Lieferauftrag
+
+Der Auftragstyp **Lieferauftrag** ermöglicht es Ihnen, aus einem Hauptauftrag jeweils Lieferaufträge für die in diesem Auftrag enthaltenen Artikel zu generieren, so dass Sie diese einzeln bw. in Teilen verschicken können. Sie können somit z. B. Artikel, die Sie auf Lager haben, sofort losschicken und Artikel, die Sie erst noch geliefert bekommen, später nachsenden. Dies können Sie mit unterschiedlichen Dienstleistern oder auch mit nur einem Dienstleister durchführen. +
+Lieferaufträge können per **Ereignisaktion**, **manuell** oder **automatisch** erstellt werden.
+
+Bei "normalen" Aufträgen würde es zu Problemen führen, wenn die jeweiligen Logistiker denselben Auftrag bearbeiten würden, weil die Statusänderung durch einen Logistiker den Abruf des Auftrags für die anderen Logistiker blockieren würde. Mit der hier beschriebenen Funktion bearbeitet jeder Logistiker nun seinen eigenen Lieferauftrag.
+
+=== Grundeinstellungen
+
+Die Funktion **Lieferaufträge** ist zum einen anwendbar, wenn die Artikel eines Auftrags verschiedenen Lagern zugeordnet sind und in den Grundeinstellungen zu Lagern im Menü **Einstellungen &gt; Aufträge &gt; Grundeinstellungen**folgende Optionen gewählt sind:
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-01-SI.png[]
+
+__Bild 1: **Lager-Optionen b) und b)** als Voraussetzung für Lieferaufträge__
+
+Zum anderen ist auch die Variante mit der Option **in Abhängigkeit des Warenbestandes** möglich.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-02-SI.png[]
+
+__Bild 2: **Lager-Optionen b) und c)** als Voraussetzung für Lieferaufträge__
+
+[WARNING]
+.**Pflichteinstellungen**
+====
+Diese **Grundeinstellungen** müssen vorgenommen werden, um die Funktion **Lieferaufträge** zu nutzen. Außerdem müssen Sie Logistik-Dienstleister im System eingerichtet haben.
+====
+
+Beachten Sie dazu die Handbuchseite **Einstellungen » Aufträge » <<auftraege/einstellungen/grundeinstellungen#, Grundeinstellungen  >>**.
+
+Weiterhin besteht die Möglichkeit, Lieferaufträge nach folgenden Kriterien zu splitten: **Lager**, **Versandprofil**, **Lager und Versandprofil**, oder **Lager- und Netto-Warenbestand**.
+
+[NOTE]
+.Lieferaufträge splitten
+====
+Diese Einstellung nehmen Sie im Menü **Einstellungen » Aufträge » Auftragstypen » Lieferauftrag** vor.
+====
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-03-SI.png[]
+
+__Bild 3: **Optionen** im Menü **Lieferaufträge**__
+
+=== Eigenschaften eines Lieferauftrags
+
+Ein Lieferauftrag besitzt folgende Eigenschaften:
+
+* Eine **Anpassung** ist nach Erzeugung **nicht** mehr möglich
+* Der **Bestand** wird vom Hauptauftrag übernommen
+* Der **Preis** und das **Gewicht** eines Artikels wird übernommen
+* Die Erzeugung eines **Lieferscheins** ist möglich
+* Die Erzeugung eines **Adressetiketts** ist möglich
+* **Weitere PDF-Dokumente** können **nicht** generiert werden
+
+Daraus folgt:
+
+=== Konsequenzen für die Auftragsbearbeitung
+
+* Sie dürfen keine **Artikelpositionen** im Hauptauftrag löschen, die sich in einem Lieferauftrag befinden
+* Die **Menge**, die für eine Artikelposition im Hauptauftrag hinterlegt ist, darf nicht in eine Menge geändert werden, die die Artikelmengen unterschreitet, die in Lieferaufträgen verteilt sind
+* Die nötigen **PDF-Dokumente** (z. B. Rechnung) werden im Hauptauftrag erzeugt
+
+== Lieferaufträge anlegen
+
+Zuerst legen Sie den eigentlichen Auftrag unter Beachtung der in Abschnitt 1 genannten Punkte an. Die zugehörigen Lieferaufträge werden **idealerweise** über eine Ereignisaktion generiert. Sie als Händler können somit bestimmen, wann und wie die Lieferaufträge zu einem Auftrag generiert und von dem jeweiligen Logistik-Dienstleister abgerufen werden können. **In einem weiteren Beispiel erläutern wir dann die manuelle Erzeugung von Lieferaufträgen.**
+
+Erfahren Sie mehr zum __**Anlegen von Lieferaufträgen**__ im folgenden Videotutorial:
+
+[.linkBox]
+link:https://www.plentymarkets.eu/a-2947/[Lieferaufträge anlegen, window="_blank"]
+
+=== Lieferaufträge per Ereignisaktion anlegen
+
+Nachfolgend drei **Beispiele** zur Generierung von Lieferaufträgen zu einem Auftrag per Ereignisaktion.
+
+Erzeugen Sie folgende neue **Ereignisaktionen** bzw. die von Ihnen benötigten und nehmen Sie darin die nachfolgend beschriebenen Einstellungen vor.
+
+[TIP]
+.Tipp
+====
+Wählen Sie für die Generierung von Lieferaufträgen Beispiel A, B **oder** C, wobei C wegen der Generierung nach dem Rechnungsdruck Vorteile hat.
+====
+
+==== Beispiel A: Ereignisaktion "Lieferauftrag generieren bei Auftragseingang"
+
+Wenn Sie möchten, dass schon beim Eingang eines Auftrages die zugehörigen Lieferaufträge generiert werden sollen, nutzen Sie folgende Einstellungen.
+
+Der Nachteil ist, dass der Status nicht beachtet wird und somit auch Lieferaufträge von Aufträgen in Status **3.0** (oder **1.0** wenn Sie mit Auktionsplattformen wie eBay arbeiten) generiert werden. Diese nehmen dann den Status des Hauptauftrages an.
+
+[.instruction]
+Ereignisaktion Beispiel A erstellen:
+
+. Öffnen Sie das Menü **Einstellungen &gt; Aufträge &gt; Ereignisaktionen**.
+. Klicken Sie links unten auf das **grüne Plus**, um eine **neue Ereignisaktion** zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen **Namen** ein, z.B. **Lieferauftrag generieren bei Auftragseingang** und wählen Sie unter **Ereignis** die Option **Auftragsanlage &gt; Neuer Auftrag**.
+. Klicken Sie auf **Speichern**. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragstyp** hinzu, markieren Sie im Filter die Option **Auftrag**.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragslager** hinzu, markieren Sie im Filter die Option **Mehrere Lager pro Auftrag**.
+. Fügen Sie mit dem **grünen Plus** eine **Aktion** des Aktionstyps **Auftrag &gt; Lieferaufträge generieren** hinzu.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. Klicken Sie auf **Speichern**, um die Einstellungen zu sichern.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-04.png[]
+
+__Bild 4: Ereignisaktion **Lieferauftrag generieren bei Auftragseingang**__
+
+==== Beispiel B: Ereignisaktion "Lieferauftrag generieren bei Wechsel zu Status 5"
+
+Wenn Sie möchten, dass zu einem Auftrag, der in den Status 5.0 gelangt, die zugehörigen Lieferaufträge generiert werden, nutzen Sie folgende Einstellungen.
+
+Der Nachteil ist, dass Sie nach der Generierung der Lieferaufträge den Hauptauftrag nicht mehr verändern dürfen, damit die Summe der Artikel der Lieferaufträge der des Hauptauftrags entspricht.
+
+[.instruction]
+Ereignisaktion Beispiel B erstellen:
+
+. Öffnen Sie das Menü **Einstellungen &gt; Aufträge &gt; Ereignisaktionen**.
+. Klicken Sie links unten auf das **grüne Plus**, um eine **neue Ereignisaktion** zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen **Namen** ein, z.B. **Lieferauftrag generieren bei Wechsel zu Status 5** und wählen Sie unter **Ereignis** die Option **Auftragsänderung &gt; Statuswechsel** und als Status **[5] Freigabe Versand**.
+. Klicken Sie auf **Speichern**. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragstyp** hinzu, markieren Sie im Filter die Option **Auftrag**.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragslager** hinzu, markieren Sie im Filter die Option **Mehrere Lager pro Auftrag**.
+. Fügen Sie mit dem **grünen Plus** eine **Aktion** des Aktionstyps **Auftrag &gt; Lieferaufträge generieren** hinzu.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. Klicken Sie auf **Speichern**, um die Einstellungen zu sichern.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-05.png[]
+
+__Bild 5: Ereignisaktion **Lieferauftrag generieren bei Wechsel zu Status 5**__
+
+==== Beispiel C: Ereignisaktion "Lieferauftrag generieren bei Rechnungsdruck"
+
+Dieses dritte Beispiel bietet die meisten Vorteile. Die Lieferaufträge zu einem Auftrag werden erst mit dem Rechnungsdruck des Hauptauftrags generiert. Somit können Sie den Hauptauftrag solange offen lassen und Änderungen vornehmen bis Sie ihn durch den Rechnungsdruck zum Versand freigeben. Folgende Einstellungen sind nötig:
+
+[.instruction]
+Ereignisaktion Beispiel C erstellen:
+
+. Öffnen Sie das Menü **Einstellungen &gt; Aufträge &gt; Ereignisaktionen**.
+. Klicken Sie links unten auf das **grüne Plus**, um eine **neue Ereignisaktion** zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen **Namen** ein, z.B. **Lieferauftrag generieren bei Rechnungsdruck** und wählen Sie unter **Ereignis** die Option **Dokumente &gt; Rechnung generiert**.
+. Klicken Sie auf **Speichern**. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragstyp** hinzu, markieren Sie im Filter die Option **Auftrag**.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragslager** hinzu, markieren Sie im Filter die Option **Mehrere Lager pro Auftrag**.
+. Fügen Sie mit dem **grünen Plus** eine **Aktion** des Aktionstyps **Auftrag &gt; Lieferaufträge generieren** hinzu.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. Klicken Sie auf **Speichern**, um die Einstellungen zu sichern.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-06.png[]
+
+__Bild 6: Ereignisaktion **Lieferauftrag generieren bei Rechnungsdruck**__
+
+In Kapitel 2.2 folgt ein **Beispiel** zur manuellen Generierung von Lieferaufträgen direkt in einem Auftrag.
+
+=== Lieferaufträge im Auftrag anlegen
+
+In der Auftragsbearbeitung finden Sie im Tab **Lief** die Optionen **Lieferaufträge automatisch anlegen** und **Lieferauftrag anlegen**.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-07-SI.png[]
+
+__Bild 7: Lieferaufträge im Tab **Lief** anlegen__
+
+[.instruction]
+Lieferaufträge automatisch anlegen
+
+Klicken Sie auf den Button **Lieferauftrag automatisch anlegen** (s. Bild 7, blauer Pfeil), um die Aufträge entsprechend der im Feld **Aufträge in Lieferaufträge splitten nach** gewählten Einstellung unter **Einstellungen &gt; Aufträge &gt; Auftragstypen &gt; Lieferauftrag** anzulegen. Es werden alle Auftragspositionen in Lieferaufträge geteilt.
+
+[WARNING]
+.**Lieferaufträge automatisch anlegen**
+====
+Diese Funktion können Sie nur nutzen, wenn noch kein Lieferauftrag zu dem Auftrag besteht.
+====
+
+[.instruction]
+Lieferaufträge manuell anlegen
+
+. Tragen Sie in das Feld **LiefAufMenge** (Menge für den Lieferauftrag), die **Menge** ein, die Sie in den Lieferauftrag überführen wollen.
+. Klicken Sie anschließend auf das **Zahnrad** (s. Bild 7, grüner Pfeil), um den Lieferauftrag anzulegen. +
+→ Auf diese Weise können Sie Lieferaufträge **einzeln** anlegen.
+
+[WARNING]
+.**NZMenge**
+====
+Die Menge, die Sie unter **LiefAufMenge** eintragen, darf nicht größer sein, als die unter **NZMenge** (nicht zugeordnete Menge) angezeigte Menge.
+====
+
+[IMPORTANT]
+.**Bestandsreservierung**
+====
+Für die in einem Lieferauftrag enthaltene Menge wird die Bestandsreservierung beim Anlegen eines Lieferauftrags vom Hauptauftrag auf den Lieferauftrag übertragen. Werden Lieferaufträge einzeln angelegt und im Hauptauftrag sind noch Artikel vorhanden, werden diese ebenfalls reserviert.
+====
+
+[TIP]
+.Tipp: **Lieferaufträge löschen**
+====
+Lieferaufträge können **einzeln** oder **über die Gruppenfunktion in der Auftragssuche** gelöscht werden.
+====
+
+[TIP]
+.Tipp: **Auftragspositionen im Hauptauftrag bearbeiten**
+====
+Es können weitere Auftragspositionen, auch andere Artikel, zum Hauptauftrag hinzugefügt oder daraus gelöscht werden. Allerdings können nur Auftragspositionen, die nicht in Lieferaufträgen enthalten sind, aus dem Hauptauftrag gelöscht werden. Die Menge der Artikel im Hauptauftrag lässt sich erhöhen oder verringern. Löschen sollten Sie jedoch nur **nicht zu Lieferaufträgen zugeordnete Mengen**.
+====
+
+[WARNING]
+.Löschen von Positionen vermeiden
+====
+Technisch möglich ist zwar auch das Löschen von Positionen, die bereits in einem Lieferauftrag enthalten sind. Dies sollten Sie jedoch vermeiden, um Fehlfunktionen zu verhindern.
+====
+
+== Lieferaufträge suchen
+
+=== Lieferaufträge in der Auftragsübersicht suchen
+
+[.instruction]
+Lieferaufträge in der Auftragsübersicht suchen:
+
+. Öffnen Sie die **Auftragsübersicht**.
+. Wählen Sie im Bereich **Filter** aus dem Dropdown-Menü **Typ** die Option **Lieferauftrag** und wählen Sie die Option **suchen**. +
+→ In der Auftragsübersicht werden nur Lieferaufträge angezeigt. Hier sehen Sie die **Nummer** des entsprechenden Lieferauftrags und das **Datum**, an dem dieser Lieferauftrag angelegt wurde.
+. Klicken Sie auf eine **Nummer**, um den entsprechenden Lieferauftrag zu öffnen.
+
+[TIP]
+.Tipp: **Lieferaufträge filtern**
+====
+Mit Hilfe der Datumsauswahl und anderer Einstellungen im Bereich Filter können Sie die Genauigkeit Ihrer Suche erhöhen und die Anzahl der angezeigten Lieferaufträge verringern.
+====
+
+=== Lieferaufträge im Auftrag selbst suchen
+
+Ob Lieferaufträge zu einem Auftrag bestehen, sehen Sie im Tab **Übersicht** des betreffenden Auftrags.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-08-SI.png[]
+
+__Bild 8: Lieferauftragshinweis im Hauptauftrag__
+
+[IMPORTANT]
+.**Lieferaufträge im Tab Aufträge eines Auftrags**
+====
+Eine weitere Möglichkeit, sich die Lieferaufträge anzusehen, besteht im Tab **Aufträge** des Auftrags. Hier sehen Sie alle Aufträge des Kunden aufgeführt und somit auch die Lieferaufträge, die Sie dort auch **suchen** können.
+====
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-09-SI.png[]
+
+__Bild 9: Lieferaufträge im Tab **Aufträge** eines Auftrags suchen__
+
+== Hauptaufträge aktuell halten
+
+Der **Status des Hauptauftrags** wird automatisch auf den **niedrigsten gemeinsamen Status** aller Lieferaufträge des jeweiligen Hauptauftrags angepasst.
+
+[IMPORTANT]
+.Gemeinsamer Status
+====
+Wenn z. B. ein Auftrag (in Status **5.0**) zwei Lieferaufträge hat (je in Status **5.0**) und der eine Lieferauftrag wechselt in den Status **6.5** (am Beispiel bedeutet 6.5 "**Beim Logistiker im Versand**", also vom Logistik-Dienstleister abgerufen), ändert sich am Status des Hauptauftrages zunächst nichts. Wenn der zweite Lieferauftrag in den Status **6.5** wechselt, wird automatisch auch der Status des Hauptauftrages zu **6.5** geändert.
+====
+
+[TIP]
+.Tipp
+====
+Bei Fehlfunktionen in Ihrem System können Sie den Statuswechsel auch per **Ereignisaktion** einrichten.
+====
+
+[.instruction]
+Ereignisaktion für das **Anpassen eines Status Hauptauftrag an Lieferaufträge** erstellen:
+
+. Öffnen Sie das Menü **Einstellungen &gt; Aufträge &gt; Ereignisaktionen**.
+. Klicken Sie links unten auf das **grüne Plus**, um eine **neue Ereignisaktion** zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen **Namen** ein, z.B. **Status Hauptautrag an Lieferauftrag anpassen** und wählen Sie unter **Ereignis** die Option **Auftragsänderung &gt; Statuswechsel** und als Status **[6.5] Beim Logistiker im Versand**.
+. Klicken Sie auf **Speichern**. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem **grünen Plus** einen **Filter** des Filtertyps **Auftrag &gt; Auftragstyp** hinzu, markieren Sie im Filter die Option **Lieferauftrag**.
+. Fügen Sie mit dem **grünen Plus** eine **Aktion** des Aktionstyps **Auftrag &gt; Status des Hauptauftrags ändern** hinzu. In der Aktion die Option **Niedrigster Status aller Lieferaufträge** wählen.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. Klicken Sie auf **Speichern**, um die Einstellungen zu sichern.
+
+image::auftraege/auftraege-bearbeiten/assets/DE-Lieferauftrag-10.png[]
+
+__Bild 10: Ereignisaktion **Status Hauptauftrag an Lieferaufträge anpassen; Statuswechsel zu 6.5**__
+
+Der **Status 6.5** bedeutet in unserem Beispiel **Beim Logistiker im Versand**. Analog dazu wäre die Erstellung einer Ereignisaktion bei Wechsel zu **Status 7.0 Warenausgang gebucht**möglich, wenn der Logistiker den Warenausgang gemeldet hat.
+
+[WARNING]
+.**Hauptauftrag eines Lieferauftrags bearbeiten**
+====
+Variable Benutzer müssen über die **Berechtigung** für alle **Läger der Lieferaufträge** eines Hauptauftrags verfügen, um den Hauptauftrag öffnen zu dürfen. Prüfen Sie ggf. die Einstellungen im Benutzerprofil.
+====
+
+[WARNING]
+.**Hauptauftrag bzw. Lieferaufträge löschen**
+====
+Wenn Sie einen Hauptauftrag löschen möchten, müssen zuerst die Lieferaufträge gelöscht werden und dann erst kann der Hauptauftrag gelöscht werden.
+====
+
+== Warenbestand und Warenausgang
+
+Der Warenbestand bei den Lieferaufträgen wird reserviert und bei deren Warenausgang werden die Bestände entsprechend reduziert. Der Hauptauftrag erhält dann auch automatisch den niedrigsten Status seiner Lieferaufträge, also auch die Information, dass der Warenausgang gebucht wurde, wenn alle Lieferaufträge des Hauptauftrags den Warenausgang gebucht haben.
+

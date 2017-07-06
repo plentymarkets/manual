@@ -1,0 +1,112 @@
+<div id="selectShippingCountryContainer" class="container margin-top-1 margin-bottom-2">
+	<h2>Lieferland wählen</h2>
+	<div id="selectShippingCountry" class="text-center">
+	</div>
+	<div class="text-right">
+		<button class="btn btn-primary btn-lg btn-block-xs" data-plenty="click:checkCountryForPayment">
+			<span>Weiter</span><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		</button>
+	</div>
+</div>
+
+<script type="text/javascript">
+	(function($) {
+		function isJson(str) 
+		{
+		    try 
+		    {
+		        JSON.parse(str);
+		    } catch (e) {
+		        return false;
+		    }
+		    return true;
+		}
+
+		{# Laden der verfügbaren Lieferländer via ReST. #}
+		$(document).ready(function () {
+			$.ajax('/rest/checkout/shippingcountryselect/?selectedShippingCountryID=' + $StoreCountryID + '&selectType=select', 
+			{
+				type: "GET",
+				success: function (response) {
+					if(isJson(response))
+					{
+						$("#selectShippingCountry").append($(JSON.parse(response).data[0]));
+
+					}
+					else
+					{
+						$("#selectShippingCountry").append(response.data[0]);
+					}
+				}
+			});
+		});
+		
+		{# Einen ausgewählten Button mit Klick-Event versehen. #}
+		$("[data-plenty='click:checkCountryForPayment']").click(function() {
+			{# Auswahl des Lieferlandes aus dem Select-Element ermitteln. #}
+			var countries = $("#PlentyWebBasketShippingCountry")[0];
+			var shipping = JSON.stringify({
+					{# Länder-ID des ausgewählten Lieferlandes aus dem select-Tag abfragen. #}
+					"CheckoutShippingCountryID": countries.options[countries.selectedIndex].value
+				});
+			
+			{# Aktualisieren des Lieferlandes auf dem Server. #}	
+			$.ajax('/rest/checkout/', 
+			{
+				type: "PUT",
+				dataType: "json",
+				data: shipping,
+				success: function () {
+					{# 
+						Nach erfolgreichem Aktualisieren des Lieferlandes, wird geprüft, ob die Bezahlart "Klarna" für das gewählte
+						Lieferland vorhanden ist, indem die aktuelle Liste der Bezahlarten abgefragt wird.
+					#}
+					var countryCurrency = {
+						1: "EUR",
+						2: "EUR",
+						20: "NOK",
+						24: "SEK",
+						11: "EUR"
+					};
+					$.ajax('/rest/checkout/methodsofpaymentlist/', 
+						{
+							type: "GET",
+							data: {Currency: countryCurrency[countries.options[countries.selectedIndex].value] || 'EUR', ShipToCountry: countries.options[countries.selectedIndex].value},
+							success: function (response) {
+								if(isJson(response))
+								{
+									var data = JSON.parse(response).data;
+
+								}
+								else
+								{
+									var data = response.data;
+								}								
+								for (var i = 0, length = data.length; i < length; i++) {
+									{# Suchen nach der Bezahlart "Klarna" #}
+									if (data[i]["MethodOfPaymentID"] === 1403 || data[i]["MethodOfPaymentName"] === "Klarna") {
+										{# 
+											Wenn "Klarna" als Bezahlart gefunden wurde, wird zum Bestellschritt 10 des individuellen Bestellvorgangs weitergeleitet.
+											Da für dieses Beispiel der Klarna-Checkout dort verknüpft wurde.
+										#}
+										window.location.href = "{% Link_Checkout(10) %}";
+										return true;
+									}
+								}
+								
+								{# Wenn die Zahlungsart "Klarna" nicht verfügbar ist, soll mit dem normalen callisto_light_2 Bestellvorgang fortgefahren werden. #}
+								window.location.href = "{% Link_Checkout(3) %}";
+								return true;
+							},
+							error: function() {
+								{# Wenn es ein Problem gibt, kann hier einen Fehler ausgegeben werden oder auf einen andere Bezahlart ausgewichen werden. #}
+							}
+						});
+				},
+				error: function() {
+					{# Wenn es ein Problem gibt, kann hier einen Fehler ausgegeben werden oder auf einen andere Bezahlart ausgewichen werden. #}
+				}
+			});
+		});
+	}(jQuery));
+</script>
