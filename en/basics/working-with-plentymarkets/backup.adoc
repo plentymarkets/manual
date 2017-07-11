@@ -1,0 +1,191 @@
+= Backing up data
+:lang: en
+include::{includedir}/_header.adoc[]
+:description: Find out how create backups and import backed up plentymarkets data.
+:position: 80
+
+The backup function of the **Settings » Basic settings » Backup** allows you to return data to a previous state and/or restore deleted data. It is also possible to perform a combination of both these functions.
+
+[IMPORTANT]
+.Limitations
+====
+You can only use the backup function within the same version of plentymarkets. This means that it is not possible to import a backup of an older version of plentymarkets.
+====
+
+== Backup and restore
+
+The **Settings » Basic settings » Backup** menu offers three submenus:
+
+.Submenus of the **Backup** menu
+[cols="a,a"]
+|====
+|Submenu |Explanation
+
+|**Processing status**
+|Submenu contains information on the backups carried out in the system. Check the **Error messages** column for any failed procedures.
+
+|**Import backup**
+|Submenu for importing backups
+
+|**Download backup**
+|Submenu for downloading backups
+|====
+
+=== Checking the processing status
+
+The **Settings » Basic settings » Backup » Processing status** menu shows the procedures that have been carried out. This menu shows the settings, the user and any error messages.
+
+[.instruction]
+Checking the processing status:
+
+. Go to **Settings » Basic settings » Backup**.
+. Expand the **Processing status** submenu.
+. Check the information shown in the table.
+
+=== Import backup
+
+Select the **Backup type** to select the data to be imported. The **Procedure** you select determines how the backup is imported:
+
+* UPDATE = Returns data to a previous state.
+* INSERT = Deleted data is restored.
+* UPDATE &amp; INSERT = Returns data to a previous state and restores deleted data in the process.
+
+For example, if you made changes to the attributes a few days ago and have now decided that you don't actually want to keep these changes, then you can use the **Update** procedure to return the attributes to the way that they were previously.
+
+[WARNING]
+.Note the guidelines
+====
+Note the requirements for restoring data and the order they need to be restored in.
+====
+
+[.instruction]
+Importing a backup:
+
+. Go to **Settings » Basic settings » Backup**.
+. Expand the **Import backup** submenu.
+. Carry out the settings as desired. Pay attention to the information given in table 1 and regarding the backup order.
+. Click on the **save** icon to import the backup. +
+→ The Backup is imported.
+
+.Settings for importing backups
+[cols="a,a"]
+|====
+|Setting |Explanation
+
+|**Backup type**
+|Select the area of the system you want to reset to a previous state or restore deleted data. +
+**Attribute** = The attributes, the attribute values and the attribute language of the **Settings » Item » Attributes** menu +
+**Blog** = The data of the **CMS » Blog** menu +
+**Category** = The categories of the **Item » Categories** menu +
+**Item** = Item master data, mainly **Global** tab. Only some of the item data will be restored. Links to data such as images, categories and attributes are not restored. +
+**ItemDescription** = Item texts that were saved in the item's Texts tab. These are e.g. **Name**, **Name2**, **Name3**, **Short description**, **Description** etc. +
+**ItemFreeTextFields** = Free text fields of items +
+**ItemListing** = Listing data +
+**Order** = Order data not including order items +
+**OrderItems** = The order items from the orders +
+**Template** = Templates and CSS date of the design +
+**Variation** = Variation data +
+**VariationCategory** = Category links of the variations +
+**VariationMarketIdentNumber** = ASINs and ePIDs +
+**VariationRetailPrice** = Prices saved for the variations +
+**VariationSupplier** = The supplier information saved in the variation's **supplier** tab.
+
+|**Backup date**
+|Select the date of the backup you want to import. You can select one of the backups of the last 7 days. +
+**__Tip:__** Used in combination with the **Update** procedure, data is set back to this date. Used in combination with the **Insert** procedure, missing data is imported from this date's backup. +
+**__Note:__** If you updated your version of plentymarkets during these last 7 days, you will not be able to back up data from before the update.
+
+|**Procedure**
+|Select a procedure. +
+**UPDATE** = Returns data to a previous state. **__Note:__** All changes made after the time of the backup are reset to the time of the backup. +
+**INSERT** = Restores deleted data. +
+**UPDATE &amp; INSERT** = Returns data to a previous state. Deleted data is restored. **__Note:__** All changes made after the time of the backup are reset to the time of the backup.
+|====
+
+==== Backup order and conditions
+
+You need to import backups in a specific order. For example, when restoring item data, it is important that you first save the item master data with the backup type **item** before you import additional item data, e.g. category links.
+
+[TIP]
+.Example: ItemAttributeVariations
+====
+To import the backup type **ItemAttributeVariations**, you need to import the different backup types in the following order: **Attribute**, **Item**, **ActiveItemAttributeValues**, **ItemAttributeVariations**
+====
+
+The table contains an overview of which backup types are required and which order they need to be restored in.
+
+[cols="a,a"]
+|====
+|Backup type |Backup order
+
+|**ActiveItemAttributeValues** +
+(plentymarkets 6 only)
+|**Attribute +
+Item +
+ActiveItemAttributeValues**
+
+|**ItemAttributeVariations** +
+(plentymarkets 6 only)
+|**Attribute +
+Item +
+ActiveItemAttributeValues** +
+**ItemAttributeVariations**
+
+|**ItemAttributeVariationDetails** +
+(plentymarkets 6 only)
+|**Attribute +
+Item +
+ActiveItemAttributeValues** +
+**ItemAttributeVariations** +
+**ItemAttributeVariationDetails**
+
+|**ItemFreeTextFields**
+|**Item** +
+**ItemFreeTextFields**
+
+|**ItemListing**
+|**Item** +
+**ItemListing**
+
+|**VariationCategory**
+|**Item** +
+**Category** +
+**VariationCategory**
+
+|**ItemDescription**
+|**Item** +
+**ItemDescription**
+
+|**VariationMarketIdentNumber**
+|**Item** +
+**VariationMarketIdentNumber**
+
+|**VariationRetailPrice**
+|**Item** +
+**VariationRetailPrice**
+
+|**VariationSupplier**
+|**Item** +
+**VariationSupplier**
+
+|**OrderItems**
+|**Item** +
+**OrderItems**
+|====
+
+Table 2: Backup order
+
+=== Download backup
+
+The **Settings » Basic settings » Backup » Download backup** menu allows you to download a backup to the **<<omni-channel/online-store/global-settings/ftp-access#, FTP server  >>**. You can select and export a backup of the last 7 days. Backups are saved as SQL files. The file name is composed of the system ID and the date based on the following pattern: **pSystem-ID_year-month-day**. Please note that only one backup can be created per day.
+
+[.instruction]
+Downloading a backup:
+
+. Go to **Settings » Basic settings » Backup**.
+. Expand the **Download backup** submenu.
+. Select the date for which you want to save a backup.
+. Click on the **save** icon to download the backup. +
+→ The Backup is saved on the **<<omni-channel/online-store/global-settings/ftp-access#, FTP server  >>**.
+. Log into the FTP server to check that the backup was saved correctly.
+

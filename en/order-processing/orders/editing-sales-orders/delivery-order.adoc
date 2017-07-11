@@ -1,0 +1,300 @@
+= Delivery order
+:lang: en
+include::{includedir}/_header.adoc[]
+:position: 80
+
+**Settings » Orders » Event procedures**
+
+**Orders » Edit orders**
+
+== Delivery order
+
+The order type **delivery order** allows you to generate delivery orders for the individual items that are included in a main order. You can then ships these items individually or in groups. For example, you could first ship the items that are in stock now and then later ship the items that need to be specially reordered. You can use a different shipping service provider for each shipment or the same one each time. +
+You can create delivery orders **manually**, **automatically** or with **event procedures**.
+
+Problems could occur with "normal" orders if different logistics service providers worked on the same order at the same time. As soon as one of them made a status change, it would be impossible for the others to retrieve the same order. Using the function described here, each logistics service provider will work on a specific delivery order.
+
+=== Basic settings
+
+The **delivery orders** function can be used if the items included in an order have been assigned to different warehouses. In addition, the following basic settings for warehouses have to be selected in the menu **Settings &gt; Orders &gt; Basic settings**:
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag01-SI.png[]
+
+__Image 1: required **warehouse settings** for delivery orders: b) and b)__
+
+It is also possible to use the setting **depending on the stock level**.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag02-SI.png[]
+
+__Image 2: required **warehouse settings** for delivery orders: b) and c)__
+
+[WARNING]
+.**Mandatory settings**
+====
+These **basic settings** have to be carried out in order to use the **delivery orders** function. You also have to set up logistics service providers in your system.
+====
+
+For further information, refer to the **Settings » Orders » <<order-processing/orders/settings/basic-settings#, Basic settings  >>** page of the manual.
+
+Furthermore, you can split up delivery orders according to the following criteria: **warehouse**, **shipping profile**, **warehouse and shipping profile**, or **stock and net stock**.
+
+[NOTE]
+.Split delivery orders
+====
+Go to **Settings » Orders » Order types » Delivery order** to select the preferred setting.
+====
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag03-SI.png[]
+
+__Image 3: **options** in the **Delivery orders** menu__
+
+=== Characteristics of a delivery order
+
+A delivery order has the following characteristics:
+
+* It is **not** possible to **edit** a delivery order after it was created
+* The **stock** is taken directly from the main order
+* An item's **price** and **weight** are transferred
+* It is possible to create a **delivery note**
+* It is possible to create an **address label**
+* It is **not** possible to generate **other PDF documents**
+
+This results in:
+
+=== Consequences for editing orders
+
+* **Stock units** that are included in a delivery order may not be deleted in the main order
+* The **quantity** that is saved for a stock unit in the main order may not be reduced to a quantity lower than the item quantity that is distributed in the delivery orders.
+* The necessary **PDF documents** (e.g. invoice) are created in the main order
+
+== Creating delivery orders
+
+Create the main order first. Pay attention to the corresponding information given in section 1. **Ideally**, the accompanying delivery orders should be generated with the help of an event procedure. This allows you to determine when and how delivery orders are generated for an order and retrieved from the respective logistics service provider. **The following examples show you how to create delivery orders with the help of event procedures and how to create them manually.**
+
+=== Creating delivery orders with an event procedure
+
+We will start by giving you three **examples** for creating delivery orders with the help of event procedures.
+
+Carry out the settings described below in order to create the **event procedures** that you need.
+
+[TIP]
+.Tip
+====
+Select the settings in example A, B **or** C. The advantage of C is that the delivery orders are generated after the invoice has been printed.
+====
+
+==== Example A: event procedure "generate delivery order when order is received"
+
+Use the following settings if you want the corresponding delivery orders to be created as soon as a new order is received.
+
+The disadvantage is that the status is not taken into consideration. This means that the delivery orders for orders with the status **3.0** (or **1.0** if you work with auction platforms like eBay) are generated as well. The delivery orders will adopt the status of the main order.
+
+[.instruction]
+Creating the event procedure for example A:
+
+. Go to **Settings &gt; Orders &gt; Event procedures**.
+. Click on the **green plus icon** in the lower left corner to create a **new event procedure**.
+. Enter a **name** into the editing window, e.g. **Generate delivery order when receiving orders**, and then select **Order generation &gt; New order** as the **event**.
+. **Save** the settings. +
+→ The event procedure will be created.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order type**. Within this filter, place a check mark for **Order**.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order warehouse**. Within this filter, place a check mark for **Multiple warehouses per order**.
+. Click on the **green plus icon** to add a **procedure** of the procedure type **Order &gt; Generate delivery orders**.
+. Place a check mark next to the option **Active**.
+. Click on the **save icon** to save the settings.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag04-SI.png[]
+
+__Image 4: event procedure **generate delivery order when order is received**__
+
+==== Example B: event procedure "generate delivery order when order changes to status 5"
+
+Use the following settings if you want the corresponding delivery orders to be created as soon as an order changes to status 5.0.
+
+The disadvantage is that you are not allowed to change the main order again after you have generated the delivery orders. This is because the number of items included in all delivery orders has to match the number included in the main order.
+
+[.instruction]
+Creating the event procedure for example B:
+
+. Go to **Settings &gt; Orders &gt; Event procedures**.
+. Click on the **green plus icon** in the lower left corner to create a **new event procedure**.
+. Enter a **name**, e.g. **Generate delivery order when the status is changed to 5**, and select **Order change &gt; Status change** as the **event** and **[5] Cleared for shipping** as the status.
+. **Save** the settings. +
+→ The event procedure will be created.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order type**. Within this filter, place a check mark for **Order**.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order warehouse**. Within this filter, place a check mark for **Multiple warehouses per order**.
+. Click on the **green plus icon** to add a **procedure** of the procedure type **Order &gt; Generate delivery orders**.
+. Place a check mark next to the option **Active**.
+. Click on the **save icon** to save the settings.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag05-SI.png[]
+
+__Image 5: event procedure **generate delivery order when order changes to status 5**__
+
+==== Example C: event procedure "generate delivery order when invoice is printed"
+
+This third example offers you the most advantages. The delivery orders for a main order are only generated when the invoice for this main order is printed. This allows you to edit the main order until you clear it for shipping by printing the invoice. The following settings need to be carried out:
+
+[.instruction]
+Creating the event procedure for example C:
+
+. Go to **Settings &gt; Orders &gt; Event procedures**.
+. Click on the **green plus icon** in the lower left corner to create a **new event procedure**.
+. Enter a **name**, e.g. **Generate delivery order when printing the invoice**, and select **Documents &gt; Invoice was generated** as the event.
+. **Save** the settings. +
+→ The event procedure will be created.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order type**. Within this filter, place a check mark for **Order**.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order warehouse**. Within this filter, place a check mark for **Multiple warehouses per order**.
+. Click on the **green plus icon** to add a **procedure** of the procedure type **Order &gt; Generate delivery orders**.
+. Place a check mark next to the option **Active**.
+. Click on the **save icon** to save the settings.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag06-SI.png[]
+
+__Image 6: event procedure **generate delivery order when invoice is printed**__
+
+In section 2.2, you will find an **example** of how delivery orders can be generated manually in an order.
+
+=== Creating delivery orders within an order
+
+The **Delivery** tab is located within the editing window of an order. This tab contains the options **Generate delivery orders automatically** and **Create delivery orders**.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag07-SI.png[]
+
+__Image 7: creating delivery orders in the **Delivery** tab__
+
+[.instruction]
+Generating delivery orders automatically
+
+Click on the **Generate delivery orders automatically** button (see image 7, blue arrow) to create the delivery orders. They will be created according to the setting that was selected in the **Split up orders into delivery orders by** drop-down menu under **Settings &gt; Orders &gt; Order types &gt; Delivery order**. All of the stock units will be split up into delivery orders.
+
+[WARNING]
+.**Generating delivery orders automatically**
+====
+You can only use this function if no delivery order already exists for the order.
+====
+
+[.instruction]
+Generating delivery orders manually
+
+. Enter the **quantity** that should be carried over to the delivery order into the **DelOrdQua** field (quantity for the delivery order).
+. Then click on the **gear-wheel icon** (see image 7, green arrow) to create the delivery order. +
+→ This way you can create delivery orders **individually**.
+
+[WARNING]
+.**Unass.Quantity**
+====
+The quantity that you enter under **DelOrdQua** may not be larger than the quantity displayed under **Unass.Quantity** (unassigned quantity).
+====
+
+[IMPORTANT]
+.**Stock reservation**
+====
+When creating a delivery order, the stock reservation for the quantity included in the delivery order is transferred from the main order to the delivery order. If delivery orders are created individually and items are still available in the main order, then they will also be reserved.
+====
+
+[TIP]
+.Tip: **Deleting delivery orders**
+====
+Delivery orders can be deleted **individually** or **with the group function in the order search**.
+====
+
+[TIP]
+.Tip: **Editing order items in the main order**
+====
+You can add other stock units or items to the main order. You can also delete them from the main order. However, you can only delete stock units from the main order if they are not included in the delivery orders. The number of items in the main order can be increased or decreased. However, you should only delete **quantities that are not assigned to delivery orders**.
+====
+
+[WARNING]
+.Avoid deleting stock units
+====
+It is technically possible to delete stock units that are already included in a delivery order. However, you should avoid doing so as this can cause errors to occur.
+====
+
+== Searching for delivery orders
+
+=== Searching for delivery orders in the order overview
+
+[.instruction]
+Searching for delivery orders in the order overview:
+
+. Open the **order overview**.
+. In the **Filter** area, use the drop-down menu **Type** to select the option **Delivery order**. Then click on **Search**. +
+→ Only delivery orders will be displayed in the order overview. Here you will see the **number** of the corresponding delivery order and the **date** when this delivery order was created.
+. Click on a **number** to open the corresponding delivery order.
+
+[TIP]
+.Tip: **Filtering delivery orders**
+====
+You can select specific dates and apply other settings in the filter area to refine your search and decrease the number of delivery orders that are displayed as results.
+====
+
+=== Searching for delivery orders within an order
+
+The **Overview** tab shows whether or not delivery orders exist for a specific order.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag08-SI.png[]
+
+__Image 8: delivery order note in the main order__
+
+[IMPORTANT]
+.**Delivery orders in the the order tab**
+====
+You can also view delivery orders directly within an order. This is done in the **Orders** tab. Here you can see all of the customer's orders, i.e. also the delivery orders that you can **search** there.
+====
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag09-SI.png[]
+
+__Image 9: searching for delivery orders in the **Orders** tab__
+
+== Keeping main orders up to date
+
+The **status of the main order** is automatically adjusted to be the **lowest common status** of all the delivery orders that are a part of the main order.
+
+[IMPORTANT]
+.Common status
+====
+For example, an order is in status **5.0**. It has two delivery orders (each one in status **5.0**). One of the delivery orders is sent to a logistics service provider and thus changes to status **6.5** (in our example 6.5 would mean "**fulfillment by logistics service provider**"). The main order's status will not change yet. It will only change to **6.5** when the second delivery order's status also changes to **6.5**.
+====
+
+[TIP]
+.Tip
+====
+In case of a malfunction in your system, you can also set up the status change with an **event procedure**.
+====
+
+[.instruction]
+Creating an event procedure for **changing the main order status to match the delivery order status**:
+
+. Go to **Settings &gt; Orders &gt; Event procedures**.
+. Click on the **green plus icon** in the lower left corner to create a **new event procedure**.
+. Enter a **name** e.g. **Change main order status to match delivery order status** and select **Order change &gt; Status change** as the **event** and **[6.5] Fulfillment by logistics service provider** as the status.
+. **Save** the settings. +
+→ The event procedure will be created.
+. Click on the **green plus icon** to create a **filter** of the filter type **Order &gt; Order type**. Within this filter, place a check mark for **Delivery order**.
+. Click on the **green plus icon** to add a **procedure** of the procedure type **Order &gt; Change status of the main order**. Within this procedure, select **Lowest status of all delivery orders**.
+. Place a check mark next to the option **Active**.
+. Click on the **save icon** to save the settings.
+
+image::order-processing/orders/editing-sales-orders/assets/EN-ENG-Auftraege-Lieferauftrag10-SI.png[]
+
+__Image 10: event procedure **changing the main order status to match the delivery order status; change of status to 6.5**__
+
+In our example, **status 6.5** means **fulfillment by logistics service provider**. Additionally, you could create an event procedure for changing the **status to 7.0: outgoing items booked**, which could come into effect as soon as the logistics service provider has registered the outgoing item.
+
+[WARNING]
+.**Editing the main order of a delivery order**
+====
+In order for variable users to be able to open the main order, they must have the **rights** to all of the **delivery orders' warehouses**. If needed, check the settings in the user profile.
+====
+
+[WARNING]
+.**Deleting a main order or delivery orders**
+====
+If you would like to delete a main order, then you have to delete the delivery orders first. Only afterwards should you delete the main order.
+====
+
+== Stock and outgoing items
+
+Stock is reserved for the delivery orders and will be reduced accordingly when the outgoing items are booked. The main order is automatically given the lowest status of all its corresponding delivery orders. It also receives the information that the outgoing items were booked once this is true for all of its corresponding delivery orders.
+
