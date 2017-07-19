@@ -6,6 +6,12 @@ include::{includedir}/_header.adoc[]
 
 Mit plentymarkets POS integrieren Sie den stationären Handel mühelos in plentymarkets.
 
+[IMPORTANT]
+.POS-Einstellung nicht im laufenden Betrieb ändern
+====
+Ändern Sie die POS-Einstellungen nicht im laufenden Betrieb. Wenn Sie dennoch Änderungen an den POS-Einstellungen vornehmen, fordern Sie Kassenbenutzer auf, sich aus der App ausloggen und wieder einloggen, da es sonst vor allem bei einer Änderung der Rundungseinstellungen zu Unstimmigkeiten in den Gesamtbeträgen kommt.
+====
+
 [#10]
 == Unterstützte Hardware
 
@@ -669,6 +675,105 @@ Verkaufspreis mit Hauptvariante verknüpfen:
 . **Speichern** Sie die Einstellungen. +
 → Die Preise werden an die Varianten des Artikels vererbt. Speichern Sie für Varianten mit abweichendem Preis einen eigenen Wert.
 
+[#800]
+=== Rundungsverhalten für Kassenaufträge festlegen
+
+Beträge werden auf plentymarkets POS Kassenbelegen grundsätzlich mit 2 Nachkommastellen dargestellt. Über die Einstellungen im plentymarkets Backend steuern Sie, ob die Preise in den Aufträge auch im Hintergrund auf 2 Nachkommastellen gerundet oder ob mit 4 Nachkommastellen gerechnet werden soll. Das Rundungsverhalten für Aufträge, die über plentymarkets POS Kassen generiert werden, wird über die folgenden 3 Optionen gesteuert:
+
+
+.Erforderliche Optionen für Rundungsverhalten bei Kassenaufträgen
+[cols="215,10,10"]
+|====
+|Menü |Option |Mögliche Einstellungen
+
+|Einstellungen » Mandant (Shop) » Mandant wählen » Standorte » Standort wählen » Buchhaltung
+|Anzahl Nachkommstellen bei Preisen
+a|
+* 2
+* 4
+
+|Einstellungen » Mandant (Shop) » Mandant wählen » Standorte » Standort wählen » Buchhaltung
+|Nur Gesamtpreise runden
+a|
+* Ja
+* Nein
+
+|Einstellungen » Mandant (Shop) » Mandant wählen » POS » Kasse wählen » Tab: Beleg
+|Identische Auftragspositionen
+a|
+* Einzeln darstellen
+* Zusammenfassen
+|====
+
+Aus diesen Einstellungen ergeben sich 6 Einstellungskombinationen:
+
+* Auftragspositionen einzeln darstellen, Einzelpreise auf 2 Nachkommastellen runden
+* Auftragspositionen einzeln darstellen, Einzelpreise auf 4 Nachkommastellen runden
+* Auftragspositionen einzeln darstellen, Gesamtpreise auf 4 Nachkommastellen runden
+* Auftragspositionen zusammenfassen, Einzelpreise auf 2 Nachkommastellen runden
+* Auftragspositionen zusammenfassen, Einzelpreise auf 4 Nachkommastellen runden
+* Auftragspositionen zusammenfassen, Gesamtpreise auf 4 Nachkommastellen runden
+
+Abhängig von den gewählten Einstellungen kommt es zu unterschiedlichen Gesamtbeträgen. Beachten Sie, dass sich die Abweichungen potenzieren, je mehr Artikel mit Rundungsbedarf pro Auftrag/Beleg verkauft werden.
+
+==== Beispielrechnung
+
+Die folgende Tabelle zeigt eine Beispielrechnung, um die Rundungsabweichungen zu verdeutlichen, die sich aus den verschiedenen Einstellungskombinationen ergeben.
+
+Die Beispielrechnung beruht auf den folgenden Daten:
+
+. Berechnungsbasis: Artikel zum Preis von 4,545 Euro
+. Rechnung 1: Verkauf von 10 Artikeln
+. Rechnung 2: Verkauf von 10 Artikeln mit 5 % Positionsrabatt
+
+
+.Beispielrechnung bei einem Artikelpreis mit 4 Nachkommastellen
+[cols="30,15,15"]
+|====
+|Gewählte Einstellungen |Rechnung 1 (4,545 Euro x 10) Gesamtpreis auf Beleg|Rechnung 2 (4,545 Euro x 10 - 5%) Gesamtpreis auf Beleg
+
+|Anzahl Nachkommastellen = 2  +
+Auftragspositionen = Einzeln darstellen
+|45,50 Euro
+|43,20 Euro
+
+|Anzahl Nachkommastellen = 4  +
+Nur Gesamtpreise runden = Nein +
+Auftragspositionen = Einzeln darstellen
+|45,45 Euro
+|43,18 Euro
+
+|Anzahl Nachkommastellen = 4 +
+Nur Gesamtpreise runden = Ja +
+Auftragspositionen = Einzeln darstellen
+|45,45 Euro
+|43,18 Euro
+
+|Anzahl Nachkommastellen = 2 +
+Auftragspositionen = Zusammenfassen
+|43,50 Euro
+|43,20 Euro
+
+|Anzahl Nachkommastellen = 4 +
+Nur Gesamtpreise runden = Nein +
+Auftragspositionen = Zusammenfassen
+|45,45 Euro
+|43,18 Euro
+
+|Anzahl Nachkommastellen = 4 +
+Nur Gesamtpreise runden = Ja +
+Auftragspositionen = Zusammenfassen
+|45,50 Euro
+|43,18 Euro
+|====
+
+Detaillierte Informationen und weitere Rechnungsbeispiele zum Rundungsverhalten finden Sie auch auf der Handbuchseite <<auftragsabwicklung/auftraege/buchhaltung, **Buchhaltung** >>.
+
+
+
+
+
+
 [#90]
 == Standardkunden für POS-Aufträge erstellen
 
@@ -685,7 +790,7 @@ Standardkunden für POS-Aufträge erstellen:
 
 . Öffnen Sie das Menü **Kunden » Kunden bearbeiten**.
 . Klicken Sie auf **Neu**.
-. Nehmen Sie die Einstellungen gemäß Tabelle 10 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 12 vor.
 . **Speichern** Sie die Einstellungen.
 . Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Standard » POS » Kasse öffnen » Grundeinstellungen**.
 . Geben Sie die ID des Standardkunden in das Feld **Standardkunde** ein.
@@ -743,9 +848,9 @@ Legen Sie die unten beschriebene Ereignisaktion an, um Waren automatisch auszubu
 . Klicken Sie auf **Ereignisaktion hinzufügen**.  +
 → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 . Geben Sie einen Namen ein.
-. Wählen Sie das **Ereignis** gemäß Tabelle 11.
+. Wählen Sie das **Ereignis** gemäß Tabelle 13.
 . **Speichern** Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß Tabelle 11 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 13 vor.
 . Setzen Sie ein Häkchen bei **Aktiv**.
 . **Speichern** Sie die Einstellungen.
 --
@@ -794,7 +899,7 @@ Kasse mit Mobilgerät koppeln:
 
 . Öffnen Sie die plentymarkets App auf dem Gerät, das Sie mit der Kasse koppeln möchten.
 . Öffnen Sie das Menü **plentymarkets App  » Einstellungen » POS beta**.
-. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 12.
+. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 14.
 . **Speichern** Sie die Einstellungen. +
 → Das Gerät wird mit der Kasse gekoppelt.
 
@@ -921,7 +1026,7 @@ In plentymarkets werden alle Kassenvorgänge dokumentiert, um rechtssicheres Arb
 Kassenvorgänge im Kassenjournal suchen:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 14.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 16.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 
@@ -1007,7 +1112,7 @@ Die im Kassenjournal angezeigten Kassenvorgänge können Sie entweder als PDF-Da
 Kassenvorgänge als PDF-Datei exportieren:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 14.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 16.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 . Klicken Sie auf **PDF-Export**. +
@@ -1019,7 +1124,7 @@ Kassenvorgänge als PDF-Datei exportieren:
 Kassenvorgänge als CSV-Datei exportieren:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 14.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 16.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 . Klicken Sie auf **CSV-Export**.
@@ -1044,4 +1149,4 @@ IDEA-Dateien exportieren:
 . Wählen Sie einen Speicherort und bestätigen Sie die Auswahl. +
 → Die IDEA-Dateien werden exportiert und als ZIP-Datei gespeichert.
 
-//  Next: 800.
+//  Next: 810.
