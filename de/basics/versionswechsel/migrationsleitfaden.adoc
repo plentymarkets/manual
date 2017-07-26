@@ -13,12 +13,6 @@ Diese Seite enthält wichtige Informationen zur Migration auf plentymarkets 7. F
 Ab dem Wechsel auf plentymarkets 7 ist die SOAP-API nur für Kunden mit Classic-Tarif nutzbar. Kunden mit Zero-Vertrag können die SOAP-API nicht mehr nutzen. Die REST-API steht allen plentymarkets 7 Kunden zur Verfügung.
 ====
 
-[IMPORTANT]
-.plentymarkets 7 ist nicht mit externen Mandanten und dem shopware Connector kompatibel
-====
-plentymarkets 7 ist aktuell nicht mit externen Mandanten und dem shopware Connector kompatibel. Wenn Sie einen externen Mandanten bzw. den shopware Connector verwenden, ist daher ein Wechsel auf plentymarkets 7 zurzeit nicht möglich.
-====
-
 [#10]
 == Überblick über die neue Artikelarchitektur
 
@@ -77,8 +71,6 @@ Beachten Sie die folgenden Voraussetzungen für eine Migration Ihres Systems auf
 * **Hosting**: Ihr System muss auf AWS gehostet sein. plentymarkets 7 kann nicht auf einem eigenen Server oder der plentymarkets eigenen Cloud (Cluster) genutzt werden. +
 → Sie können Ihr System vor der Migration auf AWS <<basics/arbeiten-mit-plentymarkets/plentymarkets-konto/umzug#, **umziehen**  >>, wenn die Hauptdomain bei plentymarkets gehostet ist.
 * **SOAP**: Eigene SOAP-Anbindungen und SOAP-Anbindungen von Partnern oder Agenturen müssen vor der Migration auf ihre Stable 7-Tauglichkeit geprüft werden. Fragen Sie den Entwickler oder die Agentur, ob die Anbindung Stable 7-fähig ist.
-* **Shopware Connector**: plentymarkets 7 ist aktuell nicht mit externen Mandanten und dem shopware Connector kompatibel. Wenn Sie einen externen Mandanten bzw. den shopware Connector verwenden, ist daher ein Wechsel auf plentymarkets 7 aktuell nicht möglich.
-* **Externe Mandanten**: plentymarkets 7 ist aktuell nicht mit externen Mandanten kompatibel. Wenn Sie einen externen Mandanten verwenden, ist daher ein Wechsel auf plentymarkets 7 aktuell nicht möglich.
 * **plentymarkets Shipping**: plentymarkets Shipping ist nicht mit plentymarkets 7 kompatibel und wird nicht mehr unterstützt. Wechseln Sie auf den aktuellen link:https://www.plentymarkets.eu/software/downloads/plentymarkets-client[**plentymarkets-Client**].
 * **Marktplätze**: In plentymarkets 7 sind noch nicht alle Marktplätze funktionsfähig. Prüfen Sie vor der Migration die <<basics/versionswechsel#, **Liste**  >> der noch nicht migrierten Marktplätze.
 * **Vorbereitungen**: Arbeiten Sie diesen Migrationsleitfaden durch und treffen Sie die darin beschriebenen Vorbereitungen.
@@ -876,6 +868,49 @@ Preissichtbarkeit in Bezug auf Kundenklassen prüfen:
 
 __Tab. 18: Datenfelder Datenformat **ItemPrice**__
 
+== Externe Shops
+
+In plentymarkets 6 wurden für die Shopware-Integration externe Shops bereitgestellt. In plentymarkets 7 wird diese Anbindung an Shopware jedoch über reguläre Mandanten (Shops) realisiert. Bei der Migration auf plentymarkets 7 werden externe Shops daher in vollwertige Mandanten (Shops) umwandelt. Diese Mandanten können über den plentymarkets Connector an Shopware angebunden werden. Beachten Sie jedoch, dass vollwertige Mandanten kostenpflichtig sind. Prüfen Sie daher vor der Migration, ob in Ihrem System externe Shops vorhanden sind. Externe Shops, die Sie nicht mehr benötigen, sollten Sie vor der Migration löschen.
+
+[TIP]
+.Externe Shops ohne Shopware-Anbindung
+====
+Technisch war es in plentymarkets 6 möglich, externe Shops für andere Zwecke als für die Anbindung an Shopware zu nutzen. Prüfen Sie daher auch, ob externe Shops in Ihrem System vorhanden sind, wenn Sie den Shopware Connector nicht verwenden. Diese Prüfung ist vor allem wichtig, wenn Sie die externen Mandanten nicht für die Anbindung von Shopware, sondern für andere Anwendungsfälle verwenden, z.B. für Marktplatzverfügbarkeiten, Nummernkreise oder Rechnungsstellung.
+====
+
+=== System auf externe Shops prüfen
+
+Externe Shops haben den Webstore-Typ **shopware** oder **extern** und haben außerdem keine eigene plenty ID. Gehen Sie wie unten beschreiben vor, um zu prüfen, ob externe Shops in Ihrem System vorhanden sind:
+
+. Öffnen Sie das Menü **Einstellungen » Mandant (Shop)**.
+. Klicken Sie auf das Plus des ersten Mandanten (Shops). +
+→ Das Mandantenmenü wird eingeblendet.
+. Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Mandant öffnen » Grundeinstellungen** des Mandanten.
+. Prüfen Sie den **Webstore-Typ**. +
+→ Shops des Typs **shopware** oder **extern** sind externe Shops. +
+**__Tipp:__** Bei externen Shops ist außerdem die Option **plenty ID** leer. +
+→ Wenn es sich um einen externen Shop handelt, prüfen Sie, ob er aktiv verwendet wird. +
+→ Löschen Sie den externen Shop, wenn Sie ihn nicht benötigen.
+. Prüfen Sie alle weiteren in Ihrem System angelegten Mandanten (Shops) auf dieselbe Weise.
+
+=== Nicht benötigte externe Shops löschen
+
+Gehen Sie wie unten beschrieben vor, um nicht mehr benötigte externe Shops vor der Migration zu löschen.
+
+. Öffnen Sie das Menü **Einstellungen » Mandant (Shop)**.
+. Zeigen Sie mit der Maus auf den externen Shop, den Sie löschen möchten. +
+→ Ein Pfeil nach unten wird eingeblendet.
+. Klicken Sie auf den Pfeil, um das Kontextmenü zu öffnen.
+. Klicken Sie im Kontextmenü auf **Löschen**. +
+→ Eine Sicherheitsabfrage wird geöffnet.
+. Klicken Sie in der Sicherheitsabfrage auf **Löschen**. +
+→ Der externe Shop wird gelöscht.
+
+=== plentymarkets an Shopware anbinden
+
+Bei der Migration Ihres Systems zu plentymarkets 7 werden die Daten Ihrer externen Shops in vollwertige Mandanten (Shops) überführt. Die Integration Ihres externen Shopware-Systems mit dem link:https://github.com/plentymarkets/plentymarkets-shopware-connector/releases[**plentyConnector**, window="_blank"] nehmen Sie nach der Migration vor. Informationen dazu finden Sie in der link:https://docs.google.com/document/d/10mPeV3xqx4We71dYQdPmJK2qvb21Rpym6FG_tKwHKfc/edit#heading=h.h38ew7hip4tl[**Dokumentation des plentymarkets Shopware Connector**, window="_blank"].
+
+
 [#210]
 == Termin für Migration vereinbaren
 
@@ -1035,4 +1070,3 @@ __Tab. 1: Migrationsstatus der Märkte__
 == Migrationshinweis Mention-Schnittstelle
 
 Die Mention-Schnittstelle ist momentan noch nicht auf plentymarkets 7 migriert.
-
