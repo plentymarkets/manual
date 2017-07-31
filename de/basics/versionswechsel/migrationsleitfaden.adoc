@@ -118,6 +118,7 @@ Aufgrund der neuen Artikeldatenstruktur werden nicht alle Item-Datenformate des 
 
 [.subhead]
 Ausnahme: Artikel-/Variantennummern
+
 In der neuen Artikelarchitektur ist die Variantennummer systemweit eindeutig. Bei der Migration werden daher in bestimmten Fällen neue Variantennummern vergeben. Die Migration läuft nach dem folgenden Muster ab:
 
 [cols=""]
@@ -153,6 +154,7 @@ __Tab. 2: Migration der Artikel-/Variantennummern__
 
 [.subhead]
 **Einheit 1** und **Einheit 2**
+
 In der neuen Artikelarchitektur werden die Felder **Einheit 1** und **Einheit 2** durch das Feld **Variantenname** ersetzt. Wie der Inhalt dieser Felder migriert wird, legen Sie in den <<basics/versionswechsel/migrationsleitfaden#35, **Migrationseinstellungen**>> fest. Die Migration erfolgt nach dem folgenden Muster:
 
 [cols=""]
@@ -174,6 +176,7 @@ __Tab. 3: Migration der Felder **Einheit 1** und **Einheit 2**__
 
 [.subhead]
 Webshop-Sichtbarkeit
+
 Die Sichtbarkeit im Webshop wird nun über die Mandanten-Sichtbarkeit gesteuert. Es gibt keine zentrale Einstellung mehr, die die Sichtbarkeit des Artikels im Webshop steuert. Stattdessen wird die Mandanten-Sichtbarkeit im Tab **Verfügbarkeit** der Variante definiert.
 
 [cols=""]
@@ -464,6 +467,7 @@ Bei der Migration der Preissets stellen die Einheiten eine Besonderheit dar und 
 
 [.subhead]
 Felder "Einheit 1" und "Einheit 2" prüfen
+
 Die Felder **Einheit 1** und **Einheit 2** werden in der neuen Artikelarchitektur durch das Feld **Variantenname** ersetzt.  In den <<basics/versionswechsel/migrationsleitfaden#35, **Migrationseinstellungen**>> legen Sie fest, ob der Inhalt nur eines Feldes oder beider Felder migriert wird. Sollen beide Felder migriert werden, geben Sie die Trennzeichen ein, die bei der Migration zwischen den Einheiten eingefügt werden sollen. Prüfen Sie daher vor der Migration, welche Trennzeichen geeignet sind, damit der zusammengesetzte Variantenname, der sich hieraus ergibt, Ihren Anforderungen entspricht. Passen Sie ggf. den Inhalt der Felder **Einheit 1** und/oder **Einheit 2** an.
 
 [cols="a,a"]
@@ -481,6 +485,7 @@ __Tab. 10: Beispiel für Migration der Felder **Einheit 1** und **Einheit 2**__
 
 [.subhead]
 Felder "Einheit" und "Inhalt" prüfen
+
 In der alten Artikelarchitektur wurden Artikel durch eine SKU, die sich aus **Artikel-ID**, **Preis-ID** und **Varianten-ID** zusammensetzte, eindeutig gekennzeichnet. In der neuen Architektur wird die Varianten-ID zum eindeutigen Bezeichner. In der neuen Architektur darf allerdings eine Variante in der Konstellation **AttributeValueSetID** + **Einheit** + **Inhalt** nur einmal vorkommen. Bei der Migration von Artikeln mit mehreren Preissets, in denen **Inhalt** und **Einheit** identisch sind, wird nur das erste Preisset migriert. Alle weiteren Preissets des Artikels verfallen. Prüfen Sie daher, ob es Artikel mit mehreren Preissets gibt, bei denen für mehrere Preissets die gleiche Einheit und der gleiche Inhalt hinterlegt wurden. Ändern Sie die Einheit und den Inhalt der zusätzlichen Preissets.
 
 Das folgende Beispiel verdeutlicht die vor der Migration erforderlichen Anpassungen anhand von Zigarillopackungen.
@@ -539,6 +544,7 @@ __Tab. 12: Beispiel für angepasste Inhalte bei **Inhalt** und **Einheit**__
 
 [.subhead]
 Vorgehensweise
+
 Prüfen Sie, ob es Artikel mit mehreren Preissets gibt, bei denen für mehrere Preissets die gleiche Einheit und der gleiche Inhalt hinterlegt sind. Führen Sie dazu einen dynamischen Export mit dem Datenformat <<basics/datenaustausch/datenformate/_itemprice#, **ItemPrice**>> aus. Gehen Sie dazu wie unten beschrieben vor.
 
 [.instruction]
@@ -626,6 +632,12 @@ Kategorieverknüpfungen prüfen:
 
 Bei der Migration werden die verschiedenen Einstellungen für Preisspalten kombiniert, um die neuen Verkaufspreise zu bilden. Prüfen Sie daher vor der Migration die in den Bereichen **Auftragsherkunft**, **Währungen**, **Kundenklassen** und **Mandant (Shop)** hinterlegten Preisspalten. Ist dieselbe Preisspalte in mehr als einem Bereich eingestellt, kann sich aus dieser Kombination ein unerwünschtes neues Verhalten ergeben. Prüfen Sie daher die Logik dieser Kombinationen. Gehen Sie dazu wie unten beschrieben vor.
 
+[IMPORTANT]
+.0-Euro-Preise
+====
+Sind Preisspalten mit Kundenklassen verknüpft, für die kein Preis eingetragen ist, also der Wert von 0,00 Euro hinterlegt ist, wird in plentymarkets 6 als Fallback der Standardpreis verwendet. Dieses Verhalten wird auch bei der Migration berücksichtigt. Bei der Migration werden solche Preise daher mit dem ehemaligen Standardpreis befüllt. Wenn ein 0-Euro-Preis gewünscht ist, müssen die Preise daher nach der Migration manuell bearbeitet werden.
+====
+
 [.instruction]
 Preisspalten-Kombinationen prüfen:
 
@@ -660,6 +672,7 @@ __Tab. 15: Menüpfade für Preisspalten__
 
 [.subhead]
 Währungsumrechnung bei mehreren Mandanten
+
 Bei der Migration der Preissets werden unter Umständen viele Verkaufspreise angelegt. Wenn Sie mit mehreren Mandanten arbeiten, sollten Sie vor der Migration die Einstellung **Währungsumrechnung** aller Mandanten prüfen. Wenn bei einigen Mandanten die Einstellung **Verwende Preisspalte** und bei anderen die Einstellung **Live-Umrechnung** eingestellt ist, prüfen Sie, ob diese Einstellungen korrekt sind. Vereinheitlichen Sie wenn sinnvoll die Einstellungen, um die Anzahl der neu erstellten Verkaufspreise zu reduzieren. Folgendes Vorgehen wird empfohlen.
 
 [.instruction]
