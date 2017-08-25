@@ -409,8 +409,11 @@ Tagesabschlussberichte enthalten folgende Informationen: +
 * Umsatz: seit letztem Tagesabschluss (Summe) und seit Inbetriebnahme der Kasse (Grand Total)
 * Steuerbericht: Steuersatz, Steuersumme und Nettoumsatz
 * Zahlungsarten: Aufschlüsselung des Umsatzes nach Zahlungsart
+* Retouren: Anzahl und Summe
 * Stornierungen: Anzahl und Summe
 * Rabattierte Artikel: Anzahl und Summe
+* Verkaufte Gutscheine: Anzahl und Summe
+* Benutzer: Umsatz pro Benutzer
 
 |**Zwischenbericht**
 a|Erlaubt Kassenbenutzer, Zwischenberichte zu erzeugen. +
@@ -420,8 +423,11 @@ Zwischenberichte enthalten folgende Informationen: +
 * Umsatz: seit letztem Tagesabschluss (Summe) und seit Inbetriebnahme der Kasse (Grand Total)
 * Steuerbericht: Steuersatz, Steuersumme und Nettoumsatz
 * Zahlungsarten: Aufschlüsselung des Umsatzes nach Zahlungsart
+* Retouren: Anzahl und Summe
 * Stornierungen: Anzahl und Summe
 * Rabattierte Artikel: Anzahl und Summe
+* Verkaufte Gutscheine: Anzahl und Summe
+* Benutzer: Umsatz pro Benutzer
 
 |**Artikel synchronisieren**
 |Erlaubt Kassenbenutzer, Artikeldaten mit der Kasse zu synchronisieren.
@@ -680,8 +686,6 @@ Verkaufspreis mit Hauptvariante verknüpfen:
 
 Beträge werden auf plentymarkets POS Kassenbelegen grundsätzlich mit 2 Nachkommastellen dargestellt. Über die Einstellungen im plentymarkets Backend steuern Sie, ob die Preise in den Aufträge auch im Hintergrund auf 2 Nachkommastellen gerundet oder ob mit 4 Nachkommastellen gerechnet werden soll. Das Rundungsverhalten für Aufträge, die über plentymarkets POS Kassen generiert werden, wird über die folgenden 3 Optionen gesteuert:
 
-
-
 .Erforderliche Optionen für Rundungsverhalten bei Kassenaufträgen
 [cols="10,1,1"]
 |====
@@ -834,6 +838,256 @@ Im Tagesgeschäft kommt es vor, dass Artikel verkauft werden sollen, für die ke
 Damit Kassenbenutzer mit Dummy-Artikeln arbeiten können, aktivieren Sie im Menü **Einstellungen » Grundeinstellungen » Benutzer » Konten » Konto öffnen » Tab: Berechtigung » Tab: Mobile** im Bereich **POS-Funktionen** die Berechtigungen **Preis bearbeiten** und **Artikelposition umbenennen**.
 ====
 
+== Gutscheinverkauf vorbereiten
+
+Um Verkaufsgutscheine über plentymarkets POS zu verkaufen, sind die folgenden Vorbereitungen im plentymarkets Backend erforderlich:
+
+* Gutscheinkampagne mit Gutscheinart **Verkaufsgutschein** erstellen.
+* Freitextfeld für die Kampagne anlegen und im Menü *Einstellungen » Aufträge » Gutscheine* verknüpfen.
+* Gutscheinartikel mit 0% MwSt. erstellen.
+* Gutscheinartikel mit Kampagne verknüpfen.
+* Gutschein-Codes erzeugen oder manuell speichern.
+* Gutscheinvordrucke erstellen und Kassenbenutzern zur Verfügung stellen.
+* Gutschein-Codes Kassenbenutzern zur Verfügung stellen.
+
+Diese Schritte werden hier kurz erläutert. Eine detaillierte Anleitung zum Erstellen von Gutscheinen finden Sie auf der Handbuchseite https://knowledge.plentymarkets.com/auftragsabwicklung/auftraege/gutscheine.
+
+[NOTE]
+.Vorgehensweise bei mehreren Kassen
+====
+Sie haben mehr als eine Kasse? Dann teilen Sie die ausgedruckten Gutschein-Codes zwischen den Kassen auf oder erstellen Sie für jede Kasse eigene Gutscheinkampagnen und -artikel, damit jeder Gutschein-Code nur einmal verkauft wird.
+====
+
+=== Freitextfeld vorbereiten
+
+Um Gutscheine zu verkaufen, muss am Artikel ein Freitextfeld hinterlegt werden. Dieses Freitextfeld definieren Sie zunächst und ordnen es dann Gutscheinkampagnen zu.
+
+[#820]
+==== Freitextfeld definieren
+
+Definieren Sie nun das Freitextfeld, dass für Kampagnen verwendet werden soll.
+
+[.instruction]
+Freitextfeld definieren:
+
+. Öffnen Sie das Menü **Einstellungen » Artikel » Freitextfelder**.
+. Geben Sie in das Feld *Feldbezeichnung* die Bezeichnung **Kampagne ID** ein. +
+_*Hinweis:*_ Achten Sie auf die Schreibweise. Der Name **Kampagne ID** ist nur in der Schreibweise mit Leerzeichen gültig.
+. Wählen Sie den Datentyp **Zahl**.
+. Geben Sie eine Zeichenlänge ein.
+. **Speichern** Sie die Einstellungen. +
+→ Das Freitextfeld wird über Nacht aktiviert und ist am nächsten Morgen verfügbar.
+
+==== Freitextfeld wählen
+
+Im Menü **Einstellungen » Aufträge » Gutscheine** wählen Sie nun dieses Freitextfeld und ordnen es so Gutscheinkampagnen zu.
+
+[.instruction]
+Freitextfeld wählen:
+
+. Öffnen Sie das Menü **Einstellungen » Aufträge » Gutscheine**.
+. Wählen Sie das Kampagnenfeld **Kampagne ID** aus der Dropdown-Liste.
+. **Speichern** Sie die Einstellungen. +
+→ Das Feld **Kampagne ID** wird im Tab **<<artikel/artikel-verwalten#75, Felder>>** der Artikel angezeigt.
+
+[#830]
+=== Kampagne für POS-Verkaufsgutscheine erstellen
+
+Erstellen Sie für den Verkauf von Gutscheinen über plentymarkets POS pro Gutscheinwert eine eigene Kampagne. Wenn Sie also z.B. Gutscheine im Wert von 10 Euro, 25 Euro und 50 Euro verkaufen möchten, benötigen Sie 3 Kampagnen mit diesen Rabattwerten. Wenn Sie mehr als eine Kasse einsetzen, kann es außerdem sinnvoll sein, pro Kasse eigene Kampagnen anzulegen. So erstellen Sie eine Kampagne für Verkaufsgutscheine:
+
+[.instruction]
+Kampagne für POS-Verkaufsgutscheine erstellen:
+
+. Öffnen Sie das Menü **Aufträge » Gutscheine**.
+. Klicken Sie auf **Neue Kampagne**.
+. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 13.
+. **Speichern** Sie die Einstellungen.  +
+→ Die neue Kampagne wird angelegt und in der Übersicht angezeigt.
+
+.Einstellungen für POS-Verkaufsgutscheinkampagnen
+[cols="1,2"]
+|====
+|Einstellung |Erläuterung
+
+2+|Kampagne
+
+|**Name**
+|Namen für die Kampagne eingeben.
+*_Tipp_*: Der Name sollte die Kasse und den Gutscheinwert enthalten.
+
+|**Beschreibung**
+|Optional eine Beschreibung eingeben.
+
+|**Konzept: Code**
+|**Mehrere Codes** wählen, um Gutschein-Codes zu erzeugt, die nur einmal einlösbar sind.
+
+|**Konzept: Einlösungen**
+|**Einlösung bis Wert aufgebraucht ist** wählen.
+
+|**Nutzung**
+|**Einzelbestellungen** oder <<auftragsabwicklung/auftraege/scheduler#, **Abonnements**>> oder beides wählen.
+
+|**Mindestbestellwert**
+|Keinen Wert eingeben.
+
+2+|Gültigkeiten
+
+|**Startdatum**
+|Das Datum, ab dem die Kampagne aktiv sein soll.
+
+|**Enddatum**
+|Das Datum, bis zu dem die Kampagne aktiv sein soll.
+
+|**Code-Gültigkeit in Wochen**
+|Keinen Wert eingeben.
+
+2+|Gutschein
+
+|**Gutscheintyp**
+|**Gutschein** wählen.
+
+|**Gutscheinart**
+|**Verkaufsgutschein** wählen.
+
+|**Code-Länge**
+|Die Zeichenlänge des Gutschein-Codes wählen.
+
+|**Rabattart**
+|**Festbetrag** wählen.
+
+|**Rabattwert**
+|Den Gutscheinwert eingeben, z.B. 10 = 10 Euro. +
+*_Hinweis:_* Diesen Wert nicht mehr ändern, nachdem der erste Gutschein verkauft wurde.
+
+|**Inkl. Versandkosten**
+|Option nicht aktivieren.
+
+2+|Filter
+
+|**Artikel über Preisportale**
+|**Nicht erlauben** wählen.
+
+|**Kategorien**
+|Die Kategorien wählen, bei denen der Gutschein einlösbar sein soll. Die Auswahl gilt auch für alle Unterkategorien einer markierten Kategorie.
+
+|**Artikel**
+|Keinen Wert eingeben.
+
+|**Mandanten (Shops)**
+|Mandanten (Shop) der Kasse wählen.
+
+|**Kundenklassen**
+|Standardkundenklasse oder *ALLE* wählen.
+
+|**Kundentypen**
+|*Kunde* wählen.
+|====
+
+[#850]
+=== Gutschein-Codes erzeugen
+
+Verkaufsgutscheine können in plentymarkets POS nur eingelöst werden, wenn ein Gutschein-Code eingegeben wird.
+Damit Restbeträge bei einer Teileinlösung korrekt berechnet werden, benötigt außerdem jeder verkaufte Gutschein einen eigenen Gutschein-Code. Gutschein-Codes können Sie auf verschiedene Arten erstellen:
+
+* Gutschein-Codes in plentymarkets generieren und Kassierern zur Verfügung stellen
+* Gutschein-Codes extern erstellen (z.B. bei Gutscheinausstellung) und dann in plentymarkets speichern/importieren
+
+Beide Verfahren werden hier erläutert.
+
+==== Gutschein-Codes manuell generieren
+
+Mit dem Gutschein-Generator im Tab **Codes** einer Kampagne erzeugen Sie gleichzeitig mehrere Gutschein-Codes.
+
+[.instruction]
+Gutschein-Codes generieren:
+
+. Öffnen Sie das Menü **Aufträge » Gutscheine**.
+. Klicken Sie auf die Kampagne, für die Sie Gutschein-Codes erzeugen möchten.
+. Öffnen Sie das Tab **Codes**.
+. Geben Sie im Bereich **Gutschein-Codes manuell generieren** links die gewünschte Anzahl an Gutschein-Codes ein.
+. **Speichern** Sie die Eingabe. +
+→ Die Gutschein-Codes werden erzeugt und zur Liste der Gutschein-Codes hinzugefügt.
+. Exportieren Sie die Gutschein-Codes und stellen Sie sie Kassenbenutzern zur Verfügung. +
+*_Hinweis:_* Achten Sie darauf, dass Gutschein-Codes nicht doppelt in Umlauf geraten. Dies ist besonders wichtig, wenn Sie später weitere Codes generieren.
+
+==== Eigene Gutschein-Codes speichern
+
+Statt Gutschein-Codes in plentymarkets zu generieren, können Sie auch eigene Gutschein-Codes in plentymarkets speichern. Gültige Zeichen für Gutschein-Codes sind Klein- und Großbuchstaben, Ziffern, Unterstriche (_) und Bindestriche (-).
+
+[.instruction]
+Gutschein-Code manuell speichern:
+
+. Öffnen Sie das Menü **Aufträge » Gutscheine**.
+. Klicken Sie auf die Kampagne, für die Sie einen Gutschein-Code speichern möchten.
+. Öffnen Sie das Tab **Codes**.
+. Geben Sie im Bereich **Gutschein-Code manuell eintragen** rechts einen Code mit zwischen 6 und 24 Zeichen ein.
+. **Speichern** Sie die Eingabe. +
+→ Der Gutschein-Code wird gespeichert und zur Liste der Gutschein-Codes hinzugefügt. +
+*_Hinweis:_* Kunden können Gutscheine nur einlösen, wenn ihr Gutschein-Code in plentymarkets gespeichert ist. Wenn Sie Gutschein-Codes außerhalb von plentymarkets generieren, sollten Sie diese Codes daher zeitnah in plentymarkets speichern. +
+*_Tipp:_* Mit dem Datenformat **CouponCode** importieren Sie mehrere Gutschein-Codes gleichzeitig.
+
+[#840]
+=== Gutscheinartikel erstellen
+
+Legen Sie nun pro Gutscheinwert einen Artikel an. Da die Kampagnen-ID auf Artikelebene zugeordnet wird, können Sie bei Verkaufsgutscheinen nicht mit Varianten arbeiten. Detaillierte Informationen zum Erstellen von Artikeln finden Sie auf der Handbuchseite **<<artikel/artikel-verwalten, Artikel verwalten>>**. Tabelle 14 zeigt nur die wichtigsten Einstellungen für Gutscheinartikel.
+
+[.instruction]
+Gutscheinartikel erstellen:
+
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
+. Klicken Sie auf **Neu**. +
+→ Das Tab **Neuer Artikel** wird geöffnet.
+. Wählen Sie den Typ **Standard**.
+. Geben Sie einen Namen ein.
+. Geben Sie als Inhalt **1 Stück** ein.
+. Wählen Sie eine Kategorie.
+. Wählen Sie einen Verkaufspreis aus der Dropdown-Liste.
+. Geben Sie als Preis den Gutscheinwert ein.
+. **Speichern** Sie die Einstellungen. +
+→ Der Artikel wird erstellt und zur weiteren Bearbeitung geöffnet.
+. Nehmen Sie die weiteren Einstellungen vor. Beachten Sie Tabelle 14.
+. **Speichern** Sie die Einstellungen.
+
+.Artikeleinstellungen für Verkaufsgutscheine
+[cols="1,2"]
+|====
+|Einstellung |Erläuterung
+
+2+|Tab: Variantennummer » Tab: Einstellungen
+
+|**Beschränkung**
+|**Keine** wählen.
+
+|**Umsatzsteuer**
+|**0%** wählen.
+
+2+|Tab: Variantennummer » Tab: Verfügbarkeit
+
+|**Märkte**
+|Kasse(n) aus der Dropdown-Liste wählen, über die die Gutscheinartikel verkauft werden sollen.
+
+|**Mandant (Shop)**
+|Mandant der Kasse wählen.
+
+2+|Tab: Felder
+
+|**Kampagne ID**
+|ID der Gutscheinkampagne eingeben.
+|====
+
+=== Besonderheiten beim Verkauf von Verkaufsgutscheinen
+
+* Der Gutschein-Code wird nicht auf dem Beleg ausgegeben. Daher benötigen Sie Gutscheinvordrucke, in die Kassenbenutzer den Gutschein-Code per Hand eintragen.
+* Beim Verkauf des Verkaufsgutscheins erhöht sich der Umsatz nicht.
+* Verkaufte Gutscheine werden auf dem Tagesbericht separat ausgewiesen. Der Barbestand wird erhöht, wenn der Gutschein bar bezahlt wurde.
+
+=== Besonderheiten beim Einlösen von Verkaufsgutscheinen
+
+* Der Wert des Verkaufsgutscheins wird vom Gesamtbetrag inkl. Steuern abgezogen.
+* Der Umsatz erhöht sich um den eingelösten Gutscheinbetrag.
+* Auf dem Tagesbericht wird der eingelöste Gutscheinwert mit der Zahlungsart *Gutschein* ausgewiesen.
+* Der Barbestand der Kasse erhöht sich durch die Einlösung des Gutscheins nicht.
+
 == Warenbestandsverwaltung automatisieren
 
 Ihre <<warenwirtschaft/waren-ausbuchen#, **Warenbestandsverwaltung**>> automatisieren Sie über Ereignisaktionen.
@@ -849,9 +1103,9 @@ Legen Sie die unten beschriebene Ereignisaktion an, um Waren automatisch auszubu
 . Klicken Sie auf **Ereignisaktion hinzufügen**.  +
 → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 . Geben Sie einen Namen ein.
-. Wählen Sie das **Ereignis** gemäß Tabelle 13.
+. Wählen Sie das **Ereignis** gemäß Tabelle 15.
 . **Speichern** Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß Tabelle 13 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 15 vor.
 . Setzen Sie ein Häkchen bei **Aktiv**.
 . **Speichern** Sie die Einstellungen.
 --
@@ -900,7 +1154,7 @@ Kasse mit Mobilgerät koppeln:
 
 . Öffnen Sie die plentymarkets App auf dem Gerät, das Sie mit der Kasse koppeln möchten.
 . Öffnen Sie das Menü **plentymarkets App  » Einstellungen » POS beta**.
-. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 14.
+. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 16.
 . **Speichern** Sie die Einstellungen. +
 → Das Gerät wird mit der Kasse gekoppelt.
 
@@ -955,7 +1209,7 @@ Sie können die Kasse nur über die Einstellungen auf dem Mobilgerät von der Ka
 [#250]
 == Senden des Kassenbelegs an Kunden einrichten
 
-plentymarkets ermöglicht es Ihnen, Kassenbelege per Ereignisaktion automatisch an die am Kundendatensatz gespeicherte E-Mail-Adresse zu senden. Dazu erstellen Sie zunächst eine E-Mail-Vorlage mit dem PDF-Anhang **Kassenbeleg**. Erstellen Sie dann eine Ereignisaktion. Für POS-Aufträge, die im Offline-Modus erstellt werden, wird die Ereignisaktion jedoch erst ausgeführt, wenn die POS-Aufträge in das plentymarkets Backend hochgeladen werden.
+plentymarkets ermöglicht es Ihnen, Kassenbelege per Ereignisaktion automatisch an die am Kundendatensatz gespeicherte E-Mail-Adresse zu senden. Dazu erstellen Sie zunächst eine E-Mail-Vorlage mit dem PDF-Anhang **Kassenbeleg**. Erstellen Sie dann eine Ereignisaktion. Für POS-Aufträge, die im Offline-Modus erstellt werden, wird die Ereignisaktion jedoch erst ausgeführt, wenn die POS-Aufträge in das plentymarkets Backend hochgeladen werden. Prüfen Sie vor der Einrichtung die aktuellen gesetzlichen Bestimmungen zum Versand von E-Mails an Kunden.
 
 [#260]
 === E-Mail-Vorlage erstellen
@@ -988,9 +1242,9 @@ Erstellen Sie nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wi
 . Klicken Sie auf **Ereignisaktion hinzufügen**. +
 → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 . Geben Sie einen Namen ein.
-. Wählen Sie das **Ereignis** gemäß Tabelle 13.
+. Wählen Sie das **Ereignis** gemäß Tabelle 16.
 . **Speichern** Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß Tabelle 13 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 16 vor.
 . Setzen Sie ein Häkchen bei **Aktiv**.
 . **Speichern** Sie die Einstellungen.
 --
@@ -1027,7 +1281,7 @@ In plentymarkets werden alle Kassenvorgänge dokumentiert, um rechtssicheres Arb
 Kassenvorgänge im Kassenjournal suchen:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 16.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 17.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 
@@ -1150,4 +1404,4 @@ IDEA-Dateien exportieren:
 . Wählen Sie einen Speicherort und bestätigen Sie die Auswahl. +
 → Die IDEA-Dateien werden exportiert und als ZIP-Datei gespeichert.
 
-//  Next: 810.
+//  Next: 860
