@@ -360,3 +360,107 @@ include::assets/EX-EN-Individual-Order-Process-05.html[]
 
 __Code example 5: the template **ValidatorPlaceOrder**__
 
+[#10000]
+== Setting up Google reCAPTCHA for the customer registration
+
+Set up Google reCAPTCHA for the customer registration in your online store. First, register your online store to use link:https://www.google.com/recaptcha/admin#list[*Google reCAPTCHA*, window="_blank"]. Then, enter the website key and the secret key for your online store.
+
+[.instruction]
+Setting up Google reCAPTCHA:
+
+. Go to *Settings » Client (store) » Standard » Online store » Basic settings*.
+. Select *Yes* under *Request Google reCAPTCHA in registration*.
+. Enter the *Google reCAPTCHA Website key* ein.
+. Enter the *Google reCAPTCHA Secret key*.
+. *Save* the settings.
+
+[#10010]
+=== Editing the Registration category
+
+Next add the template function `GetCaptcha()` as well as the following code example in the *Registration* category.
+
+[.instruction]
+Editing the *Registration* category:
+
+. Go to *Item » Categories*.
+. Open the design’s folder, e.g. the folder for Callisto Light 3.
+. Open the *Registration* category.
+. Click on the *Description 1* tab.
+. Insert the `{% GetCaptcha() %}` template function above the *Register* button.
+. Search for the code `plenty.AuthenticationService.registerCustomer();`.
+. Replace the code with `registration();`.
+. Search for `<script>`.
+. Insert the following code example within the script area.
+. *Save* the settings.
+
+----
+function registration(){
+var res = plenty.AuthenticationService.registerCustomer();
+
+if(typeof res !== 'undefined'){
+
+
+if(res.status == 400 && typeof grecaptcha !== 'undefined'){
+grecaptcha.reset();
+}
+
+}
+----
+
+[TIP]
+.Parameters for the GetCaptcha() function
+====
+The following parameters are available for the `GetCaptcha()` function:
+
+- `GetCaptcha('normal')`: Default value for the normal Google reCAPTCHA.
+- `GetCaptcha('compact')`: Parameter for the compact Google reCAPTCHA.
+- `GetCaptcha('invisible')`: Parameter for the invisible Google reCAPTCHA.
+====
+
+[#10020]
+== Setting up Google reCAPTCHA for guest orders
+
+You can also set up Google reCAPTCHA for guest orders in your online store.
+
+[#10030]
+=== Editing CheckoutCustomerInvoiceAddress
+
+Carry out the following changes in the *CheckoutCustomerInvoiceAddress* template first.
+
+[.instruction]
+Editing CheckoutCustomerInvoiceAddress:
+
+. Go to *CMS » Web design » Layout » Checkout » CheckoutCustomerInvoiceAddress*.
+. Search for `</form>`.
+. Insert the `{% GetCaptcha() %}` template function above the `</form>` tag.
+. *Save* the settings.
+
+[#10040]
+=== Editing the Address category
+
+Next, edit the *Address* category.
+
+[.instruction]
+Editing the *Address* category:
+
+. Go to *Item » Categories*.
+. Open the design’s folder, e.g. the folder for Callisto Light 3.
+. Open the *Address* category.
+. Click on the *Description 1* tab.
+. Search for the code `plenty.CheckoutService.registerGuest().done(function()`.
+. Replace the four lines of code with the following code example.
+. *Save* the settings.
+
+----
+plenty.CheckoutService.registerGuest().done(function() {
+    // change tab if success
+    plenty.NavigatorService.continueChange( targetContainer );
+
+    }).fail(function(){
+
+    if(typeof grecaptcha !== 'undefined'){
+        grecaptcha.reset();
+    }
+
+});
+----
