@@ -360,3 +360,108 @@ include::assets/EX-DE-IndividuellerBestellvorgang-05.html[]
 
 __Codebeispiel 5: Template **ValidatorPlaceOrder**__
 
+[#10000]
+== Google reCAPTCHA für Kundenregistrierung einrichten
+
+Richten Sie Google reCAPTCHA für die Kundenregistrierung im Webshop ein. Registrieren Sie Ihren Webshop zunächst für die Verwendung von link:https://www.google.com/recaptcha/admin#list[*Google reCAPTCHA*, window="_blank"]. Geben Sie anschließend den Websiteschlüssel und den Geheimen Schlüssel für Ihren Webshop ein.
+
+[.instruction]
+Google reCAPTCHA einrichten:
+
+. Öffnen Sie das Menü *Einstellungen » Mandant (Shop) » Standard » Webshop » Grundeinstellungen*.
+. Wählen Sie *Ja* unter *Google reCAPTCHA in Registrierung abfragen*.
+. Geben Sie den *Google reCAPTCHA Websiteschlüssel* ein.
+. Geben Sie den *Google reCAPTCHA Geheimer Schlüssel* ein.
+. *Speichern* Sie die Einstellungen.
+
+[#10010]
+=== Kategorie Kundenregistrierung anpassen
+
+Fügen Sie anschließend die Template-Funktion `GetCaptcha()` sowie das nachfolgende Code-Beispiel in der Kategorie *Registrierung* ein.
+
+[.instruction]
+Kategorie *Kundenregistrierung* anpassen:
+
+. Öffnen Sie das Menü *Artikel » Kategorien*.
+. Öffnen Sie den Ordner des Designs, das Sie bearbeiten möchten, z.B. Callisto Light 3.
+. Öffnen Sie die Kategorie *Registrierung*.
+. Wechseln Sie in das Tab *Beschreibung 1*.
+. Fügen Sie die Template-Funktion `{% GetCaptcha() %}` oberhalb des Buttons *Registrierung abschließen* ein.
+. Suchen Sie den Code `plenty.AuthenticationService.registerCustomer();`.
+. Ersetzen Sie den Code durch `registration();`.
+. Suchen Sie nach `<script>`.
+. Fügen Sie innerhalb des Script-Bereichs das folgende Code-Beispiel ein.
+. *Speichern* Sie die Einstellungen.
+
+----
+function registration(){
+    var res = plenty.AuthenticationService.registerCustomer();
+
+    if(typeof res !== 'undefined'){
+
+        if(res.status == 400 && typeof grecaptcha !== 'undefined'){
+            grecaptcha.reset();
+        }
+
+    }
+    return false;
+}
+----
+
+[TIP]
+.Parameter für die Funktion GetCaptcha()
+====
+Folgende Parameter stehen Ihnen für die Funktion `GetCaptcha()` zur Verfügung:
+
+- `GetCaptcha('normal')`: Standardwert für das normale Google reCAPTCHA.
+- `GetCaptcha('compact')`: Parameter für das kompakte Google reCAPTCHA.
+- `GetCaptcha('invisible')`: Parameter für das unsichtbare Google reCAPTCHA.
+====
+
+[#10020]
+== Google reCAPTCHA für Gastbestellung einrichten
+
+Sie können Google reCAPTCHA auch für Gastbestellungen im Webshop einrichten.
+
+[#10030]
+=== CheckoutCustomerInvoiceAddress anpassen
+
+Nehmen Sie dafür zunächst Änderungen am Template *CheckoutCustomerInvoiceAddress* vor.
+
+[.instruction]
+CheckoutCustomerInvoiceAddress anpassen:
+
+. Öffnen Sie das Menü *CMS » Webdesign » Layout » Checkout » CheckoutCustomerInvoiceAddress*.
+. Suchen Sie nach `</form>`.
+. Fügen Sie die Template-Funktion `{% GetCaptcha() %}` oberhalb des `</form>`-Tags ein.
+. *Speichern* Sie die Einstellungen.
+
+[#10040]
+=== Kategorie Anschrift anpassen
+
+Passen Sie anschließend die Kategorie *Anschrift* an.
+
+[.instruction]
+Kategorie *Anschrift* anpassen:
+
+. Öffnen Sie das Menü *Artikel » Kategorien*.
+. Öffnen Sie den Ordner des Designs, das Sie bearbeiten möchten, z.B. Callisto Light 3.
+. Öffnen Sie die Kategorie *Anschrift*.
+. Wechseln Sie in das Tab *Beschreibung 1*.
+. Suchen Sie den Code `plenty.CheckoutService.registerGuest().done(function()`.
+. Ersetzen Sie den 4-zeiligen Code-Block durch das nachfolgende Code-Beispiel.
+. *Speichern* Sie die Einstellungen.
+
+----
+plenty.CheckoutService.registerGuest().done(function() {
+    // change tab if success
+    plenty.NavigatorService.continueChange( targetContainer );
+
+    }).fail(function(){
+
+    if(typeof grecaptcha !== 'undefined'){
+        grecaptcha.reset();
+    }
+
+});
+----
