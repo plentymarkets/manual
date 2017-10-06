@@ -1,88 +1,76 @@
-= POS einrichten
+= plentymarkets POS in Österreich einrichten
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: plentymarkets POS, POS, Kasse, Kassensystem, Kassen, IDEA-Export, IDEA, GoBD, Kassenjournal, Kassenbuch, GoBD konform
-:position: 10
+:keywords: plentymarkets POS, POS, Österreich, AT, Kasse, Kassensystem, Kassen, Kassenjournal, Kassenbuch, Registrierkassensicherheitsverordnung, RKSV
+:description: plentymarkets POS in Österreich einrichten
+:position: 20
 
-Mit plentymarkets POS integrieren Sie den stationären Handel mühelos in plentymarkets.
+Laut Registrierkassensicherheitsverordnung (RKSV) müssen Registrierkassen in Österreich mit einer technischen Sicherheitseinrichtung ausgestattet sein, die dafür sorgt, dass die über die Kasse abgewickelten Kassenvorgänge manipulationssicher, d.h. unveränderbar sind. Sichtbares Zeichen dieses Manipulationsschutzes ist der QR-Code auf dem Kassenbeleg. Hier erfahren Sie, wie Sie Kassen mit Standort Österreich in Betrieb nehmen.
 
-[IMPORTANT]
-.POS-Einstellung nicht im laufenden Betrieb ändern
+[WARNING]
+.RKSV-konforme Berichte und Nullbelege noch nicht implementiert
 ====
-Ändern Sie die POS-Einstellungen nicht im laufenden Betrieb. Wenn Sie dennoch Änderungen an den POS-Einstellungen vornehmen, fordern Sie Kassenbenutzer auf, sich aus der App ausloggen und wieder einloggen, da es sonst vor allem bei einer Änderung der Rundungseinstellungen zu Unstimmigkeiten in den Gesamtbeträgen kommt.
+Nach Erstellen des Startbelegs werden sämtliche Kassenvorgänge signiert und RKSV-konform protokolliert. Aktuell ist es jedoch noch nicht möglich, in plentymarkets POS RKSV-konforme Berichte und Nullbelege zu erstellen.
 ====
 
 [#10]
-== Unterstützte Hardware
+== Übersicht: Schritte für die Inbetriebnahme
 
-plentymarkets POS unterstützt die folgende Hardware.
+Für Kassen mit Standort Österreich sind die in Tabelle 1 erläuterten Schritte notwendig, um die von der RKSV vorgeschriebene Sicherheitseinrichtung in Betrieb zu nehmen. Detaillierte Informationen diesen rechtlichen Anforderungen finden Sie auf der Website des österreichischen link:https://www.bmf.gv.at/steuern/selbststaendige-unternehmer/Sicherheitseinrichtung_in_Registrierkassen.html[**Bundesministeriums für Finanzen**, window="_blank"]. Auf dieser Handbuchseite werden nur die Schritte zur Einrichtung von plentymarkets POS genauer erläutert.
 
-.POS - unterstütze Hardware
-[cols="1,2,2"]
+.Kasse in Österreich in Betrieb nehmen
+[cols="a,a,a"]
 |====
-|Gerätetyp |Allgemeine Anforderungen |Getestete Geräte
+|Reihenfolge |Schritt |Erläuterung
 
-|**Betriebssysteme**
-a|
-* Android-Geräte mit OS-Version ab 4.2.2, ARM Prozessor und den link:https://cdn.discourse.org/plentymarkets/uploads/default/original/3X/5/b/5b3b12c7adea2b46e1fb4ae4d1b42bc4e8e37fd8.png[Geräteklassen, window="_blank"]
-Small, Normal, Large und X-Large. Die DPI-Zahl des mobilen Geräts kann link:http://dpi.lv/[hier, window="_blank"] ermittelt werden.
-* iOS-Geräte (iPad, iPhone, iPod) mit OS-Version ab 8
-a|Bei jedem regulären Release
+|1.
+|Signaturkarte und Signaturkartenleser beschaffen
+|plentymarkets POS ist für den Einsatz mit dem Feitian-Smartcard-Leser bR301 optimiert. Informationen zum Beschaffen der Signaturkarte finden Sie auf der Website des österreichischen link:https://www.bmf.gv.at/steuern/selbststaendige-unternehmer/Sicherheitseinrichtung_in_Registrierkassen.html#heading_6__Wo_bekomme_ich_die_Signaturkarte_[**Bundesministeriums für Finanzen**, window="_blank"].
 
-* Elo Touch Solutions I-Series 15I1 - E021201
-* Honeywell Dolphin 75e
-* Samsung Galaxy Tab A 6 - SM-T580
-* Apple iPad Air 2
+|2.
+|Manipulationssichere Registrierkasse initialisieren
+|Siehe <<omni-channel/pos/_plentymarkets-pos-in-oesterreich-einrichten#255, **Grundeinstellungen der Kasse vornehmen**>>
 
-Regelmäßig
+|3.
+|Startbeleg erstellen
+|Siehe <<omni-channel/pos/_plentymarkets-pos-in-oesterreich-einrichten#300, **Startbeleg erstellen**>>
 
-* Samsung Galaxy Tab A - SM-T555
-* Samsung Galaxy Tab 4 - SM-T530
-* Apple iPad Mini Retina
+|4.
+|Signaturkarte und Registrierkasse bei FinanzOnline registrieren
+a|Nachdem der Startbeleg erstellt wurde, registrieren Sie Signaturkarte und Registrierkasse bei FinanzOnline. Für die Registrierung benötigen Sie die folgenden Daten: +
++
+Signaturkarte (Unterlagen der Signaturkarte): +
 
-Punktuell
+* Die Seriennummer des Signaturzertifikats
+* Der Vertrauensdiensteanbieter, bei dem das Zertifikat erworben wurde
 
-* Samsung Galaxy S4
-* Apple iPhone 6
-* Apple iPad Mini
-* Apple iPhone 6
+Registrierkasse (**Einstellungen » Mandant (Shop) » Standard » POS » Kasse öffnen » Tab: Grundeinstellungen**): +
 
-|**Belegdrucker**
-a|
-* ePos-Print API
-* Drucker muss über LAN oder WLAN verfügen
-a|
-* EPSON TM-M30
-* EPSON TM-T88V-i
+* Die Kassenidentifikationsnummer, die sich aus dem Präfix POS-BASE- und der ID der Kasse zusammensetzt. +
+**__Beispiel:__** Für eine Kasse mit der ID 30 lautet die Kassenidentifikationsnummer POS-BASE-30.
+* Der AES-Schlüssel, mit dem der Umsatzzähler der Kasse verschlüsselt wurde
 
-|**Scanner**
-a|
-* Scanner muss über USB oder Bluetooth verfügen
-a|
-* Inateck BCST-10 (Bluetooth)
-* Albasca USB Handscanner MK-1000 (ungetestet aber bei mehreren Kunden erfolgreich im Einsatz)
-
-|**Kundendisplays**
-a|
-* Nur mit Belegdrucker EPSON TM-M30 einsetzbar
-a|
-* EPSON DM-D30
+|5.
+|Startbeleg mit der BMF Belegcheck-App scannen
+|Scannen Sie den QR-Code auf dem Startbeleg der Kasse, nachdem Sie die Registrierung bei FinanzOnline abgeschlossen haben. Die App prüft dabei die Gültigkeit der Signatur auf den Belegen der Registrierkasse. +
+**__Tipp:__** Zwischen dem Zeitpunkt der Registrierung von Signaturkarte und Registrierkasse über FinanzOnline und der Prüfung des Startbelegs darf nicht mehr als eine Woche liegen.
 |====
-
-[#20]
-== plentymarkets POS Kasse buchen
-
-Um plentymarkets POS verwenden zu können, müssen Sie zunächst im plentymarkets Konfigurator eine oder mehrere Kassen buchen. Informationen zu den Konditionen finden Sie im Konfigurator oder auf unserer plentymarkets POS Produktseite.
 
 [#30]
 == Kasse einrichten
 
-Nachdem Sie Kassen gebucht haben, richten Sie sie im plentymarkets Backend ein. Dabei weisen Sie die Kassen einem Mandanten zu, indem Sie sie im Menü **Einstellungen » Mandant (Shop) » Standard » POS** erstellen und weitere Einstellungen vornehmen. Gehen Sie dazu wie unten beschrieben vor.
+[#255]
+=== Grundeinstellungen vornehmen
 
-[#40]
-=== Kasse erstellen
+Buchen Sie zunächst im plentymarkets Konfigurator eine Kasse. Informationen zu den Konditionen finden Sie im Konfigurator oder auf unserer plentymarkets POS Produktseite.
 
-Erstellen Sie zunächst im plentymarkets Backend eine Kasse für den gewünschten Mandanten (Shop).
+[IMPORTANT]
+.Existierende Kassen mit Standort Österreich
+====
+Existierende Kassen können nicht nachträglich manipulationssicher gemacht werden. Wenn Sie bereits eine plentymarkets POS Kasse in Österreich betreiben erstellen Sie eine neue Kasse und nehmen die alte Kasse außer Betrieb.
+====
+
+Nachdem Sie die Kasse gebucht haben, weisen Sie die Kasse im plentymarkets Backend einem Mandanten zu und richten die Kasse ein. Gehen Sie dazu wie unten beschrieben vor.
 
 [.instruction]
 Kasse für Mandanten erstellen:
@@ -98,12 +86,12 @@ Kasse für Mandanten erstellen:
 Tabelle 1 beschreibt die Menüleiste der Kasse.
 
 .Menüleiste der Kasse
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
 |**ID**
-|Eindeutige Kennung der Kasse. Diese ID wird automatisch und mandantenübergreifend vergeben und ist nicht änderbar.
+|Eindeutige Kennung der Kasse. Diese ID wird automatisch vergeben und ist nicht änderbar.
 
 |**Kopieren**
 |Erstellt eine neue Kasse mit den Einstellungen der geöffneten Kasse. Dabei werden Name und Herkunft neu vergeben. +
@@ -116,13 +104,10 @@ Tabelle 1 beschreibt die Menüleiste der Kasse.
 |Löscht die Kasse aus dem System.
 |====
 
-[#50]
-=== Grundeinstellungen vornehmen
-
 Nehmen Sie nun im Tab **Grundeinstellungen** der neu erstellten Kasse die weiteren Einstellungen vor und speichern Sie die Einstellungen. Beachten Sie Tabelle 3.
 
-.Tab **Grundeinstellungen** der Kasse
-[cols="1,2"]
+.Grundeinstellungen der Kasse
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -133,7 +118,7 @@ Nehmen Sie nun im Tab **Grundeinstellungen** der neu erstellten Kasse die weiter
 |Beim Buchen einer Kasse wird automatisch eine Herkunft für diese Kasse generiert, um Aufträge, die über diese Kasse ins System gelangen, eindeutig zu kennzeichnen. Der neuen Kasse wird automatisch eine verfügbare POS-Herkunft (103.01 bis 103.99) zugeordnet.
 
 |**Standardkunde**
-|Für POS-Aufträge <<omni-channel/pos/pos-einrichten#90, **erstellten Standardkunden**>> wählen, dem über diese Kasse generierte Aufträge zugeordnet werden sollen.
+|Für POS-Aufträge <<omni-channel/pos/_plentymarkets-pos-in-oesterreich-einrichten#90, **erstellten Standardkunden**>> wählen, dem über diese Kasse generierte Aufträge zugeordnet werden sollen.
 
 2+|Artikelfilter
 
@@ -155,7 +140,8 @@ Häkchen nicht gesetzt = Aktive und inaktive Varianten sind in der Kasse verfüg
 **Ort**; +
 **Land**
 |Firmennamen und Adresse des Ladengeschäfts eingeben, an dem die Kasse betrieben wird. +
-**__Hinweis:__** In Deutschland ist die Adresse eine Pflichtangabe, um ein rechtssicheres Arbeiten mit der Kasse zu ermöglichen. Genaue Angaben mit einem Steuerberater klären.
+**__Hinweis:__** In vielen Ländern ist die Adresse eine Pflichtangabe, um ein rechtssicheres Arbeiten mit der Kasse zu ermöglichen. Genaue Angaben mit einem Steuerberater klären. +
+**__Österreich:__** Nachdem der Startbeleg für die Kasse erstellt wurde, kann das Land des Kassenstandorts nicht mehr geändert werden.
 
 2+|Vertriebslager
 
@@ -175,21 +161,21 @@ Häkchen nicht gesetzt = Aktive und inaktive Varianten sind in der Kasse verfüg
 |Wählen, in welchen Lagerort des Lagers defekte Retouren eingebucht werden sollen. +
 **__Tipp:__** Zweimal die Pfeiltaste drücken, um eine Liste der Lagerorte anzuzeigen.
 
-2+|Warenbewegung
+2+|Österreich
 
-|**Warenbestand bei Stornierung zurückbuchen**
-|Aktivieren, um den Warenbestand bei einer Stornierung automatisch zurückzubuchen.
+|**AES-Schlüssel** +
+(nur Standort Österreich)
+|AES-Schlüssel eingeben, mit dem der Umsatzzähler der Kasse verschlüsselt werden soll. Der AES-Schlüssel ist frei wählbar. +
+**__Tipp:__** Auf **Schlüssel generieren** klicken, um einen zufälligen Schlüssel zu generieren. +
+**__Hinweis:__** Wenn der Startbeleg für die Kasse erstellt wurde, kann der AES-Schlüssel nicht mehr geändert werden.
 
-2+|Bedienung
+|**Zertifizierer** +
+(nur Standort Österreich)
+|Den Namen des Vertrauensdiensteanbieters eingeben, bei dem das Zertifikat gekauft wurde.
 
-|**Preisabfrage wenn Artikelpreis 0** +
-(ab 1.5.19)
-|Aktivieren, um die manuelle Preiseingabe zu öffnen, wenn beim Kassieren ein 0-Euro-Artikel gewählt wird.
-
-|**Favoriten mit Menge 1 hinzufügen** +
-(ab 1.5.19)
-|Aktivieren, um beim Kassieren Favoriten automatisch mit der Menge 1 in den POS-Warenkorb zu legen. Artikel mehrmals in den Warenkorb legen, um die Anzahl zu erhöhen. +
-*_Tipp:_* Für Favoriten, die über die Artikelsuche hinzugefügt werden, wird die Menge weiterhin manuell eingegeben.
+|**Zertifizierungsnummer** +
+(nur Standort Österreich)
+|Die Seriennummer des Signaturzertifikats eingeben, siehe Unterlagen des Vertrauensdiensteanbieters.
 |====
 
 [#60]
@@ -207,7 +193,7 @@ Varianten als Favoriten speichern:
 
 . Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Standard » POS**.
 . Öffnen Sie die Kasse.
-. Öffnen Sie in das Tab **Favoriten**.
+. Wechseln Sie in das Tab **Favoriten**.
 . Öffnen Sie das Tab **Variante hinzufügen**. +
 → Eine Liste der Varianten wird angezeigt. Nutzen Sie ggf. die Filter, um die Anzeige einzuschränken.
 . Klicken Sie auf **Varianten hinzufügen**. +
@@ -230,6 +216,7 @@ Reihenfolge der Favoriten ändern:
 
 . Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Standard » POS**.
 . Öffnen Sie die Kasse.
+. Wechseln Sie in das Tab **Favoriten**.
 . Öffnen Sie das Tab **Favoriten**. +
 → Die Liste der Varianten auf der Favoritenliste wird angezeigt.
 . Klicken Sie in der Spalte **Aktionen** auf den Pfeil der Variante, deren Position Sie ändern möchten. +
@@ -246,6 +233,7 @@ Favoriten auf andere Kassen übertragen:
 
 . Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Standard » POS**.
 . Öffnen Sie die Kasse.
+. Wechseln Sie in das Tab **Favoriten**.
 . Öffnen Sie das Tab **Favoriten**. +
 → Die Liste der Varianten auf der Favoritenliste wird angezeigt.
 . Klicken Sie auf **Favoriten übertragen**. +
@@ -264,6 +252,7 @@ Varianten aus Liste der Favoriten löschen:
 
 . Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Standard » POS**.
 . Öffnen Sie die Kasse.
+. Wechseln Sie in das Tab **Favoriten**.
 . Öffnen Sie das Tab **Favoriten**. +
 → Die Liste der Varianten auf der Favoritenliste wird angezeigt.
 . Klicken Sie in der Spalte der Variante auf **Löschen**. +
@@ -286,7 +275,7 @@ Belegvorlage bearbeiten:
 → Die Belegvorlage wird erstellt.
 
 .Belegvorlage bearbeiten
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -406,7 +395,7 @@ Berechtigungen für POS-Funktionen aktivieren:
 . **Speichern** Sie die Einstellungen.
 
 .Mobile-Berechtigungen für Kassenbenutzer
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -446,11 +435,8 @@ Tagesabschlussberichte enthalten folgende Informationen: +
 * Umsatz: seit letztem Tagesabschluss (Summe) und seit Inbetriebnahme der Kasse (Grand Total)
 * Steuerbericht: Steuersatz, Steuersumme und Nettoumsatz
 * Zahlungsarten: Aufschlüsselung des Umsatzes nach Zahlungsart
-* Retouren: Anzahl und Summe
 * Stornierungen: Anzahl und Summe
 * Rabattierte Artikel: Anzahl und Summe
-* Verkaufte Gutscheine: Anzahl und Summe
-* Benutzer: Umsatz pro Benutzer
 
 |**Zwischenbericht**
 a|Erlaubt Kassenbenutzer, Zwischenberichte zu erzeugen. +
@@ -460,11 +446,8 @@ Zwischenberichte enthalten folgende Informationen: +
 * Umsatz: seit letztem Tagesabschluss (Summe) und seit Inbetriebnahme der Kasse (Grand Total)
 * Steuerbericht: Steuersatz, Steuersumme und Nettoumsatz
 * Zahlungsarten: Aufschlüsselung des Umsatzes nach Zahlungsart
-* Retouren: Anzahl und Summe
 * Stornierungen: Anzahl und Summe
 * Rabattierte Artikel: Anzahl und Summe
-* Verkaufte Gutscheine: Anzahl und Summe
-* Benutzer: Umsatz pro Benutzer
 
 |**Artikel synchronisieren**
 |Erlaubt Kassenbenutzer, Artikeldaten mit der Kasse zu synchronisieren.
@@ -520,7 +503,7 @@ Zahlungsarten für POS-Aufträge einrichten:
 . **Speichern** Sie die Einstellungen.
 
 .Einstellungen der Zahlungsarten für POS-Aufträge
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -529,7 +512,7 @@ Zahlungsarten für POS-Aufträge einrichten:
 
 |**Name**
 |Externen Namen eingeben, der auf dem Kassenbeleg und ggf. im Webshop und auf Rechnungen angezeigt werden soll. Wenn kein Name gespeichert ist, wird der Backend-Name der Zahlungsart für den Kassenbeleg verwendet. +
-__**Tipp:**__ Der externe Name wird in der Sprache auf dem Beleg ausgegeben, die der Kassenbenutzer bei der Kassenanmelden wählt.
+__**Tipp:**__ Der externe Name wird in der Sprache auf dem Beleg ausgegeben, die der Kassierer bei der Kassenanmelden wählt.
 
 |**Infoseite**
 |Standardwert **---** nur ändern, wenn die Zahlungsart auch im Webshop verwendet wird.
@@ -559,11 +542,11 @@ Stellen Sie für die Zahlungsart **11 » Barverkauf/EC-Karte** außerdem im Men�
 
 Damit POS-Aufträge korrekt in plentymarkets verbucht werden, ermöglichen Sie die Versandart **Selbstabholung** für die Artikel, die Sie über plentymarkets POS abrechnen möchten. Dazu sind folgende Vorbereitungen notwendig:
 
+Um Kassenbenutzern den Zugriff auf plentymarkets POS zu ermöglichen, sind die folgenden Vorbereitungen nötig:
+
 * Versanddienstleister **Selbstabholung** erstellen
 * Versandprofil **Selbstabholung** erstellen
-* Versandprofil **Selbstabholung** am Artikel aktivieren
-
-Diese Vorbereitungen werden nachfolgend beschrieben.
+* Versandprofil am Artikel aktivieren
 
 [#190]
 === Versanddienstleister Selbstabholung erstellen
@@ -580,7 +563,7 @@ Versanddienstleister Selbstabholung erstellen:
 . **Speichern** Sie die Einstellungen.
 
 .Versanddienstleister **Selbstabholung** erstellen
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -611,7 +594,7 @@ Versandprofil für Selbstabholer erstellen:
 . **Speichern** Sie die Einstellungen des Tabs **Portotabelle** ohne Änderungen.
 
 .Versandprofil **Selbstabholung** erstellen
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -649,7 +632,7 @@ Sie möchten das Versandprofil für eine größere Anzahl an Artikeln gleichzeit
 
 Um POS-Preise für Ihre Varianten zu hinterlegen, benötigen Sie mindestens einen <<artikel/artikel-verwalten#870, **Verkaufspreis**>>, bei dem die POS-Herkunft Ihrer Kasse aktiviert ist. Verkaufspreise erstellen und verwalten Sie zentral. Preise für Ihre Varianten hinterlegen Sie, indem Sie Varianten mit dem Verkaufspreis verknüpfen und einen Preis speichern.
 
-[#750]
+[#700]
 === Verkaufspreis für POS-Aufträge erstellen
 
 Wenn Sie bereits Verkaufspreise angelegt haben, die Ihren Anforderungen für POS-Aufträge entsprechen, aktivieren Sie bei diesen Verkaufspreisen die Herkunft Ihrer Kasse. Gehen Sie sonst wie unten beschrieben vor, um einen neuen Verkaufspreis für POS-Aufträge zu erstellen. Es werden nur die für POS-Herkünfte relevanten Einstellungen beschrieben.
@@ -664,7 +647,7 @@ Verkaufspreis für POS-Aufträge erstellen:
 . **Speichern** Sie die Einstellungen.
 
 .Verkaufspreis für POS-Aufträge erstellen
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -718,105 +701,7 @@ Verkaufspreis mit Hauptvariante verknüpfen:
 . **Speichern** Sie die Einstellungen. +
 → Die Preise werden an die Varianten des Artikels vererbt. Speichern Sie für Varianten mit abweichendem Preis einen eigenen Wert.
 
-[#800]
-=== Rundungsverhalten für Kassenaufträge festlegen
-
-Beträge werden auf plentymarkets POS Kassenbelegen grundsätzlich mit 2 Nachkommastellen dargestellt. Über die Einstellungen im plentymarkets Backend steuern Sie, ob die Preise in den Aufträge auch im Hintergrund auf 2 Nachkommastellen gerundet oder ob mit 4 Nachkommastellen gerechnet werden soll. Das Rundungsverhalten für Aufträge, die über plentymarkets POS Kassen generiert werden, wird über die folgenden 3 Optionen gesteuert:
-
-.Erforderliche Optionen für Rundungsverhalten bei Kassenaufträgen
-[cols="10,1,1"]
-|====
-|Menü |Option |Mögliche Einstellungen
-
-|Einstellungen » Mandant (Shop) » Mandant wählen » Standorte » Standort wählen » Buchhaltung
-|Anzahl Nachkommstellen bei Preisen
-a|
-* 2
-* 4
-
-|Einstellungen » Mandant (Shop) » Mandant wählen » Standorte » Standort wählen » Buchhaltung
-|Nur Gesamtpreise runden
-a|
-* Ja
-* Nein
-
-|Einstellungen » Mandant (Shop) » Mandant wählen » POS » Kasse wählen » Tab: Beleg
-|Identische Auftragspositionen
-a|
-* Einzeln darstellen
-* Zusammenfassen
-|====
-
-Aus diesen Einstellungen ergeben sich 6 Einstellungskombinationen:
-
-* Auftragspositionen einzeln darstellen, Einzelpreise auf 2 Nachkommastellen runden
-* Auftragspositionen einzeln darstellen, Einzelpreise auf 4 Nachkommastellen runden
-* Auftragspositionen einzeln darstellen, Gesamtpreise auf 4 Nachkommastellen runden
-* Auftragspositionen zusammenfassen, Einzelpreise auf 2 Nachkommastellen runden
-* Auftragspositionen zusammenfassen, Einzelpreise auf 4 Nachkommastellen runden
-* Auftragspositionen zusammenfassen, Gesamtpreise auf 4 Nachkommastellen runden
-
-Abhängig von den gewählten Einstellungen kommt es zu unterschiedlichen Gesamtbeträgen. Beachten Sie, dass sich die Abweichungen potenzieren, je mehr Artikel mit Rundungsbedarf pro Auftrag/Beleg verkauft werden.
-
-==== Beispielrechnung
-
-Die folgende Tabelle zeigt eine Beispielrechnung, um die Rundungsabweichungen zu verdeutlichen, die sich aus den verschiedenen Einstellungskombinationen ergeben.
-
-Die Beispielrechnung beruht auf den folgenden Daten:
-
-. Berechnungsbasis: Artikel zum Preis von 4,545 Euro
-. Rechnung 1: Verkauf von 10 Artikeln
-. Rechnung 2: Verkauf von 10 Artikeln mit 5 % Positionsrabatt
-
-
-.Beispielrechnung bei einem Artikelpreis mit 4 Nachkommastellen
-[cols="2,1,1"]
-|====
-|Gewählte Einstellungen |Rechnung 1 (4,545 Euro x 10) Gesamtpreis auf Beleg|Rechnung 2 (4,545 Euro x 10 - 5%) Gesamtpreis auf Beleg
-
-|Anzahl Nachkommastellen = 2  +
-Auftragspositionen = Einzeln darstellen
-|45,50 Euro
-|43,20 Euro
-
-|Anzahl Nachkommastellen = 4  +
-Nur Gesamtpreise runden = Nein +
-Auftragspositionen = Einzeln darstellen
-|45,45 Euro
-|43,18 Euro
-
-|Anzahl Nachkommastellen = 4 +
-Nur Gesamtpreise runden = Ja +
-Auftragspositionen = Einzeln darstellen
-|45,45 Euro
-|43,18 Euro
-
-|Anzahl Nachkommastellen = 2 +
-Auftragspositionen = Zusammenfassen
-|43,50 Euro
-|43,20 Euro
-
-|Anzahl Nachkommastellen = 4 +
-Nur Gesamtpreise runden = Nein +
-Auftragspositionen = Zusammenfassen
-|45,45 Euro
-|43,18 Euro
-
-|Anzahl Nachkommastellen = 4 +
-Nur Gesamtpreise runden = Ja +
-Auftragspositionen = Zusammenfassen
-|45,50 Euro
-|43,18 Euro
-|====
-
-Detaillierte Informationen und weitere Rechnungsbeispiele zum Rundungsverhalten finden Sie auch auf der Handbuchseite <<auftragsabwicklung/auftraege/buchhaltung#, **Buchhaltung**>>.
-
-
-
-
-
-
-[#95]
+[#90]
 == Standardkunden für POS-Aufträge erstellen
 
 Damit POS-Aufträge korrekt in plentymarkets gespeichert werden, muss jedem Auftrag ein Kunde zugeordnet sein. Daher erstellen Sie zunächst einen anonymen Standardkunden. Gehen Sie wie hier beschrieben vor, um einen Standardkunden für POS-Aufträge anzulegen. Dabei werden nur die für das Erstellen des Standardkunden relevanten Einstellungen beschrieben. Allgemeine Informationen zum Erstellen von Kunden finden Sie auf der Handbuchseite <<crm/kundendaten-verwalten#, **Kundendaten verwalten**>>.
@@ -832,14 +717,14 @@ Standardkunden für POS-Aufträge erstellen:
 
 . Öffnen Sie das Menü **Kunden » Kunden bearbeiten**.
 . Klicken Sie auf **Neu**.
-. Nehmen Sie die Einstellungen gemäß Tabelle 12 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 10 vor.
 . **Speichern** Sie die Einstellungen.
 . Öffnen Sie das Menü **Einstellungen » Mandant (Shop) » Standard » POS » Kasse öffnen » Grundeinstellungen**.
 . Geben Sie die ID des Standardkunden in das Feld **Standardkunde** ein.
 . **Speichern** Sie die Einstellungen.
 
 .Standardkunden für POS-Aufträge erstellen
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -865,307 +750,15 @@ PLZ**; +
 |====
 
 [#220]
-== Dummy-Artikel erstellen
+== Dummy-Artikel für Barverkauf erstellen
 
-Im Tagesgeschäft kommt es vor, dass Artikel verkauft werden sollen, für die es keinen Datensatz im System gibt. Zum Beispiel wird häufig für Diversartikel kein Datensatz angelegt. Um diese Artikel trotzdem kassieren zu können, erstellen Sie Dummy-Artikel. Kassenbenutzer fügen dann den Dummy-Artikel zum POS-Warenkorb hinzu und passen den Preis und optional den Namen der Artikelposition an.
+Im Tagesgeschäft kommt es vor, dass Artikel verkauft werden sollen, für die kein Datensatz im System besteht. Um diese Artikel trotzdem kassieren zu können, erstellen Sie Dummy-Artikel. Der Kassenbenutzer fügt dann den Dummy-Artikel zum POS-Warenkorb hinzu und passt den Namen und den Preis der Artikelposition an. Sie benötigen dazu einen Dummy-Artikel für jeden MwSt.-Satz, der für die Produkte Ihres Portfolios fällig wird. Wählen Sie beim Erstellen dieser Artikel im Tab **Einstellungen** der Variante für die Option **Beschränkung** die Einstellung **Keinen WB für diese Variante führen** und speichern Sie den Artikel, damit die Einstellung wirksam wird. Weitere Informationen zum Erstellen von Artikeln finden Sie auf der Handbuchseite <<artikel/artikel-verwalten#, **Artikel verwalten**>>.
 
-Die folgenden Vorbereitungen sind nötig, um mit Dummy-Artikeln zu arbeiten.
-
-* Einen Dummy-Artikel für jeden Umsatzsteuersatz erstellen, der für die Produkte Ihres Portfolios relevant sind. Wenn Sie Artikel mit 19% und 7% verkaufen, benötigen Sie also zwei Dummy-Artikel.
-* Option *Preisabfrage wenn Artikelpreis 0* aktivieren, damit Kassenbenutzer den Preis manuell eingeben können.
-* Kassenbenutzern Rechte zum Bearbeiten von Preisen erteilen.
-* Kassenbenutzern Rechte zum Umbenennen von Artikelpositionen erteilen (optional).
-
-Die erforderlichen Einstellungen werden in Tabelle 13 kurz erläutert. Die  Zwischenüberschriften der Tabelle geben an, in welchem Menü Sie die Einstellung vornehmen.
-
-.Empfohlene Einstellungen für Dummy-Artikel
-[cols="1,2"]
-|====
-|Einstellung |Erläuterung
-
-2+|*Artikel » Artikel bearbeiten » Neuen Artikel erstellen » Tab: Einstellungen*
-
-|**Beschränkung**
-|Option **Keinen WB für diese Variante führen** wählen.
-
-|**Preis**
-|Verkaufspreis für Kasse wählen und Preis *0,00* Euro eingeben.
-
-|**Umsatzsteuer**
-|Umsatzsteuersatz eingeben, der für den Dummy-Artikel gelten soll.
-
-2+|*Einstellungen » Mandant (Shop) » Mandant öffnen » POS » Kasse öffnen*
-
-|**Preisabfrage wenn Artikelpreis 0**
-|Option aktivieren.
-
-2+|*Einstellungen » Grundeinstellungen » Benutzer » Konten » Konto öffnen » Tab: Berechtigung » Tab: Mobile » POS-Funktionen*
-
-|**Preis bearbeiten**
-|Recht für Kassenbenutzer aktivieren, damit Kassenbenutzer den Preis anpassen können.
-
-|**Artikelposition umbenennen**
-|Recht für Kassenbenutzer aktivieren, wenn Kassenbenutzer den Namen von Dummy-Artikeln anpassen können sollen.
-|====
-
-== Gutscheinverkauf vorbereiten
-
-Um Verkaufsgutscheine über plentymarkets POS zu verkaufen, sind die folgenden Vorbereitungen im plentymarkets Backend erforderlich:
-
-* Gutscheinkampagne mit Gutscheinart **Verkaufsgutschein** erstellen.
-* Freitextfeld für die Kampagne anlegen und im Menü *Einstellungen » Aufträge » Gutscheine* verknüpfen.
-* Gutscheinartikel mit 0% MwSt. erstellen.
-* Gutscheinartikel mit Kampagne verknüpfen.
-* Gutschein-Codes erzeugen oder manuell speichern.
-* Gutscheinvordrucke erstellen und Kassenbenutzern zur Verfügung stellen.
-* Gutschein-Codes Kassenbenutzern zur Verfügung stellen.
-
-Diese Schritte werden hier kurz erläutert. Eine detaillierte Anleitung zum Erstellen von Gutscheinen finden Sie auf der Handbuchseite **<<auftragsabwicklung/auftraege/gutscheine#, Gutscheine>>**.
-
-[NOTE]
-.Vorgehensweise bei mehreren Kassen
+[IMPORTANT]
+.Berechtigungen für POS-Funktionen aktivieren
 ====
-Sie haben mehr als eine Kasse? Dann teilen Sie die ausgedruckten Gutschein-Codes zwischen den Kassen auf oder erstellen Sie für jede Kasse eigene Gutscheinkampagnen und -artikel, damit jeder Gutschein-Code nur einmal verkauft wird.
+Damit Kassenbenutzer mit Dummy-Artikeln arbeiten können, aktivieren Sie im Menü **Einstellungen » Grundeinstellungen » Benutzer » Konten » Konto öffnen » Tab: Berechtigung » Tab: Mobile** im Bereich **POS-Funktionen** die Berechtigungen **Preis bearbeiten** und **Artikelposition umbenennen**.
 ====
-
-=== Freitextfeld vorbereiten
-
-Um Gutscheine zu verkaufen, muss am Artikel ein Freitextfeld hinterlegt werden. Dieses Freitextfeld definieren Sie zunächst und ordnen es dann Gutscheinkampagnen zu.
-
-[#820]
-==== Freitextfeld definieren
-
-Definieren Sie nun das Freitextfeld, das für Kampagnen verwendet werden soll.
-
-[.instruction]
-Freitextfeld definieren:
-
-. Öffnen Sie das Menü **Einstellungen » Artikel » Freitextfelder**.
-. Geben Sie in das Feld *Feldbezeichnung* die Bezeichnung **Kampagne ID** ein. +
-*_Hinweis:_* Achten Sie auf die Schreibweise. Der Name **Kampagne ID** ist nur in der Schreibweise mit Leerzeichen gültig.
-. Wählen Sie den Datentyp **Zahl**.
-. Geben Sie eine Zeichenlänge ein.
-. **Speichern** Sie die Einstellungen. +
-→ Das Freitextfeld wird über Nacht aktiviert und ist am nächsten Morgen verfügbar.
-
-==== Freitextfeld wählen
-
-Im Menü **Einstellungen » Aufträge » Gutscheine** wählen Sie nun dieses Freitextfeld und ordnen es so Gutscheinkampagnen zu.
-
-[.instruction]
-Freitextfeld wählen:
-
-. Öffnen Sie das Menü **Einstellungen » Aufträge » Gutscheine**.
-. Wählen Sie das Kampagnenfeld **Kampagne ID** aus der Dropdown-Liste.
-. **Speichern** Sie die Einstellungen. +
-→ Das Feld **Kampagne ID** wird im Tab **<<artikel/artikel-verwalten#75, Felder>>** der Artikel angezeigt.
-
-[#830]
-=== Kampagne für POS-Verkaufsgutscheine erstellen
-
-Erstellen Sie für den Verkauf von Gutscheinen über plentymarkets POS pro Gutscheinwert eine eigene Kampagne. Wenn Sie also z.B. Gutscheine im Wert von 10 Euro, 25 Euro und 50 Euro verkaufen möchten, benötigen Sie 3 Kampagnen mit den Rabattwerten 10, 25 und 50 Euro. Wenn Sie mehr als eine Kasse einsetzen, kann es außerdem sinnvoll sein, pro Kasse eigene Kampagnen anzulegen. So erstellen Sie eine Kampagne für Verkaufsgutscheine:
-
-[.instruction]
-Kampagne für POS-Verkaufsgutscheine erstellen:
-
-. Öffnen Sie das Menü **Aufträge » Gutscheine**.
-. Klicken Sie auf **Neue Kampagne**.
-. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 14.
-. **Speichern** Sie die Einstellungen.  +
-→ Die neue Kampagne wird angelegt und in der Übersicht angezeigt.
-
-.Einstellungen für POS-Verkaufsgutscheinkampagnen
-[cols="1,2"]
-|====
-|Einstellung |Erläuterung
-
-2+|Kampagne
-
-|**Name**
-|Namen für die Kampagne eingeben.
-*_Tipp_*: Der Name sollte den Namen der Kasse und den Gutscheinwert enthalten.
-
-|**Beschreibung**
-|Optional eine Beschreibung eingeben.
-
-|**Konzept: Code**
-|**Mehrere Codes** wählen, um Gutschein-Codes zu erzeugt, die nur einmal einlösbar sind.
-
-|**Konzept: Einlösungen**
-|**Einlösung bis Wert aufgebraucht ist** wählen.
-
-|**Nutzung**
-|**Einzelbestellungen** oder <<auftragsabwicklung/auftraege/scheduler#, **Abonnements**>> oder beides wählen.
-
-|**Mindestbestellwert**
-|Keinen Wert eingeben.
-
-2+|Gültigkeiten
-
-|**Startdatum**
-|Das Datum, ab dem die Kampagne aktiv sein soll.
-
-|**Enddatum**
-|Das Datum, bis zu dem die Kampagne aktiv sein soll.
-
-|**Code-Gültigkeit in Wochen**
-|Keinen Wert eingeben.
-
-2+|Gutschein
-
-|**Gutscheintyp**
-|**Gutschein** wählen.
-
-|**Gutscheinart**
-|**Verkaufsgutschein** wählen.
-
-|**Code-Länge**
-|Die Zeichenlänge des Gutschein-Codes wählen.
-
-|**Rabattart**
-|**Festbetrag** wählen.
-
-|**Rabattwert**
-|Den Gutscheinwert eingeben, z.B. 10,00 = 10 Euro. +
-*_Hinweis:_* Den Rabattwert nicht mehr ändern, nachdem der erste Gutschein verkauft wurde.
-
-|**Inkl. Versandkosten**
-|Option nicht aktivieren.
-
-2+|Filter
-
-|**Artikel über Preisportale**
-|**Nicht erlauben** wählen.
-
-|**Kategorien**
-|Die Kategorien wählen, in denen der Gutschein einlösbar sein soll. Die Auswahl gilt auch für alle Unterkategorien einer markierten Kategorie.
-
-|**Artikel**
-|Keinen Wert eingeben.
-
-|**Mandanten (Shops)**
-|Mandanten (Shop) der Kasse wählen.
-
-|**Kundenklassen**
-|Standardkundenklasse oder *ALLE* wählen.
-
-|**Kundentypen**
-|*Kunde* wählen.
-|====
-
-[#850]
-=== Gutschein-Codes erzeugen
-
-Verkaufsgutscheine können in plentymarkets POS nur eingelöst werden, wenn beim Kassieren ein Gutschein-Code eingegeben wird. Damit Restbeträge bei einer Teileinlösung korrekt berechnet werden, benötigt jeder verkaufte Gutschein einen eigenen Gutschein-Code. Gutschein-Codes können Sie auf verschiedene Arten erstellen:
-
-* Gutschein-Codes in plentymarkets generieren und Kassenbenutzern zur Verfügung stellen
-* Gutschein-Codes extern erstellen (z.B. bei Gutscheinausstellung) und dann in plentymarkets speichern/importieren
-
-Beide Verfahren werden hier erläutert. Empfohlen wird, Gutschein-Codes in plentymarkets zu generieren und Kassenbenutzern diese Codes zur Verfügung zu stellen.
-
-[NOTE]
-.Erstellungsdatum beachten
-====
-Sie haben bereits Gutschein-Codes im Umlauf und möchten weitere Gutschein-Codes erstellen? Dann achten Sie auf das Erstellungsdatum. In plentymarkets werden Gutschein-Codes nicht als verkauft gekennzeichnet. Um Gutschein-Codes nicht doppelt zu verkaufen, bringen Sie nur die Codes in Umlauf, die Sie an einem bestimmten Datum erstellt haben. Am einfachsten geht das, indem Sie Gutscheine im Menü **Aufträge » Gutscheine** generieren und die Gutschein-Codes dann als CSV-Datei exportieren. Diese CSV-Datei filtern Sie nach dem Erstellungsdatum, also nach der Spalte *GeneriertAm*. So erhalten Sie nur die neuen Gutschein-Codes. +
-**__Tipp:__** Wenn Sie Gutscheine über plentymarkets POS verkaufen, wird automatisch ein Gutschein-Code generiert. Aus technischen Gründen wird dieser Code jedoch nicht an der Kasse ausgegeben. Im Menü **Aufträge » Gutscheine** werden also auch Gutschein-Codes mit anderem Erstellungsdatum aufgeführt. Diese Codes können Sie entweder löschen oder verkaufen. Achten Sie aber auch hier darauf, jeden Code nur einmal in Umlauf zu bringen.
-====
-
-==== Gutschein-Codes manuell generieren
-
-Mit dem Gutschein-Generator im Tab **Codes** einer Kampagne erzeugen Sie gleichzeitig mehrere Gutschein-Codes.
-
-[.instruction]
-Gutschein-Codes generieren:
-
-. Öffnen Sie das Menü **Aufträge » Gutscheine**.
-. Klicken Sie auf die Kampagne, für die Sie Gutschein-Codes erzeugen möchten.
-. Öffnen Sie das Tab **Codes**.
-. Geben Sie im Bereich **Gutschein-Codes manuell generieren** links die gewünschte Anzahl an Gutschein-Codes ein.
-. **Speichern** Sie die Eingabe. +
-→ Die Gutschein-Codes werden erzeugt und zur Liste der Gutschein-Codes hinzugefügt.
-. Klicken Sie auf *Exportieren*, um die Gutschein-Codes zu exportieren. +
-→ Ein CSV-Export aller Gutschein-Codes der Kampagne wird erstellt.
-. Filtern Sie die Spalte *GeneriertAm* der CSV-Datei nach dem aktuellen Datum. So erhalten Sie eine Liste aller neu erstellten Gutschein-Codes. +
-. Stellen Sie die Gutschein-Codes Kassenbenutzern zur Verfügung. +
-*_Hinweis:_* Achten Sie darauf, dass Gutschein-Codes nicht doppelt in Umlauf geraten. Teilen Sie bei mehreren Kassen die Gutschein-Codes entweder auf oder erstellen Sie separate Kampagnen pro Kasse.
-
-==== Eigene Gutschein-Codes speichern
-
-Statt Gutschein-Codes in plentymarkets zu generieren, können Sie auch eigene Gutschein-Codes in plentymarkets speichern. Gültige Zeichen für Gutschein-Codes sind Klein- und Großbuchstaben, Ziffern, Unterstriche (_) und Bindestriche (-).
-
-[.instruction]
-Gutschein-Code manuell speichern:
-
-. Öffnen Sie das Menü **Aufträge » Gutscheine**.
-. Klicken Sie auf die Kampagne, für die Sie einen Gutschein-Code speichern möchten.
-. Öffnen Sie das Tab **Codes**.
-. Geben Sie im Bereich **Gutschein-Code manuell eintragen** rechts einen Code mit zwischen 6 und 24 Zeichen ein.
-. **Speichern** Sie die Eingabe. +
-→ Der Gutschein-Code wird gespeichert und zur Liste der Gutschein-Codes hinzugefügt. +
-*_Hinweis:_* Kunden können Gutscheine nur einlösen, wenn ihr Gutschein-Code in plentymarkets gespeichert ist. Wenn Sie Gutschein-Codes außerhalb von plentymarkets generieren, sollten Sie diese Codes daher zeitnah in plentymarkets speichern. +
-*_Tipp:_* Mit dem Datenformat **CampaignCoupon** importieren Sie mehrere Gutschein-Codes gleichzeitig.
-
-[#840]
-=== Gutscheinartikel erstellen
-
-Legen Sie nun pro Gutscheinwert einen Artikel an. Da die Kampagnen-ID auf Artikelebene zugeordnet wird, können Sie bei Verkaufsgutscheinen nicht mit Varianten arbeiten. Detaillierte Informationen zum Erstellen von Artikeln finden Sie auf der Handbuchseite **<<artikel/artikel-verwalten, Artikel verwalten>>**. Tabelle 14 zeigt nur die wichtigsten Einstellungen für Gutscheinartikel.
-
-[.instruction]
-Gutscheinartikel erstellen:
-
-. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
-. Klicken Sie auf **Neu**. +
-→ Das Tab **Neuer Artikel** wird geöffnet.
-. Wählen Sie den Typ **Standard**.
-. Geben Sie einen Namen ein.
-. Geben Sie als Inhalt **1 Stück** ein.
-. Wählen Sie eine Kategorie.
-. Wählen Sie einen Verkaufspreis aus der Dropdown-Liste.
-. Geben Sie als Preis den Gutscheinwert ein.
-. **Speichern** Sie die Einstellungen. +
-→ Der Artikel wird erstellt und zur weiteren Bearbeitung geöffnet.
-. Nehmen Sie die weiteren Einstellungen vor. Beachten Sie Tabelle 15.
-. **Speichern** Sie die Einstellungen.
-
-.Artikeleinstellungen für Verkaufsgutscheine
-[cols="1,2"]
-|====
-|Einstellung |Erläuterung
-
-2+|Tab: Variantennummer » Tab: Einstellungen
-
-|**Beschränkung**
-|**Keine** wählen.
-
-|**Umsatzsteuer**
-|**0%** wählen.
-
-2+|Tab: Variantennummer » Tab: Verfügbarkeit
-
-|**Märkte**
-|Kasse(n) aus der Dropdown-Liste wählen, über die die Gutscheinartikel verkauft werden sollen.
-
-|**Mandant (Shop)**
-|Mandant der Kasse wählen.
-
-2+|Tab: Felder
-
-|**Kampagne ID**
-|ID der Gutscheinkampagne eingeben.
-|====
-
-=== Besonderheiten beim Verkauf von Verkaufsgutscheinen
-
-* Der Gutschein-Code wird nicht auf dem Beleg ausgegeben. Daher benötigen Sie Gutscheinvordrucke, in die Kassenbenutzer den Gutschein-Code per Hand eintragen.
-* Beim Verkauf des Verkaufsgutscheins erhöht sich der Umsatz nicht.
-* Verkaufte Gutscheine werden auf dem Tagesbericht separat ausgewiesen. Der Barbestand wird erhöht, wenn der Gutschein bar bezahlt wurde.
-
-=== Besonderheiten beim Einlösen von Verkaufsgutscheinen
-
-* Der Wert des Verkaufsgutscheins wird vom Gesamtbetrag inkl. Steuern abgezogen.
-* Der Umsatz erhöht sich um den eingelösten Gutscheinbetrag.
-* Auf dem Tagesbericht wird der eingelöste Gutscheinwert mit der Zahlungsart *Gutschein* ausgewiesen.
-* Der Barbestand der Kasse erhöht sich durch die Einlösung des Gutscheins nicht.
 
 == Warenbestandsverwaltung automatisieren
 
@@ -1182,9 +775,9 @@ Legen Sie die unten beschriebene Ereignisaktion an, um Waren automatisch auszubu
 . Klicken Sie auf **Ereignisaktion hinzufügen**.  +
 → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 . Geben Sie einen Namen ein.
-. Wählen Sie das **Ereignis** gemäß Tabelle 16.
+. Wählen Sie das **Ereignis** gemäß Tabelle 11.
 . **Speichern** Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß Tabelle 16 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 11 vor.
 . Setzen Sie ein Häkchen bei **Aktiv**.
 . **Speichern** Sie die Einstellungen.
 --
@@ -1233,12 +826,12 @@ Kasse mit Mobilgerät koppeln:
 
 . Öffnen Sie die plentymarkets App auf dem Gerät, das Sie mit der Kasse koppeln möchten.
 . Öffnen Sie das Menü **plentymarkets App  » Einstellungen » POS beta**.
-. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 17.
+. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 12.
 . **Speichern** Sie die Einstellungen. +
 → Das Gerät wird mit der Kasse gekoppelt.
 
 .Kasse mit Mobilgerät koppeln
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -1253,7 +846,8 @@ Kasse mit Mobilgerät koppeln:
 
 |**Drucker**
 |IP-Adresse des Belegdruckers eingeben. +
-**__Tipp:__** Auf **Testbeleg drucken** tippen, um einen Testbeleg zu drucken.
+
+//  b><i>Tipp:</i></b> Auf <strong>Testbeleg drucken</strong> tippen, um einen Testbeleg zu drucken.</strong
 
 |**Automatisches Drucken**
 |**Aus** =  Das Drucken von Kassenbelegen muss manuell ausgelöst werden. +
@@ -1264,6 +858,29 @@ Kasse mit Mobilgerät koppeln:
 |**Smartphone** =  Für Smartphones optimierte Darstellung; Hoch- oder Querformat. +
 **Tablet** = Für Tablets optimierte Darstellung; nur Querformat.
 |====
+
+[#300]
+=== Startbeleg erstellen
+
+Erstellen Sie nun den Startbeleg, um die Kasse produktiv zu nutzen. Den Startbeleg erstellen Sie im POS-Menü der plentymarkets App.
+
+[WARNING]
+.RKSV-konforme Berichte und Nullbelege noch nicht implementiert
+====
+Nach Erstellen des Startbelegs werden sämtliche Kassenvorgänge signiert und RKSV-konform protokolliert. Aktuell ist es jedoch nicht möglich, in plentymarkets POS RKSV-konforme Berichte und Nullbelege zu erstellen.
+====
+
+[.instruction]
+Startbeleg erstellen:
+
+. Öffnen Sie die plentymarkets App.
+. Öffnen Sie das Menü **plentymarkets App » Einstellungen » POS beta**.
+. Tippen Sie auf **Startbeleg erstellen**.
+→ Der Startbeleg wird gedruckt. +
+→ Der Startbeleg wird im Kassenjournal und im Dokumentenarchiv gespeichert. +
+→ Die Kasse kann in Betrieb genommen werden. +
+→ Belege werden signiert und der QR-Code auf Belegen ausgegeben. +
+→ Kassenvorgänge werden DEP-konform im System gespeichert.
 
 [#240]
 === Kasse von Mobilgerät entkoppeln
@@ -1288,7 +905,7 @@ Sie können die Kasse nur über die Einstellungen auf dem Mobilgerät von der Ka
 [#250]
 == Senden des Kassenbelegs an Kunden einrichten
 
-plentymarkets ermöglicht es Ihnen, Kassenbelege per Ereignisaktion automatisch an die am Kundendatensatz gespeicherte E-Mail-Adresse zu senden. Dazu erstellen Sie zunächst eine E-Mail-Vorlage mit dem PDF-Anhang **Kassenbeleg**. Erstellen Sie dann eine Ereignisaktion. Für POS-Aufträge, die im Offline-Modus erstellt werden, wird die Ereignisaktion jedoch erst ausgeführt, wenn die POS-Aufträge in das plentymarkets Backend hochgeladen werden. Prüfen Sie vor der Einrichtung die aktuellen gesetzlichen Bestimmungen zum Versand von E-Mails an Kunden.
+plentymarkets ermöglicht es Ihnen, Kassenbelege per Ereignisaktion automatisch an die am Kundendatensatz gespeicherte E-Mail-Adresse zu senden. Dazu erstellen Sie zunächst eine E-Mail-Vorlage mit dem PDF-Anhang **Kassenbeleg**. Erstellen Sie dann eine Ereignisaktion. Für POS-Aufträge, die im Offline-Modus erstellt werden, wird die Ereignisaktion jedoch erst ausgeführt, wenn die POS-Aufträge in das plentymarkets Backend hochgeladen werden.
 
 [#260]
 === E-Mail-Vorlage erstellen
@@ -1321,9 +938,9 @@ Erstellen Sie nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wi
 . Klicken Sie auf **Ereignisaktion hinzufügen**. +
 → Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
 . Geben Sie einen Namen ein.
-. Wählen Sie das **Ereignis** gemäß Tabelle 18.
+. Wählen Sie das **Ereignis** gemäß Tabelle 13.
 . **Speichern** Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß Tabelle 18 vor.
+. Nehmen Sie die Einstellungen gemäß Tabelle 13 vor.
 . Setzen Sie ein Häkchen bei **Aktiv**.
 . **Speichern** Sie die Einstellungen.
 --
@@ -1354,18 +971,18 @@ Erstellen Sie nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wi
 [#400]
 == Kassenvorgänge im Kassenjournal suchen
 
-In plentymarkets werden alle Kassenvorgänge dokumentiert, um rechtssicheres Arbeiten in Deutschland zu ermöglichen. Im Menü **Aufträge » POS » Kassenjournal** können Sie Kassenvorgänge suchen, anzeigen und bei Bedarf exportieren. Mit den Filtern des Tabs **Filter** grenzen Sie die im Kassenjournal angezeigten Kassenvorgänge anhand bestimmter Kriterien ein. Die gefundenen Kassenvorgänge werden im Tab **Kassenjournal** aufgelistet. Die Ergebnisse sind standardmäßig nach dem Datum sortiert. Gehen Sie wie unten beschrieben vor, um Kassenvorgänge im Kassenjournal zu suchen.
+In plentymarkets werden alle Kassenvorgänge dokumentiert. Im Menü **Aufträge » POS » Kassenjournal** können Sie Kassenvorgänge suchen, anzeigen und bei Bedarf exportieren. Mit den Filtern des Tabs **Filter** grenzen Sie die im Kassenjournal angezeigten Kassenvorgänge anhand bestimmter Kriterien ein. Die gefundenen Kassenvorgänge werden im Tab **Kassenjournal** aufgelistet. Die Ergebnisse sind standardmäßig nach dem Datum sortiert. Gehen Sie wie unten beschrieben vor, um Kassenvorgänge im Kassenjournal zu suchen.
 
 [.instruction]
 Kassenvorgänge im Kassenjournal suchen:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 19.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 14.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 
 .Menü **Kassenjournal**
-[cols="1,2"]
+[cols="a,a"]
 |====
 |Einstellung |Erläuterung
 
@@ -1433,11 +1050,6 @@ Um Belege eines benutzerdefinierten Zeitraums anzuzeigen, die Option **Datumsaus
 |Der Buchungstext für den Kassenvorgang. Bei Einlagen und Entnahmen entspricht der Buchungstext dem Grund der Bargeldbewegung.
 |====
 
-[#300]
-== Kassenvorgänge in Deutschland rechtssicher belegen
-
-Für eine ordnungsgemäße Kassenführung in Deutschland müssen alle Kassenvorgänge elektronisch und unveränderbar aufgezeichnet und für die Dauer des Aufbewahrungszeitraums digital lesbar archiviert werden. Damit Sie diesen gesetzlichen Anforderungen nachkommen können, stellt plentymarkets verschiedene Exportfunktionen bereit. Besprechen Sie mit Ihrem Steuerberater, welche Daten Sie exportieren und archivieren sollten, um rechtssicher zu arbeiten.
-
 === Kassenvorgänge als PDF-/CSV-Datei exportieren
 
 Die im Kassenjournal angezeigten Kassenvorgänge können Sie entweder als PDF-Datei oder als CSV-Datei exportieren. Exportiert werden die über die Suche gefilterten Kassenvorgänge. Gehen Sie wie unten beschrieben vor, um Kassenvorgänge zu exportieren. Nachdem Sie einen Exportvorgang gestartet haben, ist das Starten weiterer Kassenjournalexporte zwei Minuten lang nicht möglich.
@@ -1446,7 +1058,7 @@ Die im Kassenjournal angezeigten Kassenvorgänge können Sie entweder als PDF-Da
 Kassenvorgänge als PDF-Datei exportieren:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 19.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 14.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 . Klicken Sie auf **PDF-Export**. +
@@ -1458,29 +1070,10 @@ Kassenvorgänge als PDF-Datei exportieren:
 Kassenvorgänge als CSV-Datei exportieren:
 
 . Öffnen Sie das Menü **Aufträge » POS » Kassenjournal**.
-. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 19.
+. Wählen Sie die Filter. Beachten Sie die Erläuterungen in Tabelle 14.
 . Klicken Sie auf **Suchen**. +
 → Die Kassenvorgänge, die den Suchkriterien entsprechen, werden im Tab **Kassenjournal** aufgelistet.
 . Klicken Sie auf **CSV-Export**.
 . Wählen und bestätigen Sie einen Speicherort für die CSV-Datei. +
 → Eine CSV-Datei der gefilterten Kassenvorgänge wird generiert. Abhängig von der Anzahl der Datensätze kann dieser Vorgang mehrere Minuten dauern. +
 → Die CSV-Datei wird gespeichert.
-
-[#500]
-=== IDEA-Export erstellen
-
-Laut den deutschen handels- und steuerrechtlichen Ordnungsvorschriften (GoBD) müssen Sie bei einer Außenprüfung auf Verlangen der Finanzverwaltung nicht nur aufzeichnungs- und aufbewahrungspflichtige Daten vorlegen, sondern auch alle zur Auswertung der Daten notwendigen Strukturinformationen in maschinell auswertbarer Form bereitstellen. Deshalb stellt plentymarkets einen GoBD-konformen Export Ihrer Kassenvorgänge bereit. Die Exportdateien ermöglichen es Betriebsprüfern, Ihre Kassendaten vollständig und effizient auszuwerten. Gehen Sie wie unten beschrieben vor, um einen IDEA-Export zu erstellen:
-
-[.instruction]
-IDEA-Dateien exportieren:
-
-. Öffnen Sie das Menü **Aufträge » POS » IDEA-Export**.
-. Wählen Sie das Kalenderjahr, für das Sie die Daten exportieren möchten.
-. Klicken Sie auf das Zahnrad, um den Export zu generieren. +
-→ Der Export wird über Nacht generiert. +
-→ Der Export ist abgeschlossen, wenn der Status **Fertig** angezeigt wird.
-. Klicken Sie auf das Download-Symbol in der Spalte **Aktionen**.
-. Wählen Sie einen Speicherort und bestätigen Sie die Auswahl. +
-→ Die IDEA-Dateien werden exportiert und als ZIP-Datei gespeichert.
-
-//  Next: 860
