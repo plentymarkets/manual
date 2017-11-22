@@ -457,7 +457,7 @@ Z reports contain the following information: +
 * Cancellations: Quantity and total
 * Discounted items: Quantity and total
 * Sold gift cards: Quantity and total
-* User: Revenue per user
+* User: Revenue, cancellations and returns by user
 
 |**X report**
 a|Allows POS user to create x reports. +
@@ -471,7 +471,7 @@ X reports contain the following information: +
 * Cancellations: Quantity and total
 * Discounted items: Quantity and total
 * Sold gift cards: Quantity and total
-* User: Revenue per user
+* User: Revenue, cancellations and returns by user
 
 |**Item synchronisation**
 |Allows POS user to synchronise item data with the POS.
@@ -928,32 +928,34 @@ The required settings are described in table 13. The subheadings indicate the me
 
 == Preparing gift card sales
 
+Gift cards are sold by selling coupon items in plentymarkets. When you sell a coupon item, you provide customers with a coupon code. Customers only can redeem a coupon code if their coupon code is saved in the plentymarkets back end at the time the customers tries to redeem it. You either can generate coupon codes automatically or work with your own coupon codes.
+
 The following preparations in the plentymarkets back end are necessary to sell gift cards via plentymarkets POS:
 
 * Create a coupon campaign of the type **Gift card**.
 * Create a free text field for the campaign and link it in the *System » Orders » Coupons* menu.
 * Create gift card items with a VAT rate of 0%.
 * Link the gift card item to the campaign.
-* Generate or save coupon codes.
-* Create gift card templates and make them available to POS users.
-* Make coupon codes available to POS users.
+* *_Optional:_* Generate coupon codes or save your own coupon codes in the back end.
+* *_Optional:_* Create gift card templates and make them available to POS users.
+* *_Optional:_* Make coupon codes available to POS users.
 
 These steps are described here. Find more detailed information on gift cards and coupons on the **<<order-processing/orders/coupons#, Coupons>>** page of the manual.
 
 [NOTE]
 .More than one POS
 ====
-Do you operate more than one POS? Divide the printed coupon codes between the different POS or create a separate coupon campaign and gift card items to make sure that each coupon code is sold only once.
+Do you have more than one POS and create your own coupon codes? Divide the printed coupon codes between the different POS or create a separate coupon campaign and gift card items to make sure that each coupon code is sold only once.
 ====
 
 === Preparing the free text field
 
-To sell gift cards, you need to link the gift card item to a free text field. This free text field needs to be defined and then associated with coupon campaigns.
+To sell gift cards, you need to link the gift card item to a free text field. You define this free text field and assign it to a coupon campaign. A free text field needs to be defined only once.
 
 [#820]
 ==== Defining the free text field
 
-Now, define the free text field to be used for campaigns.
+Define the free text field to be used for campaigns.
 
 [.instruction]
 Defining the free text field:
@@ -968,7 +970,7 @@ Defining the free text field:
 
 ==== Selecting a free text field
 
-Now, go to **System » Orders » Coupons**. Select this free text field and link it to a coupon campaign.
+Now, go to **System » Orders » Coupons**. Select this free text field and link it to a coupon campaign. You only need to do this once for all campaigns.
 
 [.instruction]
 Selecting a free text field:
@@ -981,7 +983,15 @@ Selecting a free text field:
 [#830]
 === Creating a campaign for POS gift cards
 
-To sell gift cards in plentymarkets POS, create a separate campaign per gift card value you want to sell. For example, if you want to sell gift cards to the values of 10 GBP, 25 GBP and 50 GBP, you need 3 campaigns with the discount values 10, 25 and 50 GBP. If you operate more than one POS, it may be a good idea to create a separate campaign per POS. Proceed as described below to create a campaign for gift cards:
+Now, create one or several campaigns for selling gift cards in plentymarkets POS. You have the following options:
+
+* You create one campaign for all gift cards you sell in plentymarkets POS.
+* You create one campaign per gift card value. +
+*_Example:_* You want to sell gift cards for 10 GBP, 25 GBP and 50 GBP and a gift card with a flexible value that POS users enter during the transaction. As such, you create 3 campaigns with the discount values 10, 25 and 50 GBP and a campaign with an amount of your choice.
+
+If you operate more than one POS and want to use your own coupon codes it also may make sense to create separate campaigns for each POS.
+
+Proceed as described below to create a campaign for gift cards:
 
 [.instruction]
 Creating a campaign for POS gift cards:
@@ -989,7 +999,7 @@ Creating a campaign for POS gift cards:
 . Go to **Orders » Coupons**.
 . Click on **New campaign**.
 . Carry out the settings. Pay attention to the information given in table 14.
-. **Save** the settings.  +
+. **Save** the settings. +
 → The new campaign will be created and will appear in the overview.
 
 .Settings for POS gift card campaigns
@@ -1001,13 +1011,13 @@ Creating a campaign for POS gift cards:
 
 |**Name**
 |Enter a name for the campaign.
-*_Tip_*: The name should contain the name of the POS and the gift card value.
+*_Tip_*: The name should contain the name of the POS and the gift card value if applicable.
 
 |**Description**
 |Enter a description (optional).
 
 |**Concept: Code**
-|Select **Several codes** to create coupon codes that can only be redeemed once.
+|Select **Several codes** so that each coupon code can be redeemed only once and any remaining balance is calculated correctly when the gift card is redeemed.
 
 |**Concept: Redemptions**
 |Select **One-time redemption until the value is depleted**.
@@ -1021,10 +1031,10 @@ Creating a campaign for POS gift cards:
 2+|Validity
 
 |**Start date**
-|The date when the campaign should be activated.
+|The date when the campaign is activated.
 
 |**End date**
-|The date when the campaign should be deactivated.
+|The date when the campaign is deactivated.
 
 |**Code validity in weeks**
 |Do not enter a value.
@@ -1045,7 +1055,8 @@ Creating a campaign for POS gift cards:
 
 |**Discount value**
 |Enter the gift card value, e.g. 10.00 = 10 GBP. +
-*_Note:_* Do not change the discount value once the first gift card has been sold.
+**__Note:__** Do not change the discount value once the first gift card has been sold. +
+*_Tip:_* This value is assigned to codes automatically when you **Generate coupon codes manually** in the **Codes** tab without entering an amount in the **Value** field. +
 
 |**Incl. Shipping costs**
 |Do not activate option.
@@ -1072,47 +1083,72 @@ Creating a campaign for POS gift cards:
 |====
 
 [#850]
-=== Generating coupon codes
+=== Managing coupon codes
 
-Gift cards only can be redeemed in plentymarkets POS if a coupon code is entered at checkout. Every gift card needs a unique coupon code to ensure that any remaining balance is calculated correctly when the gift card is redeemed. You can create coupon codes in different ways:
+To redeem gift cards in plentymarkets POS, POS users enter the coupon code. A coupon code must be present in the plentymarkets back end at the time it is redeemed.
 
-* Generate coupon codes in plentymarkets and make them available to POS users
-* Create coupon codes externally (e.g. when selling the gift card) and then saving or importing it in plentymarkets
+From the point of view of POS users, the configuration options in plentymarkets result in three possible scenarios:
 
-Both options are described here. We recommend that you generate coupon codes in plentymarkets and make these codes available to POS users.
+* The POS generates coupon codes automatically
+* The POS user is issued with a list of coupon codes per gift card value that have been saved in plentymarkets. The POS user enters one of these codes when selling a gift card. The value of the coupon code is retrieved.
+* The POS user is issued with a list of coupon codes that have not been saved in plentymarkets. The POS user enters a code and a value.
+
+==== Automatically generating coupon codes at POS
+
+Administratively, it is easiest if POS users automatically generate a coupon code when they sell a gift card in plentymarkets POS. The coupon code and its associated value are imported into the campaign linked to the item when the POS order is uploaded. The coupon code is printed on the receipt. In addition, POS users can write the coupon code on a decorative gift card.
+
+==== Working with your own coupon codes
+
+Your administrative work increases if you want to hand out coupon codes to POS users for them to enter when they sell items. However, it also has advantages. For instance, you can create decorative gift cards that already contain the coupon code or the coupon code and the gift card value. POS users can then simply hand out these gift cards.
+
+You can save coupon codes in the system either before or during a sale.
+
+Before a sale in the plentymarkets back end:
+
+* You generate coupon codes with fixed values in a campaign before you start selling gift cards.
+* You save coupon codes with fixed values in a campaign before you start selling gift cards.
+
+In both cases, you provide POS users with a list of these coupon codes and the gift card value associated with them.
+
+During a sale in plentymarkets POS:
+
+* POS users enter a coupon code that is not yet saved in plentymarkets and the associated gift card value when selling a gift card.
+
+In such cases, you provide POS users with a list of coupon codes. POS users enter the gift card value during the transaction. This value becomes the price at which the gift card is sold.
 
 [NOTE]
 .Take note of creation date
 ====
-You have sold coupon codes already and want to create additional coupon codes? Then take note of the coupon codes' creation dates. Coupon codes are not flagged as sold in plentymarkets. To ensure that each coupon code is only sold once, only circulate the codes you created on a particular date. We recommend that you generate coupon codes in the **Orders » Coupons** menu and then export the coupon codes to a CSV file. Filter this CSV file by the creation date, i.e. the column *GeneratedOn*. This leaves you with a list of the newly created coupon codes. +
-**__Tip:__** When you sell a gift card with plentymarkets POS, a coupon code is generated automatically. For technical reasons, this code is not displayed at the POS. As such, coupon codes with other creation dates are also listed in the **Orders » Coupons** menu. You can either delete or sell these codes. However, again make sure that each code is only sold once.
+You have handed out coupon codes generated in plentymarkets to POS users already and want to generate additional coupon codes? Then take note of the coupon codes' creation dates. Coupon codes are not flagged as sold in plentymarkets. To ensure that each coupon code is only sold once, only circulate the codes you created on a particular date. We recommend that you generate coupon codes in the **Orders » Coupons** menu and export these coupon codes to a CSV file. Filter the CSV file by the creation date, i.e. the column *GeneratedOn*. This leaves you with a list of the newly created coupon codes.
 ====
 
 ==== Generate coupon codes manually
 
-Open the **Codes** tab to find the coupon generator. This allows you to generate several coupon codes for the campaign at once.
+Use the coupon generator in the **Codes** tab of a campaign to create one or more coupon codes automatically.
 
 [.instruction]
-Generating coupon codes:
+Generating coupon codes with a fixed value:
 
 . Go to **Orders » Coupons**.
 . Click on the campaign for which you want to generate coupon codes.
 . Click on the **Codes** tab.
 . In the **Generate coupon codes manually** area to the left, enter the number of coupon codes you want to generate.
+. *_Optional:_* In the **Value** field, enter the value to be assigned to the coupon code. +
+*_Tip:_* If you leave the **Value** field empty, the discount value of the campaign is assigned.
 . **Save** the data. +
 → The coupon codes are created and added to the list of coupon codes.
 . Click on *Export* to export the coupon codes. +
 → A CSV export of all coupon codes of the campaign is created.
 . Filter the *GeneratedOn* column of the CSV file by the current date. This will result in a list of all newly created coupon codes. +
-. Make the coupon codes available to POS users. +
-*_Note:_* Make sure that you do not give out duplicate coupon codes. If you operate more than one POS, either split the coupon codes or create separate campaigns per POS.
+. Provide POS users with the coupon codes and their value. +
+*_Note:_* Do not circulate duplicate coupon codes. If you operate more than one POS, either split the coupon codes or create separate campaigns per POS.
 
-==== Saving your own coupon codes
+==== Saving your own coupon codes with a fixed value
 
-Instead of generating coupon codes in plentymarkets, you also can save your own coupon codes in plentymarkets. Valid characters for coupon codes are lower and upper case letters, numbers, underscores (_) and hyphens (-).
+Instead of generating coupon codes in plentymarkets, you also can save your own coupon codes in plentymarkets before selling them. Valid characters for coupon codes are lower and upper case letters, numbers, underscores (_) and hyphens (-).
 
 [.instruction]
-Saving coupon codes manually:
+Saving your own coupon codes with a fixed value:
 
 . Go to **Orders » Coupons**.
 . Click on the campaign for which you want to generate a coupon code.
@@ -1120,16 +1156,52 @@ Saving coupon codes manually:
 . In the **Enter coupon code manually** area to the right, enter a code with 6 to 24 characters.
 . **Save** the data. +
 → The coupon code is saved and added to the list of coupon codes. +
-*_Note:_* Customers can only redeem gift cards if their coupon code is saved in plentymarkets. As such, import any coupon codes generated externally to plentymarkets as soon as possible. +
-*_Tip:_* Use the data format **CampaignCoupon** to import several coupon codes at once.
+*_Tip:_* Use the data format **CampaignCoupon** to import several coupon codes at once. The **Discount value** is imported as the gift card value. As such, you need to create one campaign per gift card value if you want to use the data format.
+. Provide POS users with the coupon codes and their value. +
+*_Note:_* Do not circulate duplicate coupon codes. If you operate more than one POS, either split the coupon codes or create separate campaigns per POS.
 
 [#840]
 === Creating a gift card item
 
-Now, create one item per gift card value. Because the campaign ID is linked at the item level, you cannot use variations to create gift cards. For further information about creating items, refer to the **<<item/managing-items, Managing items>>** page of the manual. Table 14 only shows the most important settings for gift card items.
+Now, create one or more gift card items. Because the campaign ID is linked at the item level, you cannot use variations to create gift cards. For further information about creating items, refer to the **<<item/managing-items, Managing items>>** page of the manual. Only settings needed for creating gift card items are described here.
+
+==== Creating gift card items with a fixed value
+
+POS users are not prompted to enter a price when selling gift card items with a fixed price. This speeds up the transaction but also offers less flexibility.
+
+When working with existing coupon codes:
+
+* The value of the existing coupon code must match the price of the item. As such, the gift card item must be linked to the campaign with the coupon codes of the correct values. If you create one campaign per gift card value, each campaign is linked to one item only. If you create a campaign with different gift card values, this campaigns is linked to more than one gift card item.
 
 [.instruction]
-Creating a gift card item:
+Creating gift card items with a fixed value:
+
+. Go to **Item » Edit item**.
+. Click on **New**. +
+→ The **New item** tab will open.
+. Select the type **Default**.
+. Enter a name. +
+*_Tip_*: The name should include the gift card value.
+. Enter the content **1 piece**.
+. Select a category.
+. Select a sales price from the drop-down list. +
+*_Tip_*: The sales price must be linked to the order referrer of the POS.
+. Enter the gift card value as the price.
+. **Save** the settings. +
+→ The item is created and opened for editing.
+. Carry out the additional settings. Pay attention to the information given in table 15.
+. **Save** the settings.
+
+
+==== Creating gift card items with a flexible value
+
+Gift card items with flexible value are items with a price of 0.00 GBP. You can control the price at which these gift cards are sold at the POS in two different ways:
+
+* POS users enter a coupon code saved in plentymarkets. The value of the coupon code becomes the price of the gift card.
+* POS users either generate a code or save a coupon code and enters the gift card value.
+
+[.instruction]
+Creating a gift card item with a flexible price:
 
 . Go to **Item » Edit item**.
 . Click on **New**. +
@@ -1138,12 +1210,15 @@ Creating a gift card item:
 . Enter a name.
 . Enter the content **1 piece**.
 . Select a category.
-. Select a sales price from the drop-down list.
-. Enter the gift card value as the price.
+. Select a sales price from the drop-down list. +
+*_Tip_*: The sales price must be linked to the order referrer of the POS.
+. Enter a price of **0.00** GBP.
 . **Save** the settings. +
 → The item is created and opened for editing.
 . Carry out the additional settings. Pay attention to the information given in table 15.
-. **Save** the settings.
+. **Save** the settings. +
+→ *_With existing coupon code:_* POS users enter a coupon code of the campaign linked to this item. The item is billed at the value of the coupon code. +
+→ *_Without existing coupon code:_* POS users are prompted to enter a price when they place the item in the POS shopping basket.
 
 .Item settings for gift cards
 [cols="1,2"]
@@ -1174,9 +1249,8 @@ Creating a gift card item:
 
 === Notes on selling gift cards
 
-* The coupon code is not printed on the receipt. As such, you need physical gift cards for POS users to fill in the coupon code by hand.
-* The revenue does not increase when a gift card is sold.
-* Sold gift cards are shown separately on the Z report. The cash on hand increases if the gift card is paid for in cash.
+* Revenue does not increase when a gift card is sold.
+* Sold gift cards are shown separately on the Z report. The cash on hand only increases if the gift card is paid for in cash.
 
 === Notes on redeeming gift cards
 
