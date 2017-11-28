@@ -1,42 +1,95 @@
-= Entwurf_Kathrin_Beta7-Migration
+= Entwurf_Kathrin_4
 :lang: de
 include::{includedir}/_header.adoc[]
-:position: 0
+:position: 43
 
-[#200]
-== Voraussetzungen für die Migration
+== Artikel und Varianten in plentymarkets
 
-Beachten Sie die folgenden Voraussetzungen für eine Migration Ihres Systems auf plentymarkets 7.
+Ein Artikel in plentymarkets ist der vollständige Datensatz einer Hauptvariante und der dazugehörigen Varianten. Ein Artikel besteht also aus globalen Daten, die für alle Varianten des Artikels gelten (Artikeldaten), und aus Daten, die pro Variante verwaltet werden (Variantendaten). Die Unterscheidung lässt sich wie folgt zusammenfassen:
 
-* **Hosting**: Ihr System muss auf AWS gehostet sein. plentymarkets 7 kann nicht auf einem eigenen Server oder der plentymarkets eigenen Cloud (Cluster) genutzt werden. +
-→ Sie können Ihr System vor der Migration auf AWS <<basics/arbeiten-mit-plentymarkets/plentymarkets-konto/umzug#, **umziehen**>>, wenn die Hauptdomain bei plentymarkets gehostet ist.
-* **SOAP**: Eigene SOAP-Anbindungen und SOAP-Anbindungen von Partnern oder Agenturen müssen vor der Migration auf ihre Stable 7-Tauglichkeit geprüft werden. Fragen Sie den Entwickler oder die Agentur, ob die Anbindung Stable 7-fähig ist.
-* **Shopware-Connector**: plentymarkets 7 ist aktuell nicht mit externen Mandanten und dem shopware Connector kompatibel. Wenn Sie einen externen Mandanten bzw. den shopware Connector verwenden, ist daher ein Wechsel auf plentymarkets 7 aktuell nicht möglich.
-* **Externe Mandanten**: plentymarkets 7 ist aktuell nicht mit externen Mandanten kompatibel. Wenn Sie einen externen Mandanten verwenden, ist daher ein Wechsel auf plentymarkets 7 aktuell nicht möglich.
-* **plentymarkets Shipping**: plentymarkets Shipping ist nicht mit plentymarkets 7 kompatibel und wird nicht mehr unterstützt. Wechseln Sie auf den aktuellen link:https://www.plentymarkets.eu/software/downloads/plentymarkets-client[**plentymarkets-Client**].
-* **Marktplätze**: In plentymarkets 7 sind noch nicht alle Marktplätze funktionsfähig. Prüfen Sie vor der Migration die <<basics/versionswechsel#, **Liste**>> der noch nicht migrierten Marktplätze.
-* **Vorbereitungen**: Arbeiten Sie diesen Migrationsleitfaden durch und treffen Sie die darin beschriebenen Vorbereitungen.
+Artikeldaten:
 
-[#210]
-== Termin für Migration vereinbaren
+* Globale Einstellungen (Zustand, Hersteller, Altersfreigabe etc.)
+* Texte
+* Merkmale
+* Cross-Selling-Einstellungen
 
-Einen Termin für die Migration auf plentymarkets 7 vereinbaren Sie über unser Ticket-System. Gehen Sie wie unten beschrieben vor, um ein Ticket zu erstellen.
+Variantendaten:
 
-[.instruction]
-Termin für Migration vereinbaren:
+* Bilder
+* Marktplatz-Sichtbarkeit
+* Verkaufspreise
+* Barcodes
+* Einheiten
+* Lager
+* Bestand
+* Kategorien
+* Lieferanten
 
-. Öffnen Sie das Menü **Start » Support-Ticket**.
-. Klicken Sie im Bereich **Ticket** auf **Neues Ticket anlegen**.
-. Geben Sie einen Titel ein, der Ihre Anfrage kurz definiert.
-. Wählen Sie **Auf plentymarkets 7 wechseln** aus der Dropdown-Liste. +
-→ Weitere Optionen werden eingeblendet.
-. Wählen Sie das plentymarkets System aus der Dropdown-Liste, das migriert werden soll.
-. Wählen Sie, ob Sie **plentymarkets 7 Stable** oder **plentymarkets 7 Beta** nutzen möchten.
-. Klicken Sie auf **Anlegen**, um das Ticket zu erstellen. +
-→ Das Ticket wird erstellt und ein plentymarkets Mitarbeiter wird Sie über das weitere Vorgehen informieren.
+Jeder Artikel hat eine nicht löschbare Hauptvariante. Diese Hauptvariante ist nicht identisch mit dem Artikel, sondern unterscheidet sich von allen anderen möglichen Varianten eines Artikels nur dadurch, dass Eigenschaften von dieser Hauptvariante an weitere Varianten des Artikels vererbt werden können. Die Hauptvariante kann selbst eine kaufbare Variante sein oder als virtuelle Variante dienen, um die weiteren Varianten des Artikels zu verwalten.
 
-[IMPORTANT]
-.Systemerreichbarkeit während der Migration
-====
-Während der Migration ist Ihr System nicht erreichbar. Bei kleineren Systemen dauert die Migration ca. 15 Minuten. Bei großen Systemen ist Ihr System bis zu mehrere Stunden nicht erreichbar.
-====
+Bild 1 zeigt eine schematische Darstellung der Artikelarchitektur in plentymarkets.
+
+image::_entwurfsseiten/kathrin/assets/DE-artikelarchitektur-1.png[]
+__Bild 1: plentymarkets Artikelarchitektur__
+
+== Vererbung von Varianteneigenschaften
+
+Bestimmte Daten der Hauptvariante werden standardmäßig an die anderen Varianten eines Artikels vererbt. So pflegen Sie Varianteneigenschaften zentral an der Hauptvariante und aktualisieren so die Werte vieler Varianten gleichzeitig. Beim Erstellen von Varianten werden viele Einstellungen der Hauptvariante automatisch auf die Varianten übertragen. Auch bei einer späteren Bearbeitung der Hauptvariante erben die Varianten automatisch die neuen Einstellungen, wenn die Vererbung aktiviert ist. Gleichzeitig können Sie die Vererbung jedoch auch an der Variante deaktivieren und so individuelle Einstellungen vornehmen.
+
+Die folgende Tabelle zeigt, welche Eigenschaften standardmäßig von der Hauptvariante an die weiteren Varianten des Artikels vererbt werden:
+
+[cols="a,a"]
+|====
+|Einstellungen |Vererbungslogik
+
+2+|Tab: Einstellungen
+
+|**Grundeinstellung**
+|Folgende Einstellungen werden einzeln vererbt: +
+**Externe Varianten-ID** +
+**Modell**
+
+|**Verfügbarkeit**
+|Einstellungen werden einzeln vererbt. +
+Ausnahme: Einstellung **Aktiv** wird nicht vererbt.
+
+|**Verkaufspreise**
+|Alle oder keine Einstellungen werden vererbt.
+
+|**Maße**
+|Einstellungen werden einzeln vererbt.
+
+|**Kosten**
+|Einstellungen werden einzeln vererbt.
+
+|**Versand**
+|Einstellungen werden einzeln vererbt.
+
+2+|Tab: Kategorien
+
+|**Verknüpfte Kategorien**
+|Alle oder keine Einstellungen werden vererbt.
+
+|**Standardkategorien**
+|Alle oder keine Einstellungen werden vererbt.
+
+2+|Tab: Lieferant
+
+|Lieferantendaten
+|Alle oder keine Einstellungen werden vererbt.
+
+2+|Tab: Lager
+
+|Lagerdaten
+|Alle oder keine Einstellungen werden vererbt.
+
+2+|Tab: Verfügbarkeit
+
+|Verfügbarkeit auf Marktplätzen +
+**Hinweis:** Tab wird nur angezeigt, wenn Variante aktiv ist.
+|Alle oder keine Einstellungen werden vererbt.
+|====
+
+__Tab. x: Vererbungslogik der Varianteneigenschaften__
+
