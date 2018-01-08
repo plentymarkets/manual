@@ -381,14 +381,24 @@ Setting up Google reCAPTCHA:
 
 Next add the template function `GetCaptcha()` as well as the following code example in the *Registration* category.
 
+[TIP]
+.Parameters for the GetCaptcha() function
+====
+The following parameters are available for the `GetCaptcha()` function:
+
+- `GetCaptcha('normal')`: Default value for the normal Google reCAPTCHA.
+- `GetCaptcha('compact')`: Parameter for the compact Google reCAPTCHA.
+- `GetCaptcha('invisible')`: Parameter for the invisible Google reCAPTCHA.
+====
+
 [.instruction]
-Editing the *Registration* category:
+Editing the *Registration* category for normal or compact Google reCAPTCHA:
 
 . Go to *Item » Categories*.
 . Open the design’s folder, e.g. the folder for Callisto Light 3.
 . Open the *Registration* category.
 . Click on the *Description 1* tab.
-. Insert the `{% GetCaptcha() %}` template function above the *Register* button.
+. Insert the `{% GetCaptcha('normal') %}` or `{% GetCaptcha('compact') %}` template function above the *Register* button.
 . Search for the code `plenty.AuthenticationService.registerCustomer();`.
 . Replace the code with `registration();`.
 . Search for `<script>`.
@@ -410,15 +420,34 @@ function registration(){
 }
 ----
 
-[TIP]
-.Parameters for the GetCaptcha() function
-====
-The following parameters are available for the `GetCaptcha()` function:
+[.instruction]
+Editing the *Registration* category for invisible Google reCAPTCHA:
 
-- `GetCaptcha('normal')`: Default value for the normal Google reCAPTCHA.
-- `GetCaptcha('compact')`: Parameter for the compact Google reCAPTCHA.
-- `GetCaptcha('invisible')`: Parameter for the invisible Google reCAPTCHA.
-====
+. Go to *Item » Categories*.
+. Open the design’s folder, e.g. the folder for Callisto Light 3.
+. Open the *Registration* category.
+. Click on the *Description 1* tab.
+. Insert the `{% GetCaptcha('invisible') %}` template function above the *Register* button.
+. Search for the code `plenty.AuthenticationService.registerCustomer();`.
+. Replace the code with `grecaptcha.execute();`.
+. Search for `<script>`.
+. Insert the following code example within the script area.
+. *Save* the settings.
+
+----
+function registration(){
+    var res = plenty.AuthenticationService.registerCustomer();
+
+    if(typeof res !== 'undefined'){
+
+        if(res.status == 400 && typeof grecaptcha !== 'undefined'){
+            grecaptcha.reset();
+        }
+
+    }
+    return false;
+}
+----
 
 [#10020]
 == Setting up Google reCAPTCHA for guest orders
@@ -431,11 +460,19 @@ You can also set up Google reCAPTCHA for guest orders in your online store.
 Carry out the following changes in the *CheckoutCustomerInvoiceAddress* template first.
 
 [.instruction]
-Editing CheckoutCustomerInvoiceAddress:
+Editing CheckoutCustomerInvoiceAddress for normal or compact Google reCAPTCHA:
 
 . Go to *CMS » Web design » Layout » Checkout » CheckoutCustomerInvoiceAddress*.
 . Search for `</form>`.
-. Insert the `{% GetCaptcha() %}` template function above the `</form>` tag.
+. Insert the `{% GetCaptcha('normal') %}` or `{% GetCaptcha('compact') %}` template function above the `</form>` tag.
+. *Save* the settings.
+
+[.instruction]
+Editing CheckoutCustomerInvoiceAddress for invisible Google reCAPTCHA:
+
+. Go to *CMS » Web design » Layout » Checkout » CheckoutCustomerInvoiceAddress*.
+. Search for `</form>`.
+. Insert the `{% GetCaptcha('invisible') %}` template function above the `</form>` tag.
 . *Save* the settings.
 
 [#10040]
@@ -444,7 +481,7 @@ Editing CheckoutCustomerInvoiceAddress:
 Next, edit the *Address* category.
 
 [.instruction]
-Editing the *Address* category:
+Editing the *Address* category for normal or compact Google reCAPTCHA:
 
 . Go to *Item » Categories*.
 . Open the design’s folder, e.g. the folder for Callisto Light 3.
@@ -466,4 +503,39 @@ plenty.CheckoutService.registerGuest().done(function() {
     }
 
 });
+----
+
+[.instruction]
+Editing the *Address* category for invisible Google reCAPTCHA:
+
+. Go to *Item » Categories*.
+. Open the design’s folder, e.g. the folder for Callisto Light 3.
+. Open the *Address* category.
+. Click on the *Description 1* tab.
+. Search for the code `plenty.CheckoutService.registerGuest().done(function()`.
+. Replace the code with `grecaptcha.execute();`.
+. Search for `<script>`.
+. Insert the following code example within the script area.
+. *Save* the settings.
+
+----
+function registration() {
+
+    plenty.CheckoutService.registerGuest().done(function() {
+    // change tab if success
+
+        var targetContainer = {id:"shipping-payment", index:2};
+
+        plenty.NavigatorService.continueChange(targetContainer);
+
+
+    }).fail(function(){
+
+        if(typeof grecaptcha !== 'undefined'){
+            grecaptcha.reset();
+        }
+
+    });
+
+}
 ----
