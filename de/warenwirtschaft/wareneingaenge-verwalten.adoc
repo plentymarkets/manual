@@ -4,7 +4,7 @@ include::{includedir}/_header.adoc[]
 :keywords: Ware buchen, Ware freigeben, Bestand buchen, Wareneingang, Ware einbuchen, Bestand einbuchen, Ware erfassen
 :position: 20
 
-Es gibt verschiedene Wege, über die Sie Waren in Ihr System buchen können. Voraussetzung für einen Wareneingang ist, dass der Variante ein Lager sowie ein Lagerort und ein Lieferant zugeordnet sind. Auf dieser Seite wird beschrieben, wo und wie das Zuordnen des Lagerorts und des Lieferanten erfolgt. Außerdem wird der Wareneingang über das Menü **Waren » Neuer Wareneingang** beschrieben. Nur wenn Sie Wareneingänge und Warenausgänge buchen und so Warenbestände in plentymarkets führen, kann Ihr System **<<artikel/artikel-verwalten#230, Varianten anhand der Beschränkung und Verfügbarkeit automatisiert im Webshop ein- und ausblenden>>** sowie Listings automatisiert starten und beenden.
+Es gibt verschiedene Wege, über die Sie Waren in Ihr System buchen können. Voraussetzung für einen Wareneingang ist, dass der Variante ein Lager sowie ein Lagerort und ein Lieferant zugeordnet sind. Auf dieser Seite wird beschrieben, wo und wie das Zuordnen des Lagerorts und des Lieferanten erfolgt. Außerdem wird der Wareneingang über das Menü **Waren » Neuer Wareneingang** beschrieben. Nur wenn Sie Wareneingänge und Warenausgänge buchen und so Warenbestände in plentymarkets führen, kann Ihr System <<artikel/artikel-verwalten#230, Varianten anhand der Beschränkung und Verfügbarkeit automatisiert im Webshop ein- und ausblenden>> sowie Listings automatisiert starten und beenden.
 
 [#100]
 == Lieferanten einer Variante zuordnen
@@ -22,8 +22,9 @@ Lieferanten zuordnen:
 . Klicken Sie auf **Hinzufügen**.  +
 → Der Lieferant wird der Variante zugeordnet und weitere Einstellungen können optional vorgenommen werden.
 
+[[tabelle-Lieferanteninformation-Variante]]
 .Lieferanteninformationen für eine Variante
-[cols="a,a"]
+[cols="1,2"]
 |====
 |Einstellung |Erläuterung
 
@@ -63,8 +64,9 @@ Eine Variante muss mit einem Lager samt Lagerort verknüpft werden, damit ein Wa
 . Klicken Sie auf **Hinzufügen**.  +
 → Das Lager wird der Variante zugeordnet und weitere Einstellungen können optional vorgenommen werden.
 
+[[tabelle-Lagereinstellungen-Variante]]
 .Lagereinstellungen einer Variante
-[cols="a,a"]
+[cols="1,2"]
 |====
 |Einstellung |Erläuterung
 
@@ -87,34 +89,65 @@ Wird hier kein Wert eingetragen, wird die Lagerreichweite bei der Berechnung ein
 |**Bestandspuffer**
 |Ein Bestandspuffer bewirkt, dass der Bestand für bestimmte Marktplätze um den eingetragenen Wert reduziert wird.  +
 __Beispiel__: Der Artikel hat einen Bestand von 50. Sie möchten einen Bestandspuffer von 10 Artikeln, damit der Artikel nicht vollständig über den Marktplatz abverkauft wird. Dazu **10** als Bestandspuffer eintragen. Zum Marktplatz wird ein Bestandswert von **40** übertragen.  +
-Hier eingetragene Werte gelten für die Marktplätze <<omni-channel/multi-channel/neckermann-at#, **Neckermann**>>, <<omni-channel/multi-channel/otto#, **Otto**>> und <<omni-channel/multi-channel/plus-gartenxxl#, **Plus.de**>>. Die Werte sind gegenüber den hinterlegten Bestandspufferwerten dieser Marktplätze dominant.
+Hier eingetragene Werte gelten für die Marktplätze <<omni-channel/multi-channel/neckermann-at#, Neckermann>>, <<omni-channel/multi-channel/otto#, Otto>> und <<omni-channel/multi-channel/plus-gartenxxl#, Plus.de>>. Die Werte sind gegenüber den hinterlegten Bestandspufferwerten dieser Marktplätze dominant.
 
 |**Lagerortvorschlag**
 |Lagerort wählen, der bei Nachbestellungen automatisch vorgeschlagen werden soll. Die Einstellung Standard-Lagerort bedeutet, dass kein Lagerort zugewiesen wurde.
 |====
 
+[#250]
+== Einkaufspreis ermitteln
+
+Die Einstellungen zum Einkaufspreis in plentymarkets sind vielfältig. In Varianten werden Ihnen 2 verschiedene Einkaufspreise angezeigt. Ein Feld zeigt immer den gleitenden Einkaufspreis. Welcher Einkaufspreis im 2. Feld angezeigt wird, bestimmen Sie durch Ihre Einstellungen. Sie haben die Möglichkeit einen Einkaufspreis einzutragen oder bei Wareneingängen z.B. den Einkaufspreis des aktuellen Wareneingangs an Varianten und Lieferanten zu übertragen. Sie haben auch die Möglichkeit einen weiteren Durchschnittseinkaufspreis zu übertragen. Hierbei handelt es sich um eine Art Live-Druchschnittseinkaufspreis. Welche Einstellungsoptionen Sie haben, um den Einkaufspreis zu übertragen, wird im nächsten Kapitel, <<#300, Lagerort und Einkaufspreis übertragen>>, beschrieben. +
+Die Berechnung der 2 unterschiedlichen Durchschnittseinkaufspreise wird im folgenden erläutert.
+
+[[tabelle-Durchschnittseinkaufspreis-berechnen]]
+.Formeln Durchschnittseinkaufspreis
+[cols="1,2"]
+|====
+|Livedurchschnittsberechnung |Berechnung gleitender Durchschnittseinkaufspreis
+
+|latexmath:[$DEK_neu = {EK_alt \cdot Menge_alt + EK_neu \cdot Menge_neu\over Menge_alt + Menge_neu}$]
+|latexmath:[$GLD_neu = {GLD_alt \cdot Menge_alt + EK_neu \cdot Menge_neu\over Menge_alt + Menge_neu}$]
+
+|Bei dieser Methode wird durch jeden Wareneingang und jeden Warenausgang eine Neuberechnung ausgelöst. Der aktuelle Durchschnitt wird z.B. in Statistiken oder Exporten ausgegeben. Damit dieser Durchschnittspreis auch im Artikel angezeigt wird, muss extra eingestellt werden, dass der Durchschnittseinkaufspreis auf Varianten übertragen wird.
+|Bei dieser Methode wird durch jeden Wareneingang eine Neuberechnung ausgelöst. Allerdings nur, wenn das Lager, in das Sie Bestand buchen auch für den GLD berücksichtigt wird. Der GLD wird in der Variante in einem separaten Feld automatisch angezeigt.
+
+|====
+
+[.subhead]
+GLD berechnen
+
+latexmath:[$$GLD_neu = {GLD_alt \cdot Menge_alt + EK_neu \cdot Menge_neu\over Menge_alt + Menge_neu}$$]
+
+[.subhead]
+Live-Durchschnittseinkaufspreis berechnen
+
+latexmath:[$$DEK_neu = {EK_alt \cdot Menge_alt + EK_neu \cdot Menge_neu\over Menge_alt + Menge_neu}$$]
+
 [#300]
-== Übernahme von Daten vorbereiten
+== Lagerort und Einkaufspreis übertragen
 
 Beim Hinzufügen der Artikel können Sie sowohl den Einkaufspreis als auch die UVP sowie den Lagerort angeben. Die UVP wird bei Freigabe eines Wareneingangs automatisch in die Variantendaten übernommen. Wenn ein Wareneingang die gleiche Variante mehrmals, jedoch mit unterschiedlichen UVPs enthält, wird bei der Freigabe die höchste UVP übernommen. Ob und wie Einkaufspreise von Wareneingängen zu den Artikeldaten übertragen werden und ob und wie ein Lagerort aus einem Wareneingang zu einem Artikel übertragen wird, legen Sie vorab fest.
 
 [.instruction]
-Übernahme festlegen:
+Übertragung festlegen:
 
 . Öffnen Sie das Menü **System » Waren » Warenbestand » Wareneingang**.
-. Wählen Sie eine Einstellung. Beachten Sie dazu die Erläuterungen in Tabelle 3.
+. Wählen Sie eine Einstellung. Beachten Sie dazu die Erläuterungen in <<tabelle-Einkaufspreis-Lagerort-übertragen>>
 . **Speichern** Sie die Einstellungen.
 
+[[tabelle-Einkaufspreis-Lagerort-übertragen]]
 .Preis- und Lagerortübertragung festlegen
-[cols="a,a"]
+[cols="1,2"]
 |====
 |Einstellung |Erläuterung
 
 |**Einkaufspreis**
 |Wählen ob und wohin der EK aus dem Wareneingang übertragen wird. Die Übertragung erfolgt bei Freigabe eines Wareneingangs.  +
-**Einkaufspreis nicht übertragen** = Einkaufspreis wird nicht übertragen.  +
-**Einkaufspreis auf Varianten übertragen** = Einkaufspreis wird automatisch im Tab **Einstellungen** einer Variante hinterlegt.  +
-**Einkaufspreis auf Varianten und Lieferant übertragen** = Einkaufspreis wird automatisch im Tab **Einstellungen** einer Variante sowie im Tab **Bestand** in den Lieferantendaten hinterlegt.  +
+**Einkaufspreis nicht übertragen** = Einkaufspreis wird nicht übertragen. Wählen Sie diese Einstellung, wenn Sie den Einkaufspreis in der Variante manuell pflegen möchten. +
+**Einkaufspreis auf Varianten übertragen** = Einkaufspreis wird automatisch im Tab **Einstellungen** einer Variante hinterlegt. Wenn Sie im selben Wareneingang die selbe Variante mit unterschiedlichen Einkaufspreisen buchen, wird der letzte Einkaufspreis der Variante aus dem Wareneingang übertragen. +
+**Einkaufspreis auf Varianten und Lieferant übertragen** = Einkaufspreis wird automatisch im Tab **Einstellungen** einer Variante sowie im Tab **Bestand** in den Lieferantendaten hinterlegt. Wenn Sie im selben Wareneingang die selbe Variante mit unterschiedlichen Einkaufspreisen buchen, wird der letzte Einkaufspreis der Variante aus dem Wareneingang übertragen. +
 **Durchschnittseinkaufspreis auf Varianten übertragen** = Bei jedem Wareneingang wird der durchschnittliche EK neu berechnet und angepasst. Dabei werden die Einkaufspreise aller im Lager verfügbaren Bestände einer Variante zur Berechnung herangezogen. Der errechnete Mittelwert wird im Tab **Einstellungen** einer Variante hinterlegt.  +
 **Höchsten Einkaufspreis übertragen** = Bei mehreren unterschiedlichen Einkaufspreisen wird der höchste Einkaufspreis aus dem aktuellen Wareneingang in die Variantendaten übertragen.  +
 **Niedrigsten Einkaufspreis übertragen** = Bei mehreren unterschiedlichen Einkaufspreisen wird der niedrigste Einkaufspreis aus dem aktuellen Wareneingang in die Variantendaten übertragen.
@@ -154,8 +187,8 @@ Das Erfassen eines Wareneingangs teilt sich in zwei Schritte. Zunächst geben Si
 ==== Kopfdaten eines Wareneingangs erfassen
 
 Um einen Wareneingang zu erfassen, benötigen Sie mindestens ein Lager und einen Lieferanten.
-Lieferanten legen Sie als **<<crm/kundendaten-verwalten#800, Kunden>>** an und ordnen ihnen den Kundentyp Lieferant zu.
-Außerdem muss mindestens ein Benutzer als **<<basics/arbeiten-mit-plentymarkets/benutzer-verwalten#40, Eigner für Wareneingänge>>** aktiviert sein, damit der Wareneingang einem Eigner zugeordnet werden kann.
+Lieferanten legen Sie als <<crm/kundendaten-verwalten#800, Kunden>> an und ordnen ihnen den Kundentyp Lieferant zu.
+Außerdem muss mindestens ein Benutzer als <<basics/arbeiten-mit-plentymarkets/benutzer-verwalten#40, Eigner für Wareneingänge>> aktiviert sein, damit der Wareneingang einem Eigner zugeordnet werden kann.
 Ohne Eigner kann kein Wareneingang erfasst werden.
 Die Eigner stehen Ihnen nach ID sortiert zur Verfügung.
 Wenn der eingeloggte Benutzer als Eigner möglich ist, wird er vorausgewählt.
@@ -169,14 +202,14 @@ Kopfdaten eines Wareneingangs erfassen:
 . Tragen Sie einen **Lieferanten** ein.  +
 →  Mit der Pfeiltaste nach unten öffnen Sie eine Liste aller Lieferanten, alternativ werden ab Eingabe des dritten Buchstabens Vorschläge eingeblendet.
 . Wählen Sie ein Lager.  +
-→ Wenn ein Hauptlager für die Variante gespeichert ist, ist das **<<artikel/artikel-verwalten#290, Hauptlager>>** vorausgewählt.
+→ Wenn ein Hauptlager für die Variante gespeichert ist, ist das <<artikel/artikel-verwalten#290, Hauptlager>> vorausgewählt.
 . Wählen Sie einen Eigner.  +
-→ Wenn Sie als **<<basics/arbeiten-mit-plentymarkets/benutzer-verwalten#40, Eigner für Wareneingänge>>** aktiviert wurden, sind Sie als eingeloggter Benutzer als Eigner vorausgewählt.
+→ Wenn Sie als <<basics/arbeiten-mit-plentymarkets/benutzer-verwalten#40, Eigner für Wareneingänge>> aktiviert wurden, sind Sie als eingeloggter Benutzer als Eigner vorausgewählt.
 . Nehmen Sie weitere optionale Einstellungen vor.
 . Klicken Sie auf Speichern, um den Wareneingang anzulegen.  +
 → Der Wareneingang wird in einem Tab geöffnet, erhält eine ID und den Status **Erfasst**. Durch einen Klick auf das Plus am Anfang der Kopfzeile des Wareneingangs werden weitere Angaben sichtbar.
 
-Wenn Sie den Wareneingang in einer anderen Währung als Ihrer **<<auftragsabwicklung/payment/waehrungen#30, Standardwährung>>** bezahlen, wird der **<<auftragsabwicklung/payment/waehrungen#20, Umrechnungskurs>>** voreingetragen.
+Wenn Sie den Wareneingang in einer anderen Währung als Ihrer <<auftragsabwicklung/payment/waehrungen#30, Standardwährung>> bezahlen, wird der <<auftragsabwicklung/payment/waehrungen#20, Umrechnungskurs>> voreingetragen.
 
 Alle erfassten Angaben können geändert werden. Um den Wareneingang zu vervollständigen, fügen Sie Artikel und Warenbezugskosten hinzu.
 
@@ -199,7 +232,7 @@ Varianten einzeln hinzufügen:
 . Öffnen Sie einen Wareneingang.
 . Klicken Sie auf **Artikel hinzufügen**.  +
 → Ein Fenster zur Artikelsuche und -auswahl wird geöffnet.
-. Tragen Sie Suchbegriffe ein und stellen Sie Filteroptionen ein. Beachten Sie dabei die Erläuterungen in Tabelle 4.
+. Tragen Sie Suchbegriffe ein und stellen Sie Filteroptionen ein. Beachten Sie dabei die Erläuterungen in <<tabelle-Variantenfilter-Wareneingang>>.
 . Klicken Sie auf **Suchen**.  +
 → Die Artikel, die den eingegebenen Suchkriterien entsprechen, werden aufgelistet.
 . Tragen Sie optional den **Einkaufspreis** ein.
@@ -212,8 +245,9 @@ Varianten einzeln hinzufügen:
 . Klicken Sie in der Spalte **Aktionen** auf **Artikel hinzufügen**.  +
 → Die Variante wird dem Wareneingang hinzugefügt.
 
+[[tabelle-Variantenfilter-Wareneingang]]
 .Artikelfilter
-[cols="a,a"]
+[cols="1,2"]
 |====
 |Einstellung |Erläuterung
 
@@ -241,7 +275,7 @@ Mehrere Varianten hinzufügen:
 . Öffnen Sie einen Wareneingang.
 . Klicken Sie auf **Artikel hinzufügen**.  +
 → Ein Fenster zur Artikelsuche und -auswahl wird geöffnet.
-. Tragen Sie Suchbegriffe ein und stellen Sie Filteroptionen ein. Beachten Sie dabei die Erläuterungen in Tabelle 4.
+. Tragen Sie Suchbegriffe ein und stellen Sie Filteroptionen ein. Beachten Sie dabei die Erläuterungen in <<tabelle-Variantenfilter-Wareneingang>>.
 . Klicken Sie auf **Suchen**.  +
 → Die Varianten, die den eingegebenen Suchkriterien entsprechen, werden aufgelistet.
 . Tragen Sie optional den **Einkaufspreis** ein.
@@ -287,10 +321,11 @@ Status ändern:
 → Die Status **In Prüfung**, **Fehler**, **Storniert** und **Freigegeben** stehen zur Wahl.
 . **Speichern** Sie den Status.
 
+[[tabelle-Status-Wareneingang]]
 .Einstellbare Status
-[cols="a,a"]
+[cols="1,2"]
 |====
-|**Status** |Erläuterung
+|Status |Erläuterung
 
 |**Erfasst**
 |Erhält jeder Wareneingang automatisch nach dem Anlegen.
@@ -319,7 +354,7 @@ Sobald ein Wareneingang den Status **Freigegeben** erhält, können Varianten we
 
 Den Bestand einer Variante sehen Sie im Tab **Bestand** und hier im Untertab **Warenbestand**. Im Untertab **Warenbewegung** werden zusätzlich alle Warenbewegungen angezeigt, d.h. hier sehen Sie auch, wenn z.B. der Einkaufspreis im Wareneingang geändert wurde. Alle Änderungen der Artikelmenge oder des Einkaufspreises in einem Wareneingang werden unabhängig vom Status des Wareneingangs als Warenbewegungen festgehalten.
 
-Den Bestand aller Artikel und Varianten sehen Sie im Menü **<<warenwirtschaft/warenbestaende-verwalten#, Waren » Warenbestände>>**.
+Den Bestand aller Artikel und Varianten sehen Sie im Menü <<warenwirtschaft/warenbestaende-verwalten#, Waren » Warenbestände>>.
 
 [#1200]
 === Notiz hinzufügen
@@ -379,7 +414,7 @@ Ab plentymarkets 7 kann Ware auch über die plentymarkets App eingebucht werden.
 [TIP]
 .Hardware für plentymarkets App
 ====
-Hardware-Empfehlungen für das Einbuchen von Ware über die plentymarkets App finden Sie auf der Handbuchseite **<<erste-schritte/systemvoraussetzungen#_warenbestand_mit_der_plentymarkets_app_verwalten, Systemvoraussetzungen>>**.
+Hardware-Empfehlungen für das Einbuchen von Ware über die plentymarkets App finden Sie auf der Handbuchseite <<erste-schritte/systemvoraussetzungen#_warenbestand_mit_der_plentymarkets_app_verwalten, Systemvoraussetzungen>>.
 ====
 
 === Berechtigungen für Einbuchen erteilen
@@ -395,9 +430,10 @@ Benutzern Berechtigungen für das Einbuchen erteilen:
 . Öffnen Sie das Tab **Mobile**.
 . Aktivieren Sie im Bereich **Sichtbare Funktionen** die Berechtigung **Einbuchen**. +
 → Die Einzelberechtigungen für das Einbuchen werden eingeblendet.
-. Erteilen Sie bei Bedarf zusätzliche Einzelberechtigungen. Beachten Sie dazu die Erläuterungen in Tabelle 6.
+. Erteilen Sie bei Bedarf zusätzliche Einzelberechtigungen. Beachten Sie dazu die Erläuterungen in <<tabelle-Berechtigung-Bestandseinbuchung-App>>.
 . **Speichern** Sie die Einstellungen.
 
+[[tabelle-Berechtigung-Bestandseinbuchung-App]]
 .Einbuchen über App; Einzelberechtigungen
 [cols="1,2"]
 |====
@@ -422,9 +458,10 @@ Einbuchen über die plentymarkets App personalisieren:
 . Tippen Sie auf **Einstellungen**.
 . Tippen Sie auf **Einbuchung**. +
 → Das Einstellungsmenü **Einbuchung** wird angezeigt.
-. Nehmen Sie die Einstellungen vor. Beachten Sie Tabelle 7. +
+. Nehmen Sie die Einstellungen vor. Beachten Sie <<tabelle-Einstellungen-Bestandseinbuchung-App>>. +
 **__Tipp:__** Die Einstellungen werden gespeichert, wenn Sie das Menü verlassen.
 
+[[tabelle-Einstellungen-Bestandseinbuchung-App]]
 .Einbuchung; App-Einstellungen
 [cols="1,2"]
 |====
@@ -470,7 +507,7 @@ Aktiviert = Der Einkaufspreis wird angezeigt, wenn der Benutzer über die nötig
 [TIP]
 .Lagerorte labeln
 ====
-Noch schneller buchen Sie Ware ein, wenn Sie Ihre **<<warenwirtschaft/lager-einrichten#800, Lagerorte labeln>>**. Beim Einbuchen können Sie dann die Labels des Ziellagerorts scannen.
+Noch schneller buchen Sie Ware ein, wenn Sie Ihre <<warenwirtschaft/lager-einrichten#800, Lagerorte labeln>>. Beim Einbuchen können Sie dann die Labels des Ziellagerorts scannen.
 ====
 
 [.instruction]
@@ -505,11 +542,12 @@ Mit der Wareneingangssuche listen Sie gezielt Wareneingänge auf. Viele der Filt
 Neuen Wareneingang suchen:
 
 . Öffnen Sie das Menü **Waren » Neuer Wareneingang**.
-. Wählen Sie die gewünschten Sucheinstellungen. Beachten Sie dabei auch die Erläuterungen in Tabelle 8.
+. Wählen Sie die gewünschten Sucheinstellungen. Beachten Sie dabei auch die Erläuterungen in <<tabelle-Wareneingang-suchen-App>>.
 . Klicken Sie auf **Suchen**.
 
+[[tabelle-Wareneingang-suchen-App]]
 .Sucheinstellungen für Wareneingänge
-[cols="a,a"]
+[cols="1,2"]
 |====
 |Einstellung |Erläuterung
 
