@@ -1,0 +1,168 @@
+= Ceres-Checkout in Callisto einrichten
+:lang: de
+:keywords: Webshop, Mandant, Standard, Ceres, Plugin, Checkout, Kaufabwicklung, Callisto
+:position: 30
+
+Du willst den neuen Checkout mit seiner Plugin-Fähigkeit und individuellen Anpassbarkeit in deinem Callisto-Webshop nutzen? Kein Problem – im Folgenden erfährst du Schritt für Schritt, was dafür nötig ist.
+
+[NOTE]
+.Das Wichtigste vorab …
+====
+* Dieses Best Practice beschreibt die Einrichtung des Ceres-Checkouts in ein Callisto-Template mit *individuellem Bestellvorgang*. Kopiere dir bitte dein Design und führe keine Anpassungen an deinem aktiven Layout durch.
+* Um den Ceres-Checkout zu nutzen, benötigst du neben deinem Callisto-Webshop die aktuellen Versionen der Plugins link:https://marketplace.plentymarkets.com/plugins/templates/Ceres_4697[Ceres^] und link:https://marketplace.plentymarkets.com/plugins/templates/IO_4696[IO^]. Beide findest du im plentyMarketplace.
+* Beachte bitte, dass Plugins ausschließlich mit dem neuen Backend Terra kompatibel sind.
+====
+
+== Routen verwalten
+Ceres baut auf der Logik des Plugins IO auf. Um den Checkout so zu nutzen, dass alle Links zwischen Callisto und Ceres korrekt funktionieren, verfährst du wie im Folgenden beschrieben.
+
+[TIP]
+.Im Vorschaumodus arbeiten
+====
+Führe die Änderungen zuerst im <<basics/erste-schritte/plugins#50, Vorschaumodus Stage>> aus, bevor du sie in deinen Webshop übernimmst.
+====
+
+[.instruction]
+Einstellungen in IO vornehmen:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*.
+. Klicke auf *IO*. +
+→ Das Plugin wird geöffnet.
+. Klicke im Verzeichnisbaum auf *Konfiguration*.
+. Wechsle in das Tab *Routing*.
+. Klicke das Häkchen bei *All*. +
+→ Alle Routen werden deaktiviert.
+. Aktiviere die Routen */checkout*, */confirmation*, */login*, *register* sowie */place-order & /execute-payment*.
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Einstellungen in Ceres vornehmen:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*.
+. Klicke auf *Ceres*. +
+→ Das Plugin wird geöffnet.
+. Klicke im Verzeichnisbaum auf *Konfiguration*. +
+→ Das Tab *Global* ist bereits vorausgewählt.
+. Klicke auf *Enable Callisto route pattern for items*. +
+→ Die Callisto-Routen werden etabliert.
+. *Speichere* die Einstellungen. +
+→ Der Ceres-Checkout ist in Ihrem Callisto-Webshop aktiv.
+
+== Bestellabwicklung anpassen
+
+Für die Bestellabwicklung müssen Änderungen an den Kategorien vorgenommen werden. Gehe dazu wie folgt vor.
+
+[.instruction]
+Kategorien erstellen:
+
+. Öffne das Menü *Artikel » Kategorien*.
+. Erstelle eine neue Hauptkategorie mit dem Namen *login*.
+. Öffne die Kategorie *login*.
+. Wähle den Kategorietyp *Container*.
+. *Speichere* die Einstellungen.
+. Erstelle eine neue Hauptkategorie mit dem Namen *checkout*.
+. Öffne die Kategorie *checkout*.
+. Wähle den Kategorietyp *Container*.
+. *Speichere* die Einstellungen.
+
+Anschließend verknüpfst du die neuen Kategorien mit den Bestellschritten von Callisto.
+
+[.instruction]
+Bestellvorgang anpassen:
+
+. Öffne das Menü *CMS » Webdesign*.
+. Klicke auf *Einstellungen*. +
+→ Das Menü *Design-Einstellungen* wird geöffnet.
+. Wechsle in das Tab *Mandanten*.
+. Wähle den Mandanten, für den du die Änderungen vornehmen willst.
+. Wechsle in das Tab *Bestellvorgang*.
+. Klicke neben *2. Bestellschritt* auf *Suchen*.
+. Wähle die zuvor erstellte Kategorie *login*.
+. Klicke neben *3. Bestellschritt* auf *Suchen*.
+. Wähle die zuvor erstellte Kategorie *checkout*.
+. *Speichere* die Einstellungen.
+
+Wenn du nun aus dem Warenkorb zur Kasse gehst, wirst du auf den Ceres-Checkout weitergeleitet, der alle neuen Funktionen wie z.B. Payment-Plugins wie PayPal ermöglicht.
+
+== Backlinks setzen
+
+Damit ein nicht angemeldeter Benutzer nach dem Klick auf *Zur Kasse* vom Login weiter zur Bestellabwicklung geleitet wird, müssen Änderungen am Callisto-Code vorgenommen werden. Gehe dazu vor wie im Folgenden beschrieben.
+
+[.instruction]
+Backlinks für den Warenkorb setzen:
+
+. Öffne das Menü *Artikel » Kategorien*.
+. Klappe deine Callisto-Kategorie auf.
+. Klicke auf die Kategorie *Warenkorb*.
+. Wechsle in das Tab *Beschreibung 1*.
+. Suche den Code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
+. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Backlinks für die Warenkorbvorschau setzen:
+
+. Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewBasketPreviewList*.
+. Suche den Code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
+. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Backlinks für das Warenkorb-Overlay setzen:
+
+. Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewItemToBasketConfirmationOverlay*.
+. Suche den Code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
+. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. *Speichere* die Einstellungen.
+
+== Rechtliche Angaben anpassen
+
+Die vier rechtlich relevanten Angaben *AGB*, *Datenschutzerklärung*, *Impressum* und *Widerrufsrecht* müssen neu verknüpft werden, um weiterhin korrekt angezeigt zu werden.
+
+[.instruction]
+AGB anpassen:
+
+. Öffne das Menü *Artikel » Kategorien*.
+. Klappe deine Callisto-Kategorie auf.
+. Kopiere die Kategorie *AGB* als Hauptkategorie. +
+→ Die neue Hauptkategorie *AGB* wird geöffnet.
+. Gib als *URL-Name* der Kategorie *gtc* ein.
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Datenschutzerklärung anpassen:
+
+. Öffne das Menü *Artikel » Kategorien*.
+. Klappe deine Callisto-Kategorie auf.
+. Kopiere die Kategorie *Datenschutz* als Hauptkategorie. +
+→ Die neue Hauptkategorie *Datenschutz* wird geöffnet.
+. Gib als *URL-Name* der Kategorie *privacy-policy* ein.
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Impressum anpassen:
+
+. Öffne das Menü *Artikel » Kategorien*.
+. Klappe deine Callisto-Kategorie auf.
+. Kopiere die Kategorie *Impressum* als Hauptkategorie. +
+→ Die neue Hauptkategorie *Impressum* wird geöffnet.
+. Gib als *URL-Name* der Kategorie *legal-disclosure* ein.
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Widerrufsrecht anpassen:
+
+. Öffne das Menü *Artikel » Kategorien*.
+. Klappe deine Callisto-Kategorie auf.
+. Kopiere die Kategorie *Widerrufsrecht* als Hauptkategorie. +
+→ Die neue Hauptkategorie *Widerrufsrecht* wird geöffnet.
+. Gib als *URL-Name* der Kategorie *cancellation-rights* ein.
+. *Speichere* die Einstellungen.
+
+== Theme
+
+Du hast deinen Callisto-Webshop bereits nach deinen individuellen Bedürfnissen gestaltet und befürchtest, dass das Ceres-Design nicht damit harmoniert? Es ist ein Leichtes, das link:https://marketplace.plentymarkets.com/plugins/themes/ceresvanilla_5025[Vanilla-Theme^] für Ceres herunterzuladen und dein Design darin zu hinterlegen, um deinen gesamten Shop in der gewohnten Optik erstrahlen zu lassen.
+
+== Zahlungsarten im neuen und alten Checkout
+
+Beachte bitte, dass im Ceres-Checkout keine der alten Zahlungsarten aus Callisto mehr verfügbar sind, sondern nur noch die neuen Payment-Plugins. Du musst daher mindestens ein link:https://marketplace.plentymarkets.com/plugins/payment/[Payment-Plugin^] installieren, um deinen Kunden weiterhin eine Bezahlmöglichkeit zur Verfügung zu stellen.
