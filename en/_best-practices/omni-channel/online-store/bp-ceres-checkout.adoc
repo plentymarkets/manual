@@ -1,0 +1,170 @@
+= Installing the Ceres checkout in Callisto
+:lang: en
+:keywords: online store, client, standard, Ceres, plugin, checkout, Callisto
+:position: 30
+
+You want to use the new checkout with its plugin capability and individualisation in concert with your Callisto online store? No problem – read here how to do it step by step.
+
+[NOTE]
+.First things first …
+====
+* This HowTo describes setting up the Ceres checkout in a Callisto template with the *individual order process*. Before you get started, back up your design and do not make any changes to your active layout.
+* To use the Ceres checkout, you need the current version of the link:https://marketplace.plentymarkets.com/plugins/templates/Ceres_4697[Ceres^] and the link:https://marketplace.plentymarkets.com/plugins/templates/IO_4696[IO^] plugins. You can find them in the plentyMarketplace.
+* Note that plugins only work with the new back end Terra.
+====
+
+
+== Managing routes
+
+Ceres uses the logic of the IO plugin. To ise the checkout in a way all links between Callisto and Ceres work properly, proceed as follows.
+
+[TIP]
+.Working in the preview mode
+====
+Test all changes in the <<basics/first-steps/plugins#50, preview mode Stage>> before carrying them over to your live store.
+====
+
+[.instruction]
+Applying changes in IO:
+
+. Go to *Plugins » Plugin overview*.
+. Click on *IO*. +
+→ The plugin will open.
+. Click on *Configuration* in the directory tree.
+. Click on the *Routing* tab.
+. Click on the checkbo *All*. +
+→ All routes are deactivated.
+. Activate the routes */checkout*, */confirmation*, */login*, *register* and */place-order & /execute-payment*.
+. *Save* the settings.
+
+[.instruction]
+Applying changes in Ceres:
+
+. Go to *Plugins » Plugin overview*.
+. Click on *Ceres*. +
+→ The plugin will open.
+. Click on *Configuration* in the directory tree. +
+→ The *Global* tab is already selected.
+. Click on *Enable Callisto route pattern for items*. +
+→ The Callisto routes are enabled.
+. *Save* the settings. +
+→ The Ceres checkout is active in your system.
+
+== Adjusting the order process
+
+Proceed as follows to carry out the necessary adjustments to the order process.
+
+[.instruction]
+Creating categories:
+
+. Go to *Item » Category*.
+. Create a new main category with the name *login*.
+. Open the category *login*.
+. Select the category type *Container*.
+. *Save* the settings.
+. Create a new main category with the name *checkout*.
+. Open the category * checkout*.
+. Select the category type *Container*.
+. *Save* the settings.
+
+Afterwards, link the new categories with the Callisto order process.
+
+[.instruction]
+Adjusting the order process:
+
+. Go to *CMS » Web design*.
+. Click on *Settings*. +
+→ The menu *Design settings* will open.
+. Click on the tab *Clients*.
+. Select the client you want to edit.
+. Click on the tab *Order process*.
+. Click on *Search* next to *2nd order process step*.
+. Select the created category *login*.
+. Click on *Search* next to *3rd order process step*.
+. Select the created category *checkout*.
+. *Save* the settings.
+
+Now, once you go to the checkout from the basket, you will be forwarded to the Ceres checkout, which offers new functions, e.g., payment plugins like PayPal.
+
+== Creating backlinks
+
+After clicking on *To the checkout* and logging in, a customer should be reirected to the checkout to complete the order. Proceed as follows to create the functionality to do so.
+
+[.instruction]
+Creating backlinks for the basket:
+
+. Go to *Item » Category*.
+. Open the Callisto category.
+. Click on the category *Shopping cart*.
+. Click on the tab *Description 1*.
+. Search for the code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
+. Replace this code with `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. *Save* the settings.
+
+[.instruction]
+Creating backlinks for the basket preview:
+
+. Go to *CMS » Web design » Layout » ItemView » ItemViewBasketPreviewList.*
+. Search for the code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
+. Replace this code with `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. *Save* the settings.
+
+[.instruction]
+Creating backlinks for the basket overlay:
+
+. Go to *CMS » Web design » Layout » ItemView » ItemViewItemToBasketConfirmationOverlay.*
+. Search for the code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
+. Replace this code with `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. *Save* the settings.
+
+== Adjusting the legal information
+
+The four areas have to be connected differently to be displayed correctly.
+
+[.instruction]
+Adjusting the GTC:
+
+. Go to *Item » Category*.
+. Open the Callisto category.
+. Copy the category *Terms and conditions* as main category. +
+→ The new main category *Terms and conditions* will open.
+. Enter *gtc* as *URL name* of the category.
+. *Save* the settings.
+
+[.instruction]
+Adjusting the cancellation rights:
+
+. Go to *Item » Category*.
+. Open the Callisto category.
+. Copy the category *Cancellation rights* as main category. +
+→ The new main category *Cancellation rights* will open.
+. Enter *cancellation-rights* as *URL name* of the category.
+. *Save* the settings.
+
+[.instruction]
+Adjusting the legal disclosure:
+
+. Go to *Item » Category*.
+. Open the Callisto category.
+. Copy the category *Legal disclosure* as main category. +
+→ The new main category *Legal disclosure* will open.
+. Enter *legal-disclosure* as *URL name* of the category.
+. *Save* the settings.
+
+[.instruction]
+Adjusting the privacy policy:
+
+. Go to *Item » Category*.
+. Open the Callisto category.
+. Copy the category *Privacy policy* as main category. +
+→ The new main category *Privacy policy* will open.
+. Enter *privacy-policy* as *URL name* of the category.
+. *Save* the settings.
+
+== Theme
+
+You have personalised your Callisto online store just the way you like it and fear the Ceres design will interfere with it? You can easily download the link:https://marketplace.plentymarkets.com/plugins/themes/ceresvanilla_5025[Vanilla theme^] for Ceres and apply your design to guarantee a consistent user experience.
+
+== Payment methods
+
+The old Callisto payment methods do not work with the Ceres checkout, only the new payment plugins. Hence, you have to install at least one link:https://marketplace.plentymarkets.com/plugins/payment/[payment plugin^] to provide your customers with a payment method.
