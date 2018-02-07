@@ -35,7 +35,7 @@ Sie können wählen zwischen: +
  +
 Berechnungsparameter für den Bestellmengenvorschlag:
 
-* **Meldebestand** = Bestandsmenge, bei der nachbestellt werden soll. Der Meldebestand wird im Tab **Lager** einer Variante eingetragen.
+* **Meldebestand** = Bestandsmenge, bei der nachbestellt werden soll. Beachten Sie die Erläuterungen zum <<#500, statischen und dynamischen Meldebestand>>.
 * **Nettobestand** = Verkaufbare Menge des Lagerbestands.
 * **Bestellte Menge** = Bereits nachbestellt, aber noch nicht geliefert.
 * **Durchschnittsverbrauch** = Tagesdurchschnittsverkaufsmenge. Den Zeitraum, der zum Ermitteln des Tagesdurchschnitts verwendet wird, legen Sie mit dem Abverkaufszeitraum fest.
@@ -62,7 +62,7 @@ Ein weiterer Faktor, der Einfluss auf den Bestellmengenvorschlag hat, ist die Mi
 [NOTE]
 .Differenz zum Meldebestand dynamisch berechnen
 ====
-Die Differenz zum Meldebestand, MeldΔ, kann auch dynamisch ermittelt werden. Der Meldebestand selbst ist jedoch nicht dynamisch. Die Berechnung erfolgt pro Lager. Damit MeldΔ dynamisch berechnet wird, muss die Lagereinstellung *Dynamischer Meldebestand* als *aktiv* gespeichert werden. Außerdem muss der Meldebestand der Variante für das Lager 0 sein. Wenn ein Meldebestand größer als 0 gespeichert ist, wird die Berechnung nicht ausgeführt.
+Die Differenz zum Meldebestand, MeldΔ, kann basierend auf dem dynamischen Meldebestand ermittelt werden. Der dynamische Meldebestand selbst wird jedoch noch nicht im System dargestellt. Die Berechnung erfolgt pro Lager. Damit MeldΔ dynamisch berechnet wird, muss die Lagereinstellung *Dynamischer Meldebestand* als *aktiv* gespeichert werden. Außerdem muss der Meldebestand der Variante für das Lager 0 sein. Wenn ein Meldebestand größer als 0 gespeichert ist, wird die Berechnung nicht ausgeführt.
 ====
 
 [#200]
@@ -100,7 +100,7 @@ Bestellstatus einrichten:
 |Nur ein Teil der nachbestellten Ware wurde geliefert. Wenn nur ein Teil der bestellten Ware gebucht wird, wird dieser Status automatisch eingestellt.
 
 |**4 - Geliefert**
-|Alle Artikel wurden in der bestellten Anzahl geliefert. Wenn die bestellte Ware in mehreren Schritten gebucht wurde, wird der Status automatisch gesetzt, sobald die Nachbestellung vollständig gebucht ist – siehe Kapitel **<<warenwirtschaft/nachbestellungen-verwalten#1700, Teillieferung einbuchen>>**.
+|Alle Artikel wurden in der bestellten Anzahl geliefert. Wenn die bestellte Ware in mehreren Schritten gebucht wurde, wird der Status automatisch gesetzt, sobald die Nachbestellung vollständig gebucht ist – siehe Kapitel <<warenwirtschaft/nachbestellungen-verwalten#1700, Teillieferung einbuchen>>.
 
 |**5 - Eingebucht**
 |Wenn die komplette Nachbestellung auf einmal geliefert und eingebucht wird, wird der Status automatisch eingestellt – siehe Kapitel **Ware einbuchen**.
@@ -196,7 +196,8 @@ Richten Sie anschließend die Ereignisaktion für den automatischen E-Mail-Versa
 [#500]
 == Meldebestand einer Variante festlegen
 
-Mit dem Meldebestand legen Sie fest, bei welcher Menge einer Variante Sie eine Nachbestellung veranlassen möchten. Im **Tab: Lager** einer Variante geben Sie den **Meldebestand** an. Zunächst ist die Menge 0 gespeichert, sodass erst dann eine Meldung erfolgt, wenn der komplette Bestand verkauft ist. Wenn Sie den Meldebestand bei 0 belassen, unterscheidet er sich im Grunde nicht von einem Nettobestand 0 und bietet Ihnen somit keine zusätzlichen Funktionen. Wenn Sie den Meldebestand sinnvoll nutzen möchten, tragen Sie einen Wert ein, der größer als 0 ist.
+Der Meldebestand zeigt an, bei welcher Menge einer Variante eine Nachbestellung veranlasst werden sollte. Sie können statische Werte für den Meldebestand pflegen oder den neuen dynamischen Meldebestand nutzen. Die Implementierung des dynamischen Meldebestands ist jedoch noch nicht vollumfänglich. Beachten Sie den Hinweis am Ende dieses Kapitels. +
+Im **Tab: Lager** einer Variante können Sie einen statischen **Meldebestand** eintragen. Zunächst ist die Menge 0 gespeichert, sodass erst dann eine Meldung erfolgt, wenn der komplette Bestand verkauft ist. Wenn Sie den Meldebestand bei 0 belassen, unterscheidet er sich im Grunde nicht von einem Nettobestand 0 und bietet Ihnen somit keine zusätzlichen Funktionen. Wenn Sie den Meldebestand sinnvoll nutzen möchten, tragen Sie einen Wert ein, der größer als 0 ist.
 
 [TIP]
 .Lager hinzufügen, um Meldebestand einzutragen
@@ -217,7 +218,26 @@ Meldebestand festlegen:
 Auf der Startseite Ihres Systems können Sie anzeigen, wie viele Varianten eines Lagers den Meldebestand unterschritten haben. Fügen Sie dafür das Element **Artikel unter Meldebestand** hinzu. Ein Klick auf die Anzahl der Varianten öffnet das Menü **Waren » Warenbestände** und filtert nach Varianten unter Meldebestand.
 ====
 
-Wenn weder eine Mindestabnahme noch ein Meldebestand für eine Variante eingetragen ist, beträgt der Vorschlag 0.
+Wenn weder eine Mindestabnahme noch ein Meldebestand für eine Variante eingetragen ist, beträgt der Bestellmengenvorschlag 0.
+
+[#dynamischerMeldebestand.subhead]
+Aktuelle Umsetzung des dynamischen Meldebestand
+
+Pro Lager können Sie entscheiden, ob Sie mit den dynamischen Meldebestand nutzen oder nicht. Wenn Sie den dynamischen Meldebestand nutzen, berechnet Ihr System den dynamischen Meldebestand jede Nacht im Hintergrund. Dieser berechnete dynamische Meldebestand wird noch in keinem Feld dargestellt, d.h. Sie sehen den Wert nicht. Die Differenz zum Meldebestand, MeldΔ, basiert jedoch auf dem berechneten Meldebestand. Die Differenz wird Ihnen z.B. in der Bestandsübersicht angezeigt. So können Sie anhand der Differenz absehen wann eine Nachbestellung erfolgen sollte.
+Wenn Sie den dynamischen Meldebestand nutzen, dürfen Sie manuell keinen statischen Meldebestand eintragen. Belassen Sie den Meldebestand für die Varianten in dem Lager auf 0.
+
+Der dynamische Meldebestand wird jede Nacht anhand der folgenden Formel berechnet:
+
+latexmath:[\mbox{Dynamischer Meldebestand} = {(\mbox{Ø Abverkauf} \cdot Lagerreichweite) + (\mbox{Ø Abverkauf} \cdot \mbox{kürzeste Lieferzeit})}]
+
+Ø Abverkauf = durschnittlich verkaufte Menge +
+kürzeste Lieferzeit = kürzeste Lieferzeit einer Variante egal von welchem Lieferanten
+
+Die Differenz zum dynamischen Meldebestand (MeldΔ), die Ihnen auch dargestellt wird, berechnet sich folgendermaßen:
+
+latexmath:[MeldΔ = {(\mbox{dynamischen_Meldebestand} - (Nettobestand + (\mbox{nachbestellte_Menge})}]
+
+Die Einstellung für den dynamischen Meldebestand treffen Sie für jedes Lager in den <<warenwirtschaft/lager-einrichten/#Meldebestand_Variante_Lager, Lagereinstellungen>>.
 
 [#600]
 == Mindestabnahme einer Variante festlegen
@@ -395,7 +415,7 @@ Nachdem Sie auf einem der zuvor beschriebenen Wege eine Nachbestellung angelegt 
 ====
 Die Auswahl der Sprachvariante des Dokuments erfolgt anhand der Sprache Ihres Lieferanten. Die Sprache ist im Tab **Kundendaten** des Lieferanten gespeichert. Wenn in der Sprache des Lieferanten keine Vorlage eingerichtet wurde, wird die Vorlage in der Standardsprache Ihres Systems zum Erzeugen des Dokuments verwendet.
 
-Beachten Sie dazu auch die Erklärungen auf der Handbuchseite **<<auftragsabwicklung/auftraege/auftragsdokumente#, Dokumente>>**.
+Beachten Sie dazu auch die Erklärungen auf der Handbuchseite <<auftragsabwicklung/auftraege/auftragsdokumente#, Dokumente>>.
 ====
 
 Prüfen Sie zunächst noch einmal den Bereich **Grunddaten** und nehmen Sie, wenn nötig, Änderungen vor. Nach der Prüfung und ggf. Korrektur der Grunddaten schicken Sie die Bestellung ab.
