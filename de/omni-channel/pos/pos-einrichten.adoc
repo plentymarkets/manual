@@ -4,10 +4,10 @@ include::{includedir}/_header.adoc[]
 :keywords: plentymarkets POS, POS, Kasse, Kassensystem, Kassen, IDEA-Export, IDEA, GoBD, Kassenjournal, Kassenbuch, GoBD konform, Registrierkasse, RKSV, DEP-Export, mobile Kasse, mobile Registrierkasse, Smartphone-Kasse, Kasse Sicherheitseinrichtung, Vertrauensdiensteanbieter POS, Vertrauensdiensteanbieter Kasse, Registrierkassensicherheitsverordnung, Kasse Österreich, POS Österreich, rechtssichere Kasse, RKSV-konform, plentyPOS, RKSV, Startbeleg, QR-Code, mobile Kassa, Kassasoftware, Kassensoftware, Kassa-Software, Kassen-Software
 :position: 10
 
-Mit plentymarkets POS integrieren Sie den stationären Handel mühelos in plentymarkets.
+Mit dem mobilen Kassensystem plentymarkets POS integrieren Sie den stationären Handel mühelos in plentymarkets.
 
 [IMPORTANT]
-.POS-Einstellung nicht im laufenden Betrieb ändern
+.POS-Einstellungen nicht im laufenden Betrieb ändern
 ====
 Ändern Sie die POS-Einstellungen nicht im laufenden Betrieb. Wenn Sie dennoch Änderungen an den POS-Einstellungen vornehmen, fordern Sie Kassenbenutzer auf, sich aus der App ausloggen und wieder einloggen, da es sonst vor allem bei einer Änderung der Rundungseinstellungen zu Unstimmigkeiten in den Gesamtbeträgen kommt.
 ====
@@ -484,7 +484,7 @@ Tagesabschlussberichte enthalten folgende Informationen: +
 * Umsatz: seit letztem Tagesabschluss (Summe) und seit Inbetriebnahme der Kasse (Grand Total)
 * Steuerbericht: Steuersatz, Steuersumme und Nettoumsatz
 * Zahlungsarten: Aufschlüsselung des Umsatzes nach Zahlungsart
-* Retouren: Anzahl und Summe
+* Retournierte Artikel: Anzahl und Summe
 * Stornierungen: Anzahl und Summe
 * Rabattierte Artikel: Anzahl und Summe
 * Verkaufte Gutscheine: Anzahl und Summe
@@ -498,7 +498,7 @@ Zwischenberichte enthalten folgende Informationen: +
 * Umsatz: seit letztem Tagesabschluss (Summe) und seit Inbetriebnahme der Kasse (Grand Total)
 * Steuerbericht: Steuersatz, Steuersumme und Nettoumsatz
 * Zahlungsarten: Aufschlüsselung des Umsatzes nach Zahlungsart
-* Retouren: Anzahl und Summe
+* Retournierte Artikel: Anzahl und Summe
 * Stornierungen: Anzahl und Summe
 * Rabattierte Artikel: Anzahl und Summe
 * Verkaufte Gutscheine: Anzahl und Summe
@@ -603,6 +603,73 @@ Bestimmte Kartenterminals können über ein Plugin an plentymarkets POS angebund
 * link:https://marketplace.plentymarkets.com/plugins/payment/sumup_5141[SumUp Air^]
 
 Informationen zur Anbindung finden Sie in der Beschreibung des Plugins.
+
+[#910]
+== Buchungskonten für plentymarkets POS Kassenvorfälle speichern (ab Version 1.7.3)
+
+Aufträge, die über plentymarkets POS generiert werden, werden den in plentymarkets gespeicherten <<auftragsabwicklung/auftraege/buchhaltung#800, Erlöskonten>> zugewiesen. Da Einlagen, Entnahmen und Differenzen aus Kassenstürzen keine Aufträge sind, können Sie für diese Kassenvorfälle eigene Buchungskonten speichern. Sie legen also fest, auf welche Buchungskonten Einlagen und Entnahmen gebucht werden, die über plentymarkets POS Kassen getätigt werden. Außerdem speichern Sie Buchungskonten für Differenzen, die sich aus Kassenstürzen ergeben.
+
+=== Buchungskonten für Kassensturzdifferenzen speichern
+
+Wenn beim Kassensturz der Ist-Kassenbestand vom Soll-Kassenbestand abweicht, muss die Differenz entweder ausgeglichen oder gebucht werden. Wenn die Differenz gebucht wird, wird der Ist-Kassenbestand als neuer Soll-Kassenbestand übernommen. Gleichzeitig wird abhängig vom Vorzeichen des Differenzbetrags entweder eine Einlage (+) oder eine Entnahme (-) gebucht. Gehen Sie wie unten beschrieben vor, um Buchungen, die sich aus Kassensturzdifferenzen ergeben, Buchungskonten zuzuweisen.
+
+[.instruction]
+Buchungskonten für Kassensturzdifferenzen speichern:
+
+. Öffnen Sie das Menü *System » Mandant » Mandant wählen » Standorte » Standort wählen » Buchhaltung*. +
+→ Das Tab *Grundeinstellungen* wird geöffnet.
+. Wechseln Sie in das Tab *Konten*. +
+→ Das Tab *Buchungsschlüssel* wird geöffnet.
+. Wechseln Sie in das Tab *Kassenvorfälle*.
+. Klicken Sie im Bereich *Entnahme* in der Zeile *Kassensturz* in das Feld der Spalte *Konto*.
+. Geben Sie das Konto ein, auf das Entnahmen gebucht werden, die entstehen, wenn der Ist-Kassenbestand größer ist als der Soll-Kassenbestand.
+. Klicken Sie im Bereich *Einlage* in der Zeile *Kassensturz* in das Feld der Spalte *Konto*.
+. Geben Sie das Konto ein, auf das Einlagen gebucht werden, die entstehen, wenn der Soll-Kassenbestand größer ist als der Ist-Kassenbestand.
+. *Speichern* Sie die Einstellungen. +
+→ Die Buchungskonten werden gespeichert. +
+→ Einlagen und Entnahmen, die durch Kassensturzdifferenzen entstehen, werden automatisch auf die gespeicherten Konten gebucht.
+
+=== Buchungskonten für allgemeine Einlagen und Entnahmen speichern
+
+Wenn Kassenbenutzer Einlagen und Entnahmen über plentymarkets POS durchführen, wählen sie einen Kassenvorfall als Grund für die Buchung. Systemseitig sind dafür standardmäßig ein Kassenvorfall *Entnahme* und ein Kassenvorfall *Einlage* verfügbar, die nicht gelöscht werden können. Für diese Vorfälle können Sie Buchungskonten speichern, wenn die Beträge auf bestimmte Buchungskonten gebucht werden sollen. Gehen Sie wie unten beschrieben vor, um Konten für diese Vorfälle zu speichern. Optional speichern Sie in einem weiteren Schritt zusätzliche Konten, um mit mehreren Buchungskonten zu arbeiten.
+
+[.instruction]
+Buchungskonten für Einlagen und Entnahmen speichern:
+
+. Öffnen Sie das Menü *System » Mandant » Mandant wählen » Standorte » Standort wählen » Buchhaltung*. +
+→ Das Tab *Grundeinstellungen* wird geöffnet.
+. Wechseln Sie in das Tab *Konten*. +
+→ Das Tab *Buchungsschlüssel* wird geöffnet.
+. Wechseln Sie in das Tab *Kassenvorfälle*.
+. Klicken Sie im Bereich *Entnahme* in der Zeile *Entnahme* in das Feld der Spalte *Konto*.
+. Geben Sie das Konto ein, auf das allgemeine Entnahmen gebucht werden sollen.
+. Klicken Sie im Bereich *Einlage* in der Zeile *Einlage* in das Feld der Spalte *Konto*.
+. Geben Sie das Konto ein, auf das allgemeine Einlagen gebucht werden sollen.
+. *Speichern* Sie die Einstellungen. +
+→ Die Buchungskonten werden gespeichert. +
+→ Einlagen oder Entnahmen werden diesem Konto zugewiesen.
+
+=== Weitere Buchungskonten für Einlagen und Entnahmen speichern
+
+Wenn plentymarkets POS Einlagen und Entnahmen je nach Grund verschiedenen Buchungskonten zugewiesen werden sollen, legen Sie weitere Kassenvorfälle an. Diese Kassenvorfälle können Kassenbenutzer wählen, wenn sie Bargeld aus der Kasse entnehmen oder in die Kasse legen. Gehen Sie wie unten beschrieben vor, um weitere Kombinationen aus Kassenvorfall und Buchungskonto zu speichern.
+
+[.instruction]
+Weitere Buchungskonten für Einlagen und Entnahmen speichern:
+
+. Öffnen Sie das Menü *System » Mandant » Mandant wählen » Standorte » Standort wählen » Buchhaltung*. +
+→ Das Tab *Grundeinstellungen* wird geöffnet.
+. Wechseln Sie in das Tab *Konten*. +
+→ Das Tab *Buchungsschlüssel* wird geöffnet.
+. Wechseln Sie in das Tab *Kassenvorfälle*.
+. Klicken Sie auf *Neue Einlage* oder *Neue Entnahme*. +
+→ Eine leere Zeile wird eingefügt.
+. Geben Sie die *Bezeichnung* ein, die Kassenbenutzern bei Einlagen oder Entnahmen in einer Dropdown-Liste angezeigt wird.
+. Geben Sie das Buchungskonto ein, dem die Einlage oder Entnahme buchhalterisch zugewiesen wird. +
+**__Tipp:__** Über die Pfeile steuern Sie die Reihenfolge, in der die Vorfälle in der App angezeigt werden.
+. *Speichern* Sie die Einstellungen. +
+→ Das Buchungskonto wird gespeichert. +
+→ Kassenbenutzer können bei Einlagen oder Entnahmen den Vorfall aus der Dropdown-Liste wählen.
+
 
 [#180]
 == Versandart Selbstabholung einrichten
@@ -1813,4 +1880,4 @@ Endbeleg erstellen:
 → Die Kasse kann nicht mehr verwendet werden.
 . Melden Sie dem Finanzamt, dass die Kasse außer Betrieb genommen wurde.
 
-//  Next: 930
+//  Next: 950
