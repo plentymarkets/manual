@@ -407,10 +407,10 @@ REST-API-Berechtigungen aktivieren:
 . **Speichern** Sie die Einstellungen.
 
 [[tabelle-POS-REST-Berechtigungen]]
-.REST-API-Rechte für variable Benutzer
+.REST-API-Berechtigungen für variable Benutzer
 [cols="1,3"]
 |====
-|Bereich |Recht
+|Bereich |Berechtigung
 
 |*Kommentare*
 a|* *Kommentar erstellen*
@@ -428,6 +428,11 @@ a|* *Auftragszusammenfassung » Auftragszusammenfassung anzeigen*
 |*Aufträge*
 a|* *Aufträge erstellen*
 * *Aufträge anzeigen*
+
+|*Gutschein* (optional)
+a|* *Code erstellen*
+* *Code anzeigen* +
+*_Hinweis:_* Nur für den Gutscheinverkauf erforderlich
 |====
 
 [#160]
@@ -1049,25 +1054,18 @@ Die erforderlichen Einstellungen werden in <<tabelle-POS-dummy-artikel>> kurz er
 
 == Gutscheinverkauf vorbereiten
 
-Verkaufsgutscheine verkaufen Sie in plentymarkets über Gutscheinartikel. wenn Sie einen Gutscheinartikel verkaufen, händigen Sie Kunden einen Gutschein-Code aus. Kunden können einen Gutschein-Code nur einlösen, wenn dieser Gutschein-Code zum Zeitpunkt der Einlösung im plentymarkets Backend gespeichert ist. Sie können Gutschein-Codes entweder automatisch generieren oder mit eigenen Gutschein-Codes arbeiten.
+Sie können über plentymarkets POS Verkaufsgutscheine verkaufen und einlösen. Wenn Sie einen Gutscheinartikel verkaufen, händigen Sie Kunden einen Gutschein-Code aus. Kunden können einen Gutschein-Code nur einlösen, wenn dieser Gutschein-Code zum Zeitpunkt der Einlösung im plentymarkets Backend gespeichert ist. Sie können Gutschein-Codes entweder automatisch generieren oder mit eigenen Gutschein-Codes arbeiten.
 
-Um Verkaufsgutscheine über plentymarkets POS zu verkaufen, sind die folgenden Vorbereitungen im plentymarkets Backend erforderlich:
+Um Verkaufsgutscheine über plentymarkets POS zu verkaufen, sind die folgenden Vorbereitungen im plentymarkets Backend erforderlich.
 
 * Gutscheinkampagne mit Gutscheinart **Verkaufsgutschein** erstellen.
 * Freitextfeld für die Kampagne anlegen und im Menü *System » Aufträge » Gutscheine* verknüpfen.
-* Gutscheinartikel mit 0% MwSt. erstellen.
-* Gutscheinartikel mit Kampagne verknüpfen.
+* Gutscheinartikel mit 0% MwSt. erstellen und mit der Gutscheinkampagne verknüpfen.
 * *_Optional:_* Gutschein-Codes generieren oder eigene Codes im Backend speichern.
 * *_Optional:_* Gutscheinvordrucke erstellen und Kassenbenutzern zur Verfügung stellen.
 * *_Optional:_* Gutschein-Codes Kassenbenutzern zur Verfügung stellen.
 
-[IMPORTANT]
-.Berechtigungen aktivieren
-====
-Aktivieren Sie für Kassenbenutzern mit variablen Benutzerklassen die Rechte **Code erstellen** und **Code anzeigen**. Diese Berechtigungen finden Sie im Menü *System » Einstellungen » Benutzer » Benutzer öffnen » Tab: Berechtigung » Tab: REST-API*.
-====
-
-Diese Schritte werden hier kurz erläutert. Eine detaillierte Anleitung zum Erstellen von Gutscheinen finden Sie auf der Handbuchseite **<<auftragsabwicklung/auftraege/gutscheine#, Gutscheine>>**.
+Diese Schritte werden nachfolgend kurz erläutert. Eine detaillierte Anleitung zum Erstellen von Kampagnen und Gutscheinen finden Sie auf der Handbuchseite **<<auftragsabwicklung/auftraege/gutscheine#, Gutscheine>>**.
 
 [NOTE]
 .Vorgehensweise bei mehreren Kassen
@@ -1116,9 +1114,7 @@ Erstellen Sie nun für den Verkauf von Gutscheinen über plentymarkets POS eine 
 * Sie erstellen eine Kampagne pro Gutscheinwert. +
 *_Beispiel:_* Sie möchten Gutscheine im Wert von 10 Euro, 25 Euro und 50 Euro sowie einen Gutschein verkaufen, bei dem Kassenbenutzer den Wert frei wählen können. Sie erstellen also 3 Kampagnen mit den Rabattwerten 10, 25 und 50 Euro sowie eine Kampagne mit einem beliebigen Rabattwert.
 
-Wenn Sie mehr als eine Kasse einsetzen und mit eigenen Gutschein-Codes arbeiten möchten, kann es sinnvoll sein, pro Kasse eigene Kampagnen anzulegen.
-
-So erstellen Sie eine Kampagne für Verkaufsgutscheine:
+Wenn Sie mehr als eine Kasse einsetzen und mit eigenen Gutschein-Codes arbeiten möchten, kann es sinnvoll sein, pro Kasse eigene Kampagnen anzulegen. So erstellen Sie eine Kampagne für Verkaufsgutscheine:
 
 [.instruction]
 Kampagne für POS-Verkaufsgutscheine erstellen:
@@ -1133,12 +1129,12 @@ Kampagne für POS-Verkaufsgutscheine erstellen:
 .Einstellungen für POS-Verkaufsgutscheinkampagnen
 [cols="1,2"]
 |====
-|Einstellung |Erläuterung
+|Einstellung |Benutzereingabe
 
 2+|Kampagne
 
 |**Name**
-|Namen für die Kampagne eingeben.
+|Namen für die Kampagne eingeben. +
 *_Tipp_*: Der Name sollte den Namen der Kasse und ggf. den Gutscheinwert enthalten.
 
 |**Beschreibung**
@@ -1154,7 +1150,7 @@ Kampagne für POS-Verkaufsgutscheine erstellen:
 |**Einzelbestellungen** oder <<auftragsabwicklung/auftraege/scheduler#, Abonnements>> oder beides wählen.
 
 |**Mindestbestellwert**
-|Keinen Wert eingeben.
+|Keinen Wert eingeben, da Verkaufsgutscheine wie Zahlungsmittel zu behandeln sind und keinem Mindestbestellwert unterliegen dürfen.
 
 2+|Gültigkeiten
 
@@ -1165,7 +1161,7 @@ Kampagne für POS-Verkaufsgutscheine erstellen:
 |Das Datum, bis zu dem die Kampagne aktiv ist.
 
 |**Code-Gültigkeit in Wochen**
-|Keinen Wert eingeben.
+|*0* eingeben.
 
 2+|Gutschein
 
@@ -1192,22 +1188,22 @@ Kampagne für POS-Verkaufsgutscheine erstellen:
 2+|Filter
 
 |**Artikel über Preisportale**
-|**Nicht erlauben** wählen.
+|**Nicht erlauben** wählen, da plentymarkets POS nicht an Preisportale angebunden ist.
 
 |**Kategorien**
 |Die Kategorien wählen, in denen der Gutschein einlösbar sein soll. Die Auswahl gilt auch für alle Unterkategorien einer markierten Kategorie.
 
 |**Artikel**
-|Keinen Wert eingeben.
+|Keinen Wert eingeben, da Verkaufsgutscheine wie Zahlungsmittel zu behandeln sind und nicht auf bestimmte Artikel beschränkt werden dürfen.
 
 |**Mandanten (Shops)**
-|Mandanten (Shop) der Kasse wählen.
+|Die Mandanten (Shops) wählen, für die die Gutscheine der Kampagne gelten sollen.
 
 |**Kundenklassen**
-|Standardkundenklasse oder *ALLE* wählen.
+|Die Kundenklassen wählen, für die die Gutscheine der Kampagne gelten sollen.
 
 |**Kundentypen**
-|*Kunde* wählen.
+|Die Kundentypen wählen, für die die Gutscheine der Kampagne gelten sollen.
 |====
 
 [#850]
@@ -1313,7 +1309,7 @@ Gutscheinartikel mit festem Preis erstellen:
 . Geben Sie als Inhalt **1 Stück** ein.
 . Wählen Sie eine Kategorie.
 . Wählen Sie einen Verkaufspreis aus der Dropdown-Liste. +
-*_Tipp_*: Der Verkaufspreis muss mit der Auftragsherkunft der Kasse verknüpft sein.
+*_Hinweis_*: Der Verkaufspreis muss mit der Auftragsherkunft der Kasse verknüpft sein.
 . Geben Sie als Preis den Gutscheinwert ein.
 . **Speichern** Sie die Einstellungen. +
 → Der Artikel wird erstellt und zur weiteren Bearbeitung geöffnet.
@@ -1339,7 +1335,7 @@ Gutscheinartikel mit flexiblem Preis erstellen:
 . Geben Sie als Inhalt **1 Stück** ein.
 . Wählen Sie eine Kategorie.
 . Wählen Sie einen Verkaufspreis aus der Dropdown-Liste. +
-*_Tipp_*: Der Verkaufspreis muss mit der Auftragsherkunft der Kasse verknüpft sein.
+*_Hinweis_*: Der Verkaufspreis muss mit der Auftragsherkunft der Kasse verknüpft sein.
 . Geben Sie als Preis **0,00** Euro ein.
 . **Speichern** Sie die Einstellungen. +
 → Der Artikel wird erstellt und zur weiteren Bearbeitung geöffnet.
@@ -1349,12 +1345,15 @@ Gutscheinartikel mit flexiblem Preis erstellen:
 → *_Ohne vorhandenen Gutschein-Code:_* Kassenbenutzerinnen werden aufgefordert, einen Preis einzugeben, wenn sie den Artikel in den POS-Warenkorb legen.
 
 [[tabelle-POS-verkaufsgutscheine-artikeleinstellungen]]
-.Artikeleinstellungen für Verkaufsgutscheine
+.Artikeleinstellungen für Verkaufsgutscheine mit festem und flexiblem Wert
 [cols="1,2"]
 |====
 |Einstellung |Erläuterung
 
-2+|Tab: Variantennummer » Tab: Einstellungen
+2+|*Artikel » Artikel bearbeiten » Artikel öffnen » Variante öffnen » Tab: Einstellungen*
+
+|**Aktiv**
+|Option aktivieren.
 
 |**Beschränkung**
 |**Keine** wählen.
@@ -1362,7 +1361,7 @@ Gutscheinartikel mit flexiblem Preis erstellen:
 |**Umsatzsteuer**
 |**0%** wählen.
 
-2+|Tab: Variantennummer » Tab: Verfügbarkeit
+2+|*Artikel » Artikel bearbeiten » Artikel öffnen » Variante öffnen » Tab: Verfügbarkeit
 
 |**Märkte**
 |Kasse(n) aus der Dropdown-Liste wählen, über die die Gutscheinartikel verkauft werden sollen.
@@ -1370,10 +1369,10 @@ Gutscheinartikel mit flexiblem Preis erstellen:
 |**Mandant (Shop)**
 |Mandant der Kasse wählen.
 
-2+|Tab: Felder
+2+|*Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Felder*
 
 |**Kampagne ID**
-|ID der Gutscheinkampagne eingeben.
+|ID der Gutscheinkampagne eingeben, um den Artikel mit der Kampagne zu verknüpfen.
 |====
 
 === Besonderheiten beim Verkauf von Verkaufsgutscheinen
