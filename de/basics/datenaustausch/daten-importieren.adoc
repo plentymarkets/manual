@@ -4,8 +4,569 @@ include::{includedir}/_header.adoc[]
 :description: Erfahren Sie, wie Sie Datenformate erstellen und den dynamischen Import nutzen.
 :position: 20
 
-Diese Handbuchseite befasst sich mit dem manuellen Datenimport im Menü **Daten » Dynamischer Import**. Ein Import von Daten ist ratsam, wenn Sie z.B. neue Artikel, Kundendaten oder Lagerbestände in Ihr plentymarkets System einpflegen möchten und die Daten bereits digital vorliegen. Beachten Sie, dass pro Import maximal 6000 Datensätze möglich sind. +
-In den letzten Kapiteln auf dieser Handbuchseite werden Anwendungsbeispiele beschrieben.
+Diese Handbuchseite befasst sich mit den verschiedenen Möglichkeiten des Datenimports in plentymarkets. Insbesondere die Möglichkeiten des ElasticSync-Plugins werden erläutert. ElasticSync erlaubt sowohl einmalige manuelle Importe als auch regelmäßige automatisierte Importe.
+Außerdem werden die Möglichkeiten des manuellen Datenimport per dynamischen Import beschrieben. Ein Import von Daten ist ratsam, wenn Sie z.B. neue Artikel, Kundendaten oder Lagerbestände in Ihr plentymarkets System einpflegen möchten und die Daten bereits digital vorliegen.
+
+== Daten per ElasticSync importieren
+
+**ElasticSync** ermöglicht es über das Anlegen von sogennanten **Syncs**, Datenimporte
+auszuführen. Ein Import kann manuell oder automatisiert erfolgen.
+
+=== Allgemeine Beschreibung: Daten per Sync importieren
+
+Die grundsätzliche Funktionsweise zum Erstellen und Importieren eines Syncs ist für alle Sync-Typen gleich und wird hier einmal übergreifend beschrieben. Anschließend folgt für jeden Sync-Typ zusätzlich eine detaillierte Beschreibung.
+
+==== Sync erstellen
+
+Syncs erstellen, bearbeiten und verwalten Sie im Menü **Daten » ElasticSync**. Ein Sync dient dazu, die Daten einer per FTP oder HTTP zugänglichen Datei Daten in plentymarkets zuzuordnen und zu importieren. Beim Erstellen des Syncs speichern Sie Informationen zur Datenquelle und legen ein Importintervall fest. Wichtig für einen Sync ist außerdem, dass Sie Daten für den Abgleich festlegen und zurodnen welche Daten Ihrer Datei welchen Daten in plentymarkets entsprechen. Mit dem Abgleich legen Sie fest, anhand welcher Daten versucht wird zu identifizieren, ob bereits ein Datensatz besteht oder nicht. Mit der Zuordnung legen Sie fest welche Spalte Ihrer Datei welchem Datenfeld in plentymarkets entspricht. Gehen Sie wie beschrieben vor, um einen Sync zu erstellen.
+
+[.instruction]
+Sync erstellen:
+
+. Öffnen Sie das Menü **Daten » ElasticSync**.
+. Klicken Sie auf **Sync hinzufügen**. +
+    → Der Bearbeitungsbereich **Neuer Sync** wird angezeigt.
+. Nehmen Sie Einstellungen vor. Beachten Sie dazu die Angaben in Tabelle 1.
+. **Speichern** Sie die Einstellungen. +
+    → Der Sync wird erstellt und die Abgleicheinstellungen des Syncs werden direkt geöffnet.
+
+.Sync erstellen
+[cols="1,2"]
+|====
+|Einstellung |Erläuterung
+
+2+|Grunddaten
+
+|Name
+|Name eingeben. Dieser Name wird in der Übersicht angezeigt und kann für die Suche genutzt werden.
+
+|Typ
+|Typ aus Dropdown-Liste wählen. +
+* *Artikel* = Wählen, um Artikeldaten und Variatendaten zu importieren, siehe <a>Sync-Typ Artikel
+* *Kategorien* = Wählen, um Kategriedaten zu importieren, siehe <a>Sync-Typ Kategorien
+* *Attribute* = Wählen, um Attributdaten zu importieren.
+* *Merkmale* = Wählen, um Merkmaldaten zu importieren.
+* *Notizen* = Wählen, um Notizdaten zu importieren.
+* *Aufträge* = Wählen, um Auftragsdaten zu importieren.
+* *Kontakte, Firmen und Adressen* = Wählen, um Kontakt-, Firmen- und Adressdaten zu importieren, siehe <a>Sync-Typ Kontakte, Firmen und Adressen.
+
+2+|Quelle
+
+|Datentyp
+|Dateiformat der Importdatei wählen. +
+Aktuell ist jedoch nur die Auswahl *CSV* verfügbar, da nur CSV-Dateien importiert werden können.
+
+|Trennzeichen
+|Trennzeichen wählen, das in der Importdatei verwendet wird, um die Datenfelder (Spalten) eines Datensatzes voneinander zu trennen.
+
+|Feldbegrenzungszeichen
+|Begrenzungszeichen innerhalb von Felder wählen, die mehrere Werte enthalten können.
+" = einzelne Werte innerhalb eines Feldes sind durch doppelte Anführungszeichen voneinander getrennt.
+' = einzelne Werte innerhalb eines Feldes sind durch einfache Anführungszeichen voneinander getrennt.
+
+|Zeichensatz
+|Zeichensatz der Datei oder Automatisch erkennen wählen.
+
+|Beginne ab Zeile
+|Wählen, ab welcher Zeile der Datei Daten importiert werden sollen.
+
+|Quelle
+|Zwischen FTP und HTTP wählen. +
+Je Option werden weitere Einstellungen sichtbar:
+
+*FTP* = Host, Benutzername, Passwort und Dateiname werden als Einstellungen sichtbar
+
+    * Host: Host des FTP-Servers eingegeben +
+      Tipp: plentymarkets FTP-Zugang nutzen.
+    * Benutzer: Benutzer für FTP-Zugang eingeben
+    * Passwort: Passwort für FTP-Zugang eingeben
+    * Dateiname: Pfad und Name der Datei eingeben, aus der Daten importiert werden sollen
+
+*HTTP* = Zwischen *Externe URL* und *Dateiupload* wählen
+
+    * Externe URL: URL eingeben, unter der die Importdatei erreichbar ist +
+     Tipp: Datei auf plentymarkets Webspace speichern
+      ** Authentifizierung: Wählen, ob für den Zugriff auf die Datei eine Authentifizierung erforderlich ist oder nicht.
+        ***  keine = keine Authentifizierung erforderlich
+        ***  HTTP-Authentifizierung = Authentifizierung per Benutzer und Passwort erforderlich
+    * Dateiupload: lokale Datei hochladen +
+    Wichtig: Die Datei wird auf einem öffentlichen Bucket auf S3 gespeichert. Jeder der die URL zu der Datei kennt, kann somit auf die Datei zugreifen.
+|====
+
+==== Abgleich festlegen
+
+Nachdem Sie einen Sync erstellt haben, öffnen Sie ihn nun, um weitere Einstellungen vorzunehmen. Zunächst wählen Sie die Felder, die zum Abgleichen der Daten verwendet werden sollen. Legen Sie außerdem fest, was passieren soll, wenn durch den Abgleich keine bestehenden Daten gefunden werden.
+
+[NOTE]
+.Abgleich ist optional
+====
+Bei den Abgleichfeldern handelt es sich um optionalle Einstellungen. Wenn Sie kein Abgleichfeld wählen, können die Daten Ihrer Datei keinen bestehenden Daten in Ihrem System zugeordnet werden. Sie können eins, mehrere oder alle Abgleichfelder festlegen. Die angezeigten Abgleichfelder unterscheiden sich für jeden Sync-Typ.
+====
+
+[.instruction]
+Abgleich festlegen:
+
+. Öffnen Sie das Menü Daten » ElasticSync.
+. Klicken Sie in der Sync-Übersicht auf den gewünschten Sync. +
+→ Die Abgleichoptionen des Syncs werden angezeigt.
+. Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Angaben in Tabelle 2.
+. Speichern Sie die Einstellungen. +
+→ Die Einstellungen werden gespeichert.
+
+==== Zuordnung erstellen
+
+Mithilfe einer Zuordnung legen Sie fest welche Spalte Ihrer Datei welchem Datenfeld in Ihrem System entspricht. Ohne Zuordnung können keine Daten importiert werden.
+
+[.instruction]
+Zuordnung festlegen:
+
+. Öffnen Sie das Menü *Daten » ElasticSync*.
+. Klicken Sie in der Sync-Übersicht auf den gewünschten Sync. +
+→ Die Abgleichoptionen des Syncs werden angezeigt.
+. Klicken Sie auf *Zuordnung*. +
+→ Eine Übersicht der Zuorndung wird angezeigt. Zunächst ist die Liste leer.
+. Klicken Sie auf *Zuordnung hinzufügen*.
+. Geben Sie einen Namen für die Zuordnung ein.
+. Geben Sie optional eine Position für die Zuordnung ein.
+. *Speichern* Sie die Einstellungen. +
+→ Die Zuordnung wird der Übersicht hinzugefügt.
+. Öffnen Sie die gewünschte Zuordnung. +
+→ Die verfügbaren Zuordnungsfelder unterscheiden sich je nach Sync-Typ.
+. Wählen Sie Datenfelder für die Zuordnung aus, indem Sie Häkchen bei diesen Felder setzen. +
+→ Die gewählten Datenfelder werden zur Zuordnung hinzugefügt.
+. Wählen Sie für jedes Datenfeld eine Spalte aus Ihrer Datei oder die Option *Eigener Wert*.
+. *Speichern* Sie die Einstellungen.
+
+[NOTE]
+.Eigener Wert
+====
+Die Option *Eigener Wert* erlaubt Ihnen für ein Datenfeld einen festen Wert zu importieren. Dieser feste Wert ist somit für jeden Datensatz, der durch diesen Sync importiert wird gleich.
+====
+
+==== Importdaten eingrenzen
+
+Mithilfe von Filtern können Sie die Daten eingrenzen, die importiert werden. Die Filter finden Sie im Bereich Zuordnung.
+
+[NOTE]
+.Mehrere Filter sind durch Und verknüpft
+====
+Wenn Sie mehrere Filter verwenden, werden nur Datensätze importiert auf die alle Filter zutreffen. Es handelt sich also um eine Und-Verknüpfung der Filter.
+====
+
+[.instruction]
+Filter hinzufügen:
+
+. Öffnen Sie das Menü *Daten » ElasticSync*.
+. Klicken Sie in der Sync-Übersicht auf den gewünschten Sync. +
+→ Die Abgleichoptionen des Syncs werden angezeigt.
+. Klicken Sie auf *Zuordnung*. +
+→ Eine Übersicht der Zuorndung wird angezeigt.
+. Öffnen Sie die gewünschte Zuordnung.
+. Klicken Sie in der Symbolleiste auf *Filter*.
+. Wählen Sie die Spalte aus Ihrer Datei, die Sie filtern möchten.
+. Wählen Sie einen Operator.
+. Tragen Sie einen Wert ein.
+. Klicken Sie auf *Filter hinzufügen*. +
+→ Der Filter wird gespeichert und Sie können weitere Filter hinzufügen.
+
+==== Sync testen und Daten importieren
+
+In der Sync-Übersicht können Sie Syncs testen und ausführen. Die Sync-Übersicht erreichen Sie über das Menü *Daten » ElasticSync*.
+
+==== Sync-Verlauf einsehen
+
+In der Sync-Übersicht können Sie den Verlauf Ihrer ausgeführten Syncs einsehen. Die Sync-Übersicht erreichen Sie über das Menü *Daten » ElasticSync*.
+
+=== Sync vom Typ Artikel einrichten
+
+Mit Syncs des Typs *Artikel* importieren Sie Artikel- und Variantendaten.
+
+Erfahren Sie mehr zum Importieren neuer Artikel im folgenden Videotutorial:
+
+.Artikel per ElasticSync importieren
+video::219060209[vimeo]
+
+[.subhead]
+Felder für den Artikelabgleich
+
+In der Tabelle <<tabelle-Abgleichfelder-Artikel>> werden Ihnen Felder erläutert, die für den Abgleich von Artikeldaten zur Verfügung stehen. Anhand des gewählten Feldes wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-Abgleichfelder-Artikel]]
+.Abgleichfelder für Artikelimport
+[cols="1,2"]
+|====
+|Abgleichfeld |Erläuterung
+
+|Varianten-ID
+|
+
+|Variantennr.
+|
+
+|Externe Varianten-ID
+|
+
+|Barcode
+|Aus der zweiten Dropdown-Liste den Barcode-Typ des Barcodes wählen.
+
+|Artikel-ID
+|Bei Varianten mit Attributen dieses Feld nur in Kombination mit Attributauswahlkombination nutzen.
+
+
+|Attributauswahlkombination
+|Bei Varianten mit Attributen dieses Feld nur in Kombination mit Artikel-ID nutzen.
+Aus der zweiten Dropdown-Liste das Format wählen, in dem die Daten in der Datei vorliegen.
+
+|Lieferanten-Artikel-Nr.
+|
+
+|====
+
+[.subhead]
+Felder für die Artikelzuordnung
+
+In der Tabelle <<tabelle-Zuordnungsfelder-Artikel>> werden Ihnen Felder erläutert, die für den Abgleich von Artikeldaten zur Verfügung stehen. Anhand des gewählten Feldes wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-Zuordnungsfelder-Artikel]]
+.Abgleichfelder für Artikelimport
+[cols="1,1,4"]
+|====
+|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+
+3+|Artikel
+
+|Typ
+|0 = Lagerware +
+1 = Produktionsware +
+2 = Colli +
+3 = Bestellware
+|
+
+|Shop-Aktion
+|0 = keine +
+1 = Sonderangebot +
+2 = Neuheit +
+3 = Top-Artikel
+|
+
+|Eigner
+|Nummerisch (interne User-ID)
+|
+
+|Hersteller-ID
+|Nummerisch (interne ID)
+|
+
+|Herstellerland
+|Nummerisch (interne ID); +
+0 = unbekannt
+|
+
+|Zolltarifnummer
+|Nummerisch
+|
+
+|Erlöskonto
+|
+|
+
+|Aktionsgutschein
+|0 = Möglich +
+1 = Verboten +
+2 = Nur mit Gutschein kaufbar
+|
+
+|Zustand
+|0 = Neu +
+1 = Gebraucht +
+2 = Neu und originalverpackt +
+3 = Neu mit Etikett +
+4 = B-Ware
+|Artikelzustand
+
+|Zustand API
+|0 = Neu +
+1 = Gebraucht wie neu +
+2 = Gebraucht sehr gut +
+3 = Gebraucht gut +
+4 = Gebraucht annehmbar +
+5 = B-Ware
+|Zustand des Artikels; Übertragung über API an andere Marktplätze
+
+|Abonnement (ja/nein)
+|0 = Nein +
+1 = Ja 	Kann Artikel als Abo bestellt werden?
+Seriennummer (ja/nein) 	0 = Nein
+1 = Ja 	Seriennummer zuweisen?
+Versandpaket (ja/nein) 	0 = Nein
+1 = Ja 	Versandpaket verwenden?
+Amazon-Abwicklung (FBA) 	0 = Nicht verwenden
+1 = AMAZON EU
+2 = AMAZON FE
+3 = AMAZON NA
+-1 = FBA und SellerCentral
+Versand durch Amazon (FBA) 	0 = Nein
+1 = Ja 	FBA-Versand?
+Amazon-Produkttyp 	Nummerisch
+Amazon-FEDAS 		FEDAS-Warengruppenschlüssel
+Listing-Vorlage 	Nummerisch (interne ID)
+Listing Kategorie 1;
+Listing Kategorie 2 	Nummerisch
+Listing Shop-Kategorie 1;
+Listing Shop-Kategorie 2 	Nummerisch
+Rakuten.de-Kategorien 	Nummerisch (interne ID)
+Markierung 1;
+Markierung 2
+Altersfreigabe 	0 = Keine verfügbar
+3 = FSK 3
+6 = FSK 6
+12 = FSK 12
+16 = FSK 16
+18 = FSK 18
+50 = Nicht gekennzeichnet
+88 = Nicht erforderlich
+99 = Noch nicht bekannt 	FSK
+Artikelbewertung 	Nummerisch 	Erstbewertung von 1 bis 5 bzw. 1 bis 10
+Herstellername 	Alphanummerisch 	Wenn nicht im System, wird neuer Hersteller angelegt.
+Artikel löschen 	0 = Nein
+1 = Ja
+Artikelbeschreibung (Zuordnung pro Sprache)
+Name 	Alphanummerisch
+Name 2;
+Name 3 	Alphanummerisch
+Vorschautext 	Alphanummerisch
+Meta-Beschreibung 	Alphanummerisch
+Artikeltext 	Alphanummerisch
+Technische Daten 	Alphanummerisch
+URL-Pfad 	Link
+Meta-Keywords 	Alphanummerisch
+Versandprofil
+Versandprofil-ID 	Nummerisch
+Artikel-Tags
+Tag-ID 	Nummerisch
+Tag-Name 	Alphanummerisch
+Tag-Namen (kommasepariert) 	Alphanummerisch 	Tag-Liste
+Alle verknüpften Tags löschen 	0 = Nein
+1 = Ja 	Alle Verknüpfungen aufheben?
+Varianten
+ID 	Nummerisch
+Artikel-ID 	Nummerisch
+Position 	Nummerisch
+Aktiv 	0 = Nein
+1 = Ja 	Ist Variante aktiv, d.h. wird sie im Webshop und ggf. auf Marktplätzen angeboten?
+Variantennr. 	Alphanummerisch
+Modell 	Alphanummerisch 	Modellbezeichnung
+Externe Varianten-ID 	Alphanummerisch
+Verfügbarkeit 	Nummerisch (interne ID)
+EK netto 	Nummerisch 	Einkaufspreis
+Preiskalkulation 	Nummerisch (interne ID)
+VPE 	Nummerisch 	Verpackungseinheit; Standard = 1
+Anzahl der Packstücke 	Nummerisch
+Einheit der Packstücke 	Nummerisch
+0 = unverpackt
+1 = Ballen
+2 = Behälter
+3 = Bund
+4 = Rollpalette
+5 = Colli
+6 = Container
+7 = Eimer
+8 = Fass
+9 = Flaschen
+10 = Euro Pool Flachpalette
+11 = Gestell
+12 = Gasflasche
+13 = Gitterboxpalette
+14 = Hobbock
+15 = Halbe Palette
+16 = Lebensmittelpalette
+17 = Holzuntersetzer
+18 = IBC Container
+19 = Kanne
+20 = Korbflasche
+21 = Kiste
+22 = Kanister
+23 = Kundenpalette
+24 = Karton
+25 = Kombinationsverpackung
+26 = Pack
+27 = Ring
+28 = Rolle
+29 = Sack
+30 = Stück
+31 = Tank
+32 = Trommel
+34 = Verschlag
+35 = Viertelpalette
+36 = sonstige Paletten
+37 = Kasten
+38 = Einwegpalette
+39 = Folientüte
+Transportkosten netto 	Nummerisch
+Lagerkosten netto 	Nummerisch
+Zoll 	Nummerisch 	Prozentwert
+Betriebskosten 	Nummerisch 	Prozent
+Umsatzsteuer 	Nummerisch (%)
+Paketart 	bundle = Variante ist Paket
+bundle_item = Variante ist Paketbestandteil
+Unsichtbar in Artikellisten 	0 = Nein
+1 = Ja
+Kommissionierung 	single_picking = Einzelkommissionierung möglich
+no_single_picking = Keine Einzelkommissionierung möglich
+exclude_from_picklist = Von Pickliste ausschließen
+WB-Beschränkung 	0 = Keine Beschränkung
+1 = Auf Netto-WB
+2 = Keinen Bestand führen
+Webshop: Sichtbar wenn Netto-WB positiv 	0 = Nein
+1 = Ja
+Webshop: Unsichtbar wenn kein Netto-WB 	0 = Nein
+1 = Ja
+Verfügbar wenn Netto-WB positiv 	0 = Nein
+1 = Ja
+Nicht verfügbar wenn kein Netto-WB 	0 = Nein
+1 = Ja
+Hauptlager 	Nummerisch (interne ID)
+Max. Bestellmenge 	Nummerisch
+Min.-Bestellmenge 	Nummerisch
+Intervallbestellmenge 	Nummerisch
+Grundpreis anzeigen 	0 = Nein
+1 = Ja
+Variante löschen 	0 = Nein
+1 = Ja
+Nummer der Hauptvariante 	Alphanummerisch
+Verfügbar bis 	Datum 	Datum des letzten Tages der Verfügbarkeit
+Erscheinungsdatum 	Datum 	Datum, ab dem die Variante verfügbar ist
+Name 	Alphanummerisch 	Name der Variante
+Gewicht brutto g 	Nummerisch
+Gewicht netto g 	Nummerisch
+Breite mm 	Nummerisch
+Länge mm 	Nummerisch
+Höhe mm 	Nummerisch
+Portoaufschlag 1;
+Portoaufschlag 2 	Nummerisch
+Cross-Selling
+Alle Cross-Selling-Verknüpfungen löschen 	0 = Nein
+1 = Ja
+Cross-Selling-Verknüpfungen hinzufügen 	Alphanummerisch im Format Artikel-ID:Beziehungstyp;Artikel-ID:Beziehungstyp;etc.
+Accessory = Zubehör
+ReplacementPart = Ersatzteil
+Similar = Ähnlich
+Bundle = Artikelpaket
+Cross-Selling-Verknüpfungen löschen 	Nummerisch im Format Artikel-ID;Artikel-ID;etc.
+Barcodes (Zuordnung pro Barcode-Typ)
+Code 	Alphanummerisch
+Variantenpreis (Zuordnung pro Verkaufspreis)
+Preis 	Nummerisch
+Kategorien
+ID der Kategorie 	Nummerisch (interne ID) 	Alternativ Name der Kategorie übergeben.
+Position 	Nummerisch
+Ist Neckermann.de Hauptkategorie 	0 = Nein
+1 = Ja
+Name der Kategorie 	Alphanummerisch 	Kompletten Kategoriepfad semikolongetrennt angeben (z.B. Schuhe;Unisex)
+Alternativ ID der Kategorie übergeben.
+Standardkategorien
+ID der Kategorie 	Nummerisch (interne ID)
+Automatisch ausgewählt 	N = Nein
+Y = Ja
+Name der Kategorie 	Alphanummerisch
+Bestand
+Lager 	Nummerisch (interne ID) 	Kann nur in Kombination mit Menge und Lagerort übergeben werden.
+Menge 	Nummerisch 	Kann nur in Kombination mit Lager und Lagerort übergeben werden.
+Lagerort 	Nummerisch (interne ID) 	Kann nur in Kombination mit Lager und Menge übergeben werden.
+Mandant (Shop) (Zuordnung pro Mandant)
+Aktiv 	0 = Nein
+1 = Ja
+Märkte (Zuordnung pro Marktplatz)
+Aktiv 	0 = Nein
+1 = Ja
+Attribute (Zuordnung pro Format)
+Attributauswahlkombination 	Alphanummerisch im Format Attributname:Wertname; oder Attributname<>Wertname<||> 	Import von mehr als zwei Attributverknüpfungen.
+Hinweis: Jede Attributkombination muss pro Variante einzigartig sein.
+Attribute ID 	Nummerisch 	Import von bis zu zwei Attributverknüpfungen.
+Tipp: Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format Attributname:Wertname; und eine im Format Attributname<>Wertname<||> erstellen und die separaten Spalten zuordnen.
+Attribute Name 	Alphanummerisch 	Import von bis zu zwei Attributverknüpfungen.
+Tipp: Bei zwei Verknüpfungen müssen die Namen in verschiedenen Spalten vorliegen. Eine Zuordnung im Format Attributname:Wertname; und eine im Format Attributname<>Wertname<||> erstellen und die separaten Spalten zuordnen.
+Wert Name 	Alphanummerisch 	Import von bis zu zwei Attributverknüpfungen.
+Tipp: Bei zwei Verknüpfungen müssen die Namen in verschiedenen Spalten vorliegen. Eine Zuordnung im Format Attributname:Wertname; und eine im Format Attributname<>Wertname<||> erstellen und die separaten Spalten zuordnen.
+Wert ID 	Nummerisch 	Import von bis zu zwei Attributverknüpfungen.
+Tipp: Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format Attributname:Wertname; und eine im Format Attributname<>Wertname<||> erstellen und die separaten Spalten zuordnen.
+Artikel Bilder
+ID des Bilds 	Nummerisch (interne ID)
+Position 	Nummerisch
+Dateiname 	Alphanummerisch
+Base64 Data 	Alphanummerisch
+Verfügbarkeit Mandant (Shop) 	Nummerisch (interne ID) 	-1 aktiviert alle Mandanten
+Verfügbarkeit Herkünfte 	Nummerisch (interne ID) 	-1 aktiviert alle Herkünfte
+Verfügbarkeit Listings 	Nummerisch (interne ID) 	-1 aktiviert alle Listings
+URL 	Link
+Name 	Alphanummerisch im Format Name:Sprache1,Name:Sprache2
+Multi-URL (kommasepariert) 	Alphanummerisch im Format image1url;positionImage1,image2url;positionImage2 	Wenn keine Position übergeben wird, enspricht die Position der Reihenfolge der URLs.
+Bilder löschen 	0 = Nein
+1 = Ja 	1 löscht alle Bilder des Artikels. Bilder, die erhalten bleiben sollen, müssen als URL im Sync angegeben werden.
+Mit Variante verknüpfen 	0 = Nein
+1 = Ja 	1 verknüpft das Bild mit der Variante. 0 löscht eine vorhandene Verknüpfung.
+Merkmale
+ID 	Nummerisch (interne ID)
+Wert 	Alphanummerisch
+Sprache 	Buchstaben 	Nur bei Text
+Merkmalkombination 	Alphanummerisch 	Kombination aus Backend-Name, Wert und Sprache im Format Name1:Wert1:Sprache1;Name2:Wert2:Sprache2 etc.
+Inhalt
+Inhalt Einheit 	Nummerisch (interne ID) 	Alternativ Inhalt Maßeinheit (ISO) übergeben
+Inhalt Menge 	Nummerisch 	Kann nur in Kombination mit Inhalt Einheit oder Inhalt Maßeinheit (ISO) übergeben werden.
+Inhalt Maßeinheit (ISO) 	Alphanummerischer ISO-Code 	Alternativ Inhalt Einheit übergeben
+ASIN/ePID
+Land 	Nummerisch (interne ID)
+Typ 	ASIN; ePID
+Wert 	Alphanummerisch
+Lager (Zuordnung pro Lager)
+Zone 	Nummerisch
+Lagerorttyp 	none = kein
+small = klein
+medium = mittel
+large = groß
+europallet = Europalette
+Meldebestand 	Nummerisch
+Maximalbestand 	Nummerisch
+Lagerort 	Nummerisch (interne ID)
+Bestandspuffer 	Nummerisch
+Lieferant
+EK 	Nummerisch
+Mindestabnahme 	Nummerisch
+Lieferanten-Artikel-Nr. 	Alphanummerisch
+Letzte Preisabfrage 	Datum
+Lieferzeit in Tagen 	Nummerisch
+Rabatt 	Nummerisch 	Prozent
+Rabattfähigkeit 	0 = Nein
+1 = Ja
+Verpackungseinheit 	Nummerisch
+Lieferanten-ID 	Nummerisch
+Lieferanten-Name 	Alphanummerisch
+SKU
+Marktplatz-ID 	Nummerisch
+Account-ID 	Nummerisch
+SKU 	Alphanummerisch
+Parent-SKU 	Alphanummerisch
+Paket
+Paketbestandteile 	Alphanummerisch 	Varianten-ID:Menge;Varianten-ID:Menge;etc.
+Paketbestandteile löschen 	Alphanummerisch 	Varianten-ID des Paketbestandteils
+Paket löschen 	0 = Nein
+1 = Ja
+
+|====
+
+Um Artikeldaten per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
+
+* Kategorien (Artikel » Kategorien)
+* Verkaufspreise (Einstellungen » Verkaufspreise)
+
+Um Variantendaten mit Attributen per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
+
+* Attribute und Attributwerte (Einstellungen » Artikel » Attribute)
+
+
+---Beachten Sie, dass pro Import maximal 6000 Datensätze möglich sind. +
+In den letzten Kapiteln auf dieser Handbuchseite werden Anwendungsbeispiele beschrieben.---
+
 
 Eine Einführung zum dynamischen Import erhalten Sie im folgenden Videotutorial:
 
