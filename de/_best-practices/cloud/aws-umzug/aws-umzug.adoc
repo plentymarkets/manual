@@ -31,14 +31,151 @@
 [[anchor-1.]]
 == 1. Vor dem Umzug
 [[anchor-1.1]]
-=== 1.1. Vertrag aktualisieren +
+=== 1.1. Vertrag aktualisieren
 Um den Umzug auf die AWS-Cloud starten zu können, wird ein aktueller plentymarkets-Cloud-Vertrag benötigt. Sollte ein anderer Vertrag als *plentymarkets CLASSIC* oder *plentymarkets ZERO* vorliegen, muss der Konfigurator durchlaufen werden.
 
-Für Fragen rund um die Vertragsgestaltung steht Dir das Team `@plenty-internal-sales` zur Seite in der Kategorie `#vertrag:rueckfragen` im .
+Für Fragen rund um die Vertragsgestaltung steht Dir im link:https://forum.plentymarkets.com[Forum^] das Team `@plenty-internal-sales` in der Kategorie `#vertrag:rueckfragen` zur Seite.
 
 ==== Wo finde ich die Information, welchen Vertrag ich aktuell habe?
 *Service-Center » System öffnen » Tab: Übersicht*
 
 [[styleguide-assets]]
 .which_contract
-image::aws-umzug/assets/pic001.png[]
+image::aws-umzug/assets/awstransfer_pic001.png[]
+
+==== Wie/Wo ändere ich meinen Vertrag?
+*Service-Center » System öffnen » Tab: Vertrag » Zum Systemkonfigurator*
+[[styleguide-assets]]
+.systemconfigurator
+image::aws-umzug/assets/awstransfer_pic002.png[]
+
+[[anchor-1.2]]
+=== 1.2. Sicherung der Daten auf dem Webspace/FTP-Server
+Der FTP-Zugang ist eine alternative Zugangsart zum Webspace. Beides greift auf dieselben Ressourcen zu.
+
+Folgende Ordner inkl. deren Unterordner/-Dateien werden im Rahmen des Umzugs nach link:https://aws.amazon.com/de/s3/details/[S3^] kopiert:
+
+* data
+* documents
+* images
+* layout
+* item_images
+* webstat
+
+Dateien und selbst angelegte Ordner im sog. Root-Ordner (`/`) wird an sich nicht übertragen, abgesehen von den Standarddateien (z. Bsp. `crossdomain.xml`, `favicon.ico`, `favicon_0.ico`, `shopinfo.xml`).
+
+Alle anderen Ordner müssen manuell gesichert werden, damit diese nicht verloren gehen.
+
+[[anchor-1.3]]
+=== 1.3. Vollwertige Domain anlegen
+Bevor der Umzug gestartet werden kann, muss eine vollwertige Domain an das System angebunden und als Hauptdomain eingestellt werden. Ein Umzug mit einer plentymarkets-Testdomain ist nicht möglich, solang diese als Hauptdomain eingestellt ist. Beispiele für Testdomains sind:
+
+* `*.plenty-test-drive.eu`
+* `*.plentymarkets-x1.com`
+* `*.plentymarkets.net`
+
+==== 1.3.1. Plentymarkets als Domain-Provider
+Wie man eine neue Domain bestellt, die durch plentymarkets verwaltet werden soll kann man dem Handbuch entnehmen: Siehe  link:https://knowledge.plentymarkets.com/basics/arbeiten-mit-plentymarkets/plentymarkets-konto#_neue_domains_in_plentymarkets[Handbuch 4.2. ff.^]
+
+Anschließend muss die neue Domain in Deinem Service-Center als Hauptdomain festgelegt werden:
+[[styleguide-assets]]
+.set_main_domain
+image::aws-umzug/assets/awstransfer_pic003.png[]
+
+=== 1.3.2. Externer Domain-Provider
+Wie eine externe Domain zu Deinem System hinzugefügt werden kann findest Du in unserem Handbuch. Siehe link:https://knowledge.plentymarkets.com/basics/arbeiten-mit-plentymarkets/plentymarkets-konto#_neue_externe_domain_anlegen[Handbuch 4.2.3.^]
+
+Nach dem Anlegen der neuen, externen Domain müssen unbedingt die DNS-Einstellungen bei Deinem externen Domain-Provider angepasst werden, damit Dein Shop über die neue Domain erreichbar ist.
+
+Wie man die korrekten DNS-Einstellungen in Erfahrung bringt und bei seinem Domain-Provider hinterlegt wird in diesem Best-Practice erklärt: +
+<<../domains/dns-selbsthilfe.adoc#1, Selbsthilfe bei DNS-Problemen / Wie hinterlege ich korrekte DNS-Einstellungen>>.
+
+Anschließend muss die neue Domain in Deinem link:plentymarkets.eu/my-account/[Service-Center^] als Hauptdomain festgelegt werden:
+[[styleguide-assets]]
+.set_main_domain
+image::aws-umzug/assets/awstransfer_pic003.png[]
+
+== 1.4. Interne DNS-Einstellungen überprüfen
+Domains, die von plentymarkets gehostet werden, müssen nicht angepasst werden. Sämtliche DNS-Einstellungen erfolgen automatisch.
+
+== 1.5. Externe DNS-Einstellungen anpassen
+Damit die neu angelegte, externe Domain den Shop und/oder das Backend von Plentymarkets darstellen kann müssen die DNS-Einstellungen bei Deinem externen Domain-Provider so angepasst werden, dass sie den Angaben in Deinem Service-Center entsprechen. Ein Beispiel wie die DNS-Angaben aussehen können:
+[[styleguide-assets]]
+.present_dns-settings
+image::aws-umzug/assets/awstransfer_pic004.png[]
+
+Wie man die korrekten DNS-Einstellungen in Erfahrung bringt und bei seinem Domain-Provider hinterlegt wird in diesem Best-Practice erklärt: +
+<<../domains/dns-selbsthilfe.adoc#1, Selbsthilfe bei DNS-Problemen / Wie hinterlege ich korrekte DNS-Einstellungen>>.
+
+== 1.6. Plenty-Testdomain löschen
+Da nun eine vollwertige Domain an Dein System angebunden wurde, wird die Testdomain nicht mehr benötigt und kann bei Bedarf gelöscht werden.
+
+Wenn die Testdomain weiterhin genutzt werden möchte, kann sie selbstverständlich im Service-Center angelegt bleiben.
+
+[WARNING]
+====
+Nach dem Wechsel auf eine vollwertige Domain ist es *nicht* mehr möglich die Testdomain wieder als Hauptdomain einzustellen.
+====
+
+== 1.7. Umzugstermin planen
+*Videoanleitung zum Anlegen des Umzugs* +
+video::249787171[vimeo]
+
+=== 1.7.1. Für wann sollte der Umzug sinnvollerweise geplant werden?
+Optimalerweise sollte für den Systemumzug ein Termin außerhalb der Stoßzeiten gewählt werden, da zu diesen Uhrzeiten mit minimalem Besucheraufkommen zu rechnen ist.
+Eine empfehlenswerte Uhrzeit wäre zwischen 23:00 Uhr und 02:00 Uhr.
+
+=== 1.7.2. Wie lange kann der Umzug dauern?
+Bei einem mittelgroßen System gehen wir von einem Richtwert von ca. 20 Minuten für die Dauer des Umzugs aus. Je nach Größe der umzuziehenden Daten des Systems (Webspace und DB-Speicherplatz) kann die tatsächliche Umzugsdauer abweichen. Eine pauschale Aussage kann deshalb nicht getroffen werden.
+
+=== 1.7.3. Wo kann ich den Umzug starten?
+Der Umzug kann in Deinem Backend eingeleitet werden: +
+*Start » plentymarekts-Konto » Umzug*
+[[styleguide-assets]]
+.start_aws_relocation1
+image::aws-umzug/assets/awstransfer_pic005.png[]
+
+[[styleguide-assets]]
+.start_aws_relocation2
+image::aws-umzug/assets/awstransfer_pic006.png[]
+
+A. Wähle Deine Ziel-Cloud, das gewünschte Umzugsdatum, sowie -Uhrzeit aus.
+Der Umzugstermin muss mindestens 48h in der Zukunft liegen.
+
+B. Sofern Du eine externe Domain als Hauptomain für Dein System eingestellt hast, muss der Haken gesetzt sein. Weiterhin muss bei Deinem externen Domain-Provider die als #*C*# markierte IP-Adresse als *A-Record* für `domain.tld`, sowie für `*www*.domain.tld` hinterlegt werden.
+
+Die Übergangs-IP-Adressen lauten folgendermaßen:
+
+.Übergangs-IP-Adressen
+|===
+|CLOUD |Übergangs-IP-Adresse
+
+|AWS Frankfurt
+|`35.156.167.27`
+
+|AWS Dublin
+|`54.72.150.65`
+|===
+
+[WARNING]
+====
+Bei dieser IP-Adresse handelt es sich um eine Übergangs-IP-Adresse, die nach dem erfolgreichen Umzug erneut angepasst werden muss - siehe §3.2.
+====
+
+Die externen DNS-Einstellungen sollten #*frühesten* 48h vor dem gewünschten Umzugstermin# beim entsprechenden Domain-Provider angepasst werden, jedoch #*spätestens* exakt zum gewählten Umzugszeitpunkt#.
+
+[NOTE]
+====
+Durch den Umzug auf AWS werden die zuständigen Server geändert, auf denen sich das jeweilige System befindet. Damit einhergehend ändert sich ebenfalls die _Adresse_ der Server (in Form der zu ändernden DNS-Einstellungen).
+
+Durch das Ändern der DNS-Einstellungen, wie z.B. die IP-Adresse und/oder des `CNAME`-Eintrages, müssen die geänderten Daten von dem zuständigen Domain-Provider an alle DNS-Server weltweit verteilt werden. Dieser Vorgang benötigt *bis zu 48h*.
+
+Damit der zuständige Domain-Provider nicht permanent nach geänderten DNS-Einstellungen suchen und diese direkt verteilen muss, ist für das Verteilen ein sogenannter link:https://de.wikipedia.org/wiki/Time_to_Live[Time-To-Live^]- (kurz: TTL)-Wert angegeben. Dieser Wert gibt an wie viele Sekunden vergehen müssen, bis die DNS-Daten der Domain erneut verteilt werden. Je niedriger die TTL, desto eher werden neue DNS-Daten verteilt.
+
+*FAZIT:* Je schneller die DNS-Einstellungen verteilt werden, desto dichter können die DNS-Änderungen zum Wunschzeitpunkt des AWS-Umzugs (Phase 2, grün) vorgenommen werden.
+====
+
+[WARNING]
+====
+Das Ändern der DNS-Einstellungen auf die Übergangs-IP-Adresse *VOR* dem erfolgreich durchgeführten Umzug sorgt dafür, dass das System nicht mehr erreichbar ist, bis der Umzug erfolgreich abgeschlossen wurde - denn erst danach stimmt “die Adresse des Servers” wieder.
+====
