@@ -190,17 +190,17 @@ Richten Sie anschließend die Ereignisaktion für den automatischen E-Mail-Versa
 [#500]
 == Meldebestand einer Variante festlegen
 
-Der Meldebestand zeigt an, bei welcher Menge einer Variante eine Nachbestellung veranlasst werden sollte. Sie können statische Werte für den Meldebestand pflegen oder den neuen dynamischen Meldebestand nutzen. Die Implementierung des dynamischen Meldebestands ist jedoch noch nicht vollumfänglich. Beachten Sie den Hinweis am Ende dieses Kapitels. +
+Der Meldebestand zeigt an, bei welcher Menge einer Variante eine Nachbestellung veranlasst werden sollte. Sie können feste Werte für den Meldebestand pflegen, d.h. der Meldebestand ist statisch, oder den neuen dynamischen Meldebestand nutzen. Die Implementierung des dynamischen Meldebestands ist jedoch noch nicht vollumfänglich. Beachten Sie den Hinweis am Ende dieses Kapitels. +
 Im **Tab: Lager** einer Variante können Sie einen statischen **Meldebestand** eintragen. Zunächst ist die Menge 0 gespeichert, sodass erst dann eine Meldung erfolgt, wenn der komplette Bestand verkauft ist. Wenn Sie den Meldebestand bei 0 belassen, unterscheidet er sich im Grunde nicht von einem Nettobestand 0 und bietet Ihnen somit keine zusätzlichen Funktionen. Wenn Sie den Meldebestand sinnvoll nutzen möchten, tragen Sie einen Wert ein, der größer als 0 ist.
 
 [TIP]
 .Lager hinzufügen, um Meldebestand einzutragen
 ====
-Ein Meldebestand lässt sich nur eingeben, wenn der Variante ein Lager zugeordnet ist. Wenn kein Lager zugeordnet ist, fügen Sie zunächst das Lager hinzu.
+Ein statischer Meldebestand lässt sich nur eingeben, wenn der Variante ein Lager zugeordnet ist. Wenn kein Lager zugeordnet ist, fügen Sie zunächst das Lager hinzu.
 ====
 
 [.instruction]
-Meldebestand festlegen:
+Statischen Meldebestand eintragen:
 
 . Öffnen Sie das Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Variante öffnen » Tab: Lager**.
 . Tragen Sie eine Menge unter **Meldebestand** ein.
@@ -218,16 +218,23 @@ Wenn weder eine Mindestabnahme noch ein Meldebestand für eine Variante eingetra
 Aktuelle Umsetzung des dynamischen Meldebestand
 
 Pro Lager können Sie entscheiden, ob Sie den dynamischen Meldebestand nutzen oder nicht. Wenn Sie den dynamischen Meldebestand nutzen, berechnet Ihr System den dynamischen Meldebestand jede Nacht im Hintergrund. Dieser berechnete dynamische Meldebestand wird noch in keinem Feld dargestellt, d.h. Sie sehen den Wert nicht. Die Differenz zum Meldebestand, MeldΔ, basiert jedoch auf dem berechneten Meldebestand. Die Differenz wird Ihnen z.B. in der Bestandsübersicht angezeigt. So können Sie anhand der Differenz absehen wann eine Nachbestellung erfolgen sollte.
-Wenn Sie den dynamischen Meldebestand nutzen, dürfen Sie manuell keinen statischen Meldebestand eintragen. Belassen Sie den Meldebestand für die Varianten in dem Lager auf 0. Wenn ein Meldebestand größer als 0 gespeichert ist, wird die Berechnung nicht ausgeführt.
+
+[IMPORTANT]
+.Wenn dynamischer Meldebestand genutzt wird, keinen statischen Meldebestand pflegen
+====
+Wenn Sie den dynamischen Meldebestand nutzen, dürfen Sie manuell keinen statischen Meldebestand eintragen. Belassen Sie den Meldebestand für die Varianten in dem Lager auf 0. Wenn ein Meldebestand größer als 0 gespeichert ist, wird die Berechnung des dynamischen Meldebestands nicht ausgeführt.
+====
 
 Der dynamische Meldebestand wird jede Nacht anhand der folgenden Formel berechnet:
 
 latexmath:[\mbox{Dynamischer Meldebestand} = {(\mbox{Ø Abverkauf} \cdot \mbox{Lagerreichweite}) + (\mbox{Ø Abverkauf} \cdot \mbox{kürzeste Lieferzeit})}]
 
-Ø Abverkauf = durschnittlich verkaufte Menge +
-kürzeste Lieferzeit = kürzeste Lieferzeit einer Variante egal von welchem Lieferanten
+Erläuterung der Formelparameter:
 
-Die Differenz zum dynamischen Meldebestand (MeldΔ), die Ihnen auch dargestellt wird, berechnet sich folgendermaßen:
+* Ø Abverkauf = durschnittlich verkaufte Menge
+* kürzeste Lieferzeit = kürzeste Lieferzeit einer Variante egal von welchem Lieferanten
+
+Die Differenz zum dynamischen Meldebestand (MeldΔ) wird im System dargestellt und berechnet sich folgendermaßen:
 
 latexmath:[\mbox{MeldΔ} = {(\mbox{dynamischer Meldebestand} - (\mbox{Nettobestand} + (\mbox{nachbestellte Menge})}]
 
