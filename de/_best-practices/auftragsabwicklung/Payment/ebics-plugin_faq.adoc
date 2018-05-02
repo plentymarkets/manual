@@ -1,10 +1,9 @@
-= FAQ: EBICS-Plugin
 :lang: de
 :description: Die wichtigsten Fragen und Antworten zum EBICS-Plugin.
 :keywords: EBICS, Plugin, FAQ, Konto, Bankbuchungen, Vorkasse, Überweisung, HBCI, IBAN, Zahlungen
 
-In unserem Marketplace erhaltet ihr alle wichtigen Infos zu unserem link:https://marketplace.plentymarkets.com/plugins/payment/EBICS_5098[EBICS-Plugin^].
-Ihr könnt euch auch gerne noch den link:https://www.plentymarkets.eu/blog/plentyCommunity-Projekt-EBICS-Komplett-auf-den-Anwender-ausgerichtet/b-1941/[Blog-Beitrag^] zum Plugin durchlesen, um alles Wissenswerte zu erfahren.
+In unserem Marketplace erhältst du alle wichtigen Infos zu unserem link:https://marketplace.plentymarkets.com/plugins/payment/EBICS_5098[EBICS-Plugin^].
+Du kannst dir auch gerne noch den link:https://www.plentymarkets.eu/blog/plentyCommunity-Projekt-EBICS-Komplett-auf-den-Anwender-ausgerichtet/b-1941/[Blog-Beitrag^] zum Plugin durchlesen, um alles Wissenswerte zu erfahren.
 
 == Erste Schritte: Wie benutze ich das EBICS-Plugin?
 Für das EBICS-Plugin, sowie alle anderen Plugins, wird Plentymarkets 7 vorausgesetzt.
@@ -12,7 +11,7 @@ Für das EBICS-Plugin, sowie alle anderen Plugins, wird Plentymarkets 7 vorausge
 [NOTE]
 .HINWEIS
 ====
-Um ein Konto anzulegen, muss zuerst das EBICS-Modul über den Konfigurator gebucht werden.
+Um ein Konto anzulegen, musst du zuerst das EBICS-Modul über den Konfigurator buchen.
 ====
 
 [discrete]
@@ -31,21 +30,33 @@ Prüfe bei der Auswahl der Bank, ob die URL und der Hostparameter / -name mit de
 ====
 
 Über den Button *Konto initialisieren* werden die Schlüssel generiert und der INI- und HIA-Call ausgeführt.
-Anschließend kann der INI-Brief erstellt werden. Dies erfolgt über einen direkten pdf-Download im Browser.
-Achte bitte darauf, dass die Pop-Ups dabei nicht blockiert werden.
+Danach kann der INI-Brief erstellt werden. Dies erfolgt über einen direkten PDF-Download im Browser.
+Achte bitte darauf, dass die Pop-Ups dabei nicht blockiert sind. +
 Der INI-Brief sollte direkt oder zeitnah unterschrieben und an die Bank übermittelt werden.
+Die Initialisierung wird nach spätestens *2 Wochen* verworfen, wenn der INI-Brief noch nicht angekommen sein sollte.
 Die Bank schaltet das Konto frei, wenn alles ordnungsgemäß durchgeführt wurde.
-Über *Konto-Initialisierung abschließen (HPB)* wird die Initialisierung nach der Bank-Freigabe abgeschlossen.
+Der Knopf *Konto-Initialisierung abschließen (HPB)* in den Kontoeinstellungen darf erst nach Freigabe der Bank gedrückt werden.
+Anschließend ist das Konto erfolgreich initialisiert. +
+Achte bitte darauf, dass du für den Zahlungsabruf noch die Geschäftsvorfälle über den Menüpunkt *Geschäftsvorfälle* aktivieren musst, damit die Zahlungen importiert werden.
+
+[WARNING]
+====
+Der Button *Konto initialisieren* sollte nur einmal gedrückt werden.
+Bei mehrmaligem Drücken könnte es zu Problemen und Folgefehlern kommen.
+Im Log kannst du die einzelnen Schritte nachvollziehen.
+====
 
 == Ich benutze EBICS bereits. Wieso soll ich auf das Plugin wechseln?
 Das EBICS-Tool für den Zahlungsabruf läuft stabiler als in der alten EBICS-Integration.
 Weiterhin wird das Tool, sowie das Plugin, fortlaufend weiterentwickelt.
-Die alte EBICS-Schnittstelle ist nicht mehr wartungsfähig.
+Die alte EBICS-Schnittstelle wird nicht mehr unterstützt und ist daher auch nicht ausfallsicher.
 Bereits vorhandene Konten können ganz einfach in das Plugin migriert werden.
 
 == Es werden keine Zahlungen abgerufen. Was kann ich tun?
 
-* Überprüfen, ob Vormerkposten und Tagesumsätze das richtige Format nutzen
+* Überprüfe, ob Vormerkposten und Tagesumsätze das richtige Format nutzen
+** Die Formate können in den Kontoeinstellungen angepasst werden
+** Die Bank stellt das Transaktionsfile im Format CAMT oder MT bereit
 
 .Geschäftsvorfälle aktivieren
 image::_best-practices/auftragsabwicklung/Payment/assets/EBICS-geschaeftsvorfall.png[]
@@ -56,12 +67,17 @@ image::_best-practices/auftragsabwicklung/Payment/assets/EBICS-geschaeftsvorfall
 .. *Nach dem ersten Zahlungsabruf:* inaktive Geschäftsvorfälle laden
 .. Initial über das Dropdown *Anzeigen* die inaktiven Geschäftsvorfälle auswählen und nach Wunsch aktivieren
 
-== Die Bank stellt das Transaktionsfile um X Uhr bereit. Warum wird dieses erst später von plenty abgerufen?
-* Der Abruf erfolgt täglich über einen Servercron
-* Der Zahlungsabruf erfolgt meistens spät am Abend oder in der Nacht
+== Die Bank stellt das Transaktionsfile um X Uhr bereit. Warum wird dieses erst später von plentymarkets abgerufen?
+* Der Abruf erfolgt täglich über einen Cron
+** Der Cron fragt stündlich ab, ob ein Transaktionsfile vorhanden ist
+* Der Zahlungsabruf erfolgt meistens am Abend oder in der Nacht
+** Dies hängt mit der Bereitstellung der Transaktionsfiles von der Bank zusammen
+** Der Tagesumsatz kann auch mehrmals am Tag bereitgestellt werden
+* Das Transaktionsfile für den Tagesumsatz und die Vormerkposten werden zu unterschiedlichen Zeiten bereitgestellt
+
 
 == Was bedeuten die Felder “Tagesumsatz” und “Vormerkposten”?
-* Tagesumsatz = bestätigte Buchung, die einmal am Tag bereitgestellt wird
+* Tagesumsatz = bestätigte Buchung, die meist einmal am Tag bereitgestellt wird
 * Vormerkposten = autorisierte Buchung, die mehrmals am Tag bereitgestellt wird und den Zahlungseingang reserviert
 * Der Vormerkposten wird durch die bestätigte Buchung aufgehoben
 
@@ -72,18 +88,24 @@ Tagesumsatz und Vormerkposten sollten immer das selbe Format besitzen, da sonst 
 ====
 
 == Was ist der Unterschied zwischen CAMT und MT?
+CAMT und MT sind Datenübertragungsformate, die in den Transaktionsfiles genutzt werden.
+Im Transaktionsfile wird jeweils nur ein Format genutzt.
 
 .Die Formate CAMT und MT im Vergleich
 |===
 | |CAMT |MT
+
+|*Bedeutung*
+|Cash Management
+|Message Type
 
 |*Feld IBAN in Kontoeinstellungen*
 |IBAN
 |Kontonummer
 
 |*Transaktionsfiles*
-|Standardisiertes Format
-|Bankenspezifisches Format
+|Einheitliches Format der SEPA, löst SWIFT-Format ab
+|SWIFT-Standard Format
 
 |===
 
