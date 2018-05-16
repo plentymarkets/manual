@@ -1,7 +1,269 @@
-= Fehlerbehebung DHL
 :lang: de
 :keywords: Der Vorgang konnte nicht korrekt durchgeführt werden, Bitte Dateneingabe prüfen, 1001, Fehler bei der Anmeldung, login failed, Exception in extension function, java.lang.RuntimeException, productId cannot be mapped, productId **EXP/OFP** cannot be mapped, Hard validation error occured, Bitte geben Sie einen Ort an, Bitte geben Sie Name 1 an, Bitte geben Sie eine Postleitzahl an, Bitte geben Sie eine Straße an, Bitte geben Sie eine Hausnummer an, Bitte geben Sie eine gültige Telefonnummer an, Es handelt sich um eine ungültige Postleitzahl, Bitte verwenden Sie das Format 99999, The Customer ID Number is invalid, Please check the Customer ID Number, Your order could not be processed, Ein interner Fehler ist aufgetreten, Keine gültigen Versandprofile vorhanden, SystemShippingController, unknown, Die Gewichtsangabe ist kleiner als im CN23-Formular, Invalid fieldlength: InvoiceDate, Bitte geben Sie die Anzahl an, Bitte geben Sie die Beschreibung an, Bitte geben Sie den Warenwert an, Bitte geben Sie das Gewicht an, Bitte geben Sie das Gewicht an, Bitte geben Sie die Art der Sendung an, Die angegebene Art der Sendung ist nicht gültig, Invalid fieldlength in element ‘Note’, Please refer to documentation, Invalid XML, Ungültiger Content wurde beginnend mit Element ‘Shipment’ gefunden, An dieser Stelle wird kein untergeordnetes Element erwartet, The current incoterms are not included in the list of the available incoterms, The current origin country code is not included in the list of the available countries, Export document is missing, Please enter weight for the packages, Terms of Trade have not been selected, The shipment weight may not be smaller than 0.1 kg for this product code, Please select a valid type of shipment, Please enter quantity of goods, Please enter a description of goods, Please enter the country of origin, Please enter value of goods, Please add an exportdoc position, The combination of shipping profile ID and shipping region ID does not exist, Code 1001, Der Nutzer des Webservice konnte nicht authentifiziert werden, Authorization Required, 365 Tage, 90 Tage, Systembenutzer
 :position: 40
+
+[#1]
+= Versanddienstleister und Versandprofile einrichten
+
+In diesem Kapitel gehen wir die nötigen Schritte durch, damit deine Kunden im Webshop DHL als Versandart auswählen und Du anschließend die Anmeldung über das DHL Shipping erfolgreich durchführen kannst.
+
+== DHL Shipping Plugin kaufen, installieren und bereitstellen
+
+In diesem Kapitel wird beschrieben, wie du das DHL Shipping Plugin im plentyMarketplace kaufst und es anschließend im plentymarkets Backend installierst und bereitstellst.
+
+=== Kaufen
+
+Als erstes musst du die Grundlage schaffen, um in Zukunft erfolgreich mit DHL zu arbeiten. Hierzu ist es nötig, dass du dir das link:https://marketplace.plentymarkets.com/de/plugins/integration/DHLShipping_4871[DHL Shipping Plugin^] aus unserem plentyMarketplace herunterlädst.
+
+.DHL Shipping Plugin kaufen
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_kaufen.png[]
+
+Das Plugin ist kostenfrei und kann durch einen Klick auf *Zur Kasse* gekauft werden. Bitte folge den weiteren Anweisungen im plentyMarketplace.
+
+=== Installieren
+
+Nachdem du das Plugin gekauft hast, musst du dieses in deinem plentymarkets System installieren. Das Plugin findest du nach dem Kauf im Menü *Plugins » Einkäufe*. Dort musst du das Plugin mit einem Klick auf den Button *Plugin installieren* installieren.
+
+.DHL Shipping Plugin installieren
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_installieren.png[]
+
+=== Bereitstellen
+
+Sobald das Plugin installiert ist, musst du es für die spätere Einrichtung noch im System bereitstellen. Hierzu sind folgende Schritte nötig:
+
+Du findest das Plugin in der Auflistung im Menü *Plugin » Plugin-Übersicht*. Über den Button oben links (*Zur Kartenansicht wechseln / Zur Tabellenansicht wechseln*) kannst du die Ansicht ändern:
+
+.DHL Shipping Plugin bereitstellen
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_Uebersicht.png[]
+
+Mit einem Klick auf die Weltkugel am Plugin (*Nicht in Productive aktiv* / *in Productive aktiv*) setzt du dieses in den Produktivmodus. Wenn du eine Änderung an einem Plugin vorgenommen hast, musst du alle Plugins für das System im Produktivmodus bereitstellen. Das machst du mit einem Klick auf die obere Weltkugel (*Plugins in Productive bereitstellen*). Dieser Vorgang kann einen Moment dauern:
+
+.Tabellenansicht: DHL Shipping Plugin bereitstellen
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_bereitstellen_Tabellenansicht.png[]
+
+.Kartenansicht: DHL Shipping Plugin bereitstellen
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_bereitstellen_Kartenansicht.png[]
+
+Nachdem der Bereitstellungsvorgang abgeschlossen ist, siehst du durch einen Klick auf den Käfer (*Plugin-Log (Productive)* das Bereitstellungslog. Ist dieser Vorgang erfolgreich gelaufen, ist der Käfer grün und bei nicht erfolgreichem Durchlauf ist der Käfer rot. Wenn der Käfer rot ist, findest du in dem Log eine Fehlermeldung, die dir sagt, welches Plugin diesen Fehler verursacht hat:
+
+.Plugin-Log
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_Log.png[]
+
+Wenn keine Fehler im Log angezeigt werden, dann ist das Plugin im Menü *System » Aufträge » Versand » DHLShipping* verfügbar. Wie du das Plugin im Detail einrichtest, wird in einem späteren Abschnitt beschrieben.
+
+Doch zunächst musst du einige Einstellungen im plentymarkets Backend vornehmen, bevor du das DHL Shipping Plugin konfigurierst.
+
+
+== Lieferländer aktivieren
+
+Da das Plugin jetzt grundlegend verfügbar ist, kannst du die nächsten Schritte in Angriff nehmen. In diesem Teil solltest du dir vorher Gedanken machen, in welche Länder du liefern möchtest. Wenn du die Länder festgelegt hast, kannst du diese im Menü **System » Aufträge » Versand » Optionen » Tab: Lieferländer** aktivieren. Diese stehen dann für den nächsten Schritt bereit. Beachte bitte, dass in plentymarkets besondere Regionen wie z.B. Helgoland oder die Kanarischen Inseln als eigenes "Lieferland" einzustellen sind.
+
+Für die Lieferländer hast du folgende Auswahlmöglichkeiten:
+
+.Optionen für die Anzeige Lieferländer
+[cols="1,3"]
+|====
+|Option |Beschreibung
+
+|Inaktiv
+|Das Lieferland ist nicht aktiv.
+
+|Aktiv
+|Das Lieferland ist uneingeschränkt aktiv.
+
+|Backoffice aktiv
+|Lieferländer mit dieser Eigenschaft sind nur im plentymarkets System und nicht im Webshop sichtbar.
+
+|Lieferant aktiv
+|Lieferländer mit dieser Eigenschaft stehen für die Einstellung als Standardlieferland im Menü *System » Mandant » Mandant wählen » Bestellvorgang » Einstellungen* nicht zur Verfügung.
+|====
+
+.Lieferländer aktivieren
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Lieferlaender_aktivieren.png[]
+
+== Regionen erstellen
+
+Die aktivierten Lieferländer musst du jetzt in Regionen zusammenfassen. Die Versandregionen findest du im Menü *System » Aufträge » Versand » Optionen » Tab: Regionen*. Füge die Länder, für die auch die gleichen Versandkonditionen gelten sollen, in einer gemeinsame Region zusammen.
+
+[TIP]
+.Beispiel für unterschiedliche Versandkosten
+====
+Wenn du für Spanien und Frankreich z.B. 14,90 € Versandkosten verlangen möchtest, dann kommen diese beiden Länder zusammen in eine Region. Soll hingegen für Italien 20,90 € genommen werden, muss dafür eine neue Region erstellt werden.
+====
+
+Auf der linken Seite in der Region siehst du alle verfügbaren Lieferländer. Auf der rechten Seite siehst du alle Lieferländer, die bereits mit dieser Region verknüpft sind. Füge nun alle aktiven Lieferländer einer Region hinzu. Bitte beachte dabei, dass jedes Lieferland nur in einer Region vorhanden sein kan.
+
+.Regionen einrichten
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Regionen_einrichten.png[]
+
+== Versanddienstleister erstellen
+
+Außer den Lieferländern und den dazu passenden Regionen benötigst du noch den richtigen Versanddienstleister, um eine Brücke zwischen dem Plugin und den Versandprofilen zu schaffen. Den Versanddienstleister konnfigurierst du im Menü *System » Aufträge » Versand » Optionen » Tab: Versanddienstleister*.
+
+Hier wählst du einen Namen für den Versanddienstleister aus und wählst aus dem Dropdown-Menü den Dienstleister *DHL Shipping (Versenden)* aus.
+
+.Versanddienstleister erstellen
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Versanddienstleister_erstellen.png[]
+
+[NOTE]
+.Tracking-URL
+====
+Außerdem kannst du in diesem Menü bereits die TrackingURL "*http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&zip=$PLZ&idc=$PaketNr*" für den späteren E-Mail Versand hinterlegen.
+====
+
+== Versandprofil erstellen
+
+Alle Menüpunkte, die du bisher eingerichtet hast, treffen im Versandprofil aufeinander. Hierzu wechselst du in das Menü *System » Aufträge » Versand » Optionen » Tab: Versandprofile*. Mit einem Klick auf den *Neu*-Button (Plus-Symbol) erstellst du ein neues Versandprofil und landest direkt im *Tab:Base*. Das Tab *Portotabelle* ist erst nach dem ersten Speichern sichtbar.
+
+=== Base
+
+Im **Tab: Base** legst du die grundsätzlichen Einstellungen für dein Versandprofil fest.
+
+.Feldnamenbeschreibungen im Versandprofil
+[cols="1,3"]
+|====
+|Feldname |Beschreibung
+
+|Versanddienstleister
+|Wähle hier den zuvor angelegten Versanddienstleister aus.
+
+|Name & Name (Backend)
+|Wähle hier einen Namen für das Front- und Backend in der jeweiligen Sprache aus.
+
+|Markierung
+|Hier kannst du dem Profil eine Markierung geben. (z.B. das DHL Logo)
+
+|Priorität
+|Die Priorität bestimmt die Reihenfolge der im Webshop angezeigten Versandprofile.
+
+|Kategorie
+|Die Kategorieoption ermöglicht eine zusätzliche Priorisierung der Versandprofile. Ein konkretes Anwendungsbeispiel findes du link:https://knowledge.plentymarkets.com/auftragsabwicklung/fulfillment/versand-vorbereiten#1300[hier].
+
+|Artikel Portoaufschlag
+|Hiermit kannst du am Artikel hinterlegte Portoaufschläge aktivieren.
+
+|Postident
+|Diese Option musst du aktivieren, wenn ein Postident nötig ist. Z.B. bei FSK18 Ware.
+
+|Bei neuen Artikeln aktivieren
+|Diese Option aktivieren, damit das Profil immer an neuen Artikeln aktiv ist.
+
+|Nachnahme
+|Option aktivieren, damit der Kunde im Ceres-Checkout im Webshop die Zahlungsart Nachnahme wählen kann.
+
+|Inselzuschlag
+|Es wird der eingestellte Portoaufschlag bei einer Lieferung zu bestimmten Inseln anhand der definierten Liste in plentymarkets berechnet.
+
+|Mandanten (Shops)
+|Hier wählst du die Mandaten aus, welche mit diesem Versandprofil verknüpft sein sollen. Es muss mindestens ein Mandant eingestellt sein, damit das Versandprofil auswählbar ist.
+
+|Auftragsherkunft
+|Hier wählst du die Auftragsherkünfte aus, für die dieses Versandprofil frei gegeben sein sollen.
+
+|Gesperrte Zahlungsarten
+|Hier wählst du die Zahlungsarten aus, für die das Versandprofil *nicht* auswählbar sein soll.
+
+|Gesperrte Kundenklassen
+|Wähle hier die Kundenklassen aus, für die das Versandprofil *nicht* auswählbar sein soll.
+
+|Versandgruppen
+|Versandprofile können einer Versandgruppe hinzugefügt werden, damit die Zuweisung von Versandprofilen am Artikel vereinfacht werden kann.
+
+|*eBay*
+|
+
+|Konto
+|Wähle hier ein eBay Konto aus, falls du eines verknüpfen möchtest.
+
+|Listingtyp
+|Auswahlmöglichkeiten: *Alle* = Alle Listingtypen *Auktion* = Nur Auktionen *Festpreis-/Shop Artikel* = Nur Festpreis bzw. Shop Artikel (Shop Artikel nur für Hood)
+
+|Expressversand
+|Aktivieren, wenn dieses Versandprofil für einen Expressversand bei eBay genutzt werden soll.
+
+|Treueprogramm
+|Hier kannst du ein oder mehrere Treueprogramme wie eBay Plus oder Amazon Prime mit diesem Versandprofil verknüpfen.
+
+|====
+
+=== Portotabelle
+
+Das Tab *Portotabelle* ist erst verfügbar, wenn du das Versandprofil gespeichert hast. In diesem Tab werden die Portotabellen für die jeweiligen vorher eingerichteten Regionen angezeigt. Das heißt, hier legst du die Preise und den Berechnungstypen für die einzelnen Region fest.
+Wähle die Berechnungsgrundlage für die Versandkosten aus. Es gibt die Auswahlmöglichkeint: *Pauschal*, *Gewichtsabhängig*, *Volumenabhängig*, *Mengenabhängig*, *Preisabhängig* und *Artikelporto*.
+
+Je nach Einstellung des Typen musst du die passenden Preise eingeben. Außerdem kannst du für jede Portotabelle angeben, ab welchem Betrag der Versand kostenfrei ist oder dass er z.B. ab 100 € Warenwert statt der pauschal eingestellten 4,99 € nur noch 2,50 € kostet.
+
+Der Beschränkungstyp schränkt das Versandprofil ein. Passe aber auf, dass du mit deinen Versandprofilen einen nahtlosen Übergang ermöglichst, damit z.B. bei einem eingestellten Maximalgewicht von 20 kg in einem Versandprofil und dem Kauf von zwei Artikeln mit je 11 kg, noch ein anderes Versandprofil auswählbar ist und eine Fehlermeldung im Webshop verhindert wird.
+
+Als Standardpaket kannst du ein vorher definiertes Versandpaket hinterlegen. Ein Versandpaket definierst du im Menü *System » Aufträge » Versand » Versandpakete*. So kannst du z.B. feste Maße übertragen, wenn du nur eine Paketgröße für den Versand verwendest.
+
+[NOTE]
+.Berechnungstypen
+====
+Bitte beachte, dass du z.B. für die gewichtsabhängige Berechnung auch die Gewichte an den einzelnen Artikeln pflegen musst. Ansonsten ist eine Berechnung nicht möglich.
+====
+
+.Berechnungstypen in der Portotabelle
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Portotabelle_Berechnungstypen.png[]
+
+[NOTE]
+.Portotabelle aktivieren
+====
+Eine Portotabelle ist erst aktiv, wenn diese gespeichert wurde. Ansonsten siehst du den Hinweis *Region wird im Versandprofil nicht verwendet. Preis eintragen und speichern, um Region zu verwenden. Portotabelle speichern und neu laden, um Versanddienstleister-Einstellungen anzuzeigen.*
+====
+
+== Versandprofil am Artikel aktivieren
+
+Im Menü *Artikel » Artikel bearbeiten Tab: Global* musst du jetzt alle Artikel mit den gewünschten Versandprofilen verknüpfen. Dies kannst du auch über die Gruppenfunktion machen. Achte dabei auf den Haken bei der Option *Alte Versandprofile löschen*, da über die "Versandkonfiguration" nur weitere Versandprofile hinzugefügt werden können.
+
+== DHL Shipping Plugin konfigurieren
+
+Nachdem die Versandprofile fertig eingerichtet und am Artikel verknüpft sind, kann jetzt das DHL Shipping Plugin final eingerichtet werden:
+
+=== Einrichtung
+
+Anschließend wechselst du in das Menü *System » Aufträge » Versand » DHLShipping* und findest dort die nachfolgenden Menüpunkte.
+
+*Grundeinstellungen*
+
+In den Grundeinstellungen hinterlegst du bitte die Zugangsdaten, die du für deinen DHL Benutzer angelegt hast. Außerdem hast du hier die Möglichkeit, eine alternative Telefonnummer und E-Mail Adresse zu hinterlegen. Wenn eins dieser Felder gefüllt ist, werden nur noch diese Daten und nicht mehr die des Kunden an DHL übermittelt. Als letztes gibt es hier noch die Checkbox für die Nicht-leitcodierbaren Adressen. Wenn der Haken gesetzt ist, nimmt DHL auch Nicht-leitcodierbare Sendungen an. Dies kann allerdings bei DHL zu Extrakosten führen. Nähere Informationen dazu kann dir dein DHL Ansprechpartner geben.
+
+[NOTE]
+.Gültigkeit der DHL Benutzer
+====
+Bitte beachte an dieser Stelle, dass es zwei Arten von Benutzern bei DHL gibt. Diese Benutzer haben eine Passwortgültigkeit von 3 oder 12 Monaten. Ist das Passwort abgelaufen, muss dieses bei DHL erneuert und im plentymarkets in den Grundeinstellungen des Plugins hinterlegt werden.
+====
+
+*Abrechnungsnummern*
+
+Du erhältst von DHL für jedes deiner gebuchten Services (z.B. DHL Paket National) eine eigene Abrechnungsnummer. Diese ist 14 Stellen lang und wird in 10 , 2 und 2 aufgeteilt. Die ersten 10 Ziffern ergeben die EKP und sind für jeden Service gleich. Die nachfolgenden 2 Ziffern kennzeichnen den Service (z.B. 01 für DHL Paket National). Die letzten 2 Ziffern trägst du in das Feld Teilnahme ein.
+
+*Absenderdaten*
+
+Im Bereich der Absenderdaten trägst du bitte deine Daten ein, welche letztendlich auf das DHL Label als Absender gedruckt werden sollen.
+
+*Versandeinstellungen*
+
+Als letztes kommt der wichtigste Schritt: die Versandeinstellungen. In den Versandeinstellungen kommt alles zusammen. Hier wählst du aus, welches Versandprofil mit welcher Versandregion und mit welcher Abrechnungsnummer in Zukunft arbeiten soll. Es ist wichtig, dass du für jedes Profil und jede Region in diesem Profil eine eigene Einstellung hinterlegst. Je nachdem was du für Services bei DHL gebucht hast, kannst du diese auch hier in der Konfiguration hinterlegen. Ein Beispiel hier wäre der Service Nachname. Der letzte Punkt in den Versandeinstellungen bezieht sich auf ausländische Sendungen. Für diese ist die Frankatur sowie die Sendungsart ein Pflichtfeld.
+
+Sobald du diese Einrichtung Schritt für Schritt durchgeführt hast, kannst du deine Sendungen über das DHL Shipping Plugin erfolgreich über einen Prozess und die Aktion *Versand-Center* oder über das Menü *Aufträge » Versand-Center* anmelden. Sollte dennoch einmal ein Fehler auftreten, haben wir im unteren Teil dieser Anleitung einige mögliche Fehlerquellen aufgelistet. Diese können z.B. durch falsche Adressdaten am Auftrag verursacht werden.
+
+=== Testmodus ausschalten
+
+Zum Schluss ist es noch nötig, das Plugin vom Testmodus in den Produktivmodus zu setzen.
+
+Hierzu klickst du bitte auf das Plugin und wechselst in den Bereich *Konfiguration » General*. Dort stellst du von Test auf Productive.
+
+.Plugin Modus
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Plugin_Modus.png[]
+
+[#2400]
+=== Plugin nach Aktualisierung erneut bereitstellen
+
+Nachdem du ein Update des Plugins heruntergeladen hast, ist es erforderlich, dass du das Plugin erneut in Productive bereitstellst. Das Herunterladen des Updates allein bewirkt noch nicht, dass die Neuerungen bzw. Änderungen in der neuen Version auch aktiv sind.
+
+
+= Fehlerbehebung DHL
 
 In den folgenden Unterkapiteln findest du Fehlermeldungen, die von DHL an plentymarkets über die Schnittstelle zurückgesendet werden, sowie mögliche Lösungen. Die Fehlermeldungen sind aus Gründen der Übersichtlichkeit in sechs Kategorien eingeordnet.
 
@@ -286,8 +548,3 @@ In der Fehlermeldung ist von “incoterms” und “origin country” die Rede. 
 Bei Anmeldungen von Ausfuhrlieferung ist es für die Voranmeldung der Artikel notwendig, dass eine Rechnung am Auftrag erstellt wurde, damit das Pflichtfeld *InvoiceDate* gefüllt werden kann. Die Fehlermeldung erscheint, wenn dies nicht der Fall ist.
 
 "Voranmeldung" bedeutet, dass plentymarkets die Artikeldaten im Vorfeld an DHL übermittelt. Dies ist bei Ausfuhrlieferungen verpflichtend.
-
-[#2400]
-== DHL Plugin-Installation
-
-Nachdem du ein Update des Plugins heruntergeladen hast, ist es erforderlich, dass du das Plugin erneut in Productive bereitstellst. Das Herunterladen des Updates allein bewirkt noch nicht, dass die Neuerungen bzw. Änderungen in der neuen Version auch aktiv sind.
