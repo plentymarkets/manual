@@ -7,10 +7,10 @@
 == Export von Merkmalverknüpfungen
 === Anlage des Formates im Formatdesigner
 
-Die Derzeit verknüpften Merkmale können mit Hilfe des FormatDesigners exportiert werden.
-Dafür müsst Ihr unter *Daten >> FormatDesigner* ein neues Format von Typ *Item* anlegen.
+Die derzeit verknüpften Merkmale können mit Hilfe des FormatDesigners exportiert werden.
+Dafür müsst Ihr unter *Daten >> FormatDesigner* ein neues Format vom Typ *Item* anlegen.
 
-Anschließend könnt ihr die Datenfelder wählen. Ihr solltet für die Zuordnung die Item-ID (Im Bereich Item) oder Variation-ID (Im Bereich Variation) aufnehmen. Die eigentlichen Merkmalverknüpfungen können dann innerhalb des Bereiches *VariationProperty* hinzugefügt werden.
+Anschließend könnt ihr die Datenfelder wählen. Ihr solltet für die Zuordnung beim späteren Import die Item-ID (Im Bereich Item) oder Variation-ID (Im Bereich Variation) aufnehmen. Die eigentlichen Merkmalverknüpfungen können dann innerhalb des Bereiches *VariationProperty* hinzugefügt werden.
 
 Hier besteht die Möglichkeit, zwischen 3 Werten zu wählen:
 
@@ -25,161 +25,31 @@ Nach dem Speichern des Formates, kann es im Elastischen Export eingerichtet werd
 Den Export des angelegten Formates richtet man unter *Daten >> Elastischer Export* ein.
 
 Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ (In dem Fall Artikel), das angelegte Format, ein Limit und einen Dateinamen.
+
 [TIP]
 .Datei direkt als CSV exportieren
 ====
-Wenn die Datei direkt als CSV downloaden möchte, muss der Name als Suffix .csv nutzen.
-====
-Es sollte bei euch ungefähr so aussehen.
-
-image::_best-practices/Item/ElasticSync/assets/elastischer_export.png[]
-
-Wer möchte kann anschließend noch filter setzen, der Export ist aber auch ohne diese bereits fertig und kann genutzt werden.
-
-
-
-[#infos]
-== Infos
-
-Unter *System >> Einstellungen >> ElasticSync* findest du den *Cache-löschen-Button*.
-
-Mit diesem Button kannst du einmal pro Stunde den Elastic-Sync-Cache zurücksetzen, damit du eine Datei ohne vorherige Änderung erneut importieren kannst.
-
-Ein weiterer hilfreicher Button ist der *Testlauf-Button*.
-
-.Gut geeignet um Syncs zu testen.
-
-image::_best-practices/Item/ElasticSync/assets/Testlauf_Neu.png[]
-
-Damit werden die ersten 10 Zeilen der Datei ohne Cache importiert. So kannst du prüfen, ob alle Werte korrekt zugeordnet wurden, bevor du den Sync mit allen Zeilen startest.
-
-Gültige Werte für Felder in der Zuordnung findest du in der Plugin-Beschreibung und im Handbuch.
-
-Unter *Daten >> Log* können Fehlermeldungen zum Sync eingesehen werden
-
-
-[#aufbau_der_datei]
-== Aufbau der Datei
-
-Folgende
-link:https://plenty-item.plentymarkets-cloud02.com/ElasticSync/BestPracticeArticleSync.csv[Beispieldatei^] wurde für den Sync genutzt.
-
-=== Allgemein
-
-Die Daten, die *global* am Artikel gepflegt werden, wie z.B. *der Name, die Beschreibung etc.* werden in der Zeile der Hauptvariante hinterlegt und sollten später beim Sync in einer zusätzlichen Zuordnung hinterlegt werden.
-
-Daten, die *variantenbezogen* sind, müssen in die entsprechenden Zeilen der Varianten eingetragen werden.
-
-Wichtig bei der Anlage der Varianten ist, dass der Aufbau der Attribute und Werte so in der Datei hinterlegt sind, wie es in der Zuordnung eingestellt ist.
-
-=== Variantennummern
-
-In unserem Beispiel legen wir eine Hauptvariante mit 4 Varianten an. Als Zuordnung für die Varianten nutzen wir die Hauptvariantennummer.
-
-Da der Sync die Daten zeilenweise importiert, steht die Hauptvariante ganz oben in der Datei.
-
-Dort hinterlegen wir manuell die  Variantennummer im gleichnamigen Feld. Das Feld *Hauptvariantennummer* bleibt leer.
-
-Diese Variantennummer wird nun wiederum bei den Varianten in das Feld *Hauptvariantennummer* geschrieben, damit Sie eine Zuordnung zur Hauptvariante haben und nicht als Einzelartikel angelegt werden.
-
-Die Variantennummern der Untervarianten können ebenfalls eingetragen werden. Wenn das Feld frei gelassen wird, generiert das System die Nummern automatisch.
-
-Es sieht in der Datei dann so aus.
-
-.Eintragung der Nummern bei Hauptvariante und Varianten
-
-image::_best-practices/Item/ElasticSync/assets/HVnummer.png[]
-
-[WARNING]
-.Variantennummern müssen eindeutig sein!
-====
-Sowohl die Nummer der Hauptvariante, als auch die Nummer der Untervarianten müssen eindeutig sein. Der Import schlägt fehl, wenn Nummern merhfach vergeben werden.
+Wenn man die Datei direkt als CSV downloaden möchte, muss als Suffix beim Dateinamen *.csv* genutzt werden.
 ====
 
-=== Attribute
-
-In unserem Beispiel haben wir *Attributauswahlkombination* gewählt:
-
-.Erstellen von Varianten via Attributauswahlkombination
-
-image::_best-practices/Item/ElasticSync/assets/Attribute.png[]
-
-Die oberste Zeile der Hauptvariante hat dabei keine Kombination erhalten, damit Sie keine Attributverknüpfung erhählt.
-
-[TIP]
-.Hauptvariante ohne Attribute
-====
-Wenn man mit Variantenartikeln arbeitet und der Hauptvariante keine Attribute zuweist, ist man später flexibler in der Variantenerstellung. Gibt man der Hauptvariante ebenfalls eine Attributverknüpfung, kann man Varianten ausschließlich mit den verknüpften Attributen erzeugen.
-====
-
-=== Bilder
-
-In unserem Sync importieren wir die Bilder-URLs in 2 getrennten Spalten und Zuordnungen. Dies kann auch in einer Spalte mit kommagetrennten URLs geschehen.
-Dazu muss das Feld *Multi-URL* in der Zuordnung gewählt werden. Das Format der URL wird wie folgt hinterlegt: *image1url;positionImage1,image2url;positionImage2*
-
-=== Kategorieverknüpfungen
-
-Zum Verknüpfen mehrerer Kategorien müssen mehrere Zuordnungen angelegt werden. Weiterhin muss darauf geachtet werden, dass bei den Kategorieverknüpfungen der komplette Pfad angegeben wird. Die Ebenen werden dabei mit einem Semikolon getrennt.
-
-.Die Schreibweisen von Trennzeichen und Pfad sind wichtig für den Import.
-
-image::_best-practices/Item/ElasticSync/assets/Kategorieverknuepfung.png[]
+Nach dem Speichern des Formates, ist die Einrichtung abgeschlossen.
 
 
-[WARNING]
-.Mapping und Datei
-====
-Achte darauf, dass die Werte in der Datei auch mit der Zuordnung übereinstimmen. Dabei geht es darum, dass du z.B. bei dem Feld Standardkategorie die ID oder den Namen im Mapping wählen kannst. In der CSV muss dann auch entsprechend die ID oder der Name stehen. Es geht nicht, dass im Mapping die ID, aber in der Datei der Name genutzt wird.
 
-====
+[#Import von Merkmalverknüpfungen]
+== Import von Merkmalverknüpfungen
 
+=== Anlage des Formates in ElasticSync
 
-[#abgleich]
-== Abgleich
+Für den Import der Merkmalverknüpfungen könnt Ihr unter *Daten >> ElasticSync* einen eigenen Sync von Typ Artikel anlegen oder auch die Felder in einen bestehenden Sync einbauen.
 
-Für den Abgleich ist wichtig, dass ein variantenspezifisches Abgleichfeld genutzt wird. Dafür eignet sich z.B. die Variantennummer oder auch die Varianten-ID.
+Der Abgleich kann über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen oder auch über die *Artikel ID*, wenn die Verknüpfungen in einem eigenen Sync erstellt werden.
 
-Als Aktion muss eingestellt werden, dass versucht wird, einen neuen Datensatz anzulegen, wenn kein Abgleich stattfinden konnte.
+In der Zuordnung des Syncs können verschiedene Felder gewählt werden, um die Verknüpfung zu erstellen bzw. zu bearbeiten. Z.B. könnt ihr die Felder *ID, Wert und Sprache* (es müssen alle 3 sein) hinzufügen oder auch nur das Feld *Merkmalkombination*. Letzteres muss in der Datei wie folgt aufgebaut sein:
 
+*InternerName1:Wert1:Sprache;InternerName2:Wert2:Sprache*
 
-[#Zuordnungen]
-== Zuordnung
-
-In der Zuordnung verknüpfen wir die Felder aus der CSV-Datei mit den Feldern aus plentymarkets.
-
-.Eine Zuordnung muss angelegt werden, ohne Zuordnung, kein Import.
-
-image::_best-practices/Item/ElasticSync/assets/Wertebestimmen_Neu.png[]
-
-Es empfiehlt sich, nur die Felder in die Zuordnung aufzunehmen, die tatsächlich übergeben werden sollen. Überflüssige Felder sollten vermieden werden, da das zu Fehlern führen kann.
-
-Für die Artikelanlage mit Varianten gibt es Pflichtfelder, die als Minimum in der Zuordnung enthalten sein müssen, damit der Sync funktioniert. Dabei handelt es sich um folgende Felder:
-
-* Standardkategorie
-* Hauptvariantennummer
-* Variantennummer
-* Will man Bestand importieren, müssen folgende  Werte in der Zuordnung enthalten sein:
-Lager, Menge, Lagerort
+Sollen Merkmalverknüpfungen gelöscht werden, geschieht das mit dem Feld *Löchen (Ja/Nein)*, welches in der Datei mit einer *1* für löschen und *2* für nicht löschen gefüllt sein muss.
 
 
-[#zweite_Zuordnung]
-== Zweite Zuordnung
-
-
-Die Zuordnungen werden nacheinander abgearbeitet. Das heißt, dass unsere zweite Zuordnung nach der Ersten durchgeführt wird.
-
-Über eine weiteres Zuordnung wollen wir nun eine zweite Kategorie, ein weiteres Bild und die globalen Artikeldaten (z.B. Name, Beschreibung) hinterlegen.
-
-In der Zuordnung selbst bestimmen wir erneut die Werte und mappen die URL und den Namen der Kategorie mit der jeweils zweiten Spalte aus unserer Datei.
-
-.Weitere Zuordnungen werden analog zur ersten angelegt.
-
-image::_best-practices/Item/ElasticSync/assets/zweite_Zuordnung_Neu.png[]
-
-Der Sync ist jetzt einsatzbereit und kann gestartet werden.
-
-[TIP]
-.Testlauf
-====
-Wir empfehlen, beim erstmaligen Sync vorab den Testlauf zu nutzen. So kann man prüfen, ob der Sync ordnungsgemäß läuft. Sollten sich  Fehler eingeschlichen haben, kann man diese vor der kompletten Ausführung noch korrigieren.
-====
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Merkmale können verknüpft werden.
