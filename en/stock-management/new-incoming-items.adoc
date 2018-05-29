@@ -1,5 +1,5 @@
 = Managing incoming items
-:lang: de
+:lang: en
 include::{includedir}/_header.adoc[]
 :keywords: Book stock, approve stock booking, book incoming items, incoming items, stock booking, stock registration, inventory registration
 :position: 20
@@ -9,7 +9,7 @@ There are several ways to book stock into your system. However, to book variatio
 [#100]
 == Assigning suppliers to a variation
 
-A supplier must be assigned to a variation before you can book incoming items and the supplier is also required to create reorders. Suppliers are customers that were assigned to the customer type supplier. So you need to create a supplier before you can assign a supplier to a variation. The steps for creating a supplier are the same as for creating other types of **<<crm/managing-customer-data#800, customers>>**. You just have to make sure that you select supplier as customer type.
+A supplier must be assigned to a variation before you can book incoming items and the supplier is also required to create reorders. Suppliers are customers that were assigned to the customer type supplier. So you need to create a supplier before you can assign a supplier to a variation. The steps for creating a supplier are the same as for creating other types of <<crm/managing-customer-data#800, customers>>. You just have to make sure that you select supplier as customer type.
 
 [.instruction]
 Assigning suppliers:
@@ -58,7 +58,13 @@ Assigning suppliers:
 
 A variation needs a warehouse and a storage location before you can book stock in. Without a warehouse and a storage location the system does not know where to book the stock and therefore does not book stock. The standard storage location is only a placeholder location and is used if you have not assigned an individual storage location yet. The best is to select one of your storage locations to begin with.
 
-. Go to **Item » Edit item » Open item » Edit variation**.
+[IMPORTANT]
+.Inheriting the variations to variations
+====
+When you activate a warehouse for a main variation, this setting is inherited to all variations of the item.
+====
+
+. Go to **Item » Edit item » Open item » Edit variation.**
 . Click on the **Warehouse** tab.
 . Select a warehouse from the drop-down list.
 . Click on **Add**.  +
@@ -77,7 +83,8 @@ A variation needs a warehouse and a storage location before you can book stock i
 |Select a zone if you have set up zones for this warehouse
 
 |**Reorder level**
-|Enter the quantity at which a variation should be reordered. A suggestion for a reorder quantity will be made when this reorder level is reached. Until the level is reached 0 will be displayed as suggestion, because the reorder level defines when you wish to make a reorder.
+|Enter the quantity that you want to use to reorder a variation. A suggestion for a reorder quantity will be made when this reorder level is reached. Until the level is reached 0 will be displayed as suggestion, because the reorder level defines when you wish to make a reorder. +
+_Note_: If the <<stock-management/setting-up-a-warehouse#reorder-value_variation_warehouse, difference between the current stock and the reorder level is calculated dynamically>>, the only valid value is 0.
 
 |**Stock turnover (in days)**
 |Enter the number of days that the stock of a specific variation should suffice until the next reorder. This value is relevant for calculating the reorder quantity. A standard value that could be used for the stock turnover is 14 days. Once the item has reached the reorder level, the value entered will be used for calculating the quantity of items that need to be reordered. In other words, the quantity suggested for reorder would be sufficient for the following 14 days.
@@ -89,7 +96,15 @@ If no value is entered here, the stock turnover (in days) is not taken into acco
 |**Stock buffer**
 |Enter a desired value as the stock buffer. The stock for particular markets will then be reduced by this value.  +
 __Example__: You have 50 items in stock and you want a stock buffer of 10 items so that the item can not be sold out completely on this market. In this case, enter **10** as the stock buffer. Now, 40 items are in stock on this market.  +
-The values entered here are considered for markets such as <<omni-channel/multi-channel/neckermann-at#, Neckermann>>, <<omni-channel/multi-channel/otto#, Otto>> and <<omni-channel/multi-channel/plus-gartenxxl#, Plus.de>>. The buffer entered here takes priority over the buffer values entered for the particular market.
+The values entered here are considered for markets such as <<omni-channel/multi-channel/neckermann/neckermann-at-setup#, Neckermann>>, <<omni-channel/multi-channel/otto#, Otto>> and <<omni-channel/multi-channel/plus-gartenxxl#, Plus.de>>. The buffer entered here takes priority over the buffer values entered for the particular market.
+
+|**Best before date**
+|Select if best before dates are to be saved for this variation and this warehouse. +
+*_Note:_* Once stock is booked to the warehouse, you can no longer deactivate the option *Best before date*. If the stock level for this warehouse is 0, the option *Best before date* can be activated or deactivated.
+
+|**Batch**
+|Select if batches are to be saved for this variation and this warehouse. +
+*_Note:_* Once stock is booked to the warehouse, you can no longer deactivate the option *Batch*. If the stock level for this warehouse is 0, the option *Batch* can be activated or deactivated.
 
 |**Suggested storage location**
 |Select a storage location for the particular warehouse. This storage location will automatically be suggested when a reorder is made. The setting default storage location actually means that storage location to be assigned.
@@ -98,7 +113,7 @@ The values entered here are considered for markets such as <<omni-channel/multi-
 [#250]
 == Identifying the purchase price
 
-The range of settings that are connected to the purchase price is versatile. 2 different purchase prices can be shown in the variation's data record. One purchase price is always the moving average price. The second purchase price that will be displayed depends on your settings. You can either enter a purchase price or you can transfer a purchase price from the latest incoming items data record. You also have the possiblity to transfer a second average purchase price. This second average purchase price is a sort of live average purchase price. All different purchase price options that can be transferred are described in the <<#300,Transferring storage location and purchase price>> chapter. +
+The range of settings that are connected to the purchase price is versatile. 2 different purchase prices can be shown in the variation's data record. One purchase price is always the moving average price. The second purchase price that will be displayed depends on your settings. You can either enter a purchase price or you can transfer a purchase price from the latest incoming items data record. You also have the possiblity to transfer a second average purchase price. This second average purchase price is a sort of live average purchase price. All different purchase price options that can be transferred are described in the <<#300, Transferring storage location and purchase price>> chapter. +
 How the two different average purchase prices are calculated is described in the following table.
 
 [[table-average-purchase-price-calculation]]
@@ -107,13 +122,35 @@ How the two different average purchase prices are calculated is described in the
 |====
 |Live average calculation |Moving average calculation
 
-|latexmath:[$LAPP_{new} = {LAPP_{old} \cdot StockQuantity_{old} + PurchasePrice_{new} \cdot StockQuantiy_{new}\over StockQuantity_{old} + StockQuantity_{new}}$]
-|latexmath:[$MAPP_{new} = {MAPP_{old} \cdot StockQuantity_{old} + PurchasePrice_{new} \cdot StockQuantiy_{new}\over StockQuantity_{old} + StockQuantity_{new}}$]
+|latexmath:[LAPP_{new} = {LAAP_{old} \cdot Quantity_{old} + EK_{new} \cdot Quantity_{new}\over Quantity_{old} + Quantity_{new}}] +
+ +
+LAPP~new~ = New live average purchase price +
+LAPP~old~ = Old live average purchase price +
+Quantity~old~ = Previous stock quantity +
+PurchasePrice~new~ = Purchase price of incoming items +
+Quantity~new~ = Quantity of incoming items
+|latexmath:[MAAP_{new} = {MAAP_{old} \cdot Quantity_{old} + PurchasePrice_{new} \cdot Quantity_{new}\over Quantity_{old} + Quantity_{new}}] +
+ +
+MAAP~new~ = New moving average purchase price +
+MAAP~old~ = Old moving average purchase price +
+Quantity~old~ = Previous stock quantity +
+PurchasePrice~new~ = Purchase price of incoming items +
+Quantity~new~ = Quantity of incoming items
 
-|A recalculation of the live average purchase price (LAPP) will be carried out every time stock is booked out or in. The current average is given in export formats or used for statistics. If you wish to see this purchase price in a variation's data record, then you need select that the average purches price will be transferred. +
+a|A recalculation will be carried out in the following cases:
+
+* Incoming items and
+* Outgoing items
+
+The current average is given in export formats or used for statistics. If you wish to see this purchase price in a variation's data record, then you need select that the average purches price will be transferred. +
 The *purchase price* setting can be found in the *System » Stock » Stock » Incoming items* menu. The option that you need to select is *Save live average purchase price in the variation data*. The other options available in the dropdown are explained in the <<table-transfer-of-purchase price-and-storage-location>>
-|A recalculation of the moving average purchase price (MAPP) will be carried out every time stock is booked out or in. However, a recalculation will only be carried out if you defined that stock booked into this warehouse is used for the calculation of the moving average purchase price. Each variation has a separate field for showing the moving average price. +
-Go to *System » Stock » Stock » Incoming items* to activate the warehouses that will be used for the calculation of the moving average purchase price.
+
+a|A recalculation will be carried out in the following cases:
+
+* Incoming items
+
+However, a recalculation will only be carried out if you defined that stock booked into this warehouse is used for the calculation of the moving average purchase price. Each variation has a separate field for showing the moving average price. +
+Go to *System » Stock » Stock » Incoming items* to activate the warehouses that will be used for calculating the moving average purchase price.
 
 |====
 
@@ -136,19 +173,19 @@ Choosing a transfer option:
 |Setting |Explanation
 
 |**Purchase price**
-|Choose whether or not the purchase price will be transferred and if you choose to transfer the purchase price, select where the price will be saved. The storage location while be saved once the incoming items data record was approved.  +
+|Choose whether or not the purchase price will be transferred and if you choose to transfer the purchase price, select where the price will be saved. The storage location while be saved once the incoming items data record was approved. +
 **Do not transfer the purchase price** = The purchase price will not be transferred to other menus. Select this setting if you prefer to manually add and maintain the purchase price in the variation's data. +
 **Save purchase price in variation data** = The purchase price will automatically be saved in the **Settings** tab of a variation. The purchase price that is listed last in the incoming items data record will be transferred if you have the same variation with different purchase prices in one incoming items data record. +
 **Save purchase price in variation and supplier data** = The purchase price will automatically be saved in the **Settings** tab of a variation as well as in the **Stock** tab of a supplier. The purchase price that is listed last in the incoming items data record will be transferred if you have the same variation with different purchase prices in one incoming items data record. +
-**Save live average purchase price in the variation data** = The live average purchase price will be recalculated every time new incoming items are received. The purchase prices of all variations currently available in the warehouse are used for this calculation. The average purchase price will automatically be saved in the **Settings** tab of a variation.  +
-**Save the highest purchase price** = If several different purchase prices are available, then the highest purchase price of the current incoming items data record will be saved with the variation data.  +
+**Save live average purchase price in the variation data** = The average purchase price will be recalculated every time new incoming items are received or items are booked out. The actual purchase prices of those variations currently available in the warehouse are used for this calculation. The average purchase price will automatically be saved in the **Settings** tab of a variation. <<table-average-purchase-price-calculation>> shows the formula used in the calculation. +
+**Save the highest purchase price** = If several different purchase prices are available, then the highest purchase price of the current incoming items data record will be saved with the variation data. +
 **Save the lowest purchase price** = If several different purchase prices are available, then the lowest purchase price of the current incoming items data record will be saved with the variation data.
 
 |**Storage location**
-| Choose whether or not the storage location will be transferred and if you choose to transfer the purchase price, select where the price will be saved. The storage location while be saved once the incoming items data record was approved.  +
-**Do not save the storage location** = The storage location will not be saved.  +
-**Save storage location in variation data** = The storage location is automatically saved as suggested storage location in the **Warehouse** tab of a variation. The storage location will be newly transferred with each new incoming items data record that the variation is included in.  +
-**Save the storage location for items and variations if no storage location was saved yet** = The function only takes effect if no storage location was saved yet.
+| Choose whether or not the storage location will be transferred and if you choose to transfer the purchase price, select where the price will be saved. The storage location while be saved once the incoming items data record was approved. +
+**Do not save the storage location** = The storage location will not be saved. +
+**Save storage location in variation data** = The storage location is automatically saved as suggested storage location in the **Warehouse** tab of a variation. The storage location will be newly transferred with each new incoming items data record that the variation is included in. +
+**Save the storage location for items and variations if no storage location was saved yet** = The option only takes effect if no storage location was saved yet.
 |====
 
 [#400]
@@ -164,7 +201,7 @@ Assigning the RRP to a price:
 . Select one of your sales prices from the drop-down list for the **price**.
 . Save the settings.
 
-However, it is not enough to assign a price in the **System » Stock » New incoming items** menu in order to display a sales price in a variation. You also need to assign a sales price to a variation. Sales prices are created in the **System » Item » Sales prices** menu. How to create sales prices and how to assign them to variations is described in detail on the **<<item/managing-items#, Managing items>>** page of the manual. On this page you will also learn how to calculate prices for customer classes and so on.
+However, it is not enough to assign a price in the **System » Stock » New incoming items** menu in order to display a sales price in a variation. You also need to assign a sales price to a variation. Sales prices are created in the **System » Item » Sales prices** menu. How to create sales prices and how to assign them to variations is described in detail on the <<item/managing-items#, Managing items>> page of the manual. On this page you will also learn how to calculate prices for customer classes and so on.
 
 [#450]
 == Booking in stock in the plentymarkets back end
@@ -179,11 +216,11 @@ The recording on incoming items is carried out in 2 steps. At first you need to 
 ==== Registering general incoming items information
 
 You need to have at least one warehouse and supplier before you can register incoming items.
-Create a <<crm/managing-customer-data#800, customer data record>> for each supplier and select the customer type Supplier.
-Furthermore, at least one user must be activated as an **<<basics/working-with-plentymarkets/manage-users#40, owner of incoming items>>**. This ensures that the incoming items can be assigned to a specific person.
+Suppliers are created in the same way as <<crm/managing-customer-data#800, customers>> and then assigned the customer type Supplier.
+In addition, at least one owner must be activated as <<basics/working-with-plentymarkets/manage-users#40, owner of incoming items>> so that the incoming items can be assigned to an owner.
 It is not possible to record incoming items without an owner.
-The owners are sorted by ID.
-If the user who is currently logged in was also activated as an owner, then this user will be selected by default.
+Owners are shown in the order of their ID.
+If the user that is currently logged in can be set as owner, this user is selected by default.
 
 [.instruction]
 Registering general incoming items information:
@@ -208,14 +245,14 @@ All of the recorded information can be edited. Finalize the incoming items data 
 [#600]
 ==== Adding items to the incoming items data record
 
-You can add variations individually or several at once. It is only possible to add variations that already exist as data records in your system. First create a new item and the corresponding variations, if a completely new **<<item/managing-items#, item>>** is delivered.
-When you first open the list of items and variations all variations from all suppliers are listed. Use the search to display items of a particular supplier. +
+You can add variations individually or several at once. It is only possible to add variations that already exist as data records in your system. First create a new item and the corresponding variations, if a completely new **item/managing-items#, item>> is delivered.
+When you first open the list of items and variations, all variations from all suppliers are listed. Use the search to display items of a particular supplier. +
 If you entered a purchase price for a variation, then it will automatically be displayed here and can be used. Click on the item ID to open and edit the item data record. Proceed as described below to add the delivered items to the incoming items data record.
 
 [#700]
 ===== Adding an individual variation
 
-Add an individual variation as described below. Entries such as the purchase price and the storage location are not mandatory. If you do not want to enter these entries, then simply skip the corresponding steps in the description.
+Add an individual variation as described below. Information such as the purchase price and the storage location are not mandatory. If you do not want to enter these entries, then simply skip the corresponding steps in the description.
 
 [.instruction]
 Adding an individual variation:
@@ -230,7 +267,7 @@ Adding an individual variation:
 . Enter the **Purchase price** (optional).
 . Enter the **quantity** (mandatory entry).  +
 → The variation is selected automatically when a quantity is entered.
-. Select a **Storage location** from the drop-down list.  +
+. Select a **storage location** from the drop-down list.  +
 → If you have not yet assigned a storage location to a variation, then you can assign a storage location here as well. Click on **Search** to do so. The standard storage location is only a placeholder location and is used if you have not assigned an individual storage location yet.
 . Enter the **RRP** (optional).  +
 → The RRP will be applied to the variation data record once the incoming items data record is approved.
@@ -281,7 +318,39 @@ Adding several variations:
 
 Click on **Back to incoming items** to return to the overview of incoming items data record.
 
-If you add another quantity of the same variation and you do not change the purchase price or storage location, then this new quantity will simply be added to the existing quantity. If the purchase price or storage location are different, then the variation will be listed a second time.
+If you add another quantity of the same variation and you do not change the purchase price or storage location, then this new quantity will be added to the existing quantity. If the purchase price or storage location are different, then the variation will be listed a second time.
+
+[#810]
+=== Incoming items with a best before date and/or batch information
+
+You can book in variations with best before dates and/or batch information. To save best before dates and/or batch information for a variation, the option *Best before date* and/or *Batch* must be activated for the warehouse in the *Warehouse* tab of the variation. The chapter *<<stock-management/new-incoming-items#200, Linking a variation to a storage location>>* contains information on this setting.
+
+[IMPORTANT]
+.Receiving variations with best before dates and batch information
+====
+By default, you can only book one best before date/batch per storage location and variation. We recommend that you do not change this setting. Booking more than one best before date/batch to the same storage location may result in problems during order picking. You can find this setting in the *System » Stock » Stock » Incoming items* menu.
+====
+
+[.instruction]
+Adding a variation with a best before date and/or batch information:
+
+. Go to **Stock » New incoming items**.
+. Open an incoming items data record.
+. Click on **Add item**.  +
+→ A new window for searching and selecting items will open.
+. Enter search terms and select filters. Pay attention to the information given in <<table-variation-filters-for-incoming-items>>.
+. Click on **Search**.  +
+→ The variations that match the search criteria will be listed.
+. Enter the **Purchase price** (optional).
+. Enter the **quantity** (mandatory entry).  +
+→ The variation is selected automatically when a quantity is entered.
+. Enter a value for **Best before date/batch**.
+. Enter the **RRP** (optional). +
+→ The RRP will be applied to the item data once the incoming items data record is approved.
+. Enter the **Quantity**, the **Purchase price** and the **RRP** for any additional variations.
+. Click on **Add** button that is displayed above the item list.  +
+→ The variations will be added to the incoming items data record.
+. Click on **Back to incoming items** to return to the overview of incoming items data record.
 
 [#900]
 === Adding procurement costs
@@ -450,7 +519,7 @@ Personalising booking in stock with the plentymarkets app:
 . Tap **Settings**.
 . Tap **Incoming items**. +
 → The settings menu **Incoming items** opens.
-. Carry out the settings. Pay attention to <<table-app-settings-for-incoming-items>> +
+. Carry out the settings. Pay attention to the information given in <<table-app-settings-for-incoming-items>>. +
 **__Tip:__** The settings are saved when you exit the menu.
 
 [[table-app-settings-for-incoming-items]]
@@ -495,11 +564,13 @@ Activated = The purchase price is shown to users with the necessary rights. +
 
 |**Show net stock**
 |Activate to show the net stock at the storage location when booking in items using the app. +
-Deactivated = Only the physical stock of the item at the storage is shown when booking in items using the app. +
-Activated = Both the physical stock and the net stock of the item at the storage is shown when booking in items using the app.
+Deactivated = Only the physical stock of the item at the storage location is shown when booking in items using the app. +
+Activated = Both the physical stock and the net stock of the item at the storage location is shown when booking in items using the app.
 |====
 
 === Booking in stock with the plentymarkets app
+
+Proceed as described below to book in items using the plentymarkets app.
 
 [TIP]
 .Labelling storage locations
@@ -523,6 +594,9 @@ Booking in stock with the plentymarkets app:
 . **__Optional:__** Enter the purchase price.
 . Tap the green button of the storage location to which you want to book the stock. +
 **__Tip:__** If your storage locations are labelled, scan the label of the storage location instead. If you are using a Bluetooth scanner, you need to tab the **Barcode** field first. +
+→ (Version 1.7.11 and higher) If best before dates, batches or both are managed for the variation in the selected warehouse, you are asked to enter a date, a batch or both.
+. (Version 1.7.11 and higher) *_Optional:_* Select the best before date and/or enter the batch and tap *Book items*. +
+*_Note:_* By default, you cannot book in variations with more than one best before date/batch to the same storage location. +
 → The stock is booked in.
 
 [#1600]
