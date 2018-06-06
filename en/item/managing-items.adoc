@@ -11,7 +11,7 @@ First, you will learn how to update product information for your items. Create <
 
 Next, become familiar with the plentymarkets 7 item architecture. A <<item/managing-items#20, default item>> consists of global settings and data of the main variation as well as <<item/managing-items#160, additional variations>>. Global settings apply to all variations of the **Default** item. Information saved with the main variation is passed on to additional variations. However, you can change the settings of every variation individually.
 
-Finally, learn how to create <<item/managing-items#920, item bundles>>. How to present your products in the most favourable way using <<item/managing-items#950, cross-selling>> will also be explained.
+Finally, learn how to create <<item/managing-items#920, item bundles>> for items and variations. How to present your products in the most favourable way using <<items/managing-items#950, cross-selling>> will also be explained.
 
 [#390]
 == Managing attributes
@@ -969,15 +969,100 @@ The position is defined in the item's <<item/managing-items#90, Images>> tab.
 *_Note:_* The prefix you enter is only inserted into image names if you selected a position in the *Prefix* drop-down list.
 |====
 
+=== Saving own domain for image URLs
+
+Images are assigned the URL of the default CDN domain by default.
+
+However, alternatively you can use the domain of the client as the domain for image URLs and save a custom subdomain.
+
+* You can only save individual subdomains for the main domain.
+* You can only save individual subdomains for domains that are hosted by plentymarkets.
+* You can only save one subdomain for each client.
+
+<<table-domain-image-URLs>> shows the differences between the default domain and an individual domain.
+
+[[table-domain-image-URLs]]
+.Saving own domain for image URLs
+[cols="1,2,1"]
+|====
+|Domain setting |Description |Example URL
+
+|Image URL with default domain
+a|The URL of item images is created as follows:
+
+. Subdomain *CDN1*, *CDN2* or *CDN3*
+. Domain *plentymarkets.com*
+. Customer hash
+. File path *item/images*
+. Item ID
+. Folder name of image size
+. Name of image file with file extension
+
+|https://*cdn01.plentymarkets.com/1abcd2e3fghi*/item/images/118/full/118-Relaxsessel-Rio.jpg
+
+|Image URL with own domain
+a|A custom subdomain and the domain of the client are used: The customer hash is not shown in the URL:
+
+. Custom subdomain
+. Domain of the client
+. File path *item/images*
+. Item ID
+. Folder name of image size
+. Name of image file with file extension
+
+|https://*yoursubdomain.yourstore.de*/item/images/118/full/118-Relaxsessel-Rio.jpg
+|====
+
+Proceed as described below to save an own domain for the image URLs of a client.
+
+[IMPORTANT]
+.Activate the domain after the subdomain is created
+====
+It can take several hours for the subdomain to be created. The creation process is complete when green checkmarks are shown in all three columns, i.e. *SSL*, *DNS* and *Cloud status*. Once the subdomain is created, activate the domain.
+====
+
+[.instruction]
+Saving own domain for image URLs:
+
+. Go to *System » Client » Select client » Domains*.
+. Click on *Add*. +
+→ The *New domain* window opens.
+. Carry out the settings. Pay attention to the information given in <<table-cdn-domain>>.
+. *Save* the settings. +
+→ The subdomain is created. +
+→ A SSL certificate is created for the subdomain. +
+→ A DNS record is created for the subdomain. +
+→ A CloudFront instance is created. +
+*_Note:_* It can take several hours for the subdomain to be created. The creation process is complete when green checkmarks are shown in all three columns, i.e. *SSL*, *DNS* and *Cloud status*.
+. When all three checkmarks are shown, click on *Activate* in the *Status* column to activate the domain.
+
+[[table-cdn-domain]]
+.Saving subdomain for image URLs
+[cols="1,3"]
+|====
+|Setting |Description
+
+|*Area*
+|Select the type of subdomain from the drop-down list. Currently, only the type *CDN1* is available.
+
+|*Subdomain*
+|Enter a custom subdomain. Valid characters are letters (a-z, A-Z), numbers (0-9), underscore (_) and hyphen (-). The first character of the subdomain must be either a letter or a number.
+
+|*Domain*
+|Select the domain from the drop-down list. You can only select the main domain of the client. The domain also must be hosted by plentymarkets. You cannot save a subdomain for image URLs for external domains.
+|====
+
 [#670b]
 === Specifying item image sizes
 
-In the *System » Item » Images » Sizes* menu, you select settings for each image size.
+In the *System » Item » Images » Sizes* menu, you select settings for each image size. The following sizes are available:
 
-* *preview* = Preview image
-* *secondPreview* = Second preview image
-* *middle* = Medium size image
-* *full* = Full image size
+* *preview* = The size of the preview image
+* *secondPreview* = The size of the second preview image
+* *middle* = The size of the medium image
+* *full* = The size of the full size image
+
+Proceed as described below to specify the item image sizes.
 
 [.instruction]
 Specifying item image sizes:
@@ -1004,7 +1089,7 @@ Specifying item image sizes:
 |*Width in pixels*
 |Enter the width in pixels for images of this size.
 
-|*Max. Cache lifetime in day*
+|*Max. lifetime of cache in days*
 |Enter the number of days that created images are saved in the CloudFront cache. The image’s lifetime begins once the image has been displayed on screen in this size, i.e. loaded into the cache.
 
 |*Retain meta data (EXIF, XMP, IPTC) of the original image*
@@ -1078,7 +1163,7 @@ Example:
 You want to upload images for an item with item ID 4562 and the variation number AQ3957.
 
 .Examples of FTP compliant naming of item images
-[cols="1,3,3"]
+[cols="2,1,1"]
 |====
 |Setting |Naming 1 image per item |Naming &gt; 1 image per item
 
@@ -1695,7 +1780,7 @@ Learn more about creating **Default** items in the following video tutorial:
 video::168350292[vimeo]
 
 [#30]
-== Editing **Default** items
+== Editing Default items
 
 In the plentymarkets 7 item architecture, a **Default** item consists of global settings and the data of the main variation as well as the data of optional additional variations. Find out more about managing and editing item data that apply to all variations of the item in this chapter.
 
@@ -2522,7 +2607,7 @@ Setting the main variation's availability:
 Not available if net stock is 0 or negative**
 |Activate to make the variation available if the net stock is positive and unavailable if the net stock is 0 or negative. Both functions complement each other and work in combination with the **To net stock** option under **Limitation**. plentymarkets automatically controls the item's availability in the online store. Variations do not have to be made invisible if no net stock is available.
 
-|**Store: invisible if net stock is 0 or negative. +
+|**Store: invisible if net stock is 0 or negative; +
 Store: invisible if net stock is 0 or negative**
 |Activate to make the variation visible in the online store if the net stock is positive and invisible if the net stock is 0 or negative. Both functions complement each other and work in combination with the **To net stock** option under **Limitation**. plentymarkets automatically controls the item's visibility in the online store. Variations do not have to be made invisible if no net stock is available.
 
@@ -2538,10 +2623,10 @@ Store: invisible if net stock is 0 or negative**
 **To net stock** = Stock is limited to the net stock. The variation's availability is checked automatically. +
 **Do not administer stock for this variation** = If this setting is selected, then the tabs **Correction**, **Stock**, **Supply** and **Item movement** will be hidden in the **Stock** tab of a variation.
 
-|**Max. Order quantity**
+|**Max. order quantity**
 |Enter the maximum order quantity that is permitted per order. Decimal values are possible to allow orders by weight or length. The value **0** is set by default. With the value **0**, the maximum order quantity is unlimited. You can use the maximum order quantity in combination with advance orders, e.g. to prevent other sellers from completely buying out the variation at a reduced price.
 
-|**Min. Order quantity**
+|**Min. order quantity**
 |Enter the minimum order quantity. Decimal values are possible to allow orders by weight or length.
 
 |**Interval order quantity**
@@ -3023,8 +3108,14 @@ Adding a warehouse for the variation:
 
 |**Stock buffer**
 |Enter a value for the stock buffer. The stock for particular markets will then be reduced by this value. +
-__**Example**__: You have 50 variations in stock. You want a stock buffer of **10** so that the variation cannot be sold out completely via this market. A stock value of **40** is transferred to the market. +
+__**Example**__: You have 50 variations in stock and you want a stock buffer of **10** so that the variation cannot be sold out completely via this market. A stock value of **40** is transferred to the market. +
 Values entered are valid for the markets <<omni-channel/multi-channel/neckermann-at#, Neckermann.at>>, <<omni-channel/multi-channel/otto#, OTTO>>, <<omni-channel/multi-channel/rakuten#, Rakuten>>, <<omni-channel/multi-channel/plus-gartenxxl#, Plus.de>>. The buffer entered here takes priority over the buffer values entered for the particular market.
+
+|*Batch*
+| 
+
+|*Best before date*
+| 
 
 |**Suggested storage location**
 |Select the storage location for the warehouse or select **Default storage location**. The storage location is suggested automatically when reordering. Select **Default storage location** if no storage location should be assigned.
@@ -4352,7 +4443,7 @@ Saved serial numbers are displayed in the overview. They are highlighted in gree
 [TIP]
 .Importing serial numbers
 ====
-You can create large quantities of serial numbers at once with the data format **SerialKeys** in the menu **Data » Dynamic Export**. For further information about importing serial numbers, refer to the <<basics/data-exchange/export-import/data-formats#, Data formats>> page of the manual.
+You can create large quantities of serial numbers at once with the data format **SerialKeys** in the menu **Data » Dynamic Export**. For further information about importing serial numbers, refer to the <<basics/data-exchange/export-import/data-formats/serialkeys#, SerialKeys>> page of the manual.
 ====
 
 [#840]
@@ -4432,7 +4523,7 @@ Serial numbers are assigned automatically, i.e. with the help of an event proced
 
 [[table-event-procedure-send-serial-numbers]]
 .Event procedure for automatically assigning serial numbers
-[cols="1,3,3"]
+[cols="1,1,1"]
 |====
 | Setting | Option | Selection
 
