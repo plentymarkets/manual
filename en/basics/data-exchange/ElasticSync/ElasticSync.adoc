@@ -44,14 +44,14 @@ Creating a sync:
 |*Type*
 a|Select the type from the drop-down list.
 
-* *Contacts, companies and addresses* = Select to import <<basics/data-exchange/export-import/importing-data#2200, contact, company and address data>>.
-* *Item* = Select to import <<basics/data-exchange/export-import/importing-data/#1900, item and variation data>>.
-* *Categories* = Select to import <<basics/data-exchange/export-import/iimporting-data/#2100, category data>>.
+* *Contacts, companies and addresses* = Select to import contact, company and address data.
+* *Item* = Select to import item and variation data.
+* *Categories* = Select to import category data.
 * *Attributes* = Select to import attribute data.
 * *Properties* = Select to import property data.
 * *Notes* = Select to import note data.
-* *Order* = Select to import <<basics/data-exchange/export-import/importing-data#2000, order data>>.
-* *Warehouse* = Select to import <<basics/data-exchange/export-import/importing-data#2230, storage locations>>.
+* *Order* = Select to import order data.
+* *Warehouse* = Select to import storage locations.
 * *Properties* = Select to import properties.
 
 2+|*Import*
@@ -295,11 +295,6 @@ In order to use ElasticSync via REST API, the following REST calls are available
 
 With syncs of the type *Item*, you import item and variation data.
 
-
-
-.Importing items via ElasticSync
-
-
 In order to import item data via ElasticSync, the following data records must be present in plentymarkets:
 
 * Categories (*Item » Categories* menu)
@@ -312,7 +307,7 @@ In order to import variation data with attributes via ElasticSync, the following
 [#1910]
 === Fields for item matching
 
-<<table-matching-fields-item>> explains the fields that are available for matching item data. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
+<<table-matching-fields-item>> explains the fields that are available for matching item data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-matching-fields-item]]
 .Matching fields for item import
@@ -348,15 +343,18 @@ Select the format from the second drop-down list that contains the data of the f
 [#1920]
 === Fields for the item mapping
 
-<<table-mapping-fields-item>> explains the fields that are available for mapping item data. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
+This chapter explains the fields that are available for mapping item data.
 
-[[table-mapping-fields-item]]
-.Matching fields for item import
-[cols="1,1,3"]
+[#2260]
+==== Item
+
+<<table-mapping-fields-items>> lists the fields available for importing item data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-items]]
+.Fields for item import
+[cols="1,1,2"]
 |====
 |Mapping field |Permitted import values |Explanation
-
-3+|*Item*
 
 |Type
 |0 = Stocked item +
@@ -374,16 +372,16 @@ Select the format from the second drop-down list that contains the data of the f
 
 |Owner
 |Numeric (internal user ID)
-|
+|For owner IDs, see *System » Settings » User*
 
 |Manufacturer ID
 |Numeric (internal ID)
-|
+|See *System » Item » Manufacturer*
 
 |Manufacturing country
 |Numeric (internal ID); +
 0 = unknown
-|
+|For IDs see <<basics/internal-IDs#20, Country IDs>>
 
 |Customs tariff number
 |Numeric
@@ -446,7 +444,7 @@ Select the format from the second drop-down list that contains the data of the f
 
 |Amazon product type
 |Numeric
-|
+|For IDs see <<basics/data-exchange/export-import/data-formats/item#50, amazon_product_type value table>>
 
 |Amazon-FEDAS
 |
@@ -499,8 +497,18 @@ Flag 2
 |0 = No +
 1 = Yes
 |
+|====
 
-3+|*Item description (assignment per language)*
+[#2270]
+==== Item description
+
+<<table-mapping-fields-descriptions>> lists the fields available for importing item descriptions. Create one mapping per language. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-descriptions]]
+.Fields for item description import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Name
 |Alpha-numeric
@@ -534,14 +542,38 @@ Name 3
 |Meta keywords
 |Alpha-numeric
 |
+|====
 
-3+|*Shipping profile*
+[#2280]
+==== Shipping profile
+
+<<table-mapping-fields-shipping-profiles>> lists the fields available for importing shipping profiles. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-shipping-profiles]]
+.Matching fields for shipping profiles
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Shipping profile ID
 |Numeric
 |
 
-3+|*Item tags*
+|Shipping profiles (separated by commas)
+|
+|Allows importing more than two shipping profiles
+|====
+
+[#2290]
+==== Item tags
+
+<<table-mapping-fields-tags>> lists the fields available for importing item tag data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-tags]]
+.Matching fields for item tags
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Tag ID
 |Numeric
@@ -560,8 +592,18 @@ Name 3
 |0 = No +
 1 = Yes
 |Delete all links?
+|====
 
-3+|*Variations*
+[#2300]
+==== Variations
+
+<<table-mapping-fields-variations>> lists the fields available for importing variation data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-variations]]
+.Matching fields for variations
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |ID
 |Numeric
@@ -613,8 +655,7 @@ Name 3
 |
 
 |Unit of packing units
-|Numeric +
-0 = No packaging +
+|0 = No packaging +
 1 = Bale +
 2 = Dispenser +
 3 = Coil +
@@ -783,8 +824,18 @@ exclude_from_picklist
 Extra shipping charge 2
 |Numeric
 |
+|====
 
-3+|*Cross-selling*
+[#2310]
+==== Cross-selling
+
+<<table-mapping-fields-crossselling>> lists the fields available for importing cross-selling links. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-crossselling]]
+.Fields for importing cross-selling links
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Delete all cross selling links
 |0 = No +
@@ -792,30 +843,63 @@ Extra shipping charge 2
 |
 
 |Add cross-selling links
-|Alpha-numeric in format +
-_Item ID:Reference type;Item ID:Reference type;etc._ +
+|Alpha-numeric
+|Cross-selling links in the format +
+*Item ID:Reference type;Item ID:Reference type;etc.* +
+Available relationship types: +
 Accessory = accessories +
 ReplacementPart = replacement part +
 Similar +
 Bundle = item bundle
-|
 
 |Delete all cross selling links
-|Numeric in format +
- _ItemID; itemID;etc._
-|
+|Numeric
+|Cross-selling links in the format +
+ *ItemID; itemID;etc.*
+|====
 
-3+|*Barcodes (mapping per barcode type)*
+[#2320]
+==== Barcodes
+
+<<table-mapping-fields-barcodes>> lists the fields available for importing barcode data. During the import, plentymarkets checks if the imported data record already exists based on the matching field. Create one mapping per barcode type.
+
+[[table-mapping-fields-barcodes]]
+.Fields for barcode import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Code
 |Alpha-numeric
 |
+|====
 
-3+|*Variation price (mapping per sales price)*
+[#2330]
+==== Variation price
+
+<<table-mapping-fields-price>> lists the fields available for importing variation price data. During the import, plentymarkets checks if the imported data record already exists based on the matching field. Create one mapping per sales price.
+
+[[table-mapping-fields-price]]
+.Fields for variation price import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Price
 |Numeric
 |
+|====
+
+[#2340]
+==== Categories
+
+<<table-mapping-fields-categories>> lists the fields available for importing category data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-categories]]
+.Fields for category import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 3+|*Categories*
 
@@ -834,7 +918,12 @@ Bundle = item bundle
 
 |Category name
 |Alpha-numeric
-|Separate the entire category path in semicolons (e.g. shoes;unisex). Alternatively, transfer the ID of the category.
+a|
+* Complete category path, separated by semicolons (e.g. shoes;unisex) +
+or
+* Category ID
+
+*_Tip:_* Create additional mappings to import more categories.
 
 3+|*Default categories*
 
@@ -850,8 +939,18 @@ Y = Yes
 |Category name
 |Alpha-numeric
 |
+|====
 
-3+|*Stock*
+[#2350]
+==== Stock
+
+<<table-mapping-fields-stock>> lists the fields available for importing stock data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-stock]]
+.Fields for stock import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Warehouse
 |Numeric (internal ID)
@@ -864,50 +963,91 @@ Y = Yes
 |Storage location
 |Numeric (internal ID)
 |Can only be used in combination with warehouse and quantity.
+|====
 
-3+|*Client (store) (mapping per client)*
+[#2360]
+==== Client
+
+<<table-mapping-fields-clients>> lists the fields available for importing client availabilities. During the import, plentymarkets checks if the imported data record already exists based on the matching field. Create one mapping for each client.
+
+[[table-mapping-fields-clients]]
+.Matching fields for importing client availabilities
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Active
 |0 = No +
 1 = Yes
 |
+|====
 
-3+|*Markets (mapping per market)*
+[#2370]
+==== Markets
+
+<<table-mapping-fields-markets>> lists the fields available for importing market availabilities. During the import, plentymarkets checks if the imported data record already exists based on the matching field. Create one mapping for each market.
+
+[[table-mapping-fields-markets]]
+.Fields for importing market availabilities
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Active
 |0 = No +
 1 = Yes
 |
+|====
 
-3+|*Attributes (mapping per format)*
+[#2380]
+==== Attributes
+
+<<table-mapping-fields-attributes>> lists the fields available for importing attribute links. During the import, plentymarkets checks if the imported data record already exists based on the matching field. Create one mapping for each format.
+
+[[table-mapping-fields-attributes]]
+.Fields for importing attribute links
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
 |Attribute selection combination
-|Alpha-numeric in format +
-*Attribute name:Value name;* or *Attributname&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;*
-|Import of more than two attribute links. +
-*_Note:_* Every attribute combination must be unique for each variation.
-
+|Alpha-numeric
+|Combination of Attribute name (internal) and Attribute value (internal) in the format +
+*Attribute name:Value name;* or *Attributname&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* +
+Import of more than two attribute links. +
+*_Note:_* Every attribute selection combination must be unique for each variation.
 
 |Attribute ID
 |Numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *Attribute name:Value name;* and a mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
 
 |Attribute Name
 |Alpha-numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *Attribute name:Value name;* and a mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
 
 |Value name
 |Alpha-numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *Attribute name:Value name;* and a mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
 
 |Value ID
 |Numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *Attribute name:Value name;* and a mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+|====
 
-3+|*Item images*
+[#2390]
+==== Item images
+
+<<table-mapping-fields-images>> lists the fields available for importing image data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-images]]
+.Matching fields for importing item images
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Image ID
 |Numeric (internal ID)
@@ -927,30 +1067,32 @@ Y = Yes
 
 |Availability client (store)
 |Numeric (internal ID)
-|*-1* activates all clients
+|For client IDs, see *System » Client » Open client » Settings* +
+*-1* activates all clients
 
 |Availability referrers
 |Numeric (internal ID)
-|*-1* activates all referrers
+|For referrer IDs, see <<basics/interne-IDs#90, Order referrer IDs>> +
+*-1* activates all referrers
 
 |Availability listings
 |Numeric (internal ID)
 |*-1* activates all listings
 
 |URL
-|Link
-|
+|Alpha-numeric
+|Link to item image
 
 |Name
-|Alpha-numeric in format +
-_Name:Language1,Name:Language2_
-|
+|Alpha-numeric
+|Name of the item image in the format *Name:Language1,Name:Language2*
 
 |Multi URL (separated by commas)
-|Alpha-numeric in format +
-_image1url;positionImage1,_ +
-_image2url;positionImage2_
-|If no position is transferred, the position corresponds to the order of the URLs.
+|Alpha-numeric
+|Several image URLs in the format +
+*image1url;positionImage1,* +
+*image2url;positionImage2* +
+If no position is transferred, the position corresponds to the order of the URLs.
 
 |Delete images
 |0 = No +
@@ -962,11 +1104,30 @@ _image2url;positionImage2_
 1 = Yes
 |1 links the image to the variation. +
 0 deletes an existing link.
+|====
 
-3+|*Properties*
+[#2400]
+==== Properties
+
+<<table-mapping-fields-properties-items>> lists the fields available for importing property links at the item level. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-properties-items]]
+.Fields for importing property links
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |ID
 |Numeric (internal ID)
+|See *System » Item » Properties*
+
+|Property combination
+|Alpha-numeric
+|Combination of back end name, value and language in the format +
+*Name1:Value1:Language1;Name2:Value2:Language2* etc.
+
+|Internal name
+|Alpha-numeric
 |
 
 |Value
@@ -975,18 +1136,124 @@ _image2url;positionImage2_
 
 |Language
 |Letters
-|Only with text
+|Properties of the type *Text* only +
+For codes, see <<basics/internal-IDs#10, Languages>>
+
+|Delete (yes/no)
+|0 = No +
+1 = Yes
+|
+|====
+
+[#2410]
+==== Properties
+
+<<table-mapping-fields-properties-variations>> lists the fields available for importing property links at the variation level. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-properties-variations]]
+.Fields for importing property links
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
+|ID
+|Numeric (internal ID)
+|For IDs, see *System » Settings » Properties*
+
+|Language
+|Letters
+|Properties of the types *Text* or *Short text* only +
+For codes, see <<basics/internal-IDs#10, Languages>>
+
+|Value
+|Alpha-numeric
+|
+
+|Description
+|Alpha-numeric
+|
+
+|Name
+|Alpha-numeric
+|
 
 |Property combination
 |Alpha-numeric
-|Combination of back end name, value and language in the format +
-Name1:Value1:Language1;Name2:Value2:Language2 etc.
+|Combination of name, value and language in the format +
+*Name1:Value1:Language1;Name2:Value2:Language2* etc.
 
-3+|*Content*
+|Selection ID
+|
+|
+
+|Delete (yes/no)
+|0 = No +
+1 = Yes
+|
+|====
+
+[#2420]
+==== Inheritance
+
+<<table-mapping-fields-inheritance>> lists the fields available for importing inheritance data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-inheritance]]
+.Fields for inheritance import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
+|Category
+|0 = No +
+1 = Yes
+|
+
+|Markets
+|0 = No +
+1 = Yes
+|
+
+|Client
+|0 = No +
+1 = Yes
+|
+
+|Sales price
+|0 = No +
+1 = Yes
+|
+
+|Supplier
+|0 = No +
+1 = Yes
+|
+
+|Warehouse
+|0 = No +
+1 = Yes
+|
+
+|Availability
+|0 = No +
+1 = Yes
+|
+|====
+
+[#2420]
+==== Content
+
+<<table-mapping-fields-content>> lists the fields available for importing content data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-content]]
+.Fields for content import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Content unit
 |Numeric (internal ID)
-|Alternatively, transfer *content units of measure (ISO)*
+|For IDs, see <<basics/interal-IDs#40, Unit IDs>> +
+Alternatively, transfer *content units of measure (ISO)*
 
 |Content quantity
 |Numeric
@@ -995,12 +1262,22 @@ Name1:Value1:Language1;Name2:Value2:Language2 etc.
 |Content Units of measure (ISO)
 |Alphanumeric ISO code
 |Alternatively, transfer *Content unit*
+|====
 
-3+|*ASIN/ePID*
+[#2430]
+==== ASIN/ePID
+
+<<table-mapping-fields-ASIS-ePID>> lists the fields available for importing ASIN/ePID data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-ASIN-ePID]]
+.Fields for ASIN/ePID import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Country
 |Numeric (internal ID)
-|
+|For IDs see <<basics/internal-IDs#20, Country IDs>>
 
 |Type
 |ASIN; ePID
@@ -1009,8 +1286,18 @@ Name1:Value1:Language1;Name2:Value2:Language2 etc.
 |Value
 |Alpha-numeric
 |
+|====
 
-3+|*Warehouse (mapping per warehouse)*
+[#2440]
+==== Warehouse
+
+<<table-mapping-fields-warehouse>> lists the fields available for importing warehouse data. During the import, plentymarkets checks if the imported data record already exists based on the matching field. Create one mapping per warehouse.
+
+[[table-mapping-fields-warehouse]]
+.Fields for warehouse data import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Zone
 |Numeric
@@ -1040,7 +1327,32 @@ europallet
 |Numeric
 |
 
-3+|*Supplier*
+|Batch (yes/no)
+|0 = No +
+1 = Yes
+|
+
+|Best before date (yes/no)
+|0 = No +
+1 = Yes
+|
+
+|Delete storage location link
+|0 = No +
+1 = Yes
+|
+|====
+
+[#2450]
+==== Supplier
+
+<<table-mapping-fields-supplier>> lists the fields available for importing supplier data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-supplier]]
+.Fields for supplier data import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Purchase price
 |Numeric
@@ -1077,21 +1389,35 @@ europallet
 
 |Supplier ID
 |Numeric
-|
+|Contact ID of the supplier, see *CRM » Contacts* +
+*_Tip:_* Set *Type* filter to *Supplier* to only show contacts of the type *Supplier*.
 
 |Supplier name
 |Alpha-numeric
-|
+|For supplier name, see *CRM » Contacts* +
+*_Tip:_* Set *Type* filter to *Supplier* to only show contacts of the type *Supplier*.
+|====
 
-3+|*SKU*
+[#2460]
+==== SKU
+
+<<table-mapping-fields-SKU>> lists the fields available for importing SKU data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-SKU]]
+.Fields for SKU import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Market ID
 |Numeric
-|
+|For referrer IDs, see <<basics/interne-IDs#90, Order referrer IDs>>
 
 |Account ID
 |Numeric
-|
+|ID of the market account +
+For Amazon, see *System » Markets » Amazon » Settings* +
+For eBay, see *System » Markets » eBay » Accounts*
 
 |SKU
 |Alpha-numeric
@@ -1100,8 +1426,18 @@ europallet
 |Parent SKU
 |Alpha-numeric
 |
+|====
 
-3+|*Bundle*
+[#2470]
+==== Bundle
+
+<<table-mapping-fields-bundle>> lists the fields available for importing item bundle data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-bundle]]
+.Fields for bundle import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
 
 |Item bundle components
 |Alpha-numeric
@@ -1118,7 +1454,7 @@ europallet
 |====
 
 [#1930]
-==== Mandatory values for sync procedures with items
+=== Mandatory values for sync procedures with items
 
 <<table-procedures-item-sync>> lists possible procedures for syncs of the type item and explains the required values.
 
@@ -1206,6 +1542,8 @@ a|
 * Category ID +
 or
 * Category name
+
+*_Tip:_* Create additional mappings to import more categories.
 
 |Update link
 a|
@@ -1350,6 +1688,511 @@ a|
 
 |====
 
+[#2100]
+== Setting up a sync of the Category type
+
+With syncs of the type *Category*, you import category data.
+
+[#2110]
+=== Fields for category matching
+
+<<table-matching-fields-category>> explains the fields that are available for matching category data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-matching-fields-category]]
+.Matching fields for category import
+[cols="1,2"]
+|====
+|Setting |Explanation
+
+|Category ID
+|
+
+|Category name combined
+|Select the separator from the second drop-down list.
+
+|Category name level 1 - 6
+|
+
+|====
+
+[#2120]
+=== Fields for the category mapping
+
+<<table-mapping-fields-category>> explains the fields that are available for mapping order data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-category]]
+.Mapping fields for category import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
+3+|*Category*
+
+|Parent category ID
+|Numeric (internal ID)
+|
+
+|Parent category name
+|Alpha-numeric
+|
+
+|Type
+|item +
+container +
+content +
+blog (not used)
+|
+
+|Show in link list
+|0 = No +
+1 = Yes
+|
+
+|right
+|all = Category and all sub-categories are visible to the public +
+customer = Category and all sub-categories are only visible to online store visitors that are logged in +
+|Complies with back end setting *Visible*
+
+|Visible (sitemap)
+|0 = No +
+1 = Yes
+|Complies with back end setting *Sitemap*
+
+|Delete category
+|0 = No +
+1 = Yes
+|
+
+3+|*Details (mapping per combination of language and client (store))*
+
+|Name
+|Alpha-numeric
+|Mandatory value
+
+|Description 1
+|Alpha-numeric
+|
+
+|Description 2
+|Alpha-numeric
+|
+
+|Short description
+|Alpha-numeric
+|
+
+|Meta keywords
+|Alpha-numeric
+|
+
+|Meta description
+|Alpha-numeric
+|
+
+|Meta title
+|Alpha-numeric
+|
+
+|URL name
+|Alpha-numeric
+|
+
+|Position
+|Numeric
+|
+
+|Template list
+|Alpha-numeric
+|
+
+|Template product
+|Alpha-numeric
+|
+
+|Template page
+|Alpha-numeric
+
+|Full text search
+|0 = No +
+1 = Yes
+|
+
+3+|Client (store) (mapping per client)
+
+|Active
+|0 = No +
+1 = Yes
+|
+|====
+
+[.subhead]
+Example 1: Price and stock synchronisation of a variation.
+
+Create a sync to keep prices and stock of a variation up-to-date. Once the assignment for the sync took place, a mapping has to be created. To do so, select the plentymarkets fields VariationSalesPrice and VariationStock within the Select values area of the mapping. Next, select the sales prices (price, RRP) which should be updated for VariationSalesPrice. It is possible to update several different sales prices with one sync. Now link the filed of the data source. Not only can you select the warehouse for the stock but also the storage location. For VariationStock, select the warehouse for which stock should be booked. Optionally, select the storage location. To use the quantity from the data source, link the plentymarkets field quantity with the field of the data source. A stock correction is always carried out in the process.
+
+[.subhead]
+Example 2: Importing item descriptions
+
+Name, technical data and meta keywords should be imported for an item. First, select these plentymarkets fields within the Select values area of the mapping. Next, you have to select the language for this item descriptions. You can select more than one option. The fields Name, Technical data and Meta keywords are linked with the desired fields of the data source. This means that the entries listed in the data source will be now imported for the previously selected plentymarkets fields. In addition, use the filter options to further specify the import. For example, import the item descriptions only for items that belong to a specific brand.
+
+
+
+
+[#2480]
+== Setting up a sync of the attribute type
+
+Syncs of the type *Attribute* allow you to import attributes and attribute values. Imported data is saved in the *Settings » Item » Attributes* menu.
+
+[#2490]
+=== Fields for attribute matching
+
+<<table-matching-fields-attributes>> explains the fields that are available for matching attribute data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-matching-fields-attributes]]
+.Matching fields attribute import
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|Attribute ID
+|
+
+|ID of the attribute value
+|
+
+|Attribute name
+|
+
+|Attribute value name
+|
+
+|====
+
+[#2500]
+=== Fields for the attribute mapping
+
+<<table-mapping-fields-attributes>> explains the fields that are available for mapping attribute data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-attributes]]
+.Mapping fields for attribute import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
+3+|*Attribute*
+
+|Internal name
+|Alpha-numeric
+|
+
+|Position
+|Numeric
+|
+
+|Image link possible
+|0 = No +
+1 = Yes
+|
+
+|Attribute selection in the online store
+|dropdown +
+image +
+box
+|dropdown = Attributes are displayed as a drop-down list in the online store. +
+image = Attributes are displayed as image tiles in the online store. +
+box = Attributes are displayed as boxes with attribute values in the online store.
+
+|Groupable in item lists
+|0 = No +
+1 = Yes
+|
+
+|Delete attribute
+|0 = No +
+1 = Yes
+|
+
+3+|*Value*
+
+|Internal name
+|Alpha-numeric
+|
+
+|Position
+|Numeric
+|
+
+|Note
+|Alpha-numeric
+|
+
+|Percentage
+|Numeric
+|Percentages for automatic distribution of attribute values
+
+|Delete attribute value
+|0 = No +
+1 = Yes
+|
+
+3+|*Attribute name*
+
+|Name
+|Alpha-numeric
+|Create one mapping per language.
+
+3+|*Attribute value name*
+
+|Name
+|Alpha-numeric
+|Create one mapping per language.
+|====
+
+[#2510]
+== Setting up a sync of the Property type
+
+Syncs of the type *Property* allow you to import properties. Imported data is saved in the *Settings » Item » Properties* menu.
+
+[#2520]
+=== Fields for property matching
+
+<<table-matching-fields-itemproperties>> explains the fields that are available for matching property data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-matching-fields-itemproperties]]
+.Matching fields property import
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|Property ID
+|
+
+|ID of the property group
+|
+
+|Property name
+|
+
+|Property group name
+|
+
+|====
+
+[#2530]
+=== Fields for the attribute mapping
+
+<<table-mapping-fields-properties>> explains the fields that are available for mapping property data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-properties]]
+.Mapping fields for property import
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
+3+|*Property*
+
+|Position
+|Numeric
+|
+
+|Property group ID
+|Numeric
+|
+
+|Unit
+|ISO code
+|For ISO codes of units, see <<basics/internal-IDs#40, Unit IDs>>
+
+|Internal name
+|Alpha-numeric
+|
+
+|Searchable
+|0 = No +
+1 = Yes
+|
+
+|Order property
+|0 = No +
+1 = Yes
+|
+
+|Show on the item's page in the online store
+|0 = No +
+1 = Yes
+|
+
+|Show in the item listing in the online store
+|0 = No +
+1 = Yes
+|
+
+|Display in order process
+|0 = No +
+1 = Yes
+|
+
+|Show in PDF documents
+|0 = No +
+1 = Yes
+|
+
+|Display as additional costs
+|0 = No +
+1 = Yes
+|
+
+|Surcharge
+|Numeric
+|
+
+|Property type
+|empty +
+number +
+float
+selection +
+text +
+file
+|
+
+|Delete property type
+|0 = No +
+1 = Yes
+|
+
+3+|*Property name*
+
+|Name
+|Alpha-numeric
+|Create one mapping per language.
+
+|Description
+|Alpha-numeric
+|Create one mapping per language.
+
+3+|*Property group*
+
+|Internal name
+|Alpha-numeric
+|
+
+|Percentage
+|0 = No +
+1 = Yes
+|
+
+3+|*Property group name*
+
+|Name
+|Alpha-numeric
+|Create one mapping per language.
+
+|Description
+|Alpha-numeric
+|Create one mapping per language.
+|====
+
+[#2200]
+== Setting up a sync of the Contacts, companies and addresses type
+
+Requirements for using the plugin:
+
+* The Elastic export plugin must be installed and deployed in Productive.
+* In order that the newly imported or updated countries of delivery are displayed in a contact data record in the contact overview, these countries of delivery must be activated in the *System » Orders » Shipping » Options » Tab: Countries of delivery* menu.
+
+With syncs of the type *Contacts, companies and addresses*, you import new contact data or update existing data records. This data is for example the delivery address and invoice address, the date of birth of the contact, the customer type, contact options such as the private or business email address as well as company data.
+
+In order to import contact data via ElasticSync, the following data records must be present in plentymarkets:
+
+* Contacts (*CRM » Contacts* menu)
+* contact options such as telephone number and email address, if necessary
+* address data (invoice address, delivery address), if necessary
+* company data such as VAT number and payment due date, if necessary
+
+[#2210]
+=== Field for synchronising contacts, companies and addresses
+
+Click on the following links to see the lists of the fields that are available for matching contact data, address data and company data:
+
+* link:https://developers.plentymarkets.com/rest-doc/account_contact/details#create-a-contact[Contact details^
+]
+* link:https://developers.plentymarkets.com/rest-doc/account_contact_option/details#list-contact-options-by-the-contact-id[Contact options^
+]
+* link:https://developers.plentymarkets.com/rest-doc/account_address/details#get-an-address[Address details^
+]
+* link:https://developers.plentymarkets.com/rest-doc/account_address/details#get-an-address-option[Address options^
+]
+* link:https://developers.plentymarkets.com/rest-doc/account/details#list-accounts[Company details^]
+
+By means of the identifiers *Contact ID*, *Email*, *Invoice address ID* and *Delivery address ID* in the *Matching* area, it is checked whether the imported data record is present in plentymarkets.
+
+[#2220]
+==== Mandatory values for sync procedures with contacts, companies and addresses
+
+[[table-mandatory-values-sync-procedures-contacts]]
+.Mandatory values for sync procedures with contacts, companies and addresses
+[cols="1,2"]
+|====
+|Procedure |Required values
+
+2+|*Contacts*
+
+|Creating a contact
+a|
+* Referrer
+* Type
+
+2+|*Contact option*
+
+|Create contact option
+a|
+* Value
+
+|Update contact option
+a|
+* Contact ID
+* fields to be changed
+
+2+|*Address*
+
+|Create address
+a|
+* Contact ID
+* Select at least one of the following options: Name1, Name2, Name3
+* Select at least one of the following options: Address1, Address2, Address3
+* Select at least one of the following options: Country ID or country ISO code
+* Town
+
+|Update address
+a|
+* Select at least one of the following options: Name1, Name2, Name3
+* Contact ID
+* fields to be changed
+
+2+|*Address option*
+
+|Create address option
+a|
+* Value
+
+|Update address option
+a|
+* Address ID
+* Contact ID
+* fields to be changed
+
+2+|*Company*
+
+|Creating a company
+a|
+* Company name
+
+|Update company
+a|
+* Company name
+
+|====
+
 [#2000]
 == Setting up a sync of the Order type
 
@@ -1365,11 +2208,11 @@ Currently, there is only one matching field for identifying orders. The followin
 [#2020]
 === Fields for order mapping
 
-<<table-mapping-fields-orders>> explains the fields that are available for mapping order data. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
+<<table-mapping-fields-orders>> explains the fields that are available for mapping order data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-orders]]
 .Mapping fields for order import
-[cols="1,1,4"]
+[cols="1,1,2"]
 |====
 |Mapping field |Permitted import values |Explanation
 
@@ -1608,7 +2451,7 @@ a|Select an order relation and select the column that contains the reference ID.
 
 |ID of State/Province
 |Numeric
-|List of all countries that have a state/province. The IDs of the states/provinces are also listed: link:basics/datenaustausch/assets/Bundeslaender.pdf[States/provinces]
+|List of all countries that have a state/province. The IDs of the states/provinces are also listed: link:link:https://www.plentymarkets.eu/documents/category/3507/Bundeslaender.pdf[PDF file with a list of states/provinces] (in German)
 
 |VAT number
 |Alpha-numeric
@@ -1676,257 +2519,6 @@ a|Select the invoice address or delivery address and select the column that cont
 * 37 = Bin
 * 38 = One-way pallet
 * 39 = Foilbag
-
-
-|====
-
-[#2100]
-== Setting up a sync of the Category type
-
-With syncs of the type *Category*, you import category data.
-
-[#2110]
-=== Fields for category matching
-
-<<table-matching-fields-category>> explains the fields that are available for matching category data. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
-
-[[table-matching-fields-category]]
-.Matching fields for category import
-[cols="1,2"]
-|====
-|Setting |Explanation
-
-|Category ID
-|
-
-|Category name combined
-|Select the separator from the second drop-down list.
-
-|Category name level 1 - 6
-|
-
-|====
-
-[#2120]
-=== Fields for the category mapping
-
-<<table-mapping-fields-category>> explains the fields that are available for mapping order data. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
-
-[[table-mapping-fields-category]]
-.Mapping fields for category import
-[cols="1,1,4"]
-|====
-|Mapping field |Permitted import values |Explanation
-
-3+|*Category*
-
-|Parent category ID
-|Numeric (internal ID)
-|
-
-|Parent category name
-|Alpha-numeric
-|
-
-|Type
-|item +
-container +
-content +
-blog (not used)
-|
-
-|Show in link list
-|0 = No +
-1 = Yes
-|
-
-|right
-|all = Category and all sub-categories are visible to the public +
-customer = Category and all sub-categories are only visible to online store visitors that are logged in +
-|Complies with back end setting *Visible*
-
-|Visible (sitemap)
-|0 = No +
-1 = Yes
-|Complies with back end setting *Sitemap*
-
-|Delete category
-|0 = No +
-1 = Yes
-|
-
-3+|*Details (mapping per combination of language and client (store))*
-
-|Name
-|Alpha-numeric
-|Mandatory value
-
-|Description 1
-|Alpha-numeric
-|
-
-|Description 2
-|Alpha-numeric
-|
-
-|Short description
-|Alpha-numeric
-|
-
-|Meta keywords
-|Alpha-numeric
-|
-
-|Meta description
-|Alpha-numeric
-|
-
-|Meta title
-|Alpha-numeric
-|
-
-|URL name
-|Alpha-numeric
-|
-
-|Position
-|Numeric
-|
-
-|Template list
-|Alpha-numeric
-|
-
-|Template product
-|Alpha-numeric
-|
-
-|Template page
-|Alpha-numeric
-
-|Full text search
-|0 = No +
-1 = Yes
-|
-
-3+|Client (store) (mapping per client)
-
-|Active
-|0 = No +
-1 = Yes
-|
-
-|====
-
-[.subhead]
-Example 1: Price and stock synchronisation of a variation.
-
-Create a sync to keep prices and stock of a variation up-to-date. Once the assignment for the sync took place, a mapping has to be created. To do so, select the plentymarkets fields VariationSalesPrice and VariationStock within the Select values area of the mapping. Next, select the sales prices (price, RRP) which should be updated for VariationSalesPrice. It is possible to update several different sales prices with one sync. Now link the filed of the data source. Not only can you select the warehouse for the stock but also the storage location. For VariationStock, select the warehouse for which stock should be booked. Optionally, select the storage location. To use the quantity from the data source, link the plentymarkets field quantity with the field of the data source. A stock correction is always carried out in the process.
-
-[.subhead]
-Example 2: Importing item descriptions
-
-Name, technical data and meta keywords should be imported for an item. First, select these plentymarkets fields within the Select values area of the mapping. Next, you have to select the language for this item descriptions. You can select more than one option. The fields Name, Technical data and Meta keywords are linked with the desired fields of the data source. This means that the entries listed in the data source will be now imported for the previously selected plentymarkets fields. In addition, use the filter options to further specify the import. For example, import the item descriptions only for items that belong to a specific brand.
-
-[#2200]
-== Setting up a sync of the Contacts, companies and addresses type
-
-Requirements for using the plugin:
-
-* The Elastic export plugin must be installed and deployed in Productive.
-* In order that the newly imported or updated countries of delivery are displayed in a contact data record in the contact overview, these countries of delivery must be activated in the *System » Orders » Shipping » Options » Tab: Countries of delivery* menu.
-
-With syncs of the type *Contacts, companies and addresses*, you import new contact data or update existing data records. This data is for example the delivery address and invoice address, the date of birth of the contact, the customer type, contact options such as the private or business email address as well as company data.
-
-In order to import contact data via ElasticSync, the following data records must be present in plentymarkets:
-
-* Contacts (*CRM » Contacts* menu)
-* contact options such as telephone number and email address, if necessary
-* address data (invoice address, delivery address), if necessary
-* company data such as VAT number and payment due date, if necessary
-
-[#2210]
-=== Field for synchronising contacts, companies and addresses
-
-Click on the following links to see the lists of the fields that are available for matching contact data, address data and company data:
-
-* link:https://developers.plentymarkets.com/rest-doc/account_contact/details#create-a-contact[Contact details^
-]
-* link:https://developers.plentymarkets.com/rest-doc/account_contact_option/details#list-contact-options-by-the-contact-id[Contact options^
-]
-* link:https://developers.plentymarkets.com/rest-doc/account_address/details#get-an-address[Address details^
-]
-* link:https://developers.plentymarkets.com/rest-doc/account_address/details#get-an-address-option[Address options^
-]
-* link:https://developers.plentymarkets.com/rest-doc/account/details#list-accounts[Company details^]
-
-By means of the identifiers *Contact ID*, *Email*, *Invoice address ID* and *Delivery address ID* in the *Matching* area, it is checked whether the imported data record is present in plentymarkets.
-
-[#2220]
-==== Mandatory values for sync procedures with contacts, companies and addresses
-
-[[table-mandatory-values-sync-procedures-contacts]]
-.Mandatory values for sync procedures with contacts, companies and addresses
-[cols="1,2"]
-|====
-|Procedure |Required values
-
-2+|*Contacts*
-
-|Creating a contact
-a|
-* Referrer
-* Type
-
-2+|*Contact option*
-
-|Create contact option
-a|
-* Value
-
-|Update contact option
-a|
-* Contact ID
-* fields to be changed
-
-2+|*Address*
-
-|Create address
-a|
-* Contact ID
-* Select at least one of the following options: Name1, Name2, Name3
-* Select at least one of the following options: Address1, Address2, Address3
-* Select at least one of the following options: Country ID or country ISO code
-* Town
-
-|Update address
-a|
-* Select at least one of the following options: Name1, Name2, Name3
-* Contact ID
-* fields to be changed
-
-2+|*Address option*
-
-|Create address option
-a|
-* Value
-
-|Update address option
-a|
-* Address ID
-* Contact ID
-* fields to be changed
-
-2+|*Company*
-
-|Creating a company
-a|
-* Company name
-
-|Update company
-a|
-* Company name
-
 |====
 
 [#2230]
@@ -1939,7 +2531,7 @@ In order to create or update storage locations via ElasticSync, a storage locati
 [#2231]
 === Fields for storage location matching
 
-<<table-matching-fields-storage locations>> explains the fields that are available for matching storage locations. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
+<<table-matching-fields-storage locations>> explains the fields that are available for matching storage locations. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 For further information about the the terms dimensions, levels and storage locations, refer to thelink:https://knowledge.plentymarkets.com/en/stock-management/setting-up-a-warehouse[Setting up a warehouse] page of the manual.
 
@@ -1968,7 +2560,7 @@ For further information about the the terms dimensions, levels and storage locat
 [#2232]
 === Fields for the storage location mapping
 
-<<table-mapping-fields-storage-locations>> explains the fields that are available for mapping storage location data. By means of the selected field, it is checked whether the imported data record is present in plentymarkets.
+<<table-mapping-fields-storage-locations>> explains the fields that are available for mapping storage location data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 For further information about the the terms dimensions, levels and storage locations, refer to thelink:https://knowledge.plentymarkets.com/en/stock-management/setting-up-a-warehouse[Setting up a warehouse] page of the manual.
 
