@@ -14,13 +14,14 @@ p>Noch beschreiben:</p>
 <li>Wie setzt sich die Belegnummer zusammen?</li>
 <li>Preis bearbeiten</li>
 <li>Dummy-Artikel, wenn Artikel nicht gefunden wird</li>
-<li>Favoriten in der App anlegen</li>
+<li>Favoriten in der App erstellen</li>
 <li>Warenbestand prüfen</li>
 <li>(Kasse sperren)</li>
 <li>(Artikel synchronisieren)</li>
 <li>(Aufträge hochladen)</li>
 </ul>
 ////
+
 
 [#5]
 == Installing the plentymarkets app
@@ -245,7 +246,6 @@ Booking card payments with an external payment terminal:
 **__Tip:__** Tap **Show order** to view the order details.
 . Tap **New order** to create a new POS order.
 
-
 ==== Booking card payments with a linked payment terminal
 
 [.instruction]
@@ -261,7 +261,7 @@ Booking card payments with a linked payment terminal:
 
 
 [#160]
-==== Redeeming a gift card
+==== Accepting a gift card
 
 Each gift card has a unique gift card code. You enter this gift card code during the checkout process to apply the gift card to the items the customer wants to buy. Customers can redeem a gift card code only if the code exists in the plentymarkets system when a customer tries to redeem the gift card.
 
@@ -286,6 +286,11 @@ Redeeming a gift card:
 
 If the plugin *plentyPOS Invoice* is provisioned in the plentymarkets back end, you can also sell items on account to existing customers. However, because you cannot save new customer data in plentyPOS, only existing customers can pay for items by invoice.
 
+[WARNING]
+.Returning items purchased on account
+====
+Orders with the payment method POS invoice can be cancelled until the next z report is generated. However, for technical reasons you cannot return partially or fully unpaid orders with the payment method POS invoice at the moment. Only fully paid orders can be returned. However, the plentymarkets app does not allow you to check if an order has been paid. As such, you need to open the plentymarkets back end to check if an order has been paid in full before you accept a return.
+====
 
 [.instruction]
 Buying items on account:
@@ -556,12 +561,18 @@ Cancelling an order:
 
 If customers want to return items, you have two options for booking a return:
 
-* Open the original order and link the return to this original main order (version x.xx and higher).
+* Open the original order and link the return to this original main order (version 1.8 and higher).
 * If the main order is unknown or cannot be opened, create a return without a main order.
 
-=== Booking a return by linking it to the main order (version x.xx and higher)
+[IMPORTANT]
+.Returns are cash only
+====
+For technical reasons, the return amount can only be returned to customers in cash.
+====
 
-If you know the order ID or the receipt number (external order number) of the original main order, you can open this main order and remove the items from the order that the customer wants to return. This creates a return and a credit note.
+=== Booking a return by linking it to the main order (version 1.8 and higher)
+
+If you know the order ID or the receipt number (external order number) of the original main order, you can open this main order and book the return directly to this order. This creates a return and a credit note.
 
 Proceed as described below to book a return and link it to the main order.
 
@@ -584,13 +595,32 @@ Returning all items of an order:
 → The order search opens.
 . In the *External order number* field, enter the receipt number.
 . Tap *Search*. +
-→ The order data is displayed. +
-*_Tipp:_* Order items shown in grey have already been returned.
+→ The order data is displayed.
 . Check that you have actually received all order items from the customer.
+. On the original receipt, cross out the items the customer is returning.
 . Tap *Create return*. +
 → A return and a credit note are created in the plentymarkets back end and linked to the original main order.
-. Pay out the return amount to the customer.
+. Pay out the return amount.
 
+===== Partial return: Scanning items for a return
+
+[.instruction]
+Scanning items for a partial return:
+
+. Open the *POS* menu. Tap on *Return*. +
+→ The Returns view is displayed.
+. Tap *Search order*. +
+→ The order search opens.
+. In the *External order number* field, enter the receipt number.
+. Tap *Search*. +
+→ The order data is displayed. +
+→ All order items of the order are flagged for return.
+. Scan the barcode of the items that the customer wants to return. +
+*_Note:_* When you scan the first item, all other items are removed from the return. The scanned item is added to the return with a quantity of *1*. As such, every item to be returned must be scanned individually.
+. On the original receipt, cross out the items the customer is returning.
+. Tap *Create return*. +
+→ A return and a credit note are created in the plentymarkets back end and linked to the original main order.
+. Pay out the return amount.
 
 ==== Partial return: Returning specific items of an order
 
@@ -620,44 +650,25 @@ Manually selecting items for a partial return:
     3. Enter the quantity for the item that is being returned. +
 → The quantity of the order item is updated.
 . If necessary, change the quantity of other order items.
+. On the original receipt, cross out the items the customer is returning.
 . Tap *Create return*. +
 → A return and a credit note are created in the plentymarkets back end and linked to the original main order.
-. Pay out the return amount to the customer.
-
-
-===== Partial return: Scanning items for a return
-
-[.instruction]
-Scanning items for a partial return:
-
-. Open the *POS* menu. Tap on *Return*. +
-→ The Returns view is displayed.
-. Tap *Search order*. +
-→ The order search opens.
-. In the *External order number* field, enter the receipt number.
-. Tap *Search*. +
-→ The order data is displayed. +
-→ All order items of the order are flagged for return.
-. Scan the barcode of the items that the customer wants to return. +
-*_Note:_* When you scan the first item, all other items are removed from the return. The scanned item is added to the return with a quantity of *1*. As such, every item to be returned must be scanned individually.
-. Tap *Create return*. +
-→ A return and a credit note are created in the plentymarkets back end and linked to the original main order.
-. Pay out the return amount to the customer.
-
+. Pay out the return amount.
 
 ==== Changing the price of return items
 
 If you do not want to pay out the full amount that the customer paid, e.g. because an item is damaged, you can change the price of an order item.
 
-. Tap the order item. +
+. In the return, tap the order item. +
 → Additional options are displayed.
 . Tap *Change single price* to change the single price of the order item or *Change total price* to change the total price of the order item. +
 → The price of the order item is updated.
+. Finish processing the return as usual.
 
 
 === Booking a return without linking it to the main order
 
-If you do not know the original main order for which the customer wants to return items or cannot open the order, plentymarkets POS also allows you to create a return without linking it to a main order. Proceed as described below to book a return without linking it to the main order.
+If you do not know the original main order for which the customer wants to return items or cannot open the order, plentymarkets POS also allows you to create a return without linking it to a main order. This means that there is no connection between the original order and the return. Proceed as described below to book a return without linking it to the main order.
 
 [.instruction]
 Booking a return without linking it to the main order:
@@ -680,7 +691,7 @@ Booking a return without linking it to the main order:
 → the total amount of the return is shown.
 . Tap *Complete return*. +
 → A return and a credit note without a main order are created in the plentymarkets back end.
-. Pay out the return amount to the customer.
+. Pay out the return amount.
 
 [#180]
 == Booking deposits and withdrawals
