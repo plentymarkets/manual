@@ -65,8 +65,9 @@ a|Eindeutiger Name für das Attribut. Der interne Name wird nur im plentymarkets
 **Auswahl per Bild** = Attribute per Bild wählen. Attribute werden als Bilderkacheln im Webshop angezeigt. Weitere Informationen zu Attributbildern finden Sie im Kapitel <<artikel/artikel-verwalten#450, Attributbilder hochladen>>. +
 **Auswahl per Box** = Attribute per Box wählen. Attribute werden als Boxen mit Attributwerten im Webshop angezeigt. Diese Einstellung ist nur bei der Attributverfügbarkeit mit **Client-Prüfung** möglich. Weitere Informationen finden Sie auf der Handbuchseite <<omni-channel/online-shop/webshop-einrichten/artikelansichten#, Grundeinstellungen>>.
 
-|**Gruppierbar in Artikellisten**
-|Anzeige der verfügbaren Artikelvarianten mit dem Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewcategorieslist, ItemViewCategoriesList>> aktivieren. Festlegen, anhand welches Attributs die Anzeige der Artikelvarianten erfolgen soll, z.B. für Schuhe das Attribut **Farbe** einstellen. So werden zunächst alle Farbvarianten angezeigt. Nach Wahl der Farbe wird eine weitere Dropdown-Liste mit dem nächsten Attribut, z.B. **Größe**,  in der Artikeldetailansicht verfügbar. In den Einstellungen des Templates unter **$ItemViewCategoriesList_GroupByVariation** ist wählbar, ob eine Gruppierung nach Attributen oder nach Varianten erfolgt.
+|*Gruppierbar in Artikellisten* +
+(nur Callisto)
+|Anzeige der verfügbaren Artikelvarianten mit dem Callisto-Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewcategorieslist, ItemViewCategoriesList>> aktivieren. Festlegen, anhand welches Attributs die Anzeige der Artikelvarianten erfolgen soll, z.B. für Schuhe das Attribut **Farbe** einstellen. So werden zunächst alle Farbvarianten angezeigt. Nach Wahl der Farbe wird eine weitere Dropdown-Liste mit dem nächsten Attribut, z.B. **Größe**,  in der Artikeldetailansicht verfügbar. In den Einstellungen des Callisto-Templates unter **$ItemViewCategoriesList_GroupByVariation** ist wählbar, ob eine Gruppierung nach Attributen oder nach Varianten erfolgt.
 
 2+|*Tab: Name*
 
@@ -319,7 +320,6 @@ Neues Merkmal erstellen:
 
 |**Aufpreis**
 |Wert eingeben, wenn für das Merkmal ein Aufpreis berechnet werden soll. Aufpreise werden im Webshop in der Artikelansicht und im Bestellvorgang automatisch zum Artikelpreis hinzu addiert. Standardmäßig ist **0,00** eingestellt und es wird kein Aufpreis berechnet. +
-Die Template-Variable **$PriceDynamic** gibt den Preis einer Variante inklusive Aufpreis aus. Bei Verwendung dieser Variable wird der Artikelpreis je nach Variantenwahl automatisch angepasst.  +
 **Als Zusatzkosten darstellen** = Keine MwSt. auf den eingegebenen Aufpreis des Merkmals anrechnen. Eine mögliche Anwendung ist z.B. die Darstellung von Pfandbeträgen, bei denen keine Mehrwertsteuer angewendet wird. In Rechnungen etc. erscheinen Merkmale, bei denen diese Option gewählt wurde, als eigene Position mit der **ID -2**.
 
 |**Position**
@@ -336,7 +336,7 @@ Die Template-Variable **$PriceDynamic** gibt den Preis einer Variante inklusive 
 **Anzeige in PDF-Dokumenten** = Das Merkmal wird in PDF-Dokumenten angezeigt. +
 
 |**Bestellmerkmal**
-|Aktivieren, wenn das Merkmal im Bestellvorgang verfügbar sein soll. Der Kunde kann dann je nach **Merkmaltyp** des Bestellmerkmals z.B. einen Text oder Wert eingeben oder eine Option aus der Dropdown-Liste wählen. Das Design für Bestellmerkmale ist im CSS anpassbar. Eigenen CSS-Code für den Bestellvorgang unter **CMS » Webdesign » Layout » CSS » CSSOrder** speichern.
+|Aktivieren, wenn das Merkmal im Bestellvorgang verfügbar sein soll. Der Kunde kann dann je nach *Merkmaltyp* des Bestellmerkmals z.B. einen Text oder Wert eingeben oder eine Option aus der Dropdown-Liste wählen.
 
 |**Notiz**
 |Notiz eingeben, um z.B. besondere Hinweise zum Merkmal anzuzeigen.
@@ -973,15 +973,100 @@ Die Position wird im Tab <<artikel/artikel-verwalten#90, Bilder>> des Artikels e
 *_Hinweis:_* Das eingegebene Präfix wird nur in den Bildnamen eingefügt, wenn in der Dropdown-Liste *Präfix* eine Position gewählt wurde.
 |====
 
+=== Eigene Domain für Bild-URLs speichern
+
+Standardmäßig wird Bildern die URL der Standard-CDN-Domain zugewiesen.
+
+Optional verwenden Sie als Domain die Domain des Mandanten und speichern eine eigene Subdomain.
+
+* Eigene Subdomains können nur für die Hauptdomain gespeichert werden.
+* Eigene Subdomains können nur für Domains gespeichert werden, die von plentymarkets verwaltet werden.
+* Pro Mandant kann nur eine eigene Subdomain gespeichert werden.
+
+<<tabelle-domain-bild-URLs>> zeigt die Unterschiede zwischen der Standard-Domain und einer eigenen Domain.
+
+[[tabelle-domain-bild-URLs]]
+.Eigene Domain für Bilder-URLs speichern
+[cols="1,2,1"]
+|====
+|Domain-Einstellung |Erläuterung |Beispiel-URL
+
+|Bild-URL mit Standard-Domain
+a|Die URL von Artikelbildern setzt sich wie folgt zusammen:
+
+. Subdomain *CDN1*, *CDN2* oder *CDN3*
+. Domain *plentymarkets.com*
+. Kunden-Hash
+. Dateipfad *item/images*
+. Artikel-ID
+. Ordnername der Bildgröße
+. Name der Bilddatei mit Dateierweiterung
+
+|https://*cdn01.plentymarkets.com/1abcd2e3fghi*/item/images/118/full/118-Relaxsessel-Rio.jpg
+
+|Bild-URL mit eigener Domain
+a|Statt der Standard-Domain wird die benutzerdefinierte Domain angegeben. Der Kunden-Hash wird nicht in der URL angezeigt:
+
+. Benutzerdefinierte Subdomain
+. Domain des Mandanten
+. Dateipfad *item/images*
+. Artikel-ID
+. Ordnername der Bildgröße
+. Name der Bilddatei mit Dateierweiterung
+
+|https://*ihresubdomain.ihrshop.de*/item/images/118/full/118-Relaxsessel-Rio.jpg
+|====
+
+Gehen Sie wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern.
+
+[IMPORTANT]
+.Nach dem Erstellen die Domain aktivieren
+====
+Das Erstellen der Subdomain kann mehrere Stunden dauern. Erst wenn in allen drei Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen und die Domain kann aktiviert werden.
+====
+
+[.instruction]
+Eigene Domain für Bild-URLs speichern:
+
+. Öffnen Sie das Menü *System » Mandant » Mandant öffnen » Domains*.
+. Klicken Sie auf *Hinzufügen*. +
+→ Das Fenster *Neue Domain* wird geöffnet.
+. Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-cdn-domain>>.
+. *Speichern* Sie die Einstellungen. +
+→ Die Subdomain wird erstellt. +
+→ Für die Subdomain wird ein eigenes SSL-Zertifikat erstellt. +
+→ Für die Subdomain wird ein DNS-Eintrag erstellt. +
+→ Eine CloudFront-Instanz wird erstellt. +
+*_Hinweis:_* Das Erstellen der Subdomain kann mehrere Stunden dauern. Erst wenn in allen drei Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen.
+. Wenn alle drei Häkchen angezeigt werden, klicken Sie in der Spalte *Status* auf *Aktivieren*, um die Domain zu aktivieren.
+
+[[tabelle-cdn-domain]]
+.Subdomain für Bilder-URLs festlegen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Bereich*
+|Den Typ der Subdomain aus der Dropdown-Liste wählen. Aktuell ist nur der Typ *CDN1* verfügbar.
+
+|*Subdomain*
+|Eigene Subdomain eingeben. Gültige Zeichen sind Buchstaben (a-z, A-Z), Ziffern (0-9), Unterstrich (_) und Bindestrich (-). Das erste Zeichen der Subdomain muss entweder ein Buchstabe oder eine Ziffer sein.
+
+|*Domain*
+|Domain aus der Dropdown-Liste wählen. Aktuell ist nur die Hauptdomain des Mandanten wählbar. Die Domain muss außerdem von plentymarkets gehostet werden. Für externe Domains kann keine Subdomain für Bilder-URLs gespeichert werden.
+|====
+
 [#670b]
 === Größe von Artikelbildern festlegen
 
-Im Menü *System » Artikel » Bilder » Größen* nehmen Sie Einstellungen für jede Bildgröße fest.
+Im Menü *System » Artikel » Bilder » Größen* nehmen Sie Einstellungen für jede Bildgröße fest. Die folgenden Größen sind verfügbar:
 
-* *preview* = Vorschaubild
-* *secondPreview* = Zweites Vorschaubild
-* *middle* = Mittlere Bildgröße
-* *full* = Volle Bildgröße
+* *preview* = Größe des Vorschaubilds
+* *secondPreview* = Größe des zweiten Vorschaubilds
+* *middle* = Größe der mittleren Bildgröße
+* *full* = Größe der vollen Bildgröße
+
+Gehen Sie wie unten beschrieben vor, um die verschiedenen Größen von Artikelbildern festzulegen.
 
 [.instruction]
 Größe von Artikelbildern festlegen:
@@ -1424,102 +1509,108 @@ video::162345164[vimeo]
 [#760]
 == Etiketten einrichten
 
-Artikeletiketten sind Hinweisschildchen auf einem Artikel oder der Artikelverpackung. Etiketten können Informationen über Preis, Inhalt etc. enthalten. Stellen Sie die Etikettengröße und die Positionierung der Artikel- und Auftragsparameter ein, die auf das Etikett gedruckt werden.
+Artikeletiketten sind Hinweisschildchen auf einem Artikel oder der Artikelverpackung. Etiketten können Informationen über Preis, Inhalt etc. enthalten. Erstellen Sie beliebig viele Etikettenvorlagen, um die Etikettengröße und die Position von Artikel- und Auftragsparametern festzulegen.
+
+[#3300]
+=== Etikettenvorlage erstellen
+
+Gehen Sie wie unten beschrieben vor, um eine Etikettenvorlage zu erstellen.
 
 [.instruction]
 Etikettenvorlage erstellen:
 
-. Öffnen Sie das Menü **System » Artikel » Etiketten**.
-. Klappen Sie den Bereich **Neue Vorlage** auf.
-. Nehmen Sie die Einstellungen vor. Beachten Sie <<tabelle-etikettenvorlage-erstellen>>.
-. **Speichern** Sie die Einstellungen. +
+. Öffnen Sie das Menü *System » Artikel » Etiketten*.
+. Klappen Sie den Bereich *Neue Vorlage* auf.
+. Nehmen Sie die Einstellungen vor. Beachten Sie <<tabelle-etikettenvorlage-erstellen>>. +
+*_Tipp:_* Auf den Etiketten werden nur Werte ausgegeben, für die X- und Y-Koordinaten gespeichert wurden.
+. *Speichern* Sie die Einstellungen. +
 → Die Etikettenvorlage wird erstellt.
 
 [[tabelle-etikettenvorlage-erstellen]]
 .Etikettenvorlage erstellen
-[cols="1,2"]
+[cols="1,3"]
 |====
 |Einstellung |Erläuterung
 
 2+|*Formatierung*
 
-|**Name**
+|*Name*
 |Name für das Etikett eingeben.
 
-|**Sprache**
+|*Sprache*
 |Sprache für das Etikett wählen. Standardmäßig ist die Systemsprache voreingestellt.
 
-|**Zeichensatz**
+|*Zeichensatz*
 |Zeichensatz wählen.
 
-|**Seite**
+|*Seite*
 |Seitenbreite und -höhe in Millimeter eingeben. Bei Verwendung von <<basics/arbeiten-mit-plentymarkets/drucker#50, Etikettendruckern>> kann die Seitengröße gleich der Etikettengröße sein.
 
-|**Seitenrand**
+|*Seitenrand*
 |Seitenränder links und oben in Millimeter eingeben.
 
-|**Etikett**
-|Breite und Höhe des Etiketts in Millimeter eingeben. Die Etikettgröße muss zu den Werten der Seitengröße und der Zeilen- und Spaltenanzahl passen.
+|*Etikett*
+|Breite und Höhe des Etiketts in Millimeter eingeben. Die Größe des Etiketts muss zu den Werten der Seitengröße und der Zeilen- und Spaltenanzahl passen.
 
-|**Zeilen pro Seite**
+|*Zeilen pro Seite*
 |Anzahl der Zeilen pro Seite eingeben.
 
-|**Spalten pro Seite**
+|*Spalten pro Seite*
 |Anzahl der Spalten pro Seite eingeben.
 
 2+|*Artikeldaten*
 
-|**Koordinaten; +
-Schriftgröße; +
-Schriftschnitt**
+|*Koordinaten*; +
+*Schriftgröße*; +
+*Schriftschnitt*
 |Koordinaten eingeben, um Artikeldaten auf dem Etikett zu positionieren. Die Werte orientieren sich am Koordinatensystem mit X- und Y-Achse. Die X-Achse verläuft von links nach rechts und die Y-Achse von oben nach unten, d.h. Nullwerte liegen links bzw. oben. +
 Mithilfe der Schriftgröße und des Schriftschnitts das Erscheinungsbild der Artikeldaten festlegen.
 Für einige Parameter sind Werte voreingestellt. Diese Werte bei Bedarf anpassen und für weitere benötigte Parameter Werte eingeben.
 
-|**Titel verbergen**
+|*Titel verbergen*
 |Aktivieren, um den Parametertitel auszublenden. Koordinaten und andere Einstellungen müssen nicht gelöscht werden. Der Parameter kann bei Bedarf wieder angezeigt werden, indem die Einstellung deaktiviert wird.
 
-|**Zeilenumbruch erlauben**
+|*Zeilenumbruch erlauben*
 |Aktivieren, um einen Zeilenumbruch zu erlauben. Damit wird ein Titel, z.B. der Artikelname, der über die Breite des Etiketts hinausgeht, durch Fortsetzung auf der nächsten Zeile vollständig gedruckt.
 
-|**Nummer der Hauptvariante**
+|*Nummer der Hauptvariante*
 |Aktivieren, um die Nummer der Hauptvariante der Variante anzuzeigen.
 
-|**Preis**
+|*Preis*
 |Aktivieren, um den Preis der Variante anzuzeigen. Wählen, ob der Preistyp *Verkaufspreis* oder der Preistyp *UVP* angezeigt werden soll. Außerdem wählen, welcher Verkaufspreis angezeigt werden soll. +
 *_Hinweis:_* Wird der Preistyp *UVP* gewählt, wird unabhängig vom gewählten Verkaufspreis immer der UVP der Variante ausgegeben.
 
-|**Grundpreis**
+|*Grundpreis*
 |Aktivieren, um den Grundpreis der Variante anzuzeigen. Wählen, ob der Grundpreis des Preistyps *Verkaufspreis* oder der Grundpreis des Preistyps *UVP* angezeigt werden soll. Außerdem wählen, welcher Verkaufspreis angezeigt werden soll. +
 *_Hinweis:_* Wird der Preistyp *UVP* gewählt, wird unabhängig vom gewählten Verkaufspreis immer der UVP der Variante ausgegeben. +
 *_Hinweis:_* Wenn *Preis* und *Grundpreis* angezeigt werden sollen sicherstellen, dass für beide Optionen derselbe Preistyp und/oder Verkaufspreis gewählt wird.
 
-|**GTIN-Barcode: GTIN darstellen**
+|*GTIN-Barcode: GTIN darstellen*
 |Aktivieren, um die GTIN unter dem Barcode anzuzeigen.
 
-|**Attribute: Attributnamen ausblenden**
+|*Attribute: Attributnamen ausblenden*
 |Aktivieren, um nur den Attributwert anzuzeigen. Der Attributname wird ausgeblendet.
 
-|**Artikelbild**
+|*Artikelbild*
 |Koordinaten für die Positionierung des Artikelbildes eingeben. Maximalwerte für Höhe und Breite des Bildes eingeben. Wenn das Bild größer als die eingegebenen Werte ist, wird das Bild proportional eingepasst, damit es nicht verzerrt angezeigt wird. +
-Position des Artikelbildes wählen, um das Bild für Etiketten zu verwenden. Standardmäßig ist **Position 0** voreingestellt. Die Artikelbildpositionen werden im Tab **Bilder** eines Artikels festgelegt. Wenn eine Position gewählt wurde, zu der kein Bild verfügbar ist, wird das erste verfügbare Bild, mit Position 0 beginnend, verwendet.
+Position des Artikelbildes wählen, um das Bild für Etiketten zu verwenden. Standardmäßig ist *Position 0* voreingestellt. Die Artikelbildpositionen werden im Tab *Bilder* eines Artikels festgelegt. Wenn eine Position gewählt wurde, zu der kein Bild verfügbar ist, wird das erste verfügbare Bild, mit Position 0 beginnend, verwendet.
 
-|**Artikelfreitextfeld 1 bis 4**
+|*Artikelfreitextfeld 1 bis 4*
 |Freitextfeld wählen, damit der Text auf dem Etikett angezeigt wird. Weitere Informationen zu Freitextfeldern finden Sie im Kapitel <<artikel/artikel-verwalten#70, Freitextfelder aktivieren>>.
 
-|**Freitextfeld 1 bis 4**
+|*Freitextfeld 1 bis 4*
 |Zusätzliche Freitextfelder einrichten. Text in Feld eingeben. Der eingegebene Text wird auf dem Etikett angezeigt.
 
-|**Grafik**
+|*Grafik*
 |Koordinaten für die Positionierung der Grafik eingeben. Maximalwerte für Höhe und Breite des Bildes eingeben. Wenn die Grafik größer als die eingegebenen Werte ist, wird die Grafik proportional eingepasst, damit sie nicht verzerrt angezeigt wird. +
-Grafiken in der <<omni-channel/online-shop/webshop-einrichten/cms#bilder-galerie, Bildergalerie>> hochladen. Die relative URL der Grafik aus der Bildergalerie kopieren und in das Feld **URL** einfügen.
+Grafiken in der <<omni-channel/online-shop/webshop-einrichten/cms#bilder-galerie, Bildergalerie>> hochladen. Die relative URL der Grafik aus der Bildergalerie kopieren und in das Feld *URL* einfügen.
 
 2+|*Auftragsbezogene Daten*
 
-|**Auftrags-ID; +
-Externe Auftrags-ID; +
-Lieferland; +
-Artikelanzahl**
+|*Auftrags-ID*; +
+*Externe Auftrags-ID*; +
+*Lieferland*; +
+*Artikelanzahl*
 |Auftragsbezogene Parameter einrichten, um sie auf dem Etikett anzuzeigen.
 |====
 
@@ -1529,18 +1620,101 @@ Artikelanzahl**
 Je nach Drucker kann es auch bei einer korrekt eingerichteten Vorlage zu Abweichungen beim Ausdruck kommen. Drucken Sie daher beim Einrichten der Vorlage Probedrucke auf Normalpapier. Korrigieren Sie die Positionen, bis Sie mit dem Ergebnis zufrieden sind, bevor Sie Etikettenpapier verwenden.
 ====
 
-Etiketten generieren Sie entweder direkt aus der Vorlage oder über die Funktion **Etiketten** eines Artikels oder einer Variante. Sie können auch Prozesse erstellen, um <<basics/automatisierung/prozesse/aktionen#150, Artikeletiketten zu generieren>>.
+[#3310]
+=== Etiketten generieren
+
+Sie haben mehrere Möglichkeiten, Etiketten zu generieren:
+
+* Sie generieren in der Etikettenvorlage Etiketten für alle Positionen eines Auftrags <<#3320, in der Vorlage>>.
+* Sie generieren Etiketten über die Funktion <<#3330, *Etiketten* einer Variante>>.
+* Sie erstellen Prozesse, um <<basics/automatisierung/prozesse/aktionen#150, Artikeletiketten zu generieren>>.
+* Sie drucken Etiketten in der <<#3340, Artikelsuche der plentymarkets App>>.
+
+
+[#3320]
+==== Etiketten für die Positionen eines Auftrags generieren
+
+In der Etikettenvorlage haben Sie die Möglichkeit, eine PDF-Datei mit den Etiketten für einen bestimmten Auftrag zu generieren. Gehen Sie dazu wie unten beschrieben vor.
 
 [.instruction]
-Etikett per Vorlage generieren:
+Etikett für Auftragspositionen in der Vorlage generieren:
 
-. Öffnen Sie das Menü **System » Artikel » Etiketten**.
+. Öffnen Sie das Menü *System » Artikel » Etiketten*.
 . Klappen Sie die Vorlage auf.
 . Geben Sie die Auftrags-ID ein.
-. Klicken Sie auf **Vorschau**. +
-→ Eine PDF-Datei mit Etiketten für die im Auftrag enthaltenen Artikel wird erzeugt.
+. Klicken Sie auf *Vorschau*. +
+→ Eine PDF-Datei mit Etiketten für die im Auftrag enthaltenen Artikel wird generiert.
 
-Etiketten für Artikel generieren Sie über die Funktion **Etiketten** in der Symbolleiste eines Artikel. Etiketten für Artikelvarianten generieren Sie analog über die Funktion **Etiketten** im Tab einer Variante.
+[#3330]
+==== Etikett für eine Variante generieren
+
+Etiketten für eine Variante generieren Sie über die Funktion *Etiketten* in der Symbolleiste der Variante. Gehen Sie wie unten beschrieben vor, um Etiketten für eine Variante zu generieren.
+
+[.instruction]
+Etikett für eine Variante generieren:
+
+. Öffnen Sie das Menü *Artikel » Artikel bearbeiten*.
+. Öffnen Sie den Artikel.
+. Öffnen Sie die Variante.
+. Klicken Sie in der Leiste der Variante auf das Symbol *Etiketten*. +
+→ Das Fenster *Etiketten generieren* wird geöffnet.
+. Geben Sie ein, wie viele Etiketten generiert werden sollen.
+. Wählen Sie aus der Dropdown-Liste *Vorlage* die Etikettenvorlage.
+. Klicken Sie auf *Etiketten generieren*. +
+→ Eine PDF-Datei mit der gewählten Anzahl der Etiketten wird generiert.
+
+[TIP]
+.Etiketten für alle Varianten eines Artikels generieren
+====
+Klicken Sie in der Leiste des Artikels auf das Symbol *Etiketten*, um Etiketten für alle Varianten eines Artikels zu generieren.
+====
+
+[#3340]
+==== Etikett in der Artikelsuche der plentymarkets App drucken (ab App-Version 1.8)
+
+In der Artikelsuche der plentymarkets App drucken Sie Etiketten.
+
+[IMPORTANT]
+.plentyBase konfigurieren
+====
+Um Etiketten drucken zu können, benötigen Sie das kostenlose Plugin plentyBase. plentyBase stellt eine Schnittstelle bereit, über die Sie aus dem plentymarkets Backend und/oder der plentymarkets App die Drucker nutzen können, die an den Computer angeschlossen sind. Wie Sie plentyBase installieren und konfigurieren erfahren Sie in der Beschreibung des Plugins link:https://marketplace.plentymarkets.com/plugins/integration/plentyBase_5053[plentyBase^].
+====
+
+===== Einstellungen für den Etikettendruck speichern
+
+Zunächst legen Sie die Etikettenvorlage und den Drucker fest. Gehen Sie dazu wie unten beschrieben vor.
+
+[.instruction]
+Einstellungen für den Etikettendruck speichern:
+
+. Öffnen Sie die plentymarkets App.
+. Öffnen Sie das Menü *plentymarkets App » Einstellungen » Artikelsuche*.
+. Scrollen Sie zum Bereich *Artikeletikett*. +
+*_Tipp:_* Der Bereich *Artikeletikett* wird nur angezeigt, wenn link:https://marketplace.plentymarkets.com/plugins/integration/plentyBase_5053[plentyBase^] konfiguriert ist.
+. Wählen Sie die Etikettenvorlage aus der Dropdown-Liste.
+. Wählen Sie den Drucker aus der Dropdown-Liste, auf dem die Etiketten gedruckt werden sollen.
+. *Speichern* Sie die Einstellungen.
+
+===== Etiketten in der Artikelsuche drucken
+
+Etiketten drucken Sie in der plentymarkets App über die Artikelsuche.
+
+[.instruction]
+Etiketten in der Artikelsuche drucken:
+
+. Öffnen Sie die plentymarkets App.
+. Öffnen Sie das Menü *plentymarkets App » Artikelsuche*.
+. Geben Sie ein Suchkriterium ein.
+. Tippen Sie auf *Suchen*. +
+→ Die gefundenen Artikel werden angezeigt.
+. Tippen Sie auf den grünen Balken des Artikels. +
+→ Die Artikeldaten werden angezeigt.
+. Tippen Sie auf das Symbol *Lager*. +
+→ Die Lagerorte des Artikels werden angezeigt.
+. Tippen Sie auf das Symbol *Details*. +
+→ Ein Menü wird angezeigt.
+. Tippen Sie auf *Artikeletikett drucken*. +
+→ Das Etikett wird gedruckt.
 
 [#790]
 == Markierungen einrichten
@@ -1583,10 +1757,8 @@ Kategorie vom Typ "Artikel" bearbeiten:
 . Öffnen Sie das Menü **Artikel » Kategorien**.
 . Öffnen Sie die Kategorie. +
 → Das Tab **Einstellungen** wird geöffnet.
-. Aktivieren Sie unter **Mandant (Shop)** einen oder mehrere Mandanten.
-. Wählen Sie unter **Template-Seite** ein Template.
-. Wählen Sie unter **Template-Liste** ein Template.
-. Wählen Sie unter **Template-Produkt** ein Template.
+. Aktivieren Sie unter **Mandant (Shop)** einen oder mehrere Mandanten. +
+*_Tipp:_* Die Template-Einstellungen sind nur für Systeme mit Callisto-Webshop relevant.
 . **Speichern** Sie die Einstellungen.
 
 [IMPORTANT]
@@ -1703,7 +1875,7 @@ Erfahren Sie mehr über das Anlegen von Artikeln des Typs **Standard** im folgen
 video::161911039[vimeo]
 
 [#30]
-== Artikel des Typs **Standard** bearbeiten
+== Artikel des Typs Standard bearbeiten
 
 In der Artikelarchitektur von plentymarkets 7 setzt sich ein Artikel des Typs **Standard** aus globalen Einstellungen und Daten der Hauptvariante und optional weiterer Varianten zusammen. Welche Artikeldaten Sie variantenübergreifend pflegen und bearbeiten, erfahren Sie in diesem Kapitel.
 
@@ -1755,9 +1927,9 @@ Artikeldaten anpassen:
 
 2+|*Grundeinstellungen*
 
-|**Zustand; +
-Zustand API**
-|Zustand des Artikels wählen. Standardmäßig ist **Neu** eingestellt. Um den Zustand im Webshop in der Detailansicht eines Artikels anzuzeigen, die Template-Variable **$condition** in das Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewsingleitem, ItemViewSingleItem>> einfügen. Die Einstellung **Zustand API** wird für den Marktplatz <<omni-channel/multi-channel/amazon/amazon-einrichten#, Amazon>> verwendet.
+|*Zustand*; +
+*Zustand API*
+|Zustand des Artikels wählen. Standardmäßig ist **Neu** eingestellt. Die Einstellung *Zustand API* wird für den Marktplatz <<omni-channel/multi-channel/amazon/amazon-einrichten#, Amazon>> verwendet.
 
 |**Warentyp**
 |**Lagerware** (Standardeinstellung), **Produktionsware**, **Colli** oder **Bestellware** wählen. +
@@ -1770,10 +1942,10 @@ Zustand API**
 |Land wählen, in dem der Artikel des Typs **Standard** hergestellt wurde.
 
 |**Zolltarifnummer**
-|Zolltarifnummer eingeben. Weitere Informationen finden Sie z.B. auf der Webseite von link:http://auskunft.ezt-online.de/ezto/Welcome.do[**EZT-Online**^] und unter link:http://www.zoll-erklärung.de/Die%20Einreihung%20im%20EZT.pdf[**Die Einreihung im EZT**^].
+|Zolltarifnummer eingeben. Weitere Informationen finden Sie z.B. auf der Webseite von link:http://auskunft.ezt-online.de/ezto/Welcome.do[EZT-Online^].
 
 |**Erlöskonto**
-|Erlöskonto eingeben. Weitere Informationen zum Erlöskonto finden Sie auf der Handbuchseite <<auftragsabwicklung/auftraege/buchhaltung#90, Buchhaltung>>.
+|Erlöskonto eingeben. Weitere Informationen zu Erlöskonten finden Sie auf der Handbuchseite <<auftragsabwicklung/auftraege/buchhaltung#90, Buchhaltung>>.
 
 |*Max. Bestellmenge*
 |Wert eingeben, um die Gesamtanzahl aller Varianten des Artikels zu begrenzen, die Kunden pro Auftrag bestellen können. +
@@ -1802,11 +1974,11 @@ Wert größer 0 = Kunden können maximal diese Gesamtmenge aller Varianten des A
 
 2+|*Webshop*
 
-|**Shop-Aktion**
-|Shop-Aktion oder **Keine** wählen. Artikel können als Shop-Aktionen in Ihrem Webshop dargestellt werden. Shop-Aktionen werden über Templates im Menü **CMS » Webdesign » Layout » ItemView** eingebunden. Wie Sie Shop-Aktionen einbinden, erfahren Sie unter <<artikel/artikel-verwalten#1010, Shop-Aktionen einrichten>>. +
-**Sonderangebot** = Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewspecialofferslist, ItemViewSpecialOffersList>> verwenden, um eine Liste von Sonderangeboten darzustellen. +
-**Neuheit** = Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewlatestitemslist, ItemViewLatestItemsList>> verwenden, um eine Liste der neuesten Artikel darzustellen. +
-**Top-Artikel** = Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewtopsellerslist, ItemViewTopSellersList>> verwenden, um eine Liste der meistverkauften Artikel darzustellen.
+|*Shop-Aktion*
+|Shop-Aktion oder *Keine* wählen. Artikel können als Shop-Aktionen in Ihrem Webshop dargestellt werden. Wie Sie Shop-Aktionen einrichten, erfahren Sie unter <<artikel/artikel-verwalten#1010, Artikel als Top-Artikel präsentieren>>. +
+*Sonderangebot* = Stellt eine Liste von Sonderangeboten dar. +
+*Neuheit* = Stellt eine Liste der neuesten Artikel dar. +
+*Top-Artikel* = Stellt eine Liste der meistverkauften Artikel dar.
 
 |**Artikelbewertung**
 |Erstbewertung von **1** bis **5** bzw. **1** bis **10** für den Artikel eingeben. Wenn Sie Artikelbewertungen verwenden, wird der eingegebene Wert als Erstbewertung des Artikels angezeigt. Der Wert wird nach jeder Bewertung automatisch auf einen Durchschnittswert angepasst. Den Bewertungsbereich legen Sie im Menü **System » Mandant » Global » Feedback » Tab: Artikel** unter **Maximale Bewertungspunkte** ein.
@@ -1817,9 +1989,6 @@ Wert größer 0 = Kunden können maximal diese Gesamtmenge aller Varianten des A
 |Auf das Bild klicken, um das Tab **Bilder** aufzurufen.
 |====
 
-Erfahren Sie mehr über das Tab **Global** im folgenden Videotutorial:
-
-video::162339487[vimeo]
 
 [#610]
 === Hersteller verknüpfen
@@ -1893,10 +2062,10 @@ Die Länge des Artikelnamens ist auf 240 Zeichen begrenzt. Der Artikelname wird 
 |Artikeltext eingeben. Der Artikeltext ist ein detaillierter Text, der in der Artikelansicht im Webshop angezeigt wird.
 
 |**Technische Daten**
-|Technische Daten des Artikels eingeben. Um die technischen Daten im Webshop anzuzeigen, die Template-Variable **$TechnicalData** und ggf. eine Überschrift in das Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewsingleitem, ItemViewSingleItem>> einfügen.
+|Technische Daten des Artikels eingeben.
 
 |**URL-Pfad**
-|URL-Pfad des Artikels im Webshop. Der URL-Pfad setzt sich standardmäßig aus Kategorien und Artikelname zusammen. Der Pfad wird beim Erstellen des Artikels automatisch von plentymarkets vergeben und als Teil der Artikel-URL angezeigt, wenn der Artikel im Webshop aufgerufen wird. Weitere Informationen zur Artikel-URL finden Sie in unserem <<omni-channel/online-shop/webshop-einrichten/cms-syntax#fallbeispiele-seo-guide, SEO-Guide>>.
+|URL-Pfad des Artikels im Webshop. Der URL-Pfad setzt sich standardmäßig aus Kategorien und Artikelname zusammen. Der Pfad wird beim Erstellen des Artikels automatisch von plentymarkets vergeben und als Teil der Artikel-URL angezeigt, wenn der Artikel im Webshop aufgerufen wird.
 
 |**Meta-Beschreibung**
 |Beschreibung eingeben, mit der der Artikel leichter bei der Suche mit Suchmaschinen gefunden wird (max. 350 Zeichen).
@@ -1970,8 +2139,6 @@ Freitextfelder aktivieren:
 . Wechseln Sie in das Tab **Felder**.
 . Geben Sie Werte in die benötigten Freitextfelder ein.
 . **Speichern** Sie die Einstellungen.
-
-Freitextfelder werden durch die Template-Variablen **$Free[1]** bis **$Free[20]** an beliebiger Stelle im Webshop angezeigt. Wie Sie Freitextfelder im Webshop verwenden, erfahren Sie auf der Handbuchseite <<omni-channel/online-shop/webshop-einrichten/cms#webdesign-webdesign-bearbeiten-itemview-masseingabe, Maßeingabe>>.
 
 [#80]
 === Merkmale aktivieren
@@ -2100,8 +2267,11 @@ Im Tab **Cross-Selling** verknüpfen Sie Artikel des Typs **Standard** mit belie
 [#110]
 === Dateien zum Download bereitstellen
 
-Im Tab **Media** fügen Sie Dateien zum Artikel hinzu. Dateien wie Produktinformationen oder Datenblätter stellen Sie im Bereich **Mein Konto** oder in der Artikelansicht im Webshop zum Download bereit. Für Dateien, die Sie im Tab **Media** hochladen, gelten folgende Voraussetzungen:
+NOTE: Im Tab *Media* hochgeladene Dateien können für den Ceres-Webshop nicht genutzt werden.
 
+Im Tab *Media* fügen Sie Dateien zum Artikel hinzu. Dateien wie Produktinformationen oder Datenblätter stellen Sie im Bereich **Mein Konto** oder in der Artikelansicht im Webshop zum Download bereit. Für Dateien, die Sie im Tab **Media** hochladen, gelten folgende Voraussetzungen:
+
+* Callisto-Webshop
 * **Zulässige Dateiformate:** PDF, EXCEL, X_EXCEL, DOC, DOCX, MSWORD, RTF, TEXT, RICHTEXT, ZIP, HTML, SWF
 * **Maximale Dateigröße:** 5 MB pro Datei
 * **Maximale Dateianzahl:** 10 Dateien pro Artikel (davon maximal 1 Datei im SWF-Format)
@@ -2145,13 +2315,13 @@ Ziehen Sie alternativ eine oder mehrere Dateien per Drag &amp; Drop-Funktion in 
 |Aktivieren, um die Datei im Bereich **Mein Konto** zum Download bereitzustellen.
 
 |**CMS**
-|Aktivieren, um die Datei im CMS verfügbar zu machen. Die Datei wird über die Template-Funktion **GetDocumentLinks()** im Webshop eingebunden.
+|Aktivieren, um die Datei in Callisto verfügbar zu machen.
 |====
 
 [#130]
 ==== Download-Link im Webshop einbinden
 
-Um Download-Links zu den im Tab **Media** gespeicherten Dateien im Webshop bereitzustellen, verwenden Sie die Template-Funktion **GetDocumentLinks()**. Diese Template-Funktion kann in den Templates im Ordner **ItemView** verwendet werden. Die Funktion liefert eine Liste mit Links, über die Kunden die gespeicherten Dokumente herunterladen können.
+Um Download-Links zu den im Tab **Media** gespeicherten Dateien im Webshop bereitzustellen, verwenden Sie in Callisto die Template-Funktion **GetDocumentLinks()**. Diese Template-Funktion kann in den Templates im Ordner **ItemView** verwendet werden. Die Funktion liefert eine Liste mit Links, über die Kunden die gespeicherten Dokumente herunterladen können.
 
 [.instruction]
 Template-Funktion einfügen:
@@ -2470,9 +2640,9 @@ Mögliche Bildformate: **PNG**, **JPG** und **GIF**. Ideale Bildgröße: **16 x 
 |====
 
 [#200]
-==== Verfügbarkeit im Webshop anzeigen
+==== Callisto: Verfügbarkeit im Webshop anzeigen
 
-Die Verfügbarkeit wird standardmäßig über das Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewsingleitem, ItemViewSingleItem>> im Webshop angezeigt. Über die Template-Variablen **$AvailabilityString** und **$AvailabilityIcon** werden Verfügbarkeitstext und -symbol im Webshop dargestellt. Diese Template-Variablen sind standardmäßig im Template **ItemViewSingleItem** der plentymarkets Standard-Designs enthalten.
+Die Verfügbarkeit wird in Callisto standardmäßig über das Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewsingleitem, ItemViewSingleItem>> im Webshop angezeigt. Über die Template-Variablen **$AvailabilityString** und **$AvailabilityIcon** werden Verfügbarkeitstext und -symbol im Webshop dargestellt. Diese Template-Variablen sind standardmäßig im Template **ItemViewSingleItem** der plentymarkets Standard-Designs enthalten.
 
 [IMPORTANT]
 .Fehlerhafte Anzeige der Verfügbarkeit im Webshop
@@ -2641,8 +2811,6 @@ Barcode mit Hauptvariante verknüpfen:
 . Geben Sie den Code in das Feld **Code** ein. Klicken Sie alternativ auf **GTIN generieren**, um einen durch den <<artikel/artikel-verwalten#650, Nummernkreis>> generierten Code einzufügen.
 . **Speichern** Sie die Einstellungen.
 
-Barcodes werden über die Template-Funktion **{% GetBarcode('barcodeName') %}** im Webshop ausgegeben.
-
 [#260]
 === ASIN und ePID verknüpfen
 
@@ -2656,7 +2824,7 @@ ASIN oder ePID mit Hauptvariante verknüpfen:
 → Das Tab **Einstellungen** der Hauptvariante wird geöffnet.
 . Klicken Sie im Bereich **ASIN/ePID** auf **Hinzufügen**. +
 → Ein neuer Eintrag wird hinzugefügt und in der Liste angezeigt.
-. Wählen Sie die Sprache aus der Dropdown-Liste.
+. Wählen Sie die Länderplattform aus der Dropdown-Liste.
 . Wählen Sie **ASIN** bzw. **ePID** aus der Dropdown-Liste.
 . Geben Sie die ASIN bzw. ePID in das Feld ein.
 . **Speichern** Sie die Einstellungen.
@@ -2688,21 +2856,21 @@ Maße der Hauptvariante angeben:
 |Maße der Variante in Millimeter eingeben.
 
 |**Gewicht brutto**
-|Bruttogewicht der Variante in Gramm oder Kilogramm eingeben. Bei einzeln verpackten Varianten ist dies das Gewicht inklusive Verpackung. Der hier eingegebene Wert wird für die Berechnung der <<auftragsabwicklung/fulfillment/versand-vorbereiten#1900, Versandpakete>> und für gewichtsabhängige Einstellungen der <<auftragsabwicklung/fulfillment/versand-vorbereiten#1700, Versandkosten>> verwendet. Das Bruttogewicht wird über die Template-Variable **$Weight** im Webshop angezeigt.
+|Bruttogewicht der Variante in Gramm oder Kilogramm eingeben. Bei einzeln verpackten Varianten ist dies das Gewicht inklusive Verpackung. Der hier eingegebene Wert wird für die Berechnung der <<auftragsabwicklung/fulfillment/versand-vorbereiten#1900, Versandpakete>> und für gewichtsabhängige Einstellungen der <<auftragsabwicklung/fulfillment/versand-vorbereiten#1700, Versandkosten>> verwendet.
 
 |**Gewicht netto**
-|Nettogewicht der Variante in Gramm oder Kilogramm eingeben. Gewicht der Variante ohne Verpackung. Das Nettogewicht wird über die Template-Variable **$WeightNet** im Webshop angezeigt.
+|Gewicht der Variante ohne Verpackung der Variante in Gramm oder Kilogramm eingeben.
 
 |**VPE**
 |Verpackungseinheit (VPE) ist die Zusammenfassung mehrerer Verkaufseinheiten. Standardeinstellung: **1**. +
 **__Hinweis:__** Diese VPE wird aktuell nicht in Berechnungen berücksichtigt. +
 Die Berechnung von Grundpreisen, z.B. pro Kilogramm, erfolgt auf der Basis des Gewichtes, das unter **Inhalt** eingetragen ist und der Einstellung unter **Einheit** in Verbindung mit dem **Preis**. Der Eintrag bei der Option **VPE** hat keinen Einfluss auf die Berechnung eines Grundpreises.
 
-|**Grundpreis anzeigen**
-|Wählen, ob der Grundpreis der Variante im Webshop angezeigt werden soll. Der Grundpreis wird über die Template-Variable **$BasePrice** im Webshop ausgegeben. +
-Aktiviert = Der Grundpreis der Variante wird im Webshop angezeigt, wenn die entsprechende Variablenlogik im Design hinterlegt ist. +
+|*Grundpreis anzeigen*
+|Wählen, ob der Grundpreis der Variante im Webshop angezeigt werden soll. +
+Aktiviert = Der Grundpreis der Variante wird im Webshop angezeigt, wenn die entsprechende Logik im Design hinterlegt ist. +
 Nicht aktiviert = Der Grundpreis der Variante wird nicht im Webshop angezeigt. +
-**__Tipp:__** Der Grundpreis ist der auf eine Standardmenge bezogene Preis, z.B. der Preis pro kg oder Liter. Der Grundpreis wird angegeben, um Verbrauchern einen einfachen Preisvergleich zu ermöglichen. Die deutsche Grundpreisverordnung schreibt vor, dass für Produkte, die nach Gewicht, Volumen, Länge oder Fläche verkauft werden, der Grundpreis in unmittelbarer Nähe des Endpreises anzugeben ist.
+*_Tipp:_* Der Grundpreis ist der auf eine Standardmenge bezogene Preis, z.B. der Preis pro kg oder Liter. Der Grundpreis wird angegeben, um Verbrauchern einen einfachen Preisvergleich zu ermöglichen. Die deutsche Grundpreisverordnung schreibt vor, dass für Produkte, die nach Gewicht, Volumen, Länge oder Fläche verkauft werden, der Grundpreis in unmittelbarer Nähe des Endpreises anzugeben ist.
 |====
 
 [#280]
@@ -3944,11 +4112,11 @@ Artikel des Typs Set bearbeiten:
 |**Versandprofile**
 |Ein, mehrere oder **ALLE** <<auftragsabwicklung/fulfillment/versand-vorbereiten#1000, Versandprofile>> aktivieren. Standardmäßig ist kein Versandprofil aktiviert. Mindestens ein Versandprofil aktivieren, da sonst ungewollte Effekte bei der Versandkostenberechnung auftreten können. Wenn ein Auftrag Artikel enthält, bei denen kein Versandprofil aktiviert wurde, wird das Standard-Versandprofil aus dem Standard-Webshop für die Artikel verwendet. Wenn kein Standard-Versandprofil festgelegt ist, wird das Versandprofil mit der höchsten Priorität verwendet.
 
-|**Shop-Aktion**
-|Shop-Aktion oder **Keine** wählen. Sets können als Shop-Aktionen in Ihrem Webshop dargestellt werden. Shop-Aktionen werden über Templates im Menü **CMS » Webdesign » Layout » ItemView** eingebunden. Wie Sie Shop-Aktionen einbinden, erfahren Sie unter <<artikel/artikel-verwalten#1010, Shop-Aktionen einrichten>>. +
-**Sonderangebot** = Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewspecialofferslist, ItemViewSpecialOffersList>> verwenden, um eine Liste von Sonderangeboten darzustellen. +
-**Neuheit** = Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewlatestitemslist, ItemViewLatestItemsList>> verwenden, um eine Liste der neuesten Artikel darzustellen. +
-**Top-Artikel** = Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewtopsellerslist, ItemViewTopSellersList>> verwenden, um eine Liste der meistverkauften Artikel darzustellen.
+|*Shop-Aktion*
+|Shop-Aktion oder *Keine* wählen. Sets können als Shop-Aktionen in Ihrem Webshop dargestellt werden. Wie Sie Shop-Aktionen einbinden, erfahren Sie unter <<artikel/artikel-verwalten#1010, Artikel als Top-Artikel präsentieren>>. +
+*Sonderangebot* = Stellt eine Liste von Sonderangeboten dar. +
+*Neuheit* = Stellt eine Liste der neuesten Artikel dar. +
+*Top-Artikel* = Stellt eine Liste der meistverkauften Artikel dar.
 
 |**Artikelbewertung**
 |Erstbewertung von **1** bis **5** bzw. **1** bis **10** für das Set eingeben. Wenn Sie Artikelbewertungen verwenden, wird der eingegebene Wert als Erstbewertung des Sets angezeigt. Der Wert wird nach jeder Bewertung automatisch auf einen Durchschnittswert angepasst. Den Bewertungsbereich legen Sie im Menü **System » Mandant » Global » Feedback » Tab: Artikel** unter **Maximale Bewertungspunkte** fest.
@@ -4091,19 +4259,19 @@ Wie Sie Artikellisten vom Typ **Cross-Selling** anlegen, erfahren Sie im Handbuc
 [#970]
 === Cross-Selling-Artikel hinzufügen
 
-Im Tab **Cross-Selling** eines Artikels verknüpfen Sie den Artikel mit beliebig vielen, ähnlichen Artikeln aus Ihrem Sortiment. Auch Zubehörartikel oder Ersatzteile für Artikel verknüpfen Sie hier. Verknüpfte Artikel erhalten mit der Option **Beziehung** eine Kategorie, mit der Sie über Template-Variablen die Sichtbarkeit im Webshop bestimmen. Die Beziehung der verknüpften Artikel kann jederzeit geändert werden.
+Im Tab *Cross-Selling* eines Artikels verknüpfen Sie den Artikel mit beliebig vielen, ähnlichen Artikeln aus Ihrem Sortiment. Auch Zubehörartikel oder Ersatzteile für Artikel können verknüpft werden. Die Beziehung der verknüpften Artikel kann jederzeit geändert werden.
 
 [.instruction]
 Cross-Selling-Artikel hinzufügen:
 
-. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
+. Öffnen Sie das Menü *Artikel » Artikel bearbeiten*.
 . Öffnen Sie den Artikel.
-. Wechseln Sie in das Tab **Cross-Selling » Artikel hinzufügen**.
+. Wechseln Sie in das Tab *Cross-Selling » Artikel hinzufügen*.
 . Setzen Sie Häkchen bei Artikeln, um sie als Cross-Selling-Artikel hinzuzufügen.
-. Klicken Sie auf die passende **Beziehung**. Beachten Sie dazu die Erläuterungen in <<tabelle-cross-selling-beziehung-wahlen>>. +
-→ Die Artikel werden hinzugefügt und im Tab **Cross-Selling-Artikel** angezeigt.
+. Klicken Sie auf die passende *Beziehung*. Beachten Sie dazu die Erläuterungen in <<tabelle-cross-selling-beziehung-waehlen>>. +
+→ Die Artikel werden hinzugefügt und im Tab *Cross-Selling-Artikel* angezeigt.
 
-[[tabelle-cross-selling-beziehung-wahlen]]
+[[tabelle-cross-selling-beziehung-weahlen]]
 .Cross-Selling-Beziehung wählen
 [cols="1,2"]
 |====
@@ -4151,10 +4319,12 @@ Shop-Aktionen nutzen Sie, um Ihre Produkte wirksamer im Webshop zu präsentieren
 * Stellen Sie Neuheiten auf der Startseite Ihres Webshops vor.
 * Zeigen Sie Ihren Kunden, welche Artikel sich am besten in Ihrem Webshop verkaufen.
 
-Wir beschreiben hier am Beispiel **Top-Artikel**, wie Sie Shop-Aktionen einrichten. Richten Sie andere Shop-Aktionen analog ein.
+Wie Sie Shop-Aktionen in Ceres einrichten, erfahren Sie unter <<omni-channel/online-shop/ceres-einrichten#110, Artikellisten einrichten>>.
+
+Wir beschreiben hier am Beispiel **Top-Artikel**, wie Sie Shop-Aktionen in Callisto einrichten. Richten Sie andere Shop-Aktionen analog ein. Wie Sie
 
 [#1020]
-=== Artikel als Top-Artikel präsentieren
+=== Callisto: Artikel als Top-Artikel präsentieren
 
 Gehen Sie wie folgt vor, um selbst gewählte Artikel als Top-Artikel zu präsentieren. Die Darstellung ist dabei unabhängig von den tatsächlichen Verkaufszahlen.
 
@@ -4174,7 +4344,7 @@ Die so bestimmten Top-Artikel werden im Webshop über das Template <<omni-channe
 * Neuheit: <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewlastseenlist, ItemViewLatestItemsList>>
 
 [#1030]
-=== Top-Artikel positionieren
+=== Callisto: Top-Artikel positionieren
 
 Sie haben auch die Möglichkeit, Top-Artikel im Webshop anhand der Positionsnummern darzustellen. Für diese Möglichkeit verwenden Sie das Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewitemsbypositionlist, ItemViewItemsByPositionList>>. Die Positionsnummern vergeben Sie entweder manuell oder automatisch. Wenn Sie im Menü **System » Mandant » Mandant wählen » Artikelansichten » Einstellungen** für die Einstellung **Automatische Sortierung nach monatlichen Verkäufen** die Option **Nein** wählen, können Sie manuell Positionen eingeben. Wenn Sie **Ja** wählen, werden die Positionen automatisch vergeben. Bei dieser Einstellung werden manuell eingegebene Positionen überschrieben. Die automatische Vergabe erfolgt anhand der monatlichen Verkaufszahlen und spiegelt also tatsächlich Ihre meistverkauften Artikel wider.
 
@@ -4195,7 +4365,7 @@ Top-Artikel manuell positionieren:
 . **Speichern** Sie die Einstellungen.
 
 [#1050]
-==== Top-Artikel automatisch positionieren
+==== Callisto: Top-Artikel automatisch positionieren
 
 Einmal täglich ermittelt plentymarkets, welche Artikelvarianten wie oft verkauft wurden. Daraus ergibt sich eine Position. Dem meistverkauften Top-Artikel wird die höchste Positionsnummer zugeordnet. Damit die Position automatisch in den Variantendaten im Tab **Einstellungen** bei der Option **Position** eingetragen wird, gehen Sie wie folgt vor.
 
@@ -4211,7 +4381,7 @@ Die Artikelansicht <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webd
 Weitere Informationen zur Einrichtung der verschiedenen Templates im Layout finden Sie auf der Handbuchseite <<omni-channel/online-shop/webshop-einrichten/artikelsortierung#, Artikelsortierung>>.
 
 [#1080]
-=== Artikel mit Shop-Aktionen verknüpfen
+=== Callisto: Artikel mit Shop-Aktionen verknüpfen
 
 Nutzen Sie den Aktionsmanager, um Ihre Artikel mit Shop-Aktionen zu verknüpfen.
 
@@ -4232,7 +4402,7 @@ Aktion einrichten:
 → Die Aktion wird eingerichtet und im Tab **Aktionen** angezeigt.
 
 [[tabelle-shop-aktion-verknuepfen]]
-.Artikel mit Shop-Aktion verknüpfen
+.Callisto: Artikel mit Shop-Aktion verknüpfen
 [cols="1,2"]
 |====
 |Einstellung |Erläuterung
@@ -4268,7 +4438,7 @@ Markierung 2**
 |====
 
 [#720]
-== Artikelvorlagen verwalten
+== Callisto: Artikelvorlagen verwalten
 
 Verwenden Sie Artikelvorlagen, um für verschiedene Kategorien von Artikeln im Webshop abweichende Beschreibungstexte zu erstellen.
 
@@ -4278,7 +4448,7 @@ Angenommen Sie verkaufen Mode und Accessoires. Auf der Produktseite von Modearti
 image::artikel/assets/DE-Artikel-Artikelvorlagen-01.png[Template-Variable und Hinweistext einfügen]
 
 [#730]
-=== Artikelvorlagen erstellen
+=== Callisto: Artikelvorlagen erstellen
 
 Gehen Sie wie im Folgenden beschrieben vor, um der Artikelbeschreibung einen Hinweistext anzuhängen.
 
@@ -4309,7 +4479,7 @@ Verwenden Sie ausschließlich einem Template zugeordnete **Variablen und Funktio
 ====
 
 [#740]
-=== Artikelvorlage mit einem Artikel verknüpfen
+=== Callisto: Artikelvorlage mit einem Artikel verknüpfen
 
 Nachdem Sie die Artikelvorlage erstellt haben, verknüpfen Sie diese Vorlage mit dem Artikel.
 
