@@ -1,0 +1,62 @@
+<div class="wrapper clearfix">
+	{% $_categories = GetListingStoreCategories('tree') %}
+
+<ul>
+{% for $_levelOneCategory in $_categories %}
+	<li>
+	{% $_name  = $_levelOneCategory['name'] %}
+	{% $_url = $_levelOneCategory['url'] %}
+
+	<a href="$_url">$_name</a>
+
+	{% if count($_levelOneCategory['children']) %}
+		<ul class="children">
+			{% for $_levelTwoCategory in $_levelOneCategory['children'] %}
+				<li class="child-level">
+					{% $_name = $_levelTwoCategory['name'] %}
+					{% $_url = $_levelTwoCategory['url'] %}
+					<a href="$_url">$_name</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	</li>
+{% endfor %}
+</ul>
+
+	<div style="width: $_listingWidth; float: left;" class="listing-content">
+		<h1>{% GetItemName(1) %}</h1>
+		<span class="item-data">Art.-Nr. $ItemId</span>
+		<figure>$MiddleSizeImage[1]</figure>
+		<div class="price-block">
+			{% if $ListingType == $LISTING_TYPE_FIXED %}
+				Jetzt kaufen: $BuyItNowPrice Euro
+			{% else %}
+				Startpreis: $MinimumBid Euro
+			{% endif %}
+		</div>
+
+		<hr>
+		{% GetItemDescription() %}
+		<hr>
+
+		{% if $Free[3] %}
+			<span class="info">Artikel umfasst: $Free[3]</span>
+		{% else %}
+			<span class="info">Artikel ohne Zubehör</span>
+		{% endif %}
+
+		<div class="item-properties">
+			<b>Merkmale:</b>
+			{% $_propertyList = ["Farbe", "Material"] %}
+			{% for $_key,$_property in $_propertyList %}
+				{% GetItemPropertyByName($_property, $PROPERTY_VALUE) %}
+				{% if ($_key + 1) < count($_propertyList) %},{% endif %}
+			{% endfor %}
+		</div>
+
+		<div class="properties-list">
+			{% PropertyList() %}
+		</div>
+	</div>
+</div>
