@@ -1578,6 +1578,74 @@ Kasse von Gerät entkoppeln:
 Sie können die Kasse nur über die Einstellungen auf dem Gerät von der Kasse entkoppeln. Wenden Sie sich bei einem Verlust oder Defekt des Geräts an den plentymarkets Support, um die Koppelung aufzuheben.
 ====
 
+[#250]
+== Senden des Kassenbelegs an Bestandskunden einrichten
+
+plentymarkets ermöglicht es Ihnen, Kassenbelege per Ereignisaktion automatisch an die am Kundendatensatz gespeicherte E-Mail-Adresse zu senden. Dazu erstellen Sie zunächst eine E-Mail-Vorlage mit dem PDF-Anhang **Kassenbeleg**. Erstellen Sie dann eine Ereignisaktion. Für Kassenaufträge, die im Offline-Modus erstellt werden, wird die Ereignisaktion jedoch erst ausgeführt, wenn die Kassenaufträge in das plentymarkets Backend hochgeladen werden. Prüfen Sie die aktuellen gesetzlichen Bestimmungen zum Versand von E-Mails an Kunden, bevor Sie die Ereignisaktion aktivieren.
+
+[#260]
+=== E-Mail-Vorlage erstellen
+
+Erstellen Sie zunächst eine <<crm/e-mails-versenden#1200, E-Mail-Vorlage>>, die versendet wird, wenn ein Kassenbeleg generiert wird.
+
+[.instruction]
+E-Mail-Vorlage erstellen:
+
+. Öffnen Sie das Menü **System » Mandant » Mandant wählen » E-Mail » Vorlagen**.
+. Klicken Sie auf **Neue E-Mail-Vorlage**. +
+→ Das Fenster **Neue E-Mail-Vorlage** wird geöffnet.
+. Geben Sie einen Namen für die Vorlage ein.
+. Wählen Sie einen Eigner oder **Alle** aus der Dropdown-Liste **Eigner**.
+. Klicken Sie auf **Speichern**. +
+→ Die E-Mail-Vorlage wird erstellt und je nach gewähltem Eigner in einem der drei Ordner gespeichert.
+. Wählen Sie den PDF-Anhang **Kassenbeleg**.
+. Nehmen Sie die weiteren Einstellungen vor. Beachten Sie die Erläuterungen unter <<crm/e-mails-versenden#1200, Neue E-Mail-Vorlage erstellen>>.
+. **Speichern** Sie die Einstellungen.
+
+[#270]
+=== Ereignisaktion erstellen
+
+Erstellen Sie nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wird, wenn ein Kassenbeleg generiert wird.
+
+[.collapseBox]
+.Ereignisaktion einrichten
+--
+. Öffnen Sie das Menü **System » Aufträge » Ereignisse**.
+. Klicken Sie auf **Ereignisaktion hinzufügen**. +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Geben Sie einen Namen ein.
+. Wählen Sie das **Ereignis** gemäß <<tabelle-POS-ereignisaktion-beleg-senden>>.
+. **Speichern** Sie die Einstellungen.
+. Nehmen Sie die Einstellungen gemäß <<tabelle-POS-ereignisaktion-beleg-senden>> vor.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. **Speichern** Sie die Einstellungen.
+--
+
+[[tabelle-POS-ereignisaktion-beleg-senden]]
+.Ereignisaktion zum automatischen Senden des Kassenbelegs
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Dokumente: Kassenbeleg generiert**
+|
+
+|**Filter 1**
+|**Auftrag &gt; Auftragstyp**
+|**Auftrag** +
+**Retoure**
+
+|**Filter 2**
+|**Auftrag &gt; Herkunft**
+|Kasse wählen, für die Kassenbelege per E-Mail versendet werden sollen.
+
+|**Aktion**
+|**Kunde &gt; E-Mail versenden**
+|**Vorlage**: Die E-Mail-Vorlage für Kassenbeleg wählen +
+**Empfänger**: Option **Kunde** wählen
+|====
+
 [#1000]
 == Kassenbelege über andere Drucker drucken
 
@@ -1696,78 +1764,22 @@ Der Drucker wurde für den Druck einer oder mehrerer Belege ausgewählt und die 
 * Ist der Drucker an und funktionsbereit?
 * Ist der Drucker mit dem Rechner verbunden?
 * Ist plentyBase auf dem Rechner gestartet?
-* Wurden vor Kurzem die plentyBase Konfigurationseinstellungen geändert, z.B. der HTTP-Port oder der Access Token? +
+* Wurden die plentyBase Konfigurationseinstellungen vor kurzem geändert, z.B. der HTTP-Port oder der Access Token? +
 → Wenn ja, wurden die neuen Einstellungen in der plentymarkets App gespeichert?
 * Wurde die Druckerkonfiguration aus dem plentymarkets Backend entfernt? +
 → Drucker konfigurieren Sie im Menü *System » Einstellungen » Drucker*.
 
-[#250]
-== Senden des Kassenbelegs an Bestandskunden einrichten
+[#1090]
+== Druck von Artikeletiketten einrichten
 
-plentymarkets ermöglicht es Ihnen, Kassenbelege per Ereignisaktion automatisch an die am Kundendatensatz gespeicherte E-Mail-Adresse zu senden. Dazu erstellen Sie zunächst eine E-Mail-Vorlage mit dem PDF-Anhang **Kassenbeleg**. Erstellen Sie dann eine Ereignisaktion. Für Kassenaufträge, die im Offline-Modus erstellt werden, wird die Ereignisaktion jedoch erst ausgeführt, wenn die Kassenaufträge in das plentymarkets Backend hochgeladen werden. Prüfen Sie die aktuellen gesetzlichen Bestimmungen zum Versand von E-Mails an Kunden, bevor Sie die Ereignisaktion aktivieren.
+Wie Sie Etikettenvorlagen erstellen und Artikeletiketten in der Artikelsuche der plentymarkets App drucken, erfahren Sie unter <<artikel/artikel-verwalten#760, Etiketten einrichten>>.
 
-[#260]
-=== E-Mail-Vorlage erstellen
+[IMPORTANT]
+.plentyBase konfigurieren
+====
+Um Etiketten drucken zu können, benötigen Sie das kostenlose Plugin plentyBase. plentyBase stellt eine Schnittstelle bereit, über die Sie aus dem plentymarkets Backend und/oder der plentymarkets App die Drucker nutzen können, die an den Computer angeschlossen sind. Wie Sie plentyBase installieren und konfigurieren erfahren Sie in der Beschreibung des Plugins link:https://marketplace.plentymarkets.com/plugins/integration/plentyBase_5053[plentyBase^].
+====
 
-Erstellen Sie zunächst eine <<crm/e-mails-versenden#1200, E-Mail-Vorlage>>, die versendet wird, wenn ein Kassenbeleg generiert wird.
-
-[.instruction]
-E-Mail-Vorlage erstellen:
-
-. Öffnen Sie das Menü **System » Mandant » Mandant wählen » E-Mail » Vorlagen**.
-. Klicken Sie auf **Neue E-Mail-Vorlage**. +
-→ Das Fenster **Neue E-Mail-Vorlage** wird geöffnet.
-. Geben Sie einen Namen für die Vorlage ein.
-. Wählen Sie einen Eigner oder **Alle** aus der Dropdown-Liste **Eigner**.
-. Klicken Sie auf **Speichern**. +
-→ Die E-Mail-Vorlage wird erstellt und je nach gewähltem Eigner in einem der drei Ordner gespeichert.
-. Wählen Sie den PDF-Anhang **Kassenbeleg**.
-. Nehmen Sie die weiteren Einstellungen vor. Beachten Sie die Erläuterungen unter <<crm/e-mails-versenden#1200, Neue E-Mail-Vorlage erstellen>>.
-. **Speichern** Sie die Einstellungen.
-
-[#270]
-=== Ereignisaktion erstellen
-
-Erstellen Sie nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wird, wenn ein Kassenbeleg generiert wird.
-
-[.collapseBox]
-.Ereignisaktion einrichten
---
-. Öffnen Sie das Menü **System » Aufträge » Ereignisse**.
-. Klicken Sie auf **Ereignisaktion hinzufügen**. +
-→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
-. Geben Sie einen Namen ein.
-. Wählen Sie das **Ereignis** gemäß <<tabelle-POS-ereignisaktion-beleg-senden>>.
-. **Speichern** Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß <<tabelle-POS-ereignisaktion-beleg-senden>> vor.
-. Setzen Sie ein Häkchen bei **Aktiv**.
-. **Speichern** Sie die Einstellungen.
---
-
-[[tabelle-POS-ereignisaktion-beleg-senden]]
-.Ereignisaktion zum automatischen Senden des Kassenbelegs
-[cols="1,3,3"]
-|====
-|Einstellung |Option |Auswahl
-
-|**Ereignis**
-|**Dokumente: Kassenbeleg generiert**
-|
-
-|**Filter 1**
-|**Auftrag &gt; Auftragstyp**
-|**Auftrag** +
-**Retoure**
-
-|**Filter 2**
-|**Auftrag &gt; Herkunft**
-|Kasse wählen, für die Kassenbelege per E-Mail versendet werden sollen.
-
-|**Aktion**
-|**Kunde &gt; E-Mail versenden**
-|**Vorlage**: Die E-Mail-Vorlage für Kassenbeleg wählen +
-**Empfänger**: Option **Kunde** wählen
-|====
 
 [#400]
 == Kassenvorgänge im Kassenjournal suchen
@@ -2100,4 +2112,4 @@ Endbeleg erstellen:
 → Die Kasse kann nicht mehr verwendet werden.
 . Melden Sie dem Finanzamt, dass die Kasse außer Betrieb genommen wurde.
 
-//  Next: 1090
+//  Next: 2000
