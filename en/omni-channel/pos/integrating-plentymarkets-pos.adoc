@@ -387,6 +387,18 @@ Cat food CaTasty Deluxe           20.97 GBP +
 ---------------------------------------------------- +
 |====
 
+[#2000]
+=== Return information
+
+To accept returns, all you need to do is select a storage location for returns in the POS settings and set appropriate user rights for those POS users that are allowed to handle returns. No other settings are necessary to return items in plentymarkets POS. However, not the following information on handling returns in plentymarkets POS:
+
+* For technical reasons, the return amount can only be returned to customers in cash.
+* Customers cannot return gift cards.
+* You can book returns for all orders saved in the system. As such, customers also can return order items they bought from other referrers, such as the online store or a market. It is the POS staff that decides if a customer can return an item. As such, you should inform your POS staff about any referrers that are excluded from POS returns.
+* If the main order included shipping costs, your POS staff decides whether or not those shipping costs are refunded during the return process. As such, you should train your staff to make sure they know when to refund shipping costs.
+* Instruct your POS staff to cross out returned items on the original receipt. This helps to ensure that customers do not return items more than once.
+* If the customer was issued an invoice for the original order, they only receive money back if the price of the items they want to return is higher than the invoice amount they already paid.
+
 [#130]
 == Managing user accounts for POS
 
@@ -1541,7 +1553,7 @@ Linking a POS to a device:
 |You can also operate <<1000, additional printers>> using the plugin plentyBase.
 
 |**Automatic printing**
-|**On** = Default setting. POS receipts and documents are printed automatically after a process is complete. +
+|**On** = Default setting. POS receipts and documents are printed automatically once a process is complete. +
 **Off** = POS users must trigger printing of POS receipts and documents manually.
 
 |**Schema** +
@@ -1577,6 +1589,74 @@ Unlinking a POS from a device:
 ====
 You can only unlink a POS from a device in the settings of the device itself. Contact the plentymarkets Support to unlink the device in case of device failure or loss.
 ====
+
+[#250]
+== Emailing receipts to existing customers
+
+plentymarkets allows you to set up an event procedure that automatically emails POS receipts to the email address saved for a customer record. First create an email template with the PDF attachment **Receipt**. Then, you create an event procedure. Note that for POS orders created in offline mode, the event procedure only takes effect once the POS order is uploaded to the plentymarkets back end. Before activating an event procedure for automatic emails, check the current legal restrictions regarding emailing customers.
+
+[#260]
+=== Creating an email template
+
+First, create an <<crm/sending-emails#1200, email template>> that is sent when a receipt is generated.
+
+[.instruction]
+Creating an email template:
+
+. Go to **System » Client » Select client » Email » Templates**.
+. Click on **New email template**. +
+→ The **New email template** window opens.
+. Enter a name for the template.
+. Select an owner or the setting **All** from the drop-down list **Owner**.
+. **Save** the settings. +
+→ The email template is created and saved in one of the three folders based on the owner you selected.
+. Select the PDF attachment **Receipt**.
+. Carry out the additional settings. Pay attention to the information on <<crm/sending-emails#1200, creating a new email template>>.
+. **Save** the settings.
+
+[#270]
+=== Creating an event procedure
+
+Now, create an event procedure that triggers an email to the customer when a receipt is generated.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to **System » Orders » Events**.
+. Click on **Add event procedure**. +
+→ The **Create new event procedure** window opens.
+. Enter a name.
+. Select the **event** listed in <<table-POS-event-procedure-send-receipt>>.
+. **Save** the settings.
+. Carry out the settings. Pay attention to the information given in <<table-POS-event-procedure-send-receipt>>.
+. Place a check mark next to the option **Active**.
+. **Save** the settings.
+--
+
+[[table-POS-event-procedure-send-receipt]]
+.Event procedure for automatically sending receipts
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|**Event**
+|**Documents: Receipt generated**
+|
+
+|**Filter 1**
+|**Order &gt; Order type**
+|**Order** +
+**Return**
+
+|**Filter 2**
+|**Order &gt; Referrer**
+|Select the POS for which you want to email receipts.
+
+|**Procedure**
+|**Customer &gt; Send email**
+|**Template**: Select the email template you set up for sending receipts +
+**Recipient**: Select the option **Customer**
+|====
 
 [#1000]
 == Printing POS receipts on other printers
@@ -1701,73 +1781,17 @@ A printer was selected for printing one or more types of receipts and the select
 * Was the printer configuration removed from the plentymarkets back end? +
 → Go to the plentymarkets back end menu *System » Settings » Printers* to configure printers.
 
-[#250]
-== Emailing receipts to existing customers
+[#1090]
+== Setting up printing of item labels
 
-plentymarkets allows you to set up an event procedure that automatically emails POS receipts to the email address saved for a customer record. First create an email template with the PDF attachment **Receipt**. Then, you create an event procedure. Note that for POS orders created in offline mode, the event procedure only takes effect once the POS order is uploaded to the plentymarkets back end. Before activating an event procedure for automatic emails, check the current legal restrictions regarding emailing customers.
+For further information about creating label templates and printing the labels in the item search of the plentymarkets app, refer to <<item/manage-items#760, Setting up labels>>.
 
-[#260]
-=== Creating an email template
+[IMPORTANT]
+.Configuring plentyBase
+====
+To print labels, you need the free plugin plentyBase. plentyBase establishes an interface that allows you to use the printers that are connected to the computer in the plentymarkets back end and/or the plentymarkets app. → Find out how to install and configure plentyBase in the plugin description of the plugin link:https://marketplace.plentymarkets.com/en/plugins/integration/plentyBase_5053[plentyBase^].
+====
 
-First, create an <<crm/sending-emails#1200, email template>> that is sent when a receipt is generated.
-
-[.instruction]
-Creating an email template:
-
-. Go to **System » Client » Select client » Email » Templates**.
-. Click on **New email template**. +
-→ The **New email template** window opens.
-. Enter a name for the template.
-. Select an owner or the setting **All** from the drop-down list **Owner**.
-. **Save** the settings. +
-→ The email template is created and saved in one of the three folders based on the owner you selected.
-. Select the PDF attachment **Receipt**.
-. Carry out the additional settings. Pay attention to the information on <<crm/sending-emails#1200, creating a new email template>>.
-. **Save** the settings.
-
-[#270]
-=== Creating an event procedure
-
-Now, create an event procedure that triggers an email to the customer when a receipt is generated.
-
-[.collapseBox]
-.Setting up an event procedure
---
-. Go to **System » Orders » Events**.
-. Click on **Add event procedure**. +
-→ The **Create new event procedure** window opens.
-. Enter a name.
-. Select the **event** listed in <<table-POS-event-procedure-send-receipt>>.
-. **Save** the settings.
-. Carry out the settings. Pay attention to the information given in <<table-POS-event-procedure-send-receipt>>.
-. Place a check mark next to the option **Active**.
-. **Save** the settings.
---
-
-[[table-POS-event-procedure-send-receipt]]
-.Event procedure for automatically sending receipts
-[cols="1,3,3"]
-|====
-|Setting |Option |Selection
-
-|**Event**
-|**Documents: Receipt generated**
-|
-
-|**Filter 1**
-|**Order &gt; Order type**
-|**Order** +
-**Return**
-
-|**Filter 2**
-|**Order &gt; Referrer**
-|Select the POS for which you want to email receipts.
-
-|**Procedure**
-|**Customer &gt; Send email**
-|**Template**: Select the email template you set up for sending receipts +
-**Recipient**: Select the option **Customer**
-|====
 
 [#400]
 == Searching POS transaction in the cash journal
@@ -2100,4 +2124,4 @@ Creating an end receipt (Endbeleg):
 → The POS can no longer be operated.
 . Inform tax authorities that you decommissioned the POS.
 
-// Next: 1090
+// Next: 2100
