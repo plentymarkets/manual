@@ -7,6 +7,12 @@ include::{includedir}/_header.adoc[]
 
 Diese Handbuchseite beschreibt den Datenimport in plentymarkets über das Plugin ElasticSync. Ein Import von Daten ist ratsam, wenn Sie z.B. neue Artikel, Kundendaten oder Lagerbestände in Ihr plentymarkets System einpflegen möchten und die Daten bereits digital vorliegen. ElasticSync ermöglicht es über das Erstellen von sogenannten Syncs, Datenimporte auszuführen. Ein Import kann manuell oder automatisiert erfolgen. Das ElasticSync-Plugin steht Ihnen kostenlos im link:https://marketplace.plentymarkets.com/plugins/integration/ElasticSync_4750[plentyMarketplace^] zur Verfügung.
 
+[TIP]
+.Plugin aktualisieren?
+====
+ElasticSync wird ständig aktualisiert und verbessert. Prüfen Sie deshalb im Menü *Plugins » Plugin-Übersicht » Plugin-Set öffnen*, dass Sie die aktuelle Version von ElasticSync verwenden, bevor Sie Syncs oder Exportformate erstellen.
+====
+
 = Allgemeine Einstellungen
 
 [#1210]
@@ -487,10 +493,13 @@ Listing Shop-Kategorie 2
 |Nummerisch (interne ID)
 |
 
-|Markierung 1; +
-Markierung 2
-|
-|
+|Markierung 1
+|Nummerisch (interne ID)
+|ID der Markierung 1, siehe *System » Artikel » Makierungen » Tab: Markierung 1*
+
+|Markierung 2
+|Nummerisch (interne ID)
+|ID der Markierung 2, siehe *System » Artikel » Makierungen » Tab: Markierung 2*
 
 |Altersfreigabe
 |0 = Keine verfügbar +
@@ -1182,7 +1191,7 @@ Für den Import von Eigenschaftsverknüpfungen stehen die in <<tabelle-zuordnung
 
 |ID
 |Nummerisch (interne ID)
-|IDs siehe *System » Einstellungen » Eigenschaften*
+|IDs siehe *System » Einstellungen » Eigenschaften » Konfiguration*
 
 |Sprache
 |Buchstaben
@@ -2228,7 +2237,13 @@ Es gibt derzeit nur ein Abgleichfeld für die Identifizierung von Aufträgen. Da
 [#2020]
 === Felder für die Auftragszuordnung
 
-In <<tabelle-Zuordnungsfelder-Auftraege>> werden Felder erläutert, die für die Zuordnung von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<tabelle-Zuordnungsfelder-Auftraege>> werden Felder erläutert, die für die Zuordnung von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. +
+
+[WARNING]
+.Pflichtfelder für die Auftragszuordnung
+====
+Beachten Sie die mit *Pflichtfeld* gekennzeichneten Felder in <<tabelle-Zuordnungsfelder-Auftraege>>. Wenn Sie diese Pflichtfelder nicht aktivieren, wird die Auftragszuordnung nicht korrekt durchgeführt.
+====
 
 [[tabelle-Zuordnungsfelder-Auftraege]]
 .Zuordnungsfelder für Auftragsimport
@@ -2238,7 +2253,8 @@ In <<tabelle-Zuordnungsfelder-Auftraege>> werden Felder erläutert, die für die
 
 3+|*Auftrag*
 
-|Typ-ID
+|ID des Typs +
+**Pflichtfeld**
 |Nummerisch
 a|Auftragstypen bilden verschiedene Geschäftsvorfälle ab. Folgende Typen stehen zur Verfügung:
 
@@ -2253,25 +2269,27 @@ a|Auftragstypen bilden verschiedene Geschäftsvorfälle ab. Folgende Typen stehe
 * Sammelauftrag = 9
 * Sammelgutschrift = 10
 
-|Status-ID
+|ID des Status
 |Nummerisch
 |ID des Status. Die IDs vergeben Sie selbst im Bereich von 1,0000 bis 18,9999. Die Status finden Sie im Menü *System » Aufträge » Status*.
 
-|Eigner-ID
+|ID des Eigners
 |Nummerisch
 |ID des Eigners. Ein Eigner ist ein Benutzer, der als Eigner zugeordnet wurde. Die ID des Eigners entspricht also der ID des Benutzers. Die Benutzer-ID finden Sie im Menü *System » Einstellungen » Benutzer » Konten*. Aufträge können einem Eigner zugeordnet werden, müssen aber nicht.
 
-|PlentyID
+|PlentyID +
+**Pflichtfeld**
 |Nummerisch
 |ID des Mandanten. Die PlentyID finden Sie im Menü *System » Mandant » Mandant wählen » Einstellungen*.
 
-|Standort-ID
+|ID des Standortes
 |Nummerisch
 |ID des Standorts. Standorte finden Sie im Menü *System » Mandant » Mandant wählen » Standorte*.
 
 3+|*Auftragsposition*
 
-|Typ
+|Typ +
+**Pflichtfeld**
 |Nummerisch
 a|Die Auftragspositionstypen bilden verschiedene Kostenposten eines Auftrags ab. Die mit den Posten verbundenen Kosten können sowohl negativ als auch positiv sein. Standardmäßig wird hier die ID des Auftragspositionstyps erwartet. Die Typen, die zur Verfügung stehen, sind hier mit Typ-ID aufgelistet. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
 
@@ -2293,7 +2311,8 @@ Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 |Nummerisch
 |Standardmäßig wird hier die ID der Herkunft erwartet. Die IDs finden Sie im Menü *System » Aufträge » Auftragsherkunft*. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
 
-|Name
+|Name +
+**Pflichtfeld**
 |Alphanummerisch
 |Spalte wählen, die den Namen der Auftragsposition enthält. Standardmäßig wird davon ausgegangen, dass die Namen in der Systemsprache angegeben sind.
 
@@ -2309,7 +2328,8 @@ Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 |Nummerisch
 |Spalte wählen, die den Steuerbetrag enthält. Standardmäßig wird der Umsatzsteuerbetrag für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
 
-|Menge
+|Menge +
+**Pflichtfeld**
 |Nummerisch
 |Spalte wählen, die die Anzahl einer Auftragsposition enthält.
 
@@ -2321,7 +2341,8 @@ Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 |Nummerisch
 |Spalte wählen, die die Position der Auftragspositionen enthält. Die Position dient der Sortierung innerhalb des Auftrages. Sie wird jedoch bisher noch nicht beachtet.
 
-|Währung
+|Währung +
+**Pflichtfeld**
 |Alphanummerisch
 |Standardmäßig wird der ISO-Code einer Währung erwartet, z.B. EUR für Euro.
 
