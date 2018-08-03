@@ -28,7 +28,7 @@ Bei manuell angelegten Aufträgen wird keine automatische E-Mail, z. B. Auftrags
 
 Folgende Möglichkeiten sind verfügbar, um einen Auftrag manuell anzulegen:
 
-* In der *Kundenübersicht* im Menü *CRM » Kunden bearbeiten*
+* In der *Kontaktübersicht*
 * In den *Kundendaten* des Kunden
 * In einem bestehenden *Auftrag*
 * Über einen *Barverkauf*
@@ -94,6 +94,12 @@ Neuen Auftrag über bestehenden Auftrag anlegen:
 
 Im Menü *CRM » Kunden bearbeiten* haben Sie die Möglichkeit, Barverkäufe ohne Kundenzuordnung direkt über Kundenprofil *Barverkauf* abzuwickeln. Das Kundenprofil *Barverkauf* ist in Ihrem System standardmäßig mit der ID 100 eingerichtet.
 
+[WARNING]
+.Zahlungsart und Auftragsdokumente bei Barverkäufen
+====
+Achten Sie darauf, bei der Auftragsanlage über Barverkauf in den *Auftragsdaten* die passende *Zahlungsart*, zum Beispiel Barzahlung, auszuwählen. Zudem findet bei dieser Art der Auftragsanlage keine Zuordnung zu einem in Ihrem System gespeicherten Kunden statt. Generieren Sie deshalb die benötigten *<<auftragsabwicklung/auftraege/auftragsdokumente#, Auftragsdokumente>>* wie die Rechnung direkt beim der Abwicklung des Barverkaufs manuell im Tab *Belege* des Auftrags.
+====
+
 [.instruction]
 Neuen Auftrag für Barverkäufe anlegen:
 
@@ -108,11 +114,234 @@ Neuen Auftrag für Barverkäufe anlegen:
 . Wählen Sie die Artikel, die Sie zum Auftrag hinzufügen möchten.
 . *Speichern* Sie die Einstellungen.
 
+[#200]
+== Auftragstyp Lieferauftrag nutzen
+
+er Auftragstyp *Lieferauftrag* ermöglicht es Ihnen, aus einem Hauptauftrag jeweils Lieferaufträge für die in diesem Auftrag enthaltenen Artikel zu generieren, so dass Sie diese einzeln bw. in Teilen verschicken können. Sie können somit z. B. Artikel, die Sie auf Lager haben, sofort losschicken und Artikel, die Sie erst noch geliefert bekommen, später nachsenden. Dies können Sie mit unterschiedlichen Dienstleistern oder auch mit nur einem Dienstleister durchführen. +
+Lieferaufträge können per *Ereignisaktion*, *manuell* oder *automatisch* erstellt werden.
+Im Menü *System » Aufträge » Auftragstypen » Lieferauftrag* legen Sie fest, nach welchen Kriterien Aufträge in Lieferaufträge gesplittet werden sollen. Beachten Sie hierzu die Informationen in <<tabelle-auftragstypen-lieferauftrag-optionen>>.
+
+[[tabelle-auftragstypen-lieferauftrag-optionen]]
+.Optionen für das **Splitten von Aufträgen in Lieferaufträge**
+[cols="1,2,3"]
+|====
+|Einstellung |Optionen |Erläuterung
+
+|*Aufträge in Lieferaufträge splitten nach*
+|*Lager*
+|Die Lieferaufträge werden anhand der verschiedenen *Lager* der Artikel des Auftrags erstellt.
+
+|
+|*Versandprofil*
+|Die Lieferaufträge werden anhand der verschiedenen *Versandprofile* der Artikel des Auftrags erstellt.
+
+|
+|*Lager und Versandprofil*
+|Die Lieferaufträge werden anhand der verschiedenen *Lager und der *Versandprofile* der Artikel des Auftrags erstellt.
+
+|
+|*Lager und Netto-Warenbestand*
+|Die Lieferaufträge werden anhand der verschiedenen *Lager und des Netto-Warenbestands* der Artikel des Auftrags erstellt.
+
+|
+|*Aus*
+|Es erfolgt *keine Aufsplittung*.
+|====
+
+
+Bei "normalen" Aufträgen würde es zu Problemen führen, wenn die jeweiligen Logistiker denselben Auftrag bearbeiten würden, weil die Statusänderung durch einen Logistiker den Abruf des Auftrags für die anderen Logistiker blockieren würde. Mit der hier beschriebenen Funktion bearbeitet jeder Logistiker nun seinen eigenen Lieferauftrag.
+
+
 [WARNING]
-.Zahlungsart und Auftragsdokumente bei Barverkäufen
+.Pflichteinstellungen
 ====
-Achten Sie darauf, bei der Auftragsanlage über Barverkauf in den *Auftragsdaten* die passende *Zahlungsart*, zum Beispiel Barzahlung, auszuwählen. Zudem findet bei dieser Art der Auftragsanlage keine Zuordnung zu einem in Ihrem System gespeicherten Kunden statt. Generieren Sie deshalb die benötigten *<<auftragsabwicklung/auftraege/auftragsdokumente#, Auftragsdokumente>>* wie die Rechnung direkt beim der Abwicklung des Barverkaufs manuell im Tab *Belege* des Auftrags.
+Diese *Grundeinstellungen* müssen vorgenommen werden, um die Funktion *Lieferaufträge* zu nutzen. Außerdem müssen Sie Logistik-Dienstleister im System eingerichtet haben.
 ====
+
+Beachten Sie dazu die Handbuchseite *System » Aufträge » <<auftragsabwicklung/auftraege/grundeinstellungen#, Grundeinstellungen>>*.
+
+=== Eigenschaften eines Lieferauftrags
+
+Ein Lieferauftrag besitzt folgende Eigenschaften:
+
+* Eine *Anpassung* ist nach Erzeugung *nicht* mehr möglich
+* Der *Bestand* wird vom Hauptauftrag übernommen
+* Der *Preis* und das *Gewicht* eines Artikels wird übernommen
+* Die Erzeugung eines *Lieferscheins* ist möglich
+* Die Erzeugung eines *Adressetiketts* ist möglich
+* *Weitere PDF-Dokumente* können *nicht* generiert werden
+
+Daraus folgt:
+
+=== Konsequenzen für die Auftragsbearbeitung
+
+* Sie dürfen keine *Artikelpositionen* im Hauptauftrag löschen, die sich in einem Lieferauftrag befinden
+* Die *Menge*, die für eine Artikelposition im Hauptauftrag hinterlegt ist, darf nicht in eine Menge geändert werden, die die Artikelmengen unterschreitet, die in Lieferaufträgen verteilt sind
+* Die nötigen *PDF-Dokumente* (z. B. Rechnung) werden im Hauptauftrag erzeugt
+
+=== Lieferaufträge anlegen
+
+Zuerst legen Sie den eigentlichen Auftrag unter Beachtung der in Abschnitt 1 genannten Punkte an. Die zugehörigen Lieferaufträge werden idealerweise über eine Ereignisaktion generiert. Sie als Händler können somit bestimmen, wann und wie die Lieferaufträge zu einem Auftrag generiert und von dem jeweiligen Logistik-Dienstleister abgerufen werden können.
+
+=== Lieferaufträge per Ereignisaktion anlegen
+
+Nachfolgend drei *Beispiele* zur Generierung von Lieferaufträgen zu einem Auftrag per Ereignisaktion.
+
+Erzeugen Sie folgende neue *Ereignisaktionen* bzw. die von Ihnen benötigten und nehmen Sie darin die nachfolgend beschriebenen Einstellungen vor.
+
+[TIP]
+.Tipp
+====
+Wählen Sie für die Generierung von Lieferaufträgen Beispiel A, B **oder** C, wobei C wegen der Generierung nach dem Rechnungsdruck Vorteile hat.
+====
+
+==== Beispiel A: Ereignisaktion "Lieferauftrag generieren bei Auftragseingang"
+
+Wenn Sie möchten, dass schon beim Eingang eines Auftrages die zugehörigen Lieferaufträge generiert werden sollen, nutzen Sie folgende Einstellungen.
+
+Der Nachteil ist, dass der Status nicht beachtet wird und somit auch Lieferaufträge von Aufträgen in Status *3.0* (oder *1.0* wenn Sie mit Auktionsplattformen wie eBay arbeiten) generiert werden. Diese nehmen dann den Status des Hauptauftrages an.
+
+[.instruction]
+Ereignisaktion Beispiel A erstellen:
+
+. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
+. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Lieferauftrag generieren bei Auftragseingang* und wählen Sie unter *Ereignis* die Option *Auftragsanlage » Neuer Auftrag*.
+. Klicken Sie auf *Speichern*. +
+→ Die Ereignisaktion wird angelegt. +
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Auftrag*.
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragslager** hinzu, markieren Sie im Filter die Option *Mehrere Lager pro Auftrag*.
+. Fügen Sie mit dem *grünen Plus* eine **Aktion** des Aktionstyps *Auftrag » Lieferaufträge generieren* hinzu.
+. Setzen Sie ein Häkchen bei *Aktiv*.
+. *Speichern* Sie die Einstellungen.
+
+==== Beispiel B: Ereignisaktion "Lieferauftrag generieren bei Wechsel zu Status 5"
+
+Wenn Sie möchten, dass zu einem Auftrag, der in den Status 5.0 gelangt, die zugehörigen Lieferaufträge generiert werden, nutzen Sie folgende Einstellungen.
+
+Der Nachteil ist, dass Sie nach der Generierung der Lieferaufträge den Hauptauftrag nicht mehr verändern dürfen, damit die Summe der Artikel der Lieferaufträge der des Hauptauftrags entspricht.
+
+[.instruction]
+Ereignisaktion Beispiel B erstellen:
+
+. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
+. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Lieferauftrag generieren bei Wechsel zu Status 5* und wählen Sie unter *Ereignis* die Option *Auftragsänderung » Statuswechsel* und als Status *[5] Freigabe Versand*.
+. Klicken Sie auf **Speichern**. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Auftrag*.
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragslager* hinzu, markieren Sie im Filter die Option *Mehrere Lager pro Auftrag*.
+. Fügen Sie mit dem *grünen Plus* eine *Aktion* des Aktionstyps *Auftrag » Lieferaufträge generieren* hinzu.
+. Setzen Sie ein Häkchen bei *Aktiv*.
+. *Speichern* Sie die Einstellungen.
+
+==== Beispiel C: Ereignisaktion "Lieferauftrag generieren bei Rechnungsdruck"
+
+In diesem Beispiel werden die Lieferaufträge zu einem Auftrag erst mit dem Rechnungsdruck des Hauptauftrags generiert. Somit können Sie am Hauptauftrag solange Änderungen vornehmen, bis Sie ihn durch den Rechnungsdruck zum Versand freigeben. Folgende Einstellungen sind nötig:
+
+[.instruction]
+Ereignisaktion Beispiel C erstellen:
+
+. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
+. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Lieferauftrag generieren bei Rechnungsdruck* und wählen Sie unter *Ereignis* die Option *Dokumente » Rechnung generiert*.
+. Klicken Sie auf *Speichern*. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Auftrag*.
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragslager* hinzu, markieren Sie im Filter die Option *Mehrere Lager pro Auftrag*.
+. Fügen Sie mit dem *grünen Plus* eine *Aktion* des Aktionstyps *Auftrag » Lieferaufträge generieren* hinzu.
+. Setzen Sie ein Häkchen bei *Aktiv*.
+. *Speichern* Sie die Einstellungen.
+
+=== Lieferaufträge im Auftrag anlegen
+
+In der Auftragsbearbeitung finden Sie im Tab *Lief* die Optionen *Lieferaufträge automatisch anlegen* und *Lieferauftrag anlegen*.
+
+[.instruction]
+Lieferaufträge automatisch anlegen
+
+Klicken Sie auf den Button *Lieferauftrag automatisch anlegen*, um die Aufträge entsprechend der im Feld *Aufträge in Lieferaufträge splitten nach* gewählten Einstellung unter *Einstellungen » Aufträge » Auftragstypen » Lieferauftrag* anzulegen. Es werden alle Auftragspositionen in Lieferaufträge geteilt.
+
+[WARNING]
+.Lieferaufträge automatisch anlegen
+====
+Diese Funktion können Sie nur nutzen, wenn noch kein Lieferauftrag zu dem Auftrag besteht.
+====
+
+[.instruction]
+Lieferaufträge manuell anlegen
+
+. Tragen Sie in das Feld *LiefAufMenge* (Menge für den Lieferauftrag), die *Menge* ein, die Sie in den Lieferauftrag überführen wollen.
+. Klicken Sie anschließend auf das *Zahnrad*, um den Lieferauftrag anzulegen. +
+→ Auf diese Weise können Sie Lieferaufträge *einzeln* anlegen.
+
+[WARNING]
+.NZMenge
+====
+Die Menge, die Sie unter *LiefAufMenge* eintragen, darf nicht größer sein, als die unter *NZMenge* (nicht zugeordnete Menge) angezeigte Menge.
+====
+
+[IMPORTANT]
+.Bestandsreservierung
+====
+Für die in einem Lieferauftrag enthaltene Menge wird die Bestandsreservierung beim Anlegen eines Lieferauftrags vom Hauptauftrag auf den Lieferauftrag übertragen. Werden Lieferaufträge einzeln angelegt und im Hauptauftrag sind noch Artikel vorhanden, werden diese ebenfalls reserviert.
+====
+
+[TIP]
+.Lieferaufträge löschen
+====
+Lieferaufträge können einzeln oder über die Gruppenfunktion in der Auftragssuche gelöscht werden.
+====
+
+[TIP]
+.Auftragspositionen im Hauptauftrag bearbeiten
+====
+Es können weitere Auftragspositionen, auch andere Artikel, zum Hauptauftrag hinzugefügt oder daraus gelöscht werden. Allerdings können nur Auftragspositionen, die nicht in Lieferaufträgen enthalten sind, aus dem Hauptauftrag gelöscht werden. Die Menge der Artikel im Hauptauftrag lässt sich erhöhen oder verringern. Löschen sollten Sie jedoch nur *nicht zu Lieferaufträgen zugeordnete Mengen*.
+====
+
+[WARNING]
+.Löschen von Positionen vermeiden
+====
+Technisch möglich ist zwar auch das Löschen von Positionen, die bereits in einem Lieferauftrag enthalten sind. Dies sollten Sie jedoch vermeiden, um Fehlfunktionen zu verhindern.
+====
+
+
+[IMPORTANT]
+.Gemeinsamer Status
+====
+Wenn z. B. ein Auftrag (in Status *5.0*) zwei Lieferaufträge hat (je in Status *5.0*) und der eine Lieferauftrag wechselt in den Status *6.5* (am Beispiel bedeutet 6.5 "*Beim Logistiker im Versand*", also vom Logistik-Dienstleister abgerufen), ändert sich am Status des Hauptauftrages zunächst nichts. Wenn der zweite Lieferauftrag in den Status *6.5* wechselt, wird automatisch auch der Status des Hauptauftrages zu *6.5* geändert.
+====
+
+[.instruction]
+Ereignisaktion für das *Anpassen eines Status Hauptauftrag an Lieferaufträge* erstellen:
+
+. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
+. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
+. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Status Hauptautrag an Lieferauftrag anpassen* und wählen Sie unter *Ereignis* die Option *Auftragsänderung » Statuswechsel* und als Status *[6.5] Beim Logistiker im Versand*.
+. Klicken Sie auf *Speichern*. +
+→ Die Ereignisaktion wird angelegt.
+. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Lieferauftrag*.
+. Fügen Sie mit dem *grünen Plus* eine *Aktion* des Aktionstyps *Auftrag » Status des Hauptauftrags ändern* hinzu. In der Aktion die Option *Niedrigster Status aller Lieferaufträge* wählen.
+. Setzen Sie ein Häkchen bei *Aktiv*.
+. *Speichern* Sie die Einstellungen.
+
+Der *Status 6.5* bedeutet in unserem Beispiel *Beim Logistiker im Versand*. Analog dazu wäre die Erstellung einer Ereignisaktion bei Wechsel zu **tatus 7.0 Warenausgang gebucht* möglich, wenn der Logistiker den Warenausgang gemeldet hat.
+
+[WARNING]
+.Hauptauftrag eines Lieferauftrags bearbeiten
+====
+Variable Benutzer müssen über die *Berechtigung* für alle *Läger der Lieferaufträge* eines Hauptauftrags verfügen, um den Hauptauftrag öffnen zu dürfen. Prüfen Sie ggf. die Einstellungen im Benutzerprofil.
+====
+
+[WARNING]
+.Hauptauftrag bzw. Lieferaufträge löschen
+====
+Wenn Sie einen Hauptauftrag löschen möchten, müssen zuerst die Lieferaufträge gelöscht werden. Erst dann kann der Hauptauftrag gelöscht werden.
+====
+
+=== Warenbestand und Warenausgang
+
+Der Warenbestand bei den Lieferaufträgen wird reserviert und bei deren Warenausgang werden die Bestände entsprechend reduziert. Der Hauptauftrag erhält dann auch automatisch den niedrigsten Status seiner Lieferaufträge, also auch die Information, dass der Warenausgang gebucht wurde, wenn alle Lieferaufträge des Hauptauftrags den Warenausgang gebucht haben.
 
 [#200]
 == Auftragstyp Retoure nutzen
@@ -310,100 +539,6 @@ Die Vorgehensweise zum Zurückbuchen des Warenbestands ist auch für Retouren zu
 ====
 Im Menü *<<warenwirtschaft/nachbestellungen-verwalten/rueckstandsliste-verwalten#400, Waren » Retouren » Zulauf>>* finden Sie eine Übersicht aller durch Retouren im Zulauf befindlichen Artikel.
 ====
-
-[#300]
-== Auftragstyp Gewährleistung nutzen
-
-Gewährleistungen sind Retouren relativ ähnlich, denn in beiden Fällen bekommen Sie Waren eines Auftrags im *Status 7* wieder zurückgesendet. Im Gegensatz zur Retoure erwarten Kunden bei einer Gewährleistung aber entweder eine neue Lieferung oder wollen den bezahlten Rechnungsbetrag erstattet bekommen (Gutschrift). Achten Sie bei den Gewährleistungen darauf, dass im Regelfall kein Wareneingang aus der Rücksendung erfolgt, aber typischerweise eine zweite Lieferung mit eigener Auftrags-ID und vor allem mit eigenem Warenausgang erfolgt.
-
-Weil die Begriffe *Gewährleistung* und *Garantie* häufig synonym verwendet werden, hier zunächst je eine Definition:
-
-* *Gewährleistung (auch Mängelhaftung nach deutschem Recht)* +
-Gesetzliche Pflicht des *Händlers*, Mängel eines Artikels, die bei Lieferung bereits bestanden haben, kostenlos zu beseitigen. Die Frist, während der die Gewährleistung gerichtlich geltend gemacht werden kann, beträgt bei beweglichen Artikeln 2 Jahre und bei unbeweglichen 3 Jahre. Die Frist beginnt mit dem Tag der Übergabe des Artikels. Ab 6 Monate nach Übergabe des Artikels muss der Käufer beweisen, dass der Mangel bereits bei Übergabe des Artikels vorhanden war. Vorher liegt die Beweispflicht beim Händler. Die Gewährleistungsfrist kann vertraglich verlängert, aber nicht verkürzt werden.
-* *Garantie* +
-Freiwillige Erklärung des *Herstellers und/oder Händlers*, wie bei Schäden oder sonstigen Problemen mit dem Artikel zu verfahren ist. Fristen und Vorgehensweisen liegen im Ermessen des Garantiegebers. Die Garantie ist somit eine vertragliche Angelegenheit zwischen Hersteller/Händler und Kunde und keine gesetzliche Regelung.
-
-Wenn ein Gewährleistungsfall vorliegt, kann der Händler entscheiden, ob er dem Kunden die Kosten erstattet oder den Artikel reparieren oder austauschen lässt.
-
-Wenn die Kosten erstattet werden sollen, legt er eine *<<auftragsabwicklung/auftraege/auftraege-verwalten#, Gutschrift>>* an.
-
-Bei Umtausch oder Reparatur legt er eine *Gewährleistung* an. Ob Sie die *Versandkosten* in einer Gewährleistung übernehmen oder nicht, wählen Sie im Menü *<<auftragsabwicklung/auftraege/grundeinstellungen#, System » Aufträge » Einstellungen>>*.
-
-[TIP]
-.Einstellungen einer Gewährleistung
-====
-Wenn Sie aus einem Auftrag heraus eine Gewährleistung erzeugen, wird automatisch das *Versandprofil* des Auftrags übernommen. Die Einstellungen sind jedoch in der Gewährleistung änderbar. Bei *Lieferaufträgen* wird ebenfalls automatisch das korrekte Lager eingestellt. Die *Zahlungsart* bei Gewährleistungen ist änderbar.
-====
-
-=== Eine Gewährleistung anlegen
-
-Generell legen Sie eine Gewährleistung aus einer Retoure an. Es ist jedoch auch möglich, diese direkt aus dem zugrunde liegenden Auftrag heraus anzulegen.
-
-[.instruction]
-Eine Gewährleistung anlegen:
-
-. Öffnen Sie die *Retoure* oder den *Auftrag*.
-. Klicken Sie im Bereich *Gewährleistung* auf *anlegen*. +
-→ Das Fenster *Gewährleistung zum Auftrag* mit der ID wird geöffnet.
-. Setzten Sie bei den betreffenden Artikeln ein *Häkchen*.
-. *Speichern* Sie die Einstellungen. +
-→ Die Gewährleistung wird angelegt und dem Original-Auftrag zugeordnet.
-
-=== Eine Gewährleistung bearbeiten
-
-Gewährleistungsaufträge werden in der Auftragsübersicht angezeigt. Um eine Gewährleistung zu bearbeiten, gehen Sie wie im Folgenden beschrieben vor.
-
-[.instruction]
-Eine Gewährleistung bearbeiten:
-
-. Öffnen Sie das Menü *Aufträge » Aufträge bearbeiten*.
-. Wählen Sie im Tab *Filter* für den Filter *Typ* die Option *Gewährleistung*.
-. Klicken Sie auf *Suchen*. +
-→ Es werden nur Gewährleistungen aufgelistet.
-. Klicken Sie in die Zeile der Gewährleistung, die Sie bearbeiten möchten. +
-→ Die Gewährleistung wird geöffnet und kann bearbeitet werden.
-
-Gehen Sie in der Bearbeitung der Gewährleistung wie im Folgenden beschrieben vor, um den Vorgang abzuschließen.
-
-[.instruction]
-Gewährleistung abschließen:
-
-. Öffnen Sie in der Gewährleistung das Tab *Belege*.
-. Wählen Sie *Rechnung* aus der Dropdown-Liste *Beleg erstellen*. +
-→ Der Rechnungsbetrag wird automatisch mit 0,00 angegeben.
-. Wechseln Sie in das Tab *Einstellungen*.
-. Klicken Sie in der Zeile *Warenausgang* auf das Symbol *Warenausgang buchen*. +
-→ Der Warenausgang wird gebucht und der *Status* wechselt automatisch zu *[7] Warenausgang gebucht*.
-. Setzen Sie den Status manuell auf Status *[10] Gewährleistung*.
-. *Speichern* Sie die Einstellungen.
-
-[#reparatur]
-== Auftragstyp Reparatur nutzen
-
-**System » Aufträge » Auftragstypen » Reparatur**
-
-=== Status für Reparaturen anlegen
-
-Die Hinterlegung von **Status** für Reparaturen ermöglicht es, bestimmte Stationen für den Reparaturvorgang festzulegen, die durchlaufen werden. Damit kann der Verlauf genau verfolgt werden.
-
-[.instruction]
-Status für Reparaturen hinterlegen:
-
-. Öffnen Sie das Menü *System » Aufträge » Auftragstypen » Reparatur*. +
-. Tragen Sie die von Ihnen benötigten *Status* für Reparaturen ein. +
-. *Speichern* Sie die Einstellungen.
-
-=== Zustände für Reparaturen anlegen
-
-Mit einem *Zustand* können Sie den Artikel genau beschreiben, z.B. ob dieser überhaupt eine Reparatur benötigt oder auch, dass es nicht möglich ist, diesen zu reparieren.
-
-[.instruction]
-Zustände für Reparaturen anlegen:
-
-. Tragen Sie die von Ihnen benötigten *Zustände* für die Zuordnung der Artikelpositionen ein. +
-. *Speichern* Sie die Einstellungen.
-
-Verschiedene Zustände stehen beim Anlegen einer Reparatur in der Dropdown-Liste *Zustand* des jeweiligen Artikels zur Verfügung. Sie können dann jedem Artikel den zutreffenden Zustand zuordnen und jeweils bei einer Änderung anpassen.
 
 [#gutschrift]
 == Auftragstyp Gutschrift nutzen
@@ -618,234 +753,99 @@ In der Auftragsübersicht kann auch nach Gutschriften gesucht werden. Um alle Gu
 
 Sie können eine Gutschrift, auch direkt nachdem Sie diese angelegt haben, durch Klicken auf das *Löschen-Icon* im oberen Bereich der Gutschrift wieder löschen.
 
-[#lieferauftrag]
-== Auftragstyp Lieferauftrag nutzen
+[#300]
+== Auftragstyp Gewährleistung nutzen
 
-er Auftragstyp *Lieferauftrag* ermöglicht es Ihnen, aus einem Hauptauftrag jeweils Lieferaufträge für die in diesem Auftrag enthaltenen Artikel zu generieren, so dass Sie diese einzeln bw. in Teilen verschicken können. Sie können somit z. B. Artikel, die Sie auf Lager haben, sofort losschicken und Artikel, die Sie erst noch geliefert bekommen, später nachsenden. Dies können Sie mit unterschiedlichen Dienstleistern oder auch mit nur einem Dienstleister durchführen. +
-Lieferaufträge können per *Ereignisaktion*, *manuell* oder *automatisch* erstellt werden.
-Im Menü *System » Aufträge » Auftragstypen » Lieferauftrag* legen Sie fest, nach welchen Kriterien Aufträge in Lieferaufträge gesplittet werden sollen. Beachten Sie hierzu die Informationen in <<tabelle-auftragstypen-lieferauftrag-optionen>>.
+Gewährleistungen sind Retouren relativ ähnlich, denn in beiden Fällen bekommen Sie Waren eines Auftrags im *Status 7* wieder zurückgesendet. Im Gegensatz zur Retoure erwarten Kunden bei einer Gewährleistung aber entweder eine neue Lieferung oder wollen den bezahlten Rechnungsbetrag erstattet bekommen (Gutschrift). Achten Sie bei den Gewährleistungen darauf, dass im Regelfall kein Wareneingang aus der Rücksendung erfolgt, aber typischerweise eine zweite Lieferung mit eigener Auftrags-ID und vor allem mit eigenem Warenausgang erfolgt.
 
-[[tabelle-auftragstypen-lieferauftrag-optionen]]
-.Optionen für das **Splitten von Aufträgen in Lieferaufträge**
-[cols="1,2,3"]
-|====
-|Einstellung |Optionen |Erläuterung
+Weil die Begriffe *Gewährleistung* und *Garantie* häufig synonym verwendet werden, hier zunächst je eine Definition:
 
-|*Aufträge in Lieferaufträge splitten nach*
-|*Lager*
-|Die Lieferaufträge werden anhand der verschiedenen *Lager* der Artikel des Auftrags erstellt.
+* *Gewährleistung (auch Mängelhaftung nach deutschem Recht)* +
+Gesetzliche Pflicht des *Händlers*, Mängel eines Artikels, die bei Lieferung bereits bestanden haben, kostenlos zu beseitigen. Die Frist, während der die Gewährleistung gerichtlich geltend gemacht werden kann, beträgt bei beweglichen Artikeln 2 Jahre und bei unbeweglichen 3 Jahre. Die Frist beginnt mit dem Tag der Übergabe des Artikels. Ab 6 Monate nach Übergabe des Artikels muss der Käufer beweisen, dass der Mangel bereits bei Übergabe des Artikels vorhanden war. Vorher liegt die Beweispflicht beim Händler. Die Gewährleistungsfrist kann vertraglich verlängert, aber nicht verkürzt werden.
+* *Garantie* +
+Freiwillige Erklärung des *Herstellers und/oder Händlers*, wie bei Schäden oder sonstigen Problemen mit dem Artikel zu verfahren ist. Fristen und Vorgehensweisen liegen im Ermessen des Garantiegebers. Die Garantie ist somit eine vertragliche Angelegenheit zwischen Hersteller/Händler und Kunde und keine gesetzliche Regelung.
 
-|
-|*Versandprofil*
-|Die Lieferaufträge werden anhand der verschiedenen *Versandprofile* der Artikel des Auftrags erstellt.
+Wenn ein Gewährleistungsfall vorliegt, kann der Händler entscheiden, ob er dem Kunden die Kosten erstattet oder den Artikel reparieren oder austauschen lässt.
 
-|
-|*Lager und Versandprofil*
-|Die Lieferaufträge werden anhand der verschiedenen *Lager und der *Versandprofile* der Artikel des Auftrags erstellt.
+Wenn die Kosten erstattet werden sollen, legt er eine *<<auftragsabwicklung/auftraege/auftraege-verwalten#, Gutschrift>>* an.
 
-|
-|*Lager und Netto-Warenbestand*
-|Die Lieferaufträge werden anhand der verschiedenen *Lager und des Netto-Warenbestands* der Artikel des Auftrags erstellt.
-
-|
-|*Aus*
-|Es erfolgt *keine Aufsplittung*.
-|====
-
-
-Bei "normalen" Aufträgen würde es zu Problemen führen, wenn die jeweiligen Logistiker denselben Auftrag bearbeiten würden, weil die Statusänderung durch einen Logistiker den Abruf des Auftrags für die anderen Logistiker blockieren würde. Mit der hier beschriebenen Funktion bearbeitet jeder Logistiker nun seinen eigenen Lieferauftrag.
-
-
-[WARNING]
-.Pflichteinstellungen
-====
-Diese *Grundeinstellungen* müssen vorgenommen werden, um die Funktion *Lieferaufträge* zu nutzen. Außerdem müssen Sie Logistik-Dienstleister im System eingerichtet haben.
-====
-
-Beachten Sie dazu die Handbuchseite *System » Aufträge » <<auftragsabwicklung/auftraege/grundeinstellungen#, Grundeinstellungen>>*.
-
-=== Eigenschaften eines Lieferauftrags
-
-Ein Lieferauftrag besitzt folgende Eigenschaften:
-
-* Eine *Anpassung* ist nach Erzeugung *nicht* mehr möglich
-* Der *Bestand* wird vom Hauptauftrag übernommen
-* Der *Preis* und das *Gewicht* eines Artikels wird übernommen
-* Die Erzeugung eines *Lieferscheins* ist möglich
-* Die Erzeugung eines *Adressetiketts* ist möglich
-* *Weitere PDF-Dokumente* können *nicht* generiert werden
-
-Daraus folgt:
-
-=== Konsequenzen für die Auftragsbearbeitung
-
-* Sie dürfen keine *Artikelpositionen* im Hauptauftrag löschen, die sich in einem Lieferauftrag befinden
-* Die *Menge*, die für eine Artikelposition im Hauptauftrag hinterlegt ist, darf nicht in eine Menge geändert werden, die die Artikelmengen unterschreitet, die in Lieferaufträgen verteilt sind
-* Die nötigen *PDF-Dokumente* (z. B. Rechnung) werden im Hauptauftrag erzeugt
-
-== Lieferaufträge anlegen
-
-Zuerst legen Sie den eigentlichen Auftrag unter Beachtung der in Abschnitt 1 genannten Punkte an. Die zugehörigen Lieferaufträge werden idealerweise über eine Ereignisaktion generiert. Sie als Händler können somit bestimmen, wann und wie die Lieferaufträge zu einem Auftrag generiert und von dem jeweiligen Logistik-Dienstleister abgerufen werden können.
-
-=== Lieferaufträge per Ereignisaktion anlegen
-
-Nachfolgend drei *Beispiele* zur Generierung von Lieferaufträgen zu einem Auftrag per Ereignisaktion.
-
-Erzeugen Sie folgende neue *Ereignisaktionen* bzw. die von Ihnen benötigten und nehmen Sie darin die nachfolgend beschriebenen Einstellungen vor.
+Bei Umtausch oder Reparatur legt er eine *Gewährleistung* an. Ob Sie die *Versandkosten* in einer Gewährleistung übernehmen oder nicht, wählen Sie im Menü *<<auftragsabwicklung/auftraege/grundeinstellungen#, System » Aufträge » Einstellungen>>*.
 
 [TIP]
-.Tipp
+.Einstellungen einer Gewährleistung
 ====
-Wählen Sie für die Generierung von Lieferaufträgen Beispiel A, B **oder** C, wobei C wegen der Generierung nach dem Rechnungsdruck Vorteile hat.
+Wenn Sie aus einem Auftrag heraus eine Gewährleistung erzeugen, wird automatisch das *Versandprofil* des Auftrags übernommen. Die Einstellungen sind jedoch in der Gewährleistung änderbar. Bei *Lieferaufträgen* wird ebenfalls automatisch das korrekte Lager eingestellt. Die *Zahlungsart* bei Gewährleistungen ist änderbar.
 ====
 
-==== Beispiel A: Ereignisaktion "Lieferauftrag generieren bei Auftragseingang"
+=== Eine Gewährleistung anlegen
 
-Wenn Sie möchten, dass schon beim Eingang eines Auftrages die zugehörigen Lieferaufträge generiert werden sollen, nutzen Sie folgende Einstellungen.
-
-Der Nachteil ist, dass der Status nicht beachtet wird und somit auch Lieferaufträge von Aufträgen in Status *3.0* (oder *1.0* wenn Sie mit Auktionsplattformen wie eBay arbeiten) generiert werden. Diese nehmen dann den Status des Hauptauftrages an.
+Generell legen Sie eine Gewährleistung aus einer Retoure an. Es ist jedoch auch möglich, diese direkt aus dem zugrunde liegenden Auftrag heraus anzulegen.
 
 [.instruction]
-Ereignisaktion Beispiel A erstellen:
+Eine Gewährleistung anlegen:
 
-. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
-. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
-. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Lieferauftrag generieren bei Auftragseingang* und wählen Sie unter *Ereignis* die Option *Auftragsanlage » Neuer Auftrag*.
-. Klicken Sie auf *Speichern*. +
-→ Die Ereignisaktion wird angelegt. +
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Auftrag*.
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragslager** hinzu, markieren Sie im Filter die Option *Mehrere Lager pro Auftrag*.
-. Fügen Sie mit dem *grünen Plus* eine **Aktion** des Aktionstyps *Auftrag » Lieferaufträge generieren* hinzu.
-. Setzen Sie ein Häkchen bei *Aktiv*.
+. Öffnen Sie die *Retoure* oder den *Auftrag*.
+. Klicken Sie im Bereich *Gewährleistung* auf *anlegen*. +
+→ Das Fenster *Gewährleistung zum Auftrag* mit der ID wird geöffnet.
+. Setzten Sie bei den betreffenden Artikeln ein *Häkchen*.
+. *Speichern* Sie die Einstellungen. +
+→ Die Gewährleistung wird angelegt und dem Original-Auftrag zugeordnet.
+
+=== Eine Gewährleistung bearbeiten
+
+Gewährleistungsaufträge werden in der Auftragsübersicht angezeigt. Um eine Gewährleistung zu bearbeiten, gehen Sie wie im Folgenden beschrieben vor.
+
+[.instruction]
+Eine Gewährleistung bearbeiten:
+
+. Öffnen Sie das Menü *Aufträge » Aufträge bearbeiten*.
+. Wählen Sie im Tab *Filter* für den Filter *Typ* die Option *Gewährleistung*.
+. Klicken Sie auf *Suchen*. +
+→ Es werden nur Gewährleistungen aufgelistet.
+. Klicken Sie in die Zeile der Gewährleistung, die Sie bearbeiten möchten. +
+→ Die Gewährleistung wird geöffnet und kann bearbeitet werden.
+
+Gehen Sie in der Bearbeitung der Gewährleistung wie im Folgenden beschrieben vor, um den Vorgang abzuschließen.
+
+[.instruction]
+Gewährleistung abschließen:
+
+. Öffnen Sie in der Gewährleistung das Tab *Belege*.
+. Wählen Sie *Rechnung* aus der Dropdown-Liste *Beleg erstellen*. +
+→ Der Rechnungsbetrag wird automatisch mit 0,00 angegeben.
+. Wechseln Sie in das Tab *Einstellungen*.
+. Klicken Sie in der Zeile *Warenausgang* auf das Symbol *Warenausgang buchen*. +
+→ Der Warenausgang wird gebucht und der *Status* wechselt automatisch zu *[7] Warenausgang gebucht*.
+. Setzen Sie den Status manuell auf Status *[10] Gewährleistung*.
 . *Speichern* Sie die Einstellungen.
 
-==== Beispiel B: Ereignisaktion "Lieferauftrag generieren bei Wechsel zu Status 5"
+[#reparatur]
+== Auftragstyp Reparatur nutzen
 
-Wenn Sie möchten, dass zu einem Auftrag, der in den Status 5.0 gelangt, die zugehörigen Lieferaufträge generiert werden, nutzen Sie folgende Einstellungen.
+**System » Aufträge » Auftragstypen » Reparatur**
 
-Der Nachteil ist, dass Sie nach der Generierung der Lieferaufträge den Hauptauftrag nicht mehr verändern dürfen, damit die Summe der Artikel der Lieferaufträge der des Hauptauftrags entspricht.
+=== Status für Reparaturen anlegen
+
+Die Hinterlegung von **Status** für Reparaturen ermöglicht es, bestimmte Stationen für den Reparaturvorgang festzulegen, die durchlaufen werden. Damit kann der Verlauf genau verfolgt werden.
 
 [.instruction]
-Ereignisaktion Beispiel B erstellen:
+Status für Reparaturen hinterlegen:
 
-. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
-. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
-. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Lieferauftrag generieren bei Wechsel zu Status 5* und wählen Sie unter *Ereignis* die Option *Auftragsänderung » Statuswechsel* und als Status *[5] Freigabe Versand*.
-. Klicken Sie auf **Speichern**. +
-→ Die Ereignisaktion wird angelegt.
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Auftrag*.
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragslager* hinzu, markieren Sie im Filter die Option *Mehrere Lager pro Auftrag*.
-. Fügen Sie mit dem *grünen Plus* eine *Aktion* des Aktionstyps *Auftrag » Lieferaufträge generieren* hinzu.
-. Setzen Sie ein Häkchen bei *Aktiv*.
+. Öffnen Sie das Menü *System » Aufträge » Auftragstypen » Reparatur*. +
+. Tragen Sie die von Ihnen benötigten *Status* für Reparaturen ein. +
 . *Speichern* Sie die Einstellungen.
 
-==== Beispiel C: Ereignisaktion "Lieferauftrag generieren bei Rechnungsdruck"
+=== Zustände für Reparaturen anlegen
 
-In diesem Beispiel werden die Lieferaufträge zu einem Auftrag erst mit dem Rechnungsdruck des Hauptauftrags generiert. Somit können Sie am Hauptauftrag solange Änderungen vornehmen, bis Sie ihn durch den Rechnungsdruck zum Versand freigeben. Folgende Einstellungen sind nötig:
+Mit einem *Zustand* können Sie den Artikel genau beschreiben, z.B. ob dieser überhaupt eine Reparatur benötigt oder auch, dass es nicht möglich ist, diesen zu reparieren.
 
 [.instruction]
-Ereignisaktion Beispiel C erstellen:
+Zustände für Reparaturen anlegen:
 
-. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
-. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
-. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Lieferauftrag generieren bei Rechnungsdruck* und wählen Sie unter *Ereignis* die Option *Dokumente » Rechnung generiert*.
-. Klicken Sie auf *Speichern*. +
-→ Die Ereignisaktion wird angelegt.
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Auftrag*.
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragslager* hinzu, markieren Sie im Filter die Option *Mehrere Lager pro Auftrag*.
-. Fügen Sie mit dem *grünen Plus* eine *Aktion* des Aktionstyps *Auftrag » Lieferaufträge generieren* hinzu.
-. Setzen Sie ein Häkchen bei *Aktiv*.
+. Tragen Sie die von Ihnen benötigten *Zustände* für die Zuordnung der Artikelpositionen ein. +
 . *Speichern* Sie die Einstellungen.
 
-=== Lieferaufträge im Auftrag anlegen
-
-In der Auftragsbearbeitung finden Sie im Tab *Lief* die Optionen *Lieferaufträge automatisch anlegen* und *Lieferauftrag anlegen*.
-
-[.instruction]
-Lieferaufträge automatisch anlegen
-
-Klicken Sie auf den Button *Lieferauftrag automatisch anlegen*, um die Aufträge entsprechend der im Feld *Aufträge in Lieferaufträge splitten nach* gewählten Einstellung unter *Einstellungen » Aufträge » Auftragstypen » Lieferauftrag* anzulegen. Es werden alle Auftragspositionen in Lieferaufträge geteilt.
-
-[WARNING]
-.Lieferaufträge automatisch anlegen
-====
-Diese Funktion können Sie nur nutzen, wenn noch kein Lieferauftrag zu dem Auftrag besteht.
-====
-
-[.instruction]
-Lieferaufträge manuell anlegen
-
-. Tragen Sie in das Feld *LiefAufMenge* (Menge für den Lieferauftrag), die *Menge* ein, die Sie in den Lieferauftrag überführen wollen.
-. Klicken Sie anschließend auf das *Zahnrad*, um den Lieferauftrag anzulegen. +
-→ Auf diese Weise können Sie Lieferaufträge *einzeln* anlegen.
-
-[WARNING]
-.NZMenge
-====
-Die Menge, die Sie unter *LiefAufMenge* eintragen, darf nicht größer sein, als die unter *NZMenge* (nicht zugeordnete Menge) angezeigte Menge.
-====
-
-[IMPORTANT]
-.Bestandsreservierung
-====
-Für die in einem Lieferauftrag enthaltene Menge wird die Bestandsreservierung beim Anlegen eines Lieferauftrags vom Hauptauftrag auf den Lieferauftrag übertragen. Werden Lieferaufträge einzeln angelegt und im Hauptauftrag sind noch Artikel vorhanden, werden diese ebenfalls reserviert.
-====
-
-[TIP]
-.Lieferaufträge löschen
-====
-Lieferaufträge können einzeln oder über die Gruppenfunktion in der Auftragssuche gelöscht werden.
-====
-
-[TIP]
-.Auftragspositionen im Hauptauftrag bearbeiten
-====
-Es können weitere Auftragspositionen, auch andere Artikel, zum Hauptauftrag hinzugefügt oder daraus gelöscht werden. Allerdings können nur Auftragspositionen, die nicht in Lieferaufträgen enthalten sind, aus dem Hauptauftrag gelöscht werden. Die Menge der Artikel im Hauptauftrag lässt sich erhöhen oder verringern. Löschen sollten Sie jedoch nur *nicht zu Lieferaufträgen zugeordnete Mengen*.
-====
-
-[WARNING]
-.Löschen von Positionen vermeiden
-====
-Technisch möglich ist zwar auch das Löschen von Positionen, die bereits in einem Lieferauftrag enthalten sind. Dies sollten Sie jedoch vermeiden, um Fehlfunktionen zu verhindern.
-====
-
-
-[IMPORTANT]
-.Gemeinsamer Status
-====
-Wenn z. B. ein Auftrag (in Status *5.0*) zwei Lieferaufträge hat (je in Status *5.0*) und der eine Lieferauftrag wechselt in den Status *6.5* (am Beispiel bedeutet 6.5 "*Beim Logistiker im Versand*", also vom Logistik-Dienstleister abgerufen), ändert sich am Status des Hauptauftrages zunächst nichts. Wenn der zweite Lieferauftrag in den Status *6.5* wechselt, wird automatisch auch der Status des Hauptauftrages zu *6.5* geändert.
-====
-
-[.instruction]
-Ereignisaktion für das *Anpassen eines Status Hauptauftrag an Lieferaufträge* erstellen:
-
-. Öffnen Sie das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
-. Klicken Sie links unten auf das *grüne Plus*, um eine *neue Ereignisaktion* zu erstellen.
-. Tragen Sie im Bearbeitungsfenster einen *Namen* ein, z.B. *Status Hauptautrag an Lieferauftrag anpassen* und wählen Sie unter *Ereignis* die Option *Auftragsänderung » Statuswechsel* und als Status *[6.5] Beim Logistiker im Versand*.
-. Klicken Sie auf *Speichern*. +
-→ Die Ereignisaktion wird angelegt.
-. Fügen Sie mit dem *grünen Plus* einen *Filter* des Filtertyps *Auftrag » Auftragstyp* hinzu, markieren Sie im Filter die Option *Lieferauftrag*.
-. Fügen Sie mit dem *grünen Plus* eine *Aktion* des Aktionstyps *Auftrag » Status des Hauptauftrags ändern* hinzu. In der Aktion die Option *Niedrigster Status aller Lieferaufträge* wählen.
-. Setzen Sie ein Häkchen bei *Aktiv*.
-. *Speichern* Sie die Einstellungen.
-
-Der *Status 6.5* bedeutet in unserem Beispiel *Beim Logistiker im Versand*. Analog dazu wäre die Erstellung einer Ereignisaktion bei Wechsel zu **tatus 7.0 Warenausgang gebucht* möglich, wenn der Logistiker den Warenausgang gemeldet hat.
-
-[WARNING]
-.Hauptauftrag eines Lieferauftrags bearbeiten
-====
-Variable Benutzer müssen über die *Berechtigung* für alle *Läger der Lieferaufträge* eines Hauptauftrags verfügen, um den Hauptauftrag öffnen zu dürfen. Prüfen Sie ggf. die Einstellungen im Benutzerprofil.
-====
-
-[WARNING]
-.Hauptauftrag bzw. Lieferaufträge löschen
-====
-Wenn Sie einen Hauptauftrag löschen möchten, müssen zuerst die Lieferaufträge gelöscht werden. Erst dann kann der Hauptauftrag gelöscht werden.
-====
-
-=== Warenbestand und Warenausgang
-
-Der Warenbestand bei den Lieferaufträgen wird reserviert und bei deren Warenausgang werden die Bestände entsprechend reduziert. Der Hauptauftrag erhält dann auch automatisch den niedrigsten Status seiner Lieferaufträge, also auch die Information, dass der Warenausgang gebucht wurde, wenn alle Lieferaufträge des Hauptauftrags den Warenausgang gebucht haben.
+Verschiedene Zustände stehen beim Anlegen einer Reparatur in der Dropdown-Liste *Zustand* des jeweiligen Artikels zur Verfügung. Sie können dann jedem Artikel den zutreffenden Zustand zuordnen und jeweils bei einer Änderung anpassen.
 
 == Auftragstyp Sammelauftrag nutzen
 
@@ -893,7 +893,7 @@ Ein Kunde möchte nicht jede Rechnung einzeln bezahlen, sondern pro Monat oder p
 
 Ein Unternehmen möchte für seine Mitarbeiter monatlich die aufgelaufenen Rechnungen in Ihrem Webshop bezahlen. Richten Sie dafür eine eigene Kundenklasse ein. Mit der Kunden-ID in der vorgesehenen Kundenklasse wird der Rechnungsempfänger bestimmt. Dieser Rechnungsempfänger erhält dann die Sammelrechnung, die direkt aus dem Sammelauftrag heraus erzeugt wird.
 
-== Einen Sammelauftrag anlegen
+=== Einen Sammelauftrag anlegen
 
 Ein Sammelauftrag ist nur für Aufträge möglich, die noch nicht bezahlt wurden. Sie können in der Auftragssuche im Menü **Aufträge** oder im Tab **Aufträge** eines Kunden mit dem Suchfilter **Auftragsstatus**, z.B. anhand eines Status im Bereich **[3] Warten auf Zahlung**, nach solchen Aufträgen suchen. Sie haben zwei Möglichkeiten, Sammelaufträge zu erzeugen, die nachfolgend beschrieben werden.
 
@@ -922,7 +922,7 @@ Dort finden Sie die Funktion direkt in der Kopfzeile des Tabs **Kundendaten**. U
 Damit Sie sicher gehen können, dass geeignete Aufträge für die Erzeugung eines Sammelauftrags vorhanden sind, suchen Sie im Tab **Aufträge** des Kunden nach unbezahlten Aufträgen.
 ====
 
-== Sammelrechnung generieren
+=== Sammelrechnung generieren
 
 In diesem Kapitel erfahren Sie, wie Sie Sammelrechnungen konfigurieren und generieren. Die Erstellung von Sammelrechnungen ist nur in Sammelaufträgen verfügbar.
 
@@ -958,7 +958,7 @@ Das Abo-Modul funktioniert nicht bei Artikeln mit <<artikel/artikel-verwalten#48
 ====
 
 [#100]
-== Grundlegende Einstellungen vornehmen
+=== Grundlegende Einstellungen vornehmen
 
 Legen Sie im Menü *System » Aufträge » Scheduler* fest, welche grundlegenden Einstellungen für das Modul gelten sollen:
 
@@ -1002,7 +1002,7 @@ Grundlegende Einstellungen vornehmen:
 |====
 
 [#200]
-== Einstellungen für Abo-Artikel vornehmen
+=== Einstellungen für Abo-Artikel vornehmen
 
 Nehmen Sie nun Einstellungen für Ihre Abo-Artikel vor. Zunächst ordnen Sie die Abo-Artikel in Ihren Artikelbestand ein. Dann aktivieren Sie die Abo-Funktion. Gehen Sie dazu wie in den folgenden Unterkapiteln beschrieben vor.
 
@@ -1048,7 +1048,7 @@ Wenn Sie die Abo-Funktion nicht mehr nutzen möchten, stellen Sie die globale Fu
 ====
 
 [#500]
-== Template-Variablen in das Webshop-Layout einfügen
+=== Template-Variablen in das Webshop-Layout einfügen
 
 Damit Kunden in Ihrem Webshop die Abo-Funktionen wählen können, müssen Sie zunächst Template-Variablen und Code in das Layout Ihres Webshops einfügen.
 
@@ -1096,14 +1096,11 @@ Lieferungen: $SchedulerRepeating<br />
 ----
 
 [#600]
-== Ansicht der Abo-Funktion im Webshop
+=== Ansicht der Abo-Funktion im Webshop
 
 Nachdem Sie die auf dieser Seite beschriebenen Einstellungen konfiguriert haben, werden Abo-Artikel in Ihrem Webshop angezeigt. Käufer können den Zeitpunkt für die erste Lieferung, das Intervall sowie die Anzahl der Lieferungen festlegen, bevor sie den Artikel in den Warenkorb legen (Bild 1). Im Bestellvorgang können diese Einstellungen dann noch geändert werden, bevor die Bestellung abgeschickt wird. Das Code-Beispiel in Kapitel <<auftragsabwicklung/auftraege/scheduler#500, Template-Variablen in das Webshop-Layout einfügen>> wird im Webshop folgendermaßen dargestellt:
 
-
-[#700]
-[#scheduler-auftraege]
-== Scheduler-Aufträge
+=== Scheduler-Aufträge
 
 Im Menü *Aufträge » Scheduler-Aufträge* werden Ihre Abonnements mit Informationen zu den Kunden und Aufträgen in einer Übersicht angezeigt. In dieser Ansicht suchen, bearbeiten und löschen Sie Scheduler-Aufträge.
 
@@ -1215,7 +1212,7 @@ Prüfen Sie die Einstellungen des Abonnements. Ein Fehler kann z.B. sein, dass d
 ====
 
 [#900]
-== Abonnement bearbeiten
+=== Abonnement bearbeiten
 
 Sie können bestehende Abonnements jederzeit bearbeiten. Gehen Sie dazu wie im Folgenden beschrieben vor.
 
@@ -1317,7 +1314,7 @@ Die Optionen *Start* und *Ende* entsprechen denen für den Scheduler-Auftrag (si
 
 Dieses Tab enthält sämtliche Menüs, die Ihnen auch im Hauptmenü <<crm/kundendaten-verwalten#, CRM » Kunden bearbeiten>> für einen Kunden zur Verfügung stehen. Änderungen, die Sie hier vornehmen, werden auch im Hauptmenü *CRM » Kunden bearbeiten* im Kundendatensatz übernommen.
 
-== Neues Abonnement anlegen
+=== Neues Abonnement anlegen
 
 Gehen Sie wie im Folgenden beschrieben vor, um ein neues Abonnement anzulegen.
 
@@ -1330,7 +1327,7 @@ Neues Abonnement anlegen:
 . *Speichern* Sie die Einstellungen. +
 → Das neue Abonnement wird angelegt.
 
-== Durchlauf der Abo-Aufträge starten
+=== Durchlauf der Abo-Aufträge starten
 
 Im Menü *Aufträge » Durchlauf* werden anstehende Abo-Aufträge angezeigt. Sie können hier Abo-Aufträge gesammelt starten, was besonders komfortabel ist, wenn Sie viele Abonnements bearbeiten und überwachen müssen.
 
@@ -1343,6 +1340,87 @@ Wählen Sie die Filteroptionen oder lassen Sie die Einstellungen auf *ALLE*, wen
 
 Starten Sie den *Durchlauf* dann durch Klick auf eines der Icons (siehe grüne Pfeile). Dadurch werden die Abo-Aufträge angelegt und dann im Durchlauf nicht mehr angezeigt.
 ====
+
+[#vorbestellungen]
+== Vorbestellungen
+
+=== Artikel vorbestellbar machen
+
+Vorbestellungen sind im Online-Handel ein wichtiges Instrument im Marketing-Mix. Meist können Artikel noch vor der tatsächlichen Verfügbarkeit zum günstigen Einführungspreis bestellt werden. Für eine Warenwirtschaft stellt dies einen Sonderfall dar, da noch nicht verfügbare Artikel natürlich auch noch keinen Lagerbestand haben können.
+
+Vorbestellungen sind in plentymarkets sehr einfach zu erstellen. Es gibt dafür den Auftragstyp *Vorbestellung*, den Sie bei manuell erfassten Aufträgen verwenden können.
+
+Um Vorbestellungen über den Webshop entgegennehmen zu können, ist das Erscheinungsdatum und die Artikelverfügbarkeit notwendig. Nehmen Sie dazu die auf dieser Seite beschriebenen Einstellungen am Artikel vor.
+
+[IMPORTANT]
+.Manuelle Auftragseingabe
+====
+Der Auftragstyp *Vorbestellung* kann bei manueller Auftragseingabe gewählt werden. Eine automatische Zuweisung dieses Auftragstyps bei Bestellungen über den Webshop erfolgt in der aktuellen Version noch nicht.
+====
+
+==== Erscheinungsdatum
+
+Die Option *Erscheinungsdatum* finden Sie in der Artikelbearbeitung im Tab *Verfügbar*. Hier können Sie über einen Kalender das Datum hinterlegen, zu dem der Artikel verfügbar sein wird (Eingabe auch per dynamischem Import möglich). Gehen Sie dazu wie im Folgenden beschrieben vor.
+
+[.instruction]
+Erscheinungsdatum eintragen:
+
+. Öffnen Sie das Menü *Artikel » Artikel bearbeiten*.
+. Öffnen Sie einen Artikel, den Sie vorbestellbar machen möchten.
+. Wechseln Sie in das Tab *Verfügbar*.
+. Tragen Sie bei *Erscheinungsdatum* das Datum ein, ab dem der Artikel verfügbar sein soll.
+. *Speichern* Sie die Einstellungen.
+
+Im nächsten Schritt sorgen Sie dafür, dass dieses Datum Ihren Kunden angezeigt wird. Gehen Sie dazu wie im Folgenden beschrieben vor.
+
+[.instruction]
+Erscheinungsdatum im Webshop sichtbar machen:
+
+. Öffnen Sie das Menü *CMS » Webdesign » Ordner: Layout » Ordner: ItemView*.
+. Öffnen Sie das Template *ItemViewSingleItem*.
+. Fügen Sie die Template-Variable *$ReleaseDate* ein.
+. *Speichern* Sie die Einstellungen.
+
+==== Artikelverfügbarkeit
+
+Eine weitere Voraussetzung ist die korrekte Einstellung der *Artikelverfügbarkeit*. Gehen Sie dazu wie im Folgenden beschrieben vor.
+
+[.instruction]
+Artikelverfügbarkeit für Vorbestellungen einstellen:
+
+. Öffnen Sie das Menü *Artikel » Artikel bearbeiten*.
+. Öffnen Sie einen Artikel, den Sie vorbestellbar machen möchten.
+. Wechseln Sie in das Tab *Bestand*.
+. Wählen Sie für die Option *Beschränkung* die Einstellung *Keine Beschränkung*. +
+→ Der Artikel kann nun ohne tatsächlichen Bestand vorbestellt, also verkauft werden.
+
+[TIP]
+.Maximale Bestellmenge
+====
+Damit andere Online-Händler Ihre Vorbestellungen nicht dazu missbrauchen können, Ihre Bestände zum günstigen Preis komplett aufzukaufen, tragen Sie im *Tab Verfügbar* bei der Option *Maximale Bestellmenge* einen Wert ein. Tragen Sie dort den Wert *1* ein, kann der Artikel pro Bestellung nur ein einziges Mal gekauft werden. Setzen Sie die maximale Abgabemenge auf den Wert *0*, wird ohne Beschränkung verkauft.
+====
+
+=== Zahlungsaufforderung für Vorbestellungen einrichten
+
+Die Option *Versanddatum* bleibt bei normalen Bestellungen in der Regel ungenutzt, kann jedoch für Vorbestellungen sinnvoll verwendet werden. Liegt das Erscheinungsdatum eines Artikels aber in der Zukunft, so wird dieses Datum bei der Bestellung als Versanddatum hinterlegt, da ja erst mit dem Erscheinen des Artikels geliefert werden kann. Das Versanddatum können Sie in der Auftragssuche als Filteroption verwenden und über den Aktionsmanager nutzen.
+
+Meist werden Vorbestellungen einige Zeit vor dem Erscheinen eines Artikels generiert, von den Kunden zum Zeitpunkt der Bestellung aber noch nicht bezahlt. Daher ist es sinnvoll, Kunden einige Tage vor dem Erscheinungs- bzw. Versanddatum über den bevorstehenden Versand zu informieren und sie zur Zahlung aufzufordern. Dies kann der *Aktionsmanager* automatisch für Sie erledigen. Kunden wird dann wenige Tage vor dem geplanten Versand eine Erinnerungs-E-Mail mit Ihren Bankdaten und dem Link zur Kaufabwicklung gesendet. Gehen Sie wie unten beschrieben vor, um die automatische Zahlungsaufforderung für Vorbestellungen einzurichten.
+
+[.instruction]
+Zahlungsaufforderung per E-Mail einrichten:
+
+. Erstellen Sie eine geeignete *<<crm/e-mails-versenden#1200, E-Mail-Vorlage>>*.
+. Öffnen Sie das Menü *System » Aufträge » Aktionen*.
+. Wechseln Sie in das Tab *Neue Aktion*.
+. Tragen Sie dort im Tab *Einstellungen* einen *Namen* ein.
+. Wählen Sie bei der Option *Täglich ausführen um* eine Uhrzeit aus der Dropdown-Liste.
+. Setzen Sie ein Häkchen bei *Aktiv*, um die Aktion zu aktivieren.
+. Wechseln Sie in das Tab *Filter*.
+. Wählen Sie für den *Status* die Einstellung *[3] Warten auf Zahlung*.
+. Wählen Sie unter *Versanddatum* z.B. die Einstellung *in 4 Tagen*.
+. Wechseln Sie in das Tab *Aktion*.
+. Wählen Sie bei der Option *Versende E-Mail-Vorlage* die zuvor erstellte E-Mail-Vorlage. Diese Vorlage wird dann mit dieser Aktion automatisch an den Kunden gesendet.
+. Klicken Sie auf *Speichern*, um die Aktion zu sichern.
 
 [#100]
 == Auftragsstatus nutzen
@@ -1774,9 +1852,8 @@ Die folgende Tabelle enthält eine Übersicht der möglichen Informationen. Eini
 |Öffnet den Artikel oder die Variante im Menü *Artikel » Artikel bearbeiten*
 |====
 
-
 [#auftrag-aendern]
-== Auftrag bearbeiten
+== Aufträge bearbeiten
 
 Im Menü *Aufträge » Aufträge bearbeiten* werden Ihre Aufträge in einer Übersicht angezeigt. Klicken Sie auf einen Auftrag, um ihn zu öffnen und seine Einstellungen zu ändern. Aufträge können so lange geändert werden, wie noch kein Dokument für einen Auftrag existiert. Die Einstellungen verteilen sich auf mehrere Tabs, die auf dieser Handbuchseite erläutert werden.
 
@@ -2261,86 +2338,6 @@ Beispiel Warenausgang per Gruppenfunktion buchen:
 → Für das Datum wird automatisch das aktuelle Datum gewählt, dies ist jedoch änderbar. Die Wahl des Datums ist bei dieser Gruppenfunktion Pflicht.
 . Klicken Sie auf *Anwenden*, um die Aktion auszuführen.
 
-[#vorbestellungen]
-== Vorbestellungen
-
-=== Artikel vorbestellbar machen
-
-Vorbestellungen sind im Online-Handel ein wichtiges Instrument im Marketing-Mix. Meist können Artikel noch vor der tatsächlichen Verfügbarkeit zum günstigen Einführungspreis bestellt werden. Für eine Warenwirtschaft stellt dies einen Sonderfall dar, da noch nicht verfügbare Artikel natürlich auch noch keinen Lagerbestand haben können.
-
-Vorbestellungen sind in plentymarkets sehr einfach zu erstellen. Es gibt dafür den Auftragstyp *Vorbestellung*, den Sie bei manuell erfassten Aufträgen verwenden können.
-
-Um Vorbestellungen über den Webshop entgegennehmen zu können, ist das Erscheinungsdatum und die Artikelverfügbarkeit notwendig. Nehmen Sie dazu die auf dieser Seite beschriebenen Einstellungen am Artikel vor.
-
-[IMPORTANT]
-.Manuelle Auftragseingabe
-====
-Der Auftragstyp *Vorbestellung* kann bei manueller Auftragseingabe gewählt werden. Eine automatische Zuweisung dieses Auftragstyps bei Bestellungen über den Webshop erfolgt in der aktuellen Version noch nicht.
-====
-
-==== Erscheinungsdatum
-
-Die Option *Erscheinungsdatum* finden Sie in der Artikelbearbeitung im Tab *Verfügbar*. Hier können Sie über einen Kalender das Datum hinterlegen, zu dem der Artikel verfügbar sein wird (Eingabe auch per dynamischem Import möglich). Gehen Sie dazu wie im Folgenden beschrieben vor.
-
-[.instruction]
-Erscheinungsdatum eintragen:
-
-. Öffnen Sie das Menü *Artikel » Artikel bearbeiten*.
-. Öffnen Sie einen Artikel, den Sie vorbestellbar machen möchten.
-. Wechseln Sie in das Tab *Verfügbar*.
-. Tragen Sie bei *Erscheinungsdatum* das Datum ein, ab dem der Artikel verfügbar sein soll.
-. *Speichern* Sie die Einstellungen.
-
-Im nächsten Schritt sorgen Sie dafür, dass dieses Datum Ihren Kunden angezeigt wird. Gehen Sie dazu wie im Folgenden beschrieben vor.
-
-[.instruction]
-Erscheinungsdatum im Webshop sichtbar machen:
-
-. Öffnen Sie das Menü *CMS » Webdesign » Ordner: Layout » Ordner: ItemView*.
-. Öffnen Sie das Template *ItemViewSingleItem*.
-. Fügen Sie die Template-Variable *$ReleaseDate* ein.
-. *Speichern* Sie die Einstellungen.
-
-==== Artikelverfügbarkeit
-
-Eine weitere Voraussetzung ist die korrekte Einstellung der *Artikelverfügbarkeit*. Gehen Sie dazu wie im Folgenden beschrieben vor.
-
-[.instruction]
-Artikelverfügbarkeit für Vorbestellungen einstellen:
-
-. Öffnen Sie das Menü *Artikel » Artikel bearbeiten*.
-. Öffnen Sie einen Artikel, den Sie vorbestellbar machen möchten.
-. Wechseln Sie in das Tab *Bestand*.
-. Wählen Sie für die Option *Beschränkung* die Einstellung *Keine Beschränkung*. +
-→ Der Artikel kann nun ohne tatsächlichen Bestand vorbestellt, also verkauft werden.
-
-[TIP]
-.Maximale Bestellmenge
-====
-Damit andere Online-Händler Ihre Vorbestellungen nicht dazu missbrauchen können, Ihre Bestände zum günstigen Preis komplett aufzukaufen, tragen Sie im *Tab Verfügbar* bei der Option *Maximale Bestellmenge* einen Wert ein. Tragen Sie dort den Wert *1* ein, kann der Artikel pro Bestellung nur ein einziges Mal gekauft werden. Setzen Sie die maximale Abgabemenge auf den Wert *0*, wird ohne Beschränkung verkauft.
-====
-
-=== Zahlungsaufforderung für Vorbestellungen einrichten
-
-Die Option *Versanddatum* bleibt bei normalen Bestellungen in der Regel ungenutzt, kann jedoch für Vorbestellungen sinnvoll verwendet werden. Liegt das Erscheinungsdatum eines Artikels aber in der Zukunft, so wird dieses Datum bei der Bestellung als Versanddatum hinterlegt, da ja erst mit dem Erscheinen des Artikels geliefert werden kann. Das Versanddatum können Sie in der Auftragssuche als Filteroption verwenden und über den Aktionsmanager nutzen.
-
-Meist werden Vorbestellungen einige Zeit vor dem Erscheinen eines Artikels generiert, von den Kunden zum Zeitpunkt der Bestellung aber noch nicht bezahlt. Daher ist es sinnvoll, Kunden einige Tage vor dem Erscheinungs- bzw. Versanddatum über den bevorstehenden Versand zu informieren und sie zur Zahlung aufzufordern. Dies kann der *Aktionsmanager* automatisch für Sie erledigen. Kunden wird dann wenige Tage vor dem geplanten Versand eine Erinnerungs-E-Mail mit Ihren Bankdaten und dem Link zur Kaufabwicklung gesendet. Gehen Sie wie unten beschrieben vor, um die automatische Zahlungsaufforderung für Vorbestellungen einzurichten.
-
-[.instruction]
-Zahlungsaufforderung per E-Mail einrichten:
-
-. Erstellen Sie eine geeignete *<<crm/e-mails-versenden#1200, E-Mail-Vorlage>>*.
-. Öffnen Sie das Menü *System » Aufträge » Aktionen*.
-. Wechseln Sie in das Tab *Neue Aktion*.
-. Tragen Sie dort im Tab *Einstellungen* einen *Namen* ein.
-. Wählen Sie bei der Option *Täglich ausführen um* eine Uhrzeit aus der Dropdown-Liste.
-. Setzen Sie ein Häkchen bei *Aktiv*, um die Aktion zu aktivieren.
-. Wechseln Sie in das Tab *Filter*.
-. Wählen Sie für den *Status* die Einstellung *[3] Warten auf Zahlung*.
-. Wählen Sie unter *Versanddatum* z.B. die Einstellung *in 4 Tagen*.
-. Wechseln Sie in das Tab *Aktion*.
-. Wählen Sie bei der Option *Versende E-Mail-Vorlage* die zuvor erstellte E-Mail-Vorlage. Diese Vorlage wird dann mit dieser Aktion automatisch an den Kunden gesendet.
-. Klicken Sie auf *Speichern*, um die Aktion zu sichern.
 
 
 [IMPORTANT]
