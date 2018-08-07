@@ -22,7 +22,6 @@ p>Noch beschreiben:</p>
 </ul>
 ////
 
-
 [#5]
 == Installing the plentymarkets app
 
@@ -87,18 +86,15 @@ You will remain logged in to plentymarkets POS until you tap **Log out** in the 
 [.instruction]
 Customising the screen:
 
-. Go to **Settings » Item » Attributes**.
-. Click on the attribute.
-. Open the **Values** tab.
-. Click on **New value**.
-. Enter the internal name.
-. **Save** the settings. +
-→ The attribute value is assigned an ID and displayed in the **Values** tab.
-. Carry out additional settings as desired. Pay attention to the information given in table 2.
-. **Save** the settings.
+. Open the plentymarkets app.
+. Tap the menu icon in the top left corner. +
+→ The menu opens.
+. Tap *View*.
+. Carry out the settings. Note <<table-POS-view>>.
+. *Save* the settings.
 
 [[table-POS-view]]
-.title
+.Customising the screen
 [cols="1,2"]
 |====
 |Setting |Explanation
@@ -286,10 +282,10 @@ Redeeming a gift card:
 
 If the plugin *plentyPOS Invoice* is provisioned in the plentymarkets back end, you can also sell items on account to existing customers. However, because you cannot save new customer data in plentyPOS, only existing customers can pay for items by invoice.
 
-[WARNING]
+[TIP]
 .Returning items purchased on account
 ====
-Orders with the payment method POS invoice can be cancelled until the next z report is generated. However, for technical reasons you cannot return partially or fully unpaid orders with the payment method POS invoice at the moment. Only fully paid orders can be returned. However, the plentymarkets app does not allow you to check if an order has been paid. As such, you need to open the plentymarkets back end to check if an order has been paid in full before you accept a return.
+Orders with the payment method POS invoice can be cancelled until the next z report is generated. In plentymarkets app versions 1.8 and higher, you can also book returns for items that were bought on account. If customers have partially paid their invoice at the time of the return, plentymarkets POS automatically calculates the amount the customer is to be refunded.
 ====
 
 [.instruction]
@@ -567,14 +563,12 @@ If customers want to return items, you have two options for booking a return:
 [IMPORTANT]
 .Returns are cash only
 ====
-For technical reasons, the return amount can only be returned to customers in cash.
+For technical reasons, the return amount can only be paid out to customers in cash.
 ====
 
 === Booking a return by linking it to the main order (version 1.8 and higher)
 
-If you know the order ID or the receipt number (external order number) of the original main order, you can open this main order and book the return directly to this order. This creates a return and a credit note.
-
-Proceed as described below to book a return and link it to the main order.
+If you know the order ID or the receipt number (external order number) of the original main order, you can open this main order and book the return directly to this order. Proceed as described below to book a return and link it to the main order.
 
 
 [NOTE]
@@ -663,6 +657,44 @@ If you do not want to pay out the full amount that the customer paid, e.g. becau
 → The price of the order item is updated.
 . Finish processing the return as usual.
 
+==== Return information for POS invoice orders
+
+If customers can buy items on account, customers may want to return items that are part of a partially paid invoice order. In such cases, plentymarkets POS automatically calculates the amount to be paid out to customers. <<table-POS-return-invoice>> shows the calculations that plentymarkets POS performs in the background so that you can explain it to customers if necessary.
+
+
+[[table-POS-return-invoice]]
+.POS invoice returns
+[cols="1,3,3"]
+|====
+|Invoice status |Partial return |Full return
+
+|*Not paid*
+|Customer does not receive any money. +
+A credit note for the returned items is created in the background. +
+*_Tipp:_* The invoice amount the customer still needs to pay is shown on the credit note receipt.
+|Customer does not receive any money. +
+A credit note for the full invoice amount is created in the background.
+
+|*Partially paid*
+a|The POS calculates any refund to the customer automatically. The formula is: Unpaid invoice amount minus the price of the returned items.
+
+If the invoice only has been partially paid, the following cases can occur: +
+
+* Returned items cost less than the unpaid invoice amount = The customer does not receive any money. +
+The unpaid invoice amount is adjusted (Unpaid invoice amount minus price of the returned items). +
+A credit note is created for the price of the returned items. +
+
+* Returned items cost the same as the unpaid invoice amount = The customer does not receive any money. +
+A credit note is created for the price of the returned items. +
+
+* Returned items cost more than the unpaid invoice amount = The customer receives the balance of the unpaid invoice amount minus the price of the returned items.  +
+
+A credit note for the returned items is created in the background. Note that the credit note amount and the refunded amount are not always the same. If the refunded amount does not match the credit note amount, the refunded amount is shown on the credit note receipt.
+
+|The customers receives the amount they have already paid. +
+The credit note amount is equal to the full invoice amount.
+|====
+
 
 === Booking a return without linking it to the main order
 
@@ -737,6 +769,11 @@ Booking a cash withdrawal:
 → The current cash on hand is updated. +
 → A receipt for the withdrawal is printed. +
 → The receipt is imported to plentymarkets and saved in the *Orders » Document archive* menu.
+
+[#300]
+== Printing an item label
+
+If you work with plentyBase and label printers, you can also print item labels in the item search of the plentymarkets app. Find out how to print labels in the <<item/managing-items#3340, Printing a label in the item search of the plentymarkets app>> chapter.
 
 [#210]
 == Creating reports
@@ -900,4 +937,4 @@ Creating a Kontrollbeleg (control receipt) on demand:
 → The control receipt is imported to plentymarkets and saved in the **Orders » Document archive** menu. +
 **__Note:__** The investigator can keep the control receipt as evidence.
 
-// Next: [#300]
+// Next: [#310]

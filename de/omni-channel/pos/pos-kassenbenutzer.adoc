@@ -86,18 +86,15 @@ Sie bleiben bei plentymarkets POS angemeldet, bis Sie im Menü der App auf **Aus
 [.instruction]
 Darstellung anpassen:
 
-. Öffnen Sie das Menü **Einstellungen » Artikel » Attribute**.
-. Klicken Sie auf das Attribut.
-. Wechseln Sie in das Tab **Werte**.
-. Klicken Sie auf **Neuer Wert**.
-. Geben Sie den internen Namen ein.
-. Klicken Sie auf **Speichern**. +
-→ Der Attributwert erhält eine ID und wird im Tab **Werte** angezeigt.
-. Nehmen Sie ggf. weitere Einstellungen vor. Beachten Sie dazu die Erläuterungen in Tabelle 2.
-. **Speichern** Sie die Einstellungen.
+. Öffnen Sie die plentymarkets App.
+. Tippen Sie auf das Menüsymbol oben links. +
+→ Das Menü wird angezeigt.
+. Tippen Sie auf *Darstellung*.
+. Nehmen Sie die Einstellungen vor. Beachten Sie <<tabelle-POS-darstellung>>.
+. *Speichern* Sie die Einstellungen.
 
 [[tabelle-POS-darstellung]]
-.titel
+.Darstellung anpassen
 [cols="1,2"]
 |====
 |Einstellung |Erläuterung
@@ -110,7 +107,7 @@ Darstellung anpassen:
 2+|*Vollbildmodus verwenden*
 
 |*Vollbildmodus* +
-(nur Android-Geräte, ab Version 1.7.9)
+(nur Android-Geräte)
 |Aktivieren, um die Softkeys des Betriebssystems auszublenden.
 |====
 
@@ -285,10 +282,10 @@ Verkaufsgutschein einlösen:
 
 Wenn im plentymarkets Backend das Plugin *plentyPOS Kauf auf Rechnung* aktiviert ist, können Sie Bestandskunden auch Artikel auf Rechnung verkaufen. Kunden können Artikel nur auf Rechnung kaufen, wenn ihre Kundendaten im System gespeichert sind, da über plentyPOS keine neuen Kundendaten erfasst werden können.
 
-[WARNING]
+[TIP]
 .Retouren von auf Rechnung gekauften Artikeln
 ====
-Aufträge mit Kauf auf Rechnung können bis zum nächsten Tagesabschluss wie gewohnt storniert werden. Aus technischen Gründen sind aktuell jedoch Retouren von nicht oder nur teilweise bezahlten Aufträgen mit Rechnungskauf noch nicht möglich. Nur vollständig bezahlte Aufträge können retourniert werden. Da Sie jedoch in der plentymarkets App nicht prüfen können, ob ein Auftrag vollständig bezahlt wurde, müssen Sie vor einer Retoure im plentymarkets Backend prüfen, ob der Auftrag tatsächlich vollständig bezahlt wurde.
+Aufträge mit Kauf auf Rechnung können bis zum nächsten Tagesabschluss wie gewohnt storniert werden. Auch die Retoure von auf Rechnung gekauften Artikeln ist ab Version 1.8 der plentymarkets App möglich. Bei Teilzahlung errechnet die Kasse automatisch, welchen Betrag Kunden zurückbekommen.
 ====
 
 [.instruction]
@@ -660,6 +657,44 @@ Wenn nicht der volle Kaufpreis erstattet werden soll, zum Beispiel, weil Artikel
 → Der Preis der Auftragsposition wird aktualisiert.
 . Schließen Sie die Retoure wie gewohnt ab.
 
+==== Hinweise zu Retouren bei Kauf auf Rechnung
+
+Wenn Sie Kunden Anzahlungen oder den Kauf auf Rechnung anbieten kann es vorkommen, dass Kunden Artikel aus Aufträgen zurückgeben möchten, die sie noch nicht oder nur teilweise bezahlt haben. plentymarkets POS berechnet automatisch, ob Sie dem Kunden Geld auszahlen sollen oder nicht. <<tabelle-POS-Retoure-Rechnung>> verdeutlicht die Berechnung, die im Hintergrund stattfindet, damit Sie sie Kunden bei Bedarf erklären können.
+
+
+[[tabelle-POS-Retoure-Rechnung]]
+.Retourenfälle bei Kauf auf Rechnung
+[cols="1,3,3"]
+|====
+|Rechnungsstatus |Teilretoure |Vollretoure
+
+|*Nicht bezahlt*
+|Der Kunde bekommt kein Geld zurück. +
+Im Hintergrund wird eine Gutschrift für zurückgegebenen Artikel erstellt. +
+*_Tipp:_* Der Rechnungsbetrag, den der Kunde noch bezahlen muss, steht auf dem Gutschriftsbeleg.
+|Der Kunde bekommt kein Geld zurück. +
+Im Hintergrund wird eine Gutschrift für den vollen Rechnungsbetrag erstellt.
+
+|*Teilweise bezahlt*
+a|Die Kasse errechnet automatisch, ob und wenn ja wie viel Geld der Kunde zurück bekommt. Vereinfacht lautet die Formel: Offener Rechnungsbetrag minus Preis der zurückgegebenen Artikel.
+
+Bei Teilzahlung sind die folgenden Fälle möglich: +
+
+* Zurückgegebene Artikel kosten weniger als der noch offene Rechnungsbetrag = Der Kunde bekommt kein Geld zurück. +
+Der offene Rechnungsbetrag wird angepasst (Noch offener Betrag minus Preis des zurückgegebenen Artikels). +
+Eine Gutschrift über den Preis des zurückgegebenen Artikels wird erstellt. +
+
+* Preis der zurückgegebenen Artikel entspricht dem noch offenen Rechnungsbetrag = Der Kunde bekommt kein Geld zurück. +
+Eine Gutschrift über den Preis des zurückgegebenen Artikels wird erstellt. +
+
+* Zurückgegebene Artikel kosten mehr als der noch offene Rechnungsbetrag = Der Kunde bekommt die Differenz aus offenem Betrag minus Preis des zurückgegebenen Artikels zurück.  +
+
+Im Hintergrund wird bei der Retoure eine Gutschrift für die zurückgegebenen Artikel erstellt. Dabei stimmen der Gutschriftsbetrag und der ausgezahlte Betrag nicht unbedingt überein. Wenn der ausgezahlte Betrag nicht mit dem Gutschriftsbetrag übereinstimmt, ist der ausbezahlte Betrag auf dem Gutschriftsbeleg vermerkt.
+
+|Der Kunde bekommt den Betrag zurück, den er bisher bezahlt hat. +
+Der Gutschriftbetrag ist gleich dem vollen Rechnungsbetrag.
+|====
+
 
 === Retoure ohne Zuordnung zum Hauptauftrag buchen
 
@@ -738,8 +773,7 @@ Entnahme buchen:
 [#300]
 == Artikeletikett drucken
 
-Wenn Sie mit plentyBase und Etikettendruckern arbeiten, können Sie in der Artikelsuche der plentymarkets App auch Artikeletiketten drucken. Wie das geht, erfahren Sie im Kapitel
-<<artikel/artikel-verwalten#3340, Etikett in der Artikelsuche der plentymarkets App drucken>>.
+Wenn Sie mit plentyBase und Etikettendruckern arbeiten, können Sie in der Artikelsuche der plentymarkets App auch Artikeletiketten drucken. Wie das geht, erfahren Sie im Kapitel <<artikel/artikel-verwalten#3340, Etikett in der Artikelsuche der plentymarkets App drucken>>.
 
 [#210]
 == Berichte erstellen
