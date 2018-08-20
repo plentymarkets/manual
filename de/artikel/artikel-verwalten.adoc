@@ -67,7 +67,7 @@ a|Eindeutiger Name für das Attribut. Der interne Name wird nur im plentymarkets
 
 |*Gruppierbar in Artikellisten* +
 (nur Callisto)
-|Anzeige der verfügbaren Artikelvarianten mit dem Callisto-Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewcategorieslist, ItemViewCategoriesList>> aktivieren. Festlegen, anhand welches Attributs die Anzeige der Artikelvarianten erfolgen soll, z.B. für Schuhe das Attribut **Farbe** einstellen. So werden zunächst alle Farbvarianten angezeigt. Nach Wahl der Farbe wird eine weitere Dropdown-Liste mit dem nächsten Attribut, z.B. **Größe**,  in der Artikeldetailansicht verfügbar. In den Einstellungen des Callisto-Templates unter **$ItemViewCategoriesList_GroupByVariation** ist wählbar, ob eine Gruppierung nach Attributen oder nach Varianten erfolgt.
+|Anzeige der verfügbaren Artikelvarianten mit dem Callisto-Template <<omni-channel/online-shop/webshop-einrichten/cms-syntax#webdesign-itemview-container-itemviewcategorieslist, ItemViewCategoriesList>> aktivieren. Festlegen, anhand welches Attributs die Anzeige der Artikelvarianten erfolgen soll, z.B. für Schuhe das Attribut **Farbe** einstellen. So werden zunächst alle Farbvarianten angezeigt. Nach Wahl der Farbe wird eine weitere Dropdown-Liste mit dem nächsten Attribut, z.B. **Größe**, in der Artikeldetailansicht verfügbar. In den Einstellungen des Callisto-Templates unter **$ItemViewCategoriesList_GroupByVariation** ist wählbar, ob eine Gruppierung nach Attributen oder nach Varianten erfolgt.
 
 2+|*Tab: Name*
 
@@ -971,25 +971,21 @@ Die Position wird im Tab <<artikel/artikel-verwalten#90, Bilder>> des Artikels e
 *_Hinweis:_* Das eingegebene Präfix wird nur in den Bildnamen eingefügt, wenn in der Dropdown-Liste *Präfix* eine Position gewählt wurde.
 |====
 
+[#4200]
 === Eigene Domain für Bild-URLs speichern
 
-Standardmäßig wird Bildern die URL der Standard-CDN-Domain zugewiesen.
+Artikelbildern wird die URL der Standard-CDN-Domain zugewiesen. Deshalb enthalten die URLs von Artikelbildern standardmäßig den Domain-Namen "plentymarkets.com". Sie haben jedoch auch die Möglichkeit, statt der Standard-CDN-Domain die Domain des Mandanten zu nutzen und eine eigene Subdomain für Artikelbilder zu speichern. <<tabelle-domain-bild-URLs>> zeigt die Unterschiede zwischen der Standard-CDN-Domain und einer eigenen CDN-Domain. Eine eigene CDN-Domain kann für von plentymarkets gehostete Domains und für extern gehostete Domains eingerichtet werden. Beachten Sie jedoch die folgenden Einschränkungen:
 
-Optional verwenden Sie als Domain die Domain des Mandanten und speichern eine eigene Subdomain.
-
-* Eigene Subdomains können nur für die Hauptdomain gespeichert werden.
-* Eigene Subdomains können nur für Domains gespeichert werden, die von plentymarkets verwaltet werden.
+* Eine eigene Subdomain kann nur für die Hauptdomain gespeichert werden.
 * Pro Mandant kann nur eine eigene Subdomain gespeichert werden.
 
-<<tabelle-domain-bild-URLs>> zeigt die Unterschiede zwischen der Standard-Domain und einer eigenen Domain.
-
 [[tabelle-domain-bild-URLs]]
-.Eigene Domain für Bilder-URLs speichern
-[cols="1,2,1"]
+.Eigene Domain für Bilder-URLs
+[cols="2,3,3"]
 |====
-|Domain-Einstellung |Erläuterung |Beispiel-URL
+| |Bild-URL mit Standard-Domain |Bild-URL mit eigener Domain
 
-|Bild-URL mit Standard-Domain
+|URL-Muster
 a|Die URL von Artikelbildern setzt sich wie folgt zusammen:
 
 . Subdomain *CDN1*, *CDN2* oder *CDN3*
@@ -999,10 +995,6 @@ a|Die URL von Artikelbildern setzt sich wie folgt zusammen:
 . Artikel-ID
 . Ordnername der Bildgröße
 . Name der Bilddatei mit Dateierweiterung
-
-|https://*cdn01.plentymarkets.com/1abcd2e3fghi*/item/images/118/full/118-Relaxsessel-Rio.jpg
-
-|Bild-URL mit eigener Domain
 a|Statt der Standard-Domain wird die benutzerdefinierte Domain angegeben. Der Kunden-Hash wird nicht in der URL angezeigt:
 
 . Benutzerdefinierte Subdomain
@@ -1012,13 +1004,25 @@ a|Statt der Standard-Domain wird die benutzerdefinierte Domain angegeben. Der Ku
 . Ordnername der Bildgröße
 . Name der Bilddatei mit Dateierweiterung
 
-|https://*ihresubdomain.ihrshop.de*/item/images/118/full/118-Relaxsessel-Rio.jpg
+|Beispiel-URL
+|https://*cdn01.plentymarkets.com/ +
+1abcd2e3fghi*/item/images/118/full/118-Relaxsessel-Rio.jpg
+|https://*ihresubdomain.ihrshop.de*/ +
+item/images/118/full/118-Relaxsessel-Rio.jpg
 |====
 
-Gehen Sie wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern.
+Gehen Sie wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern:
+
+* <<#4000, Für eine von plentymarkets gehostete Domain>>
+* <<#4100, Für eine von einem externen Provider gehostete Domain>>
+
+[#4000]
+*Eigene Domain für Bild-URLs speichern für eine von plentymarkets gehostete Domain*
+
+Gehen Sie wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern, wenn Ihr System von plentymarkets gehostet wird.
 
 [IMPORTANT]
-.Nach dem Erstellen die Domain aktivieren
+.Nach Erstellen der Subdomain die Domain aktivieren
 ====
 Das Erstellen der Subdomain kann mehrere Stunden dauern. Erst wenn in allen drei Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen und die Domain kann aktiviert werden.
 ====
@@ -1035,8 +1039,9 @@ Eigene Domain für Bild-URLs speichern:
 → Für die Subdomain wird ein eigenes SSL-Zertifikat erstellt. +
 → Für die Subdomain wird ein DNS-Eintrag erstellt. +
 → Eine CloudFront-Instanz wird erstellt. +
-*_Hinweis:_* Das Erstellen der Subdomain kann mehrere Stunden dauern. Erst wenn in allen drei Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen.
-. Wenn alle drei Häkchen angezeigt werden, klicken Sie in der Spalte *Status* auf *Aktivieren*, um die Domain zu aktivieren.
+*_Hinweis:_* Dieser Vorgang kann mehrere Stunden dauern. Erst wenn in den Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen.
+. Wenn alle drei Häkchen angezeigt werden, klicken Sie in der Spalte *Status* auf *Aktivieren*. +
+→ Die Domain wird aktiviert.
 
 [[tabelle-cdn-domain]]
 .Subdomain für Bilder-URLs festlegen
@@ -1051,7 +1056,58 @@ Eigene Domain für Bild-URLs speichern:
 |Eigene Subdomain eingeben. Gültige Zeichen sind Buchstaben (a-z, A-Z), Ziffern (0-9), Unterstrich (_) und Bindestrich (-). Das erste Zeichen der Subdomain muss entweder ein Buchstabe oder eine Ziffer sein.
 
 |*Domain*
-|Domain aus der Dropdown-Liste wählen. Aktuell ist nur die Hauptdomain des Mandanten wählbar. Die Domain muss außerdem von plentymarkets gehostet werden. Für externe Domains kann keine Subdomain für Bilder-URLs gespeichert werden.
+|Domain aus der Dropdown-Liste wählen. Aktuell ist nur die Hauptdomain des Mandanten wählbar.
+|====
+
+[#4100]
+*Eigene Domain für Bild-URLs speichern für eine von einem externen Provider gehostete Domain*
+
+Wenn Ihre Domain von einem externen Provider gehostet wird, müssen Sie die DNS-Einstellungen bei Ihrem Domain-Provider speichern. Gehen Sie wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern und die DNS-Einstellungen beim externen Domain-Provider zu hinterlegen.
+
+[TIP]
+.Was ist DNS?
+====
+DNS steht für Domain Name System. Dieses System sorgt dafür, dass Ihre Kunden nicht die numerische IP-Adresse Ihres Webshops eingeben müssen, sondern auch der Domain-Name der richtigen IP-Adresse zugeordnet wird.
+====
+
+[.instruction]
+Eigene Domain für Bild-URLs speichern bei externer Domain:
+
+. Öffnen Sie das Menü *System » Mandant » Mandant öffnen » Domains*.
+. Klicken Sie auf *Hinzufügen*. +
+→ Das Fenster *Neue Domain* wird geöffnet.
+. Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-cdn-domain>>.
+. *Speichern* Sie die Einstellungen. +
+→ Für die Subdomain wird ein DNS-Eintrag erstellt.
+. Klicken Sie in der Zeile des Domain-Eintrags auf *DNS-Infos*. +
+→ Das Fenster *DNS-Infos* wird geöffnet. +
+→ Die DNS-Einstellungen werden angezeigt.
+. Loggen Sie sich in den Service-Bereich Ihres Domain-Providers ein.
+. Kopieren Sie die in plentymarkets angezeigten DNS-Einstellungen in die dafür vorgesehenen Felder des Domain-Providers. +
+→ Informationen zur Vorgehensweise finden Sie in der Dokumentation des Domain-Providers.
+. *Speichern* Sie die Einstellungen. +
+→ Für die Subdomain wird ein eigenes SSL-Zertifikat erstellt. +
+→ Eine CloudFront-Instanz wird erstellt. +
+→ Die DNS-Einstellungen werden aktualisiert. +
+*_Hinweis:_* Es kann bis zu 72 Stunden dauern, bis die DNS-Einstellungen beim externen Provider wirksam werden. plentymarkets hat keinen Einfluss auf die Dauer dieses Vorgangs. +
+→ Wenn im Menü *System » Mandant » Mandant öffnen » Domains* des plentymarkets Backend in den Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen.
+. Wenn im Menü *System » Mandant » Mandant öffnen » Domains* alle drei Häkchen angezeigt werden, klicken Sie in der Spalte *Status* auf *Aktivieren*. +
+→ Die Domain wird aktiviert.
+
+[[tabelle-cdn-domain]]
+.Subdomain für Bilder-URLs festlegen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Bereich*
+|Den Typ der Subdomain aus der Dropdown-Liste wählen. Aktuell ist nur der Typ *CDN1* verfügbar.
+
+|*Subdomain*
+|Eigene Subdomain eingeben. Gültige Zeichen sind Buchstaben (a-z, A-Z), Ziffern (0-9), Unterstrich (_) und Bindestrich (-). Das erste Zeichen der Subdomain muss entweder ein Buchstabe oder eine Ziffer sein.
+
+|*Domain*
+|Domain aus der Dropdown-Liste wählen. Aktuell ist nur die Hauptdomain des Mandanten wählbar.
 |====
 
 [#670b]
@@ -1241,7 +1297,7 @@ Verkaufspreis erstellen:
 |====
 |Einstellung |Erläuterung
 
-|**Abo-Intervall**
+|**Abo-Interv.**
 |Diese Option wurde vorbereitend für eine spätere Verwendung im Ceres-Webshop integriert und hat aktuell noch keine Funktion. +
 *_Hinweis:_* Das Intervall wird für aktuelle Aboaufträge über den Scheduler nicht berücksichtigt.
 
@@ -2372,12 +2428,12 @@ Je nachdem, welche und wie viele Artikel Sie bearbeiten möchten, ist entweder d
 [.instruction]
 Artikel-Gruppenfunktion ausführen:
 
-.  Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
-.  Wählen Sie die zu bearbeitenden Artikel.
-.  Klicken Sie auf **Artikel-Gruppenfunktion**. +
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
+. Wählen Sie die zu bearbeitenden Artikel.
+. Klicken Sie auf **Artikel-Gruppenfunktion**. +
 → Das Fenster **Artikel-Gruppenfunktion** wird geöffnet.
-.  Nehmen Sie die Einstellungen gemäß <<tabelle-mehrere-artikel-bearbeiten>> vor.
-.  Klicken Sie auf **Ausführen**, um die Einstellungen auf die Artikel anzuwenden.
+. Nehmen Sie die Einstellungen gemäß <<tabelle-mehrere-artikel-bearbeiten>> vor.
+. Klicken Sie auf **Ausführen**, um die Einstellungen auf die Artikel anzuwenden.
 
 [[tabelle-mehrere-artikel-bearbeiten]]
 .Artikel per **Gruppenfunktion** oder per **Stapelverarbeitung** bearbeiten
@@ -2453,10 +2509,10 @@ Markierung 2**
 [.instruction]
 Stapelverarbeitung ausführen:
 
-.  Öffnen Sie das Menü **Artikel » Stapelverarbeitung**.
-.  Wählen Sie die Filter gemäß <<tabelle-stapelverarbeitung-filter>>.
-.  Nehmen Sie die Einstellungen gemäß <<tabelle-mehrere-artikel-bearbeiten>> vor.
-.  Klicken Sie auf **Anwenden**, um die Einstellungen an den Artikeln vorzunehmen.
+. Öffnen Sie das Menü **Artikel » Stapelverarbeitung**.
+. Wählen Sie die Filter gemäß <<tabelle-stapelverarbeitung-filter>>.
+. Nehmen Sie die Einstellungen gemäß <<tabelle-mehrere-artikel-bearbeiten>> vor.
+. Klicken Sie auf **Anwenden**, um die Einstellungen an den Artikeln vorzunehmen.
 
 [[tabelle-stapelverarbeitung-filter]]
 .Filteroptionen für die **Stapelverarbeitung**
@@ -2685,7 +2741,7 @@ Webshop: unsichtbar, wenn kein Netto-WB**
 |**Unsichtbar: in Artikelauflistung**
 |Aktivieren, um die Variante in der Artikelauflistung des Webshops unsichtbar zu stellen. Die Variante wird dann weder über die Kategorien noch über die Suche angezeigt. Die Variante ist nur über einen Direkt-Link aufrufbar.
 
-|**Verfügbarkeit im Zulauf**
+|**Im Zulauf**
 |Zeigt das voraussichtliche Lieferdatum von bestellten Varianten an. Weitere Informationen zu Nachbestellungen im Zulauf finden Sie unter <<warenwirtschaft/nachbestellungen-verwalten#, Nachbestellungen verwalten>>.
 
 |**Beschränkung**
@@ -2742,7 +2798,7 @@ Im Tab **Verfügbarkeit** aktivieren Sie <<omni-channel/multi-channel#, Marktpl�
 [#240]
 === Verkaufspreise verknüpfen
 
-Verknüpfen Sie Verkaufspreise mit den Hauptvarianten von Artikeln des Typs **Standard**, um Preise zu speichern. Sie können Preise eingeben oder anhand einer Preiskalkulation errechen lassen. Die an der Hauptvariante gespeicherten Kombinationen aus Verkaufspreis und Preis werden von der Hauptvariante an die  Varianten des Artikels vererbt, wenn die Vererbung nicht an der Variante deaktiviert ist.
+Verknüpfen Sie Verkaufspreise mit den Hauptvarianten von Artikeln des Typs **Standard**, um Preise zu speichern. Sie können Preise eingeben oder anhand einer Preiskalkulation errechen lassen. Die an der Hauptvariante gespeicherten Kombinationen aus Verkaufspreis und Preis werden von der Hauptvariante an die Varianten des Artikels vererbt, wenn die Vererbung nicht an der Variante deaktiviert ist.
 
 [.instruction]
 Verkaufspreis mit Hauptvariante verknüpfen:
@@ -2844,7 +2900,7 @@ Maße der Hauptvariante angeben:
 **__Hinweis:__** Diese VPE wird aktuell nicht in Berechnungen berücksichtigt. +
 Die Berechnung von Grundpreisen, z.B. pro Kilogramm, erfolgt auf der Basis des Gewichtes, das unter **Inhalt** eingetragen ist und der Einstellung unter **Einheit** in Verbindung mit dem **Preis**. Der Eintrag bei der Option **VPE** hat keinen Einfluss auf die Berechnung eines Grundpreises.
 
-|*Grundpreis anzeigen*
+|*Grundpreisanzeige*
 |Wählen, ob der Grundpreis der Variante im Webshop angezeigt werden soll. +
 Aktiviert = Der Grundpreis der Variante wird im Webshop angezeigt, wenn die entsprechende Logik im Design hinterlegt ist. +
 Nicht aktiviert = Der Grundpreis der Variante wird nicht im Webshop angezeigt. +
@@ -2885,10 +2941,10 @@ Der EK netto wird u.a. für die <<artikel/artikel-verwalten#910, Preiskalkulatio
 |Der <<warenwirtschaft/wareneingaenge-verwalten#250, gleitende Durchschnittseinkaufspreis>> (GLD EK netto). Der GLD EK netto wird bei jedem Wareneingang neu aus den Einkaufspreisen aller im Lager verfügbaren Bestände einer Variante berechnet. +
 **__Hinweis:__** Bei der Berechung wird nur Wareneingang in die *Lager für gleitenden Durchschnittspreis* berücksichtigt, die im Menü *System » Waren » Warenbestand » Wareneingang* aktiviert wurden. Wenn keine Lager aktiviert sind, erfolgt keine Berechnung.
 
-|**Transportkosten netto**
+|**Transport netto**
 |Nettotransportkosten für die Variante eingeben. Dieser Wert wird für **Preiskalkulationen** und die Berechnung des Einstandspreises verwendet.
 
-|**Lagerkosten netto**
+|**Lager netto**
 |Nettolagerkosten für die Variante eingeben.
 
 |**Zoll**
@@ -3311,17 +3367,17 @@ Mehrere Varianten bearbeiten Sie per **Varianten-Gruppenfunktion** oder per **St
 [.instruction]
 Varianten-Gruppenfunktion ausführen:
 
-.  Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
-.  Wählen Sie in der Suche unter **Tabellentyp** die Option **Varianten**.
-.  Wählen Sie die zu bearbeitenden Varianten.
-.  Klicken Sie auf **Varianten-Gruppenfunktion**. +
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
+. Wählen Sie in der Suche unter **Tabellentyp** die Option **Varianten**.
+. Wählen Sie die zu bearbeitenden Varianten.
+. Klicken Sie auf **Varianten-Gruppenfunktion**. +
 → Das Fenster **Varianten-Gruppenfunktion** wird geöffnet.
 . Aktivieren Sie das Kontrollkästchen links neben der Option, die Sie bearbeiten möchten. Beachten Sie <<tabelle-mehrere-varianten-bearbeiten>>.
 . Legen Sie fest, ob die Option an den markierten Varianten aktiviert oder deaktiviert werden soll. +
 → Um die Option an der Variante zu aktivieren, aktivieren Sie das Kontrollkästchen rechts neben der Option. +
 → Um die Option an der Variante zu deaktivieren, lassen Sie das Kontrollkästchen rechts neben der Option leer. +
 **__Hinweis:__** Vererbungseinstellungen können nur einzeln ausgeführt werden. Daher werden alle weiteren Einstellungen ausgegraut, wenn Sie eine Vererbungseinstellung markieren.
-.  Klicken Sie auf **Ausführen**, um die Einstellungen an den Varianten zu ändern. +
+. Klicken Sie auf **Ausführen**, um die Einstellungen an den Varianten zu ändern. +
 **__Tipp:__** Bei der Vererbung werden Hauptvarianten, die in der Artikelübersicht markiert wurden, beim Ausführen der Gruppenfunktion ignoriert.
 
 [[tabelle-mehrere-varianten-bearbeiten]]
@@ -3481,11 +3537,11 @@ Kontrollkästchen rechts neben **Eigenschaften** nicht aktiviert = Deaktiviert d
 [.instruction]
 Stapelverarbeitung ausführen:
 
-.  Öffnen Sie das Menü **Artikel » Stapelverarbeitung**.
+. Öffnen Sie das Menü **Artikel » Stapelverarbeitung**.
 . Wechseln Sie in das Tab **Varianten**.
-.  Wählen Sie die Filter gemäß <<tabelle-variantenfilter-stapelverarbeitung>>.
-.  Nehmen Sie die Einstellungen gemäß <<tabelle-mehrere-varianten-bearbeiten>> vor.
-.  Klicken Sie auf **Anwenden**, um die Einstellungen an den Varianten vorzunehmen.
+. Wählen Sie die Filter gemäß <<tabelle-variantenfilter-stapelverarbeitung>>.
+. Nehmen Sie die Einstellungen gemäß <<tabelle-mehrere-varianten-bearbeiten>> vor.
+. Klicken Sie auf **Anwenden**, um die Einstellungen an den Varianten vorzunehmen.
 
 [[tabelle-variantenfilter-stapelverarbeitung]]
 .Filteroptionen für die **Stapelverarbeitung** von Varianten
@@ -3793,7 +3849,7 @@ Varianten im Artikel filtern:
 |**Variantennummer**
 |Variantennummer eingeben, um nach der Variante mit dieser Nummer zu suchen.
 
-|**Externe Varianten-ID**
+|**Ext. Varianten-ID**
 |ID eingeben, um nach der Variante mit dieser externen Varianten-ID zu suchen.
 
 |**Barcode**
@@ -3816,7 +3872,7 @@ Ein Suchindex ist nötig, damit Artikel bei der Artikelsuche im plentymarkets Ba
 |====
 |Einstellung |Erläuterung
 
-|**Indizierte Artikel;  +
+|**Indizierte Artikel; +
 Indizierte Artikel mit Merkmalen**
 |Vom Suchindex erfasste Artikel in der jeweiligen Sprache.
 
@@ -4617,4 +4673,4 @@ Seriennummern-Funktion aktivieren:
 
 Mit Prozessen können Sie das Erfassen von <<basics/automatisierung/prozesse/aktionen#420, Seriennummern automatisieren>>.
 
-//  NEXT: a id="3000." name="3000.">16. März 2017</a
+// NEXT: 4000
