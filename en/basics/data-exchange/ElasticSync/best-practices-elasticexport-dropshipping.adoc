@@ -1,0 +1,66 @@
+= Best Practices: Drop shipping and Elastic export
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Elastic export, Drop shipping, Drop shipping provider, Best practices, FormatDesigner, Export, Data
+:position: 40
+
+Thanks to the combination of our plugins link:https://marketplace.plentymarkets.com/plugins/markets/ElasticExport_4763[ElasticExport^] and link:https://marketplace.plentymarkets.com/plugins/integration/ElasticSync_4750[ElasticSync^] including the <<en/basics/data-exchange/ElasticSync/FormatDesigner#, FormatDesigner>>, data exchange between plentymarkets and additional systems or service providers can be easily automated.
+
+== Creating an interface with your drop shipping provider: no coding skills needed
+
+If you want to use services that require data from your plentymarkets system but cannot be integrated directly via an interface, our plugins ElasticExport and Elastic Sync including the FormatDesigner offer you a simple and versatile solution.
+
+In the following, the connection and the interplay between the two plugins will be shown with the help of a use case. The use case will demonstrate how order data can be transferred to a local shipping provider without having to rely on a separate interface for data transmission.
+
+== Creating the necessary format
+
+The first step consists of creating the necessary format with the help of the FormatDesigner. +
+
+[.instruction]
+Creating the format in the FormatDesigner:
+
+. Go to *Data » FormatDesigner*.
+. Create a new format of the type *orderItem*.
+. Assign a distinct *name* to the format and select the *separators* that should be used.
+. By clicking on *Save*, the new format is created.
+
+Use the FormatDesigner to flexibly create a data export that meets the requirements of your service provider. First, select the appropriate category and the desired field within the category on the right-hand side of the menu. By clicking on the field, it is added to the format. You can now enter an individual name for that field. For example, you can rename the field with the default name *Custom_value* so that it is displayed as *fulfilment_custno* in the final export file. +
+
+In our example, we have a preset external customer number assigned by the shipping provider. Click on *change value* to include a fixed value. +
+
+The following fields from the *orderItem* format are typically needed to manage drop shipping:
+
+image::basics/data-exchange/ElasticSync/assets/en-bp-elasticexport-dropshipping_01.png[]
+
+[WARNING]
+.Pay attention to data protection laws
+====
+Make sure that you work within the legal frameworks concerning the protection of customer data. Should your drop shipping provider require data such as telephone numbers or email addresses from customers, those data need to be documented separately. To pass on such data, you have to be authorized by the respective customers to do so.
+====
+
+== Using the created format
+
+In the second step, the format created in the FormatDesigner is used for an Elastic export. +
+
+[.instruction]
+Using the format with Elastic export:
+
+. Go to *Data » Elastic export*.
+. Click on *New export* to create a new export.
+. Select the type *Order item*.
+. Use the field *Provisioning* to determine whether the export file should be provided via HTTP or via a server.
+. In the field *File name*, template variables can be entered. Example: The template variable *$day$hour.csv* inserts the respective date and the matching hour into the name of the export file.
+. Use the field *Transfer* to select the interval in which a new file should be exported.
+. Use the *Order item filters* to determine which order items should be included in the export file.
+. The option below *Format settings* allows you to set up a status change for successfully exported orders. The advantage of a status change is that orders are only exported once and are thus only processed once by the drop shipping provider.
+. *Save* the settings.
+
+image::basics/data-exchange/ElasticSync/assets/en-bp-elasticexport-dropshipping_02.png[]
+
+image::basics/data-exchange/ElasticSync/assets/en-bp-elasticexport-dropshipping_03.png[]
+
+== Transmitting the export files
+
+After using the FormatDesigner to create the format and selecting the options for the Elastic export, you only have to decide on how you would like to transmit the export file to your drop shipping provider.
+
+Your selection for the field *Provisioning* in the menu *Data » Elastic export* is crucial here. If you have selected an FTP server, the drop shipping provider can access data independently on that server on a daily basis. In case you want to manually transmit your data in certain cases, you can use the *Download* function in the menu *Data » Elastic export* any time to download the latest export file and process it as needed.
