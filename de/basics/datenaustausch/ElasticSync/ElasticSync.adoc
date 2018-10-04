@@ -7,6 +7,12 @@ include::{includedir}/_header.adoc[]
 
 Diese Handbuchseite beschreibt den Datenimport in plentymarkets über das Plugin ElasticSync. Ein Import von Daten ist ratsam, wenn Sie z.B. neue Artikel, Kundendaten oder Lagerbestände in Ihr plentymarkets System einpflegen möchten und die Daten bereits digital vorliegen. ElasticSync ermöglicht es über das Erstellen von sogenannten Syncs, Datenimporte auszuführen. Ein Import kann manuell oder automatisiert erfolgen. Das ElasticSync-Plugin steht Ihnen kostenlos im link:https://marketplace.plentymarkets.com/plugins/integration/ElasticSync_4750[plentyMarketplace^] zur Verfügung.
 
+[TIP]
+.Plugin aktualisieren?
+====
+ElasticSync wird ständig aktualisiert und verbessert. Prüfen Sie deshalb im Menü *Plugins » Plugin-Übersicht » Plugin-Set öffnen*, dass Sie die aktuelle Version von ElasticSync verwenden, bevor Sie Syncs oder Exportformate erstellen.
+====
+
 = Allgemeine Einstellungen
 
 [#1210]
@@ -74,30 +80,41 @@ Aktuell ist jedoch nur die Auswahl *CSV* verfügbar, da nur CSV-Dateien importie
 2+|*Trennzeichen*
 
 |*Trennzeichen*
-|Trennzeichen wählen, das in der Importdatei verwendet wird, um die Datenfelder (Spalten) eines Datensatzes voneinander zu trennen.
+|Trennzeichen wählen, das in der Importdatei verwendet wird, um die Datenfelder (Spalten) eines Datensatzes voneinander zu trennen. +
+Mögliche Trennzeichen sind *Semikolon*, *Komma*, *Tabulator* oder *Pipe*.
 
 |*Feldbegrenzungszeichen*
-a|Begrenzungszeichen innerhalb von Feldern wählen, die mehrere Werte enthalten können.
-
+|Begrenzungszeichen innerhalb von Feldern wählen, die mehrere Werte enthalten können. +
 * " = einzelne Werte innerhalb eines Feldes sind durch doppelte Anführungszeichen voneinander getrennt.
 * ' = einzelne Werte innerhalb eines Feldes sind durch einfache Anführungszeichen voneinander getrennt.
 
 2+|*Quelle*
 
 |*Quelle*
-a|*FTP* oder *HTTP* wählen. +
-Je Option werden weitere Einstellungen sichtbar:
+a|*FTP*, *HTTP* oder *SFTP* wählen. +
+Je nach gewählter Option werden weitere Einstellungen sichtbar:
 
 *FTP* = Host, Port, Benutzername, Passwort und Dateiname werden als Einstellungen sichtbar.
 
     * *Host (Pflichtfeld)* = Host des FTP-Servers eingeben. +
-      *_Tipp:_* plentymarkets FTP-Zugang nutzen.
+      *_Tipp:_* Nutzen Sie hierzu Ihren plentymarkets FTP-Zugang.
     * *Port* = Port des FTP-Servers. Wenn kein Port eingetragen ist, wird der Standard-Port (22) verwendet.
     * *Benutzername (Pflichtfeld)* = Benutzer für FTP-Zugang eingeben.
     * *Passwort (Pflichtfeld)* = Passwort für FTP-Zugang eingeben.
     * *Dateiname* = Pfad und Name der Datei eingeben, aus der Daten importiert werden sollen.
     *_Hinweis:_* Wildcards können im Feld *Dateiname* verwendet werden, indem z.B. ein Teil des Dateinamens durch ein *** ersetzt wird. Wildcards nur in Kombination mit der Option *Datei nach erfolgreichem Import in Archiv verschieben* verwenden.
     * *Datei nach erfolgreichem Import in Archiv verschieben* = Wenn diese Option aktiv ist, wird nach erfolgreichem Import die Importdatei automatisch in einen neuen Ordner *Archiv* auf dem FTP-Verzeichnis verschoben.
+
+
+*HTTP* = *Externe URL* oder *Datei-Upload* aus der Dropdown-Liste *HTTP-Optionen* wählen.
+
+        * *Externe URL* = URL eingeben, unter der die Importdatei erreichbar ist. +
+         *_Tipp:_* Speichern Sie die Datei auf dem plentymarkets Webspace.
+         * *Datei-Upload* = lokale Datei direkt hochladen. +
+         *_Wichtig:_* Die Datei wird auf einem öffentlichen Bucket auf S3 gespeichert. Jeder, der die URL zu der Datei kennt, kann somit auf die Datei zugreifen.
+          * *Authentifizierung*: Wählen, ob für den Zugriff auf die Datei eine Authentifizierung erforderlich ist oder nicht.
+            ** *keine* = keine Authentifizierung erforderlich
+            ** *HTTP-Authentifizierung* = Authentifizierung per Benutzer und Passwort erforderlich
 
 *SFTP* = Host, Port, Benutzername, Passwort und Dateiname werden als Einstellungen sichtbar.
 
@@ -108,16 +125,6 @@ Je Option werden weitere Einstellungen sichtbar:
         * *Dateiname* = Pfad und Name der Datei eingeben, aus der Daten importiert werden sollen.
         *_Hinweis:_* Wildcards können im Feld *Dateiname* verwendet werden, indem z.B. ein Teil des Dateinamens durch ein *** ersetzt wird. Wildcards nur in Kombination mit der Option *Datei nach erfolgreichem Import in Archiv verschieben* verwenden.
         * *Datei nach erfolgreichem Import in Archiv verschieben* = Wenn diese Option aktiv ist, wird nach erfolgreichem Import die Importdatei automatisch in einen neuen Ordner *Archiv* auf dem FTP-Verzeichnis verschoben.
-
-*HTTP* = *Externe URL* oder *Dateiupload* aus der Dropdown-Liste *HTTP-Optionen* wählen.
-
-    * *Externe URL* = URL eingeben, unter der die Importdatei erreichbar ist. +
-     *_Tipp:_* Datei auf plentymarkets Webspace speichern.
-      * Authentifizierung: Wählen, ob für den Zugriff auf die Datei eine Authentifizierung erforderlich ist oder nicht.
-        ** *keine* = keine Authentifizierung erforderlich
-        ** *HTTP-Authentifizierung* = Authentifizierung per Benutzer und Passwort erforderlich
-    * Dateiupload: lokale Datei hochladen +
-    *_Wichtig:_* Die Datei wird auf einem öffentlichen Bucket auf S3 gespeichert. Jeder, der die URL zu der Datei kennt, kann somit auf die Datei zugreifen.
 |====
 
 [#1300]
@@ -143,8 +150,9 @@ Importoptionen festlegen:
 |*Wenn keine Daten gefunden wurden*
 a|*Überspringen* oder *Erstellen* wählen.
 
-* *Überspringen* = Wenn anhand der Abgleichfelder keine übereinstimmenden Daten gefunden werden, wird der Datensatz nicht importiert.
-* *Erstellen* = Wenn anhand der Abgleichfelder keine übereinstimmenden Daten gefunden werden, wird ein neuer Datensatz, z.B. ein neuer Artikel oder ein neuer Auftrag, hinzugefügt.
+* *Neue Daten importieren, vorhandene aktualisieren* = Wenn anhand der Abgleichfelder keine übereinstimmenden Daten gefunden werden, wird ein neuer Datensatz, z.B. ein neuer Artikel oder ein neuer Auftrag, hinzugefügt. Gleichzeitig werden bereits vorhandene Daten aktualisiert.
+* *Nur vorhandene Daten aktualisieren* = Vorhandene Daten werden aktualisiert. Wenn anhand der Abgleichfelder keine übereinstimmenden Daten gefunden werden, wird der Datensatz nicht importiert.
+* *Nur neue Daten importieren* = Es werden ausschließlich neue Datensätze importiert, für die anhand der Abgleichfelder keine übereinstimmenden Daten gefunden werden.
 
 |*Dezimalzahl*
 a|*Deutsche Schreibweise* oder *Englische Schreibweise* wählen.
@@ -228,7 +236,10 @@ Filter hinzufügen:
 . Wählen Sie einen Operator.
 . Geben Sie einen Wert ein.
 . Klicken Sie auf *Filter hinzufügen*. +
-→ Der Filter wird gespeichert und Sie können weitere Filter hinzufügen.
+→ Der Filter wird gespeichert.
+. Fügen Sie bei Bedarf weitere Filter hinzu. +
+→ Nur die Daten werden importiert, auf die alle hinzugefügten Filter zutreffen.
+
 
 [#1620]
 == Sync-Logs einsehen
@@ -487,10 +498,13 @@ Listing Shop-Kategorie 2
 |Nummerisch (interne ID)
 |
 
-|Markierung 1; +
-Markierung 2
-|
-|
+|Markierung 1
+|Nummerisch (interne ID)
+|ID der Markierung 1, siehe *System » Artikel » Makierungen » Tab: Markierung 1*
+
+|Markierung 2
+|Nummerisch (interne ID)
+|ID der Markierung 2, siehe *System » Artikel » Makierungen » Tab: Markierung 2*
 
 |Altersfreigabe
 |0 = Keine verfügbar +
@@ -639,7 +653,7 @@ Für den Import von Variantendaten stehen die in <<tabelle-zuordnungsfelder-vari
 |Aktiv
 |0 = Nein +
 1 = Ja
-|Ist Variante aktiv, d.h. wird sie im Webshop und ggf. auf Marktplätzen angeboten?
+|Ist Variante aktiv, d.h. wird die Variante im Webshop und ggf. auf Marktplätzen angeboten?
 
 |Variantennr.
 |Alphanummerisch
@@ -949,11 +963,32 @@ oder
 
 *_Tipp:_* Für weitere Kategorien zusätzliche Mappings erstellen.
 
+|Alle Kategorieverknüpfungen löschen
+|0 = Nein +
+1 = Ja
+|Löst alle verknüpften Kategorien.
+
+|Kategorie-IDs (kommasepariert)
+|Alphanummerisch
+|IDs der Kategorien, die mit der Variante verknüpft werden sollen.
+
+|Kategorienamen (kommasepariert)
+|Alphanummerisch
+|Name der Kategorien, die mit der Variante verknüpft werden sollen.
+
+|Verknüpfungen löschen (Kategorie-IDs, kommasepariert)
+|Alphanummerisch
+|IDs der Kategorien, die von der Variante gelöst werden sollen.
+
+|Verknüpfungen löschen (Kategorienamen, kommasepariert)
+|Alphanummerisch
+|Namen der Kategorien, die von der Variante gelöst werden sollen.
+
 3+|*Standardkategorien*
 
 |ID der Kategorie
 |Nummerisch (interne ID)
-|
+|ID der Standardkategorie
 
 |Automatisch ausgewählt
 |N = Nein +
@@ -962,13 +997,13 @@ Y = Ja
 
 |Name der Kategorie
 |Alphanummerisch
-|
+|Name der Standardkategorie
 |====
 
 [#2350]
 ==== Bestand
 
-Für den Import von Bestandsdaten stehen die in <<tabelle-zuordnungsfelder-bestand>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+Für den Import von Bestandsdaten stehen die in <<tabelle-zuordnungsfelder-bestand>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-bestand]]
 .Felder für Import von Bestand
@@ -1182,7 +1217,7 @@ Für den Import von Eigenschaftsverknüpfungen stehen die in <<tabelle-zuordnung
 
 |ID
 |Nummerisch (interne ID)
-|IDs siehe *System » Einstellungen » Eigenschaften*
+|IDs siehe *System » Einstellungen » Eigenschaften » Konfiguration*
 
 |Sprache
 |Buchstaben
@@ -1736,7 +1771,6 @@ In <<tabelle-Abgleichfelder-Kategorie>> werden Felder erläutert, die für den A
 
 |Kategoriename Ebene 1 - 6
 |
-
 |====
 
 [#2120]
@@ -1835,11 +1869,30 @@ customer = Kategorie und alle Unterkategorien sind nur für eingeloggte Webshop-
 
 |Template-Seite
 |Alphanummerisch
+|
 
 |Volltextsuche
 |0 = Nein +
 1 = Ja
 |
+
+|Robots
+|Alphanummerisch
+|*all* = Webseite der Kategorie in Suchmaschinenindex aufnehmen und Links auf Seite folgen. +
+*index* = In Suchmaschinenindex aufnehmen. +
+*nofollow* = Links auf der Seite nicht folgen. +
+*noindex* = Nicht in den Suchmaschinenindex aufnehmen. +
+*nofollow_noindex* = Links nicht folgen und Webseite der Kategorie nicht in Suchmaschinenindex aufnehmen.
+
+|Platzhalter übersetzen
+|Alphanummerisch
+|*Y* = Ja +
+*N* = Nein +
+*L* = Nur Link-Template-Variablen und -Funktionen werden übersetzt
+
+|canonical
+|Alphanummerisch
+|URL einer Kategorie mit dem gleichen Inhalt, max. 256 Zeichen
 
 3+|Mandant (Shop) (Zuordnung pro Mandant)
 
@@ -2121,7 +2174,6 @@ datei
 
 Voraussetzung für die Nutzung des Plugins:
 
-* Das Plugin Elastischer Export muss installiert und in Productive bereitgestellt sein.
 * Damit die neu importierten oder aktualisierten Lieferländer in einem Kontaktdatensatz in der Kontaktübersicht angezeigt werden, müssen diese Lieferländer im Menü *System » Aufträge » Versand » Optionen » Tab: Lieferländer* aktiviert sein.
 
 Mit Syncs des Typs *Kontakte, Firmen und Adressen* importieren Sie Kontaktdaten oder aktualisieren bestehende Datensätze. Diese Daten sind z.B. Daten der Lieferadresse und Rechnungsadresse, das Geburtsdatum des Kontakts, der Kundentyp, Kontaktoptionen wie die private oder geschäftliche E-Mail-Adresse sowie die Firmendaten.
@@ -2228,7 +2280,13 @@ Es gibt derzeit nur ein Abgleichfeld für die Identifizierung von Aufträgen. Da
 [#2020]
 === Felder für die Auftragszuordnung
 
-In <<tabelle-Zuordnungsfelder-Auftraege>> werden Felder erläutert, die für die Zuordnung von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<tabelle-Zuordnungsfelder-Auftraege>> werden Felder erläutert, die für die Zuordnung von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. +
+
+[WARNING]
+.Pflichtfelder für die Auftragszuordnung
+====
+Beachten Sie die mit *Pflichtfeld* gekennzeichneten Felder in <<tabelle-Zuordnungsfelder-Auftraege>>. Wenn Sie diese Pflichtfelder nicht aktivieren, wird die Auftragszuordnung nicht korrekt durchgeführt.
+====
 
 [[tabelle-Zuordnungsfelder-Auftraege]]
 .Zuordnungsfelder für Auftragsimport
@@ -2238,7 +2296,8 @@ In <<tabelle-Zuordnungsfelder-Auftraege>> werden Felder erläutert, die für die
 
 3+|*Auftrag*
 
-|Typ-ID
+|ID des Typs +
+**Pflichtfeld**
 |Nummerisch
 a|Auftragstypen bilden verschiedene Geschäftsvorfälle ab. Folgende Typen stehen zur Verfügung:
 
@@ -2253,25 +2312,27 @@ a|Auftragstypen bilden verschiedene Geschäftsvorfälle ab. Folgende Typen stehe
 * Sammelauftrag = 9
 * Sammelgutschrift = 10
 
-|Status-ID
+|ID des Status
 |Nummerisch
 |ID des Status. Die IDs vergeben Sie selbst im Bereich von 1,0000 bis 18,9999. Die Status finden Sie im Menü *System » Aufträge » Status*.
 
-|Eigner-ID
+|ID des Eigners
 |Nummerisch
 |ID des Eigners. Ein Eigner ist ein Benutzer, der als Eigner zugeordnet wurde. Die ID des Eigners entspricht also der ID des Benutzers. Die Benutzer-ID finden Sie im Menü *System » Einstellungen » Benutzer » Konten*. Aufträge können einem Eigner zugeordnet werden, müssen aber nicht.
 
-|PlentyID
+|PlentyID +
+**Pflichtfeld**
 |Nummerisch
 |ID des Mandanten. Die PlentyID finden Sie im Menü *System » Mandant » Mandant wählen » Einstellungen*.
 
-|Standort-ID
+|ID des Standortes
 |Nummerisch
 |ID des Standorts. Standorte finden Sie im Menü *System » Mandant » Mandant wählen » Standorte*.
 
 3+|*Auftragsposition*
 
-|Typ
+|Typ +
+**Pflichtfeld**
 |Nummerisch
 a|Die Auftragspositionstypen bilden verschiedene Kostenposten eines Auftrags ab. Die mit den Posten verbundenen Kosten können sowohl negativ als auch positiv sein. Standardmäßig wird hier die ID des Auftragspositionstyps erwartet. Die Typen, die zur Verfügung stehen, sind hier mit Typ-ID aufgelistet. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
 
@@ -2293,7 +2354,8 @@ Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 |Nummerisch
 |Standardmäßig wird hier die ID der Herkunft erwartet. Die IDs finden Sie im Menü *System » Aufträge » Auftragsherkunft*. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
 
-|Name
+|Name +
+**Pflichtfeld**
 |Alphanummerisch
 |Spalte wählen, die den Namen der Auftragsposition enthält. Standardmäßig wird davon ausgegangen, dass die Namen in der Systemsprache angegeben sind.
 
@@ -2309,7 +2371,8 @@ Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 |Nummerisch
 |Spalte wählen, die den Steuerbetrag enthält. Standardmäßig wird der Umsatzsteuerbetrag für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
 
-|Menge
+|Menge +
+**Pflichtfeld**
 |Nummerisch
 |Spalte wählen, die die Anzahl einer Auftragsposition enthält.
 
@@ -2321,7 +2384,8 @@ Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 |Nummerisch
 |Spalte wählen, die die Position der Auftragspositionen enthält. Die Position dient der Sortierung innerhalb des Auftrages. Sie wird jedoch bisher noch nicht beachtet.
 
-|Währung
+|Währung +
+**Pflichtfeld**
 |Alphanummerisch
 |Standardmäßig wird der ISO-Code einer Währung erwartet, z.B. EUR für Euro.
 
@@ -2671,3 +2735,39 @@ Lagerort erstellen:
 . Klappen Sie auf der rechten Seite den Bereich *Ebene der Lagerorte* auf.
 . Aktivieren Sie die Felder *Dimension ID*, *Level Position* und *Level name*.
 . *Speichern* Sie die Einstellungen.
+
+[#2250]
+=== Lagerort löschen
+
+Sie können mit ElasticSync Lagerorte löschen.
+
+[.instruction]
+Lagerort löschen:
+
+. Öffnen Sie das Menü *Daten » ElasticSync*.
+. Klicken Sie in der Sync-Übersicht auf den Sync.
+. Klicken Sie auf *Abgleich*.
+. Wählen Sie das Feld *Storage location ID*.
+. Wählen Sie die Importoption *Nur vorhandene Daten aktualisieren*.
+. *Speichern* Sie die Einstellungen.
+. Klicken Sie auf *Zuordnung*.
+. Öffnen Sie die Zuordnung aus der Übersicht.
+. Klappen Sie auf der rechten Seite den Bereich *Lagerorte* auf.
+. Aktivieren Sie das Feld *Lagerort löschen*.
+. Es können alle oder nur bestimmte Lagerorte gelöscht werden. Nehmen Sie die entsprechenden Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-Lagerorte-loeschen>>.
+. *Speichern* Sie die Einstellungen.
+
+[[tabelle-Lagerorte-loeschen]]
+.Alle oder nur bestimmte Lagerorte löschen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|Alle Lagerorte löschen
+|Alle Lagerort-IDs, die in der CSV-Datei vorhanden sind, werden gelöscht. +
+ Hier wird als Wert für Lagerort löschen *Eigener Wert* ausgewählt. +
+ Anschließend wählt man *Yes* oder *No*.
+
+|Nur bestimmte Lagerorte löschen
+|Hier gibt es 2 Werte in der CSV-Datei: einmal die Lagerort-IDs und einmal die Werte *Yes* und *No*, durch die bestimmt werden kann, ob der Wert gelöscht werden soll oder nicht.
+|====

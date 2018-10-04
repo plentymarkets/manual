@@ -141,7 +141,7 @@ All plentymarkets e-mail addresses which are used to send messages to Amazon hav
 [#500]
 ===  Carrying out item settings
 
-In the *Item settings* tab, you can carry out settings related to the item export. For example, you can configure automatic processes and export filters.
+In the *Item settings* tab, you carry out settings related to the item export. For example, you can configure automatic processes and export filters. If you select export filters, only items with the selected filters are exported.
 
 .settings in the *Item settings* tab
 [cols="1,3"]
@@ -166,7 +166,8 @@ Flag 2; +
 Store items*
 | Only items with the selected filters will be exported.  +
 *Item availability* = If a parent (main item) has an availability that was not selected here, then it will not be transferred.  +
-*Flag 1* and *Flag 2* = These filters only apply to the export that takes place at night.
+*Flag 1* and *Flag 2* = These filters only apply to the export that takes place at night. +
+*Store items* = If you select the filter *Only items visible in online store*, the items which should be exported have to be activated for the shop which was selected for the option *Client* in the *System » Markets » Amazon » Settings » Tab: Settings* menu for the selected Amazon account. If you select the filter *All items*, then all items are exported, independent of the selected shop.
 
 2+| Export settings
 
@@ -197,6 +198,10 @@ Items with the setting *Limited to net stock* will not be taken into considerati
 
 |*Manufacturer part number*
 | Select whether you want to transfer the SKU, variation number, GTIN, variation ID, model number or no value at all for the CSV file's field part_number.
+
+|*Additional SKU*
+| Activate the data exchange for additional Amazon SKUs. +
+Activate *ALL*, the *Stock update*, or the *Price update* for <<Defining additional SKUs manually, additional SKUs>>.
 |====
 
 Learn more about the item settings in the following video tutorial:
@@ -238,6 +243,12 @@ In the *Order settings* tab, you can carry out settings related to shipping. The
 
 |*Outstanding orders*
 | Decide whether pending orders should be imported every 15 minutes or never.
+
+|*Credit note import*
+| Select whether Amazon credit notes should be imported into your plentymarkets system. +
+*Yes* = Amazon credit notes are imported into your plentymarkets system every four hours. +
+*No* = Credit notes are not imported. If you select *No*, create an event procedure to import returns into your plentymarkets system in form of credit notes. +
+The credit note import is deactivated by default.
 
 2+| Shipment by Amazon (FBA)
 
@@ -319,13 +330,13 @@ The availability for variations can be individually edit in the *Item » Edit it
 |====
 | Setting | Explanation
 
-|*Amazon product type*
+|*Product type*
 | Select the <<basics/data-exchange/data-formats/item#50, *Amazon product type*>>.
 
-|*Fulfilment by Amazon (FBA)*
+|*FBA Fulfillment*
 | Select one of the Amazon marketplaces *AMAZON_EU* (Europe), *AMAZON_FE* (Far East), *AMAZON_NA* (North America).
 
-|*Shipment by Amazon (FBA)*
+|*Amazon FBA*
 | Activate if the FBA function should be used and FBA stock and Multi-Channel stock should be imported.
 |====
 
@@ -358,24 +369,36 @@ Addding SKU
 → The SKU will be saved and displayed.
 
 [#760]
-==  Defining Amazon order import SKU manually
+==  Defining additional SKUs manually
 
-Add order import SKUs manually for Amazon in the menu <<item/managing-items#170, *Item » Edit item » Open item » Tab: Variation ID » Tab: Settings » Tab: Availability*>>. The order import SKU is only used for the order import from Amazon.
+Add additional SKUs manually for Amazon in the menu <<item/managing-items#170, Item » Edit item » Open item » Tab: Variation ID » Tab: Settings » Tab: Availability>>. As an alternative, you can use the data format VariationAdditionalSKU to import additional SKUs.
 
 [.instruction]
 Addding SKU
 
 . Open the *Item » Edit item » Open item » Tab: Variation ID » Tab: Settings* menu.
 .  Click on the *Availability* tab.
-.  Click in the *Amazon order import SKU* section on *Add*.  +
-→ The editing window *New order import SKU* will be displayed.
+.  Click on *Add* in the *Additional SKU* section. +
+→ The editing window *New additional SKU* is displayed.
 .  Select the referrer *Amazon* to add the SKU.
 .  Select the corresponding market account.
 .  Enter the SKU.
 .  Click on *Add*.  +
-→ The SKU will be saved and displayed.
+→ The SKU is saved and displayed.
 
 SKUs can be changed afterwards.
+
+[.subhead]
+Activating the stock update and price update for additional SKUs
+
+Additional SKUs are automatically included in the order import. Activate the stock update and price update for additional SKUs manually in the menu *System » Markets » Amazon » Settings » Tab: Item settings*. The stock update and price update for additional SKUs is carried out along with the normal stock update and price update at the interval that you have selected within *System » Markets » Amazon » Settings » Tab: Item settings* for the options *Price changes* and *Stock synchronisation* in the section *Automatic processes*.
+
+[.instruction]
+Activating the stock update and price update:
+
+. Go to *System » Markets » Amazon » Settings » Tab: Item settings*.
+. In the section *Export settings*, place a check mark next to *Stock update* and *Price update* for the option *Additional SKU*, depending on which options you want to activate. *ALL* activates both the stock update and the price update.
+. *Save* the settings.
 
 [#800]
 ==  Defining a sales price
@@ -614,6 +637,35 @@ Next, activate the attributes within the item settings.
 ====
 If an item's variations have attribute links but the main variation has none then the main variation has to be set to inactive. Otherwise the main variation will be exported as a single item. The main variation must be activated if it has an attribute link.
 ====
+
+[#1390]
+== Linking variation properties with Amazon
+
+Use <<item/managing-items#3000, variation properties>> to define individual characteristics of a variation.
+
+Link variation properties that you have created in the menu <<item/managing-items#3100, *System » Settings » Properties » Configuration*>> and added to a variation with Amazon in the menu *System » Settings » Properties » Configuration » Tab: Amazon*.
+
+[IMPORTANT]
+.Variation properties are prioritised over properties
+====
+If you have linked a property and a variation property with the same Amazon field, then the variation property is prioritised over the property. The property is then overwritten by the variation property during the item export.
+====
+
+[.instruction]
+Linking a variation property with Amazon:
+
+. Go to *System » Settings » Properties » Configuration*.
+. Open the property.
+. Click on the *Visibility* tab.
+. Activate an *Amazon referrer* under *Referrers*.
+. *Save* the settings.
+. Click on the *Amazon* tab.
+. Click on *Add correlation*.
+. Select the *Amazon platform*.
+. Select the Amazon *category*.
+. Select the Amazon *field*.
+. *Save* the settings. +
+→ The property is linked with the Amazon field and exported during the next item export.
 
 [#1400]
 ==  Linking properties with the Amazon product type
@@ -955,7 +1007,7 @@ You may NOT click on the yellow *Request report* button in the area *Request an 
 Even with Amazon, you have to anticipate the occasional order cancellation after a shipment has taken place. The customer then has to send the items back to you directly. For further information about creating a return in plentymarkets and resetting the outgoing items again, refer to the *<<stock-management/outgoing-items#, Outgoing items>>* page of the manual.
 
 [.subhead]
-Manually reversing with Seller Central
+MFN: Manually reversing with Seller Central
 
 Since Amazon received the customer's payment on your behalf, the reversal also has to take place via Amazon. You also have to take care of this in the order folder in Seller Central.
 
@@ -965,7 +1017,7 @@ Since Amazon received the customer's payment on your behalf, the reversal also h
 The interface does not automatically trigger the refund of the purchase price with Amazon. Rather, this has to be carried out manually or automatically with the help of an event procedure. If you forget to do this, then you risk a customer complaint with Amazon and negative feedback.
 ====
 
-Returns can be reported to Amazon in form of credit notes with the help of an event procedure. Returns for Amazon can only be created for orders of the type credit note. To do so, proceed as follows.
+MFN returns (=shipment by the seller) can be reported to Amazon in form of credit notes with the help of an event procedure. Returns for Amazon can only be created for orders of the type credit note. To do so, proceed as follows.
 
 [.subhead]
 Creating order statuses
@@ -1001,6 +1053,13 @@ Set up an *<<basics/automation/event-procedures#, event procedure>>* to automati
 .  Place a check mark next to the option *Active*.
 . *Save* the settings.
 --
+
+[TIP]
+.Event procedures and credit note import
+====
+Use event procedures to initiate refunds in plentymarkets. The automatic credit note import (option "Credit note import" in the order settings) ensures that credit notes are not duplicated in your system. If you manually create credit notes or have them created by a third-party system and there are no credit notes in your plentymarkets system, a credit note is imported via the import.
+====
+
 .event procedure for sending automatic returns to Amazon
 [cols="1,3,3"]
 |====
@@ -1018,6 +1077,12 @@ Set up an *<<basics/automation/event-procedures#, event procedure>>* to automati
 |*Return &gt; Create a return at Amazon*
 |
 |====
+
+[IMPORTANT]
+.Filter for the Amazon referrer
+====
+Do not select an Amazon FBA referrer such as Amazon FBA Germany for the filter *Order > Referrer* if you use the automatic credit note import.
+====
 
 [#3100]
 === Importing pending orders from Amazon
@@ -1195,6 +1260,26 @@ Activating the import function for FBA returns:
 Learn more about FBA in the following video tutorial:
 
 video::198346338[vimeo]
+
+[#3650]
+===  Automatically importing FBA credit notes
+
+Use the credit note import in order to automatically import FBA credit notes into your plentymarkets system. The credit notes are imported with the status which you have selected for the *Standard status for credit note* setting in the *System » Orders » Settings* menu. FBA credit notes are imported every four hours.
+
+[IMPORTANT]
+.Do not import FBA returns as credit notes via an event procedure
+====
+If you activate the credit note import, FBA credit notes are automatically imported into your plentymarkets system every four hours. Therefore, in this case do not use an event procedure to create credit notes from FBA returns.
+====
+
+[.instruction]
+Activating the automatic credit note import:
+
+. Go to *System » Markets » Amazon » Settings*.
+. Open the Amazon account.
+. Open the tab *Order settings*.
+. Select *Yes* for the option *Credit note import*.
+. *Save* the settings.
 
 [#3700]
 ==  Setting up Amazon Multi-Channel
@@ -1550,3 +1635,30 @@ Viewing the API log:
 Learn more about the API log in the following video tutorial:
 
 video::204331739[vimeo]
+
+[#6700]
+== FAQ
+
+=== Price and stock synchronisation
+
+===== Which settings do I have to activate so that prices are exported to Amazon?
+
+[.indented]
+* Activate the *sales price*: Make sure that the item's sales price is activated for the Amazon account and the Amazon referrer. This is done in the *System » Item » Sales prices* menu.
+
+* *Amazon product type*: You have to select an *Amazon product type* in the item's *Multi-Channel* tab.
+
+* Activate the item in the *Item » Edit item » Open item » Tab: Variation ID* menu. To do so, open the *Settings* tab and place a check mark next to the option *Active* in the *Availability* section. Then click on the *Availability* tab and activate the options *Web API* and the desired *Amazon referrer* in the *Markets* drop-down list.
+
+* *SKU*: Add an SKU with the referrer *Amazon*. This is done in the *SKU* section of the *Item » Edit item » Open item » Tab: Variation ID » Tab: Availability* menu.
+
+===== Which settings do I have to activate so that stock is exported to Amazon?
+
+[.indented]
+* Activate the item in the *Item » Edit item » Open item » Tab: Variation ID » Tab: Availability* menu. To do so, open the *Settings* tab and place a check mark next to the option *Active* in the *Availability* section. Then click on the *Availability* tab and activate the option *Web API* and the desired *Amazon referrer* in the *Markets* drop-down list.
+
+* *Amazon product type*: You have to select an *Amazon product type* in the item's *Multi-Channel* tab.
+
+* *SKU*: Add an SKU with the referrer *Amazon*. This is done in the *Item » Edit item » Open item » Tab: Variation ID » Tab: Availability* menu in the *SKU* section.
+
+* Export filter *Store items*: If you have selected *Only items visible in online store* for the export filter *Store items* in the *System » Markets » Amazon » Settings » Tab: Item settings* menu, then make sure that the item is activated for the web shop. This is done in the item's *Settings* tab.
