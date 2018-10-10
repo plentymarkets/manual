@@ -14,7 +14,7 @@ Für das Bereitstellen des SSL-Zertifikates wird eine *mtl. Gebühr in Höhe 2,-
 
 image:assets/monatlichen_kosten.png[monatlichen_kosten]
 
-''''
+
 Demnach ergeben sich folgende jährliche Kosten je Modell in aufsteigender Reihenfolge:
 
 [options="header,footer"]
@@ -25,7 +25,7 @@ Demnach ergeben sich folgende jährliche Kosten je Modell in aufsteigender Reihe
 |COMODO 1 Jahr  | 12*2 + 1*30   | 54,- €
 |===
 
-TIP: Alle Preise wurden in *netto* angegeben.
+TIP: Alle Preise sind in *netto* angegeben.
 
 === Let’sEncrypt oder COMODO - Welches Zertifikat soll ich nutzen?
 
@@ -36,7 +36,7 @@ TIP: Alle Preise wurden in *netto* angegeben.
 ==== Contra Let’sEncrypt
 * Die Vertrauenswürdigkeit wird im Hintergrund von der kleinen link:https://de.wikipedia.org/wiki/Zertifizierungsstelle[Zertifizierungsstelle]  (Certification Authority - kurz: CA) link:https://www.identrust.com[IdenTrust] bescheinigt – es handelt sich um keine traditionelle CA, sondern um ein Zertifikate ausstellendes Bank-Konsortium.
 
-Offizielle Homepage: https://letsencrypt.org/
+Offizielle Homepage: link:https://letsencrypt.org/[]
 
 '''
 
@@ -49,17 +49,47 @@ Offizielle Homepage: https://letsencrypt.org/
 * Zwingend strikte Einhaltung des Beschriebenen Bestellvorgangs notwendig
 * Das E-Mail-Postfach *hostmaster*@deineDomain.tld muss angelegt und abrufbar sein
 
-Offizielle Homepage: https://comodosslstore.com/
+Offizielle Homepage: link:https://comodosslstore.com/[]
 
 === Domainvoraussetzungen
-Ein SSL-Zertifikat muss und kann ausschließlich für die *Hauptdomain* des jeweiligen Hauptsystems oder Mandanten geordert werden.
-Siehe *Service Center » Systeme » PID » Tab: Domain » DID » Systemverknüpfung*
+Die Domain, für die das SSL-Zertifikat bestellt werden soll, muss eine im Service-Center aktivierte Hauptdomain sein (link:https://knowledge.plentymarkets.com/basics/arbeiten-mit-plentymarkets/plentymarkets-konto#_systemverkn%C3%BCpfung_erstellen[Handbuch: Systemverknüpfung erstellen]). +
+Siehe *Service Center » Systeme » PID » Tab: Domain » Domain-ID » Systemverknüpfung*
 
 image:assets/systemverknüpfung_hauptdomain.png[systemverknüpfung_hauptdomain]
 
 Die Bestellung eines SSL-Zertifikats *ist nicht möglich*, wenn für die entsprechende Domain unter dem Menüpunkt Systemverknüpfung die Auswahl externer Server abgespeichert ist.
 
 image:assets/externer_server.png[externer_server]
+
+==== Aktiviertes Autoscaling
+Vereinzelt gibt es noch immer Systeme, die nicht auf link:https://aws.amazon.com/de/autoscaling/[Autoscaling] (kurz: *AS*) umgestellt wurden. In den meisten Fällen liegt das daran, dass die Domain nicht bei plentymarkets gehostet wird und aus diesem Grund ein manuelles Eingreifen in die DNS-Einstellungen der Domain durch den Domain-Inhaber notwendig ist. +
+Eine weitere Ursache ist das *erstmalige* Hinzufügen einer Domain an einen Mandanten-Shop. Diese werden nicht automatisch auf AS umgestellt, sondern müssen von uns im Nachhinein umgestellt werden.
+
+===== Woran erkenne ich aktiviertes AS?
+Ob für das jeweilige System AS aktiviert ist oder nicht erkennt man anhand der dargestellten DNS-Einstellungen im Service-Center an der jeweiligen Domain. Systeme, die auf AS umgestellt wurden, benötigen zwingend einen CNAME-Record. Wenn dieser CNAME-Record im Service-Center nicht dargestellt wird, sondern stattdessen zwei A-Records, ist das System, bei dem zwei A-Records dargestellt werden, nicht auf AS umgestellt.
+
+* Beispiel der dargestellten DNS-Einstellungen bei einem System auf AS:
+image:assets/identify_set_as.png[DNS-Einstellungen bei aktiviertem AS]
+
+* Beispiel der dargestellten DNS-Einstellungen bei einem System *ohne* AS:
+image:assets/identify_non_set_as.png[DNS-Einstellungen bei nicht aktiviertem AS]
+
+===== Bei Subdomains: Existierende Parent-Domain
+Wenn ein SSL-Zertifikat für Sub-Domains bestellt werden soll, muss sichergestellt sein, dass die dazugehörige link:https://de.wikipedia.org/wiki/Domain_(Internet)[Parent-Domain] ebenfalls im Service-Center existiert und die notwendige Beziehung zueinander korrekt eingetragen ist.
+Solltet ihr die Parent-Domain bereits aus dem Service-Center entfernt haben, muss diese Parent-Domain erneut angelegt werden und, falls gewünscht, mit einem externen A-Record versehen werden, wenn diese *nicht* auf plentymarkets zeigen soll, sondern z.B. auf Shopware oder dergleichen (link:https://knowledge.plentymarkets.com/basics/arbeiten-mit-plentymarkets/plentymarkets-konto#_systemverkn%C3%BCpfung_erstellen[Handbuch: Systemverknüpfung erstellen]). +
+Erläutertes Fallbeispiel im Forum: link:https://forum.plentymarkets.com/t/ssl-verlaengerung-nicht-moeglich/501453/4?u=marvin.moldenhauer[SSL Verlängerung nicht möglich]
+
+===== DNS-Einstellungen
+====== DNS-Einstellungen gem. Angaben im Service-Center
+Die Validierung der SSL-Bestellung erfolgt auf Dateiebene.
+Das bedeutet, dass die Domain, für die das Zertifikat bestellt werden soll, zwingend korrekt erreichbar sein muss. Dazu müssen die DNS-Einstellungen gem. den Angaben im Service-Center entsprechen. +
+Siehe dazu link:https://forum.plentymarkets.com/t/selbsthilfe-bei-dns-problemen-wie-hinterlege-ich-korrekte-dns-einstellungen/65559[Selbsthilfe bei DNS-Problemen / Wie hinterlege ich korrekte DNS-Einstellungen]
+
+====== Kein AAAA-Record
+Für die Domain, für die das SSL-Zertifikat bestellt werden soll, darf kein IPv6-Eintrag (AAAA-Record) existieren.
+
+====== Kein negativer CAA-Record
+Für die Domain, für die das SSL-Zertifikat bestellt werden soll, muss sichergestellt werden, dass evtl. vorhandene link:https://de.wikipedia.org/wiki/DNS_Certification_Authority_Authorization[CAA-Records] die Bestellung von COMODO und/oder LetsEncrypt-Zertifikaten zulässt.
 
 === Veröffentlichung / Bereitstellung
 Nach Bestellung eines neuen Zertifikats muss dieses durch einen regelmäßig ausgeführten *Systemprozess* veröffentlicht werden. *Dies kann bis zu 60 Minuten dauern.*
