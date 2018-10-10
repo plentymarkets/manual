@@ -12,9 +12,9 @@ WARNING: Die Bereitstellungsgebühr wird *nicht* für bereits erfolgreich abgesc
 ''''
 Für das Bereitstellen des SSL-Zertifikates wird eine *mtl. Gebühr in Höhe 2,- € netto zzgl. der Kosten des SSL-Zertifikats* erhoben.
 
-image:assets/monatlichen_kosten.png[monatlichen_kosten]
+image:_best-practices/cloud/ssl-zertifikat/assets/monatlichen_kosten.png[monatlichen_kosten]
 
-''''
+
 Demnach ergeben sich folgende jährliche Kosten je Modell in aufsteigender Reihenfolge:
 
 [options="header,footer"]
@@ -25,7 +25,7 @@ Demnach ergeben sich folgende jährliche Kosten je Modell in aufsteigender Reihe
 |COMODO 1 Jahr  | 12*2 + 1*30   | 54,- €
 |===
 
-TIP: Alle Preise wurden in *netto* angegeben.
+TIP: Alle Preise sind in *netto* angegeben.
 
 === Let’sEncrypt oder COMODO - Welches Zertifikat soll ich nutzen?
 
@@ -36,7 +36,7 @@ TIP: Alle Preise wurden in *netto* angegeben.
 ==== Contra Let’sEncrypt
 * Die Vertrauenswürdigkeit wird im Hintergrund von der kleinen link:https://de.wikipedia.org/wiki/Zertifizierungsstelle[Zertifizierungsstelle]  (Certification Authority - kurz: CA) link:https://www.identrust.com[IdenTrust] bescheinigt – es handelt sich um keine traditionelle CA, sondern um ein Zertifikate ausstellendes Bank-Konsortium.
 
-Offizielle Homepage: https://letsencrypt.org/
+Offizielle Homepage: link:https://letsencrypt.org/[]
 
 '''
 
@@ -49,17 +49,47 @@ Offizielle Homepage: https://letsencrypt.org/
 * Zwingend strikte Einhaltung des Beschriebenen Bestellvorgangs notwendig
 * Das E-Mail-Postfach *hostmaster*@deineDomain.tld muss angelegt und abrufbar sein
 
-Offizielle Homepage: https://comodosslstore.com/
+Offizielle Homepage: link:https://comodosslstore.com/[]
 
 === Domainvoraussetzungen
-Ein SSL-Zertifikat muss und kann ausschließlich für die *Hauptdomain* des jeweiligen Hauptsystems oder Mandanten geordert werden.
-Siehe *Service Center » Systeme » PID » Tab: Domain » DID » Systemverknüpfung*
+Die Domain, für die das SSL-Zertifikat bestellt werden soll, muss eine im Service-Center aktivierte Hauptdomain sein (link:https://knowledge.plentymarkets.com/basics/arbeiten-mit-plentymarkets/plentymarkets-konto#_systemverkn%C3%BCpfung_erstellen[Handbuch: Systemverknüpfung erstellen]). +
+Siehe *Service Center » Systeme » PID » Tab: Domain » Domain-ID » Systemverknüpfung*
 
-image:assets/systemverknüpfung_hauptdomain.png[systemverknüpfung_hauptdomain]
+image:_best-practices/cloud/ssl-zertifikat/assets/systemverknüpfung_hauptdomain.png[systemverknüpfung_hauptdomain]
 
 Die Bestellung eines SSL-Zertifikats *ist nicht möglich*, wenn für die entsprechende Domain unter dem Menüpunkt Systemverknüpfung die Auswahl externer Server abgespeichert ist.
 
-image:assets/externer_server.png[externer_server]
+image:_best-practices/cloud/ssl-zertifikat/assets/externer_server.png[externer_server]
+
+==== Aktiviertes Autoscaling
+Vereinzelt gibt es noch immer Systeme, die nicht auf link:https://aws.amazon.com/de/autoscaling/[Autoscaling] (kurz: *AS*) umgestellt wurden. In den meisten Fällen liegt das daran, dass die Domain nicht bei plentymarkets gehostet wird und aus diesem Grund ein manuelles Eingreifen in die DNS-Einstellungen der Domain durch den Domain-Inhaber notwendig ist. +
+Eine weitere Ursache ist das *erstmalige* Hinzufügen einer Domain an einen Mandanten-Shop. Diese werden nicht automatisch auf AS umgestellt, sondern müssen von uns im Nachhinein umgestellt werden.
+
+===== Woran erkenne ich aktiviertes AS?
+Ob für das jeweilige System AS aktiviert ist oder nicht erkennt man anhand der dargestellten DNS-Einstellungen im Service-Center an der jeweiligen Domain. Systeme, die auf AS umgestellt wurden, benötigen zwingend einen CNAME-Record. Wenn dieser CNAME-Record im Service-Center nicht dargestellt wird, sondern stattdessen zwei A-Records, ist das System, bei dem zwei A-Records dargestellt werden, nicht auf AS umgestellt.
+
+* Beispiel der dargestellten DNS-Einstellungen bei einem System auf AS:
+image:_best-practices/cloud/ssl-zertifikat/assets/identify_set_as.png[DNS-Einstellungen bei aktiviertem AS]
+
+* Beispiel der dargestellten DNS-Einstellungen bei einem System *ohne* AS:
+image:_best-practices/cloud/ssl-zertifikat/assets/identify_non_set_as.png[DNS-Einstellungen bei nicht aktiviertem AS]
+
+===== Bei Subdomains: Existierende Parent-Domain
+Wenn ein SSL-Zertifikat für Sub-Domains bestellt werden soll, muss sichergestellt sein, dass die dazugehörige link:https://de.wikipedia.org/wiki/Domain_(Internet)[Parent-Domain] ebenfalls im Service-Center existiert und die notwendige Beziehung zueinander korrekt eingetragen ist.
+Solltet ihr die Parent-Domain bereits aus dem Service-Center entfernt haben, muss diese Parent-Domain erneut angelegt werden und, falls gewünscht, mit einem externen A-Record versehen werden, wenn diese *nicht* auf plentymarkets zeigen soll, sondern z.B. auf Shopware oder dergleichen (link:https://knowledge.plentymarkets.com/basics/arbeiten-mit-plentymarkets/plentymarkets-konto#_systemverkn%C3%BCpfung_erstellen[Handbuch: Systemverknüpfung erstellen]). +
+Erläutertes Fallbeispiel im Forum: link:https://forum.plentymarkets.com/t/ssl-verlaengerung-nicht-moeglich/501453/4?u=marvin.moldenhauer[SSL Verlängerung nicht möglich]
+
+===== DNS-Einstellungen
+====== DNS-Einstellungen gem. Angaben im Service-Center
+Die Validierung der SSL-Bestellung erfolgt auf Dateiebene.
+Das bedeutet, dass die Domain, für die das Zertifikat bestellt werden soll, zwingend korrekt erreichbar sein muss. Dazu müssen die DNS-Einstellungen gem. den Angaben im Service-Center entsprechen. +
+Siehe dazu link:https://forum.plentymarkets.com/t/selbsthilfe-bei-dns-problemen-wie-hinterlege-ich-korrekte-dns-einstellungen/65559[Selbsthilfe bei DNS-Problemen / Wie hinterlege ich korrekte DNS-Einstellungen]
+
+====== Kein AAAA-Record
+Für die Domain, für die das SSL-Zertifikat bestellt werden soll, darf kein IPv6-Eintrag (AAAA-Record) existieren.
+
+====== Kein negativer CAA-Record
+Für die Domain, für die das SSL-Zertifikat bestellt werden soll, muss sichergestellt werden, dass evtl. vorhandene link:https://de.wikipedia.org/wiki/DNS_Certification_Authority_Authorization[CAA-Records] die Bestellung von COMODO und/oder LetsEncrypt-Zertifikaten zulässt.
 
 === Veröffentlichung / Bereitstellung
 Nach Bestellung eines neuen Zertifikats muss dieses durch einen regelmäßig ausgeführten *Systemprozess* veröffentlicht werden. *Dies kann bis zu 60 Minuten dauern.*
@@ -104,14 +134,14 @@ Die letzte Erneurung des SSL-Zertifikats fand am 01.05.2018 statt. Demnach ist d
 |01.05.18           | 30.07.18  | entfällt wg. Kündigung
 |===
 
-image:assets/ssl-zertifikat_deaktivieren.png[ssl-zertifikat_deaktivieren]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_deaktivieren.png[ssl-zertifikat_deaktivieren]
 
 ==== Gültigkeitsdauer für COMODO-Zertifikate
 Die Gültigkeitsdauer von neu bestellten Zertifikaten beginnt mit dem Datum der Bestätigung der Zertifizierungsstelle. Eine eventuelle Restlaufzeit des vorherigen Zertifikats kann nicht übernommen werden.
 
 Die Laufzeit des SSL-Zertifikats wird während des Bestellprozesses zur Auswahl gestellt:
 
-* 1 Jahr 
+* 1 Jahr
 * 2 Jahre
 
 === Verlängerung des SSL-Zertifikats
@@ -130,7 +160,7 @@ Zusätzlich besteht die Möglichkeit, sich per E-Mail erinnern zu lassen. Eine k
 === Gekündigte Domains und Testdomains
 Für bereits *_gekündigte_* Domains, sowie für *_Startup-Domains_* bzw. *_Test-Subdomains_* (d.h. Domains mit den Bestandteilen _plenty-test-drive.eu, plentymarkets-x1.com, plentymarkets-cloud01/02.com_ etc.,) können *_keine SSL-Zertifikate bestellt* werden_*.
 
-=== Domainvalidierte /-bezogene Zertifikate
+=== Domainvalidierte/-bezogene Zertifikate
 SSL-Zertifikate sind domaingebunden. Das bedeutet, dass beispielsweise bei Umstellung der Hauptdomain das aktuelle Zertifikat _inaktiv_ geschaltet wird, da eine neue Hauptdomain ohne bestelltes Zertifikat vorliegt.
 Inaktiv bedeutet nicht gelöscht - Sollte die Hauptdomain erneut auf die Domain umgestellt werden, die bereits ein SSL-Zertifikat besaß, kann dieses im Service Center wieder aktiviert werden, sofern das SSL-Zertifikat noch gültig ist.
 
@@ -160,7 +190,7 @@ IMPORTANT: Sobald der Haken gesetzt wurde erfolgt KEINE Sicherheitsabfrage - Das
 
 IMPORTANT: Es ist zwingend notwendig, dass die DNS-Einstellungen der Domain, für die das SSL-Zertifikat bestellt werden soll, den Angaben in Deinem Service-Center entsprechen - siehe auch link:https://forum.plentymarkets.com/t/selbsthilfe-bei-dns-problemen-wie-hinterlege-ich-korrekte-dns-einstellungen/65559[Selbsthilfe bei DNS-Problemen / Wie hinterlege ich korrekte DNS-Einstellungen].
 
-image:assets/ssl-zertifikat_bestellen.png[ssl-zertifikat_bestellen]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_bestellen.png[ssl-zertifikat_bestellen]
 
 === SSL-Zertifikat von COMODO
 
@@ -173,7 +203,7 @@ Vor der Bestellung eines SSL-Zertifikates muss die E-Mail-Adresse *hostmaster*@*
 Falls eine Weiterleitung für die o.g. Email-Adresse eingerichtet wurde, sollte diese vorübergehend deaktiviert werden, um den Erhalt der Emails gewährleisten zu können. Im Falle eines Kontos bei https://mailbox.org
 
 ''''
-image:assets/mailbox_postfach_erstellen.png[mailbox_postfach_erstellen]
+image:_best-practices/cloud/ssl-zertifikat/assets/mailbox_postfach_erstellen.png[mailbox_postfach_erstellen]
 
 Um E-Mail-Konten im plentymarkets-Backend anlegen zu können, muss zunächst der E-Mail-Provider auf https://mailbox.org gewechselt werden, *oder* die Anlage des Postfachs hostmaster@deineDomain.de bei einem Mailprovider Deiner Wahl getätigt werden.
 Wie dieses Postfach eingerichtet wird haben wir hier erklärt: link:https://forum.plentymarkets.com/t/umzug-zu-mailbox-org-leitfaden/25678[Umzug zu mailbox.org - Leitfaden]
@@ -181,7 +211,7 @@ Wie dieses Postfach eingerichtet wird haben wir hier erklärt: link:https://foru
 Anschließend loggen wir uns *über das plenty-Backend* ins Service-Center ein:
 *Start » plentymarkets-Konto » Service-Center*
 
-image:assets/backend_service-center.png[backend_service-center]
+image:_best-practices/cloud/ssl-zertifikat/assets/backend_service-center.png[backend_service-center]
 
 ==== Wie bestelle ich erfolgreich ein SSL-Zertifikat von COMODO?
 
@@ -189,18 +219,18 @@ IMPORTANT: *WICHTIG UND UNBEDINGT BEACHTEN:*
 Während des gesamten Bestellprozesses muss man mit ein und demselben Browser im Service-Center eingeloggt bleiben. Erst *nachdem der Vorgang komplett* abgeschlossen wurde, kann man sich ausloggen.
 
 Nun kann der eigentliche Bestellvorgang starten. Man öffnet nun das System und die gewünschte Hauptdomain.
-image:assets/comodo_bestellen_service-center.png[comodo_bestellen_service-center]
+image:_best-practices/cloud/ssl-zertifikat/assets/comodo_bestellen_service-center.png[comodo_bestellen_service-center]
 
 Der folgende Dialog erscheint:
-image:assets/comodo_bestellen_service-center_bestaetigen.png[comodo_bestellen_service-center_bestaetigen]
+image:_best-practices/cloud/ssl-zertifikat/assets/comodo_bestellen_service-center_bestaetigen.png[comodo_bestellen_service-center_bestaetigen]
 
 Nach dem Klick auf *“Bestellung fortsetzen”* wird die erste Validierungsmail versendet:
-image:assets/ssl_email_versendet.png[ssl_email_versendet]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl_email_versendet.png[ssl_email_versendet]
 
 ''''
 In dieser Email befindet sich ein Bestätigungslink. Nach dem Anklicken dieses Links wird man automatisch ins Service-Center eingeloggt und zur Domain weitergeleitet.
 
-[TIP] 
+[TIP]
 .*Mögliche Fehlerquellen*
 ====
 . _Beim Klicken auf den Link wird ein anderer Browser geöffnet als der, den ich sonst immer verwende._
@@ -212,26 +242,26 @@ _Beim Klicken auf den Link werde ich nicht automatisch ins Service-Center eingel
 ==== Der erfolgreiche Abschluss der Bestellung und die Validierung durch den SSL-Provider
 Nach Betätigung des Links in der von plentymarkets verschickten Bestätigungsmail wird man automatisch eingeloggt und zur Domain weitergeleitet.
 
-Hier muss die gewünschte Laufzeit des Zertifikats (1 Jahr / 2 Jahre) ausgesucht und der Button 
-image:assets/button_ssl_bestellen.png[button_ssl_bestellen] 
+Hier muss die gewünschte Laufzeit des Zertifikats (1 Jahr / 2 Jahre) ausgesucht und der Button
+image:_best-practices/cloud/ssl-zertifikat/assets/button_ssl_bestellen.png[button_ssl_bestellen]
 betätigt werden.
 
-image:assets/ssl-zertifikat_bestellen_auswahl.png[ssl-zertifikat_bestellen_auswahl]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_bestellen_auswahl.png[ssl-zertifikat_bestellen_auswahl]
 
 Daraufhin erscheint folgende Meldung:
 
-image:assets/ssl-zertifikat_bestellt.png[ssl-zertifikat_bestellt]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_bestellt.png[ssl-zertifikat_bestellt]
 
 ''''
 Im Anschluss sendet die Zertifizierungsstelle (COMODO) eine *zweite* E-Mail an *hostmaster@deineDomain.de*.
 In dieser E-Mail sind die Bestellinformationen zusammengefasst und der darin enthaltene Link mit der Bezeichnung _here_ muss angeklickt werden (*beachte die in <<Was kann bei der Bestellung schiefgehen?>> beschriebenen möglichen Fehlerquellen*).
 Folge den Anweisung des Bildes.
 
-image:assets/ssl-zertifikat_email_comodo.png[ssl-zertifikat_email_comodo]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_email_comodo.png[ssl-zertifikat_email_comodo]
 
 Man wird auf die Bestätigungsseite der Zertifizierungsstelle geleitet:
 
-image:assets/ssl-zertifikat_comodo_key.png[ssl-zertifikat_comodo_key]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_comodo_key.png[ssl-zertifikat_comodo_key]
 
 Durch das Einfügen des Codes aus der E-Mail und per Klick auf *Next >* wird die Bestellung finalisiert.
 
@@ -242,7 +272,7 @@ Beide E-Mails müssen unbedingt bestätigt werden!
 
 Sobald der Status im Service-Center *done* lautet, ist der Vorgang abgeschlossen und die Domain wird nach dem nächsten Systemprozess über *HTTPS* sicher ausgeliefert.
 
-image:assets/ssl-zertifikat_status_done.png[ssl-zertifikat_status_done]
+image:_best-practices/cloud/ssl-zertifikat/assets/ssl-zertifikat_status_done.png[ssl-zertifikat_status_done]
 
 == Was kann bei der Bestellung schiefgehen?
 
@@ -283,7 +313,3 @@ Der Bestellvorgang muss erneut durchgeführt werden.
 
 *Ich möchte von COMODO auf LetsEncrypt umsteigen - was ist zu beachten?*::
 .. Im Falle einer Bestellung von Let’sEncrypt bei einem bereits aktiven SSL-Zertifikat von COMODO (alias RapidSSL), wird das COMODO-Zertifikat durch das von Let’sEncrypt ersetzt! Das “alte” Zertifikat wird jedoch nicht gelöscht, sondern auf inaktiv geschaltet. Eine Reaktivierung innerhalb des Gültigkeitszeitraums ist durch @plenty-Cloud möglich. Es kann sein, dass die Domain für maximal 1h als “nicht sicher” eingestuft wird, wenn das LetsEncrypt-Zertifikat gerade erst bestellt wurde, da dies nach der Bestellung angefordert, generiert und installiert werden muss. Nachdem die Bestellung im Service-Center der Status “done” erhalten hat muss der lokale Browser-Cache geleert werden, damit das zwischengespeicherte Zertifikat aktualisiert wird.
-
-
-
-
