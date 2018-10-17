@@ -1321,6 +1321,19 @@ Die folgende Tabelle erläutert die Template-Variablen und -Funktionen für den 
 |*{GetCSSFile() %}*
 |Generiert das &lt;link&gt;-Tag für die CSS-Datei.
 
+|*{% GetCrossSellingData() %}*
+|Fügt mit einem Artikel verknüpfte Cross-Selling-Artikel zum Listing auf eBay hinzu. +
+Folgende Daten können bei Cross-Selling Artikeln angezeigt werden: +
+Artikel-ID, Titel, Varianten-ID, Variantennummer, externe Listing-ID, Preis, Währung, Bild-URL, eBay-URL +
+Folgender Parameter ist erforderlich: +
+type = Cross-Selling-Typ. Folgende Typen sind möglich: +
+'Similar', 'Accessory', 'ReplacementPart', 'Bundle' +
+_Beispiele:_ +
+*GetCrossSellingData('Similar')* = Zeigt als ähnlich markierte Cross-Selling-Artikel an. +
+*GetCrossSellingData('Accessory')* = Zeigt als Zubehör markierte Cross-Selling-Artikel an. +
+*GetCrossSellingData('ReplacementPart')* = Zeigt als Ersatzteil markierte Cross-Selling-Artikel an. +
+*GetCrossSellingData('Bundle')* = Zeigt als Artikelpaket markierte Cross-Selling-Artikel an.
+
 |*{% GetItemDescription() %}*
 |Artikelbeschreibung +
 Optionaler Parameter: +
@@ -2850,7 +2863,81 @@ Eigene Merkmale verknüpfen:
 Wenn die Einstellung *Platzhalter in Layout-Vorlage (eBay)* aktiviert ist, wird das Merkmal auch in der Layout-Vorlage des Listings erscheinen, sofern der Platzhalter benutzt wird.
 ====
 
-[#6510]
+[#6525]
+== Cross-Selling nutzen
+
+Mit Cross-Selling haben Sie die Möglichkeit, zu einem Artikel weitere passende Artikel anzubieten. Diese Artikel werden auf eBay an Ihrem Listing angezeigt. +
+
+Mit einem Artikel verknüpfte <<artikel/artikel-verwalten#970, Cross-Selling-Artikel>> fügen Sie im Menü *System » Listings » Layout* mit der Template-Funktion *GetCrossSellingData* zu einer <<Layout-Vorlagen verwalten, Layout-Vorlage>> hinzu und <<Layout-Vorlage verknüpfen, verknüpfen>> diese Layout-Vorlage mit den gewünschten Listings.
+In der Template-Funktion *GetCrossSellingData* sind folgende Daten enthalten, die an einem Cross-Selling-Artikel angezeigt werden können:
+
+ - *Artikel-ID* des Artikels in plentymarkets
+ - *Titel* des aktiven Listings
+ - *externe Listing-ID*
+ - *Varianten-ID*
+  - bei Einzellistings die ID der gelisteten Variante
+  - bei Variantenlistings die ID der Hauptvariante
+ - *Variantennummer*
+  - bei Einzellistings die Variantennummer der gelisteten Variante
+  - bei Variantenlistings die Variantennummer der Hauptvariante
+ - *Preis*
+  - bei Einzellistings der Preis der gelisteten Variante
+  - bei Variantenlistings der Preis der gelisteten Variante mit dem niedrigsten Preis
+ - *Währung*
+ - *Bild-URL*
+  - Priorisierung Einzellisting:
+    - 1. Bild mit der niedrigsten Position, das mit der gelisteten Variante verknüpft ist
+    - 2. Bild mit der niedrigsten Position, das mit keiner Variante verknüpft ist
+  - Priorisierung Variantenlisting:
+    - 1. Bild mit der niedrigsten Position, das mit keiner Variante verknüpft ist
+    - 2. Bild mit der niedrigsten Position, das mit einer der Varianten verknüpft ist
+ - *eBay-URL*
+
+Voraussetzungen, um Cross-Selling-Artikel mit der Template-Funktion *GetCrossSellingData* auszugeben:
+
+- Der Cross-Selling-Artikel muss im Menü *Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Cross-Selling* mit dem Artikel, an dem er angezeigt werden soll, verknüpft sein.
+- Der Artikel, an dem Cross-Selling-Artikel angezeigt werden sollen, muss ein aktives Listing haben.
+
+Unten finden Sie einen Beispiel-Code für eine mögliche Layout-Vorlage, in der die Template-Funktion *GetCrossSellingData* verwendet wurde. Das Bild zeigt eine Vorschau von Cross-Selling-Artikeln mit dieser Layout-Vorlage.
+
+[[ebay-cross-selling]]
+.Beispielanzeige von Cross-Selling-Artikeln
+image::assets/example_cross-selling.png[]
+
+[.subhead]
+Mainframe
+
+Beispiel-Code Tab: Mainframe
+
+[source,plenty]
+----
+include::assets/mainframe_cross-selling.html[]
+
+----
+
+[.subhead]
+HTML-Struktur
+
+Beispiel-Code Tab: HTML-Struktur
+
+[source,plenty]
+----
+include::assets/html_cross-selling.html[]
+
+----
+
+[.subhead]
+CSS
+
+Beispiel-Code Tab: CSS
+
+[source,plenty]
+----
+include::assets/css_cross-selling.html[]
+
+----
+
+[#6550]
 == Varianten mit ePIDs verknüpfen
 
 Seit dem 15. August 2018 ist es auf eBay verpflichtend, Produkte aus bestimmten Kategorien, die man auf eBay zum Verkauf anbieten möchte, mit ePIDs zu verknüpfen. Eine ePID (eBay Product ID) ist eine von eBay vorgegebene, eBay-spezifische Produktkennzeichnung. Durch die Verwendung von ePIDs soll sichergestellt werden, dass identische Produkte gebündelt auf eBay angezeigt werden. Nachdem Käufer das Produkt angeklickt haben, können sie sich für ein Angebot entscheiden. +

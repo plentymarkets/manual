@@ -14,7 +14,6 @@ video::196548931[vimeo]
 [#100]
 ==  Registering with eBay
 
-
 You need to have your eBay access data consisting of the user name and password. You will receive this data from eBay. First, you need to become an link:https://reg.ebay.co.uk/reg/PartialReg?src=oldbizreg[eBay member^] and create an eBay account.
 
 [#200]
@@ -1322,6 +1321,19 @@ The following table explains the template variable and functions in the *Layout 
 
 |*{GetCSSFile() %}*
 |Generates the <link> tag for the CSS file.
+
+|*{% GetCrossSellingData() %}*
+|Adds cross-selling items to a listing on eBay. +
+The following data can be displayed for cross-selling items: +
+Item ID, title, variation ID, variation number, external listing ID, price, currency, image URL, eBay URL +
+The following parameter is required: +
+type = The cross-selling type. The following types are available: +
+'Similar', 'Accessory', 'ReplacementPart', 'Bundle' +
+_Examples:_ +
+*GetCrossSellingData('Similar')* = Displays similar cross-selling items. +
+*GetCrossSellingData('Accessory')* = Displays cross-selling items that were marked as accessory. +
+*GetCrossSellingData('ReplacementPart')* = Displays cross-selling items that were marked as replacement parts. +
+*GetCrossSellingData('Bundle')* = Displays cross-selling items that were marked as item bundle.
 
 |*{% GetItemDescription() %}*
 |Item description +
@@ -2852,7 +2864,81 @@ Linking your own properties:
 If the *Wildcard character in layout template (eBay)* function is activated, the property is also displayed in the layout template of a listing, provided that the wildcard character is used.
 ====
 
-[#6510]
+[#6525]
+== Use cross-selling
+
+Use cross-selling to offer further products related to an item. These products are displayed at your listing on eBay. +
+
+Use the template function *GetCrossSellingData* to add <<item/managing-items#970, cross-selling>> items that are linked to an item to a <<Managing layout templates, layout template>> and <<linking a layout template, link>> this layout template to the desired listings.
+The template function *GetCrossSellingData* displays the following data which can be displayed at a cross-selling item:
+
+ - *Item ID* of the item in plentymarkets
+ - *Title* of the active listing
+ - *external listing ID*
+ - *Variation ID*
+  - for individual listings, the ID of the listed variation is displayed
+  - for variation listings, the ID of the main variation is displayed
+ - *Variation number*
+  - for individual listings, the variation number of the listed variation is displayed
+  - for variation listings, the variation number of the main variation is displayed
+ - *Price*
+  - for individual listings, the price of the listed variation is displayed
+  - for variation listings, the price of the listed variation with the lowest price is displayed
+ - *Currency*
+ - *Image URL*
+  - Priority for individual listings:
+    - 1. Image with the lowest position which is linked to the listed variation
+    - 2. Image with the lowest position which is not linked to any variation
+  - Priority for variation listings:
+    - 1. Image with the lowest position which is not linked to any variation
+    - 2. Image with the lowest position which is linked to one of the variations
+ - *eBay-URL*
+
+Requirements for adding cross-selling items to an item with the template function *GetCrossSellingData*:
+
+- The cross-selling item has to be linked to the item to which it should be added. This is done in the *Item » Edit item » Open item » Tab: Cross-Selling* menu.
+- The item which cross-selling items should be added to must have an active listing.
+
+A code example for a potential layout template which uses the template function *GetCrossSellingData* is displayed below. The image shows the preview of a listing that uses this layout template.
+
+[[ebay-cross-selling]]
+.Example of cross-selling products
+image::assets/example-cross-selling.png[]
+
+[.subhead]
+Mainframe
+
+Example code tab: Main frame
+
+[source,plenty]
+----
+include::assets/mainframe_cross-selling.html[]
+
+----
+
+[.subhead]
+HTML structure
+
+Example code tab: HTML structure
+
+[source,plenty]
+----
+include::assets/html_cross-selling.html[]
+
+----
+
+[.subhead]
+CSS
+
+Example code tab: CSS
+
+[source,plenty]
+----
+include::assets/css_cross-selling.html[]
+
+----
+
+[#6550]
 == Matching ePIDs
 
 Since 15 August 2018, it is mandatory to match products from specific categories which you want to offer on eBay with ePIDs. An ePID (eBay Product ID) is an eBay-specific product identification that is provided by eBay. ePIDs are used to display identical products in a cluster on eBay. When buyers click on the product, they can choose an offer. +
