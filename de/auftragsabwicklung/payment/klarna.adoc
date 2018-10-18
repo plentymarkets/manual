@@ -5,23 +5,29 @@ include::{includedir}/_header.adoc[]
 :description: Payment in plentymarkets: Richten Sie die Schnittstelle zu Klarna in Ihrem plentymarkets System ein.
 :position: 13
 
-Klarna ist Europas führender Anbieter von rechnungsbasierten Zahlungslösungen im Internethandel. Wir geben Ihnen mit der Integration von Klarna die Möglichkeit, Ihren Kunden die Zahlung auf Rechnung oder Ratenkauf anzubieten – und das ganz ohne Risiko, weder für Ihre Kunden, noch für Ihren Webshop. Sowohl die Zahlungsart <<auftragsabwicklung/payment/klarna#20, Klarna Rechnung>> als auch der <<auftragsabwicklung/payment/klarna#30, Klarna Ratenkauf>> sind in Deutschland, Österreich und den Niederlanden nur für Privatpersonen verfügbar. Erlauben Sie die Zahlungsarten deshalb auch nur in <<crm/kundendaten-verwalten#100, Kundenklassen>> für Privatkunden.
+[IMPORTANT]
+.Einrichtung der Schnittstelle nur in Callisto Shops
+====
+Diese Handbuchseite beschreibt ausschließlich die Einrichtung der Schnittstelle *Klarna* in Callisto Shops. Die folgenden Anleitungen sind somit nicht für Ceres Shops gültig!
+====
+
+Klarna ist Europas führender Anbieter von rechnungsbasierten Zahlungslösungen im Internethandel. Wir geben Ihnen mit der Integration von Klarna die Möglichkeit, Ihren Kunden die Zahlung auf Rechnung oder Ratenkauf anzubieten – und das ganz ohne Risiko, weder für Ihre Kunden, noch für Ihren Webshop. Sowohl die Zahlungsart <<auftragsabwicklung/payment/klarna#20, Klarna Rechnung>> als auch der <<auftragsabwicklung/payment/klarna#30, Klarna Ratenkauf>> sind in Deutschland, Österreich und den Niederlanden nur für Privatpersonen verfügbar. Erlauben Sie die Zahlungsarten deshalb auch nur in <<crm/kontakte-verwalten#15, Kundenklassen>> für Privatkunden.
 
 [#10]
-==  Wichtige Hinweise
+== Wichtige Hinweise
 
 In diesem Kapitel erhalten Sie wichtige Hinweise zur Integration des Zahlungsanbieters in plentymarkets. Sind alle Einstellungen korrekt vorgenommen, können Sie aus plentymarkets den Versand von Aufträgen, (Teil-)Retouren und Stornos an Klarna übermitteln. Die Klarna-Rechnung wird nach Buchen des Warenausgangs direkt im Auftrag hinterlegt.
 
 Um die Abwicklung der Klarna-Bestellungen so einfach wie möglich zu halten, sind ein paar wichtige Punkte zu beachten:
 
-*  Das Buchen des Warenausgangs sollte immer mit dem tatsächlichen <<auftragsabwicklung/payment/klarna#100, Versand>> der Ware einhergehen, da mit dieser Aktion die 14-tägige Zahlungsfrist für den Endkunden beginnt.
+* Das Buchen des Warenausgangs sollte immer mit dem tatsächlichen <<auftragsabwicklung/payment/klarna#100, Versand>> der Ware einhergehen, da mit dieser Aktion die 14-tägige Zahlungsfrist für den Endkunden beginnt.
 * <<auftragsabwicklung/payment/klarna#100, Retouren>> sollten umgehend an Klarna gemeldet werden, um Mahnungen zu vermeiden.
-*  Wählt der Kunde Klarna Rechnung als Zahlungsart, versenden Sie immer die Rechnung, je nach <<auftragsabwicklung/payment/klarna#100, Workflow>> per E-Mail oder mit dem Paket. +
+* Wählt der Kunde Klarna Rechnung als Zahlungsart, versenden Sie immer die Rechnung, je nach <<auftragsabwicklung/payment/klarna#100, Workflow>> per E-Mail oder mit dem Paket. +
 Wurde Klarna Ratenkauf gewählt, verschicken Sie keine Rechnung, da der Kunde seine Sammelrechnung monatlich direkt von Klarna erhält.
-*  Sollte der Kunde seine <<auftragsabwicklung/payment/klarna#100, Bestellung stornieren>>, setzen Sie diese umgehend auf den Status *storniert*, damit der Warenkorbwert nicht länger für den Kunden reserviert ist.
+* Sollte der Kunde seine <<auftragsabwicklung/payment/klarna#100, Bestellung stornieren>>, setzen Sie diese umgehend auf den Status *storniert*, damit der Warenkorbwert nicht länger für den Kunden reserviert ist.
 
 [#20]
-===  Rechnungskauf
+=== Rechnungskauf
 
 Mit *Klarna Rechnung* können Ihre Kunden einfach einkaufen, weil sie anstelle langwieriger Anmeldeprozesse nur wenige, unsensible Daten eingeben müssen. Außerdem bekommt der Kunde die Ware zuerst geliefert und zahlt später, was den Einkauf sicherer macht. In einer TNS-Infratest-Studie geben 59% der weniger aktiven Onlineshopper die Tatsache, dass sie nach Warenerhalt zahlen wollen, als Grund für den seltenen Interneteinkauf an. Weitere Details zum Rechnungskauf finden Sie bei Klarna unter link:https://www.klarna.com/de/verkaeufer/mit-rechnung-verkaufen[Rechnung und Ratenkauf^].
 
@@ -31,10 +37,10 @@ image::auftragsabwicklung/payment/assets/DE-Zahlungsarten-Klarna-01.png[]
 [.subhead]
 Bestellvorgang
 
-Nach dem Abschluss der Bestellung wird der Auftrag an Klarna gesendet. Sofern eine positive Antwort von Klarna erfolgt, wird der Auftrag angelegt. Der Kunde erhält eine Erfolgsmeldung. Sollte es zu einem Fehler kommen oder die Zahlungsanfrage abgelehnt werden, wird der Auftrag nicht angelegt. Der Kunde erhält in der Bestellübersicht eine Fehlermeldung.
+Nach dem Abschluss der Bestellung wird der Auftrag an Klarna gesendet. Sofern eine positive Antwort von Klarna erfolgt, wird der Auftrag angelegt. Der Kunde erhält eine Erfolgsmeldung. Sollte ein Fehler auftreten oder die Zahlungsanfrage abgelehnt werden, wird der Auftrag nicht angelegt. Der Kunde erhält in der Bestellübersicht eine Fehlermeldung.
 
 [#30]
-===  Ratenkauf
+=== Ratenkauf
 
 Die Zahlungsart *Klarna Ratenkauf* ermöglicht Ihren Kunden, einen Einkauf in monatlichen Raten zu bezahlen. Eine Information zum <<auftragsabwicklung/payment/klarna#180, Ratenpreis>> wird im *Warenkorb/Bestellvorgang* sowie den *Artikeldetails* angezeigt, wenn Sie das Layout Ihres Webshops anpassen. Im Bestellvorgang wird je nach Rechnungsbetrag der Ratenpreis automatisch berechnet und angezeigt. Weitere Details zum Ratenkauf finden Sie bei Klarna unter link:https://www.klarna.com/de/verkaeufer/mit-rechnung-verkaufen[Rechnung und Ratenkauf^].
 
@@ -44,30 +50,30 @@ image::auftragsabwicklung/payment/assets/DE-Zahlungsarten-Klarna-02.png[]
 [.subhead]
 Bestellvorgang
 
-Beim Auswählen der Zahlungsart *Klarna Ratenkauf* kann der Kunde direkt die Laufzeit wählen und die entsprechende Rate einsehen. Nach dem Abschluss der Bestellung wird der Auftrag an Klarna gesendet. Sofern eine positive Antwort von Klarna erfolgt, wird der Auftrag angelegt und der Kunde erhält eine entsprechende Erfolgsmeldung. Sollte es zu einem Fehler kommen oder die Zahlungsanfrage abgelehnt werden, wird der Auftrag nicht angelegt und der Kunde erhält in der Bestellübersicht eine entsprechende Fehlermeldung.
+Beim Auswählen der Zahlungsart *Klarna Ratenkauf* kann der Kunde direkt die Laufzeit wählen und die entsprechende Rate einsehen. Nach dem Abschluss der Bestellung wird der Auftrag an Klarna gesendet. Sofern eine positive Antwort von Klarna erfolgt, wird der Auftrag angelegt und der Kunde erhält eine entsprechende Erfolgsmeldung. Sollten Fehler auftreten oder die Zahlungsanfrage abgelehnt werden, wird der Auftrag nicht angelegt und der Kunde erhält in der Bestellübersicht eine entsprechende Fehlermeldung.
 
 [#40]
 === Voraussetzungen für Klarna in verschiedenen Ländern
 
 Klarna steht für folgende Länder zur Verfügung:
 
-*  Deutschland
-*  Österreich
-*  Niederlande
-*  Dänemark
-*  Finnland
-*  Norwegen
-*  Schweden
+* Deutschland
+* Österreich
+* Niederlande
+* Dänemark
+* Finnland
+* Norwegen
+* Schweden
 
 Um Klarna mit den Zugangsdaten für den Versand in unterschiedliche Länder einzurichten, müssen für den Webshop <<auftragsabwicklung/payment/waehrungen#, Währung>> und <<omni-channel/online-shop/webshop-einrichten/mehrsprachiger-webshop#, Sprache>> gewählt sein.
 
 [#50]
-==  Bei Klarna registrieren
+== Bei Klarna registrieren
 
 Zur Registrierung bei Klarna nehmen Sie per E-Mail Kontakt zu link:mailto:verkauf@klarna.com[Klarna] auf. Sie erhalten die Zugangsdaten, die Sie für die Einrichtung von Klarna in plentymarkets benötigen.
 
 [#60]
-==  Klarna in plentymarkets einrichten
+== Klarna in plentymarkets einrichten
 
 Gehen Sie wie unten beschrieben vor, um die Schnittstelle zu Klarna einzurichten. Diese steht für die Zahlungsarten *Klarna Rechnung* und *Klarna Ratenkauf* zur Verfügung.
 
@@ -77,11 +83,11 @@ Schnittstelle zu Klarna einrichten:
 . Öffnen Sie das Menü *System » Aufträge » Zahlung » Zahlungsarten*.
 . Aktivieren Sie die Einstellung *Auch inaktive zeigen*.
 . Öffnen Sie den Ordner *International » Klarna*.
-.  Klicken Sie auf *Klarna Rechnung* bzw. *Klarna Ratenkauf*. +
+. Klicken Sie auf *Klarna Rechnung* bzw. *Klarna Ratenkauf*. +
 → Das Tab *Einstellungen* wird geöffnet.
 . Wechseln Sie in das Tab *Schnittstelle*.
-.  Klappen Sie den Mandanten auf.
-.  Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-schnittstelleneinrichtung-klarna>>.
+. Klappen Sie den Mandanten auf.
+. Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-schnittstelleneinrichtung-klarna>>.
 . *Speichern* Sie die Einstellungen.
 
 [[tabelle-schnittstelleneinrichtung-klarna]]
@@ -114,8 +120,8 @@ Zur Unterstützung mehrerer Mandanten muss im Menü <<omni-channel/online-shop/w
 |Standard-Land wählen. +
 *_Wichtig:_* In plentymarkets ist Klarna für die <<auftragsabwicklung/fulfillment/versand-vorbereiten#100, Lieferländer>> Deutschland, Österreich, Niederlande, Dänemark, Finnland, Norwegen und Schweden verfügbar. Das heißt, dass nur Kunden mit Wohnsitz in diesen Ländern Aufträge über Klarna bezahlen können.
 
-|*eID; +
-Shared secret*
+|*eID*, +
+*Shared secret*
 |Landesspezifische Zugangsdaten eingeben, wie von Klarna bei der Registrierung erhalten.
 
 |*Rechnungsversand*
@@ -128,21 +134,18 @@ Shared secret*
 Auf *Kampagnen aktualisieren* klicken, um die Tabelle im Bereich *Klarna-Kampagnen* zu aktualisieren.
 
 |*Klarna-Kampagnen*
-| Übersicht mit Informationen zu den Klarna-Kampagnen (<<bild-klarna-kampagne-aktualisieren>>).
+| Übersicht mit Informationen zu den Klarna-Kampagnen.
 |====
 
-[[bild-klarna-kampagne-aktualisieren]]
-.Kampagnen aktualisieren
-image::auftragsabwicklung/payment/assets/DE-Zahlungsarten-Klarna-03.png[]
 [#70]
 == Zahlungsarten aktivieren
 
 Für Klarna stehen Ihnen die Zahlungsarten Rechungskauf und Ratenkauf zur Verfügung, die Sie im Menü <<auftragsabwicklung/payment/zahlungsarten-verwalten#20, System » Aufträge » Zahlung » Zahlungsarten>> aktivieren. Prüfen Sie zudem die Einstellungen für *Erlaubte Zahlungsarten* in den <<auftragsabwicklung/payment/zahlungsarten-verwalten#30, Kundenklassen>> und für *Gesperrte Zahlungsarten* in den <<auftragsabwicklung/fulfillment/versand-vorbereiten#1000, Versandprofilen>>.
 
 [#80]
-==  Sozialversicherungsnummer hinterlegen
+== Sozialversicherungsnummer hinterlegen
 
-Für die Länder Dänemark, Finnland, Norwegen und Schweden ist die Angabe der Sozialversicherungsnummer für Kunden Pflicht. Um dieses Pflichtfeld für diese Länder zur Verfügung zu stellen, haben Sie die Möglichkeit, ein Textfeld einzurichten, das im Zahlungsprozess angezeigt wird.
+Für die Länder Dänemark, Finnland, Norwegen und Schweden ist die Angabe der Sozialversicherungsnummer für Kunden Pflicht. Um das Pflichtfeld für die Sozialversicherungsnummer für die genannten Länder zur Verfügung zu stellen, haben Sie die Möglichkeit, ein Textfeld einzurichten, das im Zahlungsprozess angezeigt wird.
 
 [WARNING]
 .Keine Anpassungen am aktiven Design vornehmen
@@ -174,7 +177,7 @@ Name des Textfelds ändern:
 . *Speichern* Sie die Einstellungen.
 
 [#90]
-==  Versandbestätigungen automatisch senden
+== Versandbestätigungen automatisch senden
 
 Damit Klarna über den Versand der Artikel, die Stornierung von Aufträgen und Retouren informiert sowie die Rechnung erstellt bzw. gelöscht wird, erstellen Sie die nachfolgend beschriebenen Ereignisaktionen. Beachten Sie, dass die Ereignisaktionen auch für Ratenkauf angelegt werden müssen. Die Funktionalität sollte vor Live-Schaltung mit Ihrem Ansprechpartner der Klarna-Integrationsabteilung getestet werden. Richten Sie eine <<basics/automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um Versandbestätigungen automatisch zu versenden, nachdem der Warenausgang gebucht wurde.
 
@@ -185,12 +188,13 @@ Damit Klarna über den Versand der Artikel, die Stornierung von Aufträgen und R
 .  Klicken Sie auf *Ereignisaktion hinzufügen*. +
 → Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
 .  Geben Sie einen Namen ein.
-.  Wählen Sie das *Ereignis* gemäß Tabelle 2.
+.  Wählen Sie das *Ereignis* gemäß <<tabelle-ereignisaktion-automatische-versandbestaetigung-klarna>>.
 . *Speichern* Sie die Einstellungen.
-.  Nehmen Sie die Einstellungen gemäß Tabelle 2 vor.
+.  Nehmen Sie die Einstellungen gemäß <<tabelle-ereignisaktion-automatische-versandbestaetigung-klarna>> vor.
 .  Setzen Sie ein Häkchen bei *Aktiv*.
 . *Speichern* Sie die Einstellungen.
 --
+[[tabelle-ereignisaktion-automatische-versandbestaetigung-klarna]]
 .Ereignisaktion zum automatischen Senden von Versandbestätigungen an Klarna
 [cols="1,3,3"]
 |====
@@ -234,12 +238,13 @@ Richten Sie eine <<basics/automatisierung/ereignisaktionen#, Ereignisaktion>> ei
 . Klicken Sie auf *Ereignisaktion hinzufügen*. +
 → Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
 . Geben Sie einen Namen ein.
-. Wählen Sie das *Ereignis* gemäß Tabelle 3.
+. Wählen Sie das *Ereignis* gemäß <<tabelle-automatische-retoure-klarna>>.
 . *Speichern* Sie die Einstellungen.
-. Nehmen Sie die Einstellungen gemäß Tabelle 3 vor.
+. Nehmen Sie die Einstellungen gemäß <<tabelle-automatische-retoure-klarna>> vor.
 . Setzen Sie ein Häkchen bei *Aktiv*.
 . *Speichern* Sie die Einstellungen.
 --
+[[tabelle-automatische-retoure-klarna]]
 .Ereignisaktion zum automatischen Senden von Retouren an Klarna
 [cols="1,3,3"]
 |====
@@ -264,23 +269,24 @@ Richten Sie eine <<basics/automatisierung/ereignisaktionen#, Ereignisaktion>> ei
 |====
 
 [#110]
-==  Stornierungen automatisch senden
+== Stornierungen automatisch senden
 
 Richten Sie eine <<basics/automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um Klarna automatisch über Stornierungen zu informieren.
 
 [.collapseBox]
 .Ereignisaktion einrichten
 --
-.  Öffnen Sie das Menü *System » Aufträge » Ereignisse*.
-.  Klicken Sie auf *Ereignisaktion hinzufügen*. +
+. Öffnen Sie das Menü *System » Aufträge » Ereignisse*.
+. Klicken Sie auf *Ereignisaktion hinzufügen*. +
 → Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
-.  Geben Sie einen Namen ein.
-.  Wählen Sie das *Ereignis* gemäß Tabelle 4.
+. Geben Sie einen Namen ein.
+. Wählen Sie das *Ereignis* gemäß <<tabelle-automatische-stornierung-klarna>>.
 . *Speichern* Sie die Einstellungen.
-.  Nehmen Sie die Einstellungen gemäß Tabelle 4 vor.
-.  Setzen Sie ein Häkchen bei *Aktiv*.
+. Nehmen Sie die Einstellungen gemäß <<tabelle-automatische-stornierung-klarna>> vor.
+. Setzen Sie ein Häkchen bei *Aktiv*.
 . *Speichern* Sie die Einstellungen.
 --
+[[tabelle-automatische-stornierung-klarna]]
 .Ereignisaktion zum automatischen Senden von Stornierungen an Klarna
 [cols="1,3,3"]
 |====
@@ -305,7 +311,7 @@ Richten Sie eine <<basics/automatisierung/ereignisaktionen#, Ereignisaktion>> ei
 |====
 
 [#120]
-==  Klarna-Auftrag bearbeiten
+== Klarna-Auftrag bearbeiten
 
 Sie können einen Klarna-Auftrag bis zur Buchung des Warenausgangs noch ändern, z.B. die Menge eines Artikels reduzieren. Außerdem ist es möglich, Artikel zu löschen. Der Rechnungsbetrag wird dann angepasst. Sie können die Werte nur reduzieren, nicht erhöhen. Es dürfen einem bestehenden Auftrag keine weiteren Artikel hinzugefügt werden. Da noch keine endgültige Rechnung erzeugt wurde, ist es vor Buchung des Warenausgangs problemlos möglich, einen Klarna-Auftrag zu löschen.
 
@@ -319,7 +325,7 @@ Auftrag löschen:
 → Der Auftrag wird gelöscht.
 
 [#130]
-==  Waren versenden
+== Waren versenden
 
 Versenden Sie die Ware umgehend, da das 14-tägige Zahlungsziel des Kunden mit der Aktivierung der Klarna-Rechnung beginnt. Beachten Sie auch, dass die Ware ausschließlich an die Adresse versendet werden darf, die auf der Klarna-Rechnung steht. Wird der Warenausgang gebucht, erfolgt die Rechnungsstellung.
 
@@ -330,17 +336,10 @@ Die Auftragsübergabe von mit Klarna bezahlten Aufträgen an <<auftragsabwicklun
 ====
 
 [#140]
-===  Rechnung erstellen
+=== Klarna-Rechnung erstellen
 
-Mit der Versandbestätigung an Klarna bzw. sobald der Warenausgang gebucht wird, erzeugt das System eine Klarna-Rechnung mit den aktuellen Daten. Die Rechnung steht als PDF-Dokument über den Link *Rechnungsnummer* (<<bild-klarna-rechnung-versand-auftragsübersicht>>) oder im Tab *Belege* des Auftrags zur Verfügung und kann ausgedruckt und dem Paket beigelegt werden. Über eine von Ihnen eingerichtete Ereignisaktion kann im Anschluss an den Warenausgang die Rechnung über eine E-Mail-Vorlage *Klarna-Rechnung für Endkunde* automatisch an den Kunden gesendet werden.
+Mit der Versandbestätigung an Klarna bzw. sobald der Warenausgang gebucht wird, erzeugt das System eine Klarna-Rechnung mit den aktuellen Daten. Die Rechnung steht als PDF-Dokument über den Link *Rechnungsnummer* oder im Tab *Belege* des Auftrags zur Verfügung und kann ausgedruckt und dem Paket beigelegt werden. Über eine von Ihnen eingerichtete Ereignisaktion kann im Anschluss an den Warenausgang die Rechnung über eine E-Mail-Vorlage *Klarna-Rechnung für Endkunde* automatisch an den Kunden gesendet werden.
 
-[[bild-klarna-rechnung-versand-auftragsübersicht]]
-.Klarna-Rechnung nach Versandbestätigung an Klarna in der Auftragsübersicht verfügbar
-image::auftragsabwicklung/payment/assets/DE-Zahlungsarten-Klarna-04.png[]
-
-[[bild-klarna-rechnung-versand-belege]]
-.Klarna-Rechnung nach Versandbestätigung an Klarna im Tab *Belege* verfügbar
-image::auftragsabwicklung/payment/assets/DE-Zahlungsarten-Klarna-05.png[]
 [IMPORTANT]
 .Keine Rechnungsänderung möglich
 ====
@@ -350,35 +349,79 @@ Beachten Sie, dass Rechnungsänderungen, z.B. die Änderung der Anschrift, nicht
 [.instruction]
 Rechnung herunterladen, ausdrucken und beilegen:
 
-.  Klicken Sie in der *Auftragsübersicht* (<<bild-klarna-rechnung-versand-auftragsübersicht>>) oder im Auftrag im Tab *Belege* unter *Dokumente* (<<bild-klarna-rechnung-versand-belege>>) auf den Link der Rechnung, um die Rechnung herunterzuladen.
+.  Klicken Sie in der *Auftragsübersicht* oder im Auftrag im Tab *Belege* unter *Dokumente* auf den Link der Rechnung, um die Rechnung herunterzuladen.
 .  Speichern Sie die Rechnung und drucken Sie sie aus.
 .  Legen Sie die Rechnung in das Paket.
 
 [#150]
-===  Teillieferung
+=== Klarna-Rechnung manuell importieren
+
+Nachdem Sie die Versandbestätigung an *Klarna* übermittelt haben, wird die von *Klarna* erzeugte Rechnung normalerweise automatisch an den entsprechenden Auftrag in Ihrem plentymarkets System angehängt.
+Es kann jedoch vorkommen, dass Rechnungen zu Aufträgen mit der Zahlungsart *Klarna* nicht korrekt in Ihr plentymarkets System importiert werden.
+
+[TIP]
+.Aufträge mit Zahlungsart *Klarna* suchen
+====
+Nutzen Sie den Filter *Zahlungsart* in der Auftragssuche, um nur Aufträge mit der Zahlungsart *Klarna* anzuzeigen und diese Aufträge zu prüfen. Eine fehlende *Rechnungsnummer* in der Auftragsübersicht kann darauf hinweisen, dass die jeweiligen Klarna-Rechnungen nicht in Ihr plentymarkets System importiert wurden.
+====
+
+Um einzelne Klarna-Rechnungen manuell in plentymarkets zu importieren, loggen Sie sich zunächst in Ihr Klarna-Händlerkonto ein und wählen Sie die betroffene Rechnung aus. Legen Sie das Rechnungsdokument entweder auf einem Server oder lokal auf Ihrem Computer ab.
+
+Gehen Sie anschließend wie folgt vor, um die Klarna-Rechnung manuell zu importieren.
+
+[.instruction]
+Klarna-Rechnung manuell importieren:
+
+. Öffnen Sie das Menü *System » Aufträge » Zahlung » Zahlungsarten*
+. Wählen Sie die Zahlungsart *Klarna*. +
+→ Das Tab *Schnittstelle* öffnet sich.
+. Nehmen Sie die Einstellung anhand der Informationen in <<tabelle-klarna-rechnungsimport>> vor.
+. Klicken Sie auf *Ausführen*. +
+→ Die Klarna-Rechnung wird importiert und mit dem Auftrag verknüpft. Im Folgenden ist die Klarna-Rechnung im Tab *Belege* des Auftrags oder durch Klick auf die *Rechnungsnummer* in der Auftragsübersicht zugänglich.
+
+[[tabelle-klarna-rechnungsimport]]
+.Einstellungen im Tab *Schnittstelle*
+[cols="1,3"]
+|====
+|*Order-ID*
+|Die ID des Auftrags eingeben, dem die Rechnung zugeordnet werden soll.
+
+|*Invoice-Url*
+|Falls Sie das Rechnungsdokument auf einem Server abgelegt haben, geben Sie hier die URL zum Dokument ein.
+
+|*Invoice number*
+|Die Rechnungsnummer der Klarna-Rechnung eingeben.
+
+|*Klarna invoice PDF*
+|Falls Sie das Rechnungsdokument nicht auf einem Server abgelegt, sondern lokal gespeichert haben, können Sie hier die *Datei auswählen*.
+
+|*Invoice date*
+|Das Rechnungsdatum der Klarna-Rechnung eingeben.
+|====
+
+[#160]
+=== Teillieferung
 
 Wenn sich die Bestellung ändert oder z.B. ein Artikel nicht mehr verfügbar ist, können Sie die Artikel noch anpassen. <<auftragsabwicklung/payment/klarna#120, Bearbeiten Sie den Auftrag>>, bevor Sie den Warenausgang buchen.
 
-[#160]
-===  Komplettlieferung
+[#170]
+=== Komplettlieferung
 
 Wenn ein Artikel nicht verfügbar, aber nachbestellt ist, warten Sie, bis die Nachbestellung eingetroffen ist, bevor Sie den Warenausgang buchen.
 
-[#170]
-===  Wartende Bestellung (Pending)
+[#180]
+=== Wartende Bestellung (Pending)
 
 Eine wartende Bestellung wird mit *Status 3* in der Auftragsübersicht angezeigt.
 
-Um die Akzeptanzrate zu erhöhen, erhalten Bestellungen, die von Klarna nicht direkt genehmigt werden können, den Status *Pending* (wartende Bestellung). Diese Bestellungen sehen Sie in der Übersicht des Auftrags im *Status 3* (<<bild-klarna-bestellung-warteposition>>) und halten diese vorerst zurück. Innerhalb der nächsten maximal 24 Stunden werden die wartenden Bestellungen manuell von Klarna geprüft. Durch einen integrierten Cronjob wird der Status dieser Bestellungen stündlich bei Klarna abgefragt. +
-Wird die Bestellung im Nachgang genehmigt, sehen Sie diese als normalen Auftrag. Wird die Bestellung abgelehnt, wird sie als abgelehnt angezeigt. Sie können dem Kunden dann eine andere Zahlungsart anbieten.
+Um die Akzeptanzrate zu erhöhen, erhalten Bestellungen, die von Klarna nicht direkt genehmigt werden können, den Status *Pending* (wartende Bestellung). Wartende Bestellungen halten Sie vorerst zurück und sehen Sie in der Übersicht des Auftrags im *Status 3*. Innerhalb der nächsten maximal 24 Stunden werden die wartenden Bestellungen manuell von Klarna geprüft. Durch einen integrierten Cronjob wird der Status der wartenden Bestellungen stündlich bei Klarna abgefragt.
 
-[[bild-klarna-bestellung-warteposition]]
-.Bestellung in Warteposition
-image::auftragsabwicklung/payment/assets/DE-Zahlungsarten-Klarna-06.png[]
+Wird die Bestellung im Nachgang genehmigt, sehen Sie die Bestellung als regulären Auftrag. Wird die Bestellung abgelehnt, wird sie als abgelehnt angezeigt. Sie können dem Kunden dann eine andere Zahlungsart anbieten.
+
 Die E-Mail, mit der Sie dem Kunden eine andere Zahlungsart anbieten, sollte einen Link zum Checkout des Warenkorbs (Platzhalter: [URL_Checkout]) enthalten. Der Kunde erhält über diesen Link die Möglichkeit, eine andere Zahlungsart für die Bestellung zu wählen.
 
 [#180]
-==  Template für den Ratenkauf anpassen
+== Template für den Ratenkauf anpassen
 
 Um den Ratenpreis auf der Produktseite und in der Artikelauflistung anzuzeigen, muss das Template *ItemViewSingleItem* angepasst werden. Sie können zudem das Klarna Ratenkauf-Logo in die Darstellung integrieren. Das Logo finden Sie auf der link:https://klarna.com/campaign/rebranding/?lang=german[Klarna-Integrationsseite^].
 
