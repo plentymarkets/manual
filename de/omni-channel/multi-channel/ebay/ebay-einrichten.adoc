@@ -141,6 +141,9 @@ Die Einstellung erfolgt unter <<Neues Listing anlegen, Als Artikelnummer übertr
 *Ja* = Die Artikelnummer wird als Lagerhaltungsnummer übertragen. Die Nummer muss für den Artikel und die Variante exklusiv sein. +
 *Nein (empfohlen)* = Die Listing-ID wird zusammen mit der Varianten-ID übertragen.
 
+|*eBay Varianten anhand der Artikel-Varianten Position sortieren*
+|Wählen, ob eBay-Varianten anhand der Position der Artikelvarianten sortiert werden sollen.
+
 |*eBay-Bilderservice verwenden*
 | Wählen, ob der eBay-Bilderservice verwendet wird. +
 *Ja* = Artikelbilder werden direkt an eBay übermittelt und dort gespeichert. Dabei können zusätzliche Kosten entstehen. Es können mehrere Artikelbilder zu eBay übertragen werden, wenn diese Option gewählt wird. +
@@ -263,7 +266,7 @@ Verkäufe werden automatisch von eBay abgerufen, wenn dies mit der Einstellung *
 Wenn die Option *Verkäufe nicht abrufen* bei der Einstellung *Aufträge abrufen* gewählt wurde, können Aufträge auch nicht manuell abgerufen werden.
 ====
 
-
+////
 [.subhead]
 eBay-Shop-Kategorien laden
 
@@ -282,6 +285,7 @@ eBay-Shop-Kategorien laden:
 ====
 Nach Änderungen an den eBay-Kontodaten müssen Ihre Shop-Kategorien sowie Rücknahmebedingungen neu eingestellt werden. Die *Shop-Kategorien* stellen Sie direkt in diesem Menü ein. Die *Rücknahmebedingungen* werden unter <<Rücknahmebedingungen festlegen, Einstellungen » Märkte » eBay » Rahmenbedingungen » Tab: eBay-Rücknahmebedingungen>> festgelegt.
 ====
+////
 
 [#700]
 ===  Versandprofile verknüpfen
@@ -575,10 +579,9 @@ Bei Auswahl der eBay-Plattform *Motors* erscheint der Suchfilter *Jahr* an Stell
 
 |*Fahrzeugliste*
 | Alle verfügbaren Varianten eines Fahrzeugs werden in der Liste erfasst. Die Liste ist auf 1000 Einträge begrenzt. Bei mehr als 1000 Einträgen muss eine weitere Liste für den Artikel angelegt werden.
-|
 
 |*Hinweise*
-| Hinweis eintragen. Anstatt einen Hinweis einzeln für jedes Fahrzeug in der Liste einzutragen, kann der Hinweis über den grünen Pfeil rechts für alle Fahrzeuge übernommen werden.
+| Hinweis eintragen. Anstatt einen Hinweis einzeln für jedes Fahrzeug in der Liste einzutragen, kann der Hinweis über den grünen Pfeil rechts (*Hinweise für alle Fahrzeuge übernehmen*) für alle Fahrzeuge übernommen werden.
 |====
 
 [#1630]
@@ -961,7 +964,7 @@ Auf *Dateien hochladen* klicken und das Logo wählen, das für die Zahlungsart h
 
 |*Kosten: Pauschal oder Prozentual*
 |Wenn bei der Zahlungsart zusätzliche Kosten berechnet werden, den Prozentwert oder Pauschalwert gemäß der Vertragskonditionen eingeben. Wichtig: Nicht in beide Felder einen Wert eingeben.  +
-Weitere Informationen finden Sie auf den Handbuchseiten *<<basics/statistik#, Statistik>>* und *<<basics/statistik/allgemeine-statistiken/artikel/renner-und-penner#, Renner und Penner>>*. Ein Beispiel für pauschale und prozentuale Kosten finden Sie auf der Handbuchseite *<<auftragsabwicklung/payment/zahlungsarten-verwalten#, Grundeinstellungen>>*.
+Weitere Informationen finden Sie auf der Handbuchseite <<basics/statistik/statistiken-verwalten#, Statistik>>. Ein Beispiel für pauschale und prozentuale Kosten finden Sie auf der Handbuchseite *<<auftragsabwicklung/payment/zahlungsarten-verwalten#, Grundeinstellungen>>*.
 |====
 
 [TIP]
@@ -1317,6 +1320,19 @@ Die folgende Tabelle erläutert die Template-Variablen und -Funktionen für den 
 
 |*{GetCSSFile() %}*
 |Generiert das &lt;link&gt;-Tag für die CSS-Datei.
+
+|*{% GetCrossSellingData() %}*
+|Fügt mit einem Artikel verknüpfte Cross-Selling-Artikel zum Listing auf eBay hinzu. +
+Folgende Daten können bei Cross-Selling Artikeln angezeigt werden: +
+Artikel-ID, Titel, Varianten-ID, Variantennummer, externe Listing-ID, Preis, Währung, Bild-URL, eBay-URL +
+Folgender Parameter ist erforderlich: +
+type = Cross-Selling-Typ. Folgende Typen sind möglich: +
+'Similar', 'Accessory', 'ReplacementPart', 'Bundle' +
+_Beispiele:_ +
+*GetCrossSellingData('Similar')* = Zeigt als ähnlich markierte Cross-Selling-Artikel an. +
+*GetCrossSellingData('Accessory')* = Zeigt als Zubehör markierte Cross-Selling-Artikel an. +
+*GetCrossSellingData('ReplacementPart')* = Zeigt als Ersatzteil markierte Cross-Selling-Artikel an. +
+*GetCrossSellingData('Bundle')* = Zeigt als Artikelpaket markierte Cross-Selling-Artikel an.
 
 |*{% GetItemDescription() %}*
 |Artikelbeschreibung +
@@ -2847,7 +2863,81 @@ Eigene Merkmale verknüpfen:
 Wenn die Einstellung *Platzhalter in Layout-Vorlage (eBay)* aktiviert ist, wird das Merkmal auch in der Layout-Vorlage des Listings erscheinen, sofern der Platzhalter benutzt wird.
 ====
 
-[#6510]
+[#6525]
+== Cross-Selling nutzen
+
+Mit Cross-Selling haben Sie die Möglichkeit, zu einem Artikel weitere passende Artikel anzubieten. Diese Artikel werden auf eBay an Ihrem Listing angezeigt. +
+
+Mit einem Artikel verknüpfte <<artikel/artikel-verwalten#970, Cross-Selling-Artikel>> fügen Sie im Menü *System » Listings » Layout* mit der Template-Funktion *GetCrossSellingData* zu einer <<Layout-Vorlagen verwalten, Layout-Vorlage>> hinzu und <<Layout-Vorlage verknüpfen, verknüpfen>> diese Layout-Vorlage mit den gewünschten Listings.
+In der Template-Funktion *GetCrossSellingData* sind folgende Daten enthalten, die an einem Cross-Selling-Artikel angezeigt werden können:
+
+ * *Artikel-ID* des Artikels in plentymarkets
+ * *Titel* des aktiven Listings
+ * *externe Listing-ID*
+ * *Varianten-ID*
+    - bei Einzellistings die ID der gelisteten Variante
+    - bei Variantenlistings die ID der Hauptvariante
+ * *Variantennummer*
+    - bei Einzellistings die Variantennummer der gelisteten Variante
+    - bei Variantenlistings die Variantennummer der Hauptvariante
+ * *Preis*
+    - bei Einzellistings der Preis der gelisteten Variante
+    - bei Variantenlistings der Preis der gelisteten Variante mit dem niedrigsten Preis
+ - *Währung*
+ * *Bild-URL*
+    - Priorisierung Einzellisting: +
+        1. Bild mit der niedrigsten Position, das mit der gelisteten Variante verknüpft ist +
+        2. Bild mit der niedrigsten Position, das mit keiner Variante verknüpft ist
+      - Priorisierung Variantenlisting: +
+        1. Bild mit der niedrigsten Position, das mit keiner Variante verknüpft ist +
+        2. Bild mit der niedrigsten Position, das mit einer der Varianten verknüpft ist
+ - *eBay-URL*
+
+Voraussetzungen, um Cross-Selling-Artikel mit der Template-Funktion *GetCrossSellingData* auszugeben:
+
+- Der Cross-Selling-Artikel muss im Menü *Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Cross-Selling* mit dem Artikel, an dem er angezeigt werden soll, verknüpft sein.
+- Der Artikel, an dem Cross-Selling-Artikel angezeigt werden sollen, muss ein aktives Listing haben.
+
+Unten finden Sie einen Beispiel-Code für eine mögliche Layout-Vorlage, in der die Template-Funktion *GetCrossSellingData* verwendet wurde. Das Bild zeigt eine Vorschau von Cross-Selling-Artikeln mit dieser Layout-Vorlage.
+
+[[ebay-cross-selling]]
+.Beispielanzeige von Cross-Selling-Artikeln
+image::omni-channel/multi-channel/ebay/assets/example_cross-selling.png[]
+
+[.subhead]
+Mainframe
+
+Beispiel-Code Tab: Mainframe
+
+[source,plenty]
+----
+include::assets/mainframe_cross-selling.html[]
+
+----
+
+[.subhead]
+HTML-Struktur
+
+Beispiel-Code Tab: HTML-Struktur
+
+[source,plenty]
+----
+include::assets/html_cross-selling.html[]
+
+----
+
+[.subhead]
+CSS
+
+Beispiel-Code Tab: CSS
+
+[source,plenty]
+----
+include::assets/css_cross-selling.html[]
+
+----
+
+[#6550]
 == Varianten mit ePIDs verknüpfen
 
 Seit dem 15. August 2018 ist es auf eBay verpflichtend, Produkte aus bestimmten Kategorien, die man auf eBay zum Verkauf anbieten möchte, mit ePIDs zu verknüpfen. Eine ePID (eBay Product ID) ist eine von eBay vorgegebene, eBay-spezifische Produktkennzeichnung. Durch die Verwendung von ePIDs soll sichergestellt werden, dass identische Produkte gebündelt auf eBay angezeigt werden. Nachdem Käufer das Produkt angeklickt haben, können sie sich für ein Angebot entscheiden. +
@@ -3475,7 +3565,7 @@ Richten Sie eine <<basics/automatisierung/ereignisaktionen#, Ereignisaktion>> ei
 . *Speichern* Sie die Einstellungen.
 --
 
-[[ereignisaktion-automatische-rückerstattugn]]
+[[ereignisaktion-automatische-rückerstattung]]
 .Ereignisaktion zum automatischen Veranlassen von Rückerstattungen über PayPal
 [cols="1,3,3"]
 |====
@@ -3727,7 +3817,7 @@ Auftragsstatus ändern:
 [#9600]
 ====  Anfragen für bezahlte Aufträge automatisch ablehnen
 
-Richten Sie zwei <<basics/automatisierung/ereignisaktionen, Ereignisaktionen>> ein, um bei bereits bezahlten Aufträgen Kaufabbruchanfragen automatisch abzulehnen.
+Richten Sie zwei <<basics/automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um bei bereits bezahlten Aufträgen Kaufabbruchanfragen automatisch abzulehnen.
 
 [.collapseBox]
 .Ereignisaktion einrichten
@@ -3916,7 +4006,7 @@ Im Menü *Daten » API-Log » Tab: API-Log* finden Sie eine Historie über Vorg�
 [.instruction]
 API-Log abrufen:
 
-.  Öffnen Sie das Menü *Daten » API-Log*.
+.  Öffnen Sie das Menü *Daten » API-Log » Tab: API-Log*.
 .  Wählen Sie ein Format aus der Dropdown-Liste *Vorgang*.
 .  Wählen Sie ggf. ein Datum, um nur Einträge eines bestimmten Tages zu erhalten.
 .  Wählen Sie die Anzahl der Ergebnisse pro Seite.
