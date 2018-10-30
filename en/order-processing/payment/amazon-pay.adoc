@@ -263,9 +263,17 @@ include::assets/EX-EN-Amazon-Payments-Advanced-Log-In.html[]
 [#130]
 == Automatically sending notifications
 
-Automate communication with your customers using Amazon Pay as payment methods for their orders. The following chapters 
+Automate communication with your customers using Amazon Pay as payment methods for their orders. The following chapters list the necessary event procedures to automatically send <<order-processing/payment/amazon-pay#140, shipping confirmations>>, <<order-processing/payment/amazon-pay#150, cancellations>> as well as for processing <<order-processing/payment/amazon-pay#160, refunds>> and reporting <<order-processing/payment/amazon-pay#170, rejected payments>>.
 
-[140]
+[IMPORTANT]
+.Sending order confirmations
+====
+In addition to the event procedures described below, you can also set up an event procedure that automatically sends order confirmations to customers via email. However, note that Amazon Pay only imports customers' email addresses into your plentymarkets system after payment has been effected. To avoid mistakes, we recommend to set up the event procedure so that the email is not sent when the order comes in, but when incoming payment has been booked.
+====
+
+[#140]
+== Automatically sending shipping confirmations
+
 Set up an <<basics/automation/event-procedures#, event procedure>> to automatically send shipping confirmations to Amazon when the outgoing items are booked. Booking the outgoing items and sending the shipping confirmation should not take place within the same event procedure. Otherwise, shipping of items might be confirmed before the outgoing items have been booked. Therefore, set up a separate event procedure to book the outgoing items that at the same time changes the status to 7.1, for example. Use the same status as event for the event procedure to send the shipping confirmation. In doing so, only those orders will be taken into consideration that have this status. If you have not created the status yet, go to <<order-processing/orders/managing-sales-orders#order-status, System » Orders » Order status>> to do so.
 
 [.collapseBox]
@@ -338,8 +346,8 @@ Set up an <<basics/automation/event-procedures#, event procedure>> to automatica
 |
 |====
 
-[#90]
-==  Automatically sending cancellations
+[#150]
+== Automatically sending cancellations
 
 Set up an <<basics/automation/event-procedures#, event procedure>> to automatically inform Amazon of cancellations.
 
@@ -378,8 +386,8 @@ Set up an <<basics/automation/event-procedures#, event procedure>> to automatica
 |
 |====
 
-[#100]
-==  Automatically sending refunds
+[#160]
+== Automatically sending refunds
 
 Create an *order status* for *returns* from Amazon Pay. This status will indicate that the return was checked and the correct amount was refunded. Corresponding returns then have to be given this order status. Give this order status an appropriate name, e.g. *Return checked*. Save this order status for the event procedures described below.
 
@@ -451,8 +459,8 @@ Alternatively, the refund can be created through the order. Create an order stat
 |
 |====
 
-[#150]
-==  Automatically reporting rejected payments
+[#170]
+== Automatically reporting rejected payments
 
 Set up an <<basics/automation/event-procedures#, event procedure>> to automatically inform your customers of rejected payments. In order to inform your customers by email of rejected Amazon payments and change the status of these payments, create an *order status* for *rejected payments* by Amazon Pay or use an existing order status.
 
