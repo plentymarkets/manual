@@ -3,7 +3,7 @@
 :keywords: Webshop, Mandant, Standard, Ceres, Plugin, Ceres, HowTo, Einrichtung, Plugin-Sets, Context Klassen, Cross-Selling, Artikelliste
 :position: 45
 
-Da Ceres derzeit nur eine Cross-Selling Artikelliste gleichzeitig abbildet, erfährst du in diesem Best Practice, welche Anpassungen erforderlich sind, damit du mehrere unterschiedliche Cross-Selling Artikellisten in deinem Ceres Webshop verwenden kannst. Diese Anleitung richtet sich primär an erfahrene Nutzer und Nutzerinnen, da die Einbindung von mehreren Cross-Selling Listen gegenwärtig über ein eigens angepasstes Theme-Plugin geschehen muss.
+Da Ceres nativ nur eine Cross-Selling Artikelliste gleichzeitig abbildet, erfährst du in diesem Best Practice, welche Anpassungen erforderlich sind, damit du mehrere unterschiedliche Cross-Selling Artikellisten in deinem Ceres Webshop verwenden kannst. Diese Anleitung richtet sich primär an erfahrene Nutzer und Nutzerinnen, da die Einbindung von mehreren Cross-Selling Listen gegenwärtig über ein eigens angepasstes Theme-Plugin geschehen muss.
 
 [NOTE]
 ====
@@ -47,9 +47,18 @@ Füge den folgenden Code vor dem schließenden *</single-item>*-Tag in der Kompo
 
 [source,plenty]
 ----
-include::assets/bp-contexts-single-item-code.txt[]
+<div slot="CrossSellingAccessory">
+	{{ component("Ceres::Containers.Components.ContainerItemList") }}
+	{% if accessory|length > 0 %}
+        		<div class="crossSelling">
+        			<span class="h3">Das passt dazu:</span>
+        			<container-item-list :items="{{ accessory| json_encode }}"></container-item-list>
+      		</div>
+	{% endif %}
+   </div>
 
 ----
+
 
 Passe gegebenenfalls die Überschrift an. Nachdem der Slot für die Cross-Selling Liste definiert wurde, kannst du ihn über `<slot name="CrossSellingAccessory"></slot>` in der gewünschten Komponente (/resources/views/Item/Components/) einbauen. Wo du den Code eingeben musst, ist davon abhängig an welcher Stelle der Artikelansicht die Artikelliste erscheinen soll.
 
