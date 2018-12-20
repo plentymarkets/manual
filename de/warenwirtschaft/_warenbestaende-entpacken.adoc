@@ -1,27 +1,194 @@
-= Verpackungseinheiten entpacken
+= VPE-Varianten verwalten
 :lang: de
 include::{includedir}/_header.adoc[]
 :position: 30
 
-Was ist entpacken?
+plentymarkets erlaubt es Ihnen, denselben Artikel, also das Katzenfutter, in verschiedenen Verpackungseinheiten zu verkaufen. Sie können also eine Palette mit Katzenfutter direkt als eine Variante einbuchen und im Webshop anbieten.
+
+
+Um diese Möglichkeit in der Artikelstrukur abzubilden, erstellen Sie einen Artikel mit Varianten. Der Einzelartikel (1 Dose Katzenfutter) ist die Hauptvariante. Der Karton ist eine Kindvariante der Hauptvariante. Die Palette wiederum ist eine Kindvariante der Variante mit dem Bestand Karton.
+
+== Was sind VPE-Varianten?
 
 * VPE-Varianten können nur über die plentymarkets Prozesse eingebucht werden.
 * Varianten können nur über die plentymarkets App entpackt werden.
 * Die Namen für VPEs werden automatisch vergeben.
 
-* Beispiel “P24K4” für 1 Palette mit 24 Kartons a 4 Stück
+* Name der Variante: P(Paletteninhalt)K(Kartoninhalt) +
+*_Beispiel:_* “P24K4” für 1 Palette mit 24 Kartons a 4 Stück
+
+Ebene 1 = Einzelvariante
+Ebene 2 = Karton
+Ebene 3 = Palette
+
+== VPE-Varianten erstellen und/oder Bestand buchen
+
+=== Voraussetzungen und Hinweise
+
+* VPE-Varianten können nur über die Aktion *Wareneingang (einfach)* der Prozesse erstellt werden.
+* Bestand für VPE-Varianten kann nur über die Aktion *Wareneingang (einfach)* der Prozesse gebucht werden.
+* Um eine VPE-Variante über den Prozess zu erstellen, muss die Einzelvariante beim Ausführen des Prozesses im System vorhanden sein. +
+*_Tipp:_* Im Modus *Palette* wird eine VPE-Variante der Ebene Karton erstellt, wenn keine der vorhandenen VPE-Varianten dem Kartoninhalt entspricht.
+* Der Variantenname wird beim Erstellen von VPE-Varianten automatisch nach dem folgenden Muster vergeben und kann nicht geändert werden:
+
+  ** VPE-Varianten der Ebene *Karton*: *K[Kartoninhalt]* +
+  *_Beispiel:_* K50 = Karton à 50 Einzelvarianten
+  ** VPE-Varianten der Ebene *Palette*: *P[Paletteninhalt]K[Kartoninhalt]* +
+  *_Beispiel:_* P30K50 = Palette mit 30 Kartons à 50 Einzelvarianten
+
+////
+Einbuchen: Artikel muss es geben
+Einzelvariante muss auch vorhanden sein
+Palette: K und P wird erstellt (2 ebenen)
+Karton: K wird erstellt (1 ebene)
+////
 
 
+=== Barcode für VPE-Varianten erstellen
+
+Erstellen Sie einen Barcode des Typs *Code 128* für VPE-Varianten. Im Prozess wird VPE-Varianten ein Barcode-Code nach dem folgenden Muster zugewiesen:
+
+* [Paletteninhalt]x[Kartoninhalt]x[Barcode-Code der Zielvariante] +
+→ *_Beispiel:_* 24x36x1234567
+
+[.instruction]
+Barcode für VPE-Varianten erstellen:
+
+. Öffnen Sie das Menü *System » Artikel » Barcodes*.
+. Klicken Sie auf *Neuer Barcode*. +
+→ Das Fenster *Neuer Barcode* wird geöffnet.
+. Geben Sie einen Namen ein, z.B. *VPE-Varianten*.
+. Wählen Sie den Typ *Code 128* aus der Dropdown-Liste.
+. *Speichern* Sie die Einstellungen. +
+→ Der Barcode wird erstellt.
+. Öffnen Sie den Barcode.
+. Aktivieren Sie eine oder mehrere Herkünfte.
+. *Speichern* Sie die Einstellungen.
+
+=== Prozesseinstellungen vornehmen
+
+VPE-Varianten werden über die Aktion *Wareneingang (einfach)* eingebucht. Nehmen Sie die Grundeinstellungen des *Wareneingangs (einfach)* wie auf der Handbuchseite <<basics/automatisierung/prozesse/aktionen#460, Aktionen>> beschrieben vor. Die Einstellungen im Bereich *Paletten und Kartons* nehmen Sie wie unten beschrieben vor.
+
+[[tabelle-prozesserstellung-vpe-variante]]
+.Prozesserstellung für Paletten und Kartons
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+2+|Paletten und Kartons
+
+|*Modus*
+|Wählen, in welchem Modus Varianten eingebucht werden. +
+*Standard* = Eine Variante wird eingebucht. +
+*Karton* = VPE-Varianten der zweiten Ebene werden eingebucht, also Kinder einer Einzelvariante. +
+*_Tipp:_* Die Bezeichnung "Karton" ist festgelegt. Theoretisch kann jedoch eine beliebige Verpackungseinheit der zweiten Ebene eingebucht werden.
+*Palette* = VPE-Varianten der dritten Ebene werden eingebucht, also Enkelkinder einer Einzelvariante. +
+*_Tipp:_* Die Bezeichnung "Palette" ist festgelegt. Theoretisch kann jedoch eine beliebige Verpackungseinheit der dritten Ebene eingebucht werden.
+
+|*Einheit für Karton*
+|Standardeinstellung *Karton* wählen. +
+*_Hinweis:_* Zurzeit sind keine weiteren Optionen wählbar.
+
+|*Einheit für Palette*
+|Standardeinstellung *Palette* wählen. +
+*_Hinweis:_* Zurzeit sind keine weiteren Optionen wählbar.
+
+|*Barcode Quellvariante*
+|Barcode wählen, der im Wareneingang verwendet wird, um den Barcode einer VPE-Variante zu bilden.
+
+|*Barcode Zielvariante*
+|Barcode des Typs *Code 128* wählen, der für VPE-Varianten erstellt wurde. +
+VEP-Varianten wird im Wareneingang automatisch ein Code nach dem folgenden Muster zugewiesen: +
+[Paletteninhalt]x[Kartoninhalt]x[Barcode-Code der Zielvariante], zum Beispiel "24x36x1234567"
+
+|*Verkaufspreis*
+|Verkaufspreis wählen, der der VPE-Variante zugeordnet und zum Berechnen des Preises der VPE-Variante verwendet wird. Der Preis wird beim Anlegen der VPE-Variante automatisch berechnet: +
+Modus *Karton* = Für den Verkaufspreis gespeicherter Preis der Einzelvariante x Kartoninhalt +
+Modus *Palette* = Für den Verkaufspreis gespeicherter Preis der Einzelvariante x (Kartoninhalt + Paletteninhalt) +
+*_Hinweis:_* Der Preis kann an der VPE-Variante geändert werden.
+
+|*Etiketten*
+|*Palette* = Beim Einbuchen wird ein Etikett für die Palette generiert. +
+*Palette und Kartons* = Beim Einbuchen werden ein Etikett für die Palette und Etiketten für die Kartons auf dieser Palette erstellt.
+|====
+
+=== Bestand für VPE-Varianten im Prozess buchen
+
+Gehen Sie wie unten beschrieben vor, um Bestand für eine VPE-Variante zu buchen.
+
+// Modus Karton und Modus Palette separat beschreiben?
+
+[.instruction]
+Bestand für VPE-Varianten im Prozess buchen:
+
+. Öffnen Sie das Menü *Prozesse*. +
+→ Die verfügbaren Prozesse werden angezeigt.
+. Klicken Sie auf den Prozess zum Einbuchen von VPE-Varianten. +
+→ Der Prozess wird angezeigt und befindet sich im Status *Wartend*.
+. Klicken Sie auf *Start*. +
+→ Der Prozess wird gestartet.
+. Geben Sie die Artikel-ID oder den Barcode ein. +
+*_Oder:_* Scannen Sie die Variante.
+. Nehmen Sie die Einstellungen vor. Beachten Sie die Erläuterungen in <<tabelle-vpe-varianten-einbuchen>>. +
+*_Hinweis:_* Die im Prozess angezeigten Felder können abweichen.
+. Klicken Sie auf das grüne Plus. +
+→ Im Modus *Karton*: Wenn die VPE-Variante noch nicht im System gespeichert ist, wird eine VPE-Variante der Ebene *Karton* erstellt und der Einzelvariante zugeordnet.
+→ Im Modus *Karton*: Eine VPE-Variante der Ebene *Karton*. +
+→ Im Modus *Palette*: Wenn die VPE-Variante noch nicht im System gespeichert ist, wird eine VPE-Variante der Ebene *Palette* erstellt und der VPE-Variante der Ebene *Karton* zugeordnet. Wenn keine VPE-Variante der Ebene *Karton* im System gespeichert ist, wird diese VPE-Variante erstellt und der Einzelvariante zugeordnet.
+→ Der Warenbestand für die VPE-Variante wird gebucht. +
+
+// >> Variante ist aktiv, hat aber keine Marktplatz-Verfügbarkeit, auch keine geerbte
+
+Die Darstellung ist optimiert für Bildschirmgrößen ab *15 Zoll*.
+
+[[tabelle-vpe-varianten-einbuchen]]
+.VPE-Varianten im Prozess einbuchen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Artikelvariante wählen*
+|Variante wählen.
+
+|*Kartoninhalt*
+|Eingeben, wie viele Einzelvarianten ein Karton enthält.
+
+|*Paketinhalt*
+|Eingeben, wie viele Kartons eine Palette enthält.
+
+|*Artikeldaten eingeben*
+|Eingeben, wie viele Kartons eingebucht werden. +
+*_Hinweis:_* Im Modus *Palette*, also beim Einbuchen von Paletten, ist nur die Stückzahl *1* möglich.
+
+|*Lager*
+|Zeigt das Lager an.
+*_Hinweis:_* Das Lager kann nicht geändert werden.
+
+|*Lagerort*
+|Lagerort aus der Dropdown-Liste wählen.
+
+|*Bestellung*
+|Nachbestellung aus der Dropdown-Liste wählen, der der Wareneingang zugeordnet werden soll. +
+*Keine Bestellung verwenden* = Wareneingang wird keiner Nachbestellung zugeordnet. +
 
 
-== Verpackungseinheiten über die plentymarkets App entpacken (ab App-Version 1.XX)
+|*Lieferant*
+|Lieferanten aus der Dropdown-Liste wählen.
 
-Entpacken bedeutet, dass Sie eine Variante, die aus einer größeren Verpackungseinheit besteht, in kleinere Verpackungseinheiten auflösen. Sie können nur den Bestand von Varianten entpacken, die eine Elternvariante haben. Beim Entpacken wird der Bestand der Kindvariante ausgebucht. In einem zweiten Schritt wird der Bestand der Kindvariante auf die Elternvariante umgebucht. Wenn die Kindvariante zum Beispiel eine Palette ist, wird durch das Entpacken aus diesem Bestand "1 Palette" der Bestand "36 Kartons". Dieser neue Bestand wird dann auf die Elternvariante gebucht.
+|*EK*
+|Einkaufspreis eingeben. +
+*_Hinweis:_* Einkaufspreis der Verpackungseinheit eingeben, nicht den Einzelpreis.
+|====
+
+
+== VPE-Varianten über die plentymarkets App entpacken (ab App-Version 1.XX)
+
+Entpacken bedeutet, dass Sie eine VPEVariante, also eine Variante, die aus einer größeren Verpackungseinheit besteht, in kleinere Verpackungseinheiten auflösen. Sie können nur den Bestand von Varianten entpacken, die eine Elternvariante haben. Beim Entpacken wird der Bestand der Kindvariante ausgebucht. In einem zweiten Schritt wird der Bestand der Kindvariante auf die Elternvariante umgebucht. Wenn die Kindvariante zum Beispiel eine Palette ist, wird durch das Entpacken aus diesem Bestand "1 Palette" der Bestand "36 Kartons". Dieser neue Bestand wird dann auf die Elternvariante gebucht.
 
 [#xxx]
 === Berechtigungen für Entpacken erteilen
 
-Benutzerinnen und Benutzer mit Admin-Rechten dürfen standardmäßig Verpackungseinheiten über die App entpacken. Benutzerinnen und Benutzer der Benutzerklasse *Variabel* und *Logistik* müssen Sie die Berechtigung dafür erteilen, Verpackungseinheiten zu entpacken.
+Benutzerinnen und Benutzer mit Admin-Rechten dürfen standardmäßig VPE-Varianten über die App entpacken. Benutzerinnen und Benutzer der Benutzerklasse *Variabel* und *Logistik* müssen Sie die Berechtigung dafür erteilen, VPE-Varianten zu entpacken.
 
 [.instruction]
 Berechtigungen für das Entpacken erteilen:
@@ -35,18 +202,18 @@ Berechtigungen für das Entpacken erteilen:
 . *Speichern* Sie die Einstellungen.
 
 
-=== Verpackungseinheiten über die plentymarkets App entpacken
+=== VPE-Varianten über die plentymarkets App entpacken
 
-Gehen Sie wie unten beschrieben vor, um Verpackungseinheiten über die plentymarkets App zu entpacken.
+Gehen Sie wie unten beschrieben vor, um VPE-Varianten über die plentymarkets App zu entpacken.
 
 [TIP]
 .Lagerorte labeln
 ====
-Noch schneller entpacken Sie Verpackungseinheiten, wenn Sie Ihre <<warenwirtschaft/lager-einrichten#800, Lagerorte labeln>>. Beim Entpacken können Sie dann die Labels der Quell- und Ziellagerorte scannen.
+Noch schneller entpacken Sie VPE-Varianten, wenn Sie Ihre <<warenwirtschaft/lager-einrichten#800, Lagerorte labeln>>. Beim Entpacken können Sie dann die Labels der Quell- und Ziellagerorte scannen.
 ====
 
 [.instruction]
-Ware über die plentymarkets App entpacken:
+VPE-Varianten über die plentymarkets App entpacken:
 
 . Öffnen Sie die plentymarkets App.
 . Tippen Sie in der Menüleiste auf das *Menüsymbol*.
@@ -73,7 +240,7 @@ Ware über die plentymarkets App entpacken:
 
 
 
-== Ware über die plentymarkets App umbuchen
+== Bestand von VPE-Varianten über die plentymarkets App umbuchen
 
 Ab plentymarkets 7 kann Ware auch über die plentymarkets App umgebucht werden. Erteilen Sie dazu Benutzern der Benutzerklasse *Variabel* und *Logistik* die nötigen Berechtigungen. Mit Umbuchungsvorlagen und App-Einstellungen passen Sie den Umbuchungsvorgang an Ihre Lagergegebenheiten an.
 
@@ -250,43 +417,20 @@ Ware über die plentymarkets App umbuchen:
 → Der Bestand wird umgebucht.
 
 
+== Anwendungsfall - Beispiel
 
-// ================== Anwendungsfall // Best Practice =================
+Sie verkaufen Katzenfutterdosen an Geschäftskunden und an Privatkunden. Das Katzenfutter verkaufen Sie in den folgenden Verpackungseinheiten (VPE):
 
+* Einzeldosen
+* Kartons
+* Paletten
 
-In plentymarkets können Sie
+In plentymarkets erstellen Sie also zunächst eine Variante, die einer Dose Katzenfutter entspricht. Hierbei handelt es sich um die Einzelvariante.
 
+Im Wareneingang (einfach) buchen Sie jedoch als Menge nicht 1 Dose ein. Stattdessen wählen Sie den Modus *Palette* und buchen die gesamte Palette ein. Der Prozess erstellt automatisch eine VPE-Variante der Ebene *Karton* und eine VPE-Variante der Ebene *Palette*. Die Beziehung der Varianten untereinander lässt sich dabei wie folgt darstellen:
 
-== Anwendungsfall
+* Die Palettenvariante ist ein Kind der Kartonvariante
+* Die Kartonvariante ist ein Kind der Einzelvariante
+* Die Einzelvariante ist entweder selbst Hauptvariante oder ein Kind der Hauptvariante
 
-Sie verkaufen Katzenfutter.
-Sie verkaufen Katzenfutter an große und an kleine Kunden.
-Sie verkaufen Paletten mit Katzenfutter.
-Sie verkaufen Kartons mit Katzenfutter.
-Sie verkaufen Dosen mit Katzenfutter.
-
-plentymarkets erlaubt es Ihnen, denselben Artikel, also das Katzenfutter, in verschiedenen Verpackungseinheiten zu verkaufen. Sie können also eine Palette mit Katzenfutter direkt als eine Variante einbuchen und im Webshop anbieten.
-
-Um diese Möglichkeit in der Artikelstrukur abzubilden, erstellen Sie einen Artikel mit Varianten. Der Einzelartikel (1 Dose Katzenfutter) ist die Hauptvariante. Der Karton ist eine Kindvariante der Hauptvariante. Die Palette wiederum ist eine Kindvariante der Variante mit dem Bestand Karton.
-
-Nun kann es sein, dass Sie Ihr Katzenfutter von verschiedenen Lieferanten beziehen. Dadurch kann die Anzahl der Dosen pro Karton und/oder die Anzahl der Kartons pro Palette je nach Palette unterschiedlich sein.
-
-
-== Artikel erstellen über den Wareneingang (einfach)
-
-Kartoninhalt: wie viele items in einem karton
-paletteninhalt: wie viele kartons auf der paletteninhalt
-name der variante: P(paletteninhalt)K(Kartoninhalt)
--> nicht mehr änderbar?
-
-im modus "palette" man kann nur anzahl 1 paletten einbuchen
-im modus "karton" kann man mehrere kartons gleichzetig einbuchen
-
-
-marktplatzverfügbarkeiten werden nicht vererbt
-
-
-verkaufspreis errechnet sich aus einzelpreis mal anzahl in karton bzw. auf palette
--> preis kann geändert werden. preiskalkulationen greifen wie sonst auch.
-
-EK eingeben ()
+Nun kann es sein, dass Sie das Katzenfutter von verschiedenen Lieferanten beziehen. Dadurch kann die Anzahl der Dosen pro Karton und/oder die Anzahl der Kartons pro Palette unterschiedlich sein, je nachdem, von welchem Lieferanten das Katzenfutter kommt. Abgesehen von der Menge pro Verpackungseinheit und dem Lieferanten sind die Dosen aber identisch.
