@@ -17,9 +17,9 @@ Du willst den neuen Checkout mit seiner Plugin-Fähigkeit und individuellen Anpa
 Ceres baut auf der Logik des Plugins IO auf. Um den Checkout so zu nutzen, dass alle Links zwischen Callisto und Ceres korrekt funktionieren, verfährst du wie im Folgenden beschrieben.
 
 [TIP]
-.Im Vorschaumodus arbeiten
+.In einer Plugin-Set-Kopie arbeiten
 ====
-Führe die Änderungen zuerst im <<basics/erste-schritte/plugins#50, Vorschaumodus Stage>> aus, bevor du sie in deinen Webshop übernimmst.
+Damit der Live-Betrieb des Webshops beim Testen des Ceres Checkouts nicht beeinträchtigt wird, bietet es sich an, die Änderungen in einem separaten Plugin-Set zu testen. Wie du eine Kopie deines Plugin-Sets erstellst, erfährst du in <<omni-channel/online-shop/best-practices#_plugin_set_kopieren, diesem Best Practice>>. Führe die Änderungen zuerst im <<basics/erste-schritte/plugins#60, Vorschaumodus>> aus, bevor du sie in deinen Webshop übernimmst.
 ====
 
 [.instruction]
@@ -32,8 +32,14 @@ Einstellungen in IO vornehmen:
 . Wechsle in das Tab *Routing*.
 . Klicke das Häkchen bei *All*. +
 → Alle Routen werden deaktiviert.
-. Aktiviere die Routen */checkout*, */confirmation*, */login*, *register* sowie */place-order & /execute-payment*.
+. Aktiviere die Routen */checkout*, */confirmation*, */login*, */register*, *reset-password* sowie */place-order & /execute-payment*.
 . *Speichere* die Einstellungen.
+
+[IMPORTANT]
+.ShopBuilder für Callisto-Shops mit Ceres Checkout
+====
+Wenn du einen Callisto-Shop mit Ceres-Checkout betreibst und den <<omni-channel/online-shop/shop-builder#, ShopBuilder>> verwenden möchtest, musst du zusätzlich die erste Route */* aktivieren, da der ShopBuilder sonst nicht im Backend geladen wird. Beachte bitte, dass hierdurch die Callisto Startseite überschrieben wird. Wir empfehlen Änderungen in einer Plugin-Set-Kopie durchzuführen und nach den durchgeführten Änderungen die Startseite-Route */* wieder zu deaktivieren.
+====
 
 [.instruction]
 Einstellungen in Ceres vornehmen:
@@ -95,24 +101,24 @@ Backlinks für den Warenkorb setzen:
 . Klappe deine Callisto-Kategorie auf.
 . Klicke auf die Kategorie *Warenkorb*.
 . Wechsle in das Tab *Beschreibung 1*.
-. Suche den Code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
-. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. Suche den folgenden Code: `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
+. Ersetze den Code durch: `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`
 . *Speichere* die Einstellungen.
 
 [.instruction]
 Backlinks für die Warenkorbvorschau setzen:
 
 . Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewBasketPreviewList*.
-. Suche den Code `{% if( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
-. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. Suche den folgenden Code: `{% if( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
+. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`
 . *Speichere* die Einstellungen.
 
 [.instruction]
 Backlinks für das Warenkorb-Overlay setzen:
 
 . Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewItemToBasketConfirmationOverlay*.
-. Suche den Code `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`.
-. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`.
+. Suche den folgenden Code: `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
+. Ersetze den Code durch: `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`
 . *Speichere* die Einstellungen.
 
 == Rechtliche Angaben anpassen

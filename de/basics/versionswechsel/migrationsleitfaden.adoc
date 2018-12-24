@@ -1,11 +1,11 @@
-= Migrationsleitfaden
+= Migrationsleitfaden plentymarkets 7
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: plentymarkets 7, Migration, Migrationsleitfaden
 :description: Leitfaden zur Migration auf plentymarkets 7
 :position: 10
 
-Diese Seite enthält wichtige Informationen zur Migration auf plentymarkets 7. Für plentymarkets 7 wurde die Artikelarchitektur grundlegend überarbeitet. Auf dieser Seite wird kurz die neue Architektur erläutert und ein Ausblick auf die weiteren Verbesserungen gegeben, die sich zurzeit noch in der Umsetzung befinden. Des Weiteren wird der Ablauf der Migration beschrieben. Sie erfahren, welche Vorbereitungen Sie treffen müssen, um Ihr System für die Migration vorzubereiten. Beachten Sie, dass eine Migration nicht rückgängig gemacht werden kann. Wenn Sie die hier beschriebenen Vorbereitungen nicht treffen, kann dies einen erheblichen Korrekturaufwand für Sie nach der Migration bedeuten. Im schlimmsten Fall kann es zu einem Verlust von Daten kommen. Lesen Sie daher die folgenden Informationen aufmerksam und bereiten Sie Ihre Daten wie hier beschrieben für die Migration vor.
+Diese Seite enthält wichtige Informationen zur Migration auf plentymarkets 7. Für plentymarkets 7 wurde die Artikelarchitektur grundlegend überarbeitet. Auf dieser Seite wird kurz die neue Architektur erläutert und ein Ausblick auf die weiteren Verbesserungen gegeben, die sich zurzeit noch in der Umsetzung befinden. Des Weiteren wird der Ablauf der Migration beschrieben. Sie erfahren, welche Vorbereitungen Sie treffen müssen, um Ihr System für die Migration vorzubereiten. Beachten Sie, dass eine Migration nicht rückgängig gemacht werden kann. Wenn Sie die hier beschriebenen Vorbereitungen nicht treffen, müssen Sie einen erheblichen Korrekturaufwand nach der Migration in Kauf nehmen. Im schlimmsten Fall kann es zu einem Verlust von Daten kommen. Lesen Sie daher die folgenden Informationen aufmerksam und bereiten Sie Ihre Daten wie hier beschrieben für die Migration vor.
 
 [WARNING]
 .SOAP API nur mit plentymarkets 7 Classic Tarif
@@ -37,7 +37,7 @@ Variantendaten:
 * Kategorien
 * Lieferanten
 
-Jeder Artikel verfügt über eine nicht löschbare Hauptvariante. Diese Hauptvariante ist nicht identisch mit dem Artikel, sondern unterscheidet sich von den anderen möglichen Varianten eines Artikels lediglich dadurch, dass Eigenschaften von ihr an weitere Varianten des Artikels vererbt werden können. Die Hauptvariante kann selbst eine kaufbare Variante sein oder als virtuelle Variante dienen, um die weiteren Varianten des Artikels zu verwalten.
+Jeder Artikel verfügt über eine nicht löschbare Hauptvariante. Diese Hauptvariante ist nicht identisch mit dem Artikel, sondern unterscheidet sich von den anderen möglichen Varianten eines Artikels lediglich dadurch, dass Eigenschaften von der Hauptvariante an weitere Varianten des Artikels vererbt werden können. Die Hauptvariante kann selbst eine kaufbare Variante sein oder als virtuelle Variante dienen, um die weiteren Varianten des Artikels zu verwalten. plentymarkets empfiehlt, Hauptvarianten als virtuelle Varianten zu pflegen.
 
 Bild 1 zeigt eine schematische Darstellung der Artikelarchitektur in plentymarkets 7.
 
@@ -46,7 +46,7 @@ image::basics/versionswechsel/assets/DE-artikelarchitektur-1.png[Aktueller Stand
 
 Die neue Artikelarchitektur bietet zahlreiche Vorteile. Wichtigstes Ziel war noch mehr Flexibilität bei der Verwaltung und Pflege der Preise, der Artikeldaten und vor allem auch der Varianten. Eine kurze Übersicht der Neuerungen und Vorteile finden Sie nachfolgend.
 
-* Die Preissets mit den Preisspalten wurden durch Verkaufspreise ersetzt. Diese Verkaufspreise werden zentral definiert und verwaltet und Varianten zugewiesen. Dieses Konzept vereinfacht die Preispflege und bietet Ihnen gleichzeitig deutlich mehr Flexibilität bei der selektiven Preisgestaltung. Beispielsweise werden die Mengenrabattstaffeln von Artikeln und Kundenklassen zu Verkaufspreisen migriert. Dies erlaubt Ihnen noch mehr Flexibilität bei der Preisstaffelung.
+* Die Preissets mit den Preisspalten wurden durch Verkaufspreise ersetzt. Diese Verkaufspreise werden zentral definiert und verwaltet und Varianten zugewiesen. Dieses Konzept vereinfacht die Preispflege und bietet Ihnen gleichzeitig deutlich mehr Flexibilität bei der selektiven Preisgestaltung. Beispielsweise werden die Mengenrabattstaffeln von Artikeln und Kundenklassen zu Verkaufspreisen migriert. Diese neuen Verkaufspreise erlauben Ihnen noch mehr Flexibilität bei der Preisstaffelung.
 * Mehr Flexibilität bei der Arbeit mit Varianten. Anders als bisher können für Varianten eigene Werte z.B. für Maße und Gewichte, Versandkosten, sonstige Kosten und Lieferanten hinterlegt werden. Um den Pflegeaufwand bei sehr ähnlichen Varianten zu minimieren, haben wir gleichzeitig die Möglichkeit geschaffen, Daten von der Hauptvariante an die Varianten zu vererben.
 * Vererbung bestimmter Artikeldaten der Hauptvariante an die dazugehörigen Varianten. Damit reduzieren Sie Ihren Pflegeaufwand, ohne Abstriche bei der Flexibilität zu machen. Die Vererbung ermöglicht es Ihnen, Varianteneigenschaften zentral an der Hauptvariante zu verwalten und so die Werte vieler Varianten gleichzeitig zu aktualisieren. Beim Erstellen von Varianten werden viele Einstellungen der Hauptvariante automatisch auf die Varianten übertragen. Auch bei einer späteren Bearbeitung der Hauptvariante erben die Varianten automatisch die neuen Einstellungen, wenn die Vererbung aktiviert ist. Gleichzeitig können Sie die Vererbung jedoch auch an der Variante deaktivieren und so individuelle Einstellungen vornehmen.
 
@@ -69,9 +69,11 @@ image::basics/versionswechsel/assets/DE-artikelarchitektur-2.png[Ausblick Datenp
 Beachten Sie die folgenden Voraussetzungen für eine Migration Ihres Systems auf plentymarkets 7.
 
 * **Hosting**: Wenn Sie plentymarkets auf einem eigenen Server oder der plentymarkets eigenen Cloud (Cluster) nutzen, müssen Sie das System auf die AWS-Cloud umziehen, um auf plentymarkets 7 zu migrieren. +
-→ Wenn die Hauptdomain Ihres Systems eine externe Domain ist, müssen Sie im Rahmen eines Umzugs auf die AWS-Cloud die neue IP-Adresse beim externen Domain-Provider speichern. Weitere Informationen finden Sie im <<https://forum.plentymarkets.com/t/leitfaden-aws-umzug/75863, Leitfaden AWS-Umzug^>>.
-* **SOAP**: Eigene SOAP-Anbindungen und SOAP-Anbindungen von Partnern oder Agenturen müssen vor der Migration auf ihre Stable 7-Tauglichkeit geprüft werden. Fragen Sie den Entwickler oder die Agentur, ob die Anbindung Stable 7-fähig ist.
-* **plentymarkets Shipping**: plentymarkets Shipping ist nicht mit plentymarkets 7 kompatibel und wird nicht mehr unterstützt. Wechseln Sie auf den aktuellen link:https://www.plentymarkets.eu/software/downloads/plentymarkets-client[plentymarkets-Client].
+→ Wenn die Hauptdomain Ihres Systems eine externe Domain ist, müssen Sie im Rahmen eines Umzugs auf die AWS-Cloud die neue IP-Adresse beim externen Domain-Provider speichern. Weitere Informationen finden Sie im link:https://forum.plentymarkets.com/t/leitfaden-aws-umzug/75863[Leitfaden AWS-Umzug].
+* **SOAP**: Eigene SOAP-Anbindungen und SOAP-Anbindungen von Partnern oder Agenturen müssen vor der Migration auf die Stable 7-Tauglichkeit geprüft werden. Fragen Sie den Entwickler oder die Agentur, ob die Anbindung Stable 7-fähig ist.
+* **plentymarkets Shipping**: plentymarkets Shipping ist nicht mit plentymarkets 7 kompatibel und wird nicht mehr unterstützt. Es wurde vollständig durch die Prozesse abgelöst.
+Damit die Prozesse genutzt werden können, muss link:https://marketplace.plentymarkets.com/de/plugins/integration/plentyBase_5053[plentyBase] installiert sein. +
+Die Software plentyBase läuft im Hintergrund. Ein Login zum plentymarkets Backend mit Ihrem Benutzer erfolgt wie gewohnt über den Browser.
 * **Marktplätze**: In plentymarkets 7 sind noch nicht alle Marktplätze funktionsfähig. Prüfen Sie vor der Migration die <<basics/versionswechsel#, Liste>> der noch nicht migrierten Marktplätze.
 * **Vorbereitungen**: Arbeiten Sie diesen Migrationsleitfaden durch und treffen Sie die darin beschriebenen Vorbereitungen.
 
@@ -136,11 +138,11 @@ Artikel/Varianten ohne Artikel-/Variantennummer
 
 |Sonderfall 2: +
 Artikel/Varianten mit gleicher Artikel-/Variantennummer
-|Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster vergeben, das vor der Migration in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> des Menüs **System » Einstellungen » Migration** über die Einstellung **Doppelte Nummern** festgelegt wurde.
+|Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster vergeben, das vor der Migration in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> des Menüs **System » Einstellungen » Daten » Migration** über die Einstellung **Doppelte Nummern** festgelegt wurde.
 
 |Sonderfall 3: +
 Artikel mit mehreren Preissets
-|Aus einer Variante können mehrere Varianten entstehen. Bei dem zuerst migrierten Preisset übernimmt die Variante die Artikel-/Variantennummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster vergeben, das vor der Migration in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> des Menüs **System » Einstellungen » Migration** über die Einstellung **Doppelte Nummern** festgelegt wurde. +
+|Aus einer Variante können mehrere Varianten entstehen. Bei dem zuerst migrierten Preisset übernimmt die Variante die Artikel-/Variantennummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster vergeben, das vor der Migration in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> des Menüs **System » Einstellungen » Daten » Migration** über die Einstellung **Doppelte Nummern** festgelegt wurde. +
 **Hinweis:** Bei der Migration eines Artikels mit mehreren Preissets, in denen **Inhalt** und **Einheit** identisch sind, wird nur das erste Preisset migriert.
 
 |Vorbereitungen
@@ -262,7 +264,7 @@ a|
 * Einstellung **Währungsumrechnung** aller Mandanten prüfen. Haben verschiedene Mandanten verschiedene Einstellungen, prüfen, ob es sinnvoll ist, diese Einstellung <<basics/versionswechsel/migrationsleitfaden#70, zu vereinheitlichen>>, um die Anzahl der neu erstellten Verkaufspreise zu reduzieren.
 * Bei Mandanten mit Einstellung "Verwende Preisspalte": +
 <<basics/versionswechsel/migrationsleitfaden#75, Prüfen>>, welche Preisspalten im Menü **System » Aufträge » Zahlung » Währungen** mit Währungen verknüpft sind. Sicherstellen, dass an allen Artikeln in diesen Preisspalten Beträge hinterlegt sind. +
-**Wichtig:** Ist kein Betrag hinterlegt, wird bei gleicher Währung der Standardpreis der Variante übernommen. Je nach Wechselkurs kann dies zu stark abweichenden neuen Preisen führen.
+**Wichtig:** Ist kein Betrag hinterlegt, wird bei gleicher Währung der Standardpreis der Variante übernommen. Je nach Wechselkurs kann diese Einstellung zu stark abweichenden neuen Preisen führen.
 
 |3
 |**System » CRM » Kundenklassen**
@@ -288,7 +290,7 @@ Die Preisspalten werden einzeln zu Verkaufspreisen migriert. Zunächst werden da
 [TIP]
 .Tipp: Artikeldaten prüfen und ggf. aktualisieren
 ====
-Prüfen Sie vor der Migration die Aktualität Ihrer Artikeldaten. Löschen Sie alte Testartikel und prüfen Sie vor allem die Preise. Dies vereinfacht die Datenmigration und reduziert Ihren Pflegeaufwand nach der Migration.
+Prüfen Sie vor der Migration die Aktualität Ihrer Artikeldaten. Löschen Sie alte Testartikel und prüfen Sie vor allem die Preise. Diese Vorarbeit vereinfacht die Datenmigration und reduziert Ihren Pflegeaufwand nach der Migration.
 ====
 
 Für eine reibungslose Migration Ihrer Artikeldaten müssen Sie die in diesem Kapitel beschriebenen Vorbereitungen treffen. Führen Sie diese Vorbereitungen unbedingt vor der Migration Ihrer Artikeldaten aus, da sonst ein hoher Korrekturaufwand nach der Migration entsteht. Es kann sogar der Verlust von Daten die Folge sein.
@@ -308,7 +310,7 @@ Nehmen Sie die folgenden Migrationseinstellungen vor, bevor Sie auf plentymarket
 [.instruction]
 Migrationseinstellungen vornehmen:
 
-. Öffnen Sie das Menü **System » Einstellungen » Migration**.
+. Öffnen Sie das Menü **System » Einstellungen » Daten » Migration**.
 . Klappen Sie **Artikel (Einstellungen für den Wechsel auf plentymarkets 7)** auf. +
 → Die Migrationseinstellungen werden eingeblendet.
 . Nehmen Sie die Einstellungen vor. Beachten Sie <<migrationseinstellungen>>.
@@ -339,12 +341,12 @@ Wählen, wie die Einheiten migriert werden sollen: +
 |**Trennzeichen für Zusammenführung Einheit 1 + 2**
 |Bei Auswahl der Optionen **Einheit 1 + Einheit 2** oder **Einheit 2 + Einheit 1**: +
 Trennzeichen eingeben, die zwischen den beiden Einheiten eingefügt werden sollen. Als Trennzeichen können beliebe Kombinationen aus Leerzeichen, Zeichen (Komma, Semikolon, Schrägstrich etc.) und Buchstaben eingegeben werden. +
-**Hinweis:** Der Inhalt des Felds wird direkt übernommen, Leerzeichen müssen also eingegeben werden, wenn sie als Bestandteil der Trennzeichen eingefügt werden sollen.
+**Hinweis:** Der Inhalt des Felds wird direkt übernommen. Leerzeichen müssen also eingegeben werden, wenn Leerzeichen als Bestandteil der Trennzeichen eingefügt werden sollen.
 
 |**Doppelte Nummern**
 |In plentymarkets 7 ist die Variantennummer systemweit eindeutig. Bei doppelt vergebenen Artikel-/Variantennummern übernimmt die zuerst migrierte Variante die vorhandene Nummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer vergeben. Festlegen, nach welchem Muster diese Variantennummern vergeben werden sollen. +
 **Neue Nummer generieren** = Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für die weiteren Varianten werden neue Nummern generiert. Im Menü <<artikel/artikel-verwalten#15, System » Artikel » Einstellungen>> das Muster aus Präfix und nächster Variantennummer festlegen, nach dem diese Nummern generiert werden sollen. +
-**Vorhandene durch Counter eindeutig machen** = Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für alle weiteren Varianten wird an diese Nummer eine aufsteigende Zahl angefügt, um sie eindeutig zu machen. +
+**Vorhandene durch Counter eindeutig machen** = Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für alle weiteren Varianten wird an diese Nummer eine aufsteigende Zahl angefügt, um die Nummer eindeutig zu machen. +
 **Beispiel:** Die Artikel-/Variantennummer XY12345 befindet sich dreimal im System. Bei der Migration werden drei Varianten angelegt. Diese neuen Varianten haben die Variantennummern XY12345, XY123452 und XY123453.
 |====
 
@@ -525,10 +527,10 @@ Einheiten prüfen:
 ❏ Wenn ja, können diese Felder ohne Änderungen in einem Feld zusammengeführt werden? +
 ❏ Welche Reihenfolge ist geeignet? **Einheit 1 + Einheit 2** oder **Einheit 2 + Einheit 1**? +
 ❏ Welche Trennzeichen sind geeignet, um den Inhalt zusammenzuführen?
-. Passen Sie den Inhalt der Spalten ggf. so an, dass sie zusammengeführt eine sinnvolle Einheit ergeben.
+. Passen Sie den Inhalt der Spalten ggf. so an, dass die Spalten zusammengeführt eine sinnvolle Einheit ergeben.
 . Speichern Sie die Änderungen an der CSV-Datei.
 . <<basics/datenaustausch/export-import/daten-importieren#, Importieren>> Sie die CSV-Datei zurück in plentymarkets, wenn Sie Änderungen vorgenommen haben.
-. Nehmen Sie im Menü **System » Einstellungen » Migration** geeignete Einstellungen für die Optionen **Zusammenführung Einheit 1 + 2** und **Trennzeichen für Zusammenführung Einheit 1 + 2** vor.
+. Nehmen Sie im Menü **System » Einstellungen » Daten » Migration** geeignete Einstellungen für die Optionen **Zusammenführung Einheit 1 + 2** und **Trennzeichen für Zusammenführung Einheit 1 + 2** vor.
 
 [[datenformat-itemprice]]
 .Datenfelder Datenformat **ItemPrice**
@@ -658,7 +660,7 @@ Währungseinstellungen bei Mandanten mit Einstellung "Verwende Preisspalte"
 Die Währungseinstellungen müssen Sie nur prüfen, wenn Sie Mandanten haben, bei denen im Menü **System » Mandant » Mandant wählen » Webshop » Währung** die Option **Währungsumrechnung** auf **Verwende Preisspalte** steht.
 ====
 
-Für Mandanten mit der Einstellung **Verwende Preisspalte** prüfen Sie nun, welche Preise im Menü **System » Aufträge » Zahlung » Währungen** mit Währungen verknüpft sind. Stellen Sie dann sicher, dass an allen Artikeln für diese Preise Beträge hinterlegt sind. Ist kein Betrag hinterlegt, wird der Standardpreis der Variante übernommen. Die Währung bleibt jedoch gleich. Je nach Wechselkurs kann dies zu stark abweichenden Preisen führen. Gehen Sie wie unten beschrieben vor, um die Einstellungen zu prüfen.
+Für Mandanten mit der Einstellung **Verwende Preisspalte** prüfen Sie nun, welche Preise im Menü **System » Aufträge » Zahlung » Währungen** mit Währungen verknüpft sind. Stellen Sie dann sicher, dass an allen Artikeln für diese Preise Beträge hinterlegt sind. Ist kein Betrag hinterlegt, wird der Standardpreis der Variante übernommen. Die Währung bleibt jedoch gleich. Je nach Wechselkurs kann diese Einstellung zu stark abweichenden Preisen führen. Gehen Sie wie unten beschrieben vor, um die Einstellungen zu prüfen.
 
 [.instruction]
 Währungseinstellungen bei Mandanten mit Einstellung "Verwende Preisspalte" prüfen:
@@ -755,7 +757,7 @@ Preisspalten der Herkünfte abgleichen:
 . Öffnen Sie die in <<marktplaetze-preisspalten>> aufgeführten Menüs. +
 ❏ Stimmen die dort eingestellten Preisspalten mit den notierten Einstellungen überein?
 . Passen Sie die Einstellungen bei Bedarf an.
-. Prüfen Sie auch die Preise und passen Sie sie ggf. an, wenn Sie Änderungen an den Einstellungen vornehmen.
+. Prüfen Sie auch die Preise und passen Sie die Preise ggf. an, wenn Sie Änderungen an den Einstellungen vornehmen.
 
 [[marktplaetze-preisspalten]]
 .Marktplätze mit eigenen Preisspalten
@@ -852,9 +854,9 @@ Preissichtbarkeit in Bezug auf Kundenklassen prüfen:
 
 Damit SKUs für Amazon korrekt migriert werden, müssen zwingend bestimmte Einstellungen vor der Migration geprüft werden. +
 
-Zum einen müssen Sie im Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Verfügbar** prüfen, ob bei allen von Ihnen genutzten Amazon-Plattformen sowie für die **Web-API** der Haken gesetzt ist. Dies ist zwingend erforderlich. Andernfalls werden die SKUs in plentymarkets 7 beim Export mit einer SKU der neuen Logik erzeugt. Dies führt dazu, dass Artikel im Seller Central doppelt gelistet werden. +
+Zum einen müssen Sie im Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Verfügbar** prüfen, ob bei allen von Ihnen genutzten Amazon-Plattformen sowie für die **Web-API** der Haken gesetzt ist. Diese Einstellungen sind zwingend erforderlich. Andernfalls werden die SKUs in plentymarkets 7 beim Export mit einer SKU der neuen Logik erzeugt. Dadurch werden Artikel im Seller Central doppelt gelistet. +
 
-Des Weiteren sollten sowohl die Einstellung **Amazon-Abwicklung (FBA)** als auch die Einstellung **Versand durch Amazon (FBA)** im Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Verfügbar** aktiviert sein. Ist dies nicht der Fall, können keine FBA-SKUs migriert werden.
+Des Weiteren sollten sowohl die Einstellung **Amazon-Abwicklung (FBA)** als auch die Einstellung **Versand durch Amazon (FBA)** im Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Verfügbar** aktiviert sein. Sind diese Einstellungen nicht aktiviert, können keine FBA-SKUs migriert werden.
 
 === Verwendung von Template-Variablen in Layout-Vorlagen
 
@@ -1030,13 +1032,6 @@ Barcodes zuordnen:
 . Wählen Sie einen Barcode, der als ISBN übertragen werden soll.
 . **Speichern** Sie die Einstellungen.
 
-== Übersicht der wichtigsten Änderungen
-
-Eine Übersicht der wichtigsten Änderungen finden Sie <<basics/versionswechsel/aenderungen#, hier>>.
-
-
-In diesem Handbuchbereich finden Sie wichtige Informationen zu der Migration auf plentymarkets 7 und den nötigen Vorbereitungen sowie eine kurze Übersicht der Änderungen. +
-Auf dieser Handbuchseite sind Bereiche aufgeführt, die noch nicht in plentymarkets 7 migriert wurden. Wie bereits angekündigt, stehen Ihnen bei Fragen zur neuen Artikelarchitektur auch unsere Entwickler gern mit Rat und Tat zur Seite. Auch Feedback nehmen sie in unserem Forum gern entgegen.
 
 == Migration der Marktplätze
 

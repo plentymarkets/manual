@@ -1,17 +1,284 @@
-= DHL Troubleshooting
 :lang: en
 :keywords: Der Vorgang konnte nicht korrekt durchgeführt werden, Bitte Dateneingabe prüfen, 1001, Fehler bei der Anmeldung, login failed, Exception in extension function, java.lang.RuntimeException, productId cannot be mapped, productId **EXP/OFP** cannot be mapped, Hard validation error occured, Bitte geben Sie einen Ort an, Bitte geben Sie Name 1 an, Bitte geben Sie eine Postleitzahl an, Bitte geben Sie eine Straße an, Bitte geben Sie eine Hausnummer an, Bitte geben Sie eine gültige Telefonnummer an, Es handelt sich um eine ungültige Postleitzahl, Bitte verwenden Sie das Format 99999, The Customer ID Number is invalid, Please check the Customer ID Number, Your order could not be processed, Ein interner Fehler ist aufgetreten, Keine gültigen Versandprofile vorhanden, SystemShippingController, unknown, Die Gewichtsangabe ist kleiner als im CN23-Formular, Invalid fieldlength: InvoiceDate, Bitte geben Sie die Anzahl an, Bitte geben Sie die Beschreibung an, Bitte geben Sie den Warenwert an, Bitte geben Sie das Gewicht an, Bitte geben Sie das Gewicht an, Bitte geben Sie die Art der Sendung an, Die angegebene Art der Sendung ist nicht gültig, Invalid fieldlength in element ‘Note’, Please refer to documentation, Invalid XML, Ungültiger Content wurde beginnend mit Element ‘Shipment’ gefunden, An dieser Stelle wird kein untergeordnetes Element erwartet, The current incoterms are not included in the list of the available incoterms, The current origin country code is not included in the list of the available countries, Export document is missing, Please enter weight for the packages, Terms of Trade have not been selected, The shipment weight may not be smaller than 0.1 kg for this product code, Please select a valid type of shipment, Please enter quantity of goods, Please enter a description of goods, Please enter the country of origin, Please enter value of goods, Please add an exportdoc position, The combination of shipping profile ID and shipping region ID does not exist, Code 1001, Der Nutzer des Webservice konnte nicht authentifiziert werden, Authorization Required, 90 days, 90 Tage, 365 days, 365 Tage, system user
 :position: 40
 
+[#1]
+= Setting up shipping service providers and shipping profiles
+
+In this chapter, we will walk through the necessary steps in order that your customers can choose DHL as shipping method in your online store and that you can successfully register the order via DHL Shipping.
+
+== Purchasing, installing and deploying the DHL Shipping plugin
+
+This chapter describes how you purchase the DHL Shipping plugin in the plentyMarketplace and how you install and deploy it in the plentymarkets back end afterwards.
+
+=== Purchasing
+
+First, you have to establish a basis in order to successfully work with DHL in the future. It is required that you download the link:https://marketplace.plentymarkets.com/en/plugins/integration/DHLShipping_4871[DHL Shipping plugin^] from our plentyMarketplace.
+
+.Purchasing the DHL Shipping plugin
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_kaufen.png[]
+
+The plugin is free of charge and can be purchased by clicking on *Go to checkout*. Please follow further instructions in the plentyMarketplace.
+
+=== Installing
+
+After you have purchased the plugin, you have to install it in your plentymarkets system. After the purchase, you will find the plugin in the menu *Plugins » Plugin overview*. For the display of newly purchased plugins, activate the filter "Not installed" and confirm the search. There you have to install the plugin by clicking the button *Install plugin*.
+
+.Installing the DHL Shipping plugin
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_installieren2.png[]
+
+=== Deploying and saving
+
+As soon as the plugin is installed, you have to deploy it in the system in order to set it up later on. To do so, the following steps are necessary:
+
+You will find the plugin in the list in the menu *Plugin » Plugin overview*.
+
+.Activating and deploying the DHL Shipping plugin
+
+Click on the globe in the plugin (*Active* / *Not active*) to set the plugin to productive mode. If you made changes to the plugin, you have to deploy all plugins for the system. This is simply done by clicking on *Save & deploy plugins*. This process may take a little while:
+
+.Deploying the DHL Shipping plugin
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_bereitstellen_und_speichern.png[]
+
+If an error should occur during or after the deploy process, an info button is displayed. Click to see the log entry which indicates an error or an error source. If the deploy process was successfully completed, the button will not be displayed.
+
+.Error when deploying the DHL Shipping plugin
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Plugin_bereitstellen_error.png[]
+
+.Plugin log
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Shipping_Plugin_Log_error.png[]
+
+[NOTE]
+.Plugin set
+====
+Pay attention that the DHL Shipping plugin must be activated for the *plugin set* with the *standard client* in order that the menu items are displayed after the deploy process and that you can carry out further settings.
+====
+
+How you set up the plugin is described in detail in another chapter.
+
+But before you configure the DHL Shipping plugin, you have to carry out some settings in the plentymarkets back end.
+
+== Activating countries of delivery
+
+Since the plugin is basically ready, you can now proceed with the next steps. In this part, it is important that you thoroughly think about in which countries you want to deliver your items to. After you have determined these countries, you can activate them in the **System » Orders » Shipping » Settings » Tab: Countries of delivery** menu. The countries are then available for the next step. Please note that in plentymarkets it is necessary to create own "countries of delivery" for the special regions, such as Helgoland or the Canary Islands.
+
+The following options can be selected for the countries of delivery:
+
+.Options for the countries of delivery
+[cols="1,3"]
+|====
+|Option |Description
+
+|Inactive
+|The country of delivery is not active.
+
+|Active
+|The country of delivery is unrestrictedly active.
+
+|Backoffice is active
+|Countries of delivery with this setting are only visible in the plentymarkets system and not in the online store.
+
+|Supplier is active
+|Countries of delivery with this setting cannot be selected as the standard country of delivery in the menu *System » Client » Select client » Order process » Settings*.
+|====
+
+.Activating countries of delivery
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Lieferlaender_aktivieren.png[]
+
+== Creating regions
+
+You have to group the activated countries of delivery now. You will find the shipping regions in the menu *System » Orders » Shipping » Settings » Tab: Regions*. Group the countries for which the same shipping conditions should apply to one common region.
+
+[TIP]
+.Example for different shipping costs
+====
+If you want to charge EUR 14.90 as shipping costs for both Spain and France, put those two countries into region. If you want to charge EUR 20.90 as shipping costs for Italy, however, it is not possible to put Italy together with Spain and France in one region. You have to create an own region for Italy.
+====
+
+On the left side of the region, you can see all available countries of delivery. On the right side, you can see all countries of delivery that are already linked with this region. Now add all active countries of delivery to a region. Please note that each country of delivery can only be saved in one region.
+
+.Setting up regions
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Regionen_einrichten.png[]
+
+== Creating a shipping service provider
+
+Besides the countries of delivery and the corresponding regions, you also need the correct shipping service provider in order to build a bridge between the plugin and the shipping profiles. Configure the shipping service provider in the *System » Orders » Shipping » Settings » Tab: Shipping service provider* menu.
+
+Here, you choose a name for the shipping service provider and select the service provider *DHL Shipping (Versenden)* from the drop-down list.
+
+.Creating a shipping service provider
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Versanddienstleister_erstellen.png[]
+
+[NOTE]
+.Tracking URL
+====
+Furthermore, you can also add in this menu the Tracking URL "*http://nolp.dhl.de/nextt-online-public/set_identcodes.do?lang=de&zip=$PLZ&idc=$PaketNr*". The tracking URL is required for sending emails at a later point in time.
+====
+
+== Creating a shipping profile
+
+All menu items that you have set up so far, will "meet" in the shipping profile. To do so, go to *System » Orders » Shipping » Settings » Tab: Shipping profiles*. By clicking on the *New* button (plus symbol), you create a new shipping profile and directly access the *Base* tab. The *Table of shipping charges* tab is only available after you have saved.
+
+=== Base
+
+In the **Base** tab, you determine the basic settings for your shipping profile.
+
+.Field name description in the shipping profile
+[cols="1,3"]
+|====
+|Field name |Description
+
+|Shipping service provider
+|Select the shipping service provider that you have just created.
+
+|Name & Name (back end)
+|Select a name for the front and back end in the corresponding language.
+
+|Flag
+|Here, you can assign a flag to the profile (e.g. the DHL logo).
+
+|Priority
+|The priority determines in which order the shipping profiles are displayed in the online store.
+
+|Category
+|The category option is another way to prioritise shipping profiles. An example of use can be found link:https://knowledge.plentymarkets.com/en/order-processing/fulfilment/preparing-the-shipment#1300[here].
+
+|Item extra shipping charge
+|You can activate extra shipping charges that are saved for the item.
+
+|Postident
+|Activate this option, if PostIdent is required. For example, in case of goods that can only be purchased from age 18.
+
+|Activate for new items
+|Activate this option in order that the profile is always activate for new items.
+
+|Cash on delivery
+|Activate the option in order that your customer can select the payment method Cash on delivery in your online store.
+
+|Extra charge for islands
+|The set extra shipping charge will be calculated by means of a defined list in plentymarkets when delivery is made to certain islands.
+
+|Clients (stores)
+|Select the clients that should be linked with this shipping profile. Select at least one client in order that the shipping profile can be selected.
+
+|Order referrer
+|Here, you select the order referrers for which this shipping profile should be activated.
+
+|Blocked payment methods
+|Here, you select the payment methods for which the shipping profile should *not* be available.
+
+|Blocked customer classes
+|Here, you select the customer classes for which the shipping profile should *not* be available.
+
+|Shipping groups
+|Shipping profiles can be added to a shipping group. This simplifies the assignment of shipping profiles at the item.
+
+|*eBay*
+|
+
+|Account
+|Select an eBay account if you want to link one.
+
+|Listing type
+|Possible options: *All* = All listing types *Auction* = Only auctions*Fixed price item/Shop item* = Only fixed price and/or shop item (shop item only for Hood)
+
+|Express delivery
+|Activate if you want to use this shipping profile for eBay express delivery.
+
+|Loyalty program
+|Here, you can link one or multiple loyalty programs such as eBay Plus or Amazon Prime to this shipping profile.
+
+|====
+
+=== Table of shipping charges
+
+The tab *table of shipping charges* is only available after you have saved the shipping profile. In this tab, the tables of shipping charges for the created regions are displayed. This means that you determine the prices and the calculation types for the individual regions.
+Select the calculation basis for the shipping costs. The following options are available: *Flat rate*, *Weight-dependent*, *Volume-dependent*, *Quantity-dependent*, *Price-dependent* and *Item shipping charge*.
+
+Depending on the type settings, you have to enter the correct prices. Furthermore, you can save for each table of shipping charges the amount from which shipping is free of charge, for example. Or you choose that shipping only costs EUR 2.50 instead of EUR 4.99 when the value of items ordered is EUR 100 at least.
+
+The limitation type limits the shipping profile. Pay attention that you allow for a seamless transition with your shipping profiles. For example: You have set the maximum weight of 20 kg in one shipping profile. Your customer puts two items with a weight of 11 kg each in the shopping cart. Therefore, another shipping profile should be selectable. In this way, an error message in the online store will be avoided.
+
+You can save a pre-defined shipping package as standard package. A shipping package can be defined in the menu *System » Orders » Shipping » Shipping packages*. In this way, you can transfer fixed dimensions when you only use one package size for the shipment.
+
+[NOTE]
+.Calculation types
+====
+Please pay attention that it might be necessary to save the weight for the weight-dependent calculation at the individual items. Otherwise, calculation will not be possible.
+====
+
+.Calculation types in the table of shipping charges
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Portotabelle_Berechnungstypen.png[]
+
+[NOTE]
+.Activating the table of shipping charges
+====
+The table of shipping charges is only active after you have saved it. Otherwise, you will see the note *Region not used in shipping profile. Save price to use region. Save and reload table of shipping charges to show shipping service provider settings.*
+====
+
+== Activating the shipping profile for an item
+
+In the *Items » Edit item » Tab: Global* menu, you have to link all items with the desired shipping profiles. This can also be done via the group function. Make sure that the checkmark is placed for the option *Delete old shipping profiles* since it is only possible to add further shipping profiles via the "shipping configuration".
+
+== Configuring the DHL Shipping plugin
+
+After you set up the shipping profiles and linked them to the items, you can start to finally set up the DHL Shipping plugin:
+
+=== Set up
+
+Afterwards, you switch to the *System » Orders » Shipping » DHLShipping* menu where you will find the following sub-menus.
+
+*Basic settings*
+
+In the basic settings, you enter the access data that you have saved for the DHL user. Furthermore, you also have the possibility to save an alternative telephone number and email address. If one of these fields is filled, only this data will be transferred to DHL and not the customer's data anymore. The setting in the shipping profile regarding *Transfer email and telephone* will not be taken into consideration in the plugin. Last, you can find the checkbox for the non-codable addresses here. If the checkmark is placed, DHL will also accept non-codable shipping orders. However, this may lead to additional costs at DHL. Please contact your DHL contact person for further information.
+
+[NOTE]
+.Validity of DHL user
+====
+Please note that there are two types of users at DHL. These users have a password validity of 3 or 12 months. If the password has expired, you have to save a new password at DHL and save it also in the basic settings of the plugin.
+====
+
+*Accounting numbers*
+
+You receive from DHL an individual billing number for each of your booked services (e.g. DHL Paket National). This number has 14 characters and is divided in 10, 2 and 2. The first 10 characters are the EKP and are identical for each service. The following 2 characters stand for the service (e.g. 01 for DHL Paket National). The last 2 characters must be entered in the field Subscription.
+
+*Return data*
+
+In the area of the shipper data, you enter the data which should be printed as shipper address on the DHL label.
+
+*Shipping settings*
+
+At last, we carry out the most important step: setting the shipping settings. In the shipping settings, all settings are combined. Here, you select which shipping profile is to "work" with which shipping region and which billing number in the future. It is important that you save an individual setting for each profile and each region in this profile. Depending on which services you have booked at DHL, you can save them in this configuration. An example of this would be the service "cash on delivery".
+The field *Minium package weight for transmission to DHL (in grams)* can be used to increase the weight of the items for the registration. It is necessary, however, that a weight is saved for the items. The last point in the shipping settings relates to foreign deliveries. For deliveries to foreign countries, the postage for export shipping as well as the type of shipment are mandatory fields.
+
+Once you have carried out these settings step by step, you can successfully register your orders with the DHL Shipping plugin via a process and the procedure *Shipping centre* or via the menu *Orders » Shipping centre*. If nevertheless an error should occur, you will find in the lower part of this page some possible error sources and possible solutions. Errors may be caused due to incorrect address data at the order, for example.
+
+=== Switching off the test mode
+
+In the end, it is necessary to set the plugin from test mode to productive mode.
+
+Click on the plugin and switch to the section *Configuration » General*. Switch the setting from Test to Productive.
+
+.Plugin mode
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Plugin_Modus.png[]
+
+[#2400]
+=== Deploying the plugin once again after update
+
+After you have downloaded an update of the plugin, it is necessary that you deploy the plugin once again in Productive mode. Downloading the update does not lead to the fact that new features or changes are also active in the new version.
+
+
+= DHL Troubleshooting
+
 In the following sub-chapters, you will find error messages that are sent back from DHL to plentymarkets via the interface, as well as possible solutions. For reasons of clarity, the error messages are classified in six categories.
 
-You can retrieve the registration data and the response with possible error messages for a duration of two weeks in the *Data » API Log » Tab: Shipping centre API log* menu. Click on *Open request log* in the right column to open a window that displays the registration data. Click on *Open response log* to open a window with the response message from DHL.
+You can retrieve the registration data and the response with possible error messages for a duration of two weeks in the **Data » API Log » Tab: Shipping centre API log** menu. Click on **Open request log** in the right column to open a window that displays the registration data. Click on *Open response log* to open a window with the response message from DHL.
 
 .Shipping centre API-Log
-image::_best-practices/order-processing/fulfilment/assets/DHL_shipping_centre_API_log.png[]
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Versand_Center_API_Log.png[]
 
 [#100]
-== Access data, password, Productive mode, login
+== Access data, password, productive mode, registration
 
 In this chapter, you will find error messages related to access data, password, productive mode and login, as well as possible solutions.
 
@@ -20,31 +287,55 @@ In this chapter, you will find error messages related to access data, password, 
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Es gab einen Fehler bei der Anmeldung: (1001) login failed.`
 
-When this error message is displayed, you should check the login data. The interface requires fixed specifications that do not apply when logging in via the DHL website. The interface is more precise in this case: In many cases, the limitation of 20 characters for the password and/or user name has been exceeded or the user name has been written incorrectly. For example, upon registration, you enter your user name with an upper-case character as first character. DHL saves your user name with a lower-case character. This is why you have to enter your user name with a lower-case character also in your plentymarkets back end.
+There might be two reasons when this error message is displayed:
 
-Another reason could be the user's password validity for the DHL back end. According to our information, the password validity is 90 days for an admin user. If the password is no longer valid, DHL will not display a separate error message in the plentymarkets back end that tells the user to change the password. Only the above mentioned error message will be displayed. This is different if you try to log into the DHL business customer portal. A message will be displayed that you have to change the password.
+* Incorrect login details or character limitation exceeded
+
+* Password validity has expired at DHL
+
+[.subhead]
+Incorrect login details or character limitation exceeded
+
+Check your login details in the plentymarkets back end. The interface requires fixed specifications that do not apply when logging in via the DHL website. The interface is more precise in this case: In many cases, the limitation of 20 characters for the password and/or user name has been exceeded or the user name has been written incorrectly. For example, upon registration, you enter your user name with an upper-case character as first character. DHL saves your user name with a lower-case character.
+
+[.subhead]
+Password validity has expired at DHL
+
+The password validity for the user for the DHL back end is 90 days for admin users of the business customer portal. If the password is no longer valid, DHL will not display a separate error message in the plentymarkets back end that tells the user to change the password. Only the above mentioned error message will be displayed. This is different if you try to log into the DHL business customer portal. A message will be displayed that you have to change the password.
 
 It might be useful to create a system user in the DHL back end. The password validity for system users is 365 days.
+
+The new password must also be saved in the plentymarkets back end:
+
+* in the plugin in the *System » Orders » Shipping » DHL Shipping » Basic settings* menu
+
+* in the interface configuration in the *System » Orders » Shipping » Shipping service provider » DHL Intraship/Versenden* menu
 
 [#300]
 === Code 1001: Der Nutzer des Webservice konnte nicht authentifiziert werden.
 
 `Code 1001 : Der Nutzer des Webservice konnte nicht authentifiziert werden.`
 
-In the past, sellers who received this error message had to change their password in the DHL business customer portal. The new password must also be saved in the plentymarkets back end:
+In the past, sellers who received this error message had to change their password in the DHL business customer portal since the password was no longer valid. If the password is no longer valid, DHL will not display a separate error message in the plentymarkets back end that tells the user to change the password. Only the above mentioned error message will be displayed. This is different if you try to log into the DHL business customer portal. A message will be displayed that you have to change the password.
+
+The new password must also be saved in the plentymarkets back end:
+
+* in the plugin in the *System » Orders » Shipping » DHL Shipping » Basic settings* menu
 
 * in the interface configuration in the *System » Orders » Shipping » Shipping service provider » DHL Intraship/Versenden* menu
-
-* in the plugin in the *System » Orders » Shipping » DHL Shipping* menu
 
 The password for the DHL back end is valid for 90 days (for admin users). DHL requires a new password after the duration of 90 days. The password for system users created in the DHL back end is valid for a duration of 365 days.
 
 [#400]
-=== Code 1: Authorization Required
+=== Code 1: Authorization Required or Code 1: Unauthorized
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXX: Authorization Required.`
 
-Make sure that the DHL Shipping (Versenden) plugin is in *Productive* mode and not in *Test* mode. To do so, go to *Plugins » Plugin overview*, click on the DHL Shipping (Versenden) plugin and select the setting *Productive* under *Configuration*.
+or
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXX: Unauthorized.`
+
+Make sure that the DHL Shipping (Versenden) plugin is in Productive mode and not in Test mode. To do so, go to *Plugins » Plugin overview*, click on the DHL Shipping (Versenden) plugin and select the setting *Productive* under *Configuration*.
 
 The test mode is selected as a standard. This will allow that orders are registered in the sandbox environment (DHL developer portal) – you need separate access data for the developer portal. Once the productive mode is selected and saved, the orders registered with the live system.
 
@@ -57,19 +348,31 @@ Sellers received this error message when they tried to register a large number o
 
 We recommend to set up a <<basics/automation/processes/setting-up-processes#, process>> with the procedure <<basics/automation/processes/procedures#430, shipping centre>>. With this process, no further error message was displayed. Another possibility is to reduce the number of selected orders for the manual registration in the shipping centre.
 
+[#510]
+=== Code: 1101 Das Recht zum Setzen dieses Attributes ist nicht ausreichend. Bitte wenden Sie sich an Ihren Kunden-Administrator.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen.`
+
+`Auftrag XXXX: Code: 1101 Das Recht zum Setzen dieses Attributes ist nicht ausreichend. Bitte wenden Sie sich an Ihren Kunden-Administrator.`
+`Das Recht zum Setzen dieses Attributes ist nicht ausreichend. Bitte wenden Sie sich an Ihren Kunden-Administrator.`
+
+This error message is displayed when in case of an order with cash on delivery the bank details that were saved for the DHL Shipping plugin have not been saved as standard bank details in the DHL business customer portal. The order can be successfully registered if the bank details used for the DHL Shipping plugin correspond to the standard bank details saved in the business customer portal.
+
 [#600]
 == Products, EKP, processes, subscription, billing numbers
 
 In this sub-chapter, you will find error messages related to products, EKP, processes, subscription and billing numbers as well as possible solutions.
 
 [#700]
-==== Exception in extension function java.lang.RuntimeException: +**productId cannot be mapped**+
+=== Exception in extension function java.lang.RuntimeException: +**productId cannot be mapped**+
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen.	Exception in extension function java.lang.RuntimeException: **productId cannot be mapped**.`
 
-A billing number which includes the productId was not saved. Go to *System » Orders » Shipping » Options* and open the DHL shipping profile and the table of shipping charges of the corresponding region.
+This error message indicates that no billing number which includes the productId was saved. Save the billing number:
 
-Note that the billing number must be saved in advance in the *System » Orders » Shipping » DHL Shipping » Billing numbers* menu. If you use the interface, go to *System » Orders » Shipping » Shipping service providers » DHL Intraship/Versenden*.
+* for the DHL Shipping plugin in the menu *System » Orders » Shipping » DHL Shipping » Billing numbers*
+
+* for the interface integration DHL Intraship / Versenden in the menu *System » Orders » Shipping » Settings » Tab: Shipping profiles* in the table of shipping charges of the corresponding region of the DHL shipping profile
 
 [#800]
 === Exception in extension function java.lang.RuntimeException: productId +**EXP/OFP**+ cannot be mapped
@@ -80,7 +383,7 @@ Note that the billing number must be saved in advance in the *System » Orders �
 
 DHL Intraship customers can use DHL Paket products as well as DHL Express products, e.g. OFP (Office Paket). Unfortunately, this is not possible any longer for customers of the business customer portal. They can only register DHL Paket products via the business customer portal.
 
-Since plentymarkets still uses the DHL Intraship interface and our registered orders might be transferred to the business customer portal – according to the settings in the customer's account – customers of the business customer portal receive the message that the registration could not be mapped.
+Since plentymarkets still uses the DHL Intraship interface and our registered orders might be transferred to the business customer portal – according to the settings in the customer’s account – customers of the business customer portal receive the message that the registration could not be mapped.
 
 [#900]
 == Shipping profiles
@@ -90,7 +393,7 @@ In this sub-chapter, you will find error messages related to shipping profiles, 
 [#1000]
 === The combination of shipping profile ID xx and shipping region ID xx does not exist.
 
-`The combination of shipping profile ID xx and shipping region ID xx does not exist.`
+`The combination of shipping profile ID xxxx and shipping region ID xxxx does not exist.`
 
 In this case, no shipping setting could be found (*System » Orders » Shipping » DHL Shipping » Shipping settings*) that was created with the shipping profile in the order.
 
@@ -100,14 +403,14 @@ In many cases, the “old“ DHL shipping profile was linked to the order. The s
 
 If the shipping profile is consistent with the shipping profile in the order, check the region.
 
-If it is not possible to select the region in the shipping profile of the shipping settings, the region in the table of shipping charges of the shipping profile must be checked. To do so, go to *System » Orders » Shipping » Settings » Tab: Shipping profiles » Open shipping profile » Tab: Table of shipping charges*. The following note must *not* be displayed:
+If it is not possible to select the region in the shipping profile of the shipping settings, the region in the table of shipping charges of the shipping profile must be checked. To do so, go to *System » Orders » Shipping » Settings » Tab: Shipping profiles » Open shipping profile » Tab: Table of shipping charges*. The following note *must not* be displayed:
 
 `Region not used in shipping profile. Save price to use region. Save and reload table of shipping charges to show shipping service provider settings.`
 
 Example of a region that is not used in the shipping profile:
 
 .Region that is not used in the table of shipping charges of the shipping profile
-image::_best-practices/order-processing/fulfilment/assets/DHL_table_of_shipping_charges_region.png[]
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Portotabelle_Region.png[]
 
 [#1100]
 === Ein interner Fehler ist aufgetreten
@@ -119,16 +422,16 @@ Check whether the region is activated in the table of shipping charges of the sh
 Example of a region that is not used in the shipping profile:
 
 .Region that is not used in the table of shipping charges of the shipping profile
-image::_best-practices/order-processing/fulfilment/assets/DHL_table_of_shipping_charges_region.png[]
+image::_best-practices/auftragsabwicklung/fulfillment/assets/DHL_Portotabelle_Region.png[]
 
 [#1200]
 === Keine gültigen Versandprofile vorhanden: SystemShippingController
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Keine gültigen Versandprofile vorhanden: SystemShippingController`
 
-Check whether the correct shipping service provider was selected in the *System » Orders » Shipping » Settings » Tab: Shipping service provider*. Data can only be loaded if the correct shipping service provider is selected.
+Check whether the correct shipping service provider was selected in the *System » Orders » Shipping » Settings » Tab: Shipping service provider* menu. The corresponding data can only be loaded if this is the case.
 
-When you have a look at the tables of shipping charges, you would see that DHL-specific data cannot be entered since fields such as the DHL billing number and DHL services are not available.
+When you have a look at the table of shipping charges, one would recognise that DHL-specific data cannot be entered since the fields such as DHL billing number and DHL services are not available.
 
 [#1300]
 === Bitte Dateneingabe prüfen. unknown
@@ -142,14 +445,7 @@ Maybe you deleted a billing number that still is to be retrieved in the shipping
 
 * If the order is an export delivery that exceeds the value of EUR 1,000, the message `unknown` is displayed as well.
 
-According to one of our customers, the following information is displayed at DHL Intraship:
-
-_Achtung! Ausfuhranmeldung wird erforderlich.
-(Bitte fügen Sie eine ausgefüllte Ausfuhranmeldung bei und kennzeichnen sie Ihre Sendung mit dem Aufkleber "Achtung Ausfuhranmeldung").
-Wenn Ihr Versand geschäftlichen Zwecken dient und der Warenwert Ihres Paketes oder Päckchens 1000 Euro übersteigt, benötigen Sie zusätzlich zu Paketkarte, Zollinhaltserklärung und Handelsrechnung eine Ausfuhranmeldung.
-Bitte beachten Sie, dass diese Ausfuhranmeldung bereits ab einem Betrag > 1000 Euro von Ihren Zollamt vorab gefertigt (gestempelt) sein muss.
-Sollte Ihnen Ihr Zollamt bereits ein vereinfachtes Verfahren bewilligt haben, so geben Sie bitte die jeweilige Bewilligungsnummer auf der Handelsrechnung an.
-Die Aufkleber "Achtung Ausfuhranmeldung" erhalten Sie über unseren Vertrieb unter der Bestellnummer 915-830-000._
+One of our customers informed us that the following information is displayed at Intraship:
 
 [#1400]
 == Address data, Shipper/Receiver
@@ -157,7 +453,7 @@ Die Aufkleber "Achtung Ausfuhranmeldung" erhalten Sie über unseren Vertrieb unt
 In this sub-chapter, you will find error messages related to address data (shipper/receiver), as well as possible solutions.
 
 [#1500]
-=== Invalid fieldlength in element ‘Note’. Please refer to documentation.
+== Invalid fieldlength in element ‘Note’. Please refer to documentation.
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Invalid fieldlength in element 'Note'. Please refer to documentation.`
 
@@ -169,7 +465,7 @@ You have to correct the data in the delivery address, for example.
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: The Customer ID Number is invalid. Please check the Customer ID Number. Your order could not be processed Your order could not be processed.`
 
-The “Postnummer“ in the delivery address is not correct or does not correspond to the customer's data. Ask your customer for the correct data. Upon validation, DHL also checks the address that must be identical.
+The “Postnummer“ in the delivery address is not correct or does not correspond to the customer’s data. Ask your customer for the correct data. Upon validation, DHL also checks the address that must be identical.
 
 [#1700]
 === Invalid value in element ‘germany’
@@ -180,7 +476,7 @@ or
 
 `Auftrag XXXXXX: Hard validation error occured., Es handelt sich um eine ungültige Postleitzahl. Bitte verwenden Sie das Format 99999.`
 
-An invalid postcode has been saved in the delivery address (in our example, it is an invalid postcode for Germany). The interface expects 5 numbers. Additional information such as “DE“ is not allowed.
+An invalid postcode is saved in the delivery address (in our example for Germany). The interface expects 5 digits. Additional entries such as "DE" are not allowed by the interface.
 Messages for other countries would be displayed accordingly.
 
 You can search for the invalid postcode in the *Orders » Edit orders* menu in the *Customer data* field.
@@ -217,7 +513,7 @@ This error message is displayed when export deliveries that should be registered
 
 We have informed DHL about that problem several times, but we were not able to find a common solution.
 
-When using the link:https://marketplace.plentymarkets.com/en/plugins/integration/DHLShipping_4871[DHL Shipping (Versenden)-Plugin^] – which can only be used in plentymarkets Version 7 – this problem is no longer present.
+With the link:https://marketplace.plentymarkets.com/plugins/integration/DHLShipping_4871[DHL Shipping (Versenden) plugin^] which only works with plentymarkets version 7 such as all plugins, this problem no longer occurs.
 
 If you still use the interface and DHL Intraship, registering orders with your DHL Intraship access data is still possible and the above mentioned error message will not be displayed.
 
@@ -226,28 +522,27 @@ If you still use the interface and DHL Intraship, registering orders with your D
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: Hard validation error occured., Bitte geben Sie die Anzahl an., Bitte geben Sie die Beschreibung an., Bitte geben Sie den Warenwert an., Bitte geben Sie das Gewicht an., Bitte geben Sie das Gewicht an., Bitte geben Sie die Art der Sendung an., Die angegebene Art der Sendung ist nicht gültig.`
 
-If this message is displayed, information is missing that is relevant for the export delivery. In most cases, this is because no prior registration of the CN23 form is possible. (“Prior registration“ means that plentymarkets transfers the item data to DHL in advance. This is mandatory in case of export deliveries.)
+In this case, information is missing which is relevant for export deliveries. In most cases, this is due to the fact that no prior registration of the CN23 form is possible. (Prior registration means that plentymarkets transfers the item data to DHL in advance. This is mandatory in case of export deliveries.)
 
 The reason why this is not possible is mostly because of the special regions located in the countries of delivery: They must be treated differently for customs reasons, but belong to a country of the European Union that does not require export documents. An example for such a region in Germany is the island Helgoland and in Spain the Canary Islands.
 
 Activate the corresponding country of delivery in the *System » Orders » Shipping » Settings » Tab: Countries of delivery* menu, assign it to a region in the *Region* tab and change the country of delivery in the order. This way the missing data can be transferred and the order registration process can be continued.
 
-If you use the DHL plugin, the error message could also be displayed because of the deployed plugin version: It is not possible to register export deliveries with the DHL plugin version older than 1.3.0. Therefore, you must use plugin version 1.3.0 at least to register export deliveries. In order to check which version you are using, place the cursor over the following areas in the *Plugins » Plugin overview* menu. Depending on the selected view, this looks as follows:
+If you use the DHL plugin, the error message could also be displayed because of the deployed plugin version: It is not possible to register export deliveries with the DHL plugin version older than 1.3.0. Therefore, you must use plugin version 1.3.0 at least to register export deliveries. In order to check which plugin version you use, go to *Plugins » Plugin overview* and have a look at the value that is displayed in the *Version active* column.
 
-.Table view of the plugin version
-image::_best-practices/order-processing/fulfilment/assets/DHL_table_view_plugin_version.png[]
+Screenshot from the test system:
 
-.Card view of the plugin version
-image::_best-practices/order-processing/fulfilment/assets/DHL_card_view_plugin_version.png[]
+.Plugin-overview version
+image::_best-practices/order-processing/fulfilment/assets/DHL_plugin_overview_version.png[]
 
-Make sure that you have selected an option each for the dropdown-menus *Postage of export shipping* and *Type of shipment* in the *System » Orders » Shipping » DHL Shipping » Shipping settings* menu.
+Make sure that you select one option each in the drop-down lists *Postage for export shipping* and *Type of shipment* in the menu *System » Orders » Shipping » DHL Shipping » Shipping settings*.
 
 [#2200]
 === incoterms, origin country code, export document missing, weight for packages, terms of trade, shipment weight may not be smaller than 0.1 kg, valid type of shipment, quantity of goods / description of goods / country of origin / value of goods, exportdoc position
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXX: The current incoterms are not included in the list of the available incoterms., The current origin country code is not included in the list of the available countries., Export document is missing., Your order could not be processed Your order could not be processed , Please enter weight for the packages, Terms of Trade have not been selected., The shipment weight may not be smaller than 0.1 kg for this product code., The shipment weight may not be smaller than 0.1 kg for this product code., Please select a valid type of shipment., Please enter quantity of goods., Please enter a description of goods., Please enter the country of ofigin., Please enter value of goods., Please add an exportdoc position.`
 
-The error message contains “incoterms” and “origin country”. This error message from DHL says that the order is an export delivery and that information for the customs are missing.This can have two causes:
+The error message contains “incoterms” and “origin country”. This error message from DHL says that the order is an export delivery and that information for the customs are missing. This can have two causes:
 
 1. Information such as the customs tariff number and/or country of origin of the product is missing for the items.
 
@@ -261,8 +556,3 @@ The error message contains “incoterms” and “origin country”. This error 
 When registering export deliveries, it is required for the prior registration of the items that an invoice has been created for the order to fill the mandatory field *InvoiceDate*. This error message appears if this is not the case.
 
 “Prior registration“ means that plentymarkets transfers the item data to DHL in advance. This is mandatory in case of export deliveries.
-
-[#2400]
-== DHL Plugin installation
-
-After you have downloaded an update of the plugin, you have to deploy the plugin in Productive once again. Downloading the update alone does not automatically activate new features and changes in the new version.
