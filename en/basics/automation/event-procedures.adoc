@@ -16,10 +16,10 @@ To automatically send an order confirmation to the customer as soon as a new ord
 Creating an event procedure always consists of the following steps:
 
 . <<basics/automation/event-procedures#100, Creating an event procedure>>
-. <<basics/automation/event-procedures#110, Selecting an Event>>
-. <<basics/automation/event-procedures#120, Add one Filter or more>>
+. <<basics/automation/event-procedures#110, Selecting an event>>
+. <<basics/automation/event-procedures#120, Adding one or more filter(s)>>
 . Determining which <<basics/automation/event-procedures#130, Procedures>> should be carried out by the system once the chosen event takes place
-. <<basics/automation/event-procedures#200, Activating>> the event procedure
+. <<Basics/automation/event-procedures#200, Activating>> the event procedure
 
 For practical examples for using event procedures, refer to the <<basics/automation/automating-processes#, Automating processes>> page of the manual.
 
@@ -41,7 +41,8 @@ Creating a new event procedure:
 [#110]
 === Selecting an event
 
-The first step consists of selecting an *Event* that triggers the *new event procedure*. <<table-event-procedures-event-groups>> lists the available events according to their respective event groups.
+The first steps consists of selecting an *Event* that triggers the *new event procedure*. +
+<<table-event-procedures-event-groups>> describes the available events according to their event groups.
 
 [[table-event-procedures-event-groups]]
 .Available events and event groups
@@ -136,6 +137,19 @@ Go to *<<order-processing/orders/basic-settings#, System » Orders » Settings>>
 
 |*Payment cancelled by the customer*
 |When an already effected payment is cancelled by the customer.
+
+2+| Event group *Goods*
+
+|*New purchase order*
+|When a new order of the type purchase order is created.
+
+|*Goods delivered*, +
+*Partly delivered*, +
+*Booked out* +
+*Partly booked out*, +
+*Booked in*, +
+*Partly booked in*
+|These events only apply to the order type purchase order. Depending on your selection here, the event triggering the event procedure is a complete or partial booking in or booking out of reordered stock.
 |====
 
 [#120]
@@ -177,14 +191,14 @@ It is possible to select several filters for the same event procedure. In that c
 |Select orders according to their warehouse or several warehouses. +
 *One warehouse per order* = Only orders whose variations are assigned to the same warehouse are filtered. +
 *Multiple warehouses per order* = Only orders whose variations are assigned to different warehouses are filtered. +
-Alternatively, select one or more warehouses so that only orders including variations from the selected warehouse(s) are filtered. +
+*_Or:_* Select one or more warehouses to filter the orders according to the warehouse(s) assigned to them. +
 
 |*Number of order items*
 |Orders are filtered according to the number of variations included per order. Select whether the system filters orders according to a fixed number (==) of variations or according to values greater than (>), greater than or equal to (>=), less than (<) or less than or equal to (<=) of the selected quantity. You can also limit results by using a second (optional) operator. +
 *_Example_*: The required setting for filtering all orders with more than 5, but less than or equal to 10 variations: >5 <=10.
 
 |*Active user*
-|Orders are filtered according to the active user. The active user is the user who triggers the event procedure. You can also select **ALL** users at once.
+|Orders are filtered according to the active user. The active user is the user who triggers the event procedure. You can also select *ALL* users at once.
 
 |*Click & Collect*
 |Orders are filtered according to the shipping method Click & Collect. Click & Collect can only be used for orders that are referred from eBay UK and have the UK as their delivery country. For further information, refer to the <<omni-channel/multi-channel/ebay/ebay-setup#7010, Click & Collect>> chapter.
@@ -319,13 +333,24 @@ Use this filter to flag orders of this kind.
 |Orders are filtered according to the date of outgoing items. Here, you can select the period between *until 1 day* and *until 31 days* in relation to the current date.
 
 |*Phone number*
-|Orders are filtered according to the criterion of a telephone number being *Available* or *Not available*. The *Delivery address*, the *Invoice address* or *Both* can be searched. If you look for orders with *Available* telephone numbers, you can enter *Minimal length of number* as an additional search criterion. +
-*_Example_*: If you enter a minimal length of 4, the system searches for telephone numbers consisting of 4 or more digits.
+|Orders are filtered according to whether a telephone number *Exists* or does not exist in the order. The *Delivery address*, the *Invoice address* or *Both* can be searched. If you want to search for orders in which a telephone number *Exists*, you can enter the *Minimal length of number* in addition. +
+*_Example_*: If you enter 4 as the minimal length, the system searches for orders with telephone numbers consisting of 4 or more digits.
 
 2+| Filter group *Market*
 
 |*eBay*
 |This filter identifies orders that are generated on eBay.
+
+2+| Filter group *Goods*
+
+|*Supplier*
+|Orders of the type reorder are filtered according to their supplier.
+
+|*Sending warehouse*
+|Orders of the type stock transfer are searched according to the warehouse from which stock is booked out.
+
+|*Receiving warehouse*
+|Orders of the type reorder are searched according to the receiving warehouse to which the reordered items are sent. Orders of the type stock transfer are searched according to the target warehouse into which stock is rebooked.
 |====
 
 [#130]
@@ -377,11 +402,11 @@ Choose one of the following settings for the *Date* option: +
 *Order date* = The credit note order is created with the date of the creation of the order.
 
 |*Use order template*
-|This procedure automatically uses a certain order template. Order templates can be set up in the <<System » Orders » Order template>> menu.
+|This procedure automatically uses a certain order template. Order templates can be set up in the *System » Orders » Order template* menu.
 
 |*Generate delivery orders*
 |This procedure automatically creates delivery orders as soon as the selected event takes place. +
-*Important*: This option is only displayed if the necessary <<order-processing/orders/managing-orders#320, warehouse assignment>> has been carried out correctly.
+*Important*: This option is only displayed if the necessary <<order-processing/orders/managing-orders#320, warehouse assignment>> has been set up correctly.
 
 |*Split into delivery orders by gross value of items*
 |Splits the order items of an order into various delivery orders. The delivery orders are split by an amount that the order items in a delivery order are not allowed to exceed. You can set up an error status that is assigned to the delivery order in case one of its order items exceeds the selected amount.
@@ -453,7 +478,7 @@ For more detailed information, refer to the <<crm/managing-contacts#, Managing c
 |This procedure notifies the market <<omni-channel/multi-channel/fruugo#, Fruugo>> of the cancellation of an order.
 
 |*Notify Cdiscount of order changes*
-|This procedure informs <<omni-channel/multi-channel/cdiscount#, Cdiscount>> of changes to orders received from the market Cdiscount.
+|This procedure informs <<omni-channel/multi-channel/cdiscount#, Cdiscount>> of status changes in orders received from the market Cdiscount.
 
 |*Send cancellation to Flubit*
 |This procedure notifies the market <<omni-channel/multi-channel/flubit#, Flubit>> of the cancellation of an order.
@@ -562,7 +587,7 @@ Further options appear when the procedure is selected: Indicate a *Payment due* 
 
 |*Send shipping confirmation*
 |Sends a shipping confirmation to a market or a payment provider once the orders placed via this market or payment provider has been shipped. +
-Individual procedures are available for: <<order-processing/payment/amazon-pay#, Amazon Pay>>, <<order-processing/payment/upg#, CrefoPay>>, <<order-processing/payment/klarna#, Klarna>>, <<order-processing/payment/klarna-checkout-uk#, Klarna UK>>, <<order-processing/payment/masterpayment#, Masterpayment>>, <<order-processing/payment/payolution#, Payolution>>, <<order-processing/payment/payone#, PAYONE>>, <<omni-channel/multi-channel/plus-gartenxxl#, Netto eStores>>, <<order-processing/payment/postpay#, POSTPAY>>, *Zentralverkauf*, <<omni-channel/multi-channel/hood#, Hood>>, <<omni-channel/multi-channel/ebay/ebay-setup#, eBay>>, <<omni-channel/multi-channel/rakuten/rakuten-setup#, Rakuten.de>>, <<omni-channel/multi-channel/fruugo#, Fruugo>>, <<omni-channel/multi-channel/flubit#, Flubit>>, <<omni-channel/multi-channel/idealo-checkout/idealo-setup#, idealo>> and <<omni-channel/multi-channel/bol-com#, bol.com>>.
+Individual procedures are available for: <<order-processing/payment/amazon-pay#, Amazon Pay>>, <<order-processing/payment/upg, UPG>>, <<order-processing/payment/klarna#, Klarna>>, <<order-processing/payment/klarna-checkout-uk#, Klarna UK>>, <<order-processing/payment/masterpayment#, Masterpayment>>, <<order-processing/payment/payolution#, Payolution>>, <<omni-channel/multi-channel/plus-gartenxxl#, NettoeStores>>, <<order-processing/payment/postpay#, POSTPAY>>, *Zentralverkauf*, <<omni-channel/multi-channel/hood#, Hood>>, <<omni-channel/multi-channel/ebay/ebay-setup#, eBay>>, <<omni-channel/multi-channel/rakuten/rakuten-setup#, Rakuten.de>>, <<omni-channel/multi-channel/fruugo#, Fruugo>>, <<omni-channel/multi-channel/flubit#, Flubit>>, <<omni-channel/multi-channel/idealo-checkout/idealo-setup#, idealo>> and <<omni-channel/multi-channel/bol-com#, bol.com>>.
 
 |*Send tracking information to Rakuten*, +
 *Send preparation for shipping to Rakuten*
@@ -608,7 +633,7 @@ Individual procedures are available for: <<order-processing/payment/upg#, UPG>>,
 
 |*Send return*
 |Sends a return to a market or a payment provider. +
-Individual procedures are available for: <<order-processing/payment/klarna#, Klarna>>, <<omni-channel/multi-channel/amazon/amazon-setup#, Amazon>>, <<omni-channel/multi-channel/allyouneed/allyouneed-setup#, Allyouneed>>, <<omni-channel/multi-channel/plus-gartenxxl#, Netto eStores>>, <<order-processing/payment/postpay#, POSTPAY>>, <<omni-channel/multi-channel/rakuten/rakuten-setup#, Rakuten.de>>, <<omni-channel/multi-channel/shopgate#, Shopgate>>, <<omni-channel/multi-channel/flubit#, Flubit>>, <<omni-channel/multi-channel/idealo-checkout/idealo-setup#, idealo>>, <<omni-channel/multi-channel/fruugo#, Fruugo>> and <<omni-channel/multi-channel/cdiscount#, Cdiscount>>. +
+Individual procedures are available for: <<order-processing/payment/klarna#, Klarna>>, <<omni-channel/multi-channel/amazon/amazon-setup#, Amazon>>, <<omni-channel/multi-channel/allyouneed/allyouneed-setup#, Allyouneed>>, <<omni-channel/multi-channel/plus-gartenxxl#, Netto eStores>>, <<order-processing/payment/postpay#, POSTPAY>>, <<omni-channel/multi-channel/rakuten/rakuten-setup#, Rakuten.de>>, LaRedoute, <<omni-channel/multi-channel/shopgate#, Shopgate>>, <<omni-channel/multi-channel/flubit#, Flubit>>, <<omni-channel/multi-channel/idealo-checkout/idealo-setup#, idealo>>, <<omni-channel/multi-channel/fruugo#, Fruugo>> and <<omni-channel/multi-channel/cdiscount#, Cdiscount>>. +
 More information is available on the <<order-processing/payment#, Payment method>> page of the manual.
 
 |*Send return status to bol.com*
@@ -657,7 +682,7 @@ Activating an event procedure:
 → The event procedure is activated.
 
 [TIP]
-.Check settings before activation
+.Check the settings before activation
 ====
 We recommend that you check the selected events, filters, procedures and all related settings carefully before you activate the event procedure. Activating event procedures that are not fully set up can cause malfunctions and errors.
 ====
@@ -665,4 +690,4 @@ We recommend that you check the selected events, filters, procedures and all rel
 [#300]
 == Editing an event procedure
 
-You can edit the *Name*, the *Event*, the *Filter* and the *Procedure* during or after the set-up of the respective event procedure. Remove individual filters or procedures by using the *Delete* function displayed next to each selected option. *Save* the settings to apply the changes.
+You can edit the *Name*, the *Event*, the *Filter* and the *Procedure* during or after the set-up of the respective event procedure. Delete individual filters or procedures by using the *Delete* function displayed next to each selected option. *Save* the settings to apply the changes.
