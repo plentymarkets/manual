@@ -1,106 +1,178 @@
-= Procedure manager
+﻿= Procedure manager
 :lang: en
 include::{includedir}/_header.adoc[]
-:position: 50
+:position: 30
 
-**System » Orders » Procedures**
+In plentymarkets, you can use the *Procedure manager* to automatically carry out procedures at fixed times of the day.
 
-==  Procedure manager
+For example, use the procedure manager to determine a fixed point in time at which customers who have not effected payment for orders placed via eBay or your own online store are sent reminders or dunning letters. These email notifications can be sent automatically using the procedure manager.
 
-In plentymarkets, recurring events can be taken care of automatically by the **procedure manager** and carried out at specific times.
+[#100]
+== Creating a new procedure
 
-For example, you can use the procedure manager to set up a daily time when customers who have not paid for their purchases on eBay or your online store should receive a payment reminder or a dunning letter that is automatically sent via email. For further information about these examples and possible configurations, refer to the <<basics/automation/automating-processes#, Automating processes>> best practice page of the manual.
+Creating a procedure always consists of the following steps:
 
-==  Configuring a new procedure
+. <<basics/automation/procedure-manager#200, Carrying out basic settings>>
+. <<basics/automation/procedure-manager#300, Carrying out filter settings >>
+. <<basics/automation/procedure-manager#400, Selecting one or multiple procedures>>
+. <<basics/automation/procedure-manager#500, Activating the procedure>>
 
-The **Settings**, **Filter** and **Procedure** tabs contain different settings that are used to configure a procedure. Proceed as follows to configure the individual tabs.
+[#200]
+=== Carrying out basic settings
 
-===  Tab: Settings
-
-Use this tab to name the procedure, set the time when the procedure should be carried out and to activate the daily process.
-
-image::order-processing/orders/assets/ENG-Settings-Orders-Procedure-Manager-01.png[]
-
-__Image 1: options in the **Settings** tab__
-
-[.instruction]
-Configuring a new procedure:
-
-.  Go to **System » Orders » Procedures**.
-.  Enter a meaningful name.
-. Specify a time when the procedure should be carried out every day.
-. Activate the procedure once you have edited the **Filter** and **Procedure** tab. This is done by placing a check mark next to the word **Active**.
-.  *Save* the settings. +
-→ The procedure will be created.
-
-===  Tab: Filter
-
-Next, configure a specific filter so that the procedure only goes into effect for the desired orders. To do so, proceed as follows.
-
-image::order-processing/orders/assets/ENG-Settings-Orders-Procedure-Manager-02.png[]
-
-__Image 2: options in the **Filter** tab__
+In the first step, you name the procedure and determine a point in time at which it is carried out.
 
 [.instruction]
-Configuring the filter:
+Creating a new procedure:
 
-.  Go to **System » Orders » Procedures » Tab: Filter**.
-.  Carry out the desired settings. Pay attention to the information given in table 1.
-.  *Save* the settings.
+. Go to *System » Orders » Procedures*.
+. Open the *New procedure* tab.
+. Enter a distinct name for the procedure.
+. Choose a point in time at which the procedure should be carried out on a daily basis.
+. *Save* the settings. +
+→ The procedure is created.
 
-The following table includes information about settings in the **Filter** tab:
+[#300]
+=== Carrying out filter settings
 
+In the next step, you select a precise filter for the procedure so that the procedure is only executed for specific orders. To do so, prroceed as described below.
+
+[.instruction]
+Carrying out filter settings:
+
+. Go to *System » Orders » Procedures*.
+. Open the tab *Filter*.
+. Carry out the desired settings according to the information provided in <<table-procedure-manager-filters>>.
+. *Save* the settings.
+
+[[table-procedure-manager-filters]]
+.Settings in the *Filter* tab
 [cols="1,3"]
 |====
-| Setting | Explanation
+|Setting |Description
 
-|**Status**
-| Select which <<order-processing/orders/managing-sales-orders#order-status, status>> the orders should have in order to be automatically included in the procedure.
+|*Status*
+|Select the <<order-processing/orders/managing-orders#1200, order status>> of the orders to which the procedure should be applied automatically. Only one status can be selected here. At the selected point in time, the procedure is applied to all orders that are in precisely this status.
 
-|**Order type**
-| Select one or more order types that the procedure should be assigned to. Multiple selection is possible by pressing Ctrl or cmd when clicking.
+|*Order type*
+|Select one or more order types to which the procedure should be applied. Several order types can be selected by pressing Ctrl/cmd + clicking. Select the option *All* if all order types should be considered.
 
-|**Last status change  +
+|*Last status change  +
 Return date +
 Incoming orders**
-| Select **today**, **yesterday** or **Enter the days** and enter the number of days. +
-**Tip:** This entry is especially important for reminders or dunning letters. It allows you to ensure that you only include orders that are beyond a due date. +
-__**Important:**__ The **Last status change** filter only goes into effect for processes that a status was saved for. It does not go into effect, e.g. when manually booking an incoming payment that no status was saved for.
+|Select one of the options *today*, *yesterday* or *Enter the days* and enter the number of days. +
+This selection is especially important for reminders and dunning letters to make sure that the procedure is only applied to orders for which the indicated timespan has passed. +
+*_Important_*: This filter *Last status change* only affects processes for which a status has been saved. Thus, it does not affect e.g., manually booked incoming payments that no status has been saved for.
 
-|**The order includes an entire line of items**
-| Select **Yes** and then select an attribute from the drop-down list below. The filter checks the stock of items that the selected attribute corresponds to. If one of the items has no stock, then the filter will not go into effect for this order.
+|*The order includes an entire line of items*
+|Select *Yes* and select an attribute from the drop-down list appearing below. This filter searches for the number of items included in the order to which the selected attribute applies. If one of these items is out of stock, the filter is not applied to the respective order.
 
-|**Item is included**
-| Enter item **IDs** separated by commas if you only want orders to be included that contain this item. +
+|*Item is included*
+|Enter the *IDs* of the items separated by a comma. For the procedure to be applied, these items have to be included in the order.
 
-|**Incoming payment**
+|*give eBay feedback*
+|This filter only affects processes for eBay orders for which you as the seller have already received positive feedback from the customers. Select the option *YES* if only orders for which this has happened should be affected by the procedure. For further information on the filter *give eBay feedback*, refer to the <<omni-channel/multi-channel/ebay/ebay-setup#1300, eBay>> page of the manual.
+
+|*Outgoing items*
+|Select how the status of outgoing items should be considered for the procedure. Select the option *OPEN* to search for orders for which outgoing items have not booked yet. Select the option *BOOKED* to search for orders for which outgoing items have been booked. Select the option *NO RELEVANCE* if the status of outgoing items should not be considered.
+
+|*Incoming payment*
 |Select one of the following options: +
-**OPEN** = Only considers orders that have not been paid yet or for which no payment has been booked yet. +
-**BOOKED** = Only considers orders that have been completely paid, partially paid or overpaid. +
-**COMPLETELY BOOKED** = Only considers orders that have been completely paid or overpaid.
+*NO RELEVANCE* = Incoming payment is not considered for the procedure. +
+*OPEN* = This filter searches for unpaid orders or order for which incoming payment has not yet been booked in your plentymarkets system. +
+*BOOKED* = This filter searches for orders for which incoming payment in general has already been booked in your plentymarkets system. +
+*PARTIALLY BOOKED* = This filter searches for orders for which incoming payment has been partially booked in your plentymarkets system. +
+*COMPLETELY BOOKED* = This filter searches for orders to which complete payment has been booked or which are overpaid.
+
+|*Payment method*
+|Select one of the following options: +
+*NO RELEVANCE* = The payment method is not considered for the procedure. +
+According to the payment methods you have set up in your plentymarkets system, further options appear in the drop-down menu. Select the payment method linked to the orders to which the procedure should be applied.
+
+|*Order referrer*
+|Select one or more order referrers to which the procedure should be applied. Several order types can be selected by pressing Ctrl/cmd + clicking. Select the option *All* if all order referrers should be considered.
+
+|*Owner*
+|Select one or *ALL* owners to whose orders the procedure should be applied.
+
+|*Shipped on*
+|Select how the estimated shipping date of the order should be considered for the procedure. The relevant date here is the date saved in the field *Shipped on* in the *Settings* tab of an order. Select the option *Today* to search for orders that are to be shipped on the same date. Alternatively, select one of the options *Yesterday*, *2 days ago* or *3 days ago* to determine other timespans. Select the option *ALL* if no particular shipping date should be considered for the procedure.
+
+|*Items shipped on*
+|Select how the shipping date of the order should be considered for the procedure. The relevant date here is the actual date of outgoing items. Select the option *Today* to search for orders for which outgoing items have been booked on the same date. Alternatively, select one of the options *Yesterday*, *2 days ago* or *3 days ago* to determine other timespans. Select the option *ALL* if the date of outgoing items should not be considered for the procedure.
+
+|*Client*
+|Select the option *ALL* if the procedure should be applied to orders assigned to all clients or select the option *Default store* to search for orders placed in the default online store.
+
+|*Payment due date was exceeded*
+|Enter a number (in days). This filter searches for orders in which the payment due date has been exceeded by the indicated number of days.
 
 2+|OR
 
-|**eBay**
-| If the filter **positive feedback received** was selected here, then all of the other filters will be deactivated. This means that the eBay filter only goes into effect by itself and not in combination with other filters.
+|*eBay*
+|If you activate the filter *positive feedback received*, all other filter selections are deativated. The eBay filter can only be used on its own and not in combination with other filters. Do not make any selection for the option *eBay* if you wish to use the previously set up filters.
 |====
 
-__Table 1: **basic settings** for the **stock** of orders__
+[#400]
+=== Selecting one or multiple procedures
 
-===  Tab: Procedure
-
-In this tab, you select which **procedures** are to be carried out automatically by the system at the set time for previously filtered orders. To do so, proceed as follows.
-
-image::order-processing/orders/assets/ENG-Settings-Orders-Procedure-Manager-03.png[]
-
-__Image 3: options in the **Procedure** tab__
+After selecting the desired filters, you choose the concrete *Procedures* that should be carried out for the filtered orders automatically by your plentymarkets system. For example, select an email template to be sent to customers or use a procedure to change the status or the dunning level of an order automatically. For eBay orders, it is possible to post <<omni-channel/multi-channel/ebay/ebay-setup#1300, feedback>> automatically or start the dispute process. In addition, you can involve one of the listed <<order-processing/payment#400, collection agencies>> by placing a check mark next to the option *Active*. Debt collectors are then automatically informed about the concerned orders by your plentymarkets system. Proceed as described below to select one or multiple procedures.
 
 [.instruction]
-Selecting the procedure:
+Selecting a procedure:
 
-.  Go to **System » Orders » Procedures**.
-.  Carry out the desired settings.
-.  *Save* the settings. +
-→ The procedure will be created.
+. Go to *System » Orders » Procedures*.
+. Open the *Procedure* tab.
+. Carry out the desired settings according to the information provided in <<table-procedure-manager-procedures>>.
+. *Save* the settings. +
+→ The procedure is added.
 
-For example, you can automatically send an email template or you can automatically change an order's status or dunning level. It is possible to **give feedback** automatically for eBay orders or to start the dispute process on eBay. Select the option **Active** in order to activate one of the listed **debt collection service providers**. The corresponding orders will automatically be sent to the service provider.
+[[table-procedure-manager-procedures]]
+.Settings in the *Procedure* tab
+[cols="1,3"]
+|====
+|Setting |Description
+
+|*Send email template*
+|Select an email template from the drop-down list. Make sure that the selected template has been <<crm/sending-emails#1200, set up>> correctly beforehand. Leave the selection on the option *---* if no email template should be sent.
+
+|*Change order status*
+|Select the <<order-processing/orders/managing-orders#1200, order status>> that should be assigned to the orders affected by the procedure.  Leave the selection on the option *---* if no status change should take place.
+
+|*Change dunning level*
+|Select the dunning level that should be assigned to the orders affected by the procedure. This procedure changes the dunning level saved in the *Overview* tab of an order. Leave the selection on the option *---* if the dunning level should not be changed.
+
+|*Change flag*
+|Select the flag that should be assigned to the orders affected by the procedure. This procedure changes the flag saved in the *Overview* tab of an order. Leave the selection on the option *---* if the flag should not be changed.
+
+|*eBay*
+|Select a procedure that should be carried out automatically on eBay for orders with the order referrer *eBay*. The options *give positive feedback* and *Start dispute process* are available. Leave the selection on the option *---* if no procedure should be carried out on eBay.
+
+|*atriga (debt collection)*
+|Select the option *ACTIVE* if you have set up the debt collection provider <<order-processing/payment/atriga#, atriga>> in your plentymarkets system. atriga is then automatically informed about the concerned orders by your plentymarkets system. Leave the selection on the option *---* if you do not work with atriga.
+
+|*mediafinanz*
+|Select the option *ACTIVE* if you have set up the debt collection provider <<order-processing/payment/mediafinanz#, mediafinanz>> in your plentymarkets system. mediafinanz is then automatically informed about the concerned orders by your plentymarkets system. Leave the selection on the option *---* if you do not work with mediafinanz.
+|====
+
+[#500]
+== Activating the procedure
+
+After having carried out the settings for filters and procedures, you have to activate the procedure as a whole. Proceed as described below to activate the procedure.
+
+[.instruction]
+Activating the procedure:
+
+. Go to *System » Orders » Procedures*.
+. The procedure set up by you is displayed in the *Procedures* tab.
+. Open the procedure by clicking on the *plus* icon on the left. +
+→ The procedure is opened.
+. Place a check mark next to the option *Active*.
+. *Save* the settings. +
+→ The procedure is activated.
+
+[#600]
+== Managing procedures
+
+The *Procedures* tab in the *System » Orders » Procedures* menu offers you an overview of all procedures that you have set up. In this list, you can activate, deactivate, rename or delete individual procedures, if necessary. +
+In addition, the times at which the procedures were last started and successfully completed are displayed for each procedure.
