@@ -1,0 +1,111 @@
+= Themes auf Ceres 3.0 updaten
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Ceres, Webshop, Theme, Themes, Layout, Plugin, Update, Version, Change
+:description: Diese Anleitung hilft Theme-Entwicklern dabei, ihre Themes auf Ceres 3.0 anzupassen.
+:position: 10
+
+= Themes auf Ceres 3.0 updaten
+
+Mit dem Major-Release Ceres 3.0 Mitte *Januar* gibt es Änderungen im Code, die für *Theme-Entwickler* besonders wichtig sind, da sie eine Reihe notwendiger Anpassungen in Themes mit sich bringen. Auf dieser Handbuchseite erfährst du, welche Komponenten und Direktiven aus Ceres entfernt wurden und welche Anpassungen deinerseits notwendig sind, damit sich dein Theme korrekt verhält. +
+Diese Seite dient dazu, die größten potentiellen Fehlerquellen aufzuzeigen. Für eine komplette Übersicht der Änderungen, sieh dir bitte den aktuellen Vergleich der Versionen auf link:https://github.com/plentymarkets/plugin-ceres/compare/2.17.0...2.17.1[GitHub^] an.
+
+== Entfernte Direktiven
+
+In Ceres 3.0 wurden die folgenden Direktiven global *entfernt*:
+
+- v-render-category
+- v-is-loading-watcher
+- v-update-sidenav-selection
+
+Weiterhin wurde die Direktive *v-hover-mega-menu* umbenannt und heißt nun *v-navigation-touch-handler*.
+
+== Hinzugefügte Komponenten
+
+Die Komponente *Ceres::ItemList.Components.CategoryItem* bezieht sich auf die Kachel eines Artikels und wurde vor Ceres 3.0 nicht verwendet. Die Artikelkachel wurde zuvor von der nun entfernten Komponente *Ceres::ItemList.Components.ItemList* eingebunden.
+
+== Entfernte und geänderte Komponenten
+
+Die folgenden Komponenten wurden entfernt oder werden nun auf andere Weise über Twig inkludiert:
+
+*Entfernt:*
+- Ceres::ItemList.Components.ItemList
+- Ceres::ItemList.Components.CategoryImageCarousel
+- Ceres::Category.Item.Partials.CategoryListItem
+
+*Geändert*:
+- Ceres::ItemList.Components.ItemListSorting » Ceres::Category.Item.Partials.ItemSorting
+- Ceres::ItemList.Components.ItemsPerPage » Ceres::Category.Item.Partials.ItemsPerPage
+- Ceres::ItemList.Components.Pagination » Ceres::Category.Item.Partials.Pagination
+
+Die folgenden Code-Beispiele veranschaulichen, welche Zeilen in deinem Theme potentiell entfernt werden müssen, damit die geänderten Komponenten nicht fälschlicherweise aufgerufen wird, und über welchen Befehl der jeweilige Aufruf ab Ceres 3.0 getätigt werden muss. Die Anpassungen beziehen sich auf die beiden Dateien */resources/views/ItemList/ItemListView.twig* und */resources/views/Category/Item/CategoryItem.twig*. Die drei Punkte [...] sind hier als Auslassung zu verstehen, da die Code-Zeilen nicht unmittelbar aufeinander folgen müssen. Die im jeweiligen Code-Snippet angegebenen Parameter können in deinem Theme natürlich abweichen.
+
+
+*ItemSorting*
+_Die folgenden Zeilen müssen entfernt werden:_
+[source,plenty]
+----
+{{ component( "Ceres::ItemList.Components.ItemListSorting" ) }}
+[...]
+<item-list-sorting template="#vue-item-list-sorting" :sorting-list="{{ searchOptions.sorting | json_encode }}" :default-sorting="{{ searchOptions.defaultSorting | json_encode }}"></item-list-sorting>
+----
+
+_Hinzufügen:_
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.ItemSorting" with { 'sortingData': searchOptions.sorting, 'selectedSorting': itemSorting } %}
+----
+
+
+*ItemsPerPage*
+_Die folgenden Zeilen müssen entfernt werden:_
+[source,plenty]
+----
+{{ component( "Ceres::ItemList.Components.ItemsPerPage" ) }}
+[...]
+<items-per-page template="#vue-items-per-page" :pagination-values="{{ searchOptions.itemsPerPage | json_encode }}"></items-per-page>
+----
+
+_Hinzufügen:_
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.ItemsPerPage" with { 'itemsPerPage': searchOptions.itemsPerPage, 'selectedValue': itemsPerPage } %}
+----
+
+
+*Pagination*
+_Die folgenden Zeilen müssen entfernt werden:_
+[source,plenty]
+----
+{{ component( "Ceres::ItemList.Components.Pagination") }}
+...
+<pagination template="#vue-pagination"></pagination>
+----
+
+_Hinzufügen:_
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.Pagination" %}
+----
+
+== Weitere Anpassungen
+
+- In der Datei *resources/views/PageDesign/Partials/Header/Header.twig* erfolgt der Aufruf der Paginierung nun mit *with* und Parameter:
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.Pagination" with { 'currentPage': page } %}
+----
+
+- In der Datei *resources/views/PageDesign/Partials/Header/Header.twig* muss das *script* eingebunden werden, da sonst Elemente hinter dem Header verschwinden können:
+[source,plenty]
+----
+{% set scriptId = uid() %}
+<script id="{{ scriptId }}">
+    document.getElementById("vue-app").style.marginTop = document.getElementById("page-header").getBoundingClientRect().height + 'px';
+    document.getElementById("{{ scriptId }}").remove();
+</script>
+----
+
+== Bootstrap 4 stable Anpassungen
+
+Diese Handbuchseite wird in Kürze um Schritte erweitert, die nötig sind, um Themes auf Bootstrap 4 stable anzupassen.
