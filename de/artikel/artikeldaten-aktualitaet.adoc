@@ -1,48 +1,41 @@
-= Aktualität von Artikeldaten
+= Aktualität von Artikeldaten prüfen
 :lang: de
 include::{includedir}/_header.adoc[]
 :position: 600
 
-Wenn Sie viele Artikeldaten gleichzeitig ändern oder viele neue Artikel gleichzeitig erstellen, sind diese Änderungen aufgrund des technischen Aufbaus von plentymarkets nicht sofort in den folgenden Bereichen von plentymarkets verfügbar:
+Wenn Sie viele Artikeldaten gleichzeitig ändern oder viele neue Artikel gleichzeitig erstellen, sind diese Änderungen aufgrund des technischen Aufbaus von plentymarkets in den folgenden Bereichen von plentymarkets nicht sofort verfügbar:
 
 * Artikelanzeige in Ceres
 * Artikelsuche in Ceres
 * Artikeldaten im Elastischen Export
 
+Wie groß diese Verzögerung ist, hängt davon ab, wie viele Artikel erstellt und/oder geändert wurden:
 
+* Wenn Sie einen oder wenige Artikel manuell im plentymarkets Backend erstellen oder aktualisieren, dauert es ungefähr 15 Minuten, bis die Änderungen im Shop sichtbar ist und im Elastischen Export berücksichtigt werden.
+* Wenn Sie viele Artikel erstellen oder aktualisieren, zum Beispiel per Stapelverarbeitung oder Import, dauert es unter Umständen sehr lang, bis die Änderungen im Webshop sichtbar sind und im Elastischen Export berücksichtigt werden. Wie lang der Vorgang tatsächlich dauert, ist davon abhängig, welche Änderungen vorgenommen wurden und wie viele Varianten von den Änderungen betroffen sind.
 
-== Warum sind Artikeldaten nicht immer aktuell?
+== Technischer Hintergrund zur Aktualität von Artikeldaten
 
-plentymarkets Artikeldaten werden in einer Datenbank gespeichert. Die Daten aus dieser Datenbank werden dann an ElasticSearch gesendet, da ElasticSearch die Daten wesentlich schneller ausliefern kann als die Datenbank.
+Die Artikeldaten werden in einer Datenbank gespeichert. Da das Auslesen dieser Daten aber zu lang dauern würde, sendet die Datenbank diese Daten zur Zwischenspeicherung an die Suchmaschine ElasticSearch. Die Artikelansicht und Artikelsuche in Ceres und der Elastische Export beziehen Artikeldaten nicht aus der Datenbank, sondern aus ElasticSearch. So werden im Webshop Suchergebnisse schneller gefunden und Artikeldaten schneller geladen. Auch der Elastische Export wird durch ElasticSearch beschleunigt.
 
-Die Artikelansicht und Artikelsuche in Ceres und der Elastische Export beziehen Artikeldaten nicht aus der Datenbank, sondern aus ElasticSearch. So werden im Webshop Suchergebnisse schneller gefunden und Artikeldaten schneller geladen. Auch der Elastische Export wird durch ElasticSearch beschleunigt.
-
-Allerdings verarbeitet ElasticSearch nur ein bestimmtes Kontingent an Speichervorgängen pro Zeiteinheit. Wenn dieses Kontingent erreicht ist, werden keine weiteren Daten an Ceres und den Elastischen Export gesendet. Um dieses Problem zu umgehen, werden die zu aktualisierenden Artikeldaten gesammelt und in regelmäßigen Abständen gleichzeitig in einem einzigen Schreibvorgang an ElasticSearch übergeben. Dadurch sind weniger Anfragen erforderlich, da nicht jede einzelne Artikeländerung eine eigene ElasticSearch-Aktualisierung auslöst. Je nach Anzahl der geänderten Artikel dauert es zwischen einige Minuten und mehrere Stunden, bis die Daten in ElasticSearch vollständig aktualisiert sind.
-
-Aus dem Zusammenspiel zwischen Datenbank und ElasticSearch ergeben sich Verzögerungen in der Aktualität der folgenden Artikeldaten:
-
-* Artikeldaten im Elastischen Export
-* Artikelsuche in Ceres
-* Artikelanzeige in Ceres
-
-Wie groß diese Verzögerung ist, hängt davon ab, wie viele Daten importiert und/oder geändert wurden:
-
-* Wenn Sie einen oder wenige Artikel manuell im plentymarkets Backend erstellen oder aktualisieren, dauert es ungefähr 15 Minuten, bis die Änderungen im Shop sichtbar ist.
-* Wenn Sie viele Artikel zum Beispiel über die Stapelverarbeitung oder ElasticSync-Import erstellen oder aktualisieren, dauert es sehr viel länger, bis die Änderungen im Webshop sichtbar sind.
-* Wenn Sie viele Daten importieren und dann einen Export über den Elastischen Export durchführen, sind die exportierten Daten nicht oder nur teilweise aktuell. Das liegt daran, dass Exportdaten generiert werden, bevor die importierten Datenänderungen von der Datenbank in Richtung ElasticSearch synchronisiert wurden.
-→ Prüfen Sie vor einem Export, ob die Artikeldaten aktuell sind.
+Allerdings verarbeitet ElasticSearch nur ein bestimmtes Kontingent an Speichervorgängen pro Zeiteinheit. Wenn dieses Kontingent erreicht ist, werden keine weiteren Daten an Ceres und den Elastischen Export gesendet. Um dieses Problem zu umgehen, werden die zu aktualisierenden Artikeldaten gesammelt und in regelmäßigen Abständen gleichzeitig in einem einzigen Schreibvorgang an ElasticSearch übergeben. Dadurch sind weniger Anfragen erforderlich, da nicht jede einzelne Änderung eine eigene ElasticSearch-Aktualisierung auslöst. Je nach Anzahl der geänderten Artikel dauert es zwischen einigen Minuten und mehreren Stunden, bis die Daten in ElasticSearch vollständig aktualisiert sind.
 
 == Aktualität von Artikeldaten prüfen
 
-Gehen Sie wie unten beschrieben vor, um die Aktualität von Artikeldaten zu prüfen.
+Gehen Sie wie unten beschrieben vor, um die Aktualität von Artikeldaten zu prüfen. Die Anzeige informiert über die Aktualität der folgenden Artikeldaten:
+
+* Artikeldaten im Elastischen Export
+* Artikelsuche in Ceres
+* Artikelanzeige in Ceres
 
 [.instruction]
 Aktualität der Artikeldaten prüfen:
 
 . Öffnen Sie das Menü *Daten » Aktualität*. +
-→ Das Menü *Aktualität* wird angezeigt.
-→ Im Bereich *XXX* sehen Sie, wie viel Prozent der Artikeldaten aktuell sind. +
-*_Tipp:_* Die Statusanzeige wird nicht automatisch aktualisiert. Laden Sie das Tab neu, um den Fortschritt zu beobachten.
+→ Das Menü *Aktualität* wird angezeigt. +
+→ Im Bereich *XXX* wird angezeigt, wie viel Prozent der Artikeldaten aktuell sind. <<tabelle-aktualitaet-status>> erläutert die verschiedenen Status. +
+*_Hinweis:_* Die Statusanzeige wird nicht automatisch aktualisiert. Laden Sie das Tab neu, um den Fortschritt zu beobachten.
+
 
 [[tabelle-aktualitaet-status]]
 .Status der Artikeldaten
@@ -51,11 +44,13 @@ Aktualität der Artikeldaten prüfen:
 |Status |Erläuterung
 
 |*Aktuell*
-|Die Artikeldaten in ElasticSearch sind aktuell und mit denen in der plentymarkets Datenbank identisch.
+|Die Artikeldaten sind aktuell.
 
 |*Geändert*
-|Die Artikel sind schon einmal in ElasticSearch gespeichert. Allerdings wurden seitdem Änderungen an den Artikeldaten vorgenommen.
+|Vorhandene Artikel wurden geändert. Diese Änderungen sind im Ceres Webshop und im Elastischen Export noch nicht verfügbar. +
+→
 
 |*Neu*
-|Die Artikel wurden zur plentymarkets Datenbank hinzugefügt, jedoch noch nicht an ElasticSearch übergeben.
+|Neue Artikel wurden erstellt. Diese neuen Artikel sind im Ceres Webshop und im Elastischen Export noch nicht verfügbar. +
+→
 |====
