@@ -1,17 +1,12 @@
-= Daten mit ElasticSync importieren (Plugin)
+= Daten mit ElasticSync importieren
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: Daten importieren, Datenimport, ElasticSync, Sync, Elastic Sync, Sync, Synchronisieren, Synchronisation, Datenformat, Datenformate, dynamischer Import, Abgleich, Importoptionen, Zuordnung, Importdaten, Sync-Verlauf
-:description: Erfahren Sie, wie Sie mit dem Plugin ElasticSync Daten in plentymarkets importieren.
-:position: 15
+:description: Erfahren Sie, wie Sie mit ElasticSync Daten in plentymarkets importieren.
+:position: 10
 
-Diese Handbuchseite beschreibt den Datenimport in plentymarkets über das Plugin ElasticSync. Ein Import von Daten ist ratsam, wenn Sie z.B. neue Artikel, Kundendaten oder Lagerbestände in Ihr plentymarkets System einpflegen möchten und die Daten bereits digital vorliegen. ElasticSync ermöglicht es über das Erstellen von sogenannten Syncs, Datenimporte auszuführen. Ein Import kann manuell oder automatisiert erfolgen. Das ElasticSync-Plugin steht Ihnen kostenlos im link:https://marketplace.plentymarkets.com/plugins/integration/ElasticSync_4750[plentyMarketplace^] zur Verfügung.
+Diese Handbuchseite beschreibt den Datenimport in plentymarkets mit ElasticSync. Ein Import von Daten ist ratsam, wenn Sie z.B. neue Artikel, Kundendaten oder Lagerbestände in Ihr plentymarkets System einpflegen möchten und die Daten bereits digital vorliegen. ElasticSync ermöglicht es über das Erstellen von sogenannten Syncs, Datenimporte auszuführen. Ein Import kann manuell oder automatisiert erfolgen.
 
-[TIP]
-.Plugin aktualisieren?
-====
-ElasticSync wird ständig aktualisiert und verbessert. Prüfen Sie deshalb im Menü *Plugins » Plugin-Übersicht » Plugin-Set öffnen*, dass Sie die aktuelle Version von ElasticSync verwenden, bevor Sie Syncs oder Exportformate erstellen.
-====
 
 = Allgemeine Einstellungen
 
@@ -207,10 +202,120 @@ Zuordnung festlegen:
 . *Speichern* Sie die Einstellungen.
 
 [NOTE]
+.Beschränkung für Zuordnungen
+====
+Die maximale Anzahl an möglichen Zeichen für Zuordnungen beträgt 65535.
+====
+
+[NOTE]
 .Eigener Wert
 ====
 Die Option *Eigener Wert* erlaubt Ihnen für ein Datenfeld einen festen Wert zu importieren. Dieser feste Wert ist somit für jeden Datensatz, der durch diesen Sync importiert wird, gleich.
 ====
+
+[#1510]
+=== Zeilen einer Zuordnung für den Import aktivieren
+
+Im Bereich *Zuordnung* können Sie mit nur einem Klick alle Zeilen für den Import aktivieren. Alternativ können Sie auch bei jeder Zeile individuell entscheiden, ob sie aktiv oder inaktiv sein soll, sprich, ob sie beim Import berücksichtigt werden soll oder nicht.
+
+[.instruction]
+Zeilen für den Import aktivieren:
+
+. Öffnen Sie das Menü *Daten » ElasticSync*. +
+→ Die Übersicht wird geöffnet.
+. Klicken Sie auf einen Sync. +
+→ Die Übersicht *Zuordnung* wird geöffnet.
+. Klicken Sie auf eine Zuordnung. +
+→ Die Zuordnung wird geöffnet.
+. Klicken Sie am linken Rand auf *Alle aktivieren*, um alle Zeilen beim Import zu berücksichtigen.
+. Klicken Sie alternativ in einer Zeile auf *Zeile aktivieren*, um nur diese Zeile beim Import zu berücksichtigen.
+. *Speichern* Sie die Einstellungen.
+
+[NOTE]
+.Ansicht in der Zuordnung
+====
+Auf der linken Seite der Zuordnung sind die Importdaten aus der CSV-Datei dargestellt, die auf der plentymarkets Seite zugeordnet werden müssen. Auf der rechten Seite sind die plentymarkets Datenfelder aufgeführt. Die Vorschau zeigt die ersten 6 Werte der CSV-Datei.
+====
+
+[#1520]
+=== Werte mit der RegEx-Funktion ersetzen
+
+Damit eine CSV-Datei beim Import wie gewünscht berücksichtigt wird, kann die sog. RegEx-Funktion genutzt werden. Diese sorgt dafür, dass Daten anhand von Befehlen beim Import manipuliert werden und folglich in der CSV-Datei keine Änderungen mehr vorgenommen werden müssen.
+
+Die zwei folgenden Beispiele sollen den Vorgang näher veranschaulichen.
+
+*Beispiel 1*: +
+*Input*: “24.12.2017” +
+*Search pattern*: /^(\d+)\.(\d+)\.(\d+)$/ +
+*Replace pattern*: $3﹣$2﹣$1 +
+*Result*: “2017-12-24”
+
+*Beispiel 2*: +
+*Input*: “Mustermann, Max” +
+*Search pattern*: /^(\w+), (\w+)$/ +
+*Replace pattern*: $2 $1 +
+*Result*: “Max Mustermann” +
+
+*Erläuterung der Beispiele*: +
+Ganz am Anfang steht das Input. Im ersten Schritt wird im sog. Search pattern das Muster eingefügt, nach dem gesucht werden soll. Anschließend wird dieses im sog. Replace pattern so modifiziert, wie es beim Import ausgegeben werden soll und als Result kommt das gewünschte Muster heraus, das schließlich in der CSV-Datei berücksichtigt wird.
+
+[.instruction]
+Werte ersetzen:
+
+. Öffnen Sie das Menü *Daten » ElasticSync*.
+. Klicken Sie auf einen Sync. +
+→ Die Zuordnung wird geöffnet.
+. Wählen Sie im Feld *Quelle* die Option *Regulärer Ausdruck*. +
+→ Die Optionen für *Regulärer Ausdruck* werden geöffnet.
+. Geben Sie im Feld *Wert* den Spaltennamen der CSV-Datei ein (z.B. Paketnummer, Auftrags-ID etc.).
+. Geben Sie im Feld *Suchen* das Search pattern ein.
+. Geben Sie im Feld *Ersetzen* das Replace pattern ein.
+. *Speichern* Sie die Einstellungen. +
+→ Die Datenfelder werden aktualisiert.
+
+[NOTE]
+.Infos zu RegEx
+====
+Weitere Informationen zu RegEx finden Sie auf link:http://php.net/manual/en/reference.pcre.pattern.syntax.php[dieser^] oder link:https://regexr.com/[dieser^] Seite.
+Auf letzterer muss die Einstellung der RegEx engine auf PCRE umgestellt werden. Dies geschieht über das Dropdown-Menü oben rechts, in dem Javascript voreingestellt ist.
+====
+
+[#1520]
+=== Eigene Zuordnung
+
+Mit der Eigenen Zuordnung können vorhandene Werte einer CSV-Datei auf andere Werte im System gemappt werden. So kann definiert werden, für welche ID welcher Wert importiert werden soll. Zusätzlich kann ein Default-Wert angegeben werden, wenn für einen Wert in der CSV-Datei keine Zuordnung definiert ist. Ist kein Default-Wert angegeben, wird der Originalwert importiert.
+
+[.instruction]
+Eigene Zuordnung festlegen:
+
+. Öffnen Sie das Menü *Daten » ElasticSync*. +
+→ Die Übersicht wird geöffnet.
+. Klicken Sie auf einen Sync. +
+→ Die Übersicht der Zuordnung wird geöffnet.
+. Klicken Sie auf eine Zuordnung. +
+→ Die Zuordnung wird geöffnet.
+. Wählen Sie im Dropdown-Menü des Felds *Quelle* die Option *Eigene Zuordnung*.
+. Füllen Sie die Felder aus. Beachten Sie dazu die Erläuterungen in <<tabelle-eigene-zuordnung>>.
+. *Speichern* Sie die Einstellungen.
+
+[[tabelle-eigene-zuordnung]]
+.Eigene Zuordnung
+[cols="1,3"]
+|====
+|Feld |Einstellung
+
+|Typ
+|Name der CSV-Spalte (z.B. Lieferland)
+
+|Standardwert
+|Wert, wenn keine Zuordnung gefunden wurde (z.B. 1)
+
+|Von
+|Ursprungswert in der CSV-Datei (z.B. DE für Deutschland)
+
+|Zu
+|Wert, auf den der Ursprungswert gemappt werden soll (z.B. 1 für DE, 10 für GB etc.)
+|====
 
 [#1600]
 == Importdaten filtern
@@ -306,12 +411,9 @@ Wenn Sie *Sync testen* wählen, werden nur die ersten zehn Zeilen der Importdate
 ====
 
 [#1710]
-== REST-API ansprechen
+== Abarbeitung von Jobs in der Queue
 
-Um ElasticSync per REST-API anzusprechen, stehen Ihnen die folgenden REST-Calls zur Verfügung:
-
-* Sync erstellen: POST - /rest/elasticsync/sync/{syncId}/import
-* Alle Syncs abrufen: GET - /rest/elasticsync/all_syncs
+Die Queue sorgt dafür, dass auch große Datenmengen importiert werden können. Noch vor dem Import wird die Importdatei in Pakete zerlegt und anschließend in sogenannten Jobs abgearbeitet. Ein Job besteht aus 750 Zeilen einer CSV-Datei. Jedoch werden auch Importdateien, die weniger als 750 Zeilen enthalten, zu einem Job. Wird ein Sync gestartet, wird die CSV-Datei in die entsprechenden Jobs aufgeteilt und in die Queue eingereiht. In der Queue werden neue Jobs ständig abgerufen und die Syncs werden abgearbeitet. Dabei gibt es zwei verschiedene Status. Der Status *Offene Jobs* bedeutet, dass es Jobs gibt, die sich noch in der Queue befinden und darauf warten, abgearbeitet zu werden. *Abgeschlossene Jobs* hingegen wurden bereits bearbeitet und die Daten dementsprechend importiert.
 
 [#1720]
 == Zuordnung aktivieren/deaktivieren
@@ -387,6 +489,11 @@ Für den Artikelimport stehen die in <<tabelle-Zuordnungsfelder-Artikel>> aufgel
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Typ
+|standard = Artikel des Typs *Standard* +
+multipack = Artikel des Typs *Multipack* +
+|Wenn kein Artikeltyp angegeben wird, wird automatisch der Typ *Standard* angenommen.
+
+|Warentyp
 |0 = Lagerware +
 1 = Produktionsware +
 2 = Colli +
@@ -2172,7 +2279,7 @@ datei
 [#2200]
 == Kontakte, Firmen und Adressen
 
-Voraussetzung für die Nutzung des Plugins:
+Voraussetzung:
 
 * Damit die neu importierten oder aktualisierten Lieferländer in einem Kontaktdatensatz in der Kontaktübersicht angezeigt werden, müssen diese Lieferländer im Menü *System » Aufträge » Versand » Optionen » Tab: Lieferländer* aktiviert sein.
 
