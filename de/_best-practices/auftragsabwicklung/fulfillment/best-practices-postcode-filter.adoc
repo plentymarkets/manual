@@ -1,0 +1,62 @@
+:lang: de
+:keywords: Postleitzahl, Postleitzahlen, Filter, Ereignisaktion
+:position: 70
+
+In diesem Best Practice beschreiben wir euch den Postleitzahlenfilter etwas näher und ihr könnt für das Anwendungsbeispiel sehen, wie eine Ereignisaktion aussehen könnte.
+
+= Wie arbeitet der Postleitzahlenfilter?
+
+Der Postleitzahlenfilter ist ein weiterer Filter für link:https://knowledge.plentymarkets.com/basics/automatisierung/ereignisaktionen[Ereignisaktionen^].
+
+
+Er wird auf die Postleitzahlen der *Lieferadressen* an Aufträgen angewendet. Dabei werden die eingegebenen Werte mit der Angabe in der Lieferadresse verglichen. Sollte z.B. `35` im Filter eingestellt sein, würden alle Angaben mit `35` am Anfang der Postleitzahl abgefangen werden, und die Aktionen in der Ereignisaktionen werden abgearbeitet.
+Mehrere kommagetrennte Werte sind möglich und es werden auch Buchstaben geprüft, wie es z.B. in dem Vereinigtem Königreich (W1U 6AG, London) oder Niederlanden (1011 DK, Amsterdam) verwendet wird.
+
+= Was sollte ich einrichten?
+
+Je nach dem, wie euer Workflow ist, empfiehlt es sich bereits einige Einstellungen in Vorfeld durchgeführt zu haben. Z.B. die besonderen Lieferländer zu aktivieren, in die ihr liefert (u.a Helgoland oder die Kanarischen Inseln).
+
+Sinnvoll halte ich weitere Auftragsstatus, der für den Postleitzahlenfilter verwendet wird, so wird ebenfalls eine weitere Filtermöglichkeit für andere Menüs erstellt.
+
+Im folgenden Beispiel habe ich bereits unter *System » Aufträge » Status* den Status "*Lieferanschrift prüfen*" erstellt.
+
+.Neuer Auftragsstatus
+image::_best-practice/auftragsabwicklung/fulfillment/assets/Neuer_Auftragsstatus.png[]
+
+= Anwendungsbeispiel
+
+Ich erhalte immer wieder Bestellungen aus Sonderregionen, die ich für meine Anmeldung beim Versanddienstleister anders behandeln muss, da ich zu DHL weitere zolltechnischen Informationen senden muss, die für das Land für gewöhnlich nicht notwendig sind.
+Aufgefallen ist mir Las Palmas, die Postleitzahlen der Kanarische Inseln beginnen mit "35" oder "38", politisch gehören die Inseln zu Spanien, aber ich muss Lieferungen dorthin als Ausfuhrlieferungen anmelden.
+
+Für meine neue Ereignisaktion gehe ich in das Menü *System » Aufträge » Ereignisse* und erstelle mir eine neue Ereignisaktion, die ich "PLZ-Filter" nenne.
+
+Das Ereignis, *Statuswechsel* passt für mich am besten, da alle Aufträge bei mir zuerst durch den Status *In Versandvorbereitung* laufen, so dass ich diesen auswähle.
+
+Danach klicke ich auf das `"+", um einen neuen Filter hinzuzufügen und wähle *Postleitzahlen* im Ordner *Auftrag* aus.
+
+.Postleitzahlenfilter
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Ereignisaktion_Postleitzahlfilter.png[]
+
+In das Feld des Filters schreibe ich nun "35, 38", damit alle Postleitzahlen mit 35 oder 38 beginnend abgefangen werden. Zudem füge ich noch einen weiteren Filter *Versand -> Lieferland* hinzu und aktiviere *Spanien*, da Marburg in Deutschland sonst auch die Ereignisaktion auslösen würde.
+
+Als Aktion wähle ich *Status ändern* im Ordner *Auftrag* aus und stelle den zuvor erstellten Auftragsstatus aus.
+
+
+.Neue Ereignisaktion
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Ereignisaktion_Postleitzahl.png[]
+
+
+Nun prüft die Ereignisaktion bei allen meinen neuen Aufträgen, die in den Status *In Versandvorbereitung* gelangen, ob diese auch nach Spanien geschickt werden sollen und ob die Postleitzahl durch den Filter aufgegriffen wird.
+Es sind nun zwei Ausgänge möglich:
+
+1. Die Filter der Ereignisaktionen passen nicht zum Auftrag
+  -> Die Ereignisaktion hat keinen Effekt auf den Auftrag
+2. Die Filter der Ereignisaktion passen zum Auftrag
+  -> Die Ereignisaktion greift und schiebt den Auftrag in den Status *Lieferanschrift prüfen*
+
+
+[TIP]
+.weitere Möglichkeiten in den Ereignisaktion
+====
+Mit dem Filter sind auch weitere Kombination möglich, so dass auch Herkünfte oder Auftragstypen als zusätzliche Filter hinzugefügt werden können, um die Ereignisaktion feiner einstellen zu können. Ihr wisst am Besten, was ihr benötigt!
+====
