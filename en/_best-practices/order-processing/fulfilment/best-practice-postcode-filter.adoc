@@ -2,46 +2,47 @@
 :keywords: postcode, postcodes, filter, event procedures
 :position: 70
 
-In this Best Practice we describe the postcode filter a little closer and on an example of use how an event procedure may be set up.
+In this Best Practice, we describe the postcode filter a little closer and give you an example of how you might set up an event procedure.
 
 = How does the postcode filter work?
 
-The postcode filter was added to the filters of an link:https://knowledge.plentymarkets.com/en/basics/automation/event-procedures[event procedures^] to check the postcode of a *delivery address* of an order.
+The postcode filter was added to the filters of the link:https://knowledge.plentymarkets.com/en/basics/automation/event-procedures[event procedures^] to check the postcode in the *delivery address* of an order.
 A comparison of the entered values and the postcode will be done, starting with the first character und proceeding to the next.
 
-I.e. putting `W1U` in this field will result in the event procedure working for e.g. `W1U 6AG`, `W1S 2XG` and `W1T 1BX`.
+This means putting `W1U` in this field will result in the event procedure working for e.g. `W1U 6AG`, `W1S 2XG` and `W1T 1BX`.
 You might enter multiple values separated by a comma as `W1U, SE` if multiple regions were to be considered.
 
 = What do I need to set up?
 
-Depending on your Workflow in processing orders some settings are useful. E.g. activating 'special' delivery countries you are delivering to. (Isle of Man, Canary Islands)
+Depending on your workflow in processing orders, some settings are useful such as activating 'special' delivery countries you are delivering to (Isle of Man, Canary Islands).
 
-To me it makes sense to create a new order status because you will be able to set filters in other menus regarding it.
+To us it makes sense to create a new order status because you will be able to set filters in other menus regarding it.
 
-In the following example I created a new in *System » Orders » Status* named *check delivery address* in advance.
+In the following example we created a new status in the *System » Orders » Status* menu named *check delivery address* in advance.
 
 .new order status
 image::_best-practice/order-processing/fulfillment/assets/new_order_status.png[]
 
 = Example of use
 
-I get orders with shipping to special countries time and again, which need to be processed in another way as for customs reasons or because the shipping costs are much higher for me.
+We frequently get orders with shipment to 'special' countries which need to be processed in another way as for customs reasons or because the shipping costs are much higher for us.
 
-Las Palmas came up in my mind. The postcodes of the Canary Islands start with `35` or `38`, politically it belongs to Spain but is an autonomous community with most likely higher shipping costs compared to the costs for shipping to mainland Spain.
+Las Palmas is such an example. The postcodes of the Canary Islands start with `35` or `38`; politically, it belongs to Spain but is an autonomous community with most likely higher shipping costs compared to the costs for shipping to mainland Spain.
 
-To create my new event procedure I open the menu *System » Orders » Events*. After clicking on *Add event procedure*, plus sign in the bottom, I choose the name *postcode filter* and click on the save button.
+To create our new event procedure we open the menu *System » Orders » Events*. After clicking on *Add event procedure*, plus sign in the bottom, we choose the name *postcode filter* and click on the save button.
 
-The event *Status Change* fits the most to me, because all my orders have to go through the status *In preparation for shipping*. So this status it is.
+The event *Status Change* is most suitable to us, because all our orders have to go through the status *In preparation for shipping*. So this status it is.
 
-Next, I add a new filter by clicking on the plus sign next to filter and select *Postcodes* in the *Order* folder.
+Next, we add a new filter by clicking on the plus sign next to filter and select *Postcodes* in the *Order* folder.
 
 .postcode filter
 image::_best-practices/order-processing/fulfillment/assets/event_procedure_postcode_filter.png[]
 
-Entering "35, 38" will do a check for postalcodes beginning with `35` or `38`.
-In addition to this I add the filter  *Shipping -> Country of delivery* and activate *Spain*, because other countries don't need this check.
+Entering "35, 38" will do a check for postcodes beginning with `35` or `38`.
 
-After that I add the procedure *Change Status* in the *Order* folder and select the order status *check delivery address*, that I created in advance.
+In addition to this, we add the filter  *Shipping -> Country of delivery* and activate *Spain* because other countries don't need this check.
+
+After that, we add the procedure *Change Status* in the *Order* folder and select the order status *check delivery address* that we created in advance.
 
 
 .new event procedure
@@ -49,15 +50,16 @@ image::_best-practices/order-processing/fulfillment/assets/event_procedure_postc
 
 
 Now the event procedure looks out in all my new orders in status *in preparation for shipping*, if they were to be sent to Spain and if the postcode fit in the filter.
-There are two possible outcomes
+There are two possible scenarios:
+
 1. The filters in the event procedure do not fit with the order
-  -> the event procedure does not have any impact in the order
+  -> the event procedure does not have any impact on the order
 2. The filters in the event procedure do fit with the order
   -> the event procedure is processed and the order status will be changed to  *check delivery address*
 
 
 [TIP]
-.further options for the use of this filter
+.Further options for the use of this filter
 ====
-Of course more filter can be used with the postcode filter, you can add a referrer or order types to have finer distinction in event procedures. You know best, what you need.
+Of course, more filters can be used with the postcode filter, e.g. you can add a referrer or order types to have finer distinction in the event procedures. You know best, what you need.
 ====
