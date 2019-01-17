@@ -1,0 +1,61 @@
+:lang: de
+:keywords: Postleitzahl, Postleitzahlen, Filter, Ereignisaktion
+:position: 70
+
+In diesem Best Practice beschreiben wir den Postleitzahlenfilter etwas näher und ihr könnt im Anwendungsbeispiel sehen, wie eine Ereignisaktion aussehen könnte.
+
+= Wie arbeitet der Postleitzahlenfilter?
+
+Der Postleitzahlenfilter ist ein weiterer Filter in den link:https://knowledge.plentymarkets.com/basics/automatisierung/ereignisaktionen[Ereignisaktionen^].
+
+Er wird auf die Postleitzahl der *Lieferadresse* im Auftrag angewendet. Dabei werden die eingegebenen Werte mit der Angabe in der Lieferadresse verglichen. Sollte z.B. `35` im Filter eingestellt sein, würden alle Angaben mit `35` am Anfang der Postleitzahl abgefangen werden und die Aktionen in der Ereignisaktionen werden abgearbeitet.
+Mehrere Werte können kommagetrennt eingetragen werden. Postleitzahlen, die Buchstaben enthalten, wie z.B.W1U 6AG für London oder 1011 DK für Amsterdam, werden ebenfalls berücksichtigt.
+
+= Was sollte man einrichten?
+
+Je nach dem, wie ihr eueren Workflow aufgebaut habt, empfiehlt es sich, bereits einige Einstellungen im Vorfeld vorzunehmen wie z.B. die "besonderen" Lieferländer zu aktivieren, in die ihr liefern möchtet. Das können u.a. Helgoland oder die Kanarischen Inseln sein.
+
+Als sinnvolle Erweiterung können neue Auftragsstatus angelegt werden, die später helfen, die bearbeiteten Aufträge z.B. in der Auftrasgsübersicht wieder zu finden.
+
+Im folgenden Beispiel haben wir bereits im Menü *System » Aufträge » Status* den Status *Lieferanschrift prüfen* erstellt.
+
+.Neuer Auftragsstatus
+image::_best-practice/auftragsabwicklung/fulfillment/assets/Neuer_Auftragsstatus.png[]
+
+= Anwendungsbeispiel
+
+Wir erhalten immer wieder Bestellungen aus Sonderregionen, die wir für unsere Anmeldung beim Versanddienstleister anders behandeln muss, da wir zu DHL weitere zolltechnischen Informationen senden müssen, die für das Land für gewöhnlich nicht notwendig sind.
+Ein Beispiel ist Las Palmas: Die Postleitzahlen der Kanarischen Inseln beginnen mit "35" oder "38"; politisch gehören die Inseln zu Spanien, aber man muss Lieferungen dorthin als Ausfuhrlieferungen anmelden.
+
+Für unsere neue Ereignisaktion gehen wir in das Menü *System » Aufträge » Ereignisse* und erstellen uns eine neue Ereignisaktion, die wir "PLZ-Filter" nennen.
+
+Das Ereignis *Statuswechsel* passt für uns am besten, da alle Aufträge zuerst durch den Status *In Versandvorbereitung* laufen. Also wählen wir diesen Status.
+
+Danach klicken wir auf das "+", um einen neuen Filter hinzuzufügen und wählen *Postleitzahlen* im Ordner *Auftrag* aus.
+
+.Postleitzahlenfilter
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Ereignisaktion_Postleitzahlfilter.png[]
+
+In das Feld des Filters schreiben wir nun "35, 38", damit alle Postleitzahlen, die mit 35 oder 38 beginnen, abgefangen werden. Zudem fügen wir noch einen weiteren Filter *Versand -> Lieferland* hinzu und aktivieren *Spanien*, da Marburg in Deutschland sonst auch die Ereignisaktion auslösen würde, weil die Marburger Postleitzahlen ebenfalls mit "35" beginnen.
+
+Als Aktion wählen wir *Status ändern* im Ordner *Auftrag* aus und stellen den zuvor erstellten Auftragsstatus aus.
+
+
+.Neue Ereignisaktion
+image::_best-practices/auftragsabwicklung/fulfillment/assets/Ereignisaktion_Postleitzahl.png[]
+
+Nun prüft die Ereignisaktion bei allen unseren neuen Aufträgen, die in den Status *In Versandvorbereitung* gelangen, ob diese auch nach Spanien versendet werden sollen und ob die Postleitzahl durch den Filter aufgegriffen wird.
+
+Es sind nun zwei Szenarien möglich:
+
+1. Die Filter der Ereignisaktionen passen nicht zum Auftrag
+  -> Die Ereignisaktion hat keine Auswirkung auf den Auftrag
+2. Die Filter der Ereignisaktion passen zum Auftrag
+  -> Die Ereignisaktion greift und schiebt den Auftrag in den Status *Lieferanschrift prüfen*
+
+
+[TIP]
+.Weitere Möglichkeiten in den Ereignisaktionen
+====
+Mit dem Filter sind auch weitere Kombinationen möglich, sodass auch Herkünfte oder Auftragstypen als zusätzliche Filter hinzugefügt werden können, um die Ereignisaktion noch feiner einstellen zu können. Ihr wisst am Besten, was ihr benötigt!
+====
