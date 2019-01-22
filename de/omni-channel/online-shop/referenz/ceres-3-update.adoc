@@ -1,0 +1,227 @@
+= Themes auf Ceres 3.0 updaten
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Ceres, Webshop, Theme, Themes, Layout, Plugin, Update, Version, Change
+:description: Diese Anleitung hilft Theme-Entwicklern dabei, ihre Themes auf Ceres 3.0 anzupassen.
+:position: 10
+
+= Themes auf Ceres 3.0 updaten
+
+Mit dem Major-Release Ceres 3.0 Mitte *Januar* gibt es Änderungen im Code, die für *Theme-Entwickler* besonders wichtig sind, da sie eine Reihe notwendiger Anpassungen in Themes mit sich bringen. Auf dieser Handbuchseite erfährst du, welche Komponenten und Direktiven aus Ceres entfernt wurden und welche Anpassungen deinerseits notwendig sind, damit sich dein Theme korrekt verhält. +
+Diese Seite dient dazu, die größten potentiellen Fehlerquellen aufzuzeigen. Für eine komplette Übersicht der Änderungen, sieh dir bitte den aktuellen Vergleich der Versionen auf link:https://github.com/plentymarkets/plugin-ceres/compare/2.17.1...3.0.0[GitHub^] an.
+
+== Entfernte Direktiven
+
+In Ceres 3.0 wurden die folgenden Direktiven global *entfernt*:
+
+- v-render-category
+- v-is-loading-watcher
+- v-update-sidenav-selection
+
+Weiterhin wurde die Direktive *v-hover-mega-menu* umbenannt und heißt nun *v-navigation-touch-handler*.
+
+== Hinzugefügte Komponenten
+
+Die Komponente *Ceres::ItemList.Components.CategoryItem* bezieht sich auf die Kachel eines Artikels und wurde vor Ceres 3.0 nicht verwendet. Die Artikelkachel wurde zuvor von der nun entfernten Komponente *Ceres::ItemList.Components.ItemList* eingebunden.
+
+== Entfernte und geänderte Komponenten
+
+Die folgenden Komponenten wurden entfernt oder werden nun auf andere Weise über Twig inkludiert:
+
+*Entfernt*: +
+
+- Ceres::ItemList.Components.ItemList
+- Ceres::ItemList.Components.CategoryImageCarousel
+- Ceres::Category.Item.Partials.CategoryListItem
+
+*Geändert*: +
+
+- Ceres::ItemList.Components.ItemListSorting » Ceres::Category.Item.Partials.ItemSorting
+- Ceres::ItemList.Components.ItemsPerPage » Ceres::Category.Item.Partials.ItemsPerPage
+- Ceres::ItemList.Components.Pagination » Ceres::Category.Item.Partials.Pagination
+
+Die folgenden Code-Beispiele veranschaulichen, welche Zeilen in deinem Theme potentiell entfernt werden müssen, damit die geänderten Komponenten nicht fälschlicherweise aufgerufen wird, und über welchen Befehl der jeweilige Aufruf ab Ceres 3.0 getätigt werden muss. Die Anpassungen beziehen sich auf die beiden Dateien */resources/views/ItemList/ItemListView.twig* und */resources/views/Category/Item/CategoryItem.twig*. Die drei Punkte [...] sind hier als Auslassung zu verstehen, da die Code-Zeilen nicht unmittelbar aufeinander folgen müssen. Die im jeweiligen Code-Snippet angegebenen Parameter können in deinem Theme natürlich abweichen.
+
+
+*ItemSorting* +
+_Die folgenden Zeilen müssen entfernt werden:_
+[source,plenty]
+----
+{{ component( "Ceres::ItemList.Components.ItemListSorting" ) }}
+[...]
+<item-list-sorting template="#vue-item-list-sorting" :sorting-list="{{ searchOptions.sorting | json_encode }}" :default-sorting="{{ searchOptions.defaultSorting | json_encode }}"></item-list-sorting>
+----
+
+_Hinzufügen:_
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.ItemSorting" with { 'sortingData': searchOptions.sorting, 'selectedSorting': itemSorting } %}
+----
+
+
+*ItemsPerPage* +
+_Die folgenden Zeilen müssen entfernt werden:_
+[source,plenty]
+----
+{{ component( "Ceres::ItemList.Components.ItemsPerPage" ) }}
+[...]
+<items-per-page template="#vue-items-per-page" :pagination-values="{{ searchOptions.itemsPerPage | json_encode }}"></items-per-page>
+----
+
+_Hinzufügen:_
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.ItemsPerPage" with { 'itemsPerPage': searchOptions.itemsPerPage, 'selectedValue': itemsPerPage } %}
+----
+
+
+*Pagination* +
+_Die folgenden Zeilen müssen entfernt werden:_
+[source,plenty]
+----
+{{ component( "Ceres::ItemList.Components.Pagination") }}
+...
+<pagination template="#vue-pagination"></pagination>
+----
+
+_Hinzufügen:_
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.Pagination" %}
+----
+
+== Weitere Anpassungen
+
+- In der Datei *resources/views/PageDesign/Partials/Header/Header.twig* erfolgt der Aufruf der Paginierung nun mit *with* und Parameter:
+[source,plenty]
+----
+{% include "Ceres::Category.Item.Partials.Pagination" with { 'currentPage': page } %}
+----
+
+- In der Datei *resources/views/PageDesign/Partials/Header/Header.twig* muss das *script* eingebunden werden, da sonst Elemente hinter dem Header verschwinden können:
+[source,plenty]
+----
+{% set scriptId = uid() %}
+<script id="{{ scriptId }}">
+    document.getElementById("vue-app").style.marginTop = document.getElementById("page-header").getBoundingClientRect().height + 'px';
+    document.getElementById("{{ scriptId }}").remove();
+</script>
+----
+
+== Bootstrap 4.2.1 Anpassungen
+
+Mit der Veröffentlichung von Ceres 3.0 wird das Bootstrap-Framework von Version 4.0.0-alpha.3 auf Version 4.2.1 angehoben. Durch die Anhebung der Version müssen Theme-Entwickler einige Anpassungen bei Benennungen von CSS-Klassen und -Variablen vornehmen, die im Folgenden aufgelistet werden.
+
+[[tabelle-bootstrap-4-klassen]]
+.Anpassungen an Klassenbezeichnungen
+[cols="1,3"]
+|====
+|Vorher |Nachher
+
+|.pos-f-t
+|.fixed-top
+
+|.hidden-xs-up
+|.d-none
+
+|.hidden-sm-up
+|.d-sm-none
+
+|.hidden-md-up
+|.d-md-none
+
+|.hidden-lg-up
+|.d-lg-none
+
+|.hidden-xl-up
+|.d-xl-none
+
+|.pull-{breakpoint}-{direction}
+|.float-{breakpoint}-{direction}
+
+|.m-{direction}-{spacer}
+|.m{direction}-{spacer}
+
+|.p-{direction}-{spacer}
+|.p{direction}-{spacer}
+
+|.m-x-{spacer}
+|.mx-{spacer}
+
+|.m-y-{spacer}
+|.my-{spacer}
+
+|.offset-xs-{size}
+|.offset-{size}
+
+|.m-x-auto
+|.mx-auto
+
+|.text-xs-{direction}
+|.text-{direction}
+
+|.card-block
+|.card-body
+
+|.bg-faded
+|.bg-light
+
+|====
+
+Theme-Entwickler müssen die Klassen hinsichtlich der *breakpoints* (xs, sm, md, lg, xl), *direction* (left, right, etc.) und *spacer* überprüfen. Die *Spacer*-Werte haben sich ebenfalls verändert und müssen wie folgt angepasst werden:
+
+[[tabelle-bootstrap-4-spacer]]
+.Anpassungen an Spacers
+[cols="1,3"]
+|====
+|Vorher |Nachher
+
+|0
+|0
+
+|5
+|2
+
+|1
+|3
+
+|2
+|4
+
+|3
+|5
+
+|====
+
+Die folgenden CSS-Variablen wurden umbenannt und müssen von Theme-Entwicklern angepasst werden:
+
+[[tabelle-bootstrap-4-variablen]]
+.Anpassungen an Variablen
+[cols="1,3"]
+|====
+|Vorher |Nachher
+
+|$text-color
+|$body-color
+
+|$font-size-h1
+|$h1-font-size
+
+|$font-size-h2
+|$h2-font-size
+
+|$font-size-h3
+|$h3-font-size
+
+|$font-size-h4
+|$h4-font-size
+
+|$font-size-h5
+|$h5-font-size
+
+|$font-size-h6
+|$h6-font-size
+
+|====
+
+Wenn alle auf dieser Seite aufgeführten Anpassungen vorgenommen werden, wird dein Theme fit für Ceres 3.0 sein.

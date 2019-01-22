@@ -1,4 +1,4 @@
-= Daten mit ElasticSync importieren (Beta)
+= Daten mit ElasticSync importieren
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: Daten importieren, Datenimport, ElasticSync, Sync, Elastic Sync, Sync, Synchronisieren, Synchronisation, Datenformat, Datenformate, dynamischer Import, Abgleich, Importoptionen, Zuordnung, Importdaten, Sync-Verlauf
@@ -409,6 +409,11 @@ Sie können einen Sync testen und ausführen. Das Testen erlaubt es Ihnen schnel
 ====
 Wenn Sie *Sync testen* wählen, werden nur die ersten zehn Zeilen der Importdatei importiert.
 ====
+
+[#1710]
+== Abarbeitung von Jobs in der Queue
+
+Die Queue sorgt dafür, dass auch große Datenmengen importiert werden können. Noch vor dem Import wird die Importdatei in Pakete zerlegt und anschließend in sogenannten Jobs abgearbeitet. Ein Job besteht aus 750 Zeilen einer CSV-Datei. Jedoch werden auch Importdateien, die weniger als 750 Zeilen enthalten, zu einem Job. Wird ein Sync gestartet, wird die CSV-Datei in die entsprechenden Jobs aufgeteilt und in die Queue eingereiht. In der Queue werden neue Jobs ständig abgerufen und die Syncs werden abgearbeitet. Dabei gibt es zwei verschiedene Status. Der Status *Offene Jobs* bedeutet, dass es Jobs gibt, die sich noch in der Queue befinden und darauf warten, abgearbeitet zu werden. *Abgeschlossene Jobs* hingegen wurden bereits bearbeitet und die Daten dementsprechend importiert.
 
 [#1720]
 == Zuordnung aktivieren/deaktivieren
@@ -1234,6 +1239,7 @@ Für den Import von Artikelbildern stehen die in <<tabelle-zuordnungsfelder-bild
 |Verfügbarkeit Herkünfte
 |Nummerisch (interne ID)
 |ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>> +
+Mehrere Herkünfte können kommasepariert angegeben werden. +
 *-1* aktiviert alle Herkünfte
 
 |Verfügbarkeit Listings
@@ -2540,7 +2546,8 @@ a|Eigenschaftstyp wählen und anschließend die Spalte wählen, in der die Eigen
 * Artikelstatus
 * Externe Auftragspositions-ID
 
-Eigene Eigenschaftstypen für Auftragspositionen können per link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] oder per link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^] erstellt werden. Sie werden jedoch nicht in der UI angezeigt.
+Eigene Eigenschaftstypen für Auftragspositionen können per link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] oder per link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^] erstellt werden. Sie werden jedoch nicht in der UI angezeigt. +
+Um die Eigenschaft Lager in der UI anzuzeigen, wählen Sie im Menü *System » Aufträge » Einstellungen* für das Feld Zuordnung des Lagers die Option b). Wählen Sie alternativ Option a) und klicken Sie an den Artikeln auf *Bearbeiten*.
 
 3+|*Adressrelation*
 
