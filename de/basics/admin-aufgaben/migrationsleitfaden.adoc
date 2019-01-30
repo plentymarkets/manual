@@ -1,0 +1,1045 @@
+= Migrationsleitfaden plentymarkets 7
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: plentymarkets 7, Migration, Migrationsleitfaden
+:description: Leitfaden zur Migration auf plentymarkets 7
+:position: 70
+
+Diese Seite enthält wichtige Informationen zur Migration auf plentymarkets 7. Für plentymarkets 7 wurde die Artikelarchitektur grundlegend überarbeitet. Auf dieser Seite wird kurz die neue Architektur erläutert und ein Ausblick auf die weiteren Verbesserungen gegeben, die sich zurzeit noch in der Umsetzung befinden. Des Weiteren wird der Ablauf der Migration beschrieben. Sie erfahren, welche Vorbereitungen Sie treffen müssen, um Ihr System für die Migration vorzubereiten. Beachten Sie, dass eine Migration nicht rückgängig gemacht werden kann. Wenn Sie die hier beschriebenen Vorbereitungen nicht treffen, müssen Sie einen erheblichen Korrekturaufwand nach der Migration in Kauf nehmen. Im schlimmsten Fall kann es zu einem Verlust von Daten kommen. Lesen Sie daher die folgenden Informationen aufmerksam und bereiten Sie Ihre Daten wie hier beschrieben für die Migration vor.
+
+[WARNING]
+.SOAP API nur mit plentymarkets 7 Classic Tarif
+====
+Ab dem Wechsel auf plentymarkets 7 ist die SOAP-API nur für Kunden mit Classic-Tarif nutzbar. Kunden mit Zero-Vertrag können die SOAP-API nicht mehr nutzen. Die REST-API steht allen plentymarkets 7 Kunden zur Verfügung.
+====
+
+[#10]
+== Überblick über die neue Artikelarchitektur
+
+In der neuen Artikelarchitektur ist ein Artikel der vollständige Datensatz einer Hauptvariante sowie sämtlicher dazugehöriger Varianten. Ein Artikel besteht also aus globalen Daten, die für alle Varianten des Artikels gelten (Artikeldaten), und aus Daten, die pro Variante verwaltet werden (Variantendaten).
+
+Artikeldaten:
+
+* Globale Einstellungen (Zustand, Hersteller, Altersfreigabe, etc.)
+* Texte
+* Merkmale
+* Cross-Selling-Einstellungen
+
+Variantendaten:
+
+* Bilder
+* Marktplatz-Sichtbarkeit
+* Verkaufspreise
+* Barcodes
+* Einheiten
+* Lager
+* Bestand
+* Kategorien
+* Lieferanten
+
+Jeder Artikel verfügt über eine nicht löschbare Hauptvariante. Diese Hauptvariante ist nicht identisch mit dem Artikel, sondern unterscheidet sich von den anderen möglichen Varianten eines Artikels lediglich dadurch, dass Eigenschaften von der Hauptvariante an weitere Varianten des Artikels vererbt werden können. Die Hauptvariante kann selbst eine kaufbare Variante sein oder als virtuelle Variante dienen, um die weiteren Varianten des Artikels zu verwalten. plentymarkets empfiehlt, Hauptvarianten als virtuelle Varianten zu pflegen.
+
+Bild 1 zeigt eine schematische Darstellung der Artikelarchitektur in plentymarkets 7.
+
+.Aktueller Stand der neuen Artikelarchitektur
+image::basics/versionswechsel/assets/DE-artikelarchitektur-1.png[Aktueller Stand der neuen Artikelarchitektur]
+
+Die neue Artikelarchitektur bietet zahlreiche Vorteile. Wichtigstes Ziel war noch mehr Flexibilität bei der Verwaltung und Pflege der Preise, der Artikeldaten und vor allem auch der Varianten. Eine kurze Übersicht der Neuerungen und Vorteile finden Sie nachfolgend.
+
+* Die Preissets mit den Preisspalten wurden durch Verkaufspreise ersetzt. Diese Verkaufspreise werden zentral definiert und verwaltet und Varianten zugewiesen. Dieses Konzept vereinfacht die Preispflege und bietet Ihnen gleichzeitig deutlich mehr Flexibilität bei der selektiven Preisgestaltung. Beispielsweise werden die Mengenrabattstaffeln von Artikeln und Kundenklassen zu Verkaufspreisen migriert. Diese neuen Verkaufspreise erlauben Ihnen noch mehr Flexibilität bei der Preisstaffelung.
+* Mehr Flexibilität bei der Arbeit mit Varianten. Anders als bisher können für Varianten eigene Werte z.B. für Maße und Gewichte, Versandkosten, sonstige Kosten und Lieferanten hinterlegt werden. Um den Pflegeaufwand bei sehr ähnlichen Varianten zu minimieren, haben wir gleichzeitig die Möglichkeit geschaffen, Daten von der Hauptvariante an die Varianten zu vererben.
+* Vererbung bestimmter Artikeldaten der Hauptvariante an die dazugehörigen Varianten. Damit reduzieren Sie Ihren Pflegeaufwand, ohne Abstriche bei der Flexibilität zu machen. Die Vererbung ermöglicht es Ihnen, Varianteneigenschaften zentral an der Hauptvariante zu verwalten und so die Werte vieler Varianten gleichzeitig zu aktualisieren. Beim Erstellen von Varianten werden viele Einstellungen der Hauptvariante automatisch auf die Varianten übertragen. Auch bei einer späteren Bearbeitung der Hauptvariante erben die Varianten automatisch die neuen Einstellungen, wenn die Vererbung aktiviert ist. Gleichzeitig können Sie die Vererbung jedoch auch an der Variante deaktivieren und so individuelle Einstellungen vornehmen.
+
+== Ausblick
+
+plentymarkets setzt auf agile Softwareentwicklung. Das bedeutet, dass Neuerungen nicht wie in klassischen Entwicklungszyklen als "große Würfe" veröffentlicht werden. Stattdessen werden Projekte in kleinere Einzelprojekte bzw. Inkremente heruntergebrochen, die in kürzeren, aber regelmäßigen Abständen veröffentlicht werden. Da die Artikelstruktur fast alle anderen Bereiche von plentymarkets beeinflusst, stellt in diesem Fall das kleinstmögliche Inkrement dennoch eine umfassende Umstrukturierung dar. Trotzdem setzen wir beim Artikelumbau auf agile Softwareentwicklung und stellen in der aktuellen Version einen ersten Zwischenstand vor. Er erlaubt Ihnen, sich mit der neuen Struktur vertraut zu machen, während wir weitere Verbesserungen planen und nach und nach auf agile Weise veröffentlichen. Für die nächsten Inkremente haben wir uns folgende Themen vorgenommen:
+
+* Pflege von Namen, Kurzbeschreibung, Beschreibung etc. pro Variante und ggf. auch pro Variante und Mandant
+* Definition von Merkmalen pro Variante
+* Pflege von Preisen pro Kunde
+
+Bild 2 zeigt das Ziel, die Datenpflege auf Variantenebene auf die Artikeltexte und Merkmale zu erweitern.
+
+.Ausblick Datenpflege auf Variantenebene
+image::basics/versionswechsel/assets/DE-artikelarchitektur-2.png[Ausblick Datenpflege auf Variantenebene]
+
+[#200]
+== Voraussetzungen für die Migration
+
+Beachten Sie die folgenden Voraussetzungen für eine Migration Ihres Systems auf plentymarkets 7.
+
+* **Hosting**: Wenn Sie plentymarkets auf einem eigenen Server oder der plentymarkets eigenen Cloud (Cluster) nutzen, müssen Sie das System auf die AWS-Cloud umziehen, um auf plentymarkets 7 zu migrieren. +
+→ Wenn die Hauptdomain Ihres Systems eine externe Domain ist, müssen Sie im Rahmen eines Umzugs auf die AWS-Cloud die neue IP-Adresse beim externen Domain-Provider speichern. Weitere Informationen finden Sie im link:https://forum.plentymarkets.com/t/leitfaden-aws-umzug/75863[Leitfaden AWS-Umzug].
+* **SOAP**: Eigene SOAP-Anbindungen und SOAP-Anbindungen von Partnern oder Agenturen müssen vor der Migration auf die Stable 7-Tauglichkeit geprüft werden. Fragen Sie den Entwickler oder die Agentur, ob die Anbindung Stable 7-fähig ist.
+* **plentymarkets Shipping**: plentymarkets Shipping ist nicht mit plentymarkets 7 kompatibel und wird nicht mehr unterstützt. Es wurde vollständig durch die Prozesse abgelöst.
+Damit die Prozesse genutzt werden können, muss link:https://marketplace.plentymarkets.com/de/plugins/integration/plentyBase_5053[plentyBase] installiert sein. +
+Die Software plentyBase läuft im Hintergrund. Ein Login zum plentymarkets Backend mit Ihrem Benutzer erfolgt wie gewohnt über den Browser.
+* **Marktplätze**: In plentymarkets 7 sind noch nicht alle Marktplätze funktionsfähig. Prüfen Sie vor der Migration die <<basics/versionswechsel#, Liste>> der noch nicht migrierten Marktplätze.
+* **Vorbereitungen**: Arbeiten Sie diesen Migrationsleitfaden durch und treffen Sie die darin beschriebenen Vorbereitungen.
+
+Beachten Sie außerdem, dass die SOAP-API ab dem Wechsel auf plentymarkets 7 nur für Kunden mit Classic-Tarif nutzbar ist. Kunden mit Zero-Vertrag können die SOAP-API nicht mehr nutzen. Die REST-API steht allen plentymarkets 7 Kunden zur Verfügung.
+
+[#20]
+== Migration
+
+Im folgenden Kapitel wird beschrieben, wie Ihre Daten in die neue Artikelarchitektur migriert werden. Zur besseren Übersichtlichkeit ist diese Migrationsbeschreibung in die Unterbereiche **Artikeldaten** und **Preisspalten** unterteilt. In beiden Bereichen sind teilweise Vorarbeiten Ihrerseits erforderlich. Diese Vorarbeiten werden in diesem Kapitel nur kurz umrissen, eine genaue Anleitung finden Sie im Kapitel <<basics/versionswechsel/migrationsleitfaden#30, Vorbereitungen im Detail>>.
+
+[#21]
+=== Migration der Artikeldaten
+
+==== Migrationsmuster
+
+Die Migration der Artikeldaten in die neue Artikelarchitektur erfolgt grundsätzlich nach dem folgenden Muster:
+
+.Migration von Artikeldaten
+[cols="1,3,3"]
+|====
+|Migrierter Datentyp |Verhalten |Ausnahmen
+
+|Stammartikel (Artikel ohne Varianten) ⇒ Hauptvariante
+|Einstellungen bzw. Daten des Artikels werden übernommen.
+|
+
+|Variante ⇒ Variante
+|Einstellungen bzw. Daten der Variante werden übernommen.
+|
+
+|Varianten ohne Einstellungen +
+⇒ Variante
+|Einstellungen bzw. Daten der Hauptvariante werden übernommen.
+|Artikel-/Variantennummer wird nur einmal vergeben. +
+Für alle weiteren Varianten werden neue Variantennummern generiert (siehe unten).
+|====
+
+
+
+[IMPORTANT]
+.Nicht alle Datenformate werden migriert
+====
+Aufgrund der neuen Artikeldatenstruktur werden nicht alle Item-Datenformate des Menüs **Datenaustausch » Dynamischer Export** migriert. Nicht kompatible Datenformate werden bei der Migration entfernt.
+====
+
+[.subhead]
+Ausnahme: Artikel-/Variantennummern
+
+In der neuen Artikelarchitektur ist die Variantennummer systemweit eindeutig. Bei der Migration werden daher in bestimmten Fällen neue Variantennummern vergeben. Die Migration läuft nach dem folgenden Muster ab:
+
+.Migration der Artikel-/Variantennummern
+[cols=""]
+|====
+|Einstellung |**Artikel-/Variantennummer**
+
+|Neuer Pfad
+|**Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Varianten-ID » Tab: Einstellungen**
+
+|Sonderfall 1: +
+Artikel/Varianten ohne Artikel-/Variantennummer
+|Pro Variante wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster aus Präfix und nächster Variantennummer vergeben, das vor der Migration im Menü <<artikel/artikel-verwalten#15, System » Artikel » Einstellungen>> über die Einstellungen **Präfix für neue Variantennummern (ab plentymarkets 7)** und **Nächste Variantennummer (ab plentymarkets 7)** festgelegt wurde.
+
+|Sonderfall 2: +
+Artikel/Varianten mit gleicher Artikel-/Variantennummer
+|Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster vergeben, das vor der Migration in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> des Menüs **System » Einstellungen » Daten » Migration** über die Einstellung **Doppelte Nummern** festgelegt wurde.
+
+|Sonderfall 3: +
+Artikel mit mehreren Preissets
+|Aus einer Variante können mehrere Varianten entstehen. Bei dem zuerst migrierten Preisset übernimmt die Variante die Artikel-/Variantennummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer generiert. Diese Variantennummer wird nach dem Muster vergeben, das vor der Migration in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> des Menüs **System » Einstellungen » Daten » Migration** über die Einstellung **Doppelte Nummern** festgelegt wurde. +
+**Hinweis:** Bei der Migration eines Artikels mit mehreren Preissets, in denen **Inhalt** und **Einheit** identisch sind, wird nur das erste Preisset migriert.
+
+|Vorbereitungen
+|<<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> vornehmen/prüfen. +
+Einstellungen **Präfix für neue Variantennummern (ab plentymarkets 7)** und **Nächste Variantennummer (ab plentymarkets 7)** im Menü <<artikel/artikel-verwalten#15, System » Artikel » Einstellungen>> festlegen. +
+<<basics/versionswechsel/migrationsleitfaden#50, Prüfen>>, ob es Artikel mit mehreren Preissets gibt, bei denen für mehrere Preissets die gleiche Einheit und der gleiche Inhalt hinterlegt wurden. Einheit und Inhalt der zusätzlichen Preissets ändern.
+|====
+
+
+
+[#22]
+==== Besonderheiten
+
+[.subhead]
+**Einheit 1** und **Einheit 2**
+
+In der neuen Artikelarchitektur werden die Felder **Einheit 1** und **Einheit 2** durch das Feld **Variantenname** ersetzt. Wie der Inhalt dieser Felder migriert wird, legen Sie in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> fest. Die Migration erfolgt nach dem folgenden Muster:
+
+.Migration der Felder **Einheit 1** und **Einheit 2**
+[cols=""]
+|====
+|Einstellung |**Einheit 1**, **Einheit 2**
+
+|Neuer Pfad
+|**Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Varianten-ID » Tab: Einstellungen**
+
+|Verhalten
+|Abhängig von den gewählten <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> wird entweder eine der beiden Einheiten verworfen oder beide Felder werden zusammengeführt. +
+Werden die Felder **Einheit 1** und **Einheit 2** zum Feld **Variantenname** zusammengeführt, wird der Inhalt beider Felder mit dem in den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> festgelegten Trennzeichen in das Feld **Variantenname** eingefügt.
+
+|Vorbereitungen
+|Einheiten <<basics/versionswechsel/migrationsleitfaden#50, prüfen>> und Trennzeichen festlegen. Ggf. die Felder **Einheit 1** und/oder **Einheit 2** ändern.
+|====
+
+
+
+[.subhead]
+Webshop-Sichtbarkeit
+
+Die Sichtbarkeit im Webshop wird nun über die Mandanten-Sichtbarkeit gesteuert. Es gibt keine zentrale Einstellung mehr, die die Sichtbarkeit des Artikels im Webshop steuert. Stattdessen wird die Mandanten-Sichtbarkeit im Tab **Verfügbarkeit** der Variante definiert.
+
+.Migration der Webshop-Verfügbarkeit
+[cols="1,2"]
+|====
+|Einstellung |**Webshop-Sichtbarkeit**
+
+|Neuer Pfad
+|**Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Varianten-ID » Tab: Verfügbarkeit**
+
+|Vorbereitungen
+|Keine
+|====
+
+
+[#25.subhead]
+GTIN1 bis GTIN4, ISBN
+
+In der neuen Artikelarchitektur werden EAN/GTIN und ISBN als Barcode-Definitionen hinterlegt. Eine Begrenzung der Anzahl von GTIN/ISBN gibt es nicht mehr. Sie können also pro Variante beliebig viele Barcode-Definitionen hinterlegen. Bei der Migration werden fünf Barcode-Definitionen angelegt, um die derzeitigen GTIN und ISBN abzubilden. Die Migration erfolgt nach dem folgenden Muster:
+
+.Migration von GTIN1 bis GTIN4/ISBN
+[cols="1,2"]
+|====
+|Einstellung |**GTIN1** bis **GTIN4**, **ISBN**
+
+|Neuer Pfad
+|**Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Varianten-ID » Tab: Einstellungen**
+
+|Verhalten
+|**Artikel:** Vorhandene GTIN1 bis GTIN4 und ISBN werden als Barcodes der Hauptvariante angelegt. +
+**Varianten:** Vorhandene GTIN1 bis GTIN4 werden als Barcodes der Variante angelegt. Für Varianten ohne GTIN wird kein Barcode angelegt, d.h. die GTIN des Artikels werden nicht berücksichtigt. +
+Zuordnung der vorhandenen GTIN bei der Migration: +
+**GTIN13**, wenn 13 Zeichen und nur Ziffern. +
+**UPC**, wenn 12 Zeichen und nur Ziffern. +
+**GTIN128** bei sonstiger Länge und nur Ziffern. +
+**Code128** bei allen anderen Zeichenlängen, die mindestens ein Zeichen enthalten, das keine Ziffer ist. +
+**__Hinweis:__** Bei der Migration der GTIN werden führende Nullen abgeschnitten. Da sich hierdurch die Zeichenlänge des Codes ändert, wird die GTIN nicht als GTIN-Datensatz migriert, sondern als Code128 oder UPC angelegt.
+
+|Vorbereitungen
+|<<basics/versionswechsel/migrationsleitfaden#100, Prüfen>>, ob EAN/GTIN mit führenden Nullen vorhanden sind.
+|====
+
+[#26]
+=== Migration der Preisspalten
+
+Die bisherigen Preissets mit Preisspalten werden in der neuen Artikelarchitektur durch Verkaufspreise ersetzt. Diese Verkaufspreise werden im Menü **System » Artikel » Verkaufspreise** definiert. An den Varianten werden die Preise in den verschiedenen Verkaufspreisen hinterlegt. Die neuen Verkaufspreise setzen sich aus folgenden Einstellungen zusammen:
+
+* Herkunft
+* Währung
+* Kundenklasse
+* Mandant (Shop)
+* Amazon-Konten
+* eBay-Konten
+* Lieferland
+* Preistyp
+* Artikelmenge, ab der der Preis gilt
+
+Den eigentlichen Preis, also den Betrag, für einen Verkaufspreis tragen Sie an den Varianten ein. Bisher wurden Preise aus einer Kombination von Einstellungen in verschiedenen Bereichen errechnet (<<prio-verkaufspreise>>). Aus diesen Einstellungen werden nun Ihre neuen Verkaufspreise erstellt. Die Anzahl der erstellten Verkaufspreise ist also von der Komplexität der bisherigen Einstellungen abhängig. Bei der Migration werden die Preisspalten mit der folgenden Priorität analysiert, um die neuen Verkaufspreise zu ermitteln:
+
+[[prio-verkaufspreise]]
+.Priorität bei der Erstellung von Verkaufspreisen
+[cols="1,3,3,3"]
+|====
+|Prio |Preisspalten-Definition |Erläuterung |Vorbereitungen
+
+|1
+|**System » Aufträge » Auftragsherkunft**
+|Preisspalte der Auftragsherkunft hat höchste Priorität für Herkünfte größer/gleich 2.0. +
+**Ausnahme:** Herkünfte mit konten-/plattformabhängigen Preisspalten, z.B. eBay, Amazon
+a|
+* Eingestellte Preisspalten im Menü **Auftragsherkunft** mit der am Marktplatz hinterlegten Preisspalte <<basics/versionswechsel/migrationsleitfaden#80, vergleichen und ggf. vereinheitlichen>>. +
+**Fallback:** Bei Herkünften mit eigenen Preisspalten bei den Einstellungen (z.B. Shopgate), bei denen der Standardpreis eingestellt ist, wird, wenn unter **System » Aufträge » Auftragsherkünfte** eine Preisspalte explizit angegeben ist, diese Einstellung und nicht der Standardpreis herangezogen.
+
+|2
+|**System » Aufträge » Zahlung » Währungen**
+|Option **Währungsumrechnung** beachten: +
+**Verwende Preisspalte** = Betrag in der Preisspalte wird übernommen. +
+**Live-Umrechnung** = Betrag in der Preisspalte wird mit aktuellem Wechselkurs umgerechnet.
+a|
+* Einstellung **Währungsumrechnung** aller Mandanten prüfen. Haben verschiedene Mandanten verschiedene Einstellungen, prüfen, ob es sinnvoll ist, diese Einstellung <<basics/versionswechsel/migrationsleitfaden#70, zu vereinheitlichen>>, um die Anzahl der neu erstellten Verkaufspreise zu reduzieren.
+* Bei Mandanten mit Einstellung "Verwende Preisspalte": +
+<<basics/versionswechsel/migrationsleitfaden#75, Prüfen>>, welche Preisspalten im Menü **System » Aufträge » Zahlung » Währungen** mit Währungen verknüpft sind. Sicherstellen, dass an allen Artikeln in diesen Preisspalten Beträge hinterlegt sind. +
+**Wichtig:** Ist kein Betrag hinterlegt, wird bei gleicher Währung der Standardpreis der Variante übernommen. Je nach Wechselkurs kann diese Einstellung zu stark abweichenden neuen Preisen führen.
+
+|3
+|**System » CRM » Kundenklassen**
+|Greift, wenn Preisspalten für Auftragsherkunft und Währungen keine Rolle spielen. +
+**Hinweis:** Mengenrabatte werden ab sofort nicht mehr bei den Kundenklassen, sondern als Verkaufspreise definiert.
+a|
+* Pro vorhandene und benutzte Sichtbarkeit (**Zeige jedem**, **Nur B2C-Kunden**, **Nur B2B-Kunden**) wird ein Verkaufspreis pro Preisspalte angelegt. Daher Einstellung **Preissichtbarkeit** in Bezug auf die <<basics/versionswechsel/migrationsleitfaden#90, Kundenklassen prüfen>>.
+
+|4
+|**System » Mandant » Mandant wählen » Webshop » Einstellungen**
+|Greift nur, wenn keine anderen Einstellungen höhere Priorität haben.
+a|
+* Eingestellte Preisspalten in den Bereichen <<basics/versionswechsel/migrationsleitfaden#60, Herkunft, Währung, Kundenklasse, Mandant (Shop) prüfen>>. Ist dieselbe Preisspalte in mehr als einem Bereich eingestellt, werden diese Einstellungen kombiniert. Diese Kombinationen dahingehend prüfen, dass sich daraus kein unerwünschtes neues Verhalten ergibt.
+|====
+
+
+
+Die Preisspalten werden einzeln zu Verkaufspreisen migriert. Zunächst werden dabei der Standardpreis mit den vorhandenen Einstellungskombinationen anhand der oben beschriebenen Priorität migriert und daraus die relevanten Verkaufspreise erstellt. Danach werden alle weiteren benutzten Preisspalten, d.h. Preisspalte 1, Preisspalte 2 etc., einzeln migriert. Preisspalten, die nirgendwo genutzt werden und in keinem Artikel einen Preis enthalten, werden nicht migriert.
+
+[#30]
+== Vorbereitungen im Detail
+
+[TIP]
+.Tipp: Artikeldaten prüfen und ggf. aktualisieren
+====
+Prüfen Sie vor der Migration die Aktualität Ihrer Artikeldaten. Löschen Sie alte Testartikel und prüfen Sie vor allem die Preise. Diese Vorarbeit vereinfacht die Datenmigration und reduziert Ihren Pflegeaufwand nach der Migration.
+====
+
+Für eine reibungslose Migration Ihrer Artikeldaten müssen Sie die in diesem Kapitel beschriebenen Vorbereitungen treffen. Führen Sie diese Vorbereitungen unbedingt vor der Migration Ihrer Artikeldaten aus, da sonst ein hoher Korrekturaufwand nach der Migration entsteht. Es kann sogar der Verlust von Daten die Folge sein.
+
+[NOTE]
+====
+Die hier beschriebenen Einstellungen und Vorbereitungen nehmen Sie bereits vor der Migration in Ihrer aktuellen plentymarkets 6 Version vor.
+====
+
+=== Systemeinstellungen vor dem Wechsel auf plentymarkets 7
+
+[#35]
+==== Migrationseinstellungen vornehmen
+
+Nehmen Sie die folgenden Migrationseinstellungen vor, bevor Sie auf plentymarkets 7 wechseln.
+
+[.instruction]
+Migrationseinstellungen vornehmen:
+
+. Öffnen Sie das Menü **System » Einstellungen » Daten » Migration**.
+. Klappen Sie **Artikel (Einstellungen für den Wechsel auf plentymarkets 7)** auf. +
+→ Die Migrationseinstellungen werden eingeblendet.
+. Nehmen Sie die Einstellungen vor. Beachten Sie <<migrationseinstellungen>>.
+. **Speichern** Sie die Einstellungen.
+
+[[Migrationseinstellungen]]
+.Migrationseinstellungen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|**Hauptvariante erstellen**
+|Wählen, ob für Artikel mit Varianten eine Hauptvariante aus den Artikeldaten erstellt werden soll. +
+**Ja** (Standardeinstellung) = Eine zusätzliche Variante wird erstellt, an der die Artikeldaten hinterlegt werden. Diese Variante wird zur Hauptvariante. +
+**Beispiel:** Aus einem Artikel mit 4 Varianten werden nach der Migration 5 Varianten. Der ehemalige Artikel wird zur Hauptvariante. +
+**Nein** = Die am Artikel gespeicherten Daten werden verworfen. +
+**Beispiel:** Aus einem Artikel mit 4 Varianten werden nach der Migration 4 Varianten. Eine der ehemaligen Varianten wird zur Hauptvariante. +
+**Wichtig:** Bei Auswahl der Option **Nein** werden die Artikeldaten nicht migriert. Die Daten werden verworfen. Bei Marktplätzen (z.B. Amazon, Zalando) mit einer Parent-Child-Artikelbeziehung findet kein Abgleich zwischen plentymarkets und dem Marktplatz statt. Wir empfehlen daher die Standardeinstellung **Ja**.
+
+|**Zusammenführung Einheit 1 + 2**
+|Felder Einheit 1 und Einheit 2 werden bei der Migration zum Feld **Variantenname** zusammengefasst. +
+Wählen, wie die Einheiten migriert werden sollen: +
+**Einheit 1 + Einheit 2** = Inhalt der Felder wird in der Reihenfolge **Einheit 1****Einheit 2** zusammengefasst. Trennzeichen mit Option **Trennzeichen bei Zusammenfassen Einheit 1 + 2** festlegen. +
+**Einheit 2 + Einheit 1** = Inhalt der Felder wird in der Reihenfolge **Einheit 2****Einheit 1** zusammengefasst. Trennzeichen mit Option **Trennzeichen bei Zusammenfassen Einheit 1 + 2** festlegen. +
+**Einheit 1** = Nur Inhalt der Felder **Einheit 1** wird migriert. Inhalt der Felder **Einheit 2** wird nicht migriert. +
+**Einheit 2** = Nur Inhalt der Felder **Einheit 2** wird migriert. Inhalt der Felder **Einheit 1** wird nicht migriert. +
+
+|**Trennzeichen für Zusammenführung Einheit 1 + 2**
+|Bei Auswahl der Optionen **Einheit 1 + Einheit 2** oder **Einheit 2 + Einheit 1**: +
+Trennzeichen eingeben, die zwischen den beiden Einheiten eingefügt werden sollen. Als Trennzeichen können beliebe Kombinationen aus Leerzeichen, Zeichen (Komma, Semikolon, Schrägstrich etc.) und Buchstaben eingegeben werden. +
+**Hinweis:** Der Inhalt des Felds wird direkt übernommen. Leerzeichen müssen also eingegeben werden, wenn Leerzeichen als Bestandteil der Trennzeichen eingefügt werden sollen.
+
+|**Doppelte Nummern**
+|In plentymarkets 7 ist die Variantennummer systemweit eindeutig. Bei doppelt vergebenen Artikel-/Variantennummern übernimmt die zuerst migrierte Variante die vorhandene Nummer. Für alle weiteren Varianten wird eine neue, eindeutige Variantennummer vergeben. Festlegen, nach welchem Muster diese Variantennummern vergeben werden sollen. +
+**Neue Nummer generieren** = Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für die weiteren Varianten werden neue Nummern generiert. Im Menü <<artikel/artikel-verwalten#15, System » Artikel » Einstellungen>> das Muster aus Präfix und nächster Variantennummer festlegen, nach dem diese Nummern generiert werden sollen. +
+**Vorhandene durch Counter eindeutig machen** = Die zuerst migrierte Variante übernimmt die Artikel-/Variantennummer. Für alle weiteren Varianten wird an diese Nummer eine aufsteigende Zahl angefügt, um die Nummer eindeutig zu machen. +
+**Beispiel:** Die Artikel-/Variantennummer XY12345 befindet sich dreimal im System. Bei der Migration werden drei Varianten angelegt. Diese neuen Varianten haben die Variantennummern XY12345, XY123452 und XY123453.
+|====
+
+
+[#38]
+==== Muster für neue Variantennummern festlegen
+
+Gehen Sie wie unten beschrieben vor, um vor dem Wechsel auf plentymarkets 7 festzulegen, nach welchem Muster neue Variantennummern erstellt werden sollen.
+
+. Öffnen Sie das Menü **System » Artikel » Einstellungen**.
+. Nehmen Sie Einstellungen für **Präfix für neue Variantennummern (ab plentymarkets 7)** und **Nächste Variantennummer (ab plentymarkets 7)** vor. Beachten Sie <<muster-variantennummer>>.
+. **Speichern** Sie die Einstellungen.
+
+[[muster-variantennummer]]
+.Muster für nächste Variantennummer
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|**Präfix für neue Variantennummern (ab plentymarkets 7)**
+|Präfix eingeben, das beim Generieren neuer Variantennummern vorangestellt werden soll. Ist das Feld leer, wird das Präfix **NEW-** verwendet. +
+**Hinweis:** Einstellung greift erst ab plentymarkets 7.
+
+|**Nächste Variantennummer (ab plentymarkets 7)**
+|Variantennummer eingeben, die als Nächstes vergeben werden soll. Alle weiteren neuen Variantennummern werden aufsteigend ab dieser Nummer generiert. +
+Die angezeigte nächste Variantennummer wird aktualisiert, sobald eine neue Variantennummer generiert wurde. Es wird also immer die Variantennummer angezeigt, die beim Erstellen der nächsten Variante vergeben wird. +
+**Hinweis:** Einstellung greift erst ab plentymarkets 7.
+|====
+
+=== Artikeldaten
+
+[#55]
+==== EAN/GTIN prüfen
+
+Bei der Migration der EAN/GTIN werden führende Nullen abgeschnitten. Da sich hierdurch die Zeichenlänge des Codes ändert, wird die EAN/GTIN nicht als GTIN migriert, sondern als Code128 oder UPC angelegt. Prüfen Sie daher vor der Migration, ob GTIN mit einer oder mehreren führenden Nullen im System vorhanden sind. Wenn EAN mit führenden Nullen existieren, korrigieren Sie diese GTIN <<basics/versionswechsel/migrationsleitfaden#100, nach der Migration>>.
+
+Gehen Sie wie unten beschrieben vor, um die EAN-/GTIN-Daten zu exportieren.
+
+[.instruction]
+EAN-Daten exportieren:
+
+. Öffnen Sie das Menü **Datenaustausch » Export » Dynamischer Export**.
+. Erstellen Sie ein neues <<basics/datenaustausch/export-import/daten-exportieren#, Datenformat>> des Datenformat-Typs <<basics/datenaustausch/export-import/datenformate/item#, Item>>. +
+→ Die empfohlenen Einstellungen für Datenfelder und Aktionen entnehmen Sie <<datenformat-item>>.
+. Öffnen Sie die CSV-Datei.
+. Prüfen Sie die GTIN. +
+❏ Sind GTIN vorhanden, die mit einer oder mehreren Nullen beginnen? +
+→ Wenn keine GTIN mit führenden Nullen vorhanden sind, besteht kein Handlungsbedarf.
+. Wenn GTIN mit führenden Nullen vorhanden sind, speichern Sie die CSV-Datei. Sie benötigen diese GTIN-Daten, um die GTIN <<basics/versionswechsel/migrationsleitfaden#100, nach der Migration>> zu korrigieren.
+
+[[datenformat-item]]
+.Datenfelder Datenformat **Item**
+[cols="1,3,3"]
+|====
+|Feld |Aktion |Erläuterung
+
+|**ItemId**
+|Keine
+|Artikel-ID
+
+|**ItemEAN**
+|Keine
+|GTIN-Code eines Artikels
+
+|**ItemEAN2**
+|Keine
+|Weiterer GTIN-Code eines Artikels
+
+|**ItemEAN3**
+|Keine
+|Weiterer GTIN-Code eines Artikels
+
+|**ItemEAN4**
+|Keine
+|Weiterer GTIN-Code eines Artikels
+|====
+
+
+[#50]
+==== Einheiten prüfen
+
+Bei der Migration der Preissets stellen die Einheiten eine Besonderheit dar und erfordern daher Ihre Aufmerksamkeit.
+
+[.subhead]
+Felder "Einheit 1" und "Einheit 2" prüfen
+
+Die Felder **Einheit 1** und **Einheit 2** werden in der neuen Artikelarchitektur durch das Feld **Variantenname** ersetzt.  In den <<basics/versionswechsel/migrationsleitfaden#35, Migrationseinstellungen>> legen Sie fest, ob der Inhalt nur eines Feldes oder beider Felder migriert wird. Sollen beide Felder migriert werden, geben Sie die Trennzeichen ein, die bei der Migration zwischen den Einheiten eingefügt werden sollen. Prüfen Sie daher vor der Migration, welche Trennzeichen geeignet sind, damit der zusammengesetzte Variantenname, der sich hieraus ergibt, Ihren Anforderungen entspricht. Passen Sie ggf. den Inhalt der Felder **Einheit 1** und/oder **Einheit 2** an.
+
+.Beispiel für Migration der Felder **Einheit 1** und **Einheit 2**
+[cols="1,3"]
+|====
+|Alt |Neu
+
+|**Einheit 1:** 50 g +
+**Einheit 2:** 60,00 € je 1000 g +
+**Zusammenführung Einheit 1 + 2**: Einheit 1 + Einheit 2 +
+**Trennzeichen für Zusammenführung Einheit 1 + 2**: "; " (d.h. Semikolon+Leerzeichen)
+|**Variantenname:** 50 g; 60,00 € je 1000 g
+|====
+
+
+[.subhead]
+Felder "Einheit" und "Inhalt" prüfen
+
+In der alten Artikelarchitektur wurden Artikel durch eine SKU, die sich aus **Artikel-ID**, **Preis-ID** und **Varianten-ID** zusammensetzte, eindeutig gekennzeichnet. In der neuen Architektur wird die Varianten-ID zum eindeutigen Bezeichner. In der neuen Architektur darf allerdings eine Variante in der Konstellation **AttributeValueSetID** + **Einheit** + **Inhalt** nur einmal vorkommen. Bei der Migration von Artikeln mit mehreren Preissets, in denen **Inhalt** und **Einheit** identisch sind, wird nur das erste Preisset migriert. Alle weiteren Preissets des Artikels verfallen. Prüfen Sie daher, ob es Artikel mit mehreren Preissets gibt, bei denen für mehrere Preissets die gleiche Einheit und der gleiche Inhalt hinterlegt wurden. Ändern Sie die Einheit und den Inhalt der zusätzlichen Preissets.
+
+Das folgende Beispiel verdeutlicht die vor der Migration erforderlichen Anpassungen anhand von Zigarillopackungen.
+
+.Beispiel für identische Inhalte bei **Inhalt** und **Einheit**
+[cols="1,3"]
+|====
+|Preisset 1 |Preisset 2
+
+|Packung mit 20 Zigarillos
+|Packung mit 5 Zigarillos
+
+|**Preis**: 5,80 Euro
+|**Preis**: 1,80 Euro
+
+|**Einheit**: Päckchen
+|**Einheit**: Päckchen
+
+|**Inhalt**: 1
+|**Inhalt**: 1
+
+|**Einheit 1**: 20
+|**Einheit 1**: 5
+
+|**Einheit 2**: Zigarillos
+|**Einheit 2**: Zigarillos
+|====
+
+
+In diesem Beispiel ist es sinnvoll, die **Einheit** auf **Stück** und als **Inhalt** für das Preisset 1 **20** und für das Preisset 2 **5** einzugeben. Den Inhalt der Felder **Einheit 1** und **Einheit 2** löschen Sie. Der neue Datensatz sieht dann wie folgt aus:
+
+.Beispiel für angepasste Inhalte bei **Inhalt** und **Einheit**
+[cols="1,3"]
+|====
+|Preisset 1 |Preisset 2
+
+|Packung mit 20 Zigarillos
+|Packung mit 5 Zigarillos
+
+|**Preis**: 5,80 Euro
+|**Preis**: 1,80 Euro
+
+|**Einheit**: Stück
+|**Einheit**: Stück
+
+|**Inhalt**: 20
+|**Inhalt**: 5
+
+|**Einheit 1**:
+|**Einheit 1**:
+
+|**Einheit 2**:
+|**Einheit 2**:
+|====
+
+[.subhead]
+Vorgehensweise
+
+Prüfen Sie, ob es Artikel mit mehreren Preissets gibt, bei denen für mehrere Preissets die gleiche Einheit und der gleiche Inhalt hinterlegt sind. Führen Sie dazu einen dynamischen Export mit dem Datenformat <<basics/datenaustausch/export-import/datenformate/itemprice#, ItemPrice>> aus. Gehen Sie dazu wie unten beschrieben vor.
+
+[.instruction]
+Einheiten prüfen:
+
+. Öffnen Sie das Menü **Datenaustausch » Export » Dynamischer Export**.
+. Erstellen Sie ein neues <<basics/datenaustausch/export-import/daten-exportieren#, Datenformat>> des Datenformat-Typs <<basics/datenaustausch/export-import/datenformate/itemprice#, ItemPrice>>. +
+→ Die empfohlenen Einstellungen für Datenfelder und Aktionen entnehmen Sie <<datenformat-itemprice>>.
+. Exportieren Sie das Datenformat.
+. Sortieren Sie die exportierten Daten nach der Spalte **ItemID**, um Artikel mit mehreren Preissets zu ermitteln.
+. Prüfen Sie bei allen Artikeln mit mehreren Preissets den Inhalt der Felder **Inhalt** und **Einheit**. +
+❏ Ist der Inhalt der Spalten **Unit** und **Lot** bei mehreren Preissets identisch?
+. Passen Sie den Inhalt der Spalten bei identischem Inhalt an (siehe Beispiel oben).
+. Prüfen Sie nun für alle Artikel den Inhalt der Spalten **Unit 0** und **Unit 1**. +
+❏ Benötigen Sie den Inhalt beider Spalten? +
+❏ Wenn ja, können diese Felder ohne Änderungen in einem Feld zusammengeführt werden? +
+❏ Welche Reihenfolge ist geeignet? **Einheit 1 + Einheit 2** oder **Einheit 2 + Einheit 1**? +
+❏ Welche Trennzeichen sind geeignet, um den Inhalt zusammenzuführen?
+. Passen Sie den Inhalt der Spalten ggf. so an, dass die Spalten zusammengeführt eine sinnvolle Einheit ergeben.
+. Speichern Sie die Änderungen an der CSV-Datei.
+. <<basics/datenaustausch/export-import/daten-importieren#, Importieren>> Sie die CSV-Datei zurück in plentymarkets, wenn Sie Änderungen vorgenommen haben.
+. Nehmen Sie im Menü **System » Einstellungen » Daten » Migration** geeignete Einstellungen für die Optionen **Zusammenführung Einheit 1 + 2** und **Trennzeichen für Zusammenführung Einheit 1 + 2** vor.
+
+[[datenformat-itemprice]]
+.Datenfelder Datenformat **ItemPrice**
+[cols="1,3,3"]
+|====
+|Feld |Aktion |Erläuterung
+
+|**ItemID**
+|Abgleich
+|Artikel-ID
+
+|**PriceID**
+|Abgleich
+|ID des Preissets +
+**Hinweis:** Aktion **Abgleich** wählen, da sonst pro Artikel nur Preisset 1 exportiert wird.
+
+|**Position**
+|Keine
+|Sortierung mehrerer Preissets
+
+|**Price**
+|Import
+|Preis des Artikels
+
+|**Price1** bis **Price12**
+|Import
+|Preis 1 bis Preis 12 des Artikels
+
+|**Unit**
+|Import
+|Standardeinheit
+
+|**Lot**
+|Import
+|Inhalt; definiert die Verpackungseinheiten von "unit", die pro Einheit enthalten sind.
+
+|**Unit0**
+|Import
+|Einheit 1
+
+|**Unit1**
+|Import
+|Einheit 2
+|====
+
+
+==== Kategorieverknüpfungen prüfen
+
+In plentymarkets 7 müssen Artikel mit mindestens einer Kategorie verknüpft sein. Artikel, die nicht mit einer Kategorie verknüpft sind, werden nicht im Webshop angezeigt. Stellen Sie daher vor der Migration sicher, dass alle Artikel mit einer Kategorie verknüpft sind. Gehen Sie wie unten beschrieben vor, um zu prüfen, ob alle Artikel mit Kategorien verknüpft sind.
+
+[.instruction]
+Kategorieverknüpfungen prüfen:
+
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
+. Setzen Sie den Filter **Inaktiv** auf **ALLE**.
+. Aktivieren Sie den Filter **ohne Kategorie suchen**. +
+→ Alle Artikel ohne Kategorieverknüpfung werden angezeigt.
+. Ordnen Sie vor der Migration allen Artikeln ohne Kategorieverknüpfungen entweder manuell oder per Gruppenfunktion eine Kategorie zu.
+
+=== Preisspalten
+
+[#60]
+==== Preisspalten-Kombinationen prüfen
+
+Bei der Migration werden die verschiedenen Einstellungen für Preisspalten kombiniert, um die neuen Verkaufspreise zu bilden. Prüfen Sie daher vor der Migration die in den Bereichen **Auftragsherkunft**, **Währungen**, **Kundenklassen** und **Mandant (Shop)** hinterlegten Preisspalten. Ist dieselbe Preisspalte in mehr als einem Bereich eingestellt, kann sich aus dieser Kombination ein unerwünschtes neues Verhalten ergeben. Prüfen Sie daher die Logik dieser Kombinationen. Gehen Sie dazu wie unten beschrieben vor.
+
+[IMPORTANT]
+.0-Euro-Preise
+====
+Sind Preisspalten mit Kundenklassen verknüpft, für die kein Preis eingetragen ist, also der Wert von 0,00 Euro hinterlegt ist, wird in plentymarkets 6 als Fallback der Standardpreis verwendet. Dieses Verhalten wird auch bei der Migration berücksichtigt. Bei der Migration werden solche Preise daher mit dem ehemaligen Standardpreis befüllt. Wenn ein 0-Euro-Preis gewünscht ist, müssen die Preise daher nach der Migration manuell bearbeitet werden.
+====
+
+[.instruction]
+Preisspalten-Kombinationen prüfen:
+
+. Öffnen Sie die in <<menuepfade-preisspalten>> aufgeführten Menüs.
+. Notieren Sie sich die dort hinterlegten Preisspalten.
+. Vergleichen Sie die notierten Preisspalten. +
+❏ Ist dieselbe Preisspalte in mehr als einem Bereich eingestellt? +
+❏ Entspricht die Logik, die sich aus dieser Kombination ergibt, Ihren Anforderungen?
+. Passen Sie die Einstellungen bei Bedarf an.
+
+[[menuepfade-preisspalten]]
+.Menüpfade für Preisspalten
+[cols="1,3"]
+|====
+|Pfad |Erläuterung
+
+|**System » Aufträge » Auftragsherkunft**
+|Einstellung in Spalte **Preisspalte** aller Herkünfte prüfen.
+
+|**System » Aufträge » Zahlung » Währungen**
+|Einstellung in der Dropdown-Liste **Preisspalte** aller Währungen prüfen.
+
+|**System » CRM » Kundenklassen**
+|Einstellung **Preisspalte** aller Kundenklassen prüfen.
+
+|**System » Mandant » Mandant wählen » Webshop » Einstellungen**
+|Einstellung **Preisspalte** aller Mandanten prüfen.
+|====
+
+
+[#70]
+==== Währungseinstellungen prüfen
+
+[.subhead]
+Währungsumrechnung bei mehreren Mandanten
+
+Bei der Migration der Preissets werden unter Umständen viele Verkaufspreise angelegt. Wenn Sie mit mehreren Mandanten arbeiten, sollten Sie vor der Migration die Einstellung **Währungsumrechnung** aller Mandanten prüfen. Wenn bei einigen Mandanten die Einstellung **Verwende Preisspalte** und bei anderen die Einstellung **Live-Umrechnung** eingestellt ist, prüfen Sie, ob diese Einstellungen korrekt sind. Vereinheitlichen Sie wenn sinnvoll die Einstellungen, um die Anzahl der neu erstellten Verkaufspreise zu reduzieren. Folgendes Vorgehen wird empfohlen.
+
+[.instruction]
+Währungseinstellungen prüfen:
+
+. Öffnen Sie die Menüs **System » Mandant » Mandant wählen » Webshop » Währung** aller Mandanten.
+. Notieren Sie sich die Einstellung bei **Währungsumrechnung** aller Mandanten.
+. Vergleichen Sie die Einstellungen. +
+❏ Entsprechen die Einstellungen Ihren Anforderungen?
+. Vereinheitlichen Sie wenn sinnvoll die Einstellungen. +
+→ Wenn Sie Änderungen an der Einstellung **Währungsumrechnung** vornehmen, müssen Sie auch die damit verbundenen Preise anpassen.
+
+[#75.subhead]
+Währungseinstellungen bei Mandanten mit Einstellung "Verwende Preisspalte"
+
+[TIP]
+.Nur bei Mandanten mit der Einstellung "Verwende Preisspalte"
+====
+Die Währungseinstellungen müssen Sie nur prüfen, wenn Sie Mandanten haben, bei denen im Menü **System » Mandant » Mandant wählen » Webshop » Währung** die Option **Währungsumrechnung** auf **Verwende Preisspalte** steht.
+====
+
+Für Mandanten mit der Einstellung **Verwende Preisspalte** prüfen Sie nun, welche Preise im Menü **System » Aufträge » Zahlung » Währungen** mit Währungen verknüpft sind. Stellen Sie dann sicher, dass an allen Artikeln für diese Preise Beträge hinterlegt sind. Ist kein Betrag hinterlegt, wird der Standardpreis der Variante übernommen. Die Währung bleibt jedoch gleich. Je nach Wechselkurs kann diese Einstellung zu stark abweichenden Preisen führen. Gehen Sie wie unten beschrieben vor, um die Einstellungen zu prüfen.
+
+[.instruction]
+Währungseinstellungen bei Mandanten mit Einstellung "Verwende Preisspalte" prüfen:
+
+. Öffnen Sie die Menüs **System » Mandant » Mandant wählen » Webshop » Währung** aller Mandanten.
+. Notieren Sie sich die Mandanten mit der Einstellung "Verwende Preisspalte" für die Option **Währungsumrechnung**.
+. Öffnen Sie das Menü **System » Aufträge » Zahlung » Währungen**.
+. Notieren Sie sich die Währungen, denen ein anderer Preis als der Standardpreis zugeordnet wurde, und den zugeordneten Preis.
+. Öffnen Sie das Menü **Datenaustausch » Export » Dynamischer Export**.
+. Erstellen Sie ein neues <<basics/datenaustausch/export-import/daten-exportieren#, Datenformat>> des Datenformat-Typs <<basics/datenaustausch/export-import/datenformate/itemprice#, ItemPrice>>. +
+→ Die empfohlenen Einstellungen für Datenfelder und Aktionen entnehmen Sie <<datenformat-itemprice-2>>.
+. Exportieren Sie das Datenformat.
+. Erstellen Sie ein neues <<basics/datenaustausch/export-import/daten-exportieren#, Datenformat>> des Datenformat-Typs <<basics/datenaustausch/export-import/datenformate/item#, Item>>. +
+→ Die empfohlenen Einstellungen für Datenfelder und Aktionen entnehmen Sie <<datenformat-item>>.
+. Öffnen Sie beide CSV-Dateien.
+. Filtern Sie die Daten der Datei **Item** nach den gesuchten Mandanten (Spalte **ItemStoreIDs**).
+. Filtern Sie die Daten der Datei **ItemPrice** nach den Preisen, die Sie in Schritt 4 notiert haben.
+. Vergleichen Sie die gefilterten Artikel-IDs der beiden Dokumente. +
+❏ Sind für alle diese Preise Beträge hinterlegt? +
+→ Sind keine Beträge hinterlegt, wird für den Preis der Standardpreis der Variante übernommen. Die Währung bleibt gleich.
+. Prüfen Sie für Artikel ohne Beträge, ob der Standardpreis in der eingestellten Währung Ihren Anforderungen entspricht. Hinterlegen Sie sonst den gewünschten Preis in der Datei **ItemPrice**.
+. Speichern Sie Ihre Änderungen an der CSV-Datei.
+. <<basics/datenaustausch/export-import/daten-importieren#, Importieren>> Sie die CSV-Datei **ItemPrice** zurück in plentymarkets, wenn Sie Änderungen vorgenommen haben.
+
+[[datenformat-itemprice-2]]
+.Datenfelder Datenformat **ItemPrice**
+[cols="1,3,3"]
+|====
+|Feld |Aktion |Erläuterung
+
+|**ItemId**
+|Abgleich
+|Artikel-ID
+
+|**PriceId**
+|Abgleich
+|ID des Preissets +
+**Hinweis:** Aktion **Abgleich** wählen, da sonst pro Artikel nur Preisset 1 exportiert wird.
+
+|**Position**
+|Keine
+|Sortierung mehrerer Preissets
+
+|**Price**
+|Import
+|Preis des Artikels
+
+|**Price1** bis **Price12**
+|Import
+|Preis 1 bis Preis 12 des Artikels
+|====
+
+[[datenformat-item]]
+.Datenfelder Datenformat **Item**
+[cols="1,3,3"]
+|====
+|Feld |Aktion |Erläuterung
+
+|**ItemId**
+|Abgleich
+|Artikel-ID
+
+|**ItemStoreIDs**
+|Keine
+|IDs der Mandanten
+|====
+
+
+
+[#80]
+==== Preisspalten der Herkünfte abgleichen
+
+Vergleichen Sie die im Menü **System » Aufträge » Auftragsherkunft** hinterlegten Preisspalten mit der Einstellung bei Herkünften mit eigenen Preisspalten und vereinheitlichen Sie diese Einstellungen, wenn sie voneinander abweichen. Diese Herkünfte sind:
+
+* Amazon
+* Flubit
+* Fruugo
+* eBay
+* Hitmeister
+* Neckermann
+* Otto
+* Shopgate
+
+**Fallback:** Bei Herkünften mit eigenen Preisspalten an den Einstellungen (z.B. Shopgate), bei denen der Standardpreis eingestellt ist, wird, wenn unter **System » Aufträge » Auftragsherkünfte** eine Preisspalte explizit angegeben ist, diese Einstellung und nicht der Standardpreis migriert.
+
+Gehen Sie wie unten beschrieben vor, um die eingestellten Preisspalten zu prüfen.
+
+[.instruction]
+Preisspalten der Herkünfte abgleichen:
+
+. Öffnen Sie das Menü **System » Aufträge » Auftragsherkunft**.
+. Notieren Sie sich die eingestellte Preisspalte für die oben aufgeführten Marktplätze.
+. Öffnen Sie die in <<marktplaetze-preisspalten>> aufgeführten Menüs. +
+❏ Stimmen die dort eingestellten Preisspalten mit den notierten Einstellungen überein?
+. Passen Sie die Einstellungen bei Bedarf an.
+. Prüfen Sie auch die Preise und passen Sie die Preise ggf. an, wenn Sie Änderungen an den Einstellungen vornehmen.
+
+[[marktplaetze-preisspalten]]
+.Marktplätze mit eigenen Preisspalten
+[cols="1,3"]
+|====
+|Marktplatz |Pfad
+
+|Amazon
+|**System » Märkte » Amazon » Einstellungen**
+
+|Flubit
+|**System » Märkte » Flubit » Einstellungen**
+
+|Fruugo
+|**System » Märkte » Fruugo » Einstellungen**
+
+|eBay
+|**System » Märkte » eBay » Einstellungen**
+
+|Hitmeister
+|**System » Märkte » Hitmeister » Einstellungen**
+
+|Neckermann
+|**System » Märkte » Neckermann Österreich Enterprise +
+System » Märkte » Neckermann Österreich Cross-Docking**
+
+|Otto
+|**System » Märkte » Otto » Integration**
+
+|Shopgate
+|**System » Märkte » Shopgate**
+|====
+
+[#90]
+==== Preissichtbarkeit in Bezug auf Kundenklassen prüfen
+
+Bei der Migration der Preise wird pro vorhandene und benutzte Sichtbarkeit, d.h. **Zeige jedem**, **Nur B2C-Kunden** und **Nur B2B-Kunden**, ein Verkaufspreis pro Preisspalte angelegt. Es entstehen also bis zu drei Verkaufspreise pro Preisspalte. Prüfen Sie daher vor der Migration die Einstellung **Preissichtbarkeit** in Bezug auf die Kundenklassen. Gehen Sie dazu wie unten beschrieben vor.
+
+[.instruction]
+Preissichtbarkeit in Bezug auf Kundenklassen prüfen:
+
+. Öffnen Sie das Menü **Datenaustausch » Export » Dynamischer Export**.
+. Erstellen Sie ein neues <<basics/datenaustausch/export-import/daten-exportieren#, Datenformat>> des Datenformat-Typs <<basics/datenaustausch/export-import/datenformate/itemprice#, ItemPrice>>. +
+→ Die empfohlenen Einstellungen für Datenfelder und Aktionen entnehmen Sie <<datenformat-itemprice-3>>.
+. Exportieren Sie das Datenformat.
+. Prüfen Sie die Werte in der Spalte **PriceShowOnly**. +
+❏ Ist die Sichtbarkeit auf bestimmte Kundenklassen beschränkt? +
+❏ Entsprechen diese Beschränkungen Ihren Anforderungen? +
+❏ Können Einstellungen vereinheitlicht werden?
+. Passen Sie ggf. Einstellungen an.
+. Speichern Sie Ihre Änderungen an der CSV-Datei.
+. <<basics/datenaustausch/export-import/daten-importieren#, Importieren>> Sie die CSV-Datei zurück in plentymarkets, wenn Sie Änderungen vorgenommen haben.
+
+[[datenformat-itemprice-3]]
+.Datenfelder Datenformat **ItemPrice**
+[cols="1,3,3"]
+|====
+|Feld |Aktion |Erläuterung
+
+|**ItemId**
+|Abgleich
+|Artikel-ID
+
+|**PriceId**
+|Abgleich
+|ID des Preissets +
+**Hinweis:** Aktion **Abgleich** wählen, da sonst pro Artikel nur Preisset 1 exportiert wird.
+
+|**Position**
+|Keine
+|Sortierung mehrerer Preissets
+
+|**Price**
+|Import
+|Preis des Artikels
+
+|**Price1** bis **Price12**
+|Import
+|Preis 1 bis Preis 12 des Artikels
+
+|**PriceShowOnly**
+|Import
+|Beschränke Preisset auf: +
+**0** = Alle +
+**1** = B2C-Kunden +
+**2** = B2B-Kunden
+|====
+
+
+=== Amazon-Artikelverfügbarkeiten für SKU-Migration prüfen
+
+Damit SKUs für Amazon korrekt migriert werden, müssen zwingend bestimmte Einstellungen vor der Migration geprüft werden. +
+
+Zum einen müssen Sie im Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Verfügbar** prüfen, ob bei allen von Ihnen genutzten Amazon-Plattformen sowie für die **Web-API** der Haken gesetzt ist. Diese Einstellungen sind zwingend erforderlich. Andernfalls werden die SKUs in plentymarkets 7 beim Export mit einer SKU der neuen Logik erzeugt. Dadurch werden Artikel im Seller Central doppelt gelistet. +
+
+Des Weiteren sollten sowohl die Einstellung **Amazon-Abwicklung (FBA)** als auch die Einstellung **Versand durch Amazon (FBA)** im Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Verfügbar** aktiviert sein. Sind diese Einstellungen nicht aktiviert, können keine FBA-SKUs migriert werden.
+
+=== Verwendung von Template-Variablen in Layout-Vorlagen
+
+Wenn Sie über Ihren eBay-Shop Artikel außerhalb von Deutschland verkaufen und in link:https://knowledge.plentymarkets.com/omni-channel/multi-channel/ebay/ebay-einrichten#2800[Layout-Vorlagen^], die mit Listings verknüpft sind, link:https://knowledge.plentymarkets.com/omni-channel/multi-channel/ebay/ebay-einrichten#3050[Template-Variablen^] für Artikelmerkmale verwenden, müssen Sie vor dem Wechsel auf plentymarkets 7 Übersetzungen in den Landessprachen hinterlegen. Beachten Sie, dass Sie für jedes Land, in dem Sie Ihre Artikel zum Verkauf anbieten, Übersetzungen hinterlegen. Andernfalls kann das Merkmal in der Beschreibung des Listings nicht angezeigt werden.
+
+Übersetzungen für den Merkmalnamen und den Merkmalwert sind erforderlich, wenn Sie die Template-Variablen *{% GetItemPropertyByName() %}* und *{% GetItemPropertyById() %}* in Layout-Vorlagen verwenden.
+
+[.instruction]
+Übersetzungen für Merkmalnamen hinterlegen:
+
+. Öffnen Sie das Menü *System » Artikel » Merkmale*.
+. Klappen Sie das Merkmal auf.
+. Wählen Sie im Bereich *Webshop* in der Dropdown-Liste *Sprache* die Landessprache.
+. Geben Sie im Bereich *Webshop* unter *Name* den Namen in der Landessprache ein.
+. *Speichern* Sie die Einstellungen.
+
+[.instruction]
+Übersetzungen für Merkmalwerte hinterlegen:
+
+. Öffnen Sie das Menü *Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Merkmale*.
+. Wählen Sie in der Dropdown-Liste *Cross-Selling* die Standardsprache.
+. Geben Sie im Freitextfeld *Text* die Übersetzung für die Landessprache ein.
+. *Speichern* Sie die Einstellungen.
+
+== Externe Shops
+*In plentymarkets 6 wurden für die Shopware-Integration externe Shops bereitgestellt. In plentymarkets 7 wird diese Anbindung an Shopware jedoch über reguläre Mandanten (Shops) realisiert. Bei der Migration auf plentymarkets 7 werden externe Shops daher in vollwertige Mandanten (Shops) umwandelt. Diese Mandanten können über den plentymarkets Connector an Shopware angebunden werden. Beachten Sie jedoch, dass vollwertige Mandanten kostenpflichtig sind. Prüfen Sie daher vor der Migration, ob in Ihrem System externe Shops vorhanden sind. Externe Shops, die Sie nicht mehr benötigen, sollten Sie vor der Migration löschen.
+
+[TIP]
+.Externe Shops ohne Shopware-Anbindung
+====
+Technisch war es in plentymarkets 6 möglich, externe Shops für andere Zwecke als für die Anbindung an Shopware zu nutzen. Prüfen Sie daher auch, ob externe Shops in Ihrem System vorhanden sind, wenn Sie den Shopware Connector nicht verwenden. Diese Prüfung ist vor allem wichtig, wenn Sie die externen Mandanten nicht für die Anbindung von Shopware, sondern für andere Anwendungsfälle verwenden, z.B. für Marktplatzverfügbarkeiten, Nummernkreise oder Rechnungsstellung.
+====
+
+=== System auf externe Shops prüfen
+
+Externe Shops haben den Webstore-Typ **shopware** oder **extern** und haben außerdem keine eigene plenty ID. Gehen Sie wie unten beschreiben vor, um zu prüfen, ob externe Shops in Ihrem System vorhanden sind:
+
+. Öffnen Sie das Menü **System » Mandant**.
+. Klicken Sie auf das Plus des ersten Mandanten (Shops). +
+→ Das Mandantenmenü wird eingeblendet.
+. Öffnen Sie das Menü **System » Mandant » Mandant wählen » Grundeinstellungen** des Mandanten.
+. Prüfen Sie den **Webstore-Typ**. +
+→ Shops des Typs **shopware** oder **extern** sind externe Shops. +
+**__Tipp:__** Bei externen Shops ist außerdem die Option **plenty ID** leer. +
+→ Wenn es sich um einen externen Shop handelt, prüfen Sie, ob er aktiv verwendet wird. +
+→ Löschen Sie den externen Shop, wenn Sie ihn nicht benötigen.
+. Prüfen Sie alle weiteren in Ihrem System angelegten Mandanten (Shops) auf dieselbe Weise.
+
+=== Nicht benötigte externe Shops löschen
+
+Gehen Sie wie unten beschrieben vor, um nicht mehr benötigte externe Shops vor der Migration zu löschen.
+
+. Öffnen Sie das Menü **System » Mandant**.
+. Zeigen Sie mit der Maus auf den externen Shop, den Sie löschen möchten. +
+→ Ein Pfeil nach unten wird eingeblendet.
+. Klicken Sie auf den Pfeil, um das Kontextmenü zu öffnen.
+. Klicken Sie im Kontextmenü auf **Löschen**. +
+→ Eine Sicherheitsabfrage wird geöffnet.
+. Klicken Sie in der Sicherheitsabfrage auf **Löschen**. +
+→ Der externe Shop wird gelöscht.
+
+=== plentymarkets an Shopware anbinden
+
+Bei der Migration Ihres Systems zu plentymarkets 7 werden die Daten Ihrer externen Shops in vollwertige Mandanten (Shops) überführt. Die Integration Ihres externen Shopware-Systems mit dem link:https://github.com/plentymarkets/plentymarkets-shopware-connector/releases[plentyConnector^] nehmen Sie nach der Migration vor. Informationen dazu finden Sie in der link:https://docs.google.com/document/d/10mPeV3xqx4We71dYQdPmJK2qvb21Rpym6FG_tKwHKfc/edit#heading=h.h38ew7hip4tl[Dokumentation des plentymarkets Shopware Connector^].
+
+
+[#210]
+== Termin für Migration vereinbaren
+
+Nachdem Sie die in diesem Leitfaden beschriebenen Vorbereitungen getroffen haben, vereinbaren Sie über unser Ticket-System einen Termin für die Migration auf plentymarkets 7. Gehen Sie wie unten beschrieben vor, um ein Ticket zu erstellen.
+
+[.instruction]
+Termin für Migration vereinbaren:
+
+. Öffnen Sie das Menü **Start » Support-Ticket**.
+. Klicken Sie im Bereich **Ticket** auf **Neues Ticket anlegen**.
+. Geben Sie einen Titel ein, der Ihre Anfrage kurz definiert.
+. Wählen Sie **Auf plentymarkets 7 wechseln** aus der Dropdown-Liste. +
+→ Weitere Optionen werden eingeblendet.
+. Wählen Sie das plentymarkets System aus der Dropdown-Liste, das migriert werden soll.
+. Wählen Sie, ob Sie **plentymarkets 7 Stable** oder **plentymarkets 7 Beta** nutzen möchten.
+. Klicken Sie auf **Anlegen**, um das Ticket zu erstellen. +
+→ Das Ticket wird erstellt und ein plentymarkets Mitarbeiter wird Sie über das weitere Vorgehen informieren.
+
+[IMPORTANT]
+.Systemerreichbarkeit während der Migration
+====
+Während der Migration ist Ihr System nicht erreichbar. Bei kleineren Systemen dauert die Migration ca. 15 Minuten. Bei großen Systemen ist Ihr System bis zu mehrere Stunden nicht erreichbar.
+====
+
+== Nach der Migration
+
+[#100]
+=== GTIN korrigieren (nur bei GTIN mit führenden Nullen)
+
+Bei der Migration der EAN/GTIN werden führende Nullen abgeschnitten. Da sich hierdurch die Zeichenlänge des Codes ändert, wird die EAN/GTIN nicht als GTIN migriert, sondern als Code128 oder UPC angelegt. Nach der Migration müssen Sie daher die als Code128 oder UPC importierten GTIN korrigieren. Das Datenformat **Item** ist nicht mit plentymarkets 7 kompatibel. Daher müssen Sie die Korrektur manuell vornehmen. Gehen Sie dazu wie unten beschrieben vor.
+
+[.instruction]
+GTIN mit führenden Nullen korrigieren:
+
+. Öffnen Sie das Menü **Datenaustausch » Export » Dynamischer Export**.
+. Erstellen Sie ein neues <<basics/datenaustausch/export-import/daten-exportieren#, Datenformat>> des Datenformat-Typs <<basics/datenaustausch/export-import/datenformate/variationbarcode#, VariationBarcode>>. +
+→ Die empfohlenen Einstellungen für Datenfelder und Aktionen entnehmen Sie <<datenformat-variationbarcode>>.
+. Öffnen Sie die CSV-Datei des Exports **VariationBarcode**.
+. Öffnen Sie die CSV-Datei des Exports **Item**, die Sie vor der Migration gespeichert haben.
+. Korrigieren Sie die inkorrekt importieren GTIN in der CSV-Datei des Exports **VariationBarcode**. +
+→ **Tipp:** Um viele GTIN-Codes zu korrigieren, empfehlen wir den automatischen Abgleich mit dem alten Export über die Excel-Funktion link:https://forum.plentymarkets.com/t/excel-tabelle-vergleichen/19235/2[SVERWEIS^].
+. Speichern Sie die Änderungen in der CSV-Datei des Exports **VariationBarcode**.
+. <<basics/datenaustausch/export-import/daten-importieren#, Importieren>> Sie die CSV-Datei des Exports **VariationBarcode** zurück in plentymarkets.
+
+[[datenformat-variationbarcode]]
+.Datenfelder Datenformat **VariationBarcode**
+[cols="1,3,3"]
+|====
+|Feld |Aktion |Erläuterung
+
+|**BarcodeID**
+|Import
+|ID des Barcodes
+
+|**BarcodeName**
+|Keine
+|Barcode-Name
+
+|**BarcodeType**
+|Keine
+|Barcode-Typ
+
+|**Code**
+|Import
+|Code
+
+|**VariationNumber**
+|Abgleich
+|Variantennummer
+|====
+
+
+=== Grundpreisangabe für Listings zuordnen
+
+Nach der Migration muss im Menü **Listings » Listings bearbeiten » Market-Listing öffnen » Tab: Base** einmalig die Einstellung **Grundpreisangabe ergänzen** neu hinterlegt werden. Verwenden Sie dazu das Datenformat **ItemListingMarket** mit dem Datenfeld **BasicPriceInText**, um diese Einstellung für alle Listings durchzuführen.
+
+=== Vorbereitungen für den Datenaustausch via SOAP API
+
+Bevor Sie in plentymarkets 7 die ersten Calls ausführen, müssen Sie einige Parameter zuordnen. Die Vorbereitungen für den Datenaustausch via SOAP API nehmen Sie also erst nach der Migration Ihres Systems auf plentymarkets 7, aber vor der ersten Verwendung der SOAP API vor. plentymarkets 7 bietet Ihnen insgesamt eine größere Flexibilität. So ist z.B. die Anzahl der GTIN nicht mehr begrenzt. GTIN und andere internationale Artikelnummern werden jetzt als Barcodes geführt. Jedoch ist durch diese größere Flexibilität bei Preisen und Barcodes eine pauschale Zuordnung der Parameter nicht möglich. Die Zuordnung nimmt nur einige Minuten in Anspruch und erfolgt im eigens dafür vorgesehen Menü **SOAP-Migration**.
+
+Die SOAP API-Version 115 wurde für die Arbeit mit plentymarkets 7 angepasst. Wenn Sie in plentymarkets 7 Daten via SOAP austauschen möchten, verwenden Sie deshalb die SOAP API 115.
+
+==== Preise für SOAP zuordnen
+
+Ihre bisherigen Preise wurden zu Verkaufspreisen migriert. Nach welchem Muster dabei vorgegangen wurde und wie sich die neuen Preise zusammensetzten, wird weiter <<basics/versionswechsel/migrationsleitfaden#26, oben>> in diesem Leitfaden beschrieben. Ihre Verkaufspreise finden Sie in plentymarkets 7 im Menü **System » Artikel » Verkaufspreise**.
+
+[.instruction]
+Preise zuordnen:
+
+. Öffnen Sie das Menü **System » Einstellungen » API » SOAP-Migration**.
+. Klappen Sie **Preise** auf.
+. Wählen Sie für jeden Preis, den Sie über die SOAP-Schnittstelle austauschen möchten, einen Verkaufspreis. +
+→ Der interne Name des Verkaufspreises wird in der Dropdown-Liste angezeigt.
+. **Speichern** Sie die Einstellungen.
+
+==== Barcodes für SOAP zuordnen
+
+Ihre bisherigen GTIN, ISBN usw. wurden zu Barcodes migriert. Nach welchem Muster dabei vorgegangen wurde, wird weiter <<basics/versionswechsel/migrationsleitfaden#25, oben>> in diesem Leitfaden beschrieben. Ihre neuen Barcode-Definitionen finden Sie in plentymarkets 7 im Menü **System » Artikel » Barcode**.
+
+[.instruction]
+Barcodes zuordnen:
+
+. Öffnen Sie das Menü **System » Einstellungen » API » SOAP-Migration**.
+. Klappen Sie **Barcodes** auf.
+. Wählen Sie für jede GTIN, die Sie über die SOAP-Schnittstelle austauschen möchten, einen Barcode. +
+→ Der Name des Barcodes wird in der Dropdown-Liste angezeigt.
+. Wählen Sie einen Barcode, der als ISBN übertragen werden soll.
+. **Speichern** Sie die Einstellungen.
+
+
+== Migration der Marktplätze
+
+Alle aktiven Märkte und Preisportale, die in plentymarkets 6 zur Verfügung standen, wurden in plentymarkets 7 migriert, außer neckermann.at Cross-Docking.
+
+Die Migration der folgenden Märkte erfolgt durch den Online-Marktplatz selbst:
+
+- grosshandel.eu
+- Hertie
+- Restposten.de
+- SumoNet
+
+== Migrationshinweis Mention-Schnittstelle
+
+Die Mention-Schnittstelle ist momentan noch nicht auf plentymarkets 7 migriert.

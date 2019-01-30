@@ -1,0 +1,476 @@
+= Best Practices: ElasticSync
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, Import, Artikel, Artikelanlage, Best Practice, automatisiert
+:position: 30
+
+[TIP]
+.Plugin aktualisieren?
+====
+Bevor du Syncs oder Exportformate erstellst prüfe im Menü *Plugins » Plugin-Übersicht » Plugin-Set öffnen*, dass du die aktuelle Version von ElasticSync verwendest.
+====
+
+Hier findest du Best Practices zum Thema Import und Export mit dem Plugin link:https://marketplace.plentymarkets.com/plugins/integration/ElasticSync_4750[ElasticSync^].
+
+NOTE: Bevor du die Best Practices auf dieser Handbuchseite nutzt, um Daten auszutauschen, solltest du dich mit der generellen Funktionsweise von ElasticSync vertraut machen. Lies dazu zunächst die Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+
+== Best Practice: Variantenanlage über ElasticSync
+
+In diesem Beitrag bieten wir dir ein Best Practice für die Artikelanlage via Elastic Sync.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+
+[#voraussetzungen]
+=== Voraussetzungen
+
+Im System müssen folgende Daten vorhanden sein, um wie hier beschrieben Artikel und Varianten über ElasticSync zu importieren:
+
+* Attribute
+* Attributwerte
+* Kategorien
+* Verkaufspreise
+
+[#infos]
+=== Infos
+
+Unter *System » Einstellungen » ElasticSync* findest du den *Cache-löschen-Button*.
+
+Mit diesem Button kannst du einmal pro Stunde den ElasticSync-Cache zurücksetzen, damit du eine Datei ohne vorherige Änderung erneut importieren kannst.
+
+Ein weiterer hilfreicher Button ist der *Testlauf-Button*.
+
+.Gut geeignet, um Syncs zu testen
+
+image::basics/datenaustausch/ElasticSync/assets/testlauf_Neu.png[]
+
+Damit werden die ersten 10 Zeilen der Datei ohne Cache importiert. So kannst du prüfen, ob alle Werte korrekt zugeordnet wurden, bevor du den Sync mit allen Zeilen startest.
+
+Gültige Werte für Felder in der Zuordnung findest du in der Plugin-Beschreibung und im Handbuch.
+
+Unter *Daten » Log* können Fehlermeldungen zum Sync eingesehen werden.
+
+
+[#aufbau_der_datei]
+=== Aufbau der Datei
+
+Folgende link:https://www.plentymarkets.eu/download/Testdatei.csv[Beispieldatei^] wurde für den Sync genutzt.
+
+==== Allgemein
+
+Die Daten, die *global* am Artikel gepflegt werden, wie z.B. *der Name, die Beschreibung etc.* werden in der Zeile der Hauptvariante hinterlegt und sollten später beim Sync in einer zusätzlichen Zuordnung hinterlegt werden.
+
+Daten, die *variantenbezogen* sind, müssen in die entsprechenden Zeilen der Varianten eingetragen werden.
+
+Wichtig bei der Anlage der Varianten ist, dass der Aufbau der Attribute und Werte so in der Datei hinterlegt sind, wie es in der Zuordnung eingestellt ist.
+
+==== Variantennummern
+
+In unserem Beispiel legen wir eine Hauptvariante mit 4 Varianten an. Als Zuordnung für die Varianten nutzen wir die Hauptvariantennummer.
+
+Da der Sync die Daten zeilenweise importiert, steht die Hauptvariante ganz oben in der Datei.
+
+Dort hinterlegen wir manuell die Variantennummer im gleichnamigen Feld. Das Feld *Hauptvariantennummer* bleibt leer.
+
+Diese Variantennummer wird nun wiederum bei den Varianten in das Feld *Hauptvariantennummer* geschrieben, damit Sie eine Zuordnung zur Hauptvariante haben und nicht als Einzelartikel angelegt werden.
+
+Die Variantennummern der Untervarianten können ebenfalls eingetragen werden. Wenn das Feld frei gelassen wird, generiert das System die Nummern automatisch.
+
+Es sieht in der Datei dann so aus.
+
+.Eintragung der Nummern bei Hauptvariante und Varianten
+
+image::basics/datenaustausch/ElasticSync/assets/hvnummer.png[]
+
+[WARNING]
+.Variantennummern müssen eindeutig sein!
+====
+Sowohl die Nummer der Hauptvariante, als auch die Nummer der Untervarianten müssen eindeutig sein. Der Import schlägt fehl, wenn Nummern mehrfach vergeben werden.
+====
+
+==== Attribute
+
+In unserem Beispiel haben wir *Attributauswahlkombination* gewählt:
+
+.Erstellen von Varianten via Attributauswahlkombination
+
+image::basics/datenaustausch/ElasticSync/assets/attribute.png[]
+
+Die oberste Zeile der Hauptvariante hat dabei keine Kombination erhalten, damit Sie keine Attributverknüpfung erhählt.
+
+[TIP]
+.Hauptvariante ohne Attribute
+====
+Wenn man mit Variantenartikeln arbeitet und der Hauptvariante keine Attribute zuweist, ist man später flexibler in der Variantenerstellung. Gibt man der Hauptvariante ebenfalls eine Attributverknüpfung, kann man Varianten ausschließlich mit den verknüpften Attributen erzeugen.
+====
+
+==== Bilder
+
+In unserem Sync importieren wir die Bilder-URLs in 2 getrennten Spalten und Zuordnungen. Dies kann auch in einer Spalte mit kommagetrennten URLs geschehen.
+Dazu muss das Feld *Multi-URL* in der Zuordnung gewählt werden. Das Format der URL wird wie folgt hinterlegt: *image1url;positionImage1,image2url;positionImage2*
+
+==== Kategorieverknüpfungen
+
+Zum Verknüpfen mehrerer Kategorien müssen mehrere Zuordnungen angelegt werden. Weiterhin muss darauf geachtet werden, dass bei den Kategorieverknüpfungen der komplette Pfad angegeben wird. Die Ebenen werden dabei mit einem Semikolon getrennt.
+
+.Die Schreibweisen von Trennzeichen und Pfad sind wichtig für den Import.
+
+image::basics/datenaustausch/ElasticSync/assets/kategorieverknuepfung.png[]
+
+
+[WARNING]
+.Mapping und Datei
+====
+Achte darauf, dass die Werte in der Datei auch mit der Zuordnung übereinstimmen. Dabei geht es darum, dass du z.B. bei dem Feld Standardkategorie die ID oder den Namen im Mapping wählen kannst. In der CSV muss dann auch entsprechend die ID oder der Name stehen. Es geht nicht, dass im Mapping die ID, aber in der Datei der Name genutzt wird.
+====
+
+[#abgleich]
+=== Abgleich
+
+Für den Abgleich ist wichtig, dass ein variantenspezifisches Abgleichfeld genutzt wird. Dafür eignet sich z.B. die Variantennummer oder auch die Varianten-ID.
+
+Als Aktion muss eingestellt werden, dass versucht wird, einen neuen Datensatz anzulegen, wenn kein Abgleich stattfinden konnte.
+
+
+[#Zuordnungen]
+=== Zuordnung
+
+In der Zuordnung verknüpfen wir die Felder aus der CSV-Datei mit den Feldern aus plentymarkets.
+
+.Eine Zuordnung muss angelegt werden, denn ohne Zuordnung kein Import
+
+image::basics/datenaustausch/ElasticSync/assets/wertebestimmen_Neu.png[]
+
+Es empfiehlt sich, nur die Felder in die Zuordnung aufzunehmen, die tatsächlich übergeben werden sollen. Überflüssige Felder sollten vermieden werden, da das zu Fehlern führen kann.
+
+Für die Artikelanlage mit Varianten gibt es Pflichtfelder, die als Minimum in der Zuordnung enthalten sein müssen, damit der Sync funktioniert. Dabei handelt es sich um folgende Felder:
+
+* Standardkategorie
+* Hauptvariantennummer
+* Variantennummer
+* Will man Bestand importieren, müssen folgende Werte in der Zuordnung enthalten sein:
+Lager, Menge, Lagerort
+
+
+[#zweite_Zuordnung]
+=== Zweite Zuordnung
+
+Die Zuordnungen werden nacheinander abgearbeitet. Das heißt, dass unsere zweite Zuordnung nach der Ersten durchgeführt wird.
+
+Über eine weitere Zuordnung wollen wir nun eine zweite Kategorie, ein weiteres Bild und die globalen Artikeldaten (z.B. Name, Beschreibung) hinterlegen.
+
+In der Zuordnung selbst bestimmen wir erneut die Werte und mappen die URL und den Namen der Kategorie mit der jeweils zweiten Spalte aus unserer Datei.
+
+.Weitere Zuordnungen werden analog zur ersten angelegt.
+
+image::basics/datenaustausch/ElasticSync/assets/zweite_Zuordnung_Neu.png[]
+
+Der Sync ist jetzt einsatzbereit und kann gestartet werden.
+
+[TIP]
+.Testlauf
+====
+Wir empfehlen, beim erstmaligen Sync vorab den Testlauf zu nutzen. So kann man prüfen, ob der Sync ordnungsgemäß läuft. Sollten sich Fehler eingeschlichen haben, kann man diese vor der kompletten Ausführung noch korrigieren.
+====
+
+
+== Best Practice: Mandantenverknüpfung exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du Mandantenverknüpfungen exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+
+[#export_mandantenverknüpfung]
+=== Export der Mandantenverknüpfung
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit mit Varianten verknüpften, also aktivierten Mandanten können mit Hilfe des FormatDesigners exportiert werden. Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Artikel*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import aus dem Bereich *Variation* die *ID* oder *Number* der Variante.
+
+* Die eigentliche Mandantenverfügbarkeit wird dann im Bereich *VariationClient* hinzugefügt. Das Feld heißt *isActive*.
+
+
+[WARNING]
+.Zuordnung bei mehreren Mandanten
+====
+Wenn mehrere Mandanten vorhanden sind, muss das Feld *isActive* auch mehrfach hinzugefügt werden und immer einem bestimmten Mandanten zugeordnet werden.
+====
+
+Im Export gibt das Feld bei aktiviertem Mandanten eine 1 aus. Ist der Mandant nicht aktiv, wird ein leeres Feld exportiert.
+
+Nach dem Speichern des Formates kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#import_mandantenverfügbarkeit]
+=== Import der Mandantenverfügbarkeit
+
+==== Erstellen des Syncs in ElasticSync
+
+Für den Import der Mandantenverfügbarkeit könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync vom Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+Der Abgleich muss über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen
+
+In der Zuordnung des Syncs wählt Ihr im Bereich *Mandant (Shop)* das Feld *Aktiv*. Anschließend fügt Ihr über das grüne Plus die gewünschten Mandanten hinzu und drückt zum Zuordnen der Spalte aus der CSV-Datei auf das Stift-Symbol.
+
+Zum Aktivieren wird in der Datei der Wert 1 benötigt, zum Deaktivieren eine 0.
+
+[TIP]
+.Mit eigenem Wert arbeiten
+====
+Ihr könnt in der Zuordnung statt einer Spalte in der Datei auch den *eigenen Wert* nutzen und dort *yes* oder *no* für alle Zeilen aus der Datei nutzen.
+====
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Mandanten können aktiviert oder deaktiviert werden.
+
+== Best Practice: Merkmalverknüpfungen exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du Merkmalverknüpfungen exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+
+
+[#export_merkmalverknüpfungen]
+=== Export von Merkmalverknüpfungen
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit mit Varianten verknüpften Merkmale können mit dem FormatDesigner exportiert werden. Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Artikel*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import im Bereich *Item* die *ID* des Artikels oder im Bereich *Variation* die *ID* oder die *Number* der Variante.
+
+* Die eigentlichen Merkmalverknüpfungen werden dann im Bereich *VariationProperty* hinzugefügt:
+
+Hier besteht die Möglichkeit, zwischen 3 Werten zu wählen:
+
+- *value*: Gibt den Wert des im Format zugeordneten Merkmals aus.
+- *all*: Gibt alle verknüpften Merkmale eines Artikels mit Wert aus.
+- *allIds*: Gibt alle verknüpften Merkmal-IDs eines Artikels ohne Wert aus.
+
+Nach dem Speichern des Formats kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#import_merkmalverknüpfungen]
+=== Import von Merkmalverknüpfungen
+
+==== Erstellen des Syncs in ElasticSync
+
+Für den Import der Merkmalverknüpfungen könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync von Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+Der Abgleich kann über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen oder auch über die *Artikel ID*, wenn die Verknüpfungen in einem eigenen Sync erstellt werden.
+
+In der Zuordnung des Syncs können verschiedene Felder gewählt werden, um die Verknüpfung zu erstellen bzw. zu bearbeiten. Zum Beispiel könnt Ihr die Felder *ID, Wert und Sprache* (es müssen alle 3 sein) hinzufügen oder auch nur das Feld *Merkmalkombination*. Letzteres muss in der Datei wie folgt aufgebaut sein:
+
+*InternerName1:Wert1:Sprache;InternerName2:Wert2:Sprache*
+
+Sollen Merkmalverknüpfungen gelöscht werden, geschieht das mit dem Feld *Löchen (Ja/Nein)*, das in der Datei mit einer *1* für löschen und *0* für nicht löschen gefüllt sein muss.
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Merkmale können verknüpft werden.
+
+
+== Best Practice: Cross-Selling-Verknüpfungen exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du Cross-Selling-Verknüpfungen exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+
+[#export_CrossSelling]
+=== Export der Cross-Selling-Verknüpfungen
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit verknüpften Cross-Selling-Artikel können mit dem FormatDesigner exportiert werden.
+
+Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Item*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import im Bereich *Item* die *ID* des Artikels oder im Bereich *Variation* die *ID* oder die *Number* der Variante.
+
+* Die eigentlichen Cross-Selling-Verknüpfungen fügt Ihr dann im Bereich *ItemCrossSelling* hinzu. Das Feld *all* gibt alle verknüpften Cross-Selling-Artikel im Format *ArtikelID:Typ:IsDynamic* aus.
+
+Nach dem Speichern des Formats kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#Import_CrossSelling]
+=== Import der Cross-Selling-Verknüpfungen
+
+==== Erstellen des Formats in ElasticSync
+
+Für den Import der Cross-Selling-Verknüpfungen könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync von Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+* Der Abgleich kann über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen oder auch die Item-ID, wenn die Verknüpfungen mit einem eigenen Sync importiert werden.
+
+* In der Zuordnung des Syncs verknüpft Ihr im Bereich *Cross-Selling* das Feld *Cross-Selling-Verknüpfungen hinzufügen* und ordnet die entsprechende Spalte der CSV zu.
+
+* Es ist möglich, in einer Zeile mehrere Cross-Selling-Verknüpfungen zu hinterlegen. Der Aufbau sieht dabei wie folgt aus:
+
+*ItemID:Typ;ItemID2:Typ2*
+
+* Mit dem Feld *Alle Cross-Selling-Verknüpfungen löschen* können über einen entsprechenden Wert (1 für Ja, 0 für nein) alle Verknüpfungen eines Artikels gelöscht werden. Das ist z.B. sinnvoll, wenn Ihr Eure Cross-Seller überarbeiten möchtet.
+
+* Mit dem Feld *Cross-Selling-Verknüpfungen löschen* ist es möglich, einzelne oder auch mehrere Artikel-IDs zu löschen. Das Format dafür sieht wie folgt aus:
+
+*Artikel-ID;Artikel-ID;etc*
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Cross-Selling-Artikel können verknüpft oder gelöscht werden.
+
+== Best Practice: ASIN und ePID exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du ASIN- und ePID-Daten exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+
+[#export_ASIN_ePID]
+=== Export von ASIN und ePID
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit mit Varianten verknüpften ASINs und ePIDs können mit dem FormatDesigner exportiert werden. Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Artikel*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import aus dem Bereich *Variation* die *ID* oder *Number* der Variante.
+
+* Die eigentlichen Verknüpfungen fügt Ihr dann im Bereich *VariationMarketIdentNumber* hinzu.
+
+Hier besteht die Möglichkeit, 3 Werte zu wählen:
+
+- *countryID*: Gibt die ID des Landes aus.
+- *type*: Gibt den Typ, also ASIN oder ePID, aus.
+- *value*: Gibt den Wert aus, der für die ASIN oder ePID hinterlegt ist.
+
+Für alle 3 Felder muss eine Zuordnung des Typs vorgenommen werden. Möchte man also alle ASINs und ePIDs exportieren, muss jedes Feld doppelt in das Format aufgenommen werden.
+
+Nach dem Speichern des Formats kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#import_ASIN_ePID]
+=== Import von ASIN und ePID
+
+==== Erstellen des Syncs in ElasticSync
+
+Für den Import und das Bearbeiten der ASINs und ePIDs könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync vom Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+* Der Abgleich muss über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen.
+
+* Für die *Zuordnung* des Syncs müssen für die Verknüpfung im Bereich *ASIN/ePID* die Felder *Land*, *Typ* und *Wert* hinterlegt und mit den Spalten aus der CSV verknüpft werden.
+
+* Das Land muss dabei als ID hinterlegt werden und der Typ entweder als ASIN oder EPID.
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Merkmale können verknüpft werden.
+
+[#import_paketnummern]
+== Best Practice: Paketnummern von Fulfillment-Dienstleistern importieren
+
+In diesem Beitrag wird beschrieben, wie Ihr mit *ElasticSync* Paketnummern von Aufträgen, die Ihr von einem Fulfillment-Dienstleister abwickeln lasst, in Euer plentymarkets System zu importieren.
+
+Als Datenquelle bietet sich beispielsweise eine CSV-Datei an, in der die Auftrags-ID und die jeweilige Paketnummer enthalten sind. Typischerweise erhaltet Ihr eine solche Datei von Eurem Fulfillment-Dienstleister.
+
+=== Erstellen des Syncs in ElasticSync
+
+Für den Import von Paketnummern legt Ihr unter *Daten » ElasticSync* einen eigenen Sync vom Typ *Auftrag* an.
+
+[TIP]
+.Neuen Sync anlegen
+====
+Für die reibungslose Zusammenarbeit mit Eurem Fulfillment-Dienstleister empfehlen wir, einen separaten Sync für den Import von Paketnummern anzulegen und ihn ausschließlich für diesen Zweck zu nutzen. Wenn Ihr die unten beschriebenen Felder einem bestehenden Sync hinzufügt, kann es leicht zu falschen Zuordnungen und damit zu Fehlfunktionen kommen.
+====
+
+* Der Abgleich muss zwingend über die *Auftrags-ID* erfolgen. Weitere Abgleichfelder müssen nicht eingestellt werden.
+
+* Für die Paketnummer fügt Ihr dann eine neue *Zuordnung* hinzu. Als Zuordnungsfeld muss das Feld *Paketnummer* sowie die Option *Standardpaket* ausgewählt werden.
+
+* Über die Funktion *Bearbeiten* innerhalb der Zuordnung *Standardpaket* den Namen der Spalte auswählen, deren Werte aus der Quelldatei importiert werden sollen.
+
+* Einstellungen *speichern*.
+
+Nachdem Ihr die Einstellungen vorgenommen und gespeichert habt, solltet Ihr über das Menü *Sync » Abgleich* zuerst den Sync testen. Nach erfolgreichem Import der *Paketnummer* wird diese im Reiter *Einstellungen* des jeweiligen Auftrags angezeigt.

@@ -1,0 +1,155 @@
+= Erste Hilfe für Prozesse und plentyBase
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Erste Hilfe, Client, plentymarkets Client, Client-Probleme, plentyBase, Prozesse, Prozessprobleme, alles kaputt, SOS Prozesse
+:position: 60
+
+Diese hier aufgelisteten Fehler sollen helfen, mögliche Fehlerquellen bei der Arbeit mit den Prozessen ausfindig zu machen.
+
+== plentyBase Logfiles auffinden
+
+. Starte plentyBase.
+. Führe den Prozess so lang aus, bis das Verhalten auftritt.
+. Klicke auf das plentyBase Logo und wähle *Log-Dateien anzeigen*.
+. Packe die Datei `plentyBase.log` als ZIP-Datei oder RAR-Datei. +
+→ Sollte das Verhalten an einem anderen Tag aufgetreten sein, packe die Datei des entsprechenden Tags.
+. Schicke die Logs erst *_nach Aufforderung_* durch ein Mitglied der plentyCrew per privater Nachricht im plentymarkets Forum. +
+*_Tipp:_* Schicke wenn möglich auch den Link zum Forenbeitrag mit. Ohne Bezug und Aufforderung kann es zu starken Verzögerungen kommen, die wir gern vermeiden möchten. +
+*_Hinweis:_* Bitte sende die Logfiles unbedingt als private Nachricht und poste die Logfiles nicht in dem öffentlichen Beitrag!
+
+[TIP]
+.Wie versende ich private Nachrichten im Forum?
+====
+Wie du private Nachrichten im plentymarkets Forum versendest, erfährst du im https://forum.plentymarkets.com/t/wie-sende-ich-private-nachrichten/3024[plentymarkets Forum^].
+====
+
+== Fehlermeldung "Subaktion (ID x) korrigieren: Code 1203"
+
+Die Fehlermeldung *Subaktion (ID x) korrigieren: Code 1203* ist eine sehr häufige Meldung. Verursacht wird diese Fehlermeldung, wenn Druckaktionen oder Speicheraktionen geändert werden. Änderst du zum Beispiel an Rechner A deinen Prozess und fügst dort eine Druck- oder Speicheraktion hinzu, musst du hier schon beim Anlegen den Drucker bzw. den Speicherpfad wählen. Dieser Druck- oder Speicherpfad ist jedoch nur für den Rechner gültig, den du gerade bedienst, da die kompletten Druck- oder Speicherkonfigurationen lokal auf deinem PC gespeichert werden. Versuchst du nun den Prozess auf Rechner B zu starten, bekommst du bei jeder Druck- oder Speicheraktion die Fehlermeldung *Subaktion (ID x) korrigieren: Code 1203*.
+
+[.instruction]
+Fehler beheben:
+
+. Gehe zu *Einstellungen » Prozesse*.
+. Öffne den Prozess, der die Fehlermeldung verursacht.
+. Bearbeite jede Druck- und Speicheraktion.
+. Füge jeder Druckaktion den Drucker hinzu, der bei dieser Aktion drucken soll:
+  .. Öffne die Subaktion *Drucken*. +
+  image:basics/automatisierung/prozesse/assets/beispiel_drucken_1.png[]
+  .. Wähle den Drucker. +
+  image:basics/automatisierung/prozesse/assets/beispiel_drucken_2.png[]
+  .. Speichere die Änderung.
+. Füge jeder Speicheraktion einen Speicherpfad hinzu:
+  .. Öffne die Subaktion *Speichern*. +
+  image:basics/automatisierung/prozesse/assets/beispiel_speichern_1.png[]
+  .. Wähle den Speicherpfad. +
+  image:basics/automatisierung/prozesse/assets/beispiel_speichern_2.png[]
+  .. Speichere die Änderung.
+. Die Fehlermeldung kann auch für die Aktionen im Fehlerfall auftreten kann. Prüfe daher, ob für die Aktion eine Aktion im Fehlerfall festgelegt ist:
+  .. Klicke in den Aktionen auf den *Käfer*: +
+  image:basics/automatisierung/prozesse/assets/beispiel_speichern_3.png[]
+
+
+== Fehlermeldung "Dokument nicht gespeichert"
+
+Manchmal tritt der Fehler *{Dokumenttyp} nicht gespeichert: Keine Dokumente verfügbar. Betroffene IDs: {xxx}* auf.
+
+[.instruction]
+Temp- und Cache-Ordner erstellen:
+
+. Öffne den folgenden Ordner: +
+Windows: `C:\Benutzer\"DeinBenutzer"\plentymarkets\plentymarkets` +
+MacOS: `/Users/"DeinBenutzer"/Library/Application Support/plentymarkets/plentymarkets`.
+. Prüfe, ob in diesem Order der Unterordner `temp` vorhanden ist.
+. Erstelle in diesem Ordner den Unterordner `temp`, wenn der Ordner nicht vorhanden ist.
+
+== Fehlermeldung "Angefangene Box-Kommisionierung existiert bereits für Benutzer"
+
+Bei der Meldung *Angefangene Box-Kommisionierung existiert bereits für Benutzer* handelt es sich nicht direkt um eine Fehlermeldung. Vielmehr ist die Meldung ein Hinweis darauf, dass der Benutzer bereits eine Box-Kommissionierung gestartet hat, die jedoch noch nicht abgeschlossen wurde.
+
+. Prüfe, ob im Arbeitsschritt *Auftragsabwicklung* die Einstellung *Angefangene Box-Kommissionierung* auf *Fortfahren* steht. +
+→ Mit dieser Einstellung wird die letzte Box-Kommissionierung beim nächsten Start des Prozesses fortgesetzt.
+
+Wenn die Fehlermeldung weiterhin auftritt oder wenn du die angefangene Box-Kommissionierung aus irgendeinen Grund nicht fortführen möchtest, kannst du die Box-Kommissionierung zurücksetzen:
+
+. Öffne das Menü *System » Einstellungen » Benutzer » Konten*.
+. Wechsele in das Tab *Prozesse*.
+. Klicke auf *Angefangene Box-Kommissionierung zurücksetzen*. +
+→ Die angefangene Box-Kommissionierung wird zurückgesetzt.
+
+== Fehlermeldung "Versandetiketten nicht gespeichert"
+
+Wenn die Fehlermeldung *Versandetiketten nicht gespeichert. Keine Auftragsdaten vorhanden. Betroffene IDs: {xxx}* auftritt, solltest du prüfen, ob am Auftrag der Versanddienstleister hinterlegt ist, mit dem du den Auftrag über den Prozess versenden möchtest.
+
+Wenn zum Beispiel am Auftrag der Versanddienstleister Hermes hinterlegt ist und im Prozess wird versucht, den Auftrag mit DHL Intraship/Versenden zu verschicken, tritt diese Fehlermeldung auf.
+
+Passe daher entweder das Versandprofil am Auftrag an oder passe den Prozess so an, dass nur Aufträge von einem bestimmten Versanddienstleister/Versandprofil berücksichtigt werden.
+
+== Die Lagerortsortierung passt nicht
+
+Dieses Problem kann bei verschiedenen Dokumenten (Packliste, Pickliste etc.) oder in den Arbeitsschritten auftreten. Abhilfe schafft hier eine Ereignisaktion.
+Ohne diese Ereignisaktion übernimmt die Zuweisung das erste Auftragsdokument, was für eine Sortierung im Prozess zu spät ist.
+
+[.instruction]
+Ereignisaktion einrichten:
+
+. Öffne das Menü *Einstellungen » Aufträge » Ereignisaktionen*.
+. Klicke auf *Ereignisaktion hinzufügen*. +
+→ Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
+. Gib einen Namen ein.
+. Wähle das *Ereignis* gemäß <<tabelle-BP-EA-lagerortsortierung>>.
+. *Speichere* die Einstellungen.
+. Nimm die Einstellungen gemäß <<tabelle-BP-EA-lagerortsortierung>> vor.
+. Setze ein Häkchen bei *Aktiv*.
+. *Speichere* die Einstellungen.
+
+[[tabelle-BP-EA-lagerortsortierung]]
+.Ereignisaktion Lagerortsortierung
+[cols="1,2,2"]
+|====
+|Einstellung |Option |Auswahl
+
+|*Ereignis*
+|*Statuswechsel*
+|5.0
+
+|*Filter*
+|*Auftrag &gt; Auftragstyp*
+|*Auftrag* +
+*Lieferauftrag* +
+*Gewährleistung* +
+*Reparatur*
+
+|*Aktion*
+|*Versand &gt; Lagerort zuweisen*
+|*Alten Lagerort lösen*
+|====
+
+
+== Fehlende plentyBase Authentifizierung. Access-Token-Einstellungen prüfen
+
+Hierbei handelt es sich nicht um eine Fehlermeldung im klassischen Sinn, vielmehr werden Sie darauf hingewiesen, dass noch kein Access Token zur Absicherung der Kommunikation zwischen dem plentymarkets System und dem lokal installierten plentyBase eingerichtet wurde.
+
+Damit diese Meldung nicht mehr erscheint und die Verbindung abgesichert ist, muss ein Token im Terra Backend erzeugt und in plentyBase hinterlegt werden:
+
+Das geht wie folgt:
+
+** plentyBase starten
+** plentymarkets über den zentralen Login öffnen
+** Über *P* (plenty Logo) auf plentyBase gehen
+
+image::_best-practices/MoCli/Prozesse/assets/plentybase_backend.png[]
+
+** im Reiter *Einstellungen* einen Token generieren, diesen in die Zwischenablage kopieren und oben speichern drücken
+
+image::_best-practices/MoCli/Prozesse/assets/accesstoken.png[]
+
+** auf das plentyBase Logo in der System Task-Leiste drücken und dort *Konfiguration öffnen* wählen:
+
+image::_best-practices/MoCli/Prozesse/assets/baseMac.png[]
+image::_best-practices/MoCli/Prozesse/assets/baseWin.png[]
+
+** Auf *Access Tokens verwalten* drücken
+** Auf *Hinzufügen* drücken
+** Den in die Zwischenablage kopierten Token links einfügen, rechts zum Beispiel “plentymarkets” eingeben
+** *Ok* drücken
