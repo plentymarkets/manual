@@ -1,0 +1,1015 @@
+= Migration guide
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: plentymarkets 7, Migration, Migration guide
+:description: Guide for migrating to plentymarkets 7
+:position: 70
+
+This page includes important information about migrating to plentymarkets 7. The item architecture was completely redone for plentymarkets 7. This page describes the new architecture and provides you with an overview of its features. Some of these new features are still in development. It also describes the procedure for migrating data to the new version. You will learn how to prepare your system for the migration. Please note that the migration process cannot be reversed. If you do not adequately prepare your system for the migration, then you will likely spend a lot of time and energy fixing errors after the migration. At worst, you may lose some of your data. Therefore, read the following information carefully and prepare your data for the migration as described here.
+
+[WARNING]
+.SOAP API only available for plentymarkets 7 Classic
+====
+After migrating to plentymarkets 7, the SOAP API is only available for customers with a Classic contract. Customers with a Zero contract cannot use the SOAP API. All plentymarkets 7 customers can use the REST API.
+====
+
+[#10]
+== Overview of the new structure
+
+In the new item architecture, an item is a complete data record. It is composed of one main variation and any additional variations. In other words, an item is composed of global data that applies to all of the item variations (item data) as well as data that is managed separately for each variation (variation data).
+
+Item data:
+
+* Global settings (condition, manufacturer, age rating, etc.)
+* Texts
+* Properties
+* Cross-selling settings
+
+Variation data:
+
+* Images
+* Market visibility
+* Sales prices
+* Barcodes
+* Units
+* Warehouse
+* Stock
+* Categories
+* Suppliers
+
+Every item has a main variation that cannot be deleted. This main variation is not the same thing as the item. Rather, it differs from the other variations in that its characteristics can be passed on to other variations of the item. The main variation can either be sold to customers or it can be a virtual variation, which is only used to manage other variations of the item.
+
+Image 1 shows a schematic representation of the item architecture in plentymarkets 7.
+
+.Current state of the new item architecture
+image::basics/version-upgrade/assets/EN-plentymarkets-7-Migration-Guide-01.png[]
+
+There are many advantages to the new item architecture. The most important goal was to give users more flexibility when managing prices, item data and variations. The information below provides a short overview of the new features and their advantages.
+
+* The price sets and price columns were replaced with sales prices. These sales prices are created and managed centrally. They are then assigned to variations. This concept makes it easier for you to manage your prices. It also provides you with more flexibility when creating very specific prices. For example, the discount scales that were previously created for specific items and customer classes can now be set up with sales prices. This gives you more flexibility when creating graduated prices.
+* More flexibility when working with variations. It is now possible to save individual values for variations, e.g. values for the weight, dimensions, suppliers, shipping costs and other costs. It is also possible for the main variation to pass on data to other variations. This helps minimise the time and effort needed to manage similar variations.
+* The main variation can pass on specific item data to the other variations. This reduces the time and effort needed to manage data without making the configuration any less flexible. The inheritance feature allows you to manage characteristics centrally for the main variation and then to update the values for several other variations all at once. Settings that were saved for the main variation can automatically be transferred to the other variations when they are created. You can even change the main variation later on. The variations will still automatically inherit the new settings as long as you have activated the inheritance function. You can also deactivate the inheritance function if you want to carry out settings for the variations individually.
+
+== Looking ahead
+
+plentymarkets subscribes to the principles of agile software development. This means that we do not follow classic development cycles, in which new features are all released together in one large batch. Instead, we break projects into smaller pieces or increments which are released in regular intervals. Since the item structure encompasses nearly all areas of plentymarkets, the smallest possible increment was still quite large and required us to make a comprehensive change. Nonetheless, we are still using the principles of agile software development while restructuring the item data. This current version is only the first step of the process. We have developed enough at this point to give you a first glimpse of the new features. While you get accustomed to the new structure, we will continue to make adjustments and will regularly release these improvements according to the agile philosophy. We are going to tackle the following projects in the next increments:
+
+* The ability to save a different name, short description, description etc. for each variation and possibly for each variation and client
+* The ability to define different properties for each variation
+* The ability to manage prices for each customer
+
+Image 2 shows our goal of being able to manage item texts and properties for each variation.
+
+.Looking ahead; managing data for each variation
+image::basics/version-upgrade/assets/EN-plentymarkets-7-Migration-Guide-02.png[]
+
+[#200]
+== Migration requirements
+
+Note the following requirements for migrating your system to plentymarkets 7.
+
+* **Hosting**: If you are hosting plentymarkets on an own server or in the plentymarkets cloud (cluster), you need to relocate to the AWS cloud to migrate to plentymarkets 7. +
+→ If the system's main domain is hosted by an external provider, you also need to save the new IP address with your external domain provider after <<basics/working-with-plentymarkets/plentymarkets-account#relocation, relocating to the AWS cloud>>.
+* **SOAP**: SOAP interfaces developed by you, partners or agencies must be tested for plentymarkets 7 Stable compatibility before the migration. Check with the developer or agency that the interface is compatible with plentymarkets 7 Stable.
+* **plentymarkets Shipping**: plentymarkets Shipping cannot be used with plentymarkets 7 and is no longer supported. It was completely taken over from the processes and
+You need to install link:https://marketplace.plentymarkets.com/en/plugins/integration/plentyBase_5053[plentyBase] to be able to work with them. +
+The software plentyBase works in the background, you only need to login with your user name to the plentymarkets Backend via a browser as usual.
+* **Markets**: At this stage, not all markets are functioning in plentymarkets 7. Before migrating, check the <<basics/version-upgrade#, list>> of those markets that have not been migrated yet.
+* **Preparation**: Read this migration guide and follow the preparations described.
+
+Also note that the SOAP API is only available to customers with a Classic contract after migration to plentymarkets 7. Customers with a Zero contract cannot use the SOAP API. All plentymarkets 7 customers can use the REST API.
+
+[#20]
+== Migration
+
+This chapter teaches you how to migrate your data to the new item architecture. The description is divided into two main parts, which teach you how to migrate **item data** and **price columns**. Both parts require you to do a little bit of work in advance. The preparatory work is briefly described in this chapter. However, you can find a detailed description in the chapter <<basics/version-upgrade/migration-guide#30, Preparation in detail>>.
+
+[#21]
+=== Migrating the item data
+
+==== Migration pattern
+
+The following pattern is used when migrating item data to the new item architecture:
+
+.Migrating the item data
+[cols="1,3,3"]
+|====
+|Migrated data type |Behaviour |Exceptions
+
+|Master item (item without variations) ⇒ Main variation
+|The item's settings and data will be carried over.
+|
+
+|Variation⇒ Variation
+|The variation's settings and data will be carried over.
+|
+
+|Variations without settings +
+⇒ Variation
+|The main variation's settings and data will be carried over.
+|The item/variation number will only be assigned once. +
+New variation numbers will be generated for all of the other variations (see below).
+|====
+
+[IMPORTANT]
+.Not all data formats are migrated
+====
+Due to the new item structure, not all item data formats of the **Data exchange » Dynamic export** will be migrated. Incompatible data formats are removed during migration.
+====
+
+[.subhead]
+Exception: Item/Variation numbers
+
+In the new item architecture, each variation number can only be used once. This means that new variation numbers may need to be assigned during the migration in some cases. The following pattern is used when migrating data:
+
+.Migrating item/variation numbers
+[cols=""]
+|====
+|Setting |**Item/Variation number**
+
+|New path
+|**Item » Edit item » Open item » Tab: Variation ID » Tab: Settings**
+
+|Exception 1: +
+Items/Variations without item/variation numbers
+|A new, unique variation number will be generated for each variation. This variation number is composed of a prefix and the next variation number. Before data is migrated, go to <<item/managing-items#15, System » Item » Settings>> and use the settings **Prefix for new variation numbers (plentymarkets 7 and higher)** and **Next variation number (plentymarkets 7 and higher)** to specify this information.
+
+|Exception 2: +
+Items/Variations with the same item/variation number
+|The variation that is migrated first receives the item/variation number. A new, unique variation number will be generated for all of the other variations. This variation number is determined by the <<basics/version-upgrade/migration-guide#35, migration settings>> found in the menu **System » Settings » Data » Migration**. It is controlled with the setting **Duplicate number**.
+
+|Exception 3: +
+Items with multiple price sets
+|One variation can be turned into several different variations. When the first price set is migrated, the variation receives the item/variation number. A new, unique variation number will be generated for all of the other variations. This variation number is determined by the <<basics/version-upgrade/migration-guide#35, migration settings>> found in the menu **System » Settings » Data » Migration**. It is controlled with the setting **Duplicate number**. +
+**Note:** If you migrate an item that has multiple price sets and you have saved the same **Content** and **Unit** for several of the price sets, then only the first price set will be migrated.
+
+|Preparation
+|Carry out or check the <<basics/version-upgrade/migration-guide#35, migration settings>>. +
+Go to <<item/managing-items#15, System » Item » Settings>> and configure the settings **Prefix for new variation numbers (plentymarkets 7 and higher)** and **Next variation number (plentymarkets 7 and higher)**. +
+<<basics/version-upgrade/migration-guide#50, Check>> whether you have items with multiple price sets. Then check whether any of these price sets use the same content and unit. Change the content and unit for the additional price sets.
+|====
+
+[#22]
+==== Particularities
+
+[.subhead]
+**Unit 1** and **Unit 2**
+
+In the new item architecture, the fields **Unit 1** and **Unit 2** were replaced with the field **Variation name**. Use the <<basics/version-upgrade/migration-guide#35, migration settings>> to specify how the content of these fields should be migrated. The following pattern is used when migrating data:
+
+.Migrating the fields **Unit 1** and **Unit 2**
+[cols=""]
+|====
+|Setting |**Unit 1**, **Unit 2**
+
+|New path
+|**Item » Edit item » Open item » Tab: Variation ID » Tab: Settings**
+
+|Behaviour
+|Depending on how you configured the <<basics/version-upgrade/migration-guide#35, migration settings>>, the system will either discard one of the units or it will merge both of the fields together. +
+If you want the fields **Unit 1** and **Unit 2** to be combined together in the field **Variation name**, then open the <<basics/version-upgrade/migration-guide#35, migration settings>> and specify which separator should be used. The content of both fields will be inserted into the **Variation name** field and will be separated from each other with this character.
+
+|Preparation
+|<<basics/version-upgrade/migration-guide#50, Check>> the units and specify the separator. Change the fields **Unit 1** and/or **Unit 2** if needed.
+|====
+
+[.subhead]
+Store visibility
+
+The new client visibility setting controls whether a variation is visible in the online store. There is no longer one central setting to control whether an entire item is visible in the online store. Rather, the client visibility is defined for each individual variation. This setting is found in the variation's **Availability** tab.
+
+.Migrating the store visibility
+[cols=""]
+|====
+|Setting |**Store visibility**
+
+|New path
+|**Item » Edit item » Open item » Tab: Variation ID » Tab: Availability**
+
+|Preparation
+|None
+|====
+
+[#25.subhead]
+GTIN1 to GTIN4, ISBN
+
+EAN/GTIN and ISBN numbers are now saved as barcode definitions in the new item architecture. There is no longer a limit on how many GTIN/ISBN numbers can be saved. You can save as many barcode definitions as you want for each variation. Five barcode definitions are created during the migration. They match the current GTIN and ISBN. The following pattern is used when migrating data:
+
+.Migrating GTIN1 to GTIN4/ISBN
+[cols=""]
+|====
+|Setting |**GTIN1** to **GTIN4**, **ISBN**
+
+|New path
+|**Item » Edit item » Open item » Tab: Variation ID » Tab: Settings**
+
+|Behaviour
+|**Item:** Current GTIN1 to GTIN4 and ISBN will be saved as barcodes for the main variation. +
+**Variations:** Existing GTIN1 to GTIN4 will be saved as barcodes for the variations. Barcodes will not be created for any variations that do not have their own GTIN, i.e. the item's GTIN will not be used. +
+Assignment of existing GTIN during the migration: +
+**GTIN13** if there are 13 characters that are all numbers. +
+**UPC** if there are 12 characters that are all numbers. +
+**GTIN128** if there is a different number of characters that are all numbers. +
+**Code128** if there is a different number of characters and at least one of these characters is not a number. +
+**__Note:__** Leading zeros of GTIN codes are truncated during migration. Because this changes the code's character count, the GTIN is not migrated as a GTIN data record but instead is saved as a Code128 or UPC.
+
+|Preparation
+|<<basics/version-upgrade/migration-guide#100, Check>> for EAN/GTIN that start with a zero.
+|====
+
+[#26]
+=== Migrating the price columns
+
+The previously existing price sets and price columns were replaced with sales prices in the new item architecture. These sales prices are defined in the **System » Item » Sales prices** menu. When you open a variation, you will be able to add these sales prices and then save the actual monetary amounts. The new sales prices are composed of the following settings:
+
+* Referrer
+* Currency
+* Customer class
+* Client (store)
+* Amazon accounts
+* eBay accounts
+* Country of delivery
+* Price type
+* Item quantity, starting from which the price applies
+
+You will need to open a variation and add sales prices to it before you can enter actual prices, i.e. monetary amounts. Previously, prices were calculated from a combination of settings in various areas (table 6). These settings are now used to create your new sales prices. The number of sales prices that are created depends on the complexity of the previous settings. Existing price columns are analysed and given the following priority during the migration process. This information is then used to calculate the new sales prices:
+
+.Priority when creating sales prices
+[cols="1,3,3,3"]
+|====
+|Priority |Price column definition |Explanation |Preparation
+
+|1
+|**System » Orders » Order referrer**
+|The order referrer's price column has the highest priority for referrers greater than or equal to 2.0. +
+**Exception:** Referrers that have price columns for specific accounts/platforms, e.g. eBay, Amazon
+a|
+* Check which price columns were set up in the **Order referrer** menu and <<basics/version-upgrade/migration-guide#80, compare>> them to the price columns saved for individual markets. Make any changes as needed. +
+**Fallback:** Some markets allow you to specify an individual price column (e.g. Shopgate). If you selected the standard price for these markets but you also selected a different price column under **System » Orders » Order referrer**, then this price column will be used instead of the standard price.
+
+|2
+|**System » Orders » Payment » Currencies**
+|Take a look at the **Currency conversion** option: +
+**Use price column** = The amount will be taken directly from the price column. +
+**Live conversion** = The current exchange rate will be used to convert the amount in the price column.
+a|
+* Check the **Currency conversion** setting for every client. If your clients use different settings, then consider whether it makes sense to change them so that <<basics/version-upgrade/migration-guide#70, all clients use the same settings>>, thus reducing the number of newly created sales prices.
+* Clients with the setting "Use price column": +
+<<basics/version-upgrade/migration-guide#75, Check>> which price columns were linked to currencies in the menu **System » Orders » Payment » Currencies**. Make sure that all of your items have amounts saved in these price columns. +
+**Important:** If you did not save an amount, then the variation's standard price will be used for the same currency. Depending on the exchange rate, this can cause new prices to drastically differ from one another.
+
+|3
+|**System » CRM » Classes**
+|Goes into effect if price columns are irrelevant for order referrers and currencies. +
+**Note:** Volume discounts are no longer defined for customer classes. Rather, they are defined as sales prices.
+a|
+* A sales price is created for every price column and price visibility that is currently used (**Show everyone**, **Only show B2C customer classes**, **Only show B2B customer classes**). Therefore, check the **Price visibility** setting as it pertains to <<basics/version-upgrade/migration-guide#90, customer classes>>.
+
+|4
+|**System » Client » Select client » Online store » Settings**
+|Goes into effect if there are no other settings with a higher priority.
+a|
+* Check the price columns that were selected in the menus <<basics/version-upgrade/migration-guide#60, Referrer, Currency, Customer class, Client (store)>>. If the same price column is selected in more than one of these menus, then the settings will be combined. Check these combinations and make sure that the settings do not lead to any unexpected behaviour.
+
+|====
+
+Price columns are converted into sales prices one at a time. The standard price is migrated first along with all of its settings. The priority described above is used for the migration. All of the relevant sales prices are created during the migration process. All of the other price columns are then migrated one at a time, e.g. price column 1, price column 2, etc. If a price column is not used or included in any item, then it will not be migrated.
+
+[#30]
+== Preparation in detail
+
+[TIP]
+.Tip: Check and update your item data
+====
+Make sure that your item data is up-to-date before you begin the migration. Delete any old test items and make sure that your prices are accurate. This will make it much easier to migrate the data and will reduce the amount of time needed for correcting any errors after the migration.
+====
+
+Prepare your system as described in this chapter to ensure that your item data is migrated without any problems. Make sure that you have completed all of these preparatory tasks before you begin migrating your item data. Otherwise, you may need to spend a large amount of time correcting errors after the migration. At worst, inadequate preparation may cause you to lose data.
+
+[NOTE]
+====
+Carry out the settings and preparatory tasks in your current plentymarkets 6 version before you begin the migration process.
+====
+
+=== System settings before switching to plentymarkets 7
+
+[#35]
+==== Carrying out the migration settings
+
+Carry out the following migration settings before you switch to plentymarkets 7.
+
+[.instruction]
+Carrying out the migration settings:
+
+. Go to **System » Settings » Data » Migration**.
+. Expand the menu **Items (settings for migrating to plentymarkets 7)**. +
+→ The migration settings will be displayed.
+. Carry out the settings as desired. Pay attention to the explanations given in table 7.
+. **Save** the settings.
+
+.Migration settings
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|**Create main variation**
+|Decide how items with variations should be migrated. Select whether a main variation should be created from the item data. +
+**Yes** (default setting) = An additional variation will be created. The item data will be saved in this variation. This variation will be the main variation. +
+**Example:** You have one item with 4 variations before the migration. This will turn into 5 variations after the migration. The former item will become the main variation. +
+**No** = The data that is saved for the item will be discarded. +
+**Example:** You have one item with 4 variations before the migration. This will turn into 4 variations after the migration. One of the former variations will be the main variation. +
+**Important:** Item data will not be migrated if you select the option **No**. The data will be discarded. For markets (e.g. Amazon, Zalando etc.) with parent child item relationships, plentymarkets is not synchronised with the market. Therefore, we recommend using the default setting **Yes**.
+
+|**Merge Unit 1 + 2**
+|The fields Unit 1 and Unit 2 are combined together during the migration to form the field **Variation name**. +
+Decide how the units should be migrated: +
+**Unit 1 + Unit 2** = The fields will be combined together. The content will be displayed in the order **Unit 1****Unit 2**. Use the option **Separator for merging Unit 1 + 2** to decide which separator should be used. +
+**Unit 2 + Unit 1** = The fields will be combined together. The content will be displayed in the order **Unit 2****Unit 1**. Use the option **Separator for merging Unit 1 + 2** to decide which separator should be used. +
+**Unit 1** = Only the content of the field **Unit 1** will be migrated. The content of the field **Unit 2** will not be migrated. +
+**Unit 2** = Only the content of the field **Unit 2** will be migrated. The content of the field **Unit 1** will not be migrated. +
+
+|**Separator for merging Unit 1 + 2**
+|This option is relevant if you selected **Unit 1 + Unit 2** or **Unit 2 + Unit 1**: +
+Enter the separator that should be displayed between these two units. The separator can be any combination of spaces, characters (commas, semicolons, slashes, etc.) and letters. +
+**Note:** The separator will be used exactly as it was entered into this field. In other words, you need to enter spaces if you want them to be part of the separator.
+
+|**Duplicate number**
+|In plentymarkets 7, each variation number can only be used once. If an item/variation number is used multiple times, then the variation that is migrated first receives the existing number. A new, unique variation number will be assigned for all of the other variations. Decide how you want these variation numbers to be assigned. +
+**Generate new number** = The variation that is migrated first receives the item/variation number. New numbers are generated for the rest of the variations. Go to <<item/managing-items#15, System » Item » Settings>> and enter the prefix and next variation number that should be used for generating these numbers. +
+**Add counter to make existing number unique** = The variation that is migrated first receives the item/variation number. The rest of the variations will be made unique by adding ascending numbers to the end of this existing number. +
+**Example:** The item/variation number XY12345 is used three times in the system. Three different variations are created during the migration. These new variations receive the variation numbers XY12345, XY123452 and XY123453.
+|====
+
+[#38]
+==== Creating a pattern for new variation numbers
+
+Before you switch to plentymarkets 7, decide how new variation numbers should be created. Proceed as described below to specify the pattern.
+
+. Go to **System » Item » Settings**.
+. Configure the settings **Prefix for new variation numbers (plentymarkets 7 and higher)** and **Next variation number (plentymarkets 7 and higher)**. Pay attention to the explanations given in table 8.
+. **Save** the settings.
+
+.Pattern for the next variation number
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|**Prefix for new variation numbers (plentymarkets 7 and higher)**
+|Enter a prefix that should be added to the beginning of the number when new variation numbers are generated. If the field is empty, the prefix **NEW-** is used. +
+**Note:** The setting only goes into effect for plentymarkets 7 and higher.
+
+|**Next variation number (plentymarkets 7 and higher)**
+|Enter the variation number that should be assigned next. Any new variation numbers that are generated afterwards will be given ascending numbers starting from this point. +
+The next variation number that is displayed here will be updated as soon as a new variation number was generated. In other words, you will always see the number that will be assigned for the next variation. +
+**Note:** The setting only goes into effect for plentymarkets 7 and higher.
+|====
+
+=== Item data
+
+[#55]
+==== Checking EAN/GTIN
+
+Leading zeros in EAN/GTIN codes are truncated during migration. Because this changes the code's character count, the EAN/GTIN is not migrated as a GTIN but instead is saved as a Code128 or UPC. As such, check if GTIN with one or more leading zeros exist before migration. If EAN with leading zeros exist, you will need to correct these GTIN <<basics/version-upgrade/migration-guide#100, after the migration>>.
+
+Proceed as described below to export the EAN/GTIN data.
+
+[.instruction]
+Exporting EAN data:
+
+. Go to **Data exchange » Export » Dynamic export**.
+. Create a new <<basics/data-exchange/export-import/exporting-data#, data format>> of the type <<basics/data-exchange/export-import/data-formats/item#, Item>>. +
+→ The recommended data fields and import procedures are listed in table 9.
+. Open the CSV file.
+. Check the GTIN. +
+❏ Do any GTIN start with one or more zeros? +
+→ If no GTIN with leading zeros exist, you do not need to take any action.
+. If you find GTIN with leading zeros, save the CSV file for later use. You will need this GTIN data to correct the GTIN <<basics/version-upgrade/migration-guide#100, after the migration>>.
+
+.Data fields of the data format **Item**
+[cols="1,3,3"]
+|====
+|Field |Procedure |Explanation
+
+|**ItemId**
+|None
+|Item ID
+
+|**ItemEAN**
+|None
+|GTIN code for an item
+
+|**ItemEAN2**
+|None
+|Additional GTIN code for an item
+
+|**ItemEAN3**
+|None
+|Additional GTIN code for an item
+
+|**ItemEAN4**
+|None
+|Additional GTIN code for an item
+|====
+
+[#50]
+==== Checking the units
+
+Units are somewhat of an anomaly when migrating price sets and require a bit of extra attention.
+
+[.subhead]
+Checking the fields "Unit 1" and "Unit 2"
+
+In the new item architecture, the fields **Unit 1** and **Unit 2** were replaced with the field **Variation name**.  Use the <<basics/version-upgrade/migration-guide#35, migration settings>> to specify whether the content of one field or both fields should be migrated. If you want both fields to be migrated, then enter the separator that should be displayed between the two units. Decide on an appropriate separator before you begin migrating your data. This will ensure that the resulting varition name meets your needs. Edit the content of the fields **Unit 1** and/or **Unit 2** if needed.
+
+.Example for migrating the fields **Unit 1** and **Unit 2**
+[cols="1,3"]
+|====
+|Old |New
+
+|**Unit 1:** 50 g +
+**Unit 2:** 60,00 € per 1000 g +
+**Merge Unit 1 + 2**: Unit 1 + Unit 2 +
+**Separator for merging Unit 1 + 2**: "; " (i.e. semicolon+space)
+|**Variation name:** 50 g; €60.00 per 1000 g
+|====
+
+[.subhead]
+Checking the fields "Unit" and "Content"
+
+In the old item architecture, items were uniquely identified by their SKU, which was composed of the **item ID**, **price ID** and **variation ID**. In the new item architecture, the variation ID is now used to uniquely identify data records. However, the new item architecture only allows there to be one variation composed of the **AttributeValueSetID** + **unit** + **content**. If you migrate items that have multiple price sets and you have saved the same **Content** and **Unit** for several of the price sets, then only the first price set will be migrated. Any other price sets for the item will be discarded. Therefore, check whether you have items with multiple price sets. Then check whether any of these price sets use the same content and unit. Change the content and unit for the additional price sets.
+
+The following example uses a pack of cigarillos to illustrate the changes that need to be made before migrating the data.
+
+.Example of identical content saved for the **Content** and **Unit**
+[cols="1,3"]
+|====
+|Price set 1 |Price set 2
+
+|Pack of 20 cigarillos.
+|Pack of 5 cigarillos.
+
+|**Price**: 5.80 EUR
+|**Price**: 1.80 EUR
+
+|**Unit**: Packet
+|**Unit**: Packet
+
+|**Content**: 1
+|**Content**: 1
+
+|**Unit 1**: 20
+|**Unit 1**: 5
+
+|**Unit 2**: Cigarillos
+|**Unit 2**: Cigarillos
+|====
+
+In this example, it makes sense to change the **Unit** to **Each** and to save a **Content** of **20** for price set 1 and **5** for price set 2. Delete the content of the fields **Unit 1** and **Unit 2**. The new data record will look like this:
+
+.Example of new content saved for **Content** and **Unit**
+[cols="1,3"]
+|====
+|Price set 1 |Price set 2
+
+|Pack of 20 cigarillos.
+|Pack of 5 cigarillos.
+
+|**Price**: 5.80 EUR
+|**Price**: 1.80 EUR
+
+|**Unit**: Each
+|**Unit**: Each
+
+|**Content**: 20
+|**Content**: 5
+
+|**Unit 1**:
+|**Unit 1**:
+
+|**Unit 2**:
+|**Unit 2**:
+|====
+
+[.subhead]
+Instructions
+
+Check whether you have items with multiple price sets. Then check whether any of these price sets use the same content and unit. This can be done with the data format <<basics/data-exchange/export-import/data-formats/itemprice#, ItemPrice>> in the dynamic export. To do so, proceed as follows.
+
+[.instruction]
+Checking the units:
+
+. Go to **Data exchange » Export » Dynamic export**.
+. Create a new <<basics/data-exchange/export-import/exporting-data#, data format>> of the type <<basics/data-exchange/export-import/data-formats/itemprice#, ItemPrice>>. +
+→ The recommended data fields and import procedures are listed in table 13.
+. Export the data format.
+. Use the column **ItemID** to sort the exported data. This will allow you to find items with multiple price sets.
+. Check the fields **Content** and **Unit** for all of the items with multiple price sets. +
+❏ Do multiple price sets have identical content in the columns **Unit** and **Lot**?
+. If the content is identical, then change the content of these columns as needed (see example above).
+. Now check the content of the columns **Unit 0** and **Unit 1** for all of the items. +
+❏ Do you need the content of both columns? +
+❏ If yes, then can these fields be merged together into one field as they are? +
+❏ Which field should be displayed first? **Unit 1 + Unit 2** or **Unit 2 + Unit 1**? +
+❏ Which separator is appropriate for merging the content?
+. Change the content of the columns as needed so that they can be merged together to form a meaningful unit.
+. Save the changes to the CSV file.
+. <<basics/data-exchange/export-import/importing-data#, Import>> the CSV file back into plentymarkets if you made any changes.
+. Go to **System » Settings » Data » Migration** and configure the settings for the options **Merge Unit 1 + 2** and **Separator for merging Unit 1 + 2**.
+
+.Data fields of the data format **ItemPrice**
+[cols="1,3,3"]
+|====
+|Field |Procedure |Explanation
+
+|**ItemID**
+|Synchronisation
+|Item ID
+
+|**PriceID**
+|Synchronisation
+|Price set ID +
+**Note:** Select the **Synchronisation** procedure. Otherwise only price set 1 will be exported for each item.
+
+|**Position**
+|None
+|Sorting for multiple price sets
+
+|**Price**
+|Import
+|The item's price
+
+|**Price1** to **Price12**
+|Import
+|The item's prices 1 to 12
+
+|**Unit**
+|Import
+|Default unit
+
+|**Lot**
+|Import
+|Content; determines the number of packaging entities that are included in each unit.
+
+|**Unit0**
+|Import
+|Unit 1:
+
+|**Unit1**
+|Import
+|Unit 2
+|====
+
+==== Checking category links
+
+In plentymarkets 7, items must be linked to at least one category. Items that are not linked to a category will not be visible in the online store. As such, make sure that all items are linked with a category before the migration. Proceed as described below to verify that all items are linked with a category.
+
+[.instruction]
+Checking category links:
+
+. Go to **Item » Edit item**.
+. Set the **Inactive** filter to **ALL**.
+. Activate the **Search without category**. +
+→ All items not linked to a category are listed.
+. Before migration, link all items without a category link to a category. You can do this either manually or using the group function.
+
+=== Price columns
+
+[#60]
+==== Checking combinations of price columns
+
+Various price column settings are combined during the migration process and used to calculate the new sales prices. Therefore, check which price columns are saved in the menus **Order referrer**, **Currencies**, **Customer classes** and **Client (store)** before you migrate the data. If the same price column is selected in more than one of these menus, then this combination may lead to unexpected behaviour. Therefore, check whether these combinations make sense. To do so, proceed as follows.
+
+[IMPORTANT]
+.0 Euro prices
+====
+In plentymarkets 6, if price columns were linked to customer classes without a price (i.e. a price of 0.00), the default price is used as a fallback. This behaviour is also applied during migration. As such, these prices are filled with the previous default price. If you want to offer items with a price of 0, you need to edit the prices after the migration.
+====
+
+[.instruction]
+Checking combinations of price columns:
+
+. Open the menus listed in table 15.
+. Make note of the price columns that are saved in these menus.
+. Compare these price columns. +
+❏ Is the same price column used in more than one of these menus? +
+❏ Do these combinations meet your requirements?
+. Make changes to the settings as needed.
+
+.Menus for price columns
+[cols="1,3"]
+|====
+|Path |Explanation
+
+|**System » Orders » Order referrer**
+|Check the **Price column** setting for every referrer.
+
+|**System » Orders » Payment » Currencies**
+|Check the **Price column** setting for every currency.
+
+|**System » CRM » Classes**
+|Check the **Price column** setting for every customer class.
+
+|**System » Client » Select client » Online store » Settings**
+|Check the **Price column** setting for every client.
+|====
+
+[#70]
+==== Checking the currency settings
+
+[.subhead]
+Currency conversion for multiple clients
+
+Some combinations of settings can cause a large number of sales prices to be created while migrating the price sets. If you work with multiple clients, then you should check which **Currency conversion** setting was saved for each of your clients before you migrate your data. If some clients use the setting **Use price column** and others use the setting **Live conversion**, then check whether these settings are correct. Consider whether it makes sense to change them so that all clients use the same settings, thus reducing the number of newly created sales prices. We recommend proceeding as follows.
+
+[.instruction]
+Checking the currency settings:
+
+. Go to **System » Client » Select client » Online store » Currency**. Access this menu for every client that you work with.
+. Make note of which **Currency conversion** setting was saved for each of your clients.
+. Compare the settings. +
+❏ Do these settings meet your needs?
+. Consider whether it makes more sense to use the same settings for all of your clients. +
+→ If you change the **Currency conversion** setting, then make sure to also change the prices that are linked to it.
+
+[#75.subhead]
+Currency settings for clients with the setting "Use price column"
+
+[TIP]
+.Only for clients with the setting "Use price column"
+====
+Go to **System » Client » Select client » Online store » Currency**. You will only need to check the currency settings if you have clients where the option **Currency conversion** is set to **Use price column**.
+====
+
+For every client that has the setting **Use price column**, check which prices were linked to currencies in the menu **System » Orders » Payment » Currencies**. Then make sure that all of your items have amounts saved for these prices. If you did not save an amount, then the variation's standard price will be used. However, the currency will remain the same. Depending on the exchange rate, this can cause prices to drastically differ from one another. Proceed as described below to check the settings.
+
+[.instruction]
+Checking the currency settings for clients with the setting "Use price column":
+
+. Go to **System » Client » Select client » Online store » Currency**. Access this menu for every client that you work with.
+. Make note of which clients use the setting "Use price column" for the option **Currency conversion**.
+. Go to **System » Orders » Payment » Currencies**.
+. Make note of all the currencies that were not assigned to the standard price. Note which prices these currencies were assigned to.
+. Go to **Data exchange » Export » Dynamic export**.
+. Create a new <<basics/data-exchange/export-import/exporting-data#, data format>> of the type <<basics/data-exchange/export-import/data-formats/itemprice#, ItemPrice>>. +
+→ The recommended data fields and import procedures are listed in table 16a.
+. Export the data format.
+. Create a new <<basics/data-exchange/export-import/exporting-data#, data format>> of the type <<basics/data-exchange/export-import/data-formats/item#, Item>>. +
+→ The recommended data fields and import procedures are listed in table 16b.
+. Open both CSV files.
+. In the **Item** file, filter the data by client (column **ItemStoreIDs**).
+. In the **ItemPrice** file, filter the data by the prices that you made note of in step 4.
+. Compare the filtered item IDs in both documents. +
+❏ Are monetary amounts saved for all of these prices? +
+→ If no monetary amounts are saved, then the variation's standard price will be used as the price. The currency will remain the same.
+. Make sure that the standard price and selected currency meet your needs for all of the items that do not have monetary amounts saved for them. Otherwise, save the desired price in the **ItemPrice** file.
+. Save your changes to the CSV file.
+. <<basics/data-exchange/export-import/importing-data#, Import>> the CSV file **ItemPrice** back into plentymarkets if you made any changes.
+
+.Data fields of the data format **ItemPrice**
+[cols="1,3,3"]
+|====
+|Field |Procedure |Explanation
+
+|**ItemId**
+|Synchronisation
+|Item ID
+
+|**PriceId**
+|Synchronisation
+|Price set ID +
+**Note:** Select the **Synchronisation** procedure. Otherwise only price set 1 will be exported for each item.
+
+|**Position**
+|None
+|Sorting for multiple price sets
+
+|**Price**
+|Import
+|The item's price
+
+|**Price1** to **Price12**
+|Import
+|The item's prices 1 to 12
+|====
+
+.Data fields of the data format **Item**
+[cols="1,3,3"]
+|====
+|Field |Procedure |Explanation
+
+|**ItemId**
+|Synchronisation
+|Item ID
+
+|**ItemStoreIDs**
+|None
+|Client IDs
+|====
+
+[#80]
+==== Comparing the price columns for referrers
+
+Compare the price columns that were saved in the menu **System » Orders » Order referrer** with the settings that were saved for referrers that have their own price columns. If the settings differ, then consider whether it makes more sense to use the same settings. These referrers are:
+
+* Amazon
+* Flubit
+* Fruugo
+* eBay
+* Hitmeister
+* Neckermann
+* Otto
+* Shopgate
+
+**Fallback:** Some markets allow you to specify an individual price column (e.g. Shopgate). If you selected the standard price for these markets but you also selected a different price column under **System » Orders » Order referrer**, then this price column will be migrated instead of the standard price.
+
+Proceed as described below to check the price columns that were selected.
+
+[.instruction]
+Comparing the price columns for referrers:
+
+. Go to **System » Orders » Order referrer**.
+. Make note of which price column was selected for the markets listed above.
+. Open the menus listed in table 17. +
+❏ Do the price columns in these menus match the settings that you noted?
+. Make changes to the settings as needed.
+. Also check the prices and adjust them as needed if you changed the settings.
+
+.Markets with their own price columns
+[cols="1,3"]
+|====
+|Market |Path
+
+|Amazon
+|**System » Markets » Amazon » Settings**
+
+|Flubit
+|**System » Markets » Flubit**
+
+|Fruugo
+|**System » Markets » Fruugo » Settings**
+
+|eBay
+|**System » Markets » eBay » Settings**
+
+|Hitmeister
+|**System » Markets » Hitmeister » Settings**
+
+|Neckermann
+|**System » Markets » Neckermann Austria Enterprise +
+Settings » Markets » Neckermann » Neckermann Austria Cross-Docking**
+
+|Otto
+|**System » Markets » Otto » Integration**
+
+|Shopgate
+|**System » Markets » Shopgate**
+|====
+
+[#90]
+==== Checking the price visibility as it pertains to customer classes
+
+During the migration of prices, one sales price will be created for every price column and price visibility that is currently used, i.e. **Show everyone**, **Only show B2C customer classes**, **Only show B2B customer classes**. In other words, up to three sales prices will be created per price column. Before you begin the migration, check the **Price visibility** setting as it pertains to customer classes. To do so, proceed as follows.
+
+[.instruction]
+Checking the price visibility as it pertains to customer classes:
+
+. Go to **Data exchange » Export » Dynamic export**.
+. Create a new <<basics/data-exchange/export-import/exporting-data#, data format>> of the type <<basics/data-exchange/export-import/data-formats/itemprice#, ItemPrice>>. +
+→ The recommended data fields and import procedures are listed in table 18.
+. Export the data format.
+. Check the values in the column **PriceShowOnly**. +
+❏ Is the visibility limited to specific customer classes? +
+❏ Do these limitations meet your needs? +
+❏ Can any of the settings be changed so that they are the same?
+. Make changes to the settings as needed.
+. Save your changes to the CSV file.
+. <<basics/data-exchange/export-import/importing-data#, Import>> the CSV file back into plentymarkets if you made any changes.
+
+.Data fields of the data format **ItemPrice**
+[cols="1,3,3"]
+|====
+|Field |Procedure |Explanation
+
+|**ItemId**
+|Synchronisation
+|Item ID
+
+|**PriceId**
+|Synchronisation
+|Price set ID +
+**Note:** Select the **Synchronisation** procedure. Otherwise only price set 1 will be exported for each item.
+
+|**Position**
+|None
+|Sorting for multiple price sets
+
+|**Price**
+|Import
+|The item's price
+
+|**Price1** to **Price12**
+|Import
+|The item's prices 1 to 12
+
+|**PriceShowOnly**
+|Import
+|Limit price set to: +
+**0** = All +
+**1** = B2C customers +
+**2** = B2B customers
+|====
+
+=== Checking Amazon item availability for SKU migration
+
+You have to check two settings before the migration in order for Amazon SKUs to be migrated correctly. +
+
+Check in the Menu ** Item » Edit item » Open item » Tab: Availability** whether there is a check mark placed for all the Amazon platforms that you are using as well as for the **Web API**. This is absolutely necessary. Otherwise items will be listed twice in the Seller Central.
+Furthermore, make sure that the settings **Fulfilment by Amazon (FBA)** and **Shipment by Amazon (FBA)** in the menu ** Item » Edit item » Open item » Tab: Availability** are activated. Otherwise FBA SKUs will not be migrated.
+
+=== Using template variables in layout templates
+
+If you offer items in various countries via your eBay shop and if you use link:https://knowledge.plentymarkets.com/en/omni-channel/multi-channel/ebay/ebay-setup#3050[template variables^] for properties in link:https://knowledge.plentymarkets.com/en/omni-channel/multi-channel/ebay/ebay-setup#2800[layout templates^] which are linked to listings, you must provide translations for the national languages prior to migrating to plentymarkets 7. Make sure to provide translations for every country in which you want to offer your items. Otherwise, the property will not be displayed in the description of the listing.
+
+Translations for the property name and the property value are required if you use the template variables *{% GetItemPropertyByName() %}* and *{% GetItemPropertyById() %}* in layout templates.
+
+[.instruction]
+Providing translations for property names:
+
+. Go to *System » Item » Properties*.
+. Expand the property.
+. Select the national language from the drop-down list *Language* in the section *Webshop*.
+. Enter the name in the national language into the field *Name* in the section *Webshop*.
+. *Save* the settings.
+
+[.instruction]
+Providing translations for property values:
+
+. Go to *Item » Edit item » Open item » Tab: Properties*.
+. Select the default language from the drop-down list *Cross-Selling*.
+. Enter the translation for the national language into the free text field *Text*.
+. *Save* the settings.
+
+== External stores
+
+In plentymarkets 6, external stores were used to integrate Shopware. In plentymarkets 7, this integration is realised using clients (stores). During migration to plentymarkets 7, the data of your external stores will be migrated to fully functional clients (stores). These clients can be connected to Shopware using the plentymarkets Connector. However, please note that you will be charged for these clients. As such, check if there are any external stores in your system before the migration. Delete any external stores you no longer need before migrating.
+
+[TIP]
+.External stores without a connection to Shopware
+====
+In plentymarkets 6, it was possible to use external stores not just for integrating Shopware but also for other use cases. As such, you should check if any external stores are present in your system even if you do not use the Shopware Connector. This is important particularly if you do not use the external stores to connect to Shopware but for other use cases, e.g. für market availabilities, numbering systems or invoicing.
+====
+
+=== Check system for external stores
+
+External stores have the web store type **shopware** or **extern**. In addition, they do not have a plenty ID. Proceed as described below to check if any external stores are present in your system:
+
+. Go to **System » Client**.
+. Click on the plus icon of the first client (store). +
+→ The client menu will be displayed.
+. Go to **System » Client » Select client » Settings**.
+. Check the **store type**. +
+→ Shops of the type **shopware** or **extern** are external stores. +
+**__Tip:__** In addition, the option **plenty ID** of external stores is empty. +
+→ If it is an external store, check if it is in use. +
+→ Delete the external store if it is no longer needed.
+. Check all other clients (stores) of your system in the same way.
+
+=== Deleting unneeded external stores
+
+Proceed as described below to delete unneeded external stores before migration.
+
+. Go to **System » Client**.
+. Move the cursor over the store that you want to delete. +
+→ You will see an arrow pointing down.
+. Click on the arrow to open the context menu.
+. Click on the **Delete** option in the context menu. +
+→ You will be asked to confirm your decision.
+. Click on **Delete** to confirm your selection. +
+→ The external store will be deleted.
+
+=== Connecting plentymarkets to Shopware
+
+During migration of your system to plentymarkets 7, the data of your external stores will be migrated to fully functional clients (stores). Integration of external Shopware systems with the link:https://github.com/plentymarkets/plentymarkets-shopware-connector/releases[plentyConnector^] nehmen Sie nach der Migration vor. Informationen dazu finden Sie in der link:https://docs.google.com/document/d/10mPeV3xqx4We71dYQdPmJK2qvb21Rpym6FG_tKwHKfc/edit#heading=h.h38ew7hip4tl[plentymarkets Shopware Connector^].
+
+
+[#210]
+== Making an appointment for the migration
+
+Once you have made the preparations described in this migration guide, use our ticket system to make an appointment for the migration to plentymarkets 7. Proceed as described below to create a ticket.
+
+[.instruction]
+Making an appointment for the migration:
+
+. Go to **Start » Support ticket**.
+. In the **Ticket** section, click on **Create new ticket**.
+. Enter a title that defines your query.
+. Select **Change to plentymarkets 7** from the drop-down list. +
+→ Additional options are listed.
+. Select the plentymarkets system to be migrated from the drop-down list.
+. Select the plentymarkets 7 system you want to use, i.e. **plentymarkets 7 Stable** or **plentymarkets 7 Beta**.
+. Click **Create** to create the ticket. +
+→ The ticket is created and a member of the plentymarkets team will contact you to arrange an appointment.
+
+[IMPORTANT]
+.System availability during migration
+====
+Your system is unavailable during migration. Migrating small systems takes around 15 minutes. Migration of large systems can take up to several hours.
+====
+
+== After migration
+
+[#100]
+=== Correcting GTIN (only for GTIN with leading zeros)
+
+Leading zeros in EAN/GTIN codes are truncated during migration. Because this changes the code's character count, the EAN/GTIN is not migrated as a GTIN but instead is saved as a Code128 or UPC. As such, you need to correct those GTIN imported as Code128 or UPC. The data format **Item** is not compatible with plentymarkets 7. As such, you need to correct the GTIN codes manually after migration. To do so, proceed as described below.
+
+[.instruction]
+Correcting GTIN with leading zeros:
+
+. Go to **Data exchange » Export » Dynamic export**.
+. Create a new <<basics/data-exchange/export-import/exporting-data#, data format>> of the type <<basics/data-exchange/export-import/data-formats/variationbarcode#, VariationBarcode>>. +
+→ The recommended data fields and import procedures are listed in table 19.
+. Open the CSV file of the **VariationBarcode** export.
+. Open the CSV file of the **Item** export that you saved before migration.
+. Correct the incorrectly imported GTIN in the CSV file of the **VariationBarcode** export. +
+→ **Tip:** To correct a large number of GTIN codes, we recommend using the Excel function link:https://forum.plentymarkets.com/t/excel-tabelle-vergleichen/19235/2[VLOOKUP^].
+. Save the changes you made to the CSV file of the **VariationBarcode** export.
+. <<basics/data-exchange/export-import/importing-data#, Import>> the CSV file of the **VariationBarcode** export back into plentymarkets.
+
+.Data fields of data format **VariationBarcode**
+[cols="1,3,3"]
+|====
+|Field |Procedure |Explanation
+
+|**BarcodeID**
+|Import
+|ID of barcode
+
+|**BarcodeName**
+|None
+|Barcode name
+
+|**BarcodeType**
+|None
+|Barcode type
+
+|**Code**
+|Import
+|Code
+
+|**VariationNumber**
+|Synchronisation
+|Variation number
+|====
+
+=== Assigning unit price specification for listings
+
+After migration, you need to resave the setting **Add unit price specification** of the **Listings » Edit listings » Open market listing » Tab: Base** menu for all listings. Use the data field **BasicPriceInText** of the data format **ItemListingMarket** to update this setting for all listings at once.
+
+=== Preparing to exchange data via SOAP API
+
+You need to assign a few parameters before you carry out your first calls in plentymarkets 7. In other words, prepare to exchange data via SOAP API after you have migrated your system to plentymarkets 7 but before you use the SOAP API for the first time. plentymarkets 7 provides you with much more flexibility in general. For example, there is no longer a limit to the number of GTIN. GTIN and other international item numbers are now managed as barcodes. However, this higher level of flexibility in prices and barcodes also means that it is not possible to simply assign the same parameters all across the board. The assignment only takes a few minutes. It is done in the menu **SOAP migration**, which was created for this purpose.
+
+SOAP API version 115 was modified for working with plentymarkets 7. Therefore, use the SOAP API 115 if you want to exchange data via SOAP in plentymarkets 7.
+
+==== Assigning prices for SOAP
+
+Your previous prices were migrated to sales prices. Look a bit <<basics/version-upgrade/migration-guide#26, farther up>> in this migration guide if you want to find out how the data was migrated and the new prices were created. In plentymarkets 7, your sales prices are found in the menu **System » Item » Sales prices**.
+
+[.instruction]
+Assigning prices:
+
+. Go to **System » Settings » API » SOAP migration**.
+. Expand the menu **Prices**.
+. Select a sales price for every price that you want to exchange via the SOAP interface. +
+→ The internal names of the sales prices will be displayed in the drop-down list.
+. **Save** the settings.
+
+==== Assigning barcodes for SOAP
+
+Your previous GTIN, ISBN, etc. were migrated to barcodes. Look a bit <<basics/version-upgrade/migration-guide#25, farther up>> in this migration guide if you want to find out how the data was migrated. In plentymarkets 7, your new barcode definitions are found in the menu **System » Item » Barcode**.
+
+[.instruction]
+Assigning barcodes:
+
+. Go to **System » Settings » API » SOAP migration**.
+. Expand the menu **Barcodes**.
+. Select a barcode for every GTIN that you want to exchange via the SOAP interface. +
+→ The names of the barcodes will be displayed in the drop-down list.
+. Select a barcode that should be transferred as the ISBN.
+. **Save** the settings.
+
+== Migration of markets
+
+All active markets and price comparison portals which were available in plentymarkets 6 have been migrated to plentymarkets 7, except for neckermann.at Cross-Docking.
+
+The migration of the following markets is implemented by the online markets themselves:
+
+- grosshandel.eu
+- Hertie
+- Restposten.de
+- SumoNet
+
+== Mention interface information
+
+The mention interface has not yet been migrated to match plentymarkets 7.
