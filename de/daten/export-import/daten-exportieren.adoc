@@ -1,0 +1,248 @@
+= Daten über dynamischen Export exportieren
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: FiBu, Finanzbuchhaltung, Syska, Collmex, Xero, BMECat, Preissuchmaschinen, Warenbestände exportieren
+:description: Erfahren Sie, wie Sie vorkonfigurierte und individualisierbare Datenformate sowie Datenformate für Preissuchmaschinen exportieren.
+:position: 10
+
+Um Daten manuell aus Ihrem plentymarkets System zu exportieren, stehen Ihnen der Spezialexport und der dynamische Export zur Verfügung.
+
+Im Menü *Daten » Spezialexport* finden Sie vorkonfigurierte Exportformate. Bei diesen Formaten sind die Datenfelder weitgehend definiert und können nur wenig beeinflusst werden. +
+Im Menü *Daten » Dynamischer Export* haben Sie die Möglichkeit, Datenfelder frei zu wählen und so den Inhalt eines Datenformats individuell zu gestalten. +
+
+[#05]
+==  Datei für den Datenaustausch anpassen
+
+Beim Datenexport erhalten Sie üblicherweise eine CSV-Datei. Sowohl beim Datenexport aus einem externen System als auch aus plentymarkets ist es in der Regel notwendig, die Datei vor dem Import in plentymarkets anzupassen. Wichtig ist, dass Sie das Datenformat mit UTF-8-Kodierung exportieren. Der Datensatz muss in Spalten gegliedert sein, was nur mit dem korrekten Trennzeichen möglich ist. Probieren Sie ggf. verschiedene Trennzeichen in der Import-Vorschau der Datei aus.
+
+[#10]
+==  Vorkonfigurierte Datenformate exportieren
+
+Bei den vorkonfigurierten Datenformaten sind die Datenfelder, die exportiert werden, bereits festgelegt. Einige wenige Einstellungen, die den Datenumfang des Exports beeinflussen, müssen trotzdem vorgenommen werden.
+
+<<tabelle-vorkonfigurierte-exportformate>> erläutert die vorkonfigurierten Datenformate, die Ihnen in plentymarkets im Menü *Daten » Spezialexport* zur Verfügung stehen. Anschließend wird beschrieben, wie Sie das Datenformat exportieren. Die erklärungsbedürftigen Einstellungen sind nicht für jedes Datenformat aufgeführt, sondern zusammengefasst in <<tabelle-einstellungen-datenformat-exportieren>> zu finden.
+
+[[tabelle-vorkonfigurierte-exportformate]]
+.Vorkonfigurierte Exportformate im Menü *Daten » Spezialexport*
+[cols="1,3"]
+|====
+| Datenformat | Erläuterung
+
+|*Auftragsdaten für den Zoll*
+| Der Export im CSV-Format enthält Auftragsdaten, die bei der Ausfuhr relevant sind, z.B. die Versandkosten.
+
+|*BMECat*
+|link:http://www.bme.de/initiativen/bmecat/[BMECat^] ist ein standardisiertes, XML-basiertes Austauschformat für Katalogdaten und Produktklassifikationssysteme im B2B-Bereich.
+
+|*CleverReach*
+| Der Export überträgt Auftragsdaten aller Aufträge des Vortages, die im Status 7 sind, an die E-Mail-Marketing-Software <<crm/newsletter-versenden#1700, CleverReach>>.
+
+|*Collmex-Buchhaltung*
+| Der Export ist für die ERP-Lösung link:http://www.collmex.de[Collmex^] optimiert und exportiert Umsatz- oder Kundendaten. Es können Daten eines oder mehrerer Standorte exportiert werden, um diese Daten in link:http://collmex.de/cgi-bin/cgi.exe?1005,1,help,daten_importieren[Collmex zu importieren^]. Beim Export von Umsatzdaten werden für die korrekte Zuordnung die link:http://www.collmex.de/handbuch_basic.html#zahlungsbedingung_anlegen[Zahlungsbedingungs-IDs^] von Collmex verwendet.
+
+|*Finanzbuchhaltung*
+| Der Export im CSV-Format enthält optional Daten der Warenausgangsrechnungen, der Kassenbelege der <<pos#, plentymarkets Kasse>> oder sowohl der Rechnungen als auch der Belege. Der Export ist link:https://www.datev.de/web/de/startseite/startseite-n/[DATEV^]-konform. Es können Daten eines oder mehrerer Standorte exportiert werden. Als Import-Code den Zeichensatz UTF-8 und als Trennzeichen Semikolon wählen. +
+*_Tipp:_* Für den CSV-Import eine Software verwenden, bei der diese Parameter vor dem Datenimport auswählbar sind.
+
+|*Hersteller-Provisionen*
+| Der Export im CSV-Format enthält die Provisionen, die in den <<artikel/artikel-verwalten#560, Herstellerdaten>> hinterlegt sind.
+
+|*Preisliste*
+| Der Export im CSV-Format enthält Artikeldaten und die dazugehörigen Preise.
+
+|*Rechnungsbuch*
+| Der Export im CSV-Format enthält eine Auflistung aller erzeugten Rechnungen und Gutschriften eines Datums oder eines Monats. Als Import-Code den Zeichensatz Latin und als Trennzeichen Semikolon wählen.
+
+|*Umsatz nach Auftragsdatum*
+| Der Export im CSV-Format enthält Umsatzdaten nach Datum des Auftragseingangs. +
+*_Hinweis:_* Für einen Datenexport, der für die Umsatzsteuervoranmeldung verwendet werden soll, wird der Export *Warenausgangsrechnungen* empfohlen, da der Leistungsfall erst mit Lieferung der Ware eintritt. Ein weiterer Vorteil ist, dass es dabei nicht zu so vielen Gutschriften bzw. Stornorechnungen kommt, wenn Leistungen nicht bezahlt werden oder es vor Rechnungsstellung zu Änderungen am Auftrag kommt.
+
+|*Umsatzsteuer-ID-Prüfung*
+| Der Export im CSV-Format enthält Kundendaten von geprüften Kunden sowie deren Umsatzsteuer-ID. Anhand des Eintrags in der Spalte *valid* der exportierten CSV-Datei ist zu erkennen, ob ein Kunde über eine gültige USt-IdNr. verfügt oder nicht. 0 steht für ungültig und 1 für gültig. +
+Im Webshop erfolgt die Prüfung der USt-IdNr. automatisch während des Bestellvorgangs. Für Kunden, die auf anderen Marktplätzen von Ihnen gekauft haben, können Sie die Prüfung manuell ausführen. Details zur Prüfung der USt-IdNr. finden Sie im Kapitel <<crm/kontakte-verwalten#5500, USt-IdNr. prüfen>>. +
+*_Wichtig:_* Setzen Sie ein Häkchen bei *Aktiv*. Wenn Sie das Häkchen nicht setzen, werden unabhängig vom gewählten Zeitraum alle Prüfungsdaten exportiert.
+
+|*Verkaufte Warenmengen*
+| Der Export im CSV-Format enthält eine Übersicht über verkaufte Artikel und die verkaufte Menge innerhalb eines Zeitraums. Welche Informationen der Export enthält, stellen Sie ein.
+
+|*Warenausgangsrechnungen*
+| Der Export im CSV-Format enthält die Rechnungsdaten eines Monats oder eines Tages. Für jede Rechnung wird gemäß des Mehrwertsteuersatzes eine Buchung aufgeführt. Zusätzlich wird der zu dem Auftrag zugeordnete Buchungstext ausgegeben. Als Import-Code den Zeichensatz Latin und als Trennzeichen Komma wählen.
+
+|*Xero*
+| Der Export im CSV-Format enthält Umsatzdaten von UK-Aufträgen für den Datenaustausch mit der Buchhaltungssoftware link:https://www.xero.com/[Xero^]. Es können Daten eines oder mehrerer Standorte exportiert werden. +
+Der Name eines Steuersatzes muss exakt dem Namen entsprechen, wie er in Xero definiert ist. Im Menü *System » Mandant » Mandant wählen » Standorte » Standort wählen » Buchhaltung » Tab: Umsatzsteuersätze* geben Sie hinter dem Steuersatz den Namen ein.
+
+|*Zahlungsbelege*
+| Der Export im CSV-Format enthät Zahlungseingänge, die einem Auftrag zugeordnet werden. Die Rechnungsdaten werden nach Zahlungsart abgerufen.
+|====
+
+Nachfolgend wird beschrieben, wie Sie die oben aufgeführten Datenformate exportieren.
+
+[.instruction]
+Vorkonfiguriertes Datenformat exportieren:
+
+.  Öffnen Sie das Menü *Daten » Spezialexport*.
+.  Wählen Sie ein Datenformat aus der Dropdown-Liste. Beachten Sie dazu die Erläuterungen in <<tabelle-vorkonfigurierte-exportformate>>.
+.  Klicken Sie auf *Hinzufügen*. +
+→ Das Exportformat wird erstellt und der Liste hinzugefügt.
+.  Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen zu den erklärungsbedürftigen Einstellungen in <<tabelle-einstellungen-datenformat-exportieren>>.
+. *Speichern* Sie die Einstellungen.
+.  Klicken Sie auf *Daten exportieren*. +
+→ Die Exportdatei wird erzeugt.
+.  Speichern Sie die Datei zur weiteren Verwendung auf Ihrem Rechner.
+
+[IMPORTANT]
+.Spaltenkopfnamen
+====
+Wenn Sie nach dem Export die Namen der Spaltenköpfe ändern, können diese beim Import in plentymarkets nicht zugeordnet werden, da die Zuordnung anhand der Spaltenkopfnamen erfolgt. Bei einem Import in andere Systeme kann eine Anpassung der Spaltenkopfnamen für die Zuordnung aber sogar notwendig sein.
+====
+
+[[tabelle-einstellungen-datenformat-exportieren]]
+.Einstellungen; Datenformat exportieren
+[cols="1,3"]
+|====
+| Einstellung | Erläuterung
+
+|*Name*
+| Standardname übernehmen oder eigenen Namen eingeben.
+
+|*Firmennummer*
+| Nur für das Datenformat *Collmex-Buchhaltung*. Wenn die Daten mehrerer Firmen verwaltet werden, eine Nummer wählen. Nummer 1 ist voreingestellt.
+
+|*Freitextfeld*
+| Nur für das Datenformat *Finanzbuchhaltung*. Bezieht sich auf am Artikel verknüpfte <<artikel/artikel-verwalten#70, Freitextfelder>> und deren Inhalt. Wenn hier ein Freitextfeld gewählt wurde, als Format (wie weiter unten beschrieben) die Einstellung *Ein Datensatz pro Artikelposition* wählen.
+
+|*Format*
+| Nur für das Datenformat *Finanzbuchhaltung*. +
+*Ein Datensatz pro Rechnung und Umsatzsteuersatz* = Eine Buchungszeile pro Rechnung und Umsatzsteuersatz. Besteht die Rechnung nur aus einem Steuersatz, wird auch nur eine Buchungszeile exportiert. +
+*Ein Datensatz pro Artikelposition (Standard)* = Eine Buchungszeile pro Artikelposition. Die Auswahl *Ein Datensatz pro Artikelposition (Standard)* ist z.B. dann zu verwenden, wenn für Artikel eigene <<auftraege/buchhaltung#650, Erlöskonten>> in plentymarkets hinterlegt wurden.
+
+|*Artikelkategorie bis Ebene*
+| Nur für das Datenformat *Preisliste*. Ebene wählen, um festzulegen, bis zu welcher Ebene Artikel exportiert werden.
+
+|*Datum*; +
+*Zeitraum*
+| Tag, Monat und Jahr wählen, um nur Daten dieses Tages zu exportieren. Statt einem bestimmten Tag können häufig auch Daten des ganzen Monats exportiert werden. +
+*Verkaufte Warenmengen*: Die Einstellung *Datum* bestimmt, ob die im Export enthaltenen Daten auf dem Auftragseingang oder auf dem Zahlungseingang beruhen.
+
+|*AccountCode*
+| Nur für das Datenformat *Xero*. AccountCode eingeben, wie bei Xero hinterlegt.
+
+|*Unternehmenssitz*
+| Nur für das Datenformat *Xero*. Land gemäß der Einstellung in Xero wählen. Mit dieser Einstellung wird die Formatierung der Preise und des Datums festgelegt und somit die Importvorgaben für Xero erfüllt.
+
+|*Zusätzlich Vormerkposten abrufen*
+| Nur für das Datenformat *Zahlungsbelege*. Aktivieren, um <<payment/zahlungen-verwalten#60, Vormerkposten>> abzurufen und zu exportieren. +
+Vormerkposten sind eine Bestätigung der Bank, dass Zahlungen noch nicht gebucht, aber zur Buchung vorgemerkt sind. Eine solche Bestäigung ermöglicht es, Artikel früher zu versenden und den Service zu optimieren. +
+*_Wichtig:_* Vormerkposten müssen ggf. bei der Bank freigeschaltet werden.
+|====
+
+[#20]
+==  Individualisierbare Datenformate exportieren
+
+Im Menü *Daten » Dynamischer Export* erstellen Sie neue Datenformate, die genau die Datenfelder enthalten, die Sie exportieren möchten. Die Datenfelder sind zwar vorgegeben, aber Sie haben im Gegensatz zu den <<daten/export-import/daten-exportieren#10, vorkonfigurierten Datenformaten>> mehr Möglichkeiten zu bestimmen, welche Felder exportiert werden. Die Daten werden in eine Datei exportiert, die Sie dann einem Tool oder einer Schnittstelle, z.B. einem Marktplatz, zur Verfügung stellen. Außerdem bearbeiten Sie in diesem Menü bestehende Datenformate.
+
+Auf der Handbuchseite <<daten/export-import/datenformate#, Datenformate>> finden Sie eine Übersicht der Datenformate, die Sie individuell anpassen können. Auf den Unterseiten sind die einzelnen Datenformate ausführlich erklärt. Sie erfahren dort, welche Felder Sie aktivieren und welche Filter und Aktionen Sie einstellen müssen, um Ihre Daten korrekt zu exportieren. Die meisten Datenformate können Sie nach der Bearbeitung auch wieder in plentymarkets importieren.
+
+Je nachdem, welchen Datenformat-Typ Sie wählen, stehen Ihnen beim Erstellen eines neuen Datenformats die Tabs *Felder*, *Filter* und *Aktionen* zur Verfügung. Die Tabs *Felder* und *Filter* sind in jedem Format verfügbar. <<tabelle-daten-dynamischer-export>> erläutert die Tabs im Menü *Daten » Dynamischer Export*.
+
+[[tabelle-daten-dynamischer-export]]
+.Tabs im Menü *Daten » Dynamischer Export*
+[cols="1,3"]
+|====
+| Tab | Erläuterung
+
+|*Felder*
+| Felder in der Spalte *Export* aktivieren, damit diese Daten exportiert werden. Der Name kann in der Spalte *Eigener Feldname* geändert werden. Dieser Name erscheint als Spaltenkopfbezeichnung in der Exportdatei. In der Spalte *Importaktion* die Option *Keine*, *Import* oder *Abgleich* wählen. In der Spalte *Position* festlegen, an welche Position innerhalb der Ausgabedatei das Datenfeld exportiert wird.
+
+|*Filter*
+| Datenfelder bzw. Funktionen aktivieren und Werte für die Filter wählen. Es werden nur die Daten exportiert, die exakt die eingestellten Eigenschaften aufweisen. +
+Je nach Filteroption stehen verschiedene Optionen in den Dropdown-Listen zur Verfügung. Beim Aktivieren des Datenfelds werden die Bereiche *Operator* und *Wert* zur Bearbeitung freigegeben. Je nach Datenfeld stehen Werte in der Dropdown-Liste zur Verfügung oder müssen in ein Textfeld eingegeben werden. +
+*_Beispiel:_* Aktivieren Sie *ItemID* in der Spalte *Datenfeld/Funktion*. Wählen Sie den Operator *&gt;* aus der Dropdown-Liste und geben Sie die Artikel-ID in das Textfeld in der Spalte *Wert* ein, damit nur Artikel mit der ID höher als die eingegebene exportiert werden.
+
+|*Aktionen*
+| Wählen, welche Aktion ausgeführt werden soll. +
+*_Beispiel:_* Aktivieren Sie die Aktion *ItemLastUpdateTimestamp* und wählen Sie die Option *setze aktuelles Datum* aus der Dropdown-Liste, damit den Artikeln beim Export der Zeitstempel der letzten Änderung hinzugefügt wird.
+|====
+
+Die von Ihnen erstellten Datenformate stehen im Tab *Felder* zum Export zur Verfügung. Die Daten werden in eine Datei exportiert. Sie haben auch die Möglichkeit, die Exportdatei in einem Tabellenkalkulationsprogramm zu öffnen, zu bearbeiten und wieder in Ihr plentymarkets System zu importieren. Beachten Sie dazu das Videotutorial im Kapitel <<daten/export-import/daten-exportieren#05, Datei für den Datenaustausch anpassen>>.
+
+Gehen Sie wie im Folgenden beschrieben vor, um das Datenformat zu exportieren.
+
+[.instruction]
+Datenformat exportieren:
+
+.  Öffnen Sie das Menü *Daten » Dynamischer Export*.
+.  Wechseln Sie in das Tab *Neues Datenformat*.
+.  Wählen Sie einen *Datenformat-Typ* aus der Dropdown-Liste. +
+→ Der *Datenformatsname* wird automatisch aus dem Namen für das Datenformat und einer Nummer gebildet. Sie können den Namen ändern.
+. *Speichern* Sie die Einstellungen. +
+→ Das soeben angelegte Datenformat erscheint in der Liste im Tab *Datenformat bearbeiten*.
+.  Klappen Sie das Datenformat auf. +
+→ Die verfügbaren Tabs des Datenformats werden angezeigt.
+.  Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-daten-dynamischer-export>>.
+.  Wählen Sie im Tab *Felder* auf der rechten Seite die *Anzahl der Zeilen* für den Export. Beachten Sie dazu den nachfolgenden Hinweis bezüglich der Zeilenbegrenzung.
+.  Geben Sie unter *Beginne ab Zeile* ein, ab welcher Zeile der Datenexport beginnen soll. +
+→ Zeile 0 = Spaltentitel.
+. *Speichern* Sie die Einstellungen.
+.  Klicken Sie auf *Daten exportieren*. +
+→ Die Daten werden in eine CSV-Datei exportiert.
+.  Speichern Sie die CSV-Datei zur weiteren Verwendung auf Ihrem Rechner.
+
+[NOTE]
+.Datenexport ist auf 6000 Zeilen begrenzt
+====
+In der Zeile *Anzahl der Zeilen* geben Sie ein, wie viele Datensätze (ein Datensatz pro Zeile) exportiert werden sollen. Der Export ist auf maximal 6000 Zeilen begrenzt. +
+Wenn Sie z.B. 10000 Zeilen exportieren möchten, führen Sie nach dem Export der ersten 6000 Zeilen einen zweiten Export aus. Geben Sie in der Zeile *Anzahl der Zeilen* den Wert 4000 ein und in der Zeile *Beginne ab Zeile* den Wert 6001.
+====
+
+[#90]
+==  Warenbestände exportieren
+
+Der Export Ihres Warenbestandes ist z.B. ein Schritt beim Durchführen einer <<warenwirtschaft/inventur-vornehmen#, Inventur>>. Sie erhalten dabei eine CSV-Datei mit allen relevanten Datenfeldern.
+
+Sie exportieren Ihre aktuellen Warenbestände im Menü *Daten » Dynamischer Export*. Dazu verwenden Sie das Datenformat *Stock*. Beachten Sie die Hinweise zu den Pflichtfeldern dieses Datenformats auf der Handbuchseite <<daten/export-import/datenformate/stock#, Stock>>.
+
+[.instruction]
+Datenexport durchführen:
+
+.  Öffnen Sie das Menü *Daten » Dynamischer Export*.
+.  Klappen Sie das Dateiformat *Stock* auf. +
+→ Wenn das Datenformat noch nicht vorhanden ist, erstellen Sie es wie oben beschrieben.
+.  Nehmen Sie die Einstellungen vor. Beachten Sie dazu die Erläuterungen in <<tabelle-exportoptionen-dynamischer-export>>.
+. *Speichern* Sie die Einstellungen.
+.  Klicken Sie auf *Daten exportieren*. +
+→ Eine CSV-Datei wird erzeugt, die Sie für die weitere Verwendung, z.B. einen Import nach Anpassung der Daten, bearbeiten bzw. anpassen.
+
+[[tabelle-exportoptionen-dynamischer-export]]
+.Dynamischer Export; Exportoptionen
+[cols="1,3"]
+|====
+| Einstellung | Erläuterung
+
+|*Anzahl der Zeilen*
+| Anzahl der Zeilen eingeben, die exportiert werden soll, wenn Sie die Anzahl begrenzen möchten (Grundeinstellung: 6000).
+
+|*Beginne ab Zeile*
+| Ggf. eingeben, ab welcher Zeile der Datenexport beginnen soll (Grundeinstellung: 0).
+
+|*Bestand*
+| Eine der folgenden Optionen wählen. Dieser Artikelbestand wird dann exportiert. +
+*Alle* = Der gesamte Artikelbestand wird exportiert. +
+*Meldebestand unterschritten* = Es werden nur Bestandsdaten zu Artikeln exportiert, bei denen der Meldebestand unterschritten ist. +
+*Meldebestand erreicht / unterschritten* = Es werden nur Bestandsdaten zu Artikeln exportiert, bei denen der Meldebestand erreicht oder unterschritten ist. +
+*Negativer Nettowarenbestand oder Nettowarenbestand gleich 0* = Es werden nur Bestandsdaten zu Artikeln mit Nettowarenbestand gleich oder kleiner 0 exportiert. +
+*Negativer Nettowarenbestand* = Es werden nur Bestandsdaten zu Artikeln mit negativem Nettowarenbestand exportiert. +
+*Negativer physischer Warenbestand oder physischer Warenbestand gleich 0* = Es werden nur Bestandsdaten zu Artikeln mit physischem Warenbestand gleich oder kleiner 0 exportiert. +
+*Negativer physischer Warenbestand* = Es werden nur Bestandsdaten zu Artikeln mit negativem physischem Warenbestand exportiert. +
+*Positiver Nettowarenbestand* = Es werden nur Bestandsdaten mit positivem Nettowarenbestand exportiert. +
+*Positiver physischer Warenbestand* = Es werden nur Bestandsdaten zu Artikeln mit positivem physischem Warenbestand exportiert.
+
+|*Artikelpaket*
+| Wählen, ob Daten *ohne Artikelpakete* oder *inklusive Artikelpakete* exportiert werden sollen.
+
+|*Lieferant*
+|*ALLE* oder einen Lieferanten wählen.
+|====
+
+Die CSV-Datei enthält ggf. Datenfelder, die Sie nicht benötigen. Beachten Sie dazu die Erläuterungen in <<tabelle-exportoptionen-dynamischer-export>>. Löschen Sie nicht benötigte Tabellenspalten und speichern Sie die Datei auf Ihrem Rechner. Nun geben Sie in der Spalte *Stock* den tatsächlichen Lagerbestand für jeden Artikel ein. Ermitteln Sie dazu den Ist-Zustand Ihres Bestandes und geben Sie die Werte in der Spalte *Stock* in die CSV-Datei ein. Speichern Sie die Änderungen.

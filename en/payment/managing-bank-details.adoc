@@ -1,0 +1,649 @@
+= Managing bank details
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Bank, Bank details, EBICS, SEPA, SEPA direct debit mandate
+:description: Payment in plentymarkets: Manage your bank details and the bank details of your customers. Set up EBICS and SEPA in your plentymarkets system.
+:position: 30
+
+On this page of the manual, you learn how to save your <<order-processing/payment/managing-bank-details#10, own bank details>> and your <<order-processing/payment/managing-bank-details#63, customers' bank details>>, how to make your bank details <<order-processing/payment/managing-bank-details#20, visible in the online store>> and how to set up <<order-processing/payment/managing-bank-details#70, EBICS>> and <<order-processing/payment/managing-bank-details#200, SEPA>>.
+
+[#10]
+== Saving own bank details
+
+The bank details that you save in the basic settings will be linked within the entire system. Corrections to the bank details only have to be made in this one menu. The changes will go into effect for the entire system.
+
+[.instruction]
+Saving bank details:
+
+. Go to *System » Settings » Bank*.
+. Enter your bank details. Pay attention to the information given in <<table-saving-bank-details>>.
+. *Save* the settings.
+
+[[table-saving-bank-details]]
+.saving bank details
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Account holder*
+|Enter the account holder's first and last name. For displaying this information in the design, use the template variable *$BankAccountOwner*.
+
+|*Account No.*
+|Enter the account number. For displaying this information in the design, use the template variable *$BankAccount*.
+
+|*Sort code*
+|Enter the sort code. For displaying this information in the design, use the template variable *$BankCode*.
+
+|*Bank*
+|Enter the name of the bank. For displaying this information in the design, use the template variable *$BankName*.
+
+|*IBAN*
+|Enter the International Bank Account Number. For displaying this information in the design, use the template variable *$BankIban*.
+
+|*SWIFT*
+|Enter the SWIFT code. For displaying this information in the design, use the template variable *$BankSwift*.
+|====
+
+[#20]
+== Displaying own bank details in the online store
+
+The category *Bank details* is used for displaying your bank details in the online store. A customer requires your bank details when paying with the payment method cash in advance, for example. The bank details will be displayed during the order process when the customer selects the payment method cash in advance or invoice. The information will also be displayed in the *order history* once the order has been completed. The category *Bank details* can contain information about several bank accounts in different countries.
+
+[#30]
+=== Customising the Bank details category
+
+Proceed as follows to customise the *Bank details* category.
+
+[.instruction]
+Customising the category:
+
+. Go to *Item » Categories*.
+. Open the design's folder, e.g. the folder for Callisto Light 3.
+. Open the category *Bank details*.
+. Click on the *Description 1* tab.
+. Make adjustments to the description.
+. *Save* the settings.
+
+For further information about the settings of categories, refer to the <<item/managing-categories#2, Editing categories>> chapter.
+
+[#40]
+=== Displaying bank details in order process
+
+Below you will find a description of how to save the category *bank details* for the payment method cash in advance. The link is set up the same way for the payment method invoice.
+
+[.instruction]
+Saving the category for the payment method:
+
+.  Go to *System » Orders » Payment » Methods*.
+.  Place a check mark next to the setting *Also show inactive*.
+.  Open the folder *International*.
+.  Click on the payment method. +
+→ The *Settings* tab will open.
+. Select *Info page (internal)* from the *Info page* drop-down list.
+. Click on *Edit* next to the option *Info page (internal)*. +
+→ The window *Select item template* will open.
+. Select the category *Bank details*.
+. Click on *Select*. +
+→ The info page is linked to the payment method.
+.  Place a check mark next to the option *Active*.
+. *Save* the settings.
+. Click on the *Interface* tab.
+. Expand the client.
+. Activate the options *Show bank details* and *Show designated use*. +
+→ The customer will see a link to the information if they select the payment method Cash in advance during the order process.
+. *Save* the settings.
+
+.link to the category *Bank details* in the order process
+image::order-processing/payment/assets/EN--Bank-details-Order-process.png[]
+[#50]
+=== Displaying the bank details in the order history
+
+Carry out the same settings for the payment method Invoice to display the bank details in the *order history* whenever an order is completed. If you activated the option *Show designated use*, then the order ID will be displayed in the *order history* along with the bank details.
+
+.bank details in the order history
+image::order-processing/payment/assets/EN-Bank-details-Order-history.png[]
+[#60]
+=== Displaying country-specific bank details
+
+You can use an IF query to only show the bank details for the country of delivery. In other words, a buyer in Germany would only see the German account details and a customer in Switzerland would only see the Swiss account details. You need the template variable *$CustomerShippingCountry* for this. It only displays the corresponding content if the particular country of delivery was selected. You can find the country IDs under *System » Orders » Shipping » Settings* in the *Countries of delivery* tab. Insert the following code into the <<order-processing/payment/managing-bank-details#30, Bank details>> category. Add further countries of delivery with the respective ID, if needed.
+
+[.subhead]
+Example code for displaying bank details of specific countries of delivery
+
+[source,plenty]
+----
+include::assets/EX-EN-Bank-details-Shipping-country.html[]
+
+----
+[#63]
+== Saving the customer's bank details
+
+You can save the customer's bank details in the *Settings* tab of a customer's data record or delete them again as needed. Bank details are needed, e.g. for the payment method <<order-processing/payment/managing-payment-methods#40, debit>>. There is also an <<order-processing/payment/managing-payments#10, import function>> for bank details in plentymarkets. Contact a legal adviser for information about the current laws in your own country as well as in other countries of delivery.
+
+[IMPORTANT]
+.Pay attention to subscription orders
+====
+Note that the bank details saved here will also be used for subscription orders with the payment method *Debit*. If you delete bank details that are connected to such a subscription order, then the payment method in the <<order-processing/orders/scheduler#, scheduler>> will be changed to the <<order-processing/payment/managing-payment-methods#25, default payment method>> for the particular client (store). The subscription order will then no longer be paid for as an automatic bank transfer. In such a case, only delete the bank details if absolutely necessary. If possible, save new bank details for the customer.
+====
+
+[.instruction]
+Saving the customer's bank details:
+
+. Go to *CRM » Contacts*.
+. Search the contact by means of the filter settings as described in the <<crm/managing-contacts#200, Searching for a contact>> chapter. +
+→ The contacts that correspond to the search criteria entered are displayed.
+. Click in the line of the contact. +
+→ The detail view of the contact opens.
+. Click on *Bank data*.
+. Carry out the settings as desired. Pay attention to the information given in <<table-saving-customer-bank-details>>.
+. *Save* the settings.
+
+[[table-saving-customer-bank-details]]
+.saving the customer's bank details
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*IBAN; +
+BIC; +
+Account holder; +
+Account number; +
+Sort code*
+|Enter the customer's bank details. +
+If IBAN and BIC are entered manually, then they will be checked with cKonto. A message will be displayed in case of errors. +
+If the account numbers and sort codes are saved in the bank details, then you can enter the IBAN and BIC with an automatic migration process. For further information, refer to the chapter *Migrating bank details*.
+
+|*SEPA direct debit mandate*
+|Activate this option once the customer has signed the SEPA direct debit mandate. +
+*_Important_*: This option needs to be activated before pain.008 formats can be retrieved for <<order-processing/payment/managing-bank-details#250, SEPA payments>>.
+
+|*Type of mandate*
+|*SEPA core direct debit* = Allows a biller to collect funds from a payer's account, provided that a signed mandate has been granted by the payer to the biller. +
+*SEPA business to business direct debit* = Enables business customers in the role of payers to make payments by direct debit.
+
+|*Payment frequency*
+|*One-time payment* = Typically used for standard orders. +
+*Recurring payment* = Typically used for regularly occurring orders such as subscription orders, etc.
+|====
+
+[#67]
+== Migrating bank details
+
+In order to change from regular payments to SEPA payments, migrate the bank details of all customers who pay with debit. Those are the customers who use the payment method debit or who have subscription orders in the *Scheduler* menu.
+
+[.instruction]
+Migrating bank details:
+
+. Go to *System » Settings » Data » Migration*.
+. Expand the area *Bank details*.
+. Carry out the settings as desired. Pay attention to the information given in <<table-migration-bank-details>>.
+. Click on the *gear-wheel icon* to migrate the data.
+. Check the data that was migrated in the *Tab: Settings » Tab: Bank details*.
+
+[[table-migration-bank-details]]
+.bank details migration
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Total*
+|The total number of bank data records that exist in the system.
+
+|*Without IBAN*
+|Bank details without SEPA data.
+
+|*Bank accounts*
+|Select the bank accounts to be migrated. +
+*Bank accounts without IBAN/BIC only* = Only bank accounts for which IBAN and BIC are not available, will be migrated. +
+*Bank accounts* = All bank accounts will be migrated. Select, if you are not sure that all bank details are correct. The data will be checked by cKonto during the migration process. This will help you avoid potential errors.
+
+|*Number*
+|Select the number of data records to be migrated. +
+*All* = All data records will be migrated. +
+*500* = 500 data records will be migrated. Select *500* if a large number of bank data records needs to be migrated. This will split the migration.
+|====
+
+[#70]
+== Setting up EBICS
+
+[WARNING]
+.New plugin integration
+====
+In plentymarkets, EBICS is integrated via the link:https://marketplace.plentymarkets.com/plugins/payment/Ebics_5098[plugin in the plentyMarketplace^].
+====
+
+EBICS (Electronic Banking Internet Communication Standard) is a transmission protocol for banking information for usage by banking clients. With the help of the standardised EBICS procedure, retrieving payments has become even easier. EBICS is completely integrated in plentymarkets via the EBICS plugin. No third party providers are required.
+
+For communication via EBICS, your sales figures are saved on the bank server in a file, comparable to bank statements. This file is imported in your plentymarkets system and the sales figures are booked in plentymarkets. The linked EBICS account can be seen as a combined account of several bank accounts. A file with the sales figures of an EBICS account is generated daily. This file can be retrieved at night and all incoming payments are available the next morning. Besides, multiple interim transaction report files are generated daily which can be retrieved to book interim transaction reports in your plentymarkets system.
+
+[#80]
+=== Applying for an EBICS account at your bank
+
+First, apply for an EBICS account at your bank. You will receive documents from your bank which you have to fill in and send back afterwards. The following details for EBICS have to be entered in the form.
+
+[IMPORTANT]
+.Existing EBICS accounts
+====
+Do not set up already existing EBICS accounts in plentymarkets. Multiple users (participants) can be listed in an EBICS account. If you already hold an account, then apply for a new one (techn. user is also possible). Only use this account for plentymarkets.
+====
+
+[#90]
+==== Account numbers
+
+Enter the account numbers for the accounts that you would like sales figures to be retrieved and booked into plentymarkets from. Entering account numbers is optional. This is because the retrieval is technically based on the user data. For further information about entering or not entering of account numbers refer to <<table-provision-bank-statements>>.
+
+[IMPORTANT]
+.Only save business accounts
+====
+There is currently no option in plentymarkets for setting up accounts individually for EBICS retrieval. This means that payment transactions can only be retrieved globally by the plentymarkets system for all accounts saved. This includes e.g. payment transactions on your private account as well, if this account was saved. For this reason, only save the account numbers of your business accounts.
+====
+
+[WARNING]
+.One account for several users
+====
+If several different users all refer to the same account (some banks manage multiple accounts together), then problems may occur if retrieval is carried out simultaneously. This is true even if the users work with different plentymarkets systems. There is currently no solution to prevent this.
+====
+
+[#100]
+==== Provision of bank statements
+
+Provisioning of bank statements can either be done based on the date of the bookkeeping entry or based on bank statements.
+
+[[table-provision-bank-statements]]
+.provision of bank statements
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Based on date of bookkeeping entry*
+|A fictitious, consecutive number is included. This setting is selected by default.
+
+|*Based on bank statements*
+|An effective bank statement number is included. Provided that automatic bank statement retrieval is carried out on a daily basis.
+|====
+
+[#110]
+==== Participants
+
+When setting up your accounts for EBICS, you create one or more <<basics/admin-tasks/manage-users#10, users>> for your accounts. EBICS users are called participants (German: Teilnehmer). You can create participants including different order types. One of these participants has to be saved in the plentymarkets system with the *participant ID* that you received from your bank.
+
+plentymarkets only requires one participant, e.g. a user account with the lowest rights, in order to carry out the EBICS payment retrieval. Only one participant may be set up per EBICS account.
+
+[#120]
+==== Order type
+
+Plentymarkets needs the following order types (explanation in the following table) in order to successfully retrieve the transactions on your EBICS account. Pay attention to the notes about order and signature types given in your bank's forms.
+
+.order and signature types
+[cols="1,3"]
+|====
+|Type |Explanation
+
+|*STA*
+|Statement of account *MT940* or *CAMT053*. <<order-processing/payment/managing-bank-details#180, Retrieval of the transactions>> at the end of the day.
+
+|*VMK*
+|Interim transaction report *MT942* or *CAMT052*. Depending on the respective bank, interim transaction reports are created and made ready for retrieval several times a day. This <<order-processing/payment/managing-bank-details#190, information>> is optional for plentymarkets.
+
+|*EU Type "T"*
+|Signature type that provides authorisation exclusively for the retrieval of transaction data.
+|====
+
+[#130]
+=== Creating an EBICS account in plentymarkets
+
+After your bank accounts have been set up for EBICS, you will receive a letter from your bank. This letter will include the data that you will have to save in plentymarkets in order to set up EBICS there.
+
+[.instruction]
+Adding a new EBICS account:
+
+. Go to *System » Orders » Payment » Plugins » EBICS*.
+. Click on *Create new account*. +
+→ The window *Create new account* opens.
+. Enter the data that have been sent to you by your bank. Pay attention to the settings provided in <<table-ebics-account-settings>>.
+. *Save* the settings. +
+
+[[table-ebics-account-settings]]
+.Account settings for EBICS
+[cols="1,3"]
+|====
+|Setting
+|Explanation
+|*Active*
+|Toggle to mark the account as active.
+|*Account name*
+|Enter the internal name under which the account appears in the overview.
+|*First name*
+|Enter the first name of the account holder.
+|*Surname*
+|Enter the surname of the account holder.
+|*Bank subscriber ID*
+|Enter the bank subscriber ID as submitted by the bank.
+|*Bank customer ID*
+|Enter the bank customer ID as submitted by the bank.
+|*Bank*
+|Enter the name of the bank.
+|*Account version*
+|Select from the dropdown menu which account version should be used. Details are available at the bank.
+|*Create new bank*
+|Activate to add a bank not listed in the dropdown menu. +
+*Bank*: Enter the name of the bank. +
+*URL*: Enter the host URL as submitted by the bank. +
+This option is only available when creating a new account.
+|*Interim transaction report*
+|Select from the dropdown menu with which method the interim transaction reports are accessed. Details are available at the bank.
+|*Daily account statements*
+|Select from the dropdown menu with which method the daily account statements are accessed. Details are available at the bank.
+|*IBAN*
+|Enter the IBAN or account number of linked accounts separated by commas. The CAMT format requires the IBAN, the MT format requires the account number.
+|====
+
+
+[#150]
+=== Carrying out the EBICS account settings
+
+[IMPORTANT]
+.Domain transfer
+====
+Save the basic settings again after carrying out a <<basics/working-with-plentymarkets#domain, domain transfer>>. This will update the EBICS data.
+====
+
+[.instruction]
+Carrying out the EBICS account settings:
+
+. Go to *System » Orders » Payment » Plugins » EBICS*. +
+. Click on *Edit* to open the account. +
+→ The *Account settings* tab opens.
+. Carry out the settings as desired. Pay attention to the information provided in <<table-ebics-basic-settings>>.
+. *Save* the settings.
+
+[[table-ebics-basic-settings]]
+.basic settings for EBICS
+[cols="1,3"]
+|====
+|Setting |Explanation
+|*Account settings*
+|The settings for the selected account.
+|*Transactions*
+|Manages the business transactions to be retrieved. Select the option *All* in the *Display* menu and click on *Search* +
+Select the transactions you want to use from the list and *Save* your selection.
+|*Manual payment retrieval*
+|Retrieves all orders of a certain date in case of a technical error. +
+_Note:_ This function only retrieves the data already saved in the system; the bank is not contacted again.
+|*Get status*
+|Retrieves the current initialisation status from the EBICS tool.
+|*Initialise account*
+|The keys are generated and sent to the bank via INI. HIA is activated.
+|*Initialisation letter*
+|Creates a PDF initialisation letter from the generated keys and downloads the document. It has to be signed and sent to the bank for initialisation.+
+_Note:_ For the download of the initialisation letter to work properly, the pop-up blocker of your browser has to be deactivated.
+|*Finish initialisation (HPB)*
+|Finishes the initialisation with the bank.
+|*Expert mode*
+|All options described in the following are only available if the bank requires an additional activation of the account. They will only be activated if the *Expert mode* is activated.
+|*Create keys*
+|Creates keys for initialisation.
+|*INI*
+|Initialises the EBICS account.
+|*HIA*
+|Activates HIA.
+|====
+
+[IMPORTANT]
+.Contact your bank before making changes
+====
+Get in contact with your bank before making changes. For example, if you want to use the new CAMT formats, then ask your bank whether or not this format is supported and have the format activated. Then make any necessary changes to the *basic settings* and interim transaction report as described here.
+
+If an account was reset and your bank needs new keys, then we recommend that you set up the EBICS account again in plentymarkets. This way new keys will be generated.
+====
+
+[#160]
+=== Defining commercial transactions
+
+For importing and assigning commercial transactions automatically, activate the required commercial transactions under *Domestic payments*, *SEPA payments* and *Foreign business allocation*. The following standard commercial transactions will be imported even if you did not select any of the options:
+
+* 020 - *Bank transfer*
+* 051 - *Transfer credit note*
+* 104 - *SEPA Direct Debit* (single booking - debit, B2B)
+* 105 - *SEPA Direct Debit* (single booking - debit, Core)
+* 166 - *SEPA Credit Transfer* (single booking - credit)
+
+You need to activate the standard commercial transactions if you select other commercial transactions as well. Only those that were previously selected will be imported.
+
+[#170]
+=== Activation by your bank
+
+After you have entered your access data into plentymarkets, the system electronically registers at your bank. Secret key values are necessary for retrieval via EBICS. They are generated by the system. After these key values were created and the initial electronic registration was carried out, the values have to be printed out, signed and handed in at your bank. Only the participant saved in plentymarkets is authorised to sign this document. The bank will not activate the EBICS interface if the signature was not given by the participant saved in the system.
+
+[.instruction]
+Retrieving the INI letter file and handing it in at your bank:
+
+. Go to *System » Orders » Payment » Plugins » EBICS*.
+. Click on the EBICS account. +
+→ The *Account settings* tab opens.
+. Click on *Initialisation letter* to retrieve the file.  +
+. The INI letter is created and automatically downloaded in PDF format. +
+. Print the PDF file. +
+. Sign the document and hand it in at your bank.
+
+The electronically submitted values will be compared with the values on the printed document. Then, the EBICS interface will be activated. From this moment on, the transactions will be retrieved at the retrieval times listed below.
+
+[#180]
+=== Retrieval times of transactions
+
+Maximum twice a day, your bank provides the day's transactions in a data format. Currently, plentymarkets retrieves this data at 6am, 1pm and 11pm. Transaction data is available in the system approximately one hour after the retrieval. In addition, the bank provides interim transaction reports in data format several times a day. These can be retrieved and include the transactions of the current day.
+
+[#190]
+=== Retrieval times of interim transaction reports
+
+Since the times when interim transaction reports are made available differ from bank to bank, plentymarkets retrieves them from the banks, if they are available, every hour between 8am and 6pm. For EBICS postings that have unconfirmed interim transactions, the words *interim transaction* will be written in red. If the interim transaction has been confirmed, then the lettering will change from red to green. Additionally, the confirmed posting will be assigned to the corresponding order without having to book the payment again. You have to activate the statement of account in order for interim transaction reports to be confirmed. Pay attention to the information given in <<table-provision-bank-statements>>.
+
+[#200]
+== Setting up SEPA direct debit mandate
+
+As part of the SEPA initiative (Single Euro Payments Area), euro payments were standardized in Germany and 32 other European countries on February 1st, 2014. Bank transfers and direct debits can now only be carried out with IBAN and BIC. You can <<order-processing/payment/managing-bank-details#67, migrate>> your customers' bank details automatically in the plentymarkets system. There are different types of direct debits:
+
+* *SEPA core direct debit* → Allows a biller to collect funds from a payer's account, provided that a signed mandate has been granted by the payer to the biller
+* *SEPA business to business direct debit* → Enables business customers in the role of payers to make payments by direct debit
+
+Business to business direct debits are only permitted between companies (B2B) and they require a separate mandate. You need to receive a SEPA direct debit mandate from your customers. This replaces the previous direct debit authorisation. This mandate is the new legal authorisation for using SEPA direct debit to withdraw funds from another account.
+
+[#210]
+=== Creating a document template
+
+Go to *System » Orders » Documents* and click on the *SEPA direct debit mandate* submenu. There is a template for configuring the SEPA direct debit mandate. For further information about documents, refer to the <<order-processing/orders/order-documents#, Document templates>> page of the manual.
+
+[.instruction]
+Setting up the document template:
+
+. Go to *System » Client » Select client » Locations » Select location » Documents*.
+.  Click on the *SEPA direct debit mandate* template. +
+→ The *Template* tab will open.
+. Select a *language* from the drop-down list.
+. Carry out the settings as desired. Pay attention to the information given in <<table-setup-document-template>>.
+. *Save* the settings.
+
+[[table-setup-document-template]]
+.setting up the document template
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+2+|Information about the payee
+
+|*Name of payee; +
+Street and house number; +
+Postcode and town; +
+Country*
+|Enter the seller's data.
+
+|*Creditor identifier*
+|Enter the creditor identifier.
+
+|*Mandate reference*
+|The mandate reference is generated from the customer ID and is automatically saved.
+
+|*Payment method*
+|Enter the payment frequency. Enter *One-time payment* or *Recurring payment*.
+
+|*Name of person liable to pay*
+|The name is saved automatically.
+
+2+|Formatting
+
+|*X-axis;  +
+Y-axis*
+|The values are based on a coordinate system with an x-axis and a y-axis. The x-axis goes from left to right and the y-axis from top to bottom. The reference points are in the upper left corner. For further information about the coordinate system, refer to <<order-processing/payment/managing-bank-details#50, Document templates>>.
+
+|*Font size*
+|Select the font size in pixels.
+
+|*Font style*
+|Select *normal* or *bold* for the font style.
+
+|*Information about the person liable to pay*
+|The information is saved in the customer data record and entered automatically. The IBAN and BIC can only be displayed on the template if they were also saved in the customer data. They are saved there under *Tab: Settings » Tab: Bank details*.
+
+|*Show all pages of this template*
+|Select whether to show all pages of this template.
+
+|*Character set*
+|Select *ISO-8859-1* or *Unicode*. Generating PDF documents in Unicode may take longer.
+|====
+
+[#215]
+=== Uploading a PDF template
+
+Upload a PDF template in the *PDF template* tab. Generally, the PDF template is given the same layout as your "business stationary". It includes your company data and logo. When creating the PDF template, add field names for the elements on the template as needed. Add an area for the customer's signature in the lower portion of the template.
+
+[IMPORTANT]
+.Saving fields in the PDF template
+====
+The field names, e.g. IBAN, BIC and Payment method will not be displayed on the actual template. Save the field names in the PDF template.
+====
+
+[.instruction]
+Uploading a PDF template:
+
+. Go to *System » Client » Select client » Locations » Select location » Documents*.
+.  Click on the *SEPA direct debit mandate* template. +
+→ The *Template* tab will open.
+. Select a *language* from the drop-down list.
+. Click on the *PDF template » Tab: New template* tab.
+. Click on *Browse...*. +
+→ The window *Upload file* will open.
+. Open the PDF file.
+. *Save* the settings.
+
+[#220]
+=== Creating an email template
+
+It is a good idea to send your customers the SEPA direct debit mandate directly after they made a purchase in your online store. This is done by creating an email template that has the SEPA direct debit mandate as an attachment. Create an <<order-processing/payment/managing-bank-details#230, event procedure>> for sending the email.
+
+.creating the SEPA mandate email template
+image::order-processing/payment/assets/EN-Bank-details-SEPA-Template.png[]
+[.instruction]
+Creating an email template:
+
+. Go to *System » Client » Select client » Email » Templates*.
+. Click on the *New Email template* tab.
+. Enter a *name* and select *SEPA direct debit mandate* under *PDF attachment*.
+. Enter a text in the *email message* tab. This text urges the customer to sign and return the attached SEPA direct debit mandate.
+
+[#230]
+=== Sending an email template with an event procedure
+
+The email template is sent with an <<basics/automation/event-procedures#, event procedure>>. The event procedure is triggered, e.g. whenever a new order is received.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to *System » Orders » Events*.
+. Click on *Add event procedure*. +
+→ The *Create new event procedure* window will open.
+. Enter a name.
+. Select the *event* listed in table 8.
+. *Save* the settings.
+. Pay attention to the explanations given in table 8 and carry out the settings as desired.
+. Place a check mark next to the option *Active*.
+. *Save* the settings.
+--
+.event procedure for automatically sending SEPA direct debit mandates to customers
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|*Event*
+|*Order generation: New order*
+|
+
+|*Filter 1*
+|*Order &gt; Order type*
+|*Order*
+
+|*Filter 2*
+|*Order &gt; Payment method*
+|*Debit*
+
+|*Procedure*
+|*Customer &gt; Send email*
+|*SEPA direct debit mandate template; +
+Customer*
+|====
+
+[#240]
+=== Sending an email template with the group function
+
+The email template is sent by clicking on the *Group function* button under *CRM » Contacts*.
+
+[.instruction]
+Sending an email template:
+
+. Go to *CRM » Contacts*.
+. Search the contact by means of the filter settings as described in the <<crm/managing-contacts#200, Searching for a contact>> chapter. +
+→ The contacts that correspond to the search criteria entered are displayed.
+. Click on *Group function*.
+. Place check marks next to those customers who the email template should be sent to.
+. Select the previously created SEPA email template from the *Send email template* drop-down list.
+. Place a check mark next to *Send email template*.
+. Click on *Apply*.
+
+For further information, refer to the <<crm/managing-contacts#, Managing contacts >> page of the manual. Specifically, refer to the chapter <<crm/managing-contacts#510, Carrying out the group function>>.
+
+[#250]
+=== Activating SEPA payments in the bank details
+
+Carry out the following setting once a customer has signed and returned the SEPA direct debit mandate to activate SEPA payments and retrieve pain008 formats.
+
+[.instruction]
+Activating SEPA direct debit mandate in the bank details:
+
+. Go to *CRM » Contacts*.
+. Search the contact by means of the filter settings as described in the <<crm/managing-contacts#200, Searching for a contact>> chapter. +
+→ The contacts that correspond to the search criteria entered are displayed.
+. Click in the line of the contact. +
+→ The detail view of the contact opens.
+. Click on *Bank data*.
+. Activate *SEPA direct debit mandate*.
+. *Save* the settings.
+
+For further information about bank details, refer to the <<order-processing/payment/managing-bank-details#63, Saving the customer's bank details>> chapter.
+
+[#260]
+=== Activating the download in the My account area
+
+Customers who have not yet switched to SEPA will see a button in the *order process* when selecting Debit as the payment method. This will inform customers about downloading the SEPA direct debit mandate in the *My account* area of the store and that they need to sign and return the form.
+
+[.instruction]
+Displaying the download link:
+
+. Go to *System » Client » Select client » My Account » Settings*.
+. Select the setting *Show* under *Download link for SEPA direct debit mandate*.
+. *Save* the settings.
+
+.downloading the SEPA mandate
+image::order-processing/payment/assets/EN-Bank-details-SEPA-Order-history.png[]
+[#270]
+=== Automating SEPA payments
+
+Set up processes to automate your SEPA payments. Go to *System » Processes* and use the procedures <<automation/processes/procedures#400, SEPA Pain001>> and <<automation/processes/procedures#410, SEPA Pain008>>.
