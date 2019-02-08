@@ -26,10 +26,20 @@ Die Daten aus plentymarkets können einfach in eine bestehende BI-Lösung integr
 
 === Für Entwickler
 
-Alle plentymarkets Systeme verfügen über eine einheitliche REST-API. Die Dokumentation finden Sie auf der folgenden Seite: link:https://developers.plentymarkets.com/[developers.plentymarkets.com^].
+Wenn Sie einen Connector zu einer BI-Lösung herstellen und diesen vermarkten möchten, kann dies auch kostenfrei über den link:https://marketplace.plentymarkets.com/[plentyMarketplace^] erfolgen. Neben plentymarkets Plugins können hier auch Einträge zu externen Angeboten integriert werden. Registrieren Sie sich link:https://www.plentymarkets.eu/service/partner-werden/[hier^] als Partner.
 
-[...] Da folgt noch was
+Rohdaten liegen im Format CSV vor und können somit einfach weiter verarbeitet werden. Alle plentymarkets Systeme verfügen über eine einheitliche REST-API. Die Dokumentation finden Sie auf link:https://developers.plentymarkets.com/[dieser Seite^].
 
+Der Abruf von Rohdaten erfolgt in zwei Schritten. Wir empfehlen, den Abruf einmal pro Tag ab Mittag durchzuführen, da bis dahin für alle Systeme die Generierung der Rohdaten abgeschlossen ist.
+
+1.	Zuerst wird über diese link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data[Route^] eine Liste der vorhandenen Rohdaten Dateien abgefragt. Der Erstellungszeitpunkt der beim letzten Abruf jüngsten Datei, dient für die nächste Anfrage als Filter, um Dateien nicht wiederholt abzufragen. Die Anzahl der pro Tag generierten Dateien kann variieren, je nachdem wie viele Creator-Prozesse für ein plentymarkets System aktiviert wurden. Zudem wird in jede Datei nur eine bestimmte Anzahl an Datenzeilen geschrieben und im Bedarfsfall eine weitere Datei angelegt. Je nach Bedarf können mit dieser Route alle Dateien nur eines Creators oder alle Dateien die im Abfragezeitraum erstellt wurden, zurück geliefert werden.
+2.	Mit dieser link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data_file[Route^] wird eine Rohdaten-Datei zurück geliefert. Der dafür nötige Dateipfad ist in der Ergebnismenge der unter Punkt 1 benannten REST Route.
+
+[TIP]
+.Standardzeitstempelformat
+====
+Das Standarddatumsformat ist MM/DD/YYYY HH:MI:SS TZ, da dies unverändert in eine AWS Redshift Spalte vom Typ TIMESTAMPTZ per copy-Befehl übernommen werden kann. Beispiel: 01/30/2019 05:14:57 Europe/Berlin
+====
 
 == Datenformat-Creator
 
