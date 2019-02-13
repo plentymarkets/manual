@@ -1,24 +1,14 @@
 = Best Practices: ElasticSync
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, Import, Artikel, Artikelanlage, Best Practice, automatisiert
+:keywords: ElasticSync, Import, Artikel, Artikelanlage, Best Practice, automatisiert, Variantenanlage
 :position: 20
-
-[TIP]
-.Plugin aktualisieren?
-====
-Bevor du Syncs oder Exportformate erstellst prüfe im Menü *Plugins » Plugin-Übersicht » Plugin-Set öffnen*, dass du die aktuelle Version von ElasticSync verwendest.
-====
-
-Hier findest du Best Practices zum Thema Import und Export mit dem Plugin link:https://marketplace.plentymarkets.com/plugins/integration/ElasticSync_4750[ElasticSync^].
-
-NOTE: Bevor du die Best Practices auf dieser Handbuchseite nutzt, um Daten auszutauschen, solltest du dich mit der generellen Funktionsweise von ElasticSync vertraut machen. Lies dazu zunächst die Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
 
 == Best Practice: Variantenanlage über ElasticSync
 
-In diesem Beitrag bieten wir dir ein Best Practice für die Artikelanlage via Elastic Sync.
+In diesem Beitrag bieten wir dir ein Best Practice für die Artikelanlage via ElasticSync.
 
-NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von ElasticSync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
 
 [#voraussetzungen]
 === Voraussetzungen
@@ -33,35 +23,41 @@ Im System müssen folgende Daten vorhanden sein, um wie hier beschrieben Artikel
 [#infos]
 === Infos
 
-Unter *System » Einstellungen » ElasticSync* findest du den *Cache-löschen-Button*.
+Unter *System » Einstellungen » ElasticSync*, oder auch direkt im Sync findest du den *Cache-löschen-Button*.
 
-Mit diesem Button kannst du einmal pro Stunde den ElasticSync-Cache zurücksetzen, damit du eine Datei ohne vorherige Änderung erneut importieren kannst.
+Mit diesem Button kannst du den ElasticSync-Cache zurücksetzen, damit du eine Datei ohne vorherige Änderung erneut importieren kannst.
 
 Ein weiterer hilfreicher Button ist der *Testlauf-Button*.
 
-.Gut geeignet, um Syncs zu testen
+.Testlauf-Button
 
-image::basics/datenaustausch/ElasticSync/assets/testlauf_Neu.png[]
+image::daten/daten-importieren/assets/testlauf_button.png[]
 
 Damit werden die ersten 10 Zeilen der Datei ohne Cache importiert. So kannst du prüfen, ob alle Werte korrekt zugeordnet wurden, bevor du den Sync mit allen Zeilen startest.
 
-Gültige Werte für Felder in der Zuordnung findest du in der Plugin-Beschreibung und im Handbuch.
+Gültige Werte für Felder in der Zuordnung findest du in der Beschreibung im Handbuch.
 
 Unter *Daten » Log* können Fehlermeldungen zum Sync eingesehen werden.
 
 
-[#aufbau_der_datei]
-=== Aufbau der Datei
+[#aufbau_des_syncs]
+=== Beispiel-Daten für die Variantenanlage
 
-Folgende link:https://www.plentymarkets.eu/download/Testdatei.csv[Beispieldatei^] wurde für den Sync genutzt.
+Hier könnt ihr euch die Beispieldatei als CSV, so wie den Sync als json-Datei herunterladen.
+
+==== Beispieldatei
+Folgende link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/BestPractice.csv[Beispieldatei^] wurde für den Sync genutzt.
+
+==== Beispielsync
+Den kompletten Sync kannst du als link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/Best_Practice.json.zip[json-Datei^] (verpackt als zip-Datei) hier herunterladen.
 
 ==== Allgemein
 
-Die Daten, die *global* am Artikel gepflegt werden, wie z.B. *der Name, die Beschreibung etc.* werden in der Zeile der Hauptvariante hinterlegt und sollten später beim Sync in einer zusätzlichen Zuordnung hinterlegt werden.
+Die Daten, die *global* am Artikel gepflegt werden, wie z.B. *der Name, die Beschreibung etc.* sollten in jeder Zeile, die Varianten eines Artikels beinhalten, hinterlegt werden. Alternativ kannst du auch eine separate Zuordnung mit entsprechendem Filter anlegen, in der die Beschreibung nur in der Zeile der Hauptvariante hinterlegt werden muss.
 
 Daten, die *variantenbezogen* sind, müssen in die entsprechenden Zeilen der Varianten eingetragen werden.
 
-Wichtig bei der Anlage der Varianten ist, dass der Aufbau der Attribute und Werte so in der Datei hinterlegt sind, wie es in der Zuordnung eingestellt ist.
+Wichtig bei der Anlage der Varianten ist, dass der Aufbau der Attribute und Werte so in der Datei hinterlegt ist, wie es in der Zuordnung eingestellt ist.
 
 ==== Variantennummern
 
@@ -79,7 +75,7 @@ Es sieht in der Datei dann so aus.
 
 .Eintragung der Nummern bei Hauptvariante und Varianten
 
-image::basics/datenaustausch/ElasticSync/assets/hvnummer.png[]
+image::daten/daten-importieren/assets/hvnummer.png[]
 
 [WARNING]
 .Variantennummern müssen eindeutig sein!
@@ -93,7 +89,7 @@ In unserem Beispiel haben wir *Attributauswahlkombination* gewählt:
 
 .Erstellen von Varianten via Attributauswahlkombination
 
-image::basics/datenaustausch/ElasticSync/assets/attribute.png[]
+image::daten/daten-importieren/assets/attribute.png[]
 
 Die oberste Zeile der Hauptvariante hat dabei keine Kombination erhalten, damit Sie keine Attributverknüpfung erhählt.
 
@@ -105,16 +101,16 @@ Wenn man mit Variantenartikeln arbeitet und der Hauptvariante keine Attribute zu
 
 ==== Bilder
 
-In unserem Sync importieren wir die Bilder-URLs in 2 getrennten Spalten und Zuordnungen. Dies kann auch in einer Spalte mit kommagetrennten URLs geschehen.
+In unserem Sync importieren wir die Bilder-URLs in einer Zuordnung mittels Multi-URL.
 Dazu muss das Feld *Multi-URL* in der Zuordnung gewählt werden. Das Format der URL wird wie folgt hinterlegt: *image1url;positionImage1,image2url;positionImage2*
 
 ==== Kategorieverknüpfungen
 
-Zum Verknüpfen mehrerer Kategorien müssen mehrere Zuordnungen angelegt werden. Weiterhin muss darauf geachtet werden, dass bei den Kategorieverknüpfungen der komplette Pfad angegeben wird. Die Ebenen werden dabei mit einem Semikolon getrennt.
+Mehrere Kategorien können in einer Zuordnung kommasepariert verknüpft werden. Es können Kategorienamen oder Kategorie-ID's genutzt werden. Bei den Kategorienamen muss darauf geachtet werden, dass der gesamte Kategoriepfad angegeben wird. Die Ebenen werden dabei mit einem Semikolon getrennt.
 
 .Die Schreibweisen von Trennzeichen und Pfad sind wichtig für den Import.
 
-image::basics/datenaustausch/ElasticSync/assets/kategorieverknuepfung.png[]
+image::daten/daten-importieren/assets/kategorieverknuepfungen_neu.png[]
 
 
 [WARNING]
@@ -128,7 +124,7 @@ Achte darauf, dass die Werte in der Datei auch mit der Zuordnung übereinstimmen
 
 Für den Abgleich ist wichtig, dass ein variantenspezifisches Abgleichfeld genutzt wird. Dafür eignet sich z.B. die Variantennummer oder auch die Varianten-ID.
 
-Als Aktion muss eingestellt werden, dass versucht wird, einen neuen Datensatz anzulegen, wenn kein Abgleich stattfinden konnte.
+Als Aktion muss „Neue Daten importieren, vorhandene aktualisieren“ eingestellt werden.
 
 
 [#Zuordnungen]
@@ -136,11 +132,11 @@ Als Aktion muss eingestellt werden, dass versucht wird, einen neuen Datensatz an
 
 In der Zuordnung verknüpfen wir die Felder aus der CSV-Datei mit den Feldern aus plentymarkets.
 
-.Eine Zuordnung muss angelegt werden, denn ohne Zuordnung kein Import
+.Eine Zuordnung muss angelegt werden
 
-image::basics/datenaustausch/ElasticSync/assets/wertebestimmen_Neu.png[]
+image::daten/daten-importieren/assets/zuordnung_neu.png[]
 
-Es empfiehlt sich, nur die Felder in die Zuordnung aufzunehmen, die tatsächlich übergeben werden sollen. Überflüssige Felder sollten vermieden werden, da das zu Fehlern führen kann.
+Es empfiehlt sich, nur die Felder in die Zuordnung aufzunehmen, die tatsächlich übergeben werden sollen. Überflüssige Felder sollten deaktiviert werden, da das zu Fehlern führen kann.
 
 Für die Artikelanlage mit Varianten gibt es Pflichtfelder, die als Minimum in der Zuordnung enthalten sein müssen, damit der Sync funktioniert. Dabei handelt es sich um folgende Felder:
 
@@ -149,20 +145,6 @@ Für die Artikelanlage mit Varianten gibt es Pflichtfelder, die als Minimum in d
 * Variantennummer
 * Will man Bestand importieren, müssen folgende Werte in der Zuordnung enthalten sein:
 Lager, Menge, Lagerort
-
-
-[#zweite_Zuordnung]
-=== Zweite Zuordnung
-
-Die Zuordnungen werden nacheinander abgearbeitet. Das heißt, dass unsere zweite Zuordnung nach der Ersten durchgeführt wird.
-
-Über eine weitere Zuordnung wollen wir nun eine zweite Kategorie, ein weiteres Bild und die globalen Artikeldaten (z.B. Name, Beschreibung) hinterlegen.
-
-In der Zuordnung selbst bestimmen wir erneut die Werte und mappen die URL und den Namen der Kategorie mit der jeweils zweiten Spalte aus unserer Datei.
-
-.Weitere Zuordnungen werden analog zur ersten angelegt.
-
-image::basics/datenaustausch/ElasticSync/assets/zweite_Zuordnung_Neu.png[]
 
 Der Sync ist jetzt einsatzbereit und kann gestartet werden.
 
@@ -177,7 +159,7 @@ Wir empfehlen, beim erstmaligen Sync vorab den Testlauf zu nutzen. So kann man p
 
 In diesem Beitrag wird beschrieben, wie du Mandantenverknüpfungen exportierst und importierst.
 
-NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
 
 [#export_mandantenverknüpfung]
 === Export der Mandantenverknüpfung
@@ -250,8 +232,7 @@ Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit
 
 In diesem Beitrag wird beschrieben, wie du Merkmalverknüpfungen exportierst und importierst.
 
-NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
-
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
 
 [#export_merkmalverknüpfungen]
 === Export von Merkmalverknüpfungen
@@ -318,7 +299,7 @@ Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit
 
 In diesem Beitrag wird beschrieben, wie du Cross-Selling-Verknüpfungen exportierst und importierst.
 
-NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
 
 [#export_CrossSelling]
 === Export der Cross-Selling-Verknüpfungen
@@ -386,7 +367,7 @@ Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit
 
 In diesem Beitrag wird beschrieben, wie du ASIN- und ePID-Daten exportierst und importierst.
 
-NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos zum Plugin findest du auf der Handbuchseite <<basics/datenaustausch/ElasticSync/ElasticSync-plugin#, Daten mit ElasticSync importieren>>.
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
 
 [#export_ASIN_ePID]
 === Export von ASIN und ePID
@@ -474,3 +455,93 @@ Für die reibungslose Zusammenarbeit mit Eurem Fulfillment-Dienstleister empfehl
 * Einstellungen *speichern*.
 
 Nachdem Ihr die Einstellungen vorgenommen und gespeichert habt, solltet Ihr über das Menü *Sync » Abgleich* zuerst den Sync testen. Nach erfolgreichem Import der *Paketnummer* wird diese im Reiter *Einstellungen* des jeweiligen Auftrags angezeigt.
+
+[#kontaktdaten]
+== Best Practice: Kontaktdaten importieren
+
+In diesem Kapitel beschreiben wir, wie du Kontaktdaten in plentymarkets importierst. Dazu benötigst du eine CSV-Datei mit den Daten, die du importieren möchtest. Speichere diese Datei auf deinem Computer. Gehe dann wie im Folgenden beschrieben vor.
+
+////
+[TIP]
+.Aufbau der Datei: Beispieldatei mit Musterdaten
+====
+Hier findest du eine Beispieldatei mit Musterdaten, die du als Test für den Import von Kontaktdaten nutzen kannst.
+====
+////
+
+[.instruction]
+Grundeinstellungen vornehmen:
+
+. Öffne das Menü *Daten » Elastic Sync NEW*.
+. Klicke auf das Plus-Zeichen (*Sync hinzufügen*).
+. Gib im Bereich *Grunddaten* einen Namen ein.
+. Wähle aus der Dropdown-Liste *Typ* die Option *Kontakte, Firmen, Adressen*.
+. Im Bereich *Import* lässt du die voreingestellten Optionen so wie sie sind.
+. Im Bereich *Trennzeichen* wählst du statt des voreingestellten Semikolons die Option *Tabulator*.
+. Im Bereich *Quelle* wählst du die Option *HTTP*. +
+→ Drei weitere Zeilen werden angezeigt.
+. Wähle aus der Dropdown-Liste die Option *HTTP-Optionen* die Option *Datei-Upload*.
+. Klicke in der Zeile *URL* auf den Button mit den drei Punkten (*Datei wählen*). +
+→ Ein Fenster öffnet sich.
+. Klicke auf *Datei hochladen*, wähle die CSV-Datei mit den Kontaktdaten, die du importieren möchtest, und klicke auf *Öffnen*.
+. Setze ein Häkchen in der Zeile der Datei und klicke einmal in die Zeile der Datei. +
+→ *_Wichtig:_* Die Zeile muss noch einmal geklickt werden. Erst wenn die Zeile blau gefärbt ist, kannst du sie mit einem Klicke auf *Wählen* hochladen. +
+→ Die URL – also der Pfad, von wo aus du die CSV-Datei hochgeladen hast – ist nun im Feld *URL* grau hinterlegt.
+. *Speichere* die Einstellungen.
+
+Du hast die CSV-Datei nun erfolgreich hochgeladen. Im Folgenden nimmst du die Einstellungen für den Abgleich und die Zuordnung vor.
+
+[.instruction]
+Abgleich einstellen:
+
+. Klicke ganz links auf *Abgleich*.
+. Im Bereich *Abgleich* musst du mindestens eine der vier vorhandenen Optionen einem deiner Felder aus der CSV-Datei zuordnen. +
+*_Hinweis:_* Wenn du noch keine Kontakt-IDs hast, ist es sinnvoll den Abgleich über die E-Mail-Adresse durchzuführen.
+. Im Bereich *Importoptionen* wählst du die Option *Nur neue Daten importieren*.
+. Wähle ggf. die Dezimalzahl und das Datumsformat.
+. *Speichere* die Einstellungen.
+
+Nimm nun die Einstellungen für die Zuordnung vor.
+
+[.instruction]
+Zuordnung einstellen:
+
+. Klicke ganz links auf *Zuordnung*.
+. Klicke auf das Plus-Zeichen (*Zuordnung hinzufügen*).
+. Gib einen Namen ein.
+. *Speichere* die Einstellung. +
+→ Der Bereich *Importdaten / plentymarkets Datenfelder* öffnet sich.
+
+In diesem Bereich ordnest du die Felder aus deiner CSV-Datei den Feldern in plentymarkets zu. Auf der linken Seite im Bereich *Importdaten* siehst du die Bezeichnungen in der Kopfzeile aus deiner CSV-Datei. Diese Bezeichnungen hat plentymarkets bereits automatisch aus deiner CSV-Datei übernommen.
+
+Auf der rechten Seite im Bereich *plentymarkets Datenfelder* musst du nun das entsprechende Gegenstück aus der Liste wählen.
+
+[TIP]
+.Pflichtfelder für Kontaktdaten
+====
+Beim Import von Kontaktoptionen sind die Felder *Typ* und *Herkunft* Pflichtfelder. Diese beiden Felder sind mit einem Sternchen (***) gekennzeichnet.
+====
+
+[.instruction]
+Beispiel: Quelle *Vorname* dem passenden plentymarkets Datenfeld zuordnen
+
+. Auf der linken Seite siehst du die Quelle *Vorname*. Klicke auf der rechten Seite in dieselbe Zeile und gib *Vorname* in der Suche ein.
+. Klicke auf *Vorname*.
+. Klicke unterhalb der Liste auf den grünen Haken (*Auswählen*).
+. Aktiviere in dieser Zeile ganz links den Toggle-Button (*Zeile aktivieren*). +
+*_Wichtig:_* Die zu importierenden Datenfelder müssen alle aktiviert sein, damit die Zuordnung korrekt erfolgen kann.
+. Klicke ganz unten links auf den Button *Feld*.
+. Wähle aus der Dropdown-Liste *Eigener Wert*.
+. Gib als Wert 0 oder 1 ein. +
+→ 0 steht für die Herkunft *Manuelle Anlage* und die 1 steht für die Herkunft *Webshop*.
+. Gib auf der rechten Seite *Herkunft* in der Suche ein.
+. Klicke auf *Herkunft**.
+. Klicke unterhalb der Liste auf den grünen Haken (*Auswählen*).
+. Aktiviere auch in dieser Zeile ganz links den Toggle-Button (*Zeile aktivieren*). +
+. *Speichere* die Einstellungen.
+
+Klicke auf *Vorschau*, um dir eine Vorschau der Datei anzeigen zu lassen und die Inhalte zu prüfen.
+
+Zu guter Letzt klickst du auf den Play-Button (*Sync ausführen*). Je nach der zu importierenden Datenmenge kann dies einige Zeit dauern. Wenn der Sync durchgelaufen ist, erscheint die Meldung *Sync beendet*.
+
+Nun kannst du im Menü *CRM » Kontakte* prüfen, ob der Import der Kontaktdaten erfolgreich war.
