@@ -1,58 +1,131 @@
 = accountContacts
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: accountContacts
+:keywords: accountContacts, report, raw data, rohdaten
 :position: 10
 
-Diese Handbuchseite beschreibt die Werte des Datenformats *accountContacts*.
 
-== Werte des Datenformats accountContacts
+Der Datenformat-Creator accountContacts exportiert die im System vorhandenen Kontakte (Kundendaten) gemäß der im Folgenden definierten Regeln und speichert diese im Cloud-Speicher ab.
 
-[[tabelle-report-datenformat-werte-accountcontacts]]
-.Werte des Datenformats accountContacts
-[cols="1,2"]
+== Spezifikationen
+
+.Technische Spezifikationen
+[cols=4]
 |====
-|Wert |Erläuterung
+|Eigenschaft |Bezeichnung |Wert |Erläuterung
+
+|dataName
+|Name
+|accountContacts
+|Name des Creator-Prozesses und Prefix der erstellten Dateien.
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als als per GZIP (RFC 1952) komprimierte CSV Datei bereitgestellt.
+
+|defaultActive
+|Standardmäßig aktiv
+|nein
+|Dieser Vorgang läuft erst dann automatisch im Hintergrund, wenn zuvor im Menü *Daten » Rohdaten* der gleichnamige Creator aktiviert wurde.
+
+|intervall
+|Intervall
+|täglich
+|Einmal pro Tag, gewöhnlich über Nacht, werden alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|limitFile
+|Zeilen pro Datei
+|bis zu 3.000
+|Die Anzahl der Datenzeilen, die in eine einzelne Datei maximal geschrieben werden.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 80.0000
+|Die Anzahl der Datenzeilen, die in an einem Tag maximal geschrieben werden.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|01.01.2017
+|Zeitpunkt ab dem diese Rohdaten erhoben werden können, gefiltert nach der Spalte in dataUpdatedAtColumnName.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|ac_updated_at
+|Name der Spalte, welche den Zeitstempel der letzten Aktualisierung enthält.
+
+|deleteRawDataAfterDaysMinimum
+|Minimale Anzahl an Tagen bis zur Löschung
+|20
+|Die minimale Anzahl an Tagen bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird, eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|deleteRawDataAfterDaysMaximum
+|Maximale Anzahl an Tagen bis zur Löschung
+|80
+|Die maximal Anzahl an Tagen bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird, eine Weiterverarbeitung muss somit vorher erfolgen.
+
+|====
+
+== Datenspalten
+
+[[tabelle-report-raw-data-format-werte-accountcontacts]]
+.Datenspalten und Erläuterung des Formats accountContacts
+[cols="3"]
+|====
+|Spaltenname |Bezeichnung |Erläuterung
 
 |plenty_id
-|plenty-ID
+|plenty id
+|ID des plentymarkets Systems
 
 |ac_id
-|Kontakt-ID
+|account contact id
+|ID des Kontakts
 
 |a_id
-|Firmen-ID
+|account id
+|ID der Firma, sofern vorhanden
 
 |act_id
+|account contact type id
 |ID des Kontakttyps
 
 |acc_id
+|account contact class id
 |ID der Kontaktklasse
 
 |r_id
-|Herkunfts-ID
+|referrer id
+|ID der Auftragsherkunft, über welche dieser Datensatz angelegt wurde.
 
 |u_id
-|Benutzer-ID
+|user id
+|ID des Benutzer, welcher als Eigner dieses Kontakts hinterlegt wurde.
 
 |ac_name
+|account contact name
 |Vorname und Nachname des Kontakts
 
 |ac_country
-|Land des Kontakts
+|account contact country
+|Land des Kontakts als ISO2 Ländercode
 
 |ac_lang
-|Sprache des Kontakts
+|account contact lang
+|Sprache des Kontakts (en, de, fr, ...)
 
 |ac_rating
-|Bewertung des Kontakts
+|account contact rating
+|Bewertung des Kontakts ... TODO Wertebereich
 
 |ac_updated_at
+|account contact updated at
 |Zeitstempel der letzten Aktualisierung +
-Datumsformat: mm/dd/yyyy
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |ac_created_at
+|account contact created at
 |Zeitstempel der Erstellung +
-Datumsformat: mm/dd/yyyy
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====
