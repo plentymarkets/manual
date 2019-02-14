@@ -1,0 +1,73 @@
+= Best Practices: Cross-selling links
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, import, items, best practice, automated, cross-selling links
+:position: 40
+
+== Exporting and importing cross-selling links
+
+This chapter describes how to export and import cross-selling links.
+
+NOTE: To benefit from this best practice, you should be familiar the basic functionality of ElasticSync. Check the <<basics/data-exchange/ElasticSync/ElasticSync-plugin#, Importing data with ElasticSync>> page of the manual for general information about how the plugin works.
+
+[#export_CrossSelling]
+=== Exporting cross-selling links
+
+==== Creating the format in the FormatDesigner
+
+The currently linked cross-selling items can be exported using the FormatDesigner.
+
+To do so, go to *Data » FormatDesigner* and create a new format of the type *Item*.
+
+After that, select the data fields:
+
+* To allow mapping during import, from the *Item* area select the *ID* of the item or from the *Variation* area select the *ID* or the *Number* of the variation.
+
+* The actual cross-selling links are added in the *ItemCrossSelling* area. The field *all* returns all linked cross-selling items in the format *ItemID:Type:IsDynamic*.
+
+After you have saved the format, you can set up the export in the elastic export.
+
+==== Setting up the export in the elastic export
+
+Go to *Data » Elastic export* to set up the export of the format you created.
+
+To do so, click on *New export* and save a name, the type *Item*, the format you created, a limit and a file name.
+
+[TIP]
+.Exporting the file in CSV format
+====
+If you want to download the file in CSV format, specify the suffix *.csv* as part of the file name.
+====
+
+Once you save the format, you are done setting it up.
+
+==== Exporting data
+
+There are several ways of exporting the data:
+
+* In the export, click *Download*.
+* Open the URL in a browser.
+* In the export overview, click *Download*.
+
+[#Import_CrossSelling]
+=== Importing cross-selling links
+
+==== Creating the format in ElasticSync
+
+To import the cross-selling links, you can go to *Data » ElasticSync* and create a sync of the type *Item*. Alternatively, you can add the fields to an existing sync.
+
+* The synchronisation can be based on a variation-specific field, for example the *Variation number*, or based on the item ID if the links are imported using a separate sync.
+
+* In the sync’s mapping, in the *Cross-selling* are, link the field *Add cross-selling links* and assign the corresponding column in the CSV file.
+
+* You can save more than one cross-selling link per row. The structure will be as follows:
+
+*ItemID:Type;ItemID2:Type2*
+
+* Use the field *Delete all cross-selling links* to delete all links of an item. Specify 1 for yes, 0 for no. This is a good idea if, for example, you want to update your cross-selling items.
+
+* Using the field *Delete cross-selling links*, you can delete one or more item IDs. The format should look like this:
+
+*itemID;itemID;etc*
+
+That is all you need for the link. The sync is now ready to go and you can start linking or unlinking cross-selling items.
