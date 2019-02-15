@@ -4,33 +4,133 @@ include::{includedir}/_header.adoc[]
 :keywords: orderItemProperties
 :position: 60
 
-Diese Handbuchseite beschreibt die Werte des Datenformats *orderItemProperties*.
+Der Datenformat-Creator *orderItemProperties* export Daten zu den Eigenschaften der im System vorhandenen Auftragspositionen und speichert diese im Cloud-Speicher ab.
 
-== Werte des Datenformats orderItemProperties
+== Technische Spezifikationen
 
-[[tabelle-report-datenformat-werte-orderitemproperties]]
-.Werte des Datenformats orderItemProperties
-[cols="1,2"]
+<<tabelle-spezifikationen-orderitem-properties>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+
+[[tabelle-spezifikationen-orderitem-properties]]
+.Technische Spezifikationen des Formats *orderItemProperties*
+[cols=4]
 |====
-|Wert |Erläuterung
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|orderItemProperties
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *orderItemProperties-xxx.csv*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 8.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 100.0000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|01.01.2017
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+////
+TODO Rückfrage: hier sollte Jan nochmal schauen, ob das sachlich richtig ist.
+////
+|deleteRawDataAfterDaysMinimum
+|Minimale Anzahl an Tagen bis zur Löschung
+|20
+|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|deleteRawDataAfterDaysMaximum
+|Maximale Anzahl an Tagen bis zur Löschung
+|80
+|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|filterType
+|
+|lastUpdate
+|
+
+|dataUpdatedatColumname
+|Name der Datenspalte, in der das letzte Änderungsdatum der Auftragsposition ausgegeben wird //TO DO von Alex abschreiben
+|oi_updated_at
+|Datum der letzten Änderung der Auftragsposition
+
+|defaultActive
+|Standardmäßig aktiv
+|false
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Daten » Rohdaten* aktiviert wurde.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|====
+
+== Datenspalten
+
+<<tabelle-datenspalten-orderitems>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+
+[[tabelle-datenspalten-orderitems]]
+.Datenspalten des Formats *orderItems*
+[cols="1,3,3"]
+|====
+|Spaltenname |Vollständige Bezeichnung |Erläuterung
 
 |plenty_id
-|plenty-ID
+|plenty ID
+|ID des plentymarkets System
 
 |oip_id
-|Eigenschafts-ID der Auftragsposition
+|order item property ID
+|ID der Eigenschaft der Auftragsposition +
+Mögliche Werte: +
 
-|oi_id
-|ID der Auftragsposition
+
+|iv_id
+|item variation id
+|Varianten-ID der Auftragsposition
+
+|i_id
+|item id
+|Artikel-ID der Auftragsposition
+
+|oi_quantity
+|order item quantity
+|Gesamtanzahl der im Auftrag enthaltenen Auftragspositionen
 
 |oi_type_id
-|Typ-ID der Auftragsposition
+|order item type ID
+|ID des Typs der Auftragsposition. +
+Mögliche Werte: +
+1 = Variante +
+2 = Artikelpaket +
+3 = Paketbestandteil +
+4 = Aktionsgutschein +
+5 = Geschenkgutschein +
+6 = Versandkosten +
+7 = Zahlungsaufschlag +
+8 = Geschenkverpackung +
+9 = Unzugeordnete Variante +
+10 = Pfand +
+11 = Auftrag (z.B. in Sammelaufträgen)
 
-|oip_value
-|Eigenschaftswert der Auftragsposition
+|oi_warehouse_id
+|order item warehouse id
+|ID des Lagers, das der Auftragsposition zugeordnet ist
 
-|oip_updated_at
+|oi_updated_at
+|order item updated at
 |Zeitstempel der letzten Aktualisierung +
-Datumsformat: mm/dd/yyyy
+Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |====
