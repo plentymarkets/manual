@@ -4,65 +4,155 @@ include::{includedir}/_header.adoc[]
 :keywords:
 :position: 90
 
-Diese Handbuchseite beschreibt die Werte des Datenformats *orders*.
+Der Datenformat-Creator *orders* exportiert Daten zu den im System vorhandenen Aufträgen und speichert diese im Cloud-Speicher ab.
 
-== Werte des Datenformats orders
+== Technische Spezifikationen
 
-[[tabelle-report-datenformat-werte-orders]]
-.Werte des Datenformats orders
-[cols="1,2"]
+<<tabelle-spezifikationen-orders>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+
+[[tabelle-spezifikationen-orders]]
+.Technische Spezifikationen des Formats *orders*
+[cols=4]
 |====
-|Wert |Erläuterung
+|Eigenschaft |Bedeutung |Wert |Erläuterung
 
-|plenty_id
-|plenty-ID
+|dataName
+|Name
+|orders
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *orders-xxx.csv*
 
-|o_id
-|Auftrags-ID
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
 
-|o_plenty_id
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 5.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 50.0000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|01.01.2017
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|deleteRawDataAfterDaysMinimum
+|Minimale Anzahl an Tagen bis zur Löschung
+|1095
+|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|deleteRawDataAfterDaysMaximum
+|Maximale Anzahl an Tagen bis zur Löschung
+|1095
+|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|filterType
+|
+|lastUpdate
 |
 
-|o_origin_order_id
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|o_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|nein
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Daten » Rohdaten* aktiviert wurde.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|====
+
+== Datenspalten
+
+<<tabelle-datenspalten-orders>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+
+[[tabelle-datenspalten-orders]]
+.Datenspalten des Formats *orders*
+[cols="1,3,3"]
+|====
+|Spaltenname |Vollständige Bezeichnung |Erläuterung
+
+|plenty_id
+|plenty ID
+|ID des plentymarkets Systems
+
+|o_id
+|order ID
+|ID des Auftrags
+
+|o_plenty_id
+|order plenty ID
+|
+
+|o_origin_order_ID
+|order origin order ID
 |
 
 |o_status
-|Auftragsstatus
+|order status
+|Status des Auftrags im Dezimalformat. Je nach den im System eingerichteten Status werden Zahlen mit bis zu 4 Nachkommastellen ausgegeben.
 
 |o_referrer
-|Auftragsherkunft
+|order referrer
+|Herkunft des Auftrags
 
 |o_global_referrer
+|order global referrer
 |
 
 |o_type
-|Auftragstyp
+|order type
+|Auftragstyp +
+Mögliche Werte: +
+order = Auftrag +
+delivery order = Lieferauftrag +
+return = Retoure +
+credit note = Gutschrift +
+warranty = Gewährleistung +
+repair = Reparaturauftrag +
+offer = Angebot +
+advance order = Vorbestellung +
+multi-order = Sammelauftrag +
+multi credit note = Sammelgutschrift
 
 |ac_id
-|Kontakt-ID
+|account contact id
+|ID des Kontakts, der dem Auftrag zugeordnet ist
 
 |o_shipping_profile
-|Versandprofil
+|order shipping profile
+|ID des Versandprofil des Auftrags
 
 |o_created_at
-|Zeitstempel der Erstellung +
-Datumsformat: mm/dd/yyyy
+|order created at
+|Zeitstempel der Auftragsanlage +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |o_goods_issue_at
-|Zeitstempel des Warenausgangs +
-Datumsformat: mm/dd/yyyy
+|order goods issue at
+|Zeitstempel der Buchung des Warenausgangs +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
 
-|o_payed_at
-|Zeitstempel des Zahlungseingangs +
-Datumsformat: mm/dd/yyyy
-
-////
-TODO
- muss o_paid_at heißen
-////
+|o_paid_at
+|order paid at
+|Zeitstempel der Buchung des Zahlungseingangs +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |o_updated_at
-|Zeitstempel der letzten Aktualisierung +
-Datumsformat: mm/dd/yyyy
+|order updated at
+|Zeitstempel der letzten Aktualisierung des Auftrags +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |====
