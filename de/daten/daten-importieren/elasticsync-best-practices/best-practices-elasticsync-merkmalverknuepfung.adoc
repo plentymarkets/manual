@@ -1,0 +1,71 @@
+= Best Practices: Merkmalverknüpfungen
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, Import, Artikel, Artikelanlage, Best Practice, automatisiert, Merkmalverknüpfungen, Merkmale
+:position: 40
+
+== Merkmalverknüpfungen exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du Merkmalverknüpfungen exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
+
+[#export_merkmalverknüpfungen]
+=== Export von Merkmalverknüpfungen
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit mit Varianten verknüpften Merkmale können mit dem FormatDesigner exportiert werden. Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Artikel*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import im Bereich *Item* die *ID* des Artikels oder im Bereich *Variation* die *ID* oder die *Number* der Variante.
+
+* Die eigentlichen Merkmalverknüpfungen werden dann im Bereich *VariationProperty* hinzugefügt:
+
+Hier besteht die Möglichkeit, zwischen 3 Werten zu wählen:
+
+- *value*: Gibt den Wert des im Format zugeordneten Merkmals aus.
+- *all*: Gibt alle verknüpften Merkmale eines Artikels mit Wert aus.
+- *allIds*: Gibt alle verknüpften Merkmal-IDs eines Artikels ohne Wert aus.
+
+Nach dem Speichern des Formats kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#import_merkmalverknüpfungen]
+=== Import von Merkmalverknüpfungen
+
+==== Erstellen des Syncs in ElasticSync
+
+Für den Import der Merkmalverknüpfungen könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync von Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+Der Abgleich kann über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen oder auch über die *Artikel ID*, wenn die Verknüpfungen in einem eigenen Sync erstellt werden.
+
+In der Zuordnung des Syncs können verschiedene Felder gewählt werden, um die Verknüpfung zu erstellen bzw. zu bearbeiten. Zum Beispiel könnt Ihr die Felder *ID, Wert und Sprache* (es müssen alle 3 sein) hinzufügen oder auch nur das Feld *Merkmalkombination*. Letzteres muss in der Datei wie folgt aufgebaut sein:
+
+*InternerName1:Wert1:Sprache;InternerName2:Wert2:Sprache*
+
+Sollen Merkmalverknüpfungen gelöscht werden, geschieht das mit dem Feld *Löchen (Ja/Nein)*, das in der Datei mit einer *1* für löschen und *0* für nicht löschen gefüllt sein muss.
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Merkmale können verknüpft werden.
