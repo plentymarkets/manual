@@ -1,0 +1,77 @@
+= Best Practices: Client links
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, import, items, creating items, best practice, automated
+:position: 30
+
+== Exporting and importing client links
+
+This chapter describes how to export and import client links.
+
+NOTE: To benefit from this best practice, you should be familiar the basic functionality of ElasticSync. Check the <<basics/data-exchange/ElasticSync/ElasticSync-plugin#, Importing data with ElasticSync>> page of the manual for general information about how the plugin works.
+
+[#export_client_links]
+=== Exporting client availability
+
+==== Creating the format in the FormatDesigner
+
+The clients currently linked to variations, i.e. active clients, can be exported using the FormatDesigner. To do so, go to *Data » FormatDesigner* and create a new format of the type *Item*.
+
+After that, select the data fields:
+
+* To allow mapping during import, from the *Variation* area select the *ID* or the *Number* of the variation.
+
+* The actual client availability is then added in the *VariationClient* area. The field is called *isActive*.
+
+[WARNING]
+.Mapping for multiple clients
+====
+If you work with more than one client, the field *isActive* must be added more than once. Each field must be assigned to a specific client.
+====
+
+In the export, the field contains the value 1 if the client is active. If the client is not active, an empty field is exported.
+
+After you have saved the format, you can set up the export in the elastic export.
+
+==== Setting up the export in the elastic export
+
+Go to *Data » Elastic export* to set up the export of the format you created.
+
+To do so, click on *New export* and save a name, the type *Item*, the format you created, a limit and a file name.
+
+[TIP]
+.Exporting the file in CSV format
+====
+If you want to download the file in CSV format, specify the suffix *.csv* as part of the file name.
+====
+
+Once you save the format, you are done setting it up.
+
+==== Exporting data
+
+There are several ways of exporting the data:
+
+* In the export, click *Download*.
+* Open the URL in a browser.
+* In the export overview, click *Download*.
+
+[#import_client_availability]
+=== Importing the client availability
+
+==== Creating the sync in ElasticSync
+
+To import the client availability, you can go to *Data » ElasticSync* and create a sync of the type *Item*. Alternatively, you can add the fields to an existing sync.
+
+The synchronisation must be based on a variation-specific field, for example the *Variation number*.
+
+In the sync’s mapping, select the field *Active* in the *Client (store)* area. Then click on the green plus icon to add the clients. To map the column of the CSV file, click on the pencil icon.
+
+You need to specify the value 1 to activate. To deactivate, specify a 0.
+
+[TIP]
+.Working with your own values
+====
+Instead of using one column in the file, you can also use your *own value* and enter *yes* or *no* for all rows of the file in the mapping.
+====
+
+That is all you need for the link. The sync is now ready to go and you can start activating or deactivating clients.

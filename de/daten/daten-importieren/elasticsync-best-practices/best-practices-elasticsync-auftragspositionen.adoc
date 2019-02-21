@@ -1,0 +1,81 @@
+= Best Practices: Auftragspositionen
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, Import, Aufträge, Auftragspositionen, Best Practice, automatisiert
+:position: 80
+
+== Importdatei vorbereiten
+
+Bevor wir den Import und die Aktualisierung von Auftragspositionen erklären, erhältst du in diesem Kapitel einige wichtige Informationen zum Import der Daten in dein plentymarkets System. +
+
+Dein plentymarkets System bezieht die benötigten Daten zu den Auftragspositionen aus einer Importdatei im CSV-Format. Deine Importdatei muss die folgenden Spalten enthalten, wie du an diesem Beispiel-Aufbau aus dem früheren dynamischen Export erkennst:
+
+image::daten/daten-importieren/assets/elasticsync-bp-importdatei-order.png[]
+
+Stelle sicher, dass die CSV-Datei für den folgenden Schritt lokal auf deinem Computer abgespeichert ist.
+
+== Auftragspositionen importieren und aktualisieren
+
+In diesem Kapitel wird beschrieben, wie du mithilfe von ElasticSync Auftragspositionen, also in einem Auftrag enthaltene Artikel, importierst und anpasst.
+
+[.instruction]
+Grundeinstellungen vornehmen:
+
+. Öffne das Menü *Daten » Elastic Sync NEW*.
+. Klicke auf das Plus-Zeichen (*Sync hinzufügen*).
+. Gib im Bereich *Grunddaten* einen eindeutigen Namen für den Sync ein.
+. Wähle aus der Dropdown-Liste *Typ* die Option *Aufträge*.
+. Im Bereich *Import* lässt du die voreingestellten Optionen so wie sie sind.
+. Im Bereich *Quelle* wählst du die Option *HTTP*. +
+→ Drei weitere Zeilen werden angezeigt.
+. Wähle aus der Dropdown-Liste die Option *HTTP-Optionen* die Option *Datei-Upload*.
+. Klicke in der Zeile *URL* auf den Button mit den drei Punkten (*Datei wählen*). +
+→ Ein Fenster öffnet sich.
+. Klicke auf *Datei hochladen*, wähle die CSV-Datei mit den Auftragspositionsdaten, die du importieren möchtest, und klicke auf *Öffnen*.
+. Setze ein Häkchen in der Zeile der Datei und klicke einmal in die Zeile der Datei. +
+→ *_Wichtig:_* Die Zeile muss noch einmal geklickt werden. Erst wenn die Zeile blau gefärbt ist, kannst du sie mit einem Klicke auf *Wählen* hochladen. +
+→ Die URL – also der Pfad, von wo aus du die CSV-Datei hochgeladen hast – ist nun im Feld *URL* grau hinterlegt.
+. *Speichere* die Einstellungen.
+
+Du hast die CSV-Datei nun erfolgreich hochgeladen. Im Folgenden nimmst du die Einstellungen für den Abgleich vor.
+
+[.instruction]
+Abgleich einstellen:
+
+. Klicke ganz links auf *Abgleich*.
+. Im Bereich *Abgleich* wählst du die folgenden Datenfelder aus, um die Auftragspositionen zu aktualisieren:
+
+image::daten/daten-importieren/assets/elasticsync-bp-abgleichfelder-order.png[]
+
+[NOTE]
+.Funktionsweise des Abgleichs
+====
+Die hier eingestellten Abgleichsfelder sind im Sync-Typ *Aufträge* allgemein und somit auch in dem hier gezeigten Format in Form einer UND-Bedingung verknüpft. Werden also die Abgleichsfelder *Auftrags-ID* und *Varianten-ID* gewählt, werden nur Datenzeilen importiert, die Werte für *beide* dieser Datenspalten enthalten.
+====
+
+Als nächstes nimmst du die Einstellungen für die Zuordnung vor.
+
+[.instruction]
+Zuordnung einstellen:
+
+. Klicke ganz links auf *Zuordnung*.
+. Klicke auf das Plus-Zeichen (*Zuordnung hinzufügen*).
+. Gib einen Namen ein.
+. Gib bei *Position* die Zahl *1* ein.
+. *Speichere* die Einstellung. +
+→ Der Bereich *Importdaten / plentymarkets Datenfelder* öffnet sich.
+
+In diesem Bereich ordnest du die Felder aus deiner CSV-Datei den Datenfeldern in plentymarkets zu. Ordne alle links angezeigten Felder wie folgt den plentymarkets Datenfeldern zu:
+
+image::daten/daten-importieren/assets/elasticsync-bp-zuordnung-order.png[]
+
+[IMPORTANT]
+.Pflichtfelder für die Zordnung
+====
+Bitte beachte, dass die plentymarkets Datenfelder *Auftragsposition / Name*, *Auftragsposition / Menge*, *Auftragsposition / Währung* und *Auftragsposition / Typ* Pflichtfelder sind. Nur wenn du deine Zuordnung wie oben gezeigst vornimmst, kannst du gleichzeitig Auftragspositionen importieren und aktualisieren.
+====
+
+== Sync testen und ausführen
+
+Nachdem du alle oben beschriebenen Einstellungen vorgenommen hast, solltest du deinen Sync einmalig über den Button *Sync testen* testen. +
+Beim Testen werden jeweils die ersten 10 Zeilen des Syncs verarbeitet und es wird kein Cache verwendet. Prüfe anschließend das Log durch Klick auf den Button *Log* auf etwaige Fehlermeldungen oder sieh die getesteten Aufträge direkt ein. Erst wenn dieser Test fehlerfrei verläuft, solltest du den Sync ausführen.

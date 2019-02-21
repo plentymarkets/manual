@@ -1,0 +1,78 @@
+= Best Practices: Mandantenverknüpfung
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, Import, Artikel, Artikelanlage, Best Practice, automatisiert, Variantenanlage
+:position: 30
+
+== Mandantenverknüpfung exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du Mandantenverknüpfungen exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
+
+[#export_mandantenverknüpfung]
+=== Export der Mandantenverknüpfung
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit mit Varianten verknüpften, also aktivierten Mandanten können mit Hilfe des FormatDesigners exportiert werden. Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Artikel*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import aus dem Bereich *Variation* die *ID* oder *Number* der Variante.
+
+* Die eigentliche Mandantenverfügbarkeit wird dann im Bereich *VariationClient* hinzugefügt. Das Feld heißt *isActive*.
+
+
+[WARNING]
+.Zuordnung bei mehreren Mandanten
+====
+Wenn mehrere Mandanten vorhanden sind, muss das Feld *isActive* auch mehrfach hinzugefügt werden und immer einem bestimmten Mandanten zugeordnet werden.
+====
+
+Im Export gibt das Feld bei aktiviertem Mandanten eine 1 aus. Ist der Mandant nicht aktiv, wird ein leeres Feld exportiert.
+
+Nach dem Speichern des Formates kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#import_mandantenverfügbarkeit]
+=== Import der Mandantenverfügbarkeit
+
+==== Erstellen des Syncs in ElasticSync
+
+Für den Import der Mandantenverfügbarkeit könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync vom Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+Der Abgleich muss über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen
+
+In der Zuordnung des Syncs wählt Ihr im Bereich *Mandant (Shop)* das Feld *Aktiv*. Anschließend fügt Ihr über das grüne Plus die gewünschten Mandanten hinzu und drückt zum Zuordnen der Spalte aus der CSV-Datei auf das Stift-Symbol.
+
+Zum Aktivieren wird in der Datei der Wert 1 benötigt, zum Deaktivieren eine 0.
+
+[TIP]
+.Mit eigenem Wert arbeiten
+====
+Ihr könnt in der Zuordnung statt einer Spalte in der Datei auch den *eigenen Wert* nutzen und dort *yes* oder *no* für alle Zeilen aus der Datei nutzen.
+====
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Mandanten können aktiviert oder deaktiviert werden.

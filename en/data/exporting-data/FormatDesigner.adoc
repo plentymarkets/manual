@@ -80,9 +80,6 @@ With formats of the type *Item*, you export item and variation data.
 |stockType
 |Type
 
-|storeSpecial
-|Store special
-
 |OwnerID
 |Owner
 
@@ -286,12 +283,12 @@ url;position,url;position,etc.
 
 
 [#240]
-=== ItemTag
+=== VariationTag
 
-<<table-fields-tags>> lists the fields available for exporting tags linked to items.
+<<table-fields-tags>> lists the fields available for exporting tags linked to variations.
 
 [[table-fields-tags]]
-.Fields for exporting item tags
+.Fields for exporting variation tags
 [cols="1,3"]
 |====
 |Field |Explanation
@@ -299,8 +296,11 @@ url;position,url;position,etc.
 |tagId
 |Tag ID
 
-|tagNames
+|tagName
 |Tag name
+
+|tagNames
+|Tag names
 |====
 
 
@@ -396,6 +396,9 @@ url;position,url;position,etc.
 |relatedUpdatedAt
 |Time stamp of last update of linked data
 
+|availabilityUpdatedAt
+|Time stamp of last update of the availability
+
 |PriceCalculationID
 |Price calculation
 
@@ -416,6 +419,12 @@ url;position,url;position,etc.
 
 |isUnavailableIfNetStockIsNotPositive
 |Not available if net stock is 0 or negative
+
+|isVisibleInListIfNetStockIsPositive
+|Visible in item list if net stock is positive
+
+|isInvisibleInListIfNetStockIsNotPositive
+|Invisible in item list if net stock is 0 or negative
 
 |mainWarehouseId
 |ID of the main warehouse
@@ -511,6 +520,27 @@ D = 3
 |salesRank
 |Sales rank of the variation
 
+|parentVariationId
+|Currently not in use +
+// ID of the parent variation
+
+|parentVariationQuantity
+|Currently not in use +
+// Number of parent variations that this variation contains
+
+|singleItemCount
+|Currently not in use +
+// Number of single items of the variation
+
+|parentVariationID
+|ID of the main variation
+
+|parentVariationQuantity
+|
+
+|singleItemCount
+|
+
 |categoryVariationId
 |Variation ID or ID of the main variation of the item. +
 ID of the variation = Categories are not inherited from the main variation. +
@@ -573,8 +603,8 @@ ID of the main variation of the item = Properties are inherited from the main va
 |====
 |Field |Explanation
 
-|codes
-|Codes for the selected barcode
+|code
+|Code saved for the selected barcode
 |====
 
 
@@ -853,13 +883,16 @@ Component:Quantity;Component:Quantity
 [#380]
 === VariationSupplier
 
-<<table-fields-variation-supplier>> lists the fields available for exporting supplier data.
+<<table-fields-suppliers>> lists the fields available for exporting supplier data.
 
-[[table-fields-variation-supplier]]
+[[table-fields-supplier]]
 .Fields for exporting supplier data
 [cols="1,3"]
 |====
 |Field |Explanation
+
+|supplierRowId
+|Supplier link ID
 
 |SupplierID
 |Supplier ID
@@ -955,7 +988,7 @@ _Example:_ 512;"EinText":"de"
 [#420]
 === VariationEigenschaften
 
-<<table-fields-variation-properties>> lists the fields available for importing property links at the variation level.
+<<table-fields-properties-variations>> lists the fields available for importing property links at the variation level.
 
 [[table-fields-variation-properties]]
 .Fields for exporting variation properties
@@ -966,9 +999,46 @@ _Example:_ 512;"EinText":"de"
 |id
 |ID of the property
 
+|Cast
+|Type of the property +
+int = Integer +
+float = Decimal number +
+select = Selection +
+date = Date +
+file = File +
+empty = None
+
+|linked
+|IDs of the linked properties
+
+|value
+|Property value
+
 |all
 |All characteristics in the format +
 name:value:language;name:value:language
+|====
+
+
+[#format-item-serial-number]
+=== ItemSerialNumber
+
+<<table-fields-serial-numbers>> lists the fields available for exporting serial number data.
+
+[[table-fields-serial-numbers]]
+.Fields for exporting serial numbers
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|all
+|All serial numbers
+
+|available
+|Available serial numbers
+
+|used
+|Assigned serial numbers
 |====
 
 [#430]
@@ -1004,6 +1074,9 @@ name:value:language;name:value:language
 
 |fileType
 |File format of the image (JPG, JPEG, PNG, GIF or SVG)
+
+|path
+|URL of the image
 
 |position
 |Position
@@ -1068,7 +1141,9 @@ name:value:language;name:value:language
 |alternate
 |Alternative text of item image
 
-|Own value
+2+|*custom_value*
+
+|custom_value
 |Own value for export
 |====
 
@@ -1222,6 +1297,9 @@ customer = Category and all sub-categories are only visible to online store visi
 |sitemap
 |Sitemap
 
+|updatedAt
+|Time stamp of the last update
+
 |parentCategoryName
 |Name of the parent category
 
@@ -1251,6 +1329,9 @@ customer = Category and all sub-categories are only visible to online store visi
 |metaTitle
 |Meta title
 
+|image2Path
+|
+
 |previewUrl
 |Category URL
 
@@ -1265,6 +1346,9 @@ customer = Category and all sub-categories are only visible to online store visi
 
 |pageView
 |Template page
+
+|fullText
+|Full text search
 
 2+|*CategoryClient*
 
@@ -1287,6 +1371,8 @@ customer = Category and all sub-categories are only visible to online store visi
 [cols="1,3"]
 |====
 |Field |Explanation
+
+2+|*Manufacturer*
 
 |id
 |Manufacturer ID
@@ -1345,8 +1431,10 @@ customer = Category and all sub-categories are only visible to online store visi
 |updatedAt
 |Time stamp of the last update
 
+2+|*custom_value*
+
+|custom_value
 |Own value
-|Own value for export
 |====
 
 [#500]
@@ -1510,7 +1598,7 @@ customer = Category and all sub-categories are only visible to online store visi
 |Date of birth
 
 |personalNumber
-|Personnel number
+|Personal number
 
 |packstationNo
 |Number of the Packstation
@@ -1791,7 +1879,7 @@ customer = Category and all sub-categories are only visible to online store visi
 
 <<table-fields-order-contacts>> lists the fields available for exporting order contact data.
 
-[[table-fields-order-contacts]]
+[[table-order-contacts]]
 .Fields for exporting order contacts
 [cols="1,3"]
 |====
@@ -3059,7 +3147,7 @@ customer = Category and all sub-categories are only visible to online store visi
 
 <<table-fields-delivery-orderitem-address-option>> lists the fields available for exporting delivery address option data.
 
-[[table-fields-delivery-orderitem-address-option]]
+[[table-fields-delivery-orderiten-address-option]]
 .Fields for exporting delivery address options
 [cols="1,3"]
 |====
@@ -3749,6 +3837,555 @@ D = 3
 <<table-fields-warehouse-own-values>> lists the fields available for exporting custom values.
 
 [[table-fields-warehouse-own-values]]
+.Fields for exporting custom values
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|Own value
+|Own value
+|====
+
+[#1200]
+== Contacts
+
+[#1205]
+=== Contact
+
+<<table-fields-contacts>> lists the fields available for exporting contact data.
+
+[[table-fields-contacts]]
+.Fields for exporting contact data
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|id
+|Contact ID
+
+|externalId
+|External contact ID
+
+|number
+|Customer number. This number is not assigned automatically. The maximum length is 128 characters.
+
+|typeId
+|Contact type ID
+
+|firstName
+|The contact's first name
+
+|lastName
+|The contact's surname
+
+|gender
+|Gender of the contact
+
+|title
+|Title of contact
+
+|newsletterAllowanceAt
+|Time stamp of the contact registering for the newsletter
+
+|classId
+|Customer class ID
+
+|blocked
+|Status “Blocked”. A contact can be locked for a specific client. +
+Possible values: 0 = not blocked, 1 = blocked.
+
+|rating
+|Rating of the contact. This is an internal rating only. 5 red stars are the worst and 5 yellow stars are the best rating. Possible values: +
+-5 = 5 red stars (worst possible rating) +
+-4 = 4 red stars +
+-3 = 3 red stars +
+-2 = 2 red stars +
+-1 = 1 red stars +
+0 = 5 grey stars, no rating saved for the contact. +
+1 = 1 yellow star +
+2 = 2 yellow stars +
+3 = 3 yellow stars +
+4 = 4 yellow stars +
+5 = 5 yellow stars (best possible rating)
+
+|bookAccount
+|Debtor account of the contact. An additional, separate number that usually corresponds to the contact number or the debtor number of the contact in your administrative accounting.
+
+|lang
+|Language of the contact
+
+|referrerId
+|Referrer of the contact
+
+|plentyId
+|Client that is assigned to the contact
+
+|userId
+|Owner ID of the contact
+
+|birthdayAt
+|Birthday of the contact
+
+|lastLoginAtTimestamp
+|Date of last login of the contact
+
+|lastOrderAt
+|Date of last order
+
+|dhlPostIdent
+|DHL PostIdent of the contact
+
+|valuta
+|Valuta of the contact
+
+|discountDays
+|Early payment discount (days) of the contact
+
+|discountPercent
+|Percentage for early payment discount of the contact
+
+|timeForPaymentAllowedDays
+|Payment due date of the contact
+
+|salesRepresentativeContactId
+|Contact ID of the sales representative
+
+|====
+
+[#1210]
+=== BillingAddress
+
+<<table-fields-billing-address-contacts>> lists the fields available for exporting invoice address data.
+
+[[table-fields-billing-address-contacts]]
+.Fields for exporting invoice address data
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|id
+|ID of the invoice address
+
+|name1
+|Name (default: company)
+
+|name2
+|Name (default: first name)
+
+|name3
+|Name (default: last name)
+
+|name4
+|Name (default: freely definable)
+
+|address1
+|Field address 1 (default: street)
+
+|address2
+|Field address 2 (default: house number)
+
+|address3
+|Address field 3 (default: additional address information)
+
+|address4
+|Address field 4 (default: freely definable)
+
+|postalCode
+|Postcode
+
+|town
+|Town
+
+|countryId
+|Country ID
+
+|stateId
+|ID of state, county or province
+
+|checkedAt
+|Time stamp of the last check of address (Unix timestamp)
+
+|title
+|Title of contact
+
+|====
+
+[#1220]
+=== DeliveryAddress
+
+<<table-fields-delivery-address>> lists the fields available for exporting delivery address data.
+
+[[table-fields-delivery-address-contacts]]
+.Fields for exporting delivery address data
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|id
+|ID of the invoice address
+
+|name1
+|Name (default: company)
+
+|name2
+|Name (default: first name)
+
+|name3
+|Name (default: last name)
+
+|name4
+|Name (default: freely definable)
+
+|address1
+|Field address 1 (default: street)
+
+|address2
+|Field address 2 (default: house number)
+
+|address3
+|Address field 3 (default: additional address information)
+
+|address4
+|Address field 4 (default: freely definable)
+
+|postalCode
+|Postcode
+
+|town
+|Town
+
+|countryId
+|Country ID
+
+|stateID
+|ID of state, county or province
+
+|checkedAt
+|Time stamp of the last check of address
+
+|title
+|Title of contact
+
+|====
+
+[#1230]
+=== Account
+
+<<table-fields-company>> lists the fields available for exporting company data.
+
+[[table-fields-company]]
+.Fields for exporting company data
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|id
+|The company's ID
+
+|number
+|Customer number. This number is not assigned automatically. The maximum length is 128 characters.
+
+|companyName
+|Company name
+
+|taxIdNumber
+|VAT identification number of the customer
+
+|valuta
+|Valuta of the company
+
+|discountDays
+|Early payment discount (days) of the company
+
+|discountPercent
+|Percentage for early payment discount of the company
+
+|TimeForPaymentAllowedDays
+|Payment due date of the contact
+
+|salesRepresentativeContactId
+|Contact ID of the sales representative
+
+|userId
+|ID of the owner (plentymarkets user ID)
+
+|deliveryTime
+|Delivery time for the supplier
+
+|dealerMinOrderValue
+|Minimum order value for the supplier
+
+|====
+
+[#1240]
+=== ContactOption
+
+<<table-fields-contact-option>> lists the fields available for exporting contact options.
+
+[[table-fields-contact-option]]
+.Fields for exporting contact options
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|telephonePrivate
+|Private telephone number
+
+|telephoneWork
+|Office telephone number
+
+|telephoneMobilePrivate
+|Private mobile phone number
+
+|telephoneMobileWork
+|Office mobile phone number
+
+|emailPrivate
+|Private email address
+
+|emailWork
+|Office email address
+
+|emailPayPal
+|PayPal email address
+
+|telefaxPrivate
+|Private fax number
+
+|telefaxWork
+|Office fax number
+
+|webPagePrivate
+|Private website
+
+|webPageWork
+|Office website
+
+|marketplaceEbay
+|eBay name
+
+|marketplaceAmazon
+|Email address at Amazon
+
+|identificationNumberKlarna
+|Identification number at Klarna
+
+|identificationNumberDHL
+|Identification number at DHL
+
+|paymentPayPal
+|Email address at PayPal
+
+|paymentKlarna
+|Identification number at Klarna
+
+|paymentStandard
+|Default payment method
+
+|userNamePrivate
+|Private user name
+
+|userNameWork
+|Office user name
+
+|userNameForum
+|User name used in a forum
+
+|groupForum
+|Email address used in a forum
+
+|accessGuest
+|Account type. Indicates if the account is a regular account or a guest account.
+
+|additionalContactPerson
+|Additional contact person
+
+|salutationPrivate
+|Private form of address
+
+|salutationWork
+|Office form of address
+
+|====
+
+
+[#1250]
+=== BillingAddressOption
+
+<<table-fields-billing-address-option-contacts>> lists the fields available for exporting invoice address options.
+
+[[table-fields-billing-address-option-contacts]]
+.Fields for exporting invoice address options
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|vatNumber
+|VAT identification number of the customer
+
+|externalAddressID
+|External ID of the invoice address
+
+|entryCertificate
+|Entry certificate (Gelangensbestätigung)
+
+|telephone
+|Telephone number
+
+|email
+|Email address
+
+|postNumber
+|Post number
+
+|personalId
+|Personnel ID
+
+|bBFC
+|BBFC (age rating)
+
+|birthday
+|Date of birth
+
+|sessionID
+|Session ID
+
+|title
+|Title of the invoice recipient
+
+|contactPerson
+|Contact person
+
+|====
+
+[#1260]
+=== DeliveryAddressOption
+
+<<table-fields-delivery-address-option-contacts>> lists the fields available for exporting delivery address options.
+
+[[table-fields-delivery-address-option-contacts]]
+.Fields for exporting delivery address options
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|vatNumber
+|VAT identification number of the customer
+
+|externalAddressID
+|External ID of the delivery address
+
+|entryCertificate
+|Entry certificate (Gelangensbestätigung)
+
+|telephone
+|Telephone number
+
+|email
+|Email address
+
+|postNumber
+|Post number
+
+|personalId
+|Personnel ID
+
+|bBFC
+|BBFC (age rating)
+
+|birthday
+|Date of birth
+
+|sessionID
+|Session ID
+
+|title
+|Title of recipient
+
+|contactPerson
+|Contact person
+
+|====
+
+[#1270]
+=== ContactBank
+
+<<table-fields-contact-bank>> lists the fields available for exporting bank details.
+
+[[table-fields-contact-bank]]
+.Fields for exporting bank data
+[cols="1,3"]
+|====
+|Field |Explanation
+
+|id
+|ID of the bank account
+
+|contactId
+|Contact ID
+
+|accountOwner
+|The account holder's name
+
+|bankName
+|The name of the bank
+
+|bankAddress
+|The address of the bank
+
+|bankPostalCodeTown
+|Postcode and town of the bank
+
+|bankCountry
+|Country of the bank
+
+|iban
+|IBAN of bank account
+
+|bic
+|BIC of the bank account
+
+|accountNumber
+|Account number
+
+|sortCode
+|Sort code
+
+|lastUpdateBy
+|Date of last update. Possible values: +
+customer +
+back end +
+import
+
+|directDebiteMandateAvailable
+|Flag that indicates if a SEPA direct debit mandate was granted
+
+|directDebitMandateAt
+|Date the SEPA direct debit mandate was granted.
+
+|directDebitMethod
+|Type of SEPA direct debit mandate. Possible values: +
+sepaDirectDebit +
+sepaB2bDirectDebit
+
+|directDebitType
+|Indicates if this is a first debit or recurring debit. Possible values: +
+first +
+next
+
+|paymentMethod
+|Payment frequency of SEPA direct debit mandate. Possible values: +
+recurrent +
+onOff
+
+|====
+
+[#1280]
+=== Exporting custom values
+
+<<table-fields-contacts-own-values>> lists the fields available for exporting custom values.
+
+[[table-fields-contacts-own-values]]
 .Fields for exporting custom values
 [cols="1,3"]
 |====
