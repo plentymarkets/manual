@@ -1,0 +1,127 @@
+= orderItems
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: orderItems, report, raw data
+:position: 70
+
+The data format creator *orderProperties* exports data on the properties of the order items saved in the system based on the rules defined in the following and saves the data on a cloud storage.
+
+== Technical specifications
+
+<<table-specifications-orderitems>> explains the available properties and the corresponding values.
+
+[[table-specifications-orderitems]]
+.Technical specifications of the *orderItemPropertiess* format
+[cols=4]
+|====
+|Property |Meaning |Value |Explanation
+
+|dataName
+|Name
+|orderItems
+|Name of the creator process and prefix of the created file. +
+File name: *orderItems-xxx.csv.gz*
+
+|fileFormat
+|File format
+|CSV, GZIP
+|The data is provided as a GZIP-compressed CSV file (RFC 1952).
+
+|limitPage
+|Lines per request
+|up to 8,000
+|The maximum number of data rows that is written into a single file.
+
+|limitDay
+|Lines per day
+|up to 100,0000
+|The maximum number of data rows that is written on one day in total.
+
+|earliestPossibleDataDate
+|Earliest point in time
+|2017-01-01
+|Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
+
+|deleteRawDataAfterDaysMinimum
+|Minimum number of days until the data is deleted
+|1095
+|The minimum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Data » Raw data* menu.
+
+|deleteRawDataAfterDaysMaximum
+|Maximum number of days until the data is deleted
+|1095
+|The maximum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Data » Raw data* menu.
+
+|dataUpdatedAtColumnName
+|Column header
+|oi_updated_at
+|Name of the column that contains the time stamp of the last data update.
+
+|defaultActive
+|Activated by default
+|yes
+|As standard, the export runs automatically in the background.
+
+|interval
+|Interval
+|daily
+|With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
+
+|====
+
+== Data columns
+
+<<table-data-columns-orderitems>> explains the available properties and the corresponding values.
+
+[[table-data-columns-orderitems]]
+.Data columns of the *orderItems* format
+[cols="1,3,3"]
+|====
+|Column name |Full name |Explanation
+
+|oi_id
+|order item ID
+|ID of the order item
+
+|o_id
+|order ID
+|ID of the order
+
+|iv_id
+|item variation id
+|Variation ID of the order item
+
+|i_id
+|item id
+|Item ID of the order item
+
+|oi_quantity
+|order item quantity
+|Quantity of the order items contained in the order
+
+|oi_type_id
+|order item type id
+|ID of the order item type. +
+Possible values: +
+1= Variation +
+2 = Bundle +
+3 = Bundle component +
+4 = Promotional coupon +
+5 = Gift card +
+6 = Shipping costs +
+7 = Surcharge (depending on the payment method) +
+8 = Gift wrap +
+9 = Unassigned variation +
+10 = Deposit +
+11 = Order (e.g. with multi-orders)
+
+|oi_warehouse_id
+|order item warehouse id
+|ID of the warehouse that is assigned to the order item
+
+|oi_updated_at
+|order item updated at
+|Time stamp of the last update +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|====

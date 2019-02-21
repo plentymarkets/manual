@@ -1,0 +1,92 @@
+= Managing reports
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Report, Reports, raw data, key performance indicator, KPI, key figure, data analysis, statistics, BI, Business Intelligence
+:position: 30
+
+A report is a data analysis that determines a single key performance indicator (KPI) or a list of KPIs. The data base for this analysis is an export of raw data at regular intervals. This data is saved on a secure cloud storage.
+
+[TIP]
+.Current status
+====
+Currently, the data can be analysed via external business intelligence tools (BI tools) only. An internal module for the data analysis is planned for this year.
+====
+
+== Raw data
+
+Raw data is collected in the background, usually over night. The raw data to be saved is set in the *Data » Raw data* menu. You can retrieve the generated files via the REST API and process the data externally.
+
+=== For end users
+
+We have observed that business decisions are often not made based on key figures, but rather intuitively. In order to change this behaviour, we recommend using a business intelligence tool. Ideally, such a toll analyses different data from several sources. This allows you to identify specific recommendations for action.
+
+The data exported from your plentymarkets system can easily be integrated into an existing BI tool. If no standard connector exists yet, forward the URL of this page to the tool provider.
+
+=== For developers
+
+If you are interested in developing and selling a connector to a BI tool, you can upload the connector to the link:https://marketplace.plentymarkets.com/en[plentyMarketplace^] free of charge. In addition to plentymarkets plugins, it is also possible to integrate external offers. Register link:https://www.plentymarkets.eu/service/partner-werden/[here^] to become a partner. Please note that this website is only available in German.
+
+Raw data is available in CSV format and can therefore easily be processed. All plentymarkets systems have a standardised REST API. You can find the documentation on link:https://developers.plentymarkets.com/[this page^].
+
+Raw data is retrieved in two steps. We recommend retrieving the data once a day after around noon. At this point, the process of generating raw data is completed for all systems.
+
+First, a list of available raw data files is retrieved via this link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data[route^]. The time at which the latest file of the last retrieval was created serves as a filter for the next retrieval. In this way, the files are not retrieved several times. The number of files that are generated per day may vary depending on how many creator processes are activated for a plentymarkets system. Furthermore, only a certain number of data rows is written in each file. If required, another file is created. With this route, either all files of a single creator or all files that were created during the retrieval interval are exported.
+With this link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data_file[route^], a raw data file is exported. The required file path is contained in the sample space of the REST route listed in point 1. Raw data files are provided as a GZIP-compressed CSV file (RFC 1952). A comma is used as column separator.
+
+[TIP]
+.Standard time stamp format
+====
+The standard date format is MM/DD/YYYY HH:MI:SS TZ. This date format can be copied directly to an AWS Redshift column of the type TIMESTAMPTZ. Example: 01/30/2019 05:14:57 Europe/Berlin
+====
+
+=== Date format creator
+
+The creator is a specific process that provides a data format. Each creator only saves data after you have activated the creator in the *Data » Raw data* menu.
+
+The data formats have English names. Explanations as well as links to the sub-pages are listed in <<table-reports-data-formats>>.
+
+[[table-reports-data-formats]]
+.Available data formats
+[cols="1,3"]
+|====
+|Data format |Explanation
+
+|accountContacts
+|Contact +
+For further information, refer to the sub-page <<data/report/data-formats/accountcontacts#, accountContacts>>.
+
+|accounts
+|Company +
+For further information, refer to the sub-page <<data/report/data-formats/accounts#, accounts>>.
+
+|itemManufacturer
+|Manufacturer +
+For further information, refer to the sub-page <<data/report/data-formats/itemmanufacturer#, ItemManufacturer>>.
+
+|itemVariations
+|Variation +
+For further information, refer to the sub-page <<data/report/data-formats/itemvariations#, ItemVariations>>.
+
+|orderItemAmounts
+|Number of order items +
+For further information, refer to the sub-page <<data/report/data-formats/orderitemamounts#, orderItemAmounts>>.
+
+|orderItemProperties
+|Property of the order item +
+For further information, refer to the sub-page <<data/report/data-formats/orderitemproperties#, orderItemProperties>>.
+
+|orderItems
+|Order item +
+For further information, refer to the sub-page <<data/report/data-formats/orderitems#, orderItems>>.
+
+|orderProperties
+|Order property +
+For further information, refer to the sub-page <<data/report/data-formats/orderproperties#, orderProperties>>.
+
+|orders
+|Order +
+For further information, refer to the sub-page <<data/report/data-formats/orders#, orders>>.
+
+|====
+
+Further data formats will be added in the future.
