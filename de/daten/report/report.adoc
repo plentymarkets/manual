@@ -1,0 +1,120 @@
+= Reports verwalten
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Report, Reports, Rohdaten, KPI, Kennzahl, Datenanalyse, Statistik, BI, Business Intelligence
+:position: 10
+
+Ein Report ist eine Datenanalyse, die als Ergebnis eine einzelne Kennzahl (KPI) oder eine Ergebnisliste ermittelt. Als Datenbasis für diese Analyse werden regelmäßig Rohdaten aus plentymarkets exportiert und auf einem sicheren Cloud-Speicher abgelegt.
+
+[TIP]
+.Aktueller Stand
+====
+Zum aktuellen Zeitpunkt kann die Analyse lediglich über externe Business-Intelligence-Tools (BI-Tools) erfolgen. Für das laufende Jahr ist auch ein internes Modul zur Datenanalyse geplant.
+====
+
+== Rohdaten
+
+Rohdaten werden im Hintergrund und im Regelfall nachts ermittelt. Welche Rohdaten abgelegt werden, legen Sie im Menü *Daten » Rohdaten* fest. Die generierten Dateien können Sie per REST-API abrufen und extern verarbeiten.
+
+=== Für Endanwender
+
+Wir beobachten, dass Geschäftsentscheidungen oft nicht auf Basis von Kennzahlen, sondern eher aus dem Bauch heraus getroffen werden. Um dies zu verändern, empfehlen wir den Einsatz eines Business-Intelligence-Tools. Bestenfalls werden darin unterschiedliche Daten aus mehreren Quellen analysiert, um daraus konkrete Handlungsempfehlungen ableiten zu können.
+
+Die Daten aus plentymarkets können einfach in eine bestehende BI-Lösung integriert werden. Sofern noch kein Standard-Connector existiert, leiten Sie bitte die URL zu dieser Seite an den Lösungsanbieter weiter.
+
+=== Für Entwickler
+
+Wenn Sie einen Connector zu einer BI-Lösung herstellen und diesen vermarkten möchten, kann dies auch kostenfrei über den link:https://marketplace.plentymarkets.com/[plentyMarketplace^] erfolgen. Neben plentymarkets Plugins können hier auch Einträge zu externen Angeboten integriert werden. Registrieren Sie sich link:https://www.plentymarkets.eu/service/partner-werden/[hier^] als Partner.
+
+Rohdaten liegen im Format CSV vor und können somit einfach weiter verarbeitet werden. Alle plentymarkets Systeme verfügen über eine einheitliche REST-API. Die Dokumentation finden Sie auf link:https://developers.plentymarkets.com/[dieser Seite^].
+
+Der Abruf von Rohdaten erfolgt in zwei Schritten. Wir empfehlen, den Abruf einmal pro Tag ab Mittag durchzuführen, da bis dahin für alle Systeme die Generierung der Rohdaten abgeschlossen ist.
+
+1.	Zuerst wird über diese link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data[Route^] eine Liste der vorhandenen Rohdatendateien abgefragt. Der Erstellungszeitpunkt der beim letzten Abruf jüngsten Datei dient für die nächste Anfrage als Filter, um Dateien nicht wiederholt abzufragen. Die Anzahl der pro Tag generierten Dateien kann variieren, je nachdem wie viele Creator-Prozesse für ein plentymarkets System aktiviert wurden. Zudem wird in jede Datei nur eine bestimmte Anzahl an Datenzeilen geschrieben und im Bedarfsfall eine weitere Datei angelegt. Je nach Bedarf können mit dieser Route alle Dateien nur eines Creators oder alle Dateien die im Abfragezeitraum erstellt wurden, zurückgeliefert werden.
+2.	Mit dieser link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data_file[Route^] wird eine Rohdatendatei zurückgeliefert. Der dafür nötige Dateipfad ist in der Ergebnismenge der unter Punkt 1 benannten REST-Route. Rohdatendateien werden als per GZIP (RFC 1952) komprimierte CSV-Dateien geliefert, wobei als Spaltentrennzeichen ein Komma verwendet wird.
+
+[TIP]
+.Standardzeitstempelformat
+====
+Das Standarddatumsformat ist MM/DD/YYYY HH:MI:SS TZ, da dies unverändert in eine AWS Redshift Spalte vom Typ TIMESTAMPTZ per copy-Befehl übernommen werden kann. Beispiel: 01/30/2019 05:14:57 Europe/Berlin
+====
+
+=== Datenformat-Creator
+
+Mit Creator bezeichnen wir einen bestimmten Prozess, welcher ein Datenformat bereitstellt. Jeder Creator legt erst dann Daten ab, wenn dieser zuvor im Menü *Daten » Rohdaten* aktiviert wurde.
+
+Die einzelnen Datenformate haben englische Bezeichnungen. Die Bedeutung sowie weiterführende Links sind in <<tabelle-report-datenformate>> aufgelistet.
+
+[[tabelle-report-datenformate]]
+.Verfügbare Datenformate
+[cols="1,3"]
+|====
+|Datenformat |Erläuterung
+
+|accountContacts
+|Kontakt +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/accountcontacts#, accountContacts>>.
+
+|accounts
+|Firma +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/accounts#, accounts>>.
+
+|categories
+|Kategorien +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/categories#, categories>>.
+
+|itemManufacturer
+|Hersteller +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/itemmanufacturer#, itemManufacturer>>.
+
+|itemVariations
+|Variante +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/itemvariations#, itemVariations>>.
+
+|itemVariationSuppliers
+|Verknüpfungen zwischen Lieferanten und Varianten +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/itemvariationsuppliers#, itemVariationSuppliers>>.
+
+|orderItemAmounts
+|Anzahl der Auftragspositionen +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/orderitemamounts#, orderItemAmounts>>.
+
+|orderItemProperties
+|Eigenschaft der Auftragsposition +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/orderitemproperties#, orderItemProperties>>.
+
+|orderItems
+|Auftragsposition +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/orderitems#, orderItems>>.
+
+|orderProperties
+|Auftragseigenschaft +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/orderproperties#, orderProperties>>.
+
+|orders
+|Auftrag +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/orders#, orders>>.
+
+|stockManagementStock
+|Bestand +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/stockmanagementstock#, stockManagementStock>>
+
+|stockManagementStockMovements
+|Warenbewegungen +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/stockmanagementstockmovements#, stockManagementStockMovements>>
+
+|stockManagementWarehouses
+|Lager +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/stockmanagementwarehouses#, stockManagementWarehouses>>
+
+|tags
+|Tags +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/tags#, tags>>.
+
+|tagRelations
+|Tag-Verknüpfungen +
+Weitere Informationen finden Sie auf der Unterseite <<daten/report/datenformate/tagrelations#, tagRelations>>.
+
+|====
+
+Weitere Datenformate werden sukzessive ergänzt und in dieser Tabelle hinzugefügt.
