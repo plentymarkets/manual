@@ -137,7 +137,7 @@ No check mark = Active and inactive variations are available for this POS and ca
 *_Tipp:_* Click the arrow key of your keyboard twice to show a list of storage locations.
 
 |*Refund customer with gift card* +
-|Select if POS users can hand out a gift card to the value of the refund amount instead of paying out the amount in cash.
+|Select if POS users are allowed to hand out a gift card to the value of the refund amount instead of paying out the amount in cash.
 
 |*Variation ID of return item* +
 |Enter the ID of the variation that serves as the gift card item for refunds.
@@ -146,6 +146,19 @@ No check mark = Active and inactive variations are available for this POS and ca
 
 |*Reverse stock if order is cancelled*
 |Activate to reverse stock automatically if the order is cancelled.
+
+|*External order: Book outgoing items automatically* +
+(version 1.9.2 and higher)
+|Select if outgoing items are booked automatically for external items that are payed for at the POS. +
+Activated (default setting) = Items are booked out automatically. The *Book outgoing items* button is not shown. +
+Not activated = Items are booked out only if the POS user taps the *Book outgoing items* button. +
+*_Tip:_* Deactivate the option if your customers do not receive their goods at the POS.
+
+|*Outgoing items for external orders: Book items out of POS sales warehouse* +
+(version 1.9.2 and higher)
+|Select from which warehouse the order items are to be booked out when external orders are completed at the POS. +
+Not activated (default setting) = The order items are booked out of the warehouse that was assigned to the order when the order was created. +
+Activated = The order items are booked out of the *Sales warehouse* saved for the POS. The warehouse originally saved for the order is overwritten.
 
 2+|*Operation*
 
@@ -169,6 +182,15 @@ Activated = The following numpad quick buttons are shown as an additional row of
 Not activated = Default setting. All order items are selected for return when you open the order. POS staff removes those items from the return that the customer does not want to return. +
 Activated = No order items are selected for return when the order opens. POS staff adds those items to the return that the customer wants to return. +
 *_Tipp:_* Activate this option if your POS does not have a scanner and if your orders typically contain a large number of order items.
+
+2+|*Loyalty card*
+
+|*Customer identification* +
+(version 1.9.2 and higher)
+|Select what contact data is to be searched when a barcode with a plus sign prefix (+) is scanned. +
+*Contact ID* (default setting) = Select if barcodes contain the contact ID. +
+*Customer number* = Select if barcodes contain the customer number. +
+*_Tip:_* If you select *Customer number*, this allows you to print loyalty cards with barcodes in advance. The barcode code minus the plus sign is then entered into the *Customer number* field of the contact.
 
 2+|*Austria*
 
@@ -1073,7 +1095,7 @@ The following preparations in the plentymarkets back end are necessary to sell g
 * *_Optional:_* Create gift card templates and make them available to POS users.
 * *_Optional:_* Make gift card codes available to POS users.
 
-These steps are described below. Find more detailed information on campaigns and gift cards on the <<orders/coupons#, Coupons>> page of the manual.
+These steps are described below. Find more detailed information on creating campaigns and gift cards on the <<orders/coupons#, Coupons>> page of the manual.
 
 [NOTE]
 .More than one POS
@@ -1485,7 +1507,7 @@ The following preparations in the plentymarkets back end are necessary to create
 * Assign REST API rights to variable user accounts.
 
 
-These steps are described below. Find more detailed information on campaigns and gift cards on the <<orders/coupons#, Coupons>> page of the manual.
+These steps are described below. Find more detailed information on creating campaigns and gift cards on the <<orders/coupons#, Coupons>> page of the manual.
 
 
 [#3200]
@@ -1692,6 +1714,7 @@ Users with admin rights are able to create refund gift cards by default. *Variab
 
 [.instruction]
 Assigning rights for refund gift cards:
+
 . Go to *System » Settings » User » Accounts*.
 . Open the variable user account.
 . Click on the *Right* tab.
@@ -1710,29 +1733,28 @@ Assigning rights for refund gift cards:
 * On z reports, returned items refunded as gift cards are shown as cash refunds.
 * Gift cards due to refunds are shown as gift card sales on the Z report. The total cash on hand remains the same.
 
-[#3700]
-== Preparing Click & Collect
+[#4100]
+== Preparing pickup and payment of online orders (click & collect)
 
-* Customer orders and pays online and picks up the ordered items in the retail outlet.
-* Customer orders online and pays in the retail outlet when they pick up the ordered items.
+Items ordered in your online store, on markets or via other sales channels can be paid for online and picked up at the retail store or picked up and paid for in the store.
 
-[#2000]
-=== Click & Collect information
-
-Note the following information on Click & Collect orders:
+The following preparations for the POS are necessary if you want your customers to be able to pick up and pay for online orders at your retail outlet.
 
 * The order ID is needed to search for orders at the POS. +
-→ Make sure that your order confirmations state the order ID clearly and that customers are aware that they need this ID to pick up their order in your retail outlet.
-* Train POS users to verify the identity of customers who come to pick up orders that were paid for online.
-* If you use processes and/or event procedures to automatically process orders generated in the online store and/or on markets, check these automated sequences before you offer customers to order online and pick up their orders in the retail outlet. +
-→ Make sure that orders are not automatically set to the status *Outgoing items booked* by an event procedure or a process before the customer picks up the ordered items in the retail outlet.
-* Online store orders cannot be edited at the POS. POS users can only book payments or save order notes. +
-* Click & Collect orders cannot be paid for using gift cards.
-* Click & Collect orders cannot be cancelled at the POS.
-* Payments that are booked at the POS to clear Click & Collect orders do not increase the POS’s revenue. +
+→ Ensure that your order confirmations contain the order ID. → Make sure that your order confirmations state the order ID clearly and that customers are aware that they need this order ID to pick up their order at your retail outlet.
+* Train POS users to verify the identity of customers who come to pick up orders that were paid for online. Otherwise your POS users may hand over paid items to the wrong person by mistake.
+* Do you use processes and/or event procedures to automatically process orders generated in the online store and/or on markets? +
+→ Check your event procedures and processes before you offer store pickups. → Make sure that orders are only set to the status *Outgoing items booked* by an event procedure or a process after the customer has picked up the ordered items from the retail outlet. +
+→ The POS shows that a customer has received the goods they ordered after the items have been booked out in plentymarkets. → If problems occur and a customer insists that they have not received the items, check the order in the plentymarkets back end. The items may have been booked out too early.
+
+Also note the following information and limitations regarding payment and pickup of online orders at the retail outlet:
+
+* Online orders cannot be edited at the POS. POS users can only book payments or save order notes. +
+* Online orders can be paid for at the POS using gift cards in app version 1.9.2 and higher. However, gift cards can only be used if no payment has been made for the order and no invoice document has been created yet.
+* Online orders cannot be cancelled at the POS.
+* Payments that are booked at the POS to clear online orders do not increase the POS’s revenue. +
 → Payments that are not revenue relevant for the POS are saved as POS events of the type *Payment* in the Cash Journal.
-* The POS shows that a customer has received the goods they ordered after the items have been booked out. +
-→ If problems occur and a customer insists that they have not yet received the items, the order must be checked in the plentymarkets back end. The items may have been booked out by mistake because they automatic processing of orders might have been configured incorrectly.
+* The option *External order: Book outgoing items automatically* of the POS settings allows you to specify if the order items are booked out of the warehouse automatically. This option is activated by default for POS created on or after the 05th of March 2019. If you deactivate this option, explain to your POS users in what cases they need to manually book outgoing items.
 
 [#2900]
 [#3000]
@@ -1849,11 +1871,11 @@ Linking a POS to a device:
 
 |**Create start receipt** +
 (new POS with location in Austria only)
-|Select to <<pos/integrating-plentymarkets-pos#900, create the start receipt>> (Startbeleg). This activates the tamper-proof signature unit for the POS. After the start receipt is created, the location country of the POS cannot be changed.
+|Select to <<pos/integrating-plentymarkets-pos#900, create the start receipt>> (Startbeleg). This will activate the tamper-proof signature unit for the POS. After the start receipt is created, the location country of the POS cannot be changed.
 
 |**Create end receipt** +
 (POS with location in Austria and activated signature unit only)
-|Select to <<pos/integrating-plentymarkets-pos#920, create the end receipt>> (Endbeleg). This deactivates the tamper-proof signature unit for the POS. Once an end receipt has been created, the POS can no longer be operated.
+|Select to <<pos/integrating-plentymarkets-pos#920, create the end receipt>> (Endbeleg). This will deactivate the tamper-proof signature unit for the POS. Once an end receipt has been created, the POS can no longer be operated.
 |====
 
 [#240]
@@ -2051,7 +2073,7 @@ So far, you have not saved any additional printers in the POS settings. Only the
 *_Tip:_* Did you save the right HTTP port in the app?
 * Is plentyBase running on the computer? +
 *_Recommendation:_* Configure plentyBase to run automatically when the computer is started up.
-* Has the printer been <<basics/admin-tasks/printer, saved and configured>> in the plentymarkets back end?
+* Has the printer been <<basics/admin-tasks/printer#, saved and configured>> in the plentymarkets back end?
 
 [#1050]
 ==== Case 2: Printers are saved in the POS settings but are not available
@@ -2249,7 +2271,7 @@ Deleting a POS:
 → The **Basic settings** tab of the POS opens.
 . In the top left corner, click **Delete**. +
 → The POS is deleted. +
-**__Note:__** If the POS is located in Austria and the signature unit is activated, an <<pos/implementing-plentymarkets-pos#920, end receipt must be created in the app>>. This deletes the POS automatically.
+**__Note:__** If the POS is located in Austria and the signature unit is activated, an <<pos/integrating-plentymarkets-pos#920, end receipt must be created in the app>>. This deletes the POS automatically.
 
 [#860]
 == Operating plentymarkets POS in Austria
@@ -2274,11 +2296,11 @@ a|* plentymarkets tests with the Feitian smartcard reader link:https://en.crypto
 
 |2.
 |Initialise the tamper-proof POS
-|See <<pos/integrating-plentymarkets-POS#50, Basic settings for PO>>
+|See <<pos/plentymarkets-pos-for-pos-users#50, Basic settings for POS>>
 
 |3.
 |Create the start receipt (Startbeleg)
-|See <<pos/integrating-plentymarkets-pos#900, Creating the start receipt (Startbeleg)>>
+|See <<pos/integrating-plentymarkets-pos#900, Creating the start receipt (Austria)>>
 
 |4
 |Register the signature card and POS at FinanzOnline
