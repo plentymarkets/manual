@@ -1,0 +1,226 @@
+= Ceres Coconut Theme
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Webshop, Mandant, Standard, Ceres, IO, Plugin, Template, ShopBuilder, Theme
+:position: 40
+
+[#10]
+link:https://marketplace.plentymarkets.com/plugins/storefront/themes/cerescoconut_6120[Ceres Coconut^] ist ein simples Theme-Plugin mit dessen Hilfe du das Standard-Design deines Ceres Webshops individualisieren kannst. Bei der Installation enthält Coconut noch keinerlei Anpassungen bezüglich Design oder Funktionalität. Coconut spiegelt die Dateistruktur des Plugins Ceres wieder und muss selbst angepasst werden, um Änderungen im Webshop anzeigen zu lassen. So kannst du beispielsweise eigenes CSS über Coconut einbinden oder einzelne Ceres-Templates anpassen. Dieses Theme ist der Nachfolger für *Ceres Vanilla* und ist mit Ceres ab *Version 3.0* und dem *ShopBuilder* kompatibel. Durch die Verwendung von Coconut bleibt dein angepasstes Design auch bei neuen Updates von Ceres erhalten. +
+
+Du musst Ceres Coconut im link:https://marketplace.plentymarkets.com/plugins/storefront/themes/cerescoconut_6120[plentyMarketplace^] kaufen und danach in deinem plentymarkets Backend installieren. Wie das geht, erfährst du auf unseren <<plugins/neue-plugins#, Handbuchseiten zu Plugins>>. Beachte bitte, dass du dem Plugin Ceres Coconut eine <<plugins/plugin-sets#plugin-sets-erstellen, Positionsnummer>> zuweisen musst, die zwischen der Positionsnummer von Ceres und IO liegt. Bitte beachte auch die Plugin-Beschreibung auf dem Marketplace. +
+
+In dieser Anleitung zeigen wir dir ein paar Beispiele, wie du deinen Webshop mit Ceres Coconut individuell gestalten kannst. Nachdem du eigene Anpassungen gemacht hast, musst du das Plugin-Set, in dem Ceres Coconut liegt, erneut speichern und bereitstellen damit deine Änderungen im Webshop angezeigt werden.
+
+[IMPORTANT]
+====
+Ceres Coconut beinhaltet lediglich die Ceres-Dateistruktur. Die einzelnen Dateien sind zunächst leer. Wenn du einzelne Bereiche anpassen möchtest, solltest du zunächst den Code aus der dazugehörigen Ceres-Datei in die jeweilige Coconut-Datei kopieren. Die folgenden Anwendungsfälle zeigen dir Schritt für Schritt wie das geht.
+====
+
+[#20]
+== Artikelseite anpassen
+
+Im ersten Schritt zeigen wir dir, wie du deine Artikelansicht anpassen kannst. Hier kannst du beispielsweise zusätzliche Artikeldaten anzeigen lassen, einzelne Komponenten ausblenden oder zusätzlichen Text einbinden. Es ist zwingend notwendig, dass du dabei alle hier aufgeführten Stellen anpasst. Am Ende jedes Kapitels gibt es eine Checkliste, die dir dabei hilft zu überprüfen, ob du die Änderungen an den richtigen Stellen eingepflegt hast.
+
+[#30]
+=== Zusätzliche Artikeldaten in Coconut einbinden
+
+Um zusätzliche Artikeldaten in der Artikelansicht anzuzeigen, musst du zunächst überprüfen, ob diese Artikeldaten bereits in Ceres verfügbar sind, oder ob du diese erst hinzufügen musst. Die verfügbaren Artikeldaten findest du in JSON-Dateien, den sogenannten *Result Fields*, bzw. *Ergebnisfelder*. Unsere englischsprachige Entwicklerdokumentation enthält eine Liste der verfügbaren link:https://developers.plentymarkets.com/dev-doc/result-fields-ceres[Ergebnisfelder^]. Das Standard-Ceres verwendet nur einen Bruchteil der verfügbaren Artikeldaten. Mit Coconut kannst du aber fehlende Artikeldaten hinzufügen. +
+Gehe wie folgt vor, um zusätzliche Artikeldaten in Ceres verfügbar zu machen:
+
+[#40]
+[.instruction]
+Ergebnisfelder für die Artikelansicht von Ceres nach Coconut kopieren:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *Ceres*. +
+→ Das Plugin wird geöffnet.
+. Scrolle links im Konfigurationsbaum nach unten und klicke auf *Dateien*. +
+→ Der Ceres-Dateibaum wird geöffnet.
+. Klicke auf das Ordnersymbol vor *resources*. +
+→ Der resources-Order wird aufgeklappt.
+. Klicke auf das Ordnersymbol vor *views*. +
+→ Der views-Order wird aufgeklappt.
+. Klicke auf das Ordnersymbol vor *ResultFields*. +
+→ Der ResultFields-Order wird aufgeklappt.
+. Klicke auf *SingleItem.fields.json*. +
+→ Die Datei wird geöffnet.
+. Kopiere den Inhalt der Datei in deine Zwischenablage.
+. Klicke in der Breadcrumb-Navigation auf *Plugin-Sets*, um zurück in die *Plugin-Übersicht* zu kommen.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Klicke auf *Dateien*. +
+→ Der Coconut-Dateibaum wird geöffnet.
+. Wiederhole hier die Schritte 5-8, um die Datei *SingleItem.fields.json* in Coconut zu öffnen. +
+→ Die leere Datei wird geöffnet.
+. Kopiere den Inhalt, den du in Schritt 9 in deine Zwischenablage kopiert hast, in die geöffnete Datei.
+. *Speichere* deine Änderungen.
+
+Nun hast du die in Ceres verfügbaren Artikeldaten 1:1 nach CeresCoconut übertragen. Wie du siehst, ist diese Liste überschaubar. Im nächsten Schritt fügst du nun dieser Datei in Ceres Coconut weitere Ergebnisfelder hinzu, um später Zugriff darauf zu haben. Nimm dir einen Moment, um link:https://developers.plentymarkets.com/dev-doc/result-fields-ceres[in dieser Liste^] nach möglichen Ergänzungen für deine SingleItem.fields.json zu suchen. Im folgenden Beispiel werden wir das Ergebnisfeld *item.manufacturer.logo* hinzufügen, also das Artikel gepflegte *Logo des Artikelherstellers*. Damit wir später das Herstellerlogo ausgeben können, muss dieses unter *System » Artikel » Hersteller » Hersteller wählen » Logo-URL* hinterlegt sein.
+
+[#50]
+[.instruction]
+Ergebnisfeld für die Artikelseite in Coconut hinzufügen:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Klicke links auf *Dateien*. +
+→ Der Coconut-Dateibaum wird geöffnet.
+. Navigiere zur oben beschriebenen Datei *SingleItem.fields.json*.
+. Füge in dieser Datei *"item.manufacturer.logo",* hinzu. Hinweis: Das Komma ist erforderlich wenn das hinzugefügte Ergebnisfeld *nicht* an letzter Stelle in der Datei steht.
+. *Speichere* deine Änderungen.
+
+Damit hast du das Ergebnisfeld deiner Coconut-Datei hinzugefügt und du kannst darauf zugreifen. Damit du diese Artikelinformation in deinem Webshop anzeigen lassen kannst, musst du die folgenden Anpassungen vornehmen.
+
+[#55]
+=== Herstellerlogo in der Artikelansicht ausgeben
+
+Im nächsten Schritt nimmst du 2 kleine Einstellungen in der Konfiguration von Coconut vor und passt danach einige Dateien in Coconut an, um die neue Artikelinformation in der Artikelansicht einzubinden.
+
+[#60]
+[.instruction]
+Konfig-Einstellungen für Artikeldaten in der Artikelansicht vornehmen:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet. +
+→ Das Tab *Templates* ist bereits vorausgewählt.
+. Aktiviere in der Liste *Partials und Templates überschreiben* die Option *Artikelansicht*.
+. *Speichere* die Einstellungen.
+. Klicke im Navigationsbaum auf *Datenfelder*. +
+→ Das Tab *Datenfelder* wird geöffnet.
+. Aktiviere in der Liste *Datenfelder überschreiben* die option *Artikeldaten in der Artikelseite*.
+. *Speichere* die Einstellungen.
+
+Mit diesen beiden Einstellungen hast du sichergestellt, dass dein Webshop beim Laden der Artikelansicht von nun an auf Dateien aus Coconut zurückgreift und die Artikeldaten für die Artikelansicht ebenfalls aus Coconut erhält. Die Artikeldaten haben wir <<#40, hier>> bereits angepasst. Im nächsten Schritt möchten wir nun sichtbare Anpasungen an der Artikelansicht vornehmen. Welche Dateien dafür angepasst werden müssen, ist abhängig von der Stelle, an der wir das Logo des Artikelherstellers anzeigen lassen wollen. +
+
+Für dieses Beispiel lassen wir das Herstellerlogo an 2 Stellen ausgeben: In den *Artikeldetails* unterhalb des Variantennamens (1) und im Tab *Weitere Details* als Substitut für den Herstellernamen (2):
+
+[[bild-coconut-artikeldaten]]
+.Stellen an denen das Herstellerlogo angezeigt werden soll
+image::webshop/assets/coconut-hersteller-logo-stellen.png[]
+
+[#70]
+
+Um das Herstellerlogo in den Artikeldetails und den weiteren Details anzeigen zu lassen, müssen wir die Dateien *SingleItem_Details.twig* (Artikeldetails) und *SingleItem_InformationTable.twig* (Weitere Details) unter *resources/views/Item/Components/SingleItem* anpassen. Wie bei den Ergebnisfeldern <<#40, weiter oben>>, musst du auch hier zunächst die Inhalte aus den Ceres-Dateien kopieren und an der gleichen Stelle im Coconut-Dateibaum einfügen. +
+Zusätzlich müssen die Stellen angepasst werden, die die veränderten Artikeldetails und weiteren Details einbinden. Diese sind:
+
+- *resources/views/Item/SingleItemView.twig*
+- *resources/views/Item/SingleItemWrapper.twig*
+- *resources/views/Item/Components/SingleItem.twig*
+
+Das klingt nach viel Aufwand, aber keine Panik: Wenn du dich an diese Anleitung hältst, kann nichts schiefgehen.
+Bevor wir die Code-Anpassungen für die Artikeldetails und die weiteren Details einfügen, passen wir in den 3 obengenannten Dateien die *Namespaces* an. *Namespaces* definieren, auf welche Code-Stellen zugegriffen werden soll; in den 3 Dateien muss der Ceres-Namespace an bestimmten Stellen in Coconut geändert werden.
+
+[.instruction]
+Namespace in der Datei *SingleItemView.twig* ändern:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Klicke auf *Dateien*.
+. Öffne die Datei *resources/views/Item/SingleItemView.twig*.
+. Ändere Zeile 6 in: `{{ component( "CeresCoconut::Item.Components.SingleItem" ) }}`
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Namespace in der Datei *SingleItemWrapper.twig* ändern:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Klicke auf *Dateien*.
+. Öffne die Datei *resources/views/Item/SingleItemWrapper.twig*.
+. Ändere Zeile 22 in: `{% include [category_template( item.documents[0].data.item.add_cms_page, lang, webstoreConfig.webstoreId ), "CeresCoconut::Item.SingleItemView"] %}`
+. *Speichere* die Einstellungen.
+
+[.instruction]
+Namespace in der Datei *SingleItem.twig* ändern:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Klicke auf *Dateien*.
+. Öffne die Datei *resources/views/Item/SingleItem.twig*.
+. Ändere Zeile 13 in: `{% include "CeresCoconut::Item.Components.SingleItem.SingleItem_Details" %}`
+. Ändere Zeile 21 in: `{% include "CeresCoconut::Item.Components.SingleItem.SingleItem_InformationTable" %}`
+. *Speichere* die Einstellungen.
+
+Wenn du den Ceres-Namespace an diesen 4 Stellen angepasst hast, werden die betreffenden Stellen in Ceres von Coconut überschrieben und wir können die konkreten Änderungen für die Artikelansicht verbauen.
+
+[NOTE]
+====
+Je nachdem, welche Anpassungen du in deinem Coconut-Theme vornimmst, ist es möglich, dass die obigen Zeilenangaben nicht mit dem Zeileninhalt deiner Dateien übereinstimmt. Die Anpassungen ersetzen hier lediglich "Ceres" durch "CeresCoconut"; falls die Zeilenangaben abweichen, kannst du die Zeilen dadurch trotzdem finden.
+====
+
+Jetzt weiß Ceres, auf welche Dateien es zugreifen muss, um deine Änderungen im Webshop sichtbar zu machen. Im nächsten Schritt fügen wir das Herstellerlogo an den 2 Stellen auf der Artikelansicht hinzu.
+
+[#80]
+
+[.instruction]
+Herstellerlogo unterhalb des Variantennamens einfügen:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Navigiere zur Datei *resources/views/Item/Components/SingleItem/SingleItem_Details.twig*.
+. Füge nach Zeile 8 unter `${ currentVariation.variation.name }` die folgende Zeile ein: `<img :src="currentVariation.item.manufacturer.logo" alt="TEXT">`
+. Speichere deine Änderungen.
+
+Mit dieser Anpassung setzt du unter den Variantennamen (also unter der Variable *${ currentVariation.variation.name }*) ein *<img>*-Tag, über welches du ein Bild einbinden kannst. Das *src*-Attribut gibt die Quelle der Bilddatei an und holt sich in unserem Fall über die Variable *currentVariation.item.manufacturer.logo* die URL die unter *System » Artikel » Hersteller » Hersteller wählen » Logo-URL* hinterlegt ist. Das *alt*-Attribut dient dazu, einen Text anzugeben, der ausgelesen wird, falls das Bild nicht angezeigt werden kann und hilft zudem deine Inhalte Menschen mit Sehbehinderungen zugänglich zu machen, wenn deine Website von einem Screenreader vorgelesen wird. Ersetze also den Platzhalter "TEXT" im *alt*-Attribut durch einen Text, der die angezeigte Bilddatei beschreibt. +
+Du siehst vielleicht, dass das *<img>*-Tag hier etwas anders verwendet wird, als es üblicherweise der Fall ist: Zum einen muss dem *src*-Attribut ein Doppelpunkt vorangstellt werden; zum anderen wird die Variable, mit der auf die Logo-URL zugegriffen wird, nicht mit *$* und den geschwungenen Klammern verwendet. Diese Änderungen sind nötig, da es sich bei der Datei SingleItem_Details.twig um eine Vue.js-Komponente handelt, dessen Syntax etwas anders funktioniert als herkömmliches Twig. Du kannst die Bildgröße durch zusätzliche Attribute hinter `alt="TEXT"` beinflussen; füge hinter deinem *alt*-Attribut beispielsweise die beiden Attribute `width="40" height="40"` ein, um die Bildgröße auf 40x40 px zu setzen. +
+Auf die gleiche Weise binden wir das Herstellerlogo nun auch im Tab *Weitere Details* ein:
+
+[.instruction]
+Herstellerlogo im Tab *Weitere Details* einfügen:
+
+. Öffne das Menü *Plugins » Plugin-Übersicht*. +
+→ Die Plugin-Übersicht wird geöffnet.
+. Klicke auf das gewünschte Plugin-Set.
+. Klicke auf *CeresCoconut*. +
+→ Das Plugin wird geöffnet.
+. Navigiere zur Datei *resources/views/Item/Components/SingleItem/SingleItem_InformationTable.twig*.
+. Ersetze in Zeile 80 die Stelle `${ currentVariation.item.manufacturer.externalName }` durch `<img :src="currentVariation.item.manufacturer.logo" alt="TEXT">`
+. Speichere deine Änderungen.
+
+Diese Anpassung ersetzt *Externer Name* des Herstellers (auf den mit der Variable *${ currentVariation.item.manufacturer.externalName }* zugegriffen wird) durch das Herstellerlogo, sodass im Tab *Weitere Details* das Logo in der Zeile *Hersteller* angezeigt wird. +
+
+Es ist notwendig, dass du das Plugin-Set, in dem du die Anpassungen vorgenommen hast, nochmal *speicherst* und *bereitstellst*. Nach dem Bereitstellungsprozess kannst du eine Artikelseite in deinem Webshop aufrufen und überprüfen, ob die beiden Anpassungen erfolgreich waren. Im Folgenden findest du eine Checkliste mit Schritten, die zwingend notwendig sind, um deine Anpassungen sichtbar zu machen. Bitte gehe diese Punkt für Punkt durch.
+
+Checkliste für Änderungen an der Artikelansicht:
+
+[%interactive]
+
+* [ ] Hast du das CeresCoconut-Plugin installiert und ihm eine *Postitionsnummer* zugewiesen, die zwischen den Positionen von Ceres und IO liegt?
+* [ ] Hast du die Inhalte der *SingleItem.fields.json* aus Ceres in die Datei *SingleItem.fields.json* in Coconut kopiert?
+* [ ] Hast du weitere Ergebnisfelder (z.B. *item.manufacturer.logo*) in der *SingleItem.fields.json* in Coconut hinzugefügt und die Datei gespeichert?
+* [ ] Hast du die Option *Artikelansicht* im Tab *Templates* der Coconut-Configuration aktiviert?
+* [ ] Hast du die Option *Artikeldaten in der Artikelseite* im Tab *Datenfelder* der Coconut-Konfiguration aktiviert?
+* [ ] Hast du die drei Dateien *SingleItemView.twig*, *SingleItemWrapper.twig* und *SingleItem.twig* hinsichtlich der Namespaces angepasst?
+* [ ] Hast du deine eigenen Anpassungen in den Dateien *SingleItem_Details.twig* und *SingleItem_InformationTable.twig* eingebaut?
+* [ ] Hast du alle Änderungen in Coconut gespeichert?
+* [ ] Hast du das Plugin-Set gespeichert und neu bereitgestellt?
+
+Solltest du Fragen oder Anregungen rund um CeresCoconut haben, kannst du uns gerne deine Gedanken im link:https://forum.plentymarkets.com/c/ceres-webshop/ceres-vanilla[Forum] mitteilen.
+
+//[#40]
+//=== Elemente ausblenden
+
+//[#50]
+//== Startseite überschreiben
+
+//CHECKLISTE
