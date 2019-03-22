@@ -17,7 +17,7 @@ Dieses Best Practice bezieht sich nur auf Plugin-Formate für Marktplätze und P
 [discrete]
 === Sind die Plugins aktuell?
 
-Als Erstes solltet ihr überprüfen, ob das Exportformat-Plugin (d.h. das Plugin für das Preisportal oder den Marktplatz) auf dem aktuellen Stand sind. Prüft außerdem, ob die Plugins in dem Plugin-Set bereitgestellt sind, das mit dem Standard-Mandanten verknüpft ist.
+Als Erstes solltet ihr überprüfen, ob das Exportformat-Plugin (d.h. das Plugin für das Preisportal oder den Marktplatz) und das Elastic Export-Plugin auf dem aktuellen Stand sind. Prüft außerdem, ob die Plugins in dem Plugin-Set bereitgestellt sind, das mit dem Standard-Mandanten verknüpft ist.
 
 Wie Plugins installiert oder aktualisiert werden, ist auf der Handbuchseite <<plugins/plugin-sets#plugins-hinzufuegen, Plugins und Plugin-Sets>> beschrieben.
 
@@ -31,7 +31,7 @@ Ein gültiger Verkaufspreis bedeutet, dass die Auftragsherkunft, die im Menü *S
 [discrete]
 === Ist das Limit zu niedrig?
 
-Das Limit in den Einstellungen des Exportformats gibt an, wie viele Artikel (bzw. Zeilen) maximal im Export erscheinen dürfen. Wenn also ein Limit von 1000 gesetzt ist, aber 2000 Artikel für den Export freigeschaltet sind, werden 1000 Artikel davon nicht im Export angezeigt. Setzt hier im Zweifelsfall ein höhers Limit und schaut, ob die fehlenden Artikel dann im Export erscheinen.
+Das Limit in den Einstellungen des Exportformats gibt an, wie viele Artikel (bzw. Zeilen) maximal im Export erscheinen dürfen. Wenn also ein Limit von 1000 gesetzt ist, aber 2000 Artikel für den Export freigeschaltet sind, werden 1000 Artikel davon nicht im Export angezeigt. Setzt hier im Zweifelsfall ein höheres Limit und schaut, ob die fehlenden Artikel dann im Export erscheinen.
 
 [discrete]
 === Wird der Artikel herausgefiltert?
@@ -44,3 +44,10 @@ Grundsätzlich werden alle Artikel exportiert, die nicht herausgefiltert werden.
 Aus Performance-Gründen können Exporte mit mehr als 10.000 Zeilen nur über eine Cache-Datei generiert werden, diese wird aber nur alle 24h neu erstellt. Deshalb zeigt der Export nicht immer den aktuellsten Stand an und Artikel, die erst kürzlich für den Export freigeschaltet wurden, erscheinen erst im Export, wenn die Cache-Datei neu generiert wird.
 
 Ihr könnt die neue Generierung der Cache-Datei auch erzwingen, indem ihr die *Cache Datei generieren*-Option deaktiviert, den Export speichert und anschließend die Option wieder aktiviert. Dann sollte es je nach Anzahl der Exporte und Größe der Datei nicht länger als 2-3 Stunden dauern, bis eine neue Datei verfügbar ist.
+
+[discrete]
+=== Ist der ElasticSearch-Index aktuell?
+
+Zurzeit werden Artikel nicht live aus dem System exportiert, sondern aus ElasticSearch ausgelesen. Diese Technologie erlaubt zwar einen schnelleren Zugriff auf die Artikeldaten, damit die Artikeldaten aber in ElasticSearch verfügbar sind, muss der Index regelmäßig aktualisiert werden. Normalerweise dauert dies nicht länger als 5 Minuten, aber Änderungen am Artikel sind dadurch nicht sofort im Export sichtbar. Wenn ihr also zum Beispiel einen Artikel fertig konfiguriert habt und dieser nicht sofort danach im Export erscheint, kann dies daran liegen, dass der Artikel noch indexiert werden muss. Wenn ihr regelmäßig größere Datenmengen aktualisiert, kann es hier auch zu größeren Verzögerungen kommen.
+
+Ob der ElasticSearch-Index aktuell ist, könnt ihr unter *Daten » Status* einsehen.
