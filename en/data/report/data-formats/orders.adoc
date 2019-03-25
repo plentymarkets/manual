@@ -1,0 +1,165 @@
+= orders
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: orders, report, raw data
+:position: 110
+
+The data format creator *orders* exports data on the orders available in your plentymarkets system and saves the data on a cloud storage.
+
+== Technical specifications
+
+<<table-specifications-orders>> explains the available properties and the corresponding values.
+
+[[table-specifications-orders]]
+.Technical specifications of the *orders* format
+[cols=4]
+|====
+|Property |Meaning |Value |Explanation
+
+|dataName
+|Name
+|orders
+|Name of the creator process and prefix of the created file. +
+File name: *orders-xxx.csv.gz*
+
+|fileFormat
+|File format
+|CSV, GZIP
+|The data is provided as a GZIP-compressed CSV file (RFC 1952).
+
+|limitPage
+|Lines per request
+|up to 5,000
+|The maximum number of data rows that is written into a single file.
+
+|limitDay
+|Lines per day
+|up to 50,0000
+|The maximum number of data rows that is written on one day in total.
+
+|earliestPossibleDataDate
+|Earliest point in time
+|2017-01-01
+|Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
+
+|deleteRawDataAfterDaysMinimum
+|Minimum number of days until the data is deleted
+|1095
+|The minimum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Data » Raw data* menu.
+
+|deleteRawDataAfterDaysMaximum
+|Maximum number of days until the data is deleted
+|1095
+|The maximum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Data » Raw data* menu.
+
+|dataUpdatedAtColumnName
+|Column header
+|o_updated_at
+|Name of the column that contains the time stamp of the last data update.
+
+|defaultActive
+|Activated by default
+|no
+|The data is only exported automatically in the background after you have activated the creator in the *Data » Raw data* menu.
+
+|interval
+|Interval
+|daily
+|With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
+
+|====
+
+== Data columns
+
+<<table-data-columns-orders>> explains the available properties and the corresponding values.
+
+[[table-data-columns-orders]]
+.Data columns of the *orders* format
+[cols="1,3,3"]
+|====
+|Column name |Full name |Explanation
+
+|plenty_id
+|plenty ID
+|ID of the plentymarkets system
+
+|o_id
+|order ID
+|ID of the order
+
+|o_plenty_id
+|order plenty ID
+|ID of the plentymarkets system or the client via which the order was created
+
+|o_origin_order_ID
+|order origin order ID
+|ID of the main order. This ID is only exported for order types that are assigned to a so-called main order (e.g. credit notes, returns and delivery orders).
+
+|o_status
+|order status
+|Status of the order in decimal format. Depending on the statuses set up in the system, numbers with up to 4 decimal places are exported. You find the IDs of the standard statuses on the <<basics/internal-IDs#120, Internal Ids in plentymarkets>> page of the manual.
+
+|o_referrer
+|order referrer
+|Referrer of the order. +
+Possible values: +
+0 = Manual entry +
+1 = Client (store) +
+2 = eBay +
+4 = Amazon +
+5 = Yatego +
+6 = Kelkoo +
+7 = Google Shopping +
+9 = Wish +
+101 = ricardo +
+102 = real.de +
+You find further possible values for order referrers on the <<basics/internal-IDs#90, Internal IDs in plentymarkets>> page of the manual.
+
+|o_global_referrer
+|order global referrer
+|Global referrer of the order
+
+|o_type
+|order type
+|Order type +
+Possible values: +
+order +
+delivery order +
+return +
+credit note +
+warranty +
+repair +
+offer +
+advance order +
+multi-order +
+multi credit note
+
+|ac_id
+|account contact id
+|ID of the contact that is assigned to the order
+
+|o_shipping_profile
+|order shipping profile
+|ID of the shipping profile of the order
+
+|o_created_at
+|order created at
+|Time stamp of the order creation +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|o_goods_issue_at
+|order goods issue at
+|Time stamp for booking outgoing items +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|o_paid_at
+|order paid at
+|Time stamp for booking the incoming payment +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|o_updated_at
+|order updated at
+|Time stamp of the last order update +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|====

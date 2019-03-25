@@ -1,0 +1,127 @@
+= orderItems
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: orderItems, Report, Rohdaten
+:position: 90
+
+Der Datenformat-Creator *orderItems* exportiert Daten zu den im System vorhandenen Auftragspositionen und speichert diese im Cloud-Speicher ab.
+
+== Technische Spezifikationen
+
+<<tabelle-spezifikationen-orderitems>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+
+[[tabelle-spezifikationen-orderitems]]
+.Technische Spezifikationen des Formats *orderItems*
+[cols=4]
+|====
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|orderItems
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *orderItems-xxx.csv.gz*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 8.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 100.0000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2017-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|deleteRawDataAfterDaysMinimum
+|Minimale Anzahl an Tagen bis zur Löschung
+|1095
+|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|deleteRawDataAfterDaysMaximum
+|Maximale Anzahl an Tagen bis zur Löschung
+|1095
+|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|oi_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|ja
+|Der Export läuft standardmäßig automatisch im Hintergrund.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|====
+
+== Datenspalten
+
+<<tabelle-datenspalten-orderitems>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+
+[[tabelle-datenspalten-orderitems]]
+.Datenspalten des Formats *orderItems*
+[cols="1,3,3"]
+|====
+|Spaltenname |Vollständige Bezeichnung |Erläuterung
+
+|oi_id
+|order item ID
+|ID der Auftragsposition
+
+|o_id
+|order ID
+|ID des Auftrags
+
+|iv_id
+|item variation id
+|Varianten-ID der Auftragsposition
+
+|i_id
+|item id
+|Artikel-ID der Auftragsposition
+
+|oi_quantity
+|order item quantity
+|Anzahl der im Auftrag enthaltenen Auftragspositionen
+
+|oi_type_id
+|order item type ID
+|ID des Typs der Auftragsposition. +
+Mögliche Werte: +
+1 = Variante +
+2 = Artikelpaket +
+3 = Bestandteil eines Artikelpakets +
+4 = Aktionsgutschein +
+5 = Geschenkgutschein +
+6 = Versandkosten +
+7 = Aufpreis (abhängig von der Zahlungsart) +
+8 = Geschenkverpackung +
+9 = Unzugeordnete Variante +
+10 = Pfand +
+11 = Auftrag (z.B. als Teil von Sammelaufträgen)
+
+|oi_warehouse_id
+|order item warehouse id
+|ID des Lagers, das der Auftragsposition zugeordnet ist
+
+|oi_updated_at
+|order item updated at
+|Zeitstempel der letzten Aktualisierung +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|====

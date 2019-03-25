@@ -3,66 +3,66 @@
 :keywords: Amazon, Order, Import, Merchant Fulfilment Network, Merchant Fulfillment Network, MFN
 :position: 30
 
-This best practice tells you how to solve different issues which might cause your MFN orders (MFN = Merchant Fulfilment Network, i.e. shipment by the seller) to not be imported. As a precondition, we assume that the order import has already been activated in the basic settings for Amazon.
+This best practice deals with MFN orders (MFN = Merchant Fulfillment Network, i.e. shipment by the seller) that are not imported. We assume that the order import is activated in the basic settings for Amazon.
 
 == MWS registration
 
-The MWS registration allows our developers to access your Amazon account. When the registration is finished, the access rights are displayed in your seller central within *Settings » User permissions* in the section *Amazon MWS Developer Permissions*. If we do not have these rights we can neither retrieve data from Amazon nor send data to Amazon (requests are blocked by Amazon).
+MWS registration allows our developers to access your Amazon account. When the registration is finished, the access rights are displayed in your seller central within *Settings » User permissions* in the *Amazon MWS Developer Permissions* section. If we are not granted access rights, we can neither retrieve data from nor send data to Amazon (as requests are blocked by Amazon).
 
 [IMPORTANT]
 ====
-Check whether developer permissions have been granted. To do so, go to *Settings » User permissions* in the Amazon seller central.
-Another indicator that no developer pemissions are available is this error message: _Error:Access to Reports. (GetReportScheduleList) is denied_. You will receive this error message for almost all requests if you have not set up any developer permissions. If you set the _scheduled reports_, then error messages are displayed in the logs or within *System » Markets » Amazon » Data exchange » Reports*. How to set scheduled reports is described below.
+Check whether developer permissions are set up. To do so, go to *Settings » User permissions* in the Amazon seller central.
+Another indicator that there are no developer permissions is this error message: _Error:Access to Reports. (GetReportScheduleList) is denied_. You will receive this error message for almost all requests if you did not set up any developer permissions. If you set up _scheduled reports_, then error messages are displayed in the logs or within *System » System settings » Markets » Amazon » Data exchange » Reports*. How to set up scheduled reports is described below.
 ====
 
-How set up the MWS registration is described in our <<omni-channel/multi-channel/amazon/amazon-setup#100, manual>>.
+How to carry out the MWS registration is described in our <<markets/amazon/amazon-setup#100, manual>>.
 
 == Auth token expired
 
-The Auth token is generated during the MWS registration. The token is used for the synchronisation between plentymarkets and Amazon and it is directly linked to the authorisation. The token has an expiry date. This is to ensure that interfaces which have already been deactivated do not have access any longer after the token has expired.
-Vice versa, this means that this token must be updated from time to time. When the token has expired, the developer permission granted with the MWS registration is not valid any longer and the synchronisation cannot be performed.
+The Auth token is generated during the MWS registration. The token is used for the synchronisation between plentymarkets and Amazon and it is directly linked to the authorisation. The token has an expiry date. This is to ensure that deactivated interfaces no longer have access after the token is expired.
+Vice versa, this means that the token must be updated from time to time. When the token has expired, developer permissions granted with the MWS registration are no longer valid and no synchronisation can be carried out.
 
 [IMPORTANT]
 ====
 Check whether the token has expired by viewing the developer permissions in your seller central. Another indicator that the token has expired is the error message _Access denied_.
 ====
 
-You can update the Auth token in the seller central under *Settings » User permissions* in the section *Amazon MWS Developer Permissions*. (The expiry date is set in the future. This ensures that the permissions are valid once again.)
+You can update the Auth token in the seller central under *Settings » User permissions* in the section *Amazon MWS Developer Permissions*. (The expiry date is set in the future. This ensures that the permissions are valid again.)
 
 == Wrong access data
 
-Naturally, to enable contact between our system and your Amazon account, the access data saved in the basic settings must be correct.
+In order to enable contact between our system and your Amazon account, the access data saved in the basic settings must be correct.
 
 [IMPORTANT]
 ====
-If the seller token is not saved correctly within the basic settings, the error message reads: _ERROR: AuthToken is not valid for SellerId and AWSAccountId_.
+If the seller token is not saved correctly within the basic settings, the error message _ERROR: AuthToken is not valid for SellerId and AWSAccountId_ is issued.
 ====
 
-The correct token and your seller ID (merchant ID) can be found via the <<omni-channel/multi-channel/amazon/amazon-setup#100, MWS registration>> (at the end of the registration). As an alternative, you can enter the merchant ID into the field for the seller token.
+The correct token and your seller ID (merchant ID) can be found via the <<markets/amazon/amazon-setup#100, MWS registration>> (at the end of the registration). As an alternative, you can enter the merchant ID into the field for the seller token.
 
 [TIP]
 ====
-After you have changed the seller token in the basic settings for Amazon, click on *refresh token* under *System » Markets » Amazon » Data exchange » Reports » Tab: Token Refresh*. This way, the changes apply immediately.
+After you have changed the seller token in the basic settings for Amazon, click on *refresh token* under *System » System settings » Markets » Amazon » Data exchange » Reports » Tab: Token Refresh*. This way, the changes apply immediately.
 ====
 
 == Scheduled reports
 
-If all of the issues mentioned above are solved, you can start the synchronisation. In order to import orders, Amazon has to generate reports which contain the orders. We retrieve those reports.
+If all of the issues mentioned above are solved, you can start the synchronisation. In order to import orders, Amazon generates reports which contain the orders. We retrieve those reports.
 
 [CAUTION]
 ====
 The generation of the reports is not preset in the Amazon settings. You need to carry out the settings.
 ====
 
-Go to *System » Markets » Amazon » Data exchange » Reports » Tab: Scheduled reports* to set up the continuous automatical generation of scheduled reports. This function is called *scheduled reports*.
+Go to *System » System settings » Markets » Amazon » Data exchange » Reports » Tab: Scheduled reports* to set up a continual automatic generation of scheduled reports. This function is called *scheduled reports*.
 
 . Select the *Amazon account*.
-. Select the interval under *MFN Orders*
-. Click on the gear-wheel icon *Schedule MFN order report*
+. Select the interval under *MFN Orders*.
+. Click on the gear-wheel icon *Schedule MFN order report*.
 
 [TIP]
 ====
-We recommend to use 15 minutes as interval because reports from Amazon which are not marked as retrieved are retrieved every 15 minutes.
+We recommend to use 15 minutes as interval, as reports from Amazon that are not marked as retrieved are retrieved every 15 minutes.
 ====
 
 Click on *Import report list* to check whether your settings were saved.
@@ -71,9 +71,9 @@ Click on *Import report list* to check whether your settings were saved.
 .Viewing the scheduled reports
 image::_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-mfn-order-import-magnifier.png[Viewing the scheduled reports]
 
-As a result, the schedulers that you have activated for your Amazon account are displayed. The report type *Get Orders Data* is required for the MFN order import. It should be set to 15 minutes. This setting may cause orders to be imported late (for example if the interval is set to weekly).
+As a result, the schedulers that you activated for your Amazon account are displayed. The report type *Get Orders Data* is required for the MFN order import. It should be set to 15 minutes. This setting may cause orders to be imported late (for example if the interval is set to *weekly*).
 
 == Further error messages
 
-If you receive the error message _The seller does not have an eligible Amazon account to call Amazon MWS._, the cause may also be that our system is not authorised to access Amazon. Check the developer permissions as described above. If they are not available, add the permissions via the MWS registration.
-If this does not help, contact Amazon. (Either your seller account is no power seller and therefore the Amazon MWS API cannot be used or your account is not completely activated).
+If you receive the error message _The seller does not have an eligible Amazon account to call Amazon MWS._, it may be that our system is not authorised to access Amazon. Check the developer permissions as described above. If they are not available, add the permissions via the MWS registration.
+If this does not help, contact Amazon. (Either your seller account is no power seller account and therefore the Amazon MWS API cannot be used, or your account is not properly activated).

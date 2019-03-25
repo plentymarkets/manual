@@ -4,17 +4,17 @@
 :position: 20
 
 [NOTE]
-.Some basic information:
+.Some general information:
 ====
-If we talk about Amazon Prime orders, we do not only mean orders from Prime customers on Amazon, but also include Amazon orders from non-Prime customers which use a shipping service (NextDay, SecondDay).
+Prime orders do not only include orders from Amazon Prime customers, but also orders from non-Prime customers that are delivered with a shipping service (NextDay, SecondDay).
 ====
 
 == How are Prime orders processed?
 
-The order is placed on Amazon and then imported into our system. When the order is imported, we receive information about whether the order is a Prime order and whether a service level (NextDay, SecondDay, Standard) has been specified.
+The order is placed on Amazon and then imported into plentymarkets. When the order is imported, plentymarkets receives information about whether the order is a Prime order and whether a service level (NextDay, SecondDay, Standard) is included.
 
 [TIP]
-.Thus, there are five different possibilities:
+.Thus, there are five different scenarios:
 ====
 1. Prime [[symbol-Prime]]
 image:_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-ap.png[Prime]
@@ -28,38 +28,37 @@ image:_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-a
 image:_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-a2.png[SecondDay]
 ====
 
-In your plentymarkets system, the order type is indicated by the small symbol in the status bar in the order overview in the *Orders » Edit orders* menu. You can see which order type it is if you move the cursor over this symbol.
+In plentymarkets, the order type is indicated by the small symbol in the status bar in the order overview within the *Orders » Edit orders* menu. You can see the order type by moving the cursor over this symbol.
 
 [[symbol-order]]
 .Symbol in the order overview:
 image::_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-symbol-order.png[Symbol order overview]
 
 === Shipping profile
-As with “standard” Amazon orders, the system searches for a suitable shipping profile for this order by checking the shipping profiles that are saved for this order. A precondition is that at least one item of the order was assigned. Otherwise, the system will not find the shipping profiles which are saved for the items contained in the order.
-The settings for those shipping profiles are very important here. We will now only consider the filter “Loyalty program”, but not the further settings. Of course, those settings have to be correct as well (e.g. referrer, activated table of shipping charges etc.).
+As with "standard" Amazon orders, plentymarkets checks the shipping profiles that are saved for the order and selects a suitable shipping profile. For this purpose, at least one item of the order must be assigned. Otherwise, the system cannot find the shipping profiles which are saved for the order items. Of course, the configured settings for the shipping profiles are important here. This best practice only covers the *loyalty program* filter, but no other settings. Of course, those settings must also be correct (e.g. order referrer, table of shipping charges etc.).
 
 === Loyalty program
-The filter **Loyalty program** checks whether a shipping profile matches an order. Vice versa, this means that if the filters are not set correctly, the desired order types (Prime, NextDay etc.) do not get the right shipping profile.
-Thus, if you want to create a shipping profile for e.g. Prime NextDay orders, you have to set the filter “Loyalty program” for the option **Amazon Prime NextDay**.
+The filter *loyalty program* checks whether a shipping profile matches an order. Thus, if the filters are not set correctly, the desired order types (Prime, NextDay etc.) cannot be assigned to the appropriate shipping profiles. This means that if you want to create a shipping profile for e.g. Prime NextDay orders, you have to select the option *Amazon Prime NextDay* for the filter *Loyalty program*.
 
-[[treueprogramm]]
-.Filter “Loyalty program” within the shipping profile
+[[loyalty-program]]
+.Loyalty program filter in the shipping profile
 image::_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-filter.png[Prime loyalty program filter]
 
 === AmazonPrime service
-After processing the order (invoice etc.), register this order for shipping on Amazon. As usual, you can do so by using a process, or go to the *Shipping centre* in the *Orders » Shipping centre* menu.
+After processing the order (invoice etc.), register the order for shipping on Amazon. As usual, you can do so via a process, or via the *Shipping centre* in the *Orders » Shipping centre* menu.
 When registering the order, the order's shipping profile is checked for the *AmazonPrime service* that should be used. This setting is saved in the shipping profile, dependent on the country of delivery in the table of shipping charges.
 
 //[[services]]
 //.Selecting an AmazonPrime service in the table of shipping charges
 //image::_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-services.png[Prime-Services]
 
-Thus, the dispatch route and the shipping costs depend on the *AmazonPrime service* that is saved in the *table of shipping charges* of the order's shipping profile.
+Thus, the dispatch route and the shipping costs depend on the *Amazon Prime service* saved in the *table of shipping charges* of the shipping profile that is assigned to the order.
 
 === Further information
 Furthermore, the *dimensions* and the *sender information* are required.
 
-The sender information is saved for each warehouse within the *System » Orders » Shipping » Shipping service provider » Settings* menu.
+The sender information is saved within the *System » System settings » Orders » Shipping » Shipping service provider » Settings* menu for each warehouse.
+
 [IMPORTANT]
 .Fill in the following fields:
 ====
@@ -75,22 +74,21 @@ The sender information is saved for each warehouse within the *System » Orders 
 
 Which sender information is delivered depends on the *warehouse* that is saved for the order.
 
-The *dimensions* are retrieved from the system, depending on which options were selected for the shipping package.
-The options are set within the *System » Orders » Shipping » Shipping packages* menu.
+The *dimensions* are retrieved from the system, depending on which options were selected for the shipping package in the *System » System settings » Orders » Shipping » Shipping packages* menu.
 
 [[shipping-packages]]
 .Settings for shipping packages
 image::_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-shipping-package.png[Settings shipping packages]
 
-Either enter the dimensions within the shipping package or import them from the corresponding item fields (in Version 7 for each variation within the *Settings* tab, in Version 6 within the base tab in the *Length/Width/Height* fields).
+You can enter the dimensions within the shipping package or import them from the corresponding item settings (in plentymarkets 7 for each variation in the *Settings* tab, in plentymarkets 6 in the *Base* tab in the *Length/Width/Height* fields).
 
 === Defining shipping groups on Amazon
-In order to offer orders on Amazon with the correct shipping method, a shipping group must be created on Amazon.
-Manage these shipping groups by using properties for each item on Amazon.
+In order to offer items on Amazon with the correct shipping method, a shipping group must be created on Amazon.
+You can manage these shipping groups by using properties for each item.
 
-We recommend to use a property of the type *text* or *selection*. Link the property to the field *merchant_shipping_group_name*.
-Save the name of the shipping group you have created in your seller central as value for the text or the selection of the item.
-For further information on linking properties, refer to our <<en/omni-channel/multi-channel/amazon/amazon-setup#1400, manual>>.
+We recommend using a property of the type *text* or *selection*. Link the property to the field *merchant_shipping_group_name*.
+Save the name of the shipping group you have created in your seller central as a value for the text or the selection of the item.
+For further information on linking properties, refer to our <<markets/amazon/amazon-setup#1400, manual>>.
 
 //This chart shows an example of Prime NextDay:
 
@@ -98,17 +96,17 @@ For further information on linking properties, refer to our <<en/omni-channel/mu
 //.Prime order process
 //image::_best-practices/omni-channel/multi-channel/amazon/assets/bp-amazon-prime-ablaufdiagramm.jpg[Prime order process]
 
-== Error messages and how to solve them
-Sometimes error messages may occur when booking those orders on Amazon.
+== Errors and how to solve them
+Sometimes, error messages may occur when booking Prime orders on Amazon.
 
-If an order was not supposed to be registered, you can check under *Data exchange » API log* in the *Shipment_AmazonPrime* process which information was returned by Amazon. (When logging into the shipping centre, the error message is issued in red.)
+If you did not want the order to be registered on Amazon, you can check the *Shipment_AmazonPrime* process in the *Data exchange » API log* menu to see which information was returned by Amazon. (When logging into the shipping centre, the error message is issued in red.)
 
-- *Error:TermsAndConditionsNotAccepted, Type: Sender* indicates that the terms and conditions for Prime have not yet been accepted on Amazon. Solve this error by registering a Prime order on Amazon. The terms and conditions have to be accepted for this process. If this does not help, contact Amazon.
+- *Error:TermsAndConditionsNotAccepted, Type: Sender* indicates that the terms and conditions for Prime have not yet been accepted on Amazon. Solve this issue by registering a Prime order on Amazon. The terms and conditions have to be accepted for this process. If this does not help, contact Amazon.
 - *Error:InvalidRequest, Type: Sender* indicates that the data is incomplete. The cause for this may be incomplete *sender data* for the warehouses, missing customer information (*shipping address*) or an unassigned or incorrect *shipping profile* in the order. +
-Furthermore, the cause may be a value from the *warehouse settings* that has too many characters. Amazon only accepts values up to a certain number of characters for most fields. +
-Another cause might be that *dimensions* are not transferred to Amazon. A cause for this may be that the option *take from the item data* is activated in the shipping packages settings, but there are no dimensions saved for the item.
+Furthermore, the cause may be a value in the *warehouse settings* with too many characters. Amazon only accepts values up to a certain number of characters. +
+Another cause might be that the *dimensions* are not transferred to Amazon because the option *take from item data* is activated in the shipping packages settings, but there are no dimensions saved for the item.
 - *Error:ShipmentAlreadyExists, Type: Sender* indicates that shipping has already been booked for this order.
 - *Error:no AmazonPrime Service selected* indicates that no *Amazon shipping service* was saved in the table of shipping charges in the order’s shipping profile.
-- *Error:ShippingServiceNotAvailable, Type: Sender* indicates that an Amazon service was saved for the order that does not match the order type (e.g. NextDay). Different services should be used for the different order types on Amazon, which causes this error. Check whether the correct shipping profile was saved for the order and whether the correct Amazon service was saved in the shipping profile.
+- *Error:ShippingServiceNotAvailable, Type: Sender* indicates that an Amazon service was saved for the order that does not match the order type (e.g. NextDay). Different services should be used for the different order types on Amazon. Check whether the correct shipping profile was saved for the order and whether the correct Amazon service was saved in the shipping profile.
 - *Error:ResourceNotFound, Type: Sender* indicates that the order does not exist on Amazon or that the order was cancelled.
-- *No Valid Warehouse Address* indicates that no or no valid values were saved for the selected warehouse. Enter the values in the *System » Orders » Shipping » Shipping service provider » Settings* menu.
+- *No Valid Warehouse Address* indicates that no values or no valid values were saved for the selected warehouse. Enter the values in the *System » System settings » Orders » Shipping » Shipping service provider » Settings* menu.

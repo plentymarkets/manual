@@ -1,0 +1,73 @@
+= Best Practices: Cross-Selling-Verknüpfungen
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, Import, Artikel, Artikelanlage, Best Practice, automatisiert, Cross-Selling
+:position: 40
+
+== Cross-Selling-Verknüpfungen exportieren und importieren
+
+In diesem Beitrag wird beschrieben, wie du Cross-Selling-Verknüpfungen exportierst und importierst.
+
+NOTE: Für dieses Best Practice solltest du mit der generellen Funktionsweise von Elastic Sync vertraut sein. Allgemeine Infos dazu findest du auf der Handbuchseite <<daten/daten-importieren/ElasticSync#, Daten mit ElasticSync importieren>>.
+
+[#export_CrossSelling]
+=== Export der Cross-Selling-Verknüpfungen
+
+==== Erstellen des Formats im FormatDesigner
+
+Die derzeit verknüpften Cross-Selling-Artikel können mit dem FormatDesigner exportiert werden.
+
+Dafür erstellt Ihr im Menü *Daten » FormatDesigner* ein neues Format vom Typ *Item*.
+
+Anschließend wählt Ihr die Datenfelder:
+
+* Für die Zuordnung beim späteren Import im Bereich *Item* die *ID* des Artikels oder im Bereich *Variation* die *ID* oder die *Number* der Variante.
+
+* Die eigentlichen Cross-Selling-Verknüpfungen fügt Ihr dann im Bereich *ItemCrossSelling* hinzu. Das Feld *all* gibt alle verknüpften Cross-Selling-Artikel im Format *ArtikelID:Typ:IsDynamic* aus.
+
+Nach dem Speichern des Formats kann der Export im Elastischen Export eingerichtet werden.
+
+==== Einrichten des Exports im Elastischen Export
+
+Den Export des angelegten Formats richtet man im Menü *Daten » Elastischer Export* ein.
+
+Dafür klickt Ihr auf den Button *Neuer Export* und hinterlegt einen Namen, den Typ *Artikel*, das angelegte Format, ein Limit und einen Dateinamen.
+
+[TIP]
+.Datei als CSV exportieren
+====
+Wenn die Datei direkt als CSV heruntergeladen werden soll, muss beim Dateinamen das Suffix *.csv* angegeben werden.
+====
+
+Nach dem Speichern des Formats ist die Einrichtung abgeschlossen.
+
+==== Daten exportieren
+
+Es gibt mehrere Möglichkeiten, die Daten zu exportieren:
+
+* Im Export auf *Herunterladen* klicken.
+* Die im Export angegebene URL im Browser öffnen.
+* In der Übersicht der Exporte auf *Herunterladen* klicken.
+
+[#Import_CrossSelling]
+=== Import der Cross-Selling-Verknüpfungen
+
+==== Erstellen des Formats in ElasticSync
+
+Für den Import der Cross-Selling-Verknüpfungen könnt Ihr unter *Daten » ElasticSync* einen eigenen Sync von Typ *Artikel* anlegen oder auch die Felder in einen bestehenden Sync einbauen.
+
+* Der Abgleich kann über ein variantenspezifisches Feld wie die *Variantennummer* erfolgen oder auch die Item-ID, wenn die Verknüpfungen mit einem eigenen Sync importiert werden.
+
+* In der Zuordnung des Syncs verknüpft Ihr im Bereich *Cross-Selling* das Feld *Cross-Selling-Verknüpfungen hinzufügen* und ordnet die entsprechende Spalte der CSV zu.
+
+* Es ist möglich, in einer Zeile mehrere Cross-Selling-Verknüpfungen zu hinterlegen. Der Aufbau sieht dabei wie folgt aus:
+
+*ItemID:Typ;ItemID2:Typ2*
+
+* Mit dem Feld *Alle Cross-Selling-Verknüpfungen löschen* können über einen entsprechenden Wert (1 für Ja, 0 für nein) alle Verknüpfungen eines Artikels gelöscht werden. Das ist z.B. sinnvoll, wenn Ihr Eure Cross-Seller überarbeiten möchtet.
+
+* Mit dem Feld *Cross-Selling-Verknüpfungen löschen* ist es möglich, einzelne oder auch mehrere Artikel-IDs zu löschen. Das Format dafür sieht wie folgt aus:
+
+*Artikel-ID;Artikel-ID;etc*
+
+Mehr benötigt Ihr für die Verknüpfung nicht. Der Sync ist damit einsatzbereit und die Cross-Selling-Artikel können verknüpft oder gelöscht werden.
