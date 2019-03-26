@@ -1,0 +1,53 @@
+= Best Practices: Elastischer Export
+
+:lang: de
+:keywords: Elastischer Export, Elastic Export, Artikelexport, elastisch, elastic
+:position: 50
+
+== Warum erscheint ein Artikel nicht im Elastischen Export?
+
+Dieses Best Practice beschäftigt sich mit der Frage, warum ein Artikel nicht im elastischen Export erscheint. Oft sind die Ursachen falsche Einstellungen. Zur besseren Übersicht und schnelleren Problemlösung behandeln wir hier verschiedene Einstellungen, die ihr überprüfen solltet, um die Fehlerquelle ausfindig machen zu können.
+
+[TIP]
+.Best Practice für Marktplatz- und Preisvergleich-Plugins
+====
+Dieses Best Practice bezieht sich nur auf Plugin-Formate für Marktplätze und Preisportale und nicht auf die Formate des FormatDesigners.
+====
+
+[discrete]
+=== Sind die Plugins aktuell?
+
+Als Erstes solltet ihr überprüfen, ob das Exportformat-Plugin (d.h. das Plugin für das Preisportal oder den Marktplatz) und das Elastic Export-Plugin auf dem aktuellen Stand sind. Prüft außerdem, ob die Plugins in dem Plugin-Set bereitgestellt sind, das mit dem Standard-Mandanten verknüpft ist.
+
+Wie Plugins installiert oder aktualisiert werden, ist auf der Handbuchseite <<plugins/plugin-sets#plugins-hinzufuegen, Plugins und Plugin-Sets>> beschrieben.
+
+[discrete]
+=== Hat der Artikel einen gültigen Verkaufspreis?
+
+Ohne einen gültigen Verkaufspreis wird der Artikel bei den meisten Exportformaten nicht im elastischen Export erscheinen.
+
+Ein gültiger Verkaufspreis bedeutet, dass die Auftragsherkunft, die im Menü *System » Artikel » Verkaufspreise* hinterlegt ist, dieselbe Auftragsherkunft ist wie im Exportformat unter *Daten » Elastischer Export* angegeben. Wenn also im elastischen Export als Auftragsherkunft *Rakuten* gewählt wurde, muss es auch einen Verkaufspreis für diese Herkunft geben. Ein Verkaufspreis darf als Preistyp nicht gleichzeitig *UVP*, *Aktionspreis* oder *Setpreis* sein. Außerdem muss der Verkaufspreis auch für die im Export gewählte Währung und den Mandanten gültig sein.
+
+[discrete]
+=== Ist das Limit zu niedrig?
+
+Das Limit in den Einstellungen des Exportformats gibt an, wie viele Artikel (bzw. Zeilen) maximal im Export erscheinen dürfen. Wenn also ein Limit von 1000 gesetzt ist, aber 2000 Artikel für den Export freigeschaltet sind, werden 1000 Artikel davon nicht im Export angezeigt. Setzt hier im Zweifelsfall ein höheres Limit und schaut, ob die fehlenden Artikel dann im Export erscheinen.
+
+[discrete]
+=== Wird der Artikel herausgefiltert?
+
+Grundsätzlich werden alle Artikel exportiert, die nicht herausgefiltert werden. Wenn also ein Artikel nicht im Export erscheint, solltet ihr die eingestellten Artikelfilter prüfen. Wenn zum Beispiel der Bestandsfilter *Positiver Netto-Warenbestand* eingestellt ist, der Artikel aber einen Bestand von 0 hat, dann erscheint dieser Artikel auch nicht im Export.
+
+[discrete]
+=== Ist der Artikel noch nicht gecached?
+
+Aus Performance-Gründen können Exporte mit mehr als 10.000 Zeilen nur über eine Cache-Datei generiert werden, diese wird aber nur alle 24h neu erstellt. Deshalb zeigt der Export nicht immer den aktuellsten Stand an und Artikel, die erst kürzlich für den Export freigeschaltet wurden, erscheinen erst im Export, wenn die Cache-Datei neu generiert wird.
+
+Ihr könnt die neue Generierung der Cache-Datei auch erzwingen, indem ihr die *Cache Datei generieren*-Option deaktiviert, den Export speichert und anschließend die Option wieder aktiviert. Dann sollte es je nach Anzahl der Exporte und Größe der Datei nicht länger als 2-3 Stunden dauern, bis eine neue Datei verfügbar ist.
+
+[discrete]
+=== Ist der ElasticSearch-Index aktuell?
+
+Zurzeit werden Artikel nicht live aus dem System exportiert, sondern aus ElasticSearch ausgelesen. Diese Technologie erlaubt zwar einen schnelleren Zugriff auf die Artikeldaten, damit die Artikeldaten aber in ElasticSearch verfügbar sind, muss der Index regelmäßig aktualisiert werden. Normalerweise dauert dies nicht länger als 5 Minuten, aber Änderungen am Artikel sind dadurch nicht sofort im Export sichtbar. Wenn ihr also zum Beispiel einen Artikel fertig konfiguriert habt und dieser nicht sofort danach im Export erscheint, kann dies daran liegen, dass der Artikel noch indexiert werden muss. Wenn ihr regelmäßig größere Datenmengen aktualisiert, kann es hier auch zu größeren Verzögerungen kommen.
+
+Ob der ElasticSearch-Index aktuell ist, könnt ihr unter *Daten » Status* einsehen.

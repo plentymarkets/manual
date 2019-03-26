@@ -1,0 +1,53 @@
+= Best Practices: Elastic Export
+
+:lang: en
+:keywords: elastic export, item export, elastic
+:position: 50
+
+== Why does the item not appear in the elastic export?
+
+This best practice deals with the question why items are not included in the elastic export. Often, this is caused by faulty settings. This best practice provides an overview of the settings that you should check in order to detect error sources quickly.
+
+[TIP]
+.Best practice for marketplace and price comparison plugins
+====
+This best practice only refers to export formats for marketplaces and price comparisons and not to formats for the FormatDesigner.
+====
+
+[discrete]
+=== Are the plugins up-to-date?
+
+First, you should check whether the export format-plugin (i.e. the plugin for the price comparison or the market) and the Elastic Export plugin are up-to-date. In addition, check whether the plugins are activated in the plugin set that is linked to the standard client.
+
+How to install or update plugins is described on the <<plugins/plugin-sets#adding-plugins, Plugins and plugin sets>> page of the manual.
+
+[discrete]
+=== Is the item linked to a valid sales price?
+
+Without valid sales prices, items will not be included in the elastic export for most export formats.
+
+The sales price is valid for the item if the order referrer that is saved in the *System » Item » Sales prices* menu is the same order referrer as the one saved for the export format in the *Data » Elastic Export* menu. Thus, if you have selected e.g. the order referrer *Rakuten* in the the elastic export, then you need to have a sales price for this order referrer. A sales price must not be of the price type *RRP*, *special offer*, or *set price*. In addition, the sales price must be valid for the currency and the client selected in the export.
+
+[discrete]
+=== Is the limit too low?
+
+The limit which is defined in the export settings specifies the maximum of items (or lines) in the export. Hence, if you set a limit of 1000, but 2000 items should be exported, then 1000 items will not appear in the export. If you are not sure, increase the limit and check if the missing items appear in the export.
+
+[discrete]
+=== Is the item filtered out of the export?
+
+In general, all items which are not filtered out will be exported. Thus, check the item filters if an item does not appear in the export. For example, if the stock filter *Positive net stock* is set, but the item's stock is 0, then the item will not appear in the export.
+
+[discrete]
+=== Is the item not cached?
+
+Due to performance reasons, exports with more than 10,000 lines can only be generated via cache file. This cache file is only generated once a day. Therefore, the export does not always display the current status and items which were only recently added to the export will only appear in the export once the cache file is generated again.
+
+You can also force the new generation of the cache file by deactivating the *Generate cache file* option, saving the setting and activating the option again afterwards. Depending on the number of exports and the size of the file, it should not take longer than 2-3 hours until a new file is available.
+
+[discrete]
+=== Is the ElasticSearch index up-to-date?
+
+At the moment, items are not exported live from the system, but taken from ElasticSearch. This technology enables quick access to item data, but in order to make the item data available in ElasticSearch, the index must be updated regularly. Usually this does not take longer than 5 minutes, but when an item is changed, the changes will not be visible in the export right away. Thus, if you have finished configuring an item and it does not appear in the export immediately, the cause might be that the item still needs to be indexed. If you update large amounts of data on a regular basis, this may lead to a delay.
+
+Go to the *Data » Status* menu to check whether the ElasticSearch index is up-to-date.
