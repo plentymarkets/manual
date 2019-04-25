@@ -42,6 +42,10 @@ Creating a sync:
 |*Name*
 |Enter a name. This name is displayed in the overview and can be used for the search.
 
+|*Interval*
+|Select an interval for the import of syncs. +
+By choosing the option *Schedule* you can determine how often and at what time the import of syncs shall be started.
+
 |*Type*
 a|Select the type from the drop-down list.
 
@@ -86,8 +90,10 @@ Possible separators are *Semicolon*, *Comma*, *Tab* and *Pipe*.
 2+|*Source*
 
 |*Source*
-a|Select *FTP*, *HTTP* or *SFTP*. +
+a|Select *Manual Upload*, *FTP*, *HTTP* or *SFTP*. +
 Depending on the selected option, the following settings are displayed:
+
+*Manual Upload* = Select and upload a local file.
 
 *FTP* = Host, port, username, password and file name are displayed.
 
@@ -96,17 +102,15 @@ Depending on the selected option, the following settings are displayed:
     * *Port* = Port of the FTP server. If no port is entered, the standard port (22) is used.
     * *User name (Mandatory field)* = Enter the user for the FTP access.
     * *Password (Mandatory field)* = Enter the password for the FTP access.
-    * *File name* = Enter the path and the name of the file from which the data is to be imported.
+    * *File name* = Enter the path and the name of the file from which the data is to be imported. The file name must end with .csv. +
     *_Note:_* You can use wildcard characters in the field *File name* by e.g. replacing a part of the file name with a ***. Only use wildcard characters in combination with the option *Move file to archive when import was successful*.
     * *Move file to archive when import was successful* = If this option is activated, the import file is automatically moved to the new folder *Archive* in the FTP directory once import was successfully.
 
 
-*HTTP* = Select *External URL* or *File upload* from the drop-down list *HTTP options*.
+*HTTP* = Select *External URL*.
 
         * *External URL* = Enter the URL to access the import file. +
          *_Tip:_* Save the file on your plentymarkets Webspace.
-         * *File upload* = Upload a file from your local hard disk. +
-         *_Important:_* The file is saved to a public bucket on S3. This means that everyone who know the URL can access the file.
           * *Authentication*: Select whether an authentication is required to access the file.
             ** *none* = no authentication required
             ** *HTTP authentication* = an authentication is required for each user and password
@@ -117,7 +121,7 @@ Depending on the selected option, the following settings are displayed:
         * *Port (Mandatory field)* = Port of the FTP server. If no port is entered, the standard port (22) is used.
         * *User name (Mandatory field)* = Enter the user for the FTP access.
         * *Password (Mandatory field)* = Enter the password for the FTP access.
-        * *File name* = Enter the path and the name of the file from which the data is to be imported.
+        * *File name* = Enter the path and the name of the file from which the data is to be imported. The file name must end with .csv. +
         *_Note:_* You can use wildcard characters in the field *File name* by e.g. replacing a part of the file name with a ***. Only use wildcard characters in combination with the option *Move file to archive when import was successful*.
         * *Move file to archive when import was successful* = If this option is activated, the import file is automatically moved to the new folder *Archive* in the FTP directory once import was successfully.
 |====
@@ -142,8 +146,8 @@ Setting the import options:
 |====
 |Import option |Explanation
 
-|*If no data matched*
-a|Select *Skip* or *Create*.
+|*Select an import option*
+a|
 
 * *Import new data, update existing* = If data can be found by means of the matching fields, a new data record, e.g. a new item or a new order, is added. At the same time, existing data is updated.
 * *Only update existing data* = Existing data is updated. If no data can be found by means of the matching fields, the data record is not imported.
@@ -207,12 +211,14 @@ Determining the mapping:
 The maximum number of possible characters for mappings is 65535.
 ====
 
-[NOTE].Own value
+[NOTE]
+.Own value
 ====
 The option *Own value* allows to import a fix value for the data field. This fix value is thus identical for each data record that is imported via this sync.
 ====
 
-[#1510]=== Activating lines of a mapping for the import
+[#1510]
+=== Activating lines of a mapping for the import
 
 In the *Mapping* section, you can activate all lines for the import with just one click. Alternatively, you can decide individually for each line whether you want it to be active or inactive, thus, whether it should be considered in the import or not.
 
@@ -229,12 +235,14 @@ Activating lines for the import:
 . Alternatively, in a line, click on *Activate line* in order to just consider this line in the import.
 . *Save* the settings.
 
-[NOTE].View of the mapping
+[NOTE]
+.View of the mapping
 ====
 On the left side of the mapping you can see the import data of the CSV file that have to be mapped on the plentymarkets page. The plentymarkets data fields are shown on the right. The preview displays the first 6 values of the CSV file.
 ====
 
-[#1520]=== Replacing values with the RegEx function
+[#1520]
+=== Replacing values with the RegEx function
 
 In order to consider a CSV file during the import as desired, the so-called RegEx function can be applied. Thanks to this function, data is manipulated during the import through commands. Thus, no changes need to be made to the CSV file anymore.
 
@@ -269,13 +277,15 @@ Replacing values:
 . *Save* the settings. +
 → The data fields are updated.
 
-[NOTE].Info about RegEx
+[NOTE]
+.Info about RegEx
 ====
 For further information on the RegEx function, see link:http://php.net/manual/en/reference.pcre.pattern.syntax.php[this^] page or link:https://regexr.com/[this^] page.
 On the latter, the RegEx engine setting has to be changed to PCRE. This can be done in the dropdown menu on the top right where Javascript is preset.
 ====
 
-[#1520]=== Own assignment
+[#1520]
+=== Own assignment
 
 With the own assignment you can assign existing values in a CSV file to other values in the system. This enables to define, which value is supposed to be imported for which ID. In addition, if there is no assignment defined for a value in the CSV file, you can specify a default value. If no default value is specified, the original value is imported.
 
@@ -292,7 +302,8 @@ Defining an own assignment:
 . Fill in the fields. Pay attention to the information given in <<table-own-assignment>>.
 . *Save* the settings.
 
-[[table-own-assignment]].Own assignment
+[[table-own-assignment]]
+Own assignment
 [cols="1,3"]
 |====
 |Field |Setting
@@ -309,6 +320,42 @@ Defining an own assignment:
 |To
 |Value, to which the original value shall be mapped (e.g. 1 for DE, 10 for GB etc.)
 |====
+
+[#1530]
+=== Manipulating an import file via the own assignment
+
+In the following section we will demonstrate the usage of the own assignment shown by the example of *activating the shipping profile*. +
+For this procedure, an item/a variant as well as a shipping profile has to exist.
+
+[[image-importing-data]]
+.Shipping profile
+image::data/importing-data/assets/en-elasticsync-shipping-profile.png[]
+
+In order to link an item/a variant to a shipping profile, the ID is needed. Only with the name of the shipping profile that is shown in the import file, no link can be created.
+
+[[image-importing-data]]
+.Item ID
+image::data/importing-data/assets/en-elasticsync-item-id.png[]
+
+Use the own assignment in ElasticSync, which manipulates the data during the import. As source for the import data, select the value *Own assignment*.
+
+[[image-importing-data]]
+.Own assignment
+image::data/importing-data/assets/en-elasticsync-own-assignment.png[]
+
+For *type*, select the column from the import file. In this case, it is the column *Shipping profile*.
+
+[[image-importing-data]]
+.Select column from import file
+image::data/importing-data/assets/en-elasticsync-type.png[]
+
+Determine, which value in the import file is to be changed to which value, in order to successfully carry out the import. In this case, DPD shall be changed to the ID of the shipping profile (here ID 7). You can also do this for several shipping profiles by adding further own assignments. Afterwards, carry out the import. The shipping profile is linked.
+
+[[image-importing-data]]
+.Determining a value
+image::data/importing-data/assets/en-elasticsync-determine-value.png[]
+
+The own assignment can be used for many other cases. This applies in particular where internal IDs of plentymarkets play a role (e.g. characteristic names, item flags, payment methods, country ISO codes etc.).
 
 [#1600]
 == Filtering import data
@@ -340,16 +387,9 @@ Adding the filter:
 
 
 [#1620]
-== Viewing the sync logs
+== Report of sync import
 
-Log entries are created for each sync that is carried out. You can view these log entries.
-
-[.instruction]
-Viewing the sync logs:
-
-. Go to *Data » ElasticSync*.
-. Click on *History*. +
-→ The sync logs are displayed.
+A report is available in the overview of a sync. This report shows all imported rows including the success and error messages, which can be opened by clicking on the *Message* column. Use the filter in order to retrieve specific sync data.
 
 [#1630]
 == Copying syncs
@@ -403,11 +443,12 @@ It is possible to test and carry out syncs. Testing allows you to quickly know w
 If you select *Test sync*, only the first ten lines of the import file are imported.
 ====
 
-[#1710]== Processing jobs in the queue
+[#1710]
+== Processing jobs in the queue
 
 The queue enables the import of large amounts of data. Before being imported, the import file is broken down into packages and processed in so-called jobs. A job consists of 750 lines of a CSV file. However, import files with less than 750 lines also make a job. Whenever a sync is started, the CSV file is split up into the respective jobs and is put into the queue. In the queue, new jobs are permanently retrieved and the syncs are processed. There are two different statuses. The status *Open jobs* means that there are jobs in the queue waiting to be processed. *Completed jobs* on the contrary have already been processed and the data have been imported.
 
 [#1720]
 == Activating/deactivating mappings
 
-If you manage several mappings in the same sync, you can deactivate or activate specific mappings of the sync in the mapping overview using "activate-mapping". New mappings are active by default.
+If you manage several mappings in the same sync, you can deactivate or activate specific mappings of the sync in the mapping overview by clicking on the button in the column *Active/Inactive*. New mappings are active by default.

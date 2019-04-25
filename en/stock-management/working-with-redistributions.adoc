@@ -1,0 +1,239 @@
+= Working with redistributions
+:lang: en
+include::{includedir}/_header.adoc[]
+:description: Learn how to work with warehouse redistributions in your plentymarkets system.
+:keywords: Redistribution, warehouse redistribution, storage location, storage locations, PO delivery note
+:position: 35
+
+In the *Stock » Redistribution* menu, your plentymarkets system offers you the possibility to redistribute items between different warehouses. This redistribution is carried out by a particular order type. +
+
+A redistribution always consists of the following steps:
+
+* <<#600, Creating a redistribution>>
+* <<#700, Adding order items>>
+* <<#800, Generating a PO delivery note>>
+* <<#900, Booking items out>>
+* <<#1000, Booking items in>>
+* <<#1100, Finishing a redistribution>>
+
+We recommend carrying out some <<#100, preparatory settings>> before working with redistributions.
+
+[#100]
+== Preparatory settings
+In order to organise your workflow using the redistributions, we recommend carrying out some preparatory settings. Those settings are described in the following subchapters. Create new order statuses and tags that are used exclusively with redistributions and thus enable you to keep an overview. In addition, setting up a document template for the particular document type *PO delivery note* is mandatory.
+
+[#200]
+=== Preparing order statuses for redistributions
+Several order statuses are saved in your plentymarkets system by default. Those default order statuses can also be used for redistributions. However, it is also possible to create status that are exclusively used for this order type. Creating new order statuses is described in detail in the respective chapter on the <<managing-orders#1200, Managing orders>> page of the manual.
+
+[TIP]
+.Create own order statuses for redistributions
+====
+We recommend creating separate order statuses that you only use for working with redistributions. This way, you can assign particular names and distinguish between redistributions and other order types. This is particularly important when automating the redistribution with the help of <<#1100, event procedures>>.
+====
+
+[#300]
+=== Creating tags
+Tags are keywords that you create centrally before you can use them to mark data in different areas of your plentymarkets system. If you want to use tags with redistributions, you need to create those tags beforehand in the menu *System » System settings » Settings » Tags*. To do so, follow the instruction on the <<basics/working-with-plentymarkets/tags#, Managing tags>> page of the manual.
+
+[#400]
+=== Carrying out default settings
+You can determine default settings to reduce the workload involved in creating a new redistribution. The default settings are then automatically displayed in the data fields when creating a new redistribution. Proceed as described below to carry out default settings.
+
+[.instruction]
+Carrying out default settings:
+
+. Go to *System » System settings » Stock » Purchase order » Redistribution » Settings*.
+. Select a *Default status* that should be preselected when creating a new redistribution.
+. Carry out the desired settings for the *Default owner*. Pay attention to the information provided in <<table-default-owner-redistribution>>.
+. *Save* the settings. +
+→ The selected default settings are displayed when creating new redistributions.
+
+[[table-default-owner-redistribution]]
+.Available settings for the default owner
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Active user preselected*
+|The user creating the redistribution is preselected in the *Owner* field.
+
+|*No owner preselected*
+|If you select this option, no *Owner* is preselected when creating a redistribution.
+
+|====
+
+[#500]
+=== Setting up a template for the PO delivery note
+When working with redistributions, you can use the special document type *PO delivery note*. *PO* stands for *Purchase order*, which is a standard term from the context of reorder and stock management. This delivery note lists the variations included in a redistribution. Warehouse staff and logistics partners can use this document to keep track of the variations included.
+
+[WARNING]
+.Document template must be set up
+====
+The document template for the document *PO delivery note* has to be set up before creating such a document for the first time. As long as the document template has not been set up, no delivery note can be generated during a redistribution.
+====
+
+The following instructions describe how to transfer the default document template saved in your plentymarkets system.
+
+[.instruction]
+Setting up a document template for the PO delivery note:
+
+. Go to *System » System settings » Client (store) » Select client » Locations » Select location » Documents*.
+. Open the menu item *PO delivery note*.
+. Open the *Transfer* tab.
+. Above the tab title, select the language.
+. In the *Apply settings from default document template* area, click on *Accept*. +
+→ The default document template is applied to the document.
+
+If to wish to make individual changes to the *PO delivery note* document, such as displaying your company logo or further information, proceed according to the instructions on the <<orders/order-documents#300, order documents>> manual page.
+
+[#600]
+== Creating a redistribution
+After having carried out the preparatory settings, you can proceed with creating an order of the type redistribution.
+
+[.instruction]
+Creating a new redistribution:
+
+. Go to *Stock » Redistribution*.
+. Move the cursor over the *Plus icon* and click on *New redistribution*. +
+→ The menu for creating a new redistribution opens.
+. In the field *Status*, select an initial <<#200, status>> that should be assigned to the new redistribution. This status can be changed at a later point in time.
+. In the field *Sender*, select the warehouse from which items should be booked out.
+. In the field *Receiver*, select the warehouse into which the items should be booked.
+. *_Optional:_* Select one or several *Tags* to mark the new redistribution.
+. *_Optional:_* Select an *Owner* responsible for the redistribution.
+
+[IMPORTANT]
+.Selecting an owner
+====
+If the desired owner is missing from the list, no users have been activated as owners. Proceed according to the instructions on the <<basics/admin-tasks/manage-users#40, Managing user accounts>> manual page to activate owners. In addition, check the <<#400, default settings>> for owners described above.
+====
+
+[#700]
+=== Adding order items
+The next step consists of adding the items that should be redistributed from one warehouse to another. Use the *Filter* to search for the desired order items according to the available <<item/managing-items#_filtering_items, item and variation data>>.
+
+[.instruction]
+Adding order items:
+
+. In the *Item list* area, click on *Add*. +
+→ A menu for adding order items opens.
+. Use one of the filters described in <<table-filter-item-search-redistribution>> to search for order items.
+. Click on *Search*. +
+→ Item variations that are in stock in the sending warehouse are displayed.
+. Enter the item quantity that should be redistributed in the *Quantity* column of a variation.
+. Click on the *Cart* icon. +
+→ The variations are added to the cart.
+. Repeat the steps described above until all variations that should be redistributed are included in the cart in the desired quantities.
+. In the *Cart* area, click on *Save*. +
+→ The cart is saved. +
+→ The redistribution opens.
+
+[[table-filter-item-search-redistribution]]
+.Available filters in the item search
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Item ID*
+|Enter the ID to search for the item with this ID.
+
+|*Variation ID*
+|Enter the ID to search for the variation with this ID.
+
+|*Variation number*
+|Enter the variation number to search for the variation with this number.
+
+|*Barcode*
+|Enter the barcode to search for the variation with this barcode.
+
+|*Item name*
+|Enter the item name to search for the item with this name.
+
+|*Supplier number*
+|Enter the number of the supplier to search for the item with this supplier number.
+
+|*Warehouse*
+|Enter the name of the warehouse to search for the item linked to this warehouse.
+
+|====
+
+[IMPORTANT]
+.Results of the item search
+====
+The item search in this menu only lists items and variations that are in stock in the sending warehouse. If items or variations are not displayed in the in the search results, check the available stock in the *Stock » Stocks* menu or in the *Stock* tab of the respective variation.
+====
+
+[#800]
+=== Generating a PO delivery note
+After adding the order items to the redistribution, the stock movements are already prepared. The red arrows in the *Stock movements* table represent those stock movements. Check the stock movements as well as the quantities included. Afterwards, proceed with generating a *PO delivery note* that includes all order items included in the redistribution.
+
+[.instruction]
+Generating a PO delivery note:
+
+. Open the *Documents* area.
+. Click on *Add delivery note*.
+. Select the option *Generate delivery note*. +
+→ The *PO delivery* note is generated.
+
+After the document has been generated, the *PO delivery note* is available in the *Documents* area, where it can be downloaded and deleted. Alternatively, an external delivery note can be uploaded in this area. To do so, click on *Add delivery note* and select the option *Upload delivery note*.
+
+[#900]
+=== Booking items out
+After generating the *PO delivery note*, proceed with booking the items out in the sending warehouse.
+
+[WARNING]
+.Redistribution locked
+====
+After carrying out the steps described in the following, the purchase order *cannot* be edited any more. Order items can neither be deleted nor added after this step. Only book items out after carefully checking the redistribution!
+====
+
+[.instruction]
+Booking items out:
+
+. In the *Order details* area, click on the *gear-wheel* icon next to the *Order initiated* field. +
+→ The redistribution is created and outgoing items are booked in the sending warehouse.
+
+[#1000]
+=== Booking items in
+
+Upon arrival in the receiving warehouse, the order items have to be booked in. Proceed as described below.
+
+[.instruction]
+Booking items in:
+
+. Open the *Order items* area.
+. Enter the item quantity that should be booked in in the *Quantity* column.
+. Click on *Create item transactions*. +
+→ The stock movements are prepared.
+. Open the *Stock movements* area. The green arrows on the *Stock movements* table represent the prepared stock movements.
+. Enter a storage location in the *Storage location* column.
+. Place a check mark next to the order items that should be booked in.
+. In the *Delivery note number* field, enter the number of the delivery note that was generated during the process of booking items out.
+. Click on *Book item transactions*. +
+→ Incoming items are booked in the receiving warehouse.
+
+[#1100]
+=== Finishing a redistribution
+As soon as all order items included in the redistributions have been booked in, you should finish the redistribution in your plentymarkets system. Proceed as described below.
+
+[.instruction]
+Finishing a redistribution:
+
+. Open the redistribution.
+. Open the *Order details* area.
+. Click on the *gear-wheel* icon next to the *Finish date* field. +
+→ The current date is automaticalle set as the finishing date of the redistribution. +
+→ The redistribution is locked and cannot be edited any more.
+
+[TIP]
+.Unlocking a redistribution
+====
+In case the finish date has been set by mistake, the redistribution can be unlocked by clicking on the same icon once more. This way, the redistribution can be edited again.
+====
+
+[#1200]
+== Automating redistributions
+Redistributions can be automated with the help of the event procedure function available in your plentymarkets system. In the *System » System settings » Orders » Events*, events, filters and procedures available in groups named *Goods* allow you to automate redistributions. +
+
+For more detailed information on setting up event procedures, refer to the <<automation/event-procedures#, Event procedures>> page of the manual. In case you are working with event procedures for the first time, pay attention to the information provided on creating event procedures in the <<automation/event-procedures#100, Creating a new event procedure>> chapter.

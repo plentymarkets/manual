@@ -1,0 +1,123 @@
+= Best Practice: Amazon Prime
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Amazon, Prime, Auftragsablauf
+:position: 60
+
+[NOTE]
+.Grundsätzliches:
+====
+Wenn wir von Prime-Aufträgen sprechen, ist nicht nur der Auftrag eines Prime-Kunden auf Amazon gemeint, sondern auch Aufträge, welche mit einem Versandservice (NextDay, SecondDay) von nicht-Prime-Kunden auf Amazon erteilt wurden.
+====
+
+[#100]
+== Wie sieht der Verlauf eines Prime-Auftrags bei uns aus?
+
+Der Auftrag wird auf Amazon erteilt und wird in unser System importiert. Dabei bekommen wir die Informationen mitgeteilt, ob der Auftrag ein Prime-Auftrag ist oder nicht und ob ein Service Level (NextDay, SecondDay, Standard) vorliegt.
+
+[TIP]
+.Es gibt dementsprechend 5 unterschiedliche Möglichkeiten:
+====
+1. Prime [[symbol-Prime]]
+image:maerkte/assets/bp-amazon-prime-ap.png[Prime]
+2. Prime NextDay [[symbol-PrimeNextDay]]
+image:maerkte/assets/bp-amazon-prime-ap1.png[Prime NextDay]
+3. Prime SecondDay [[symbol-PrimeSecondDay]]
+image:maerkte/assets/bp-amazon-prime-ap2.png[Prime SecondDay]
+4. NextDay [[symbol-NextDay]]
+image:maerkte/assets/bp-amazon-prime-a1.png[NextDay]
+5. SecondDay [[symbol-SecondDay]]
+image:maerkte/assets/bp-amazon-prime-a2.png[SecondDay]
+====
+
+In unserem System könnt ihr dies in der Auftragsübersicht *_Aufträge » Aufträge bearbeiten_* an dem Zeichen in der Statusleiste einsehen. Wenn ihr die Maus über dieses Zeichen zieht, seht ihr genau, welcher Art dieser Auftrag ist.
+
+[[symbol-auftrag]]
+.Symbol in der Auftragsübersicht
+image::maerkte/assets/bp-amazon-prime-symbolauftrag.png[Symbol Auftragsübersicht]
+
+[#150]
+=== Versandprofil
+Wie bei "normalen" Aufträgen von Amazon wird anhand der Versandprofile, welche in den Artikeln hinterlegt sind, geprüft, welches denn an diesem Auftrag hinterlegt werden soll. Dabei ist eine Voraussetzung, dass überhaupt ein Artikel im Auftrag zugeordnet werden konnte (sonst findet das System natürlich auch nicht die Versandprofile, die für die im Auftrag enthaltenen Artikel freigegeben sind).
+Dabei ist es wichtig bzw. ausschlaggebend, wie diese Versandprofile eingestellt sind. Wir beziehen uns jetzt nur auf den Filter *Treueprogramm*, nicht auf die weiteren Einstellungen, welche natürlich auch passen müssen (Herkunft, aktivierte Portotabellen etc.)
+
+[#160]
+=== Treueprogramm
+Der Filter *Treueprogramm* steuert per Ausschluss, ob ein Versandprofil zu einem Auftrag passt, oder eben nicht. Das heißt im Umkehrschluss, wenn die Filter nicht korrekt gesetzt sind, können auch die gewünschten Auftragsarten (Prime, NextDay etc.) nicht das passende Versandprofil bekommen.
+Wollt ihr also ein Versandprofil für z.B. Prime NextDay-Aufträge anlegen, muss der Filter *Treueprogramm* bei der Option *Amazon Prime NextDay* aktiviert sein.
+
+[[treueprogramm]]
+.Filter Treueprogramm im Versandprofil
+image::maerkte/assets/bp-amazon-prime-treueprogramm.png[Prime-Treueprogamm-Filter]
+
+[#170]
+=== Amazon Prime Service
+Nach der Verarbeitung des Auftrags (Rechnung etc.) wollt ihr diesen Auftrag bei Amazon zum Versand anmelden. Das könnt ihr wie gewohnt über einen _Prozess_ oder über das _Versand-Center_ unter *_Aufträge » Versand-Center_* vornehmen.
+Bei der Anmeldung wird über das Versandprofil des anzumeldenden Auftrags gecheckt, welcher *Amazon Prime Service* genutzt werden soll. Im Versandprofil wird diese Einstellung abhängig vom Lieferland in der Portotabelle hinterlegt.
+
+[[services]]
+.Amazon Prime Service Auswahl in der Portotabelle
+image::maerkte/assets/bp-amazon-prime-services.png[Prime-Services]
+
+Das bedeutet, welcher Versandweg und welche Kosten für den Versand und das Label am Ende nach der erfolgreichen Anmeldung herauskommen, hängt davon ab, welcher *Amazon Prime Service* in der *Portotabelle* des Lieferlandes in dem Versandprofil eingetragen ist, welches im Auftrag hinterlegt wurde.
+
+[#180]
+=== Sonstige Informationen
+Weiterhin werden die *Maße* und die *Absenderinformationen* von Amazon gefordert.
+
+Letzteres hinterlegt ihr in den *System » Systemeinstellungen » Aufträge » Versand » Versanddienstleister » Grundeinstellungen* pro Lager.
+
+[IMPORTANT]
+.Übergeben werden müssen die Felder:
+====
+- Firma
+- Straße
+- Hausnummer
+- E-Mail
+- PLZ
+- Ort
+- Land
+- Telefon
+====
+
+Welche Absenderinformationen übergeben werden, richtet sich danach, welches *Lager* im anzumeldenden Auftrag hinterlegt ist.
+
+Die *Maße* werden, je nachdem welche Option in dem Versandpaket eingestellt sind, aus dem System gezogen:
+*System » Systemeinstellungen » Aufträge » Versand » Versandpakete*
+
+[[versandpakete]]
+.Einstellung Versandpakete
+image::maerkte/assets/bp-amazon-prime-versandpaket.png[Einstellung-Versandpakete]
+
+Entweder, ihr definiert in dem Versandpaket die Maße vor, oder ihr lasst diese aus den Feldern aus den Artikeln ziehen (in Version 7 pro Variante in *Tab: Einstellungen*, in Version 6 unter *Tab: Base* jeweils *Länge/Breite/Höhe*).
+
+[#190]
+=== Versandgruppe auf Amazon definieren
+Damit auf Amazon die Artikel auch mit den korrekten Versandarten angeboten werden, muss auf Amazon eine entsprechende Versandgruppe angelegt werden.
+Diese könnt ihr anschließend per Merkmal über den Artikeldatenexport pro Artikel auf Amazon steuern.
+
+Dazu nutzt ihr am besten ein Merkmal von Typ *Text* oder *Auswahl*. Das Feld, welches ihr mit dem Merkmal verknüpfen müsst, lautet *merchant_shipping_group_name*.
+Als Wert für die Auswahl oder den Text in dem Artikel hinterlegt ihr den Namen der Versandgruppe, welche ihr zuvor in eurem Seller Central angelegt habt.
+Informationen zur Merkmalverknüpfung findet ihr in unserem <<maerkte/amazon/amazon-einrichten#1400, Handbuch>>.
+
+Im folgenden Diagramm ist ein Beispiel zur Veranschaulichung für Prime NextDay:
+
+[[prime-auftragsablauf]]
+.Prime Auftragsablauf
+image::maerkte/assets/bp-amazon-prime-ablaufdiagramm.jpg[Prime-Auftragsablauf]
+
+[#200]
+== Fehlermeldungen und wie sie gelöst werden können
+Zu guter Letzt gibt es natürlich auch Fehlermeldungen bei der Anmeldung dieser Aufträge bei Amazon.
+
+Wenn ein Auftrag nicht angemeldet werden sollte, könnt ihr unter *Datenaustausch » API-Log* in dem Vorgang *Shipment_AmazonPrime* prüfen, was an dieser Stelle von Amazon zurückgemeldet wurde (bei der Anmeldung über das Versand-Center wird die Fehlermeldung auch direkt in rot ausgegeben).
+
+- *Error:TermsAndConditionsNotAccepted, Type: Sender* bedeutet, dass die *Geschäftsbedingungen* zu Prime noch nicht auf Amazon bestätigt wurden. Diese Fehlermeldung könnt ihr "beheben", wenn ihr auf Amazon selbst einmal einen Auftrag zu Prime anmeldet (bei diesem Prozess sollten auch die Geschäftsbedingungen einmal abgefragt werden). Hilft dies nicht, müsst ihr euch mit Amazon in Verbindung setzen.
+- *Error:InvalidRequest, Type: Sender* bedeutet, dass die Daten nicht vollständig sind. Dies kann durch nicht gepflegte *Absenderdaten* für die Lager, fehlende Informationen des Kunden (*Lieferadresse*) oder ein nicht zugeordnetes/nicht passendes *Versandprofil* im Auftrag resultieren.
+Weiterhin kann es daran liegen, dass ein Wert aus den *Lagereinstellungen* (wie oben genannt) zu lang ist - z.B. oft schon bei Firma der Fall gewesen. Amazon nimmt in den meisten Feldern nur Werte bis zu einer bestimmten Größe an (welche mir leider nicht exakt bekannt sind).
+Die letzte Möglichkeit wäre, dass keine *Maße* übermittelt werden. Das kann daran liegen, dass in den Grundeinstellungen für die Versandpakete auf *von Artikel beziehen* gestellt ist, aber in den Artikeln keine Maße eingetragen sind.
+- *Error:ShipmentAlreadyExists, Type: Sender* z.B. bedeutet, dass bereits eine Versandanmeldung für den jeweiligen Auftrag besteht.
+- *Error:no AmazonPrime Service selected* bedeutet, dass für das Versandprofil aus dem Auftrag in der Portotabelle kein *Amazon-Versandservice* hinterlegt ist.
+- *Error:ShippingServiceNotAvailable, Type: Sender* bedeutet, wie die Fehlermeldung bereits sagt, dass ein Amazon-Service für den Auftrag übermittelt wurde, welcher nicht zur Art (z.B. NextDay) des Auftrags passt. Amazon sieht für die unterschiedlichen Arten unterschiedliche Services vor. Daher kommt der Fehler. Prüfen, ob das passende Versandprofil am Auftrag hinterlegt ist und/oder der passende AmazonService in dem Versandprofil eingetragen wurde.
+- *Error:ResourceNotFound, Type: Sender* bedeutet, dass der Auftrag auf Amazon nicht existiert oder er bereits storniert wurde.
+- *No Valid Warehouse Address* bedeutet, dass für das Lager, aus dem versendet wird, keine oder keine gültigen Werte eingetragen sind (*Einstellungen » Aufträge » Versand » Versanddienstleister » Grundeinstellungen*).

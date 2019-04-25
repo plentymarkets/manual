@@ -43,12 +43,6 @@ Einstellungen im Plugin IO vornehmen:
 . Aktiviere die Routen */basket*, */checkout*, */confirmation*, */login*, */register*, */password-reset*, sowie */place-order* & */execute-payment*.
 . *Speichere* die Einstellungen.
 
-[IMPORTANT]
-.ShopBuilder für Callisto-Shops mit Ceres Checkout
-====
-Wenn du einen Callisto-Shop mit Ceres-Checkout betreibst und den <<webshop/shop-builder#, ShopBuilder>> verwenden möchtest, musst du zusätzlich die erste Route */* aktivieren, da der ShopBuilder sonst nicht im Backend geladen wird. Beachte bitte, dass hierdurch die Callisto Startseite überschrieben wird. Wir empfehlen Änderungen in einer Plugin-Set-Kopie durchzuführen und nach den durchgeführten Änderungen die Startseite-Route */* wieder zu deaktivieren.
-====
-
 [.instruction]
 Einstellungen im Plugin Ceres vornehmen:
 
@@ -142,12 +136,6 @@ Einstellungen in IO vornehmen:
 . Aktiviere die Routen */checkout*, */confirmation*, */login*, */register*, *password-reset* sowie */place-order & /execute-payment*.
 . *Speichere* die Einstellungen.
 
-[IMPORTANT]
-.ShopBuilder für Callisto-Shops mit Ceres Checkout
-====
-Wenn du einen Callisto-Shop mit Ceres-Checkout betreibst und den <<omni-channel/online-shop/shop-builder#, ShopBuilder>> verwenden möchtest, musst du zusätzlich die erste Route */* aktivieren, da der ShopBuilder sonst nicht im Backend geladen wird. Beachte bitte, dass hierdurch die Callisto Startseite überschrieben wird. Wir empfehlen Änderungen in einer Plugin-Set-Kopie durchzuführen und nach den durchgeführten Änderungen die Startseite-Route */* wieder zu deaktivieren.
-====
-
 [.instruction]
 Einstellungen in Ceres vornehmen:
 
@@ -209,26 +197,61 @@ Backlinks für den Warenkorb setzen:
 . Klicke auf die Kategorie *Warenkorb*.
 . Wechsle in das Tab *Beschreibung 1*.
 . Suche den folgenden Code: `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
-. Ersetze den Code durch: `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`
+. Ersetze den Code durch: `$_check.$_backlink`
 . *Speichere* die Einstellungen.
+
+In der Zeile vor dem gerade eingefügten `$_check.$_backlink` musst du nun noch den folgenden Code einfügen:
+
+[source,plenty]
+----
+include::assets/checkout_snippet.txt[]
+
+----
+
+*Speichere* deine Änderungen am Code. +
+Das *de* in der Zeile `{% if $Lang !== 'de' %}` bezieht sich hier auf die Standardprache des Webshops. Falls die Standardsprache nicht Deutsch ist, muss das Sprachkürzel entsprechend angepasst werden.
+
 
 [.instruction]
 Backlinks für die Warenkorbvorschau setzen:
 
 . Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewBasketPreviewList*.
 . Suche den folgenden Code: `{% if( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
-. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`
+. Ersetze den Code durch `$_check.$_backlink`
 . *Speichere* die Einstellungen.
+
+In der Zeile vor dem gerade eingefügten `$_check.$_backlink` musst du nun noch den folgenden Code einfügen:
+
+[source,plenty]
+----
+include::assets/checkout_snippet.txt[]
+
+----
+
+*Speichere* deine Änderungen am Code. +
+Das *de* in der Zeile `{% if $Lang !== 'de' %}` bezieht sich hier auf die Standardprache des Webshops. Falls die Standardsprache nicht Deutsch ist, muss das Sprachkürzel entsprechend angepasst werden.
 
 [.instruction]
 Backlinks für das Warenkorb-Overlay setzen:
 
 . Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewItemToBasketConfirmationOverlay*.
-. Suche den folgenden Code: `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
-. Ersetze den Code durch: `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink=/checkout'; } %} $_check.$_backlink`
+. Suche den folgenden Code: `{% if( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
+. Ersetze den Code durch: `$_check.$_backlink`
 . *Speichere* die Einstellungen.
 
-Kunden, die zusätzliche individuelle Anpassungen an ihrem Layout vorgenommen haben, müssen überprüfen an welchen Stellen sie ihre Kunden zur Kaufabwicklung weiterleiten. Diese Stellen müssen so angepasst werden, dass sie auf die Route */checkout* verlinken. Wir können diese individuellen Anpassungen nicht abfangen und sie können von Kunde zu Kunde anders ausfallen.
+In der Zeile vor dem gerade eingefügten `$_check.$_backlink` musst du nun noch den folgenden Code einfügen:
+
+[source,plenty]
+----
+include::assets/checkout_snippet.txt[]
+
+----
+
+*Speichere* deine Änderungen am Code. +
+Das *de* in der Zeile `{% if $Lang !== 'de' %}` bezieht sich hier auf die Standardprache des Webshops. Falls die Standardsprache nicht Deutsch ist, muss das Sprachkürzel entsprechend angepasst werden. +
+
+
+Kunden, die zusätzliche individuelle Anpassungen an ihrem Layout vorgenommen haben, müssen überprüfen an welchen Stellen sie ihre Kunden zur Kaufabwicklung weiterleiten. Diese Stellen müssen so angepasst werden, dass sie auf die Route */checkout* verlinken. Wir können diese individuellen Anpassungen nicht abfangen, da sie von Kunde zu Kunde anders ausfallen können. +
 
 Der Ceres-Checkout wird sich von deinem bisherigen Callisto-Layout optisch unterscheiden. Du kannst Header und Footer des Checkouts und des Warenkorbs global über den <<webshop/shop-builder#95, ShopBuilder>> bearbeiten. Den Checkout selbst wirst du mit Ceres Version 3.1.0 über den ShopBuilder bearbeiten können. Weiterhin kannst du eigene Anpassungen über ein <<#theme, Theme>> realisieren.
 

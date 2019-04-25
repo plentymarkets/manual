@@ -9,11 +9,11 @@ With a sync of the type *Item*, you import item and variation data.
 In order to import item data via ElasticSync, the following data records must be present in plentymarkets:
 
 * Categories (*Item » Categories* menu)
-* Sales prices (*System » Item » Sales prices*)
+* Sales prices (*System » System settings » Item » Sales prices*)
 
 In order to import variation data with attributes via ElasticSync, the following data records must be present in plentymarkets:
 
-* Attributes and attribute values (*System » Item » Attributes* menu)
+* Attributes and attribute values (*System » System settings » Item » Attributes* menu)
 
 [#1910]
 == Fields for item matching
@@ -88,11 +88,11 @@ multipack = *Multipack* item +
 
 |Owner
 |Numeric (internal user ID)
-|For owner IDs, see *System » Settings » User » Accounts*
+|For owner IDs, see *System » System settings » Settings » User » Accounts*
 
 |Manufacturer ID
 |Numeric (internal ID)
-|See *System » Item » Manufacturer*
+|See *System » System settings » Item » Manufacturer*
 
 |Manufacturing country
 |Numeric (internal ID); +
@@ -171,7 +171,7 @@ multipack = *Multipack* item +
 |
 
 |Listing category 1; +
-Listing category 2;
+Listing category 2
 |Numeric
 |
 
@@ -186,11 +186,11 @@ Listing store category 2
 
 |Flag 1
 |Numeric (internal ID)
-|ID of flag 1, see *System » Items » Flags » Tab: Flag 1*
+|ID of flag 1, see *System » System settings » Items » Flags » Tab: Flag 1*
 
 |Flag 2
 |Numeric (internal ID)
-|ID of flag 2, see *System » Items » Flags » Tab: Flag 2*
+|ID of flag 2, see *System » System settings » Items » Flags » Tab: Flag 2*
 
 |Age rating
 |0 = None available +
@@ -212,9 +212,9 @@ Listing store category 2
 Field 2; +
 Field 3; +
 ... +
-Field 18
+Field 20
 |Alpha-numeric
-|Free text fields 1 to 18
+|Free text fields 1 to 20
 
 |Max. item order quantity
 |Numeric
@@ -222,12 +222,43 @@ Field 18
 
 |Manufacturer name
 |Alpha-numeric
-|If not available in the system, a new producer is created.
+|If not available in the system, a new manufacturer is created.
+
+|Item template
+|Numeric
+|ID of the category of the <<item/managing-items#720, item template>> +
+*_Note:_* Item templates are only available in the old design Callisto.
 
 |Delete item
 |0 = No +
 1 = Yes
 |
+|====
+
+[#3000]
+==== Item sets
+
+<<table-mapping-fields-item-sets>> lists the fields available for importing item sets. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+
+[[table-mapping-fields-item-sets]]
+.Fields for importing item sets
+[cols="1,1,2"]
+|====
+|Mapping field |Permitted import values |Explanation
+
+|Add components (IDs, comma-separated)
+|Alpha-numeric
+|ID and quantity of the items to be added to the set, format: +
+*itemID:quantity,itemID:quantity*
+
+|Remove components (IDs, comma-separated)
+|Alpha-numeric
+|IDs of the items to be removed from the set +
+*itemID:quantity,itemID:quantity*
+
+|Discount
+|Decimal number
+|Discount on total price of set in %
 |====
 
 [#2310]
@@ -256,17 +287,17 @@ ReplacementPart = replacement part +
 Similar +
 Bundle = item bundle
 
-|Delete all cross selling links
+|Delete cross selling links
 |Numeric
-|Cross-selling links in the format +
- *ItemID; itemID;etc.*
+|Cross-selling links to be deleted in the format +
+ *ItemID;itemID;etc.*
 |====
 
 
 [#2270]
 === Item description
 
-<<table-mapping-fields-descriptions>> lists the fields available for importing item descriptions. Create one mapping per language. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-matching-fields-description>> lists the fields available for importing item descriptions. Create one mapping per language. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-descriptions]]
 .Fields for importing item descriptions
@@ -461,7 +492,7 @@ Name 3
 
 |Bundle type
 |bundle = variation is a bundle +
-bundle_item = variation is bundle component
+bundle_item = Variation is bundle component
 |
 
 |Invisible in item list
@@ -472,7 +503,7 @@ bundle_item = variation is bundle component
 |Order picking
 |single_picking = Single order picking possible +
 no_single_picking = No single order picking possible +
-exclude_from_picklist
+exclude_from_picklist = Exclude from pick list
 |
 
 |Stock limit
@@ -515,7 +546,7 @@ exclude_from_picklist
 |Numeric (internal ID)
 |
 
-|Max. order quantity
+|Max. order quantity 
 |Numeric
 |
 
@@ -536,7 +567,7 @@ exclude_from_picklist
 |Numeric
 |
 
-|Delete variations
+|Delete variation
 |0 = No +
 1 = Yes
 |
@@ -547,11 +578,11 @@ exclude_from_picklist
 
 |Available until
 |Date
-|Last date that the main variation is available.
+|Last date that the main variation is available
 
 |Release date
 |Date
-|Date on which the main variation becomes available.
+|Date on which the main variation becomes available
 
 |Name
 |Alpha-numeric
@@ -692,11 +723,6 @@ or
 |Numeric (internal ID)
 |ID of the default category
 
-|Automatically selected
-|N = No +
-Y = Yes
-|
-
 |Category name
 |Alpha-numeric
 |Name of the default category
@@ -774,29 +800,29 @@ Y = Yes
 |Attribute selection combination
 |Alpha-numeric
 |Combination of *Attribute name (internal)* and *Attribute value (internal)* in the format +
-*Attribute name:Value name;* or *Attributname&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* +
+*attributeName:valueName; * or *attributeName<>valueName<||>* +
 Import of more than two attribute links. +
 *_Note:_* Every attribute selection combination must be unique for each variation.
 
 |Attribute ID
 |Numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *attribute name:value name;* and an additional mapping in the format *attribute name<>value name<||>* and assign the separate columns.
 
-|Attribute Name
+|Attribute name
 |Alpha-numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *attribute name:value name;* and an additional mapping in the format *attribute name<>value name<||>* and assign the separate columns.
 
 |Value name
 |Alpha-numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the names must be in different columns. Create a mapping in the format *attribute name:value name;* and an additional mapping in the format *attribute name<>value name<||>* and assign the separate columns.
 
 |Value ID
 |Numeric
 |Import of up to two attribute links. +
-*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *Attribute name:Value name;* and an additional mapping in the format *Attribute name&lt;&gt;Value name&lt;&#x007C;&#x007C;&gt;* and assign the separate columns.
+*_Tip:_* If two links exist, the IDs must be in different columns. Create a mapping in the format *attribute name:value name;* and an additional mapping in the format *attribute name<>value name<||>* and assign the separate columns.
 |====
 
 [#2390]
@@ -850,12 +876,12 @@ If no position is transferred, the position corresponds to the order of the URLs
 
 |Availability client (store)
 |Numeric (internal ID)
-|For client IDs, see *System » Client » Open client » Settings* +
+|For client IDs, see *System » System settings » Client » Open client » Settings* +
 *-1* activates all clients
 
 |Availability referrers
 |Numeric (internal ID)
-|For referrer IDs, see <<basics/interne-IDs#90, Order referrer IDs>> +
+|For referrer IDs, see <<basics/internal-IDs#90, Order referrer IDs>> +
 Specify more than one referrer separated by commas. +
 *-1* activates all referrers
 
@@ -863,32 +889,37 @@ Specify more than one referrer separated by commas. +
 |Numeric (internal ID)
 |*-1* activates all listings
 
+|Name
+|Alpha-numeric
+|Name of the item image in the format *Name:Language1,Name:Language2* +
+Alternative text of the item image in the format *Name:Language1:AlternativeText,Name:Language2:AlternativeText*
+
+|Market attribute link (attribute value ID)
+|Numeric (internal ID)
+|ID of the attribute value
+
 |Remove all availabilities
 |0 = No +
 1 = Yes
 |
-
-|Name
-|Alpha-numeric
-|Name of the item image in the format *Name:Language1,Name:Language2*
 |====
 
 [#2400]
-=== Properties
+=== Characteristics
 
-<<table-mapping-fields-properties-items>> lists the fields available for importing property links at the item level. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-matching-fields-characteristics>> lists the fields available for importing characteristics data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
-[[table-mapping-fields-properties-items]]
-.Fields for importing property links
+[[table-mapping-fields-characteristics]]
+.Fields for importing characteristics links
 [cols="1,1,2"]
 |====
 |Mapping field |Permitted import values |Explanation
 
 |ID
 |Numeric (internal ID)
-|See *System » Item » Properties*
+||See *System » System settings » Item » Characteristics*
 
-|Property combination
+|Characteristic combination
 |Alpha-numeric
 |Combination of back end name, value and language in the format +
 *Name1:Value1:Language1;Name2:Value2:Language2* etc.
@@ -925,7 +956,7 @@ For codes, see <<basics/internal-IDs#10, Languages>>
 
 |ID
 |Numeric (internal ID)
-|For IDs, see *System » Settings » Properties » Configuration*
+|For IDs, see *System » System settings » Settings » Properties » Configuration*
 
 |Language
 |Letters
@@ -962,7 +993,7 @@ For codes, see <<basics/internal-IDs#10, Languages>>
 [#2290]
 === Variation tags
 
-<<Table-mapping-fields-tags>> lists the fields available for importing tag links. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-mapping-fields-tags>> lists the fields available for importing tag links. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-tags]]
 .Fields for importing tag links
@@ -1000,7 +1031,7 @@ For codes, see <<basics/internal-IDs#10, Languages>>
 [#2420]
 === Inheritance
 
-<<table-mapping-fields-inheritance>> lists the fields available for importing inheritance data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-mapping-fields-inheritance>> lists the fields available for importing inheritance settings. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-inheritance]]
 .Fields for importing inheritance
@@ -1077,7 +1108,7 @@ Alternatively, transfer *content units of measure (ISO)*
 [#2430]
 === ASIN/ePID
 
-<<table-mapping-fields-ASIS-ePID>> lists the fields available for importing ASIN/ePID data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-mapping-fields-ASIN-ePID>> lists the fields available for importing ASIN/ePID data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-ASIN-ePID]]
 .Fields for importing ASIN/ePID
@@ -1238,13 +1269,13 @@ europallet
 
 |Market ID
 |Numeric
-|For referrer IDs, see <<basics/interne-IDs#90, Order referrer IDs>>
+|For referrer IDs, see <<basics/internal-IDs#90, Order referrer IDs>>
 
 |Account ID
 |Numeric
 |ID of the market account +
-For Amazon, see *System » Markets » Amazon » Settings* +
-For eBay, see *System » Markets » eBay » Accounts*
+For Amazon, see *System » System settings » Markets » Amazon » Settings* +
+For eBay, see *System » System settings » Markets » eBay » Accounts*
 
 |SKU
 |Alpha-numeric
@@ -1273,13 +1304,13 @@ For eBay, see *System » Markets » eBay » Accounts*
 
 |Market ID
 |Numeric
-|For referrer IDs, see <<basics/interne-IDs#90, Order referrer IDs>>
+|For referrer IDs, see <<basics/internal-IDs#90, Order referrer IDs>>
 
 |Account ID
 |Numeric
 |ID of the market account +
-For Amazon, see *System » Markets » Amazon » Settings* +
-For eBay, see *System » Markets » eBay » Accounts*
+For Amazon, see *System » System settings » Markets » Amazon » Settings* +
+For eBay, see *System » System settings » Markets » eBay » Accounts*
 
 |SKU
 |Alpha-numeric
@@ -1306,15 +1337,15 @@ For eBay, see *System » Markets » eBay » Accounts*
 |====
 |Mapping field |Permitted import values |Explanation
 
-|Item bundle components
+|Bundle components
 |Alpha-numeric
-|Variation ID:quantity;Variation ID:quantity,etc.
+|variationID:quantity;variationID:quantity;etc.
 
 |Delete bundle components
 |Alpha-numeric
 |Variation ID of bundle component
 
-|Delete package
+|Delete bundle
 |0 = No +
 1 = Yes
 |
@@ -1323,7 +1354,7 @@ For eBay, see *System » Markets » eBay » Accounts*
 [#sync-serial-number]
 === Serial number
 
-<<Table-mapping-fields-serial-numbers>> lists the fields available for importing serial number data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-mapping-fields-serial-numbers>> lists the fields available for importing serial number data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-serial-numbers]]
 .Fields for importing serial numbers
@@ -1497,7 +1528,7 @@ a|
 or
 * URL
 
-2+|*Properties*
+2+|*Characteristics*
 
 |Save properties
 a|

@@ -2,13 +2,15 @@
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: ElasticSync, Import, Sync, Kontakte, Firmen, Adressen
-:position: 70
+:position: 80
 
 Mit einem Sync des Typs *Kontakte, Firmen und Adressen* importieren Sie Kontaktdaten oder aktualisieren bestehende Datensätze. Diese Daten sind z.B. Daten der Lieferadresse und Rechnungsadresse, das Geburtsdatum des Kontakts, der Kundentyp, Kontaktoptionen wie die private oder geschäftliche E-Mail-Adresse sowie die Firmendaten.
 
-Voraussetzung:
-
-* Damit die neu importierten oder aktualisierten Lieferländer in einem Kontaktdatensatz in der Kontaktübersicht angezeigt werden, müssen diese Lieferländer im Menü *System » Aufträge » Versand » Optionen » Tab: Lieferländer* aktiviert sein.
+[TIP]
+.Voraussetzung für den Import von Lieferländern
+====
+Damit die neu importierten oder aktualisierten Lieferländer in einem Kontaktdatensatz in der Kontaktübersicht angezeigt werden, müssen diese Lieferländer im Menü *System » Aufträge » Versand » Optionen » Tab: Lieferländer* aktiviert sein.
+====
 
 Um Kontaktdaten per ElasticSync zu aktualisieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
@@ -17,23 +19,572 @@ Um Kontaktdaten per ElasticSync zu aktualisieren, müssen die folgenden Datensä
 * ggf. Adressdaten (Rechnungsadresse, Lieferadresse)
 * ggf. Firmendaten wie USt-IdNr. und Zahlungsziel
 
-[#2210]
+[#100]
 == Felder für den Abgleich von Kontakten, Firmen und Adressen
 
-Über die folgenden Links finden Sie die Listen der Felder, die für den Abgleich von Kontaktdaten, Adressdaten und Firmendaten zur Verfügung stehen:
+In Tabelle <<tabelle-abgleichfelder-kontakte>> werden Felder erläutert, die für den Datenabgleich von Kontakten, Firmen und Adressen zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-* link:https://developers.plentymarkets.com/rest-doc/account_contact/details#create-a-contact[Kontaktdetails^]
-* link:https://developers.plentymarkets.com/rest-doc/account_contact_option/details#list-contact-options-by-the-contact-id[Kontaktoptionen^]
-* link:https://developers.plentymarkets.com/rest-doc/account_address/details#get-an-address[Adressdetails^]
-* link:https://developers.plentymarkets.com/rest-doc/account_address/details#get-an-address-option[Adressoptionen^]
-* link:https://developers.plentymarkets.com/rest-doc/account/details#list-accounts[Firmendetails^]
+[[tabelle-abgleichfelder-kontakte]]
+.Abgleichfelder für den Import von Kontaktdaten
+[cols="1,3"]
+|====
+|Abgleichfeld |Erläuterung
 
-Anhand der Identifikatoren *Kontakt-ID*, *E-Mail*, *Rechnungsadress-ID* und *Lieferadress-ID* im Bereich *Abgleich* wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+|Kontakt-ID
+|ID des Kontakts
 
-[#2220]
-=== Pflichtwerte für Sync-Aktionen von Kontakten, Firmen und Adressen
+|E-Mail
+|E-Mail-Adresse des Kontakts
 
-[[tabelle-Pflichtwerte-Sync-Aktionen-Kontakte]]
+|Rechnungsadress-ID
+|ID der Rechnungsadresse
+
+|Lieferadress-ID
+|ID der Lieferadresse
+
+|====
+
+[#200]
+== Felder für die Zuordnung von Kontakten, Firmen und Adressen
+
+In diesem Kapitel werden Felder erläutert, die für die Zuordnung von Kontakten, Firmen und Adressen zur Verfügung stehen.
+
+[#300]
+=== Kontakt
+
+Für den Import von Kontaktdaten stehen die in <<tabelle-zuordnungsfelder-kontakt>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-kontakt]]
+.Felder für den Kontaktdatenimport
+[cols="1,3"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Externe Nummer
+|Externe Nummer für den Kontakt
+
+|Nummer
+|Zusätzliche Nummer für den Kontakt. Diese Nummer kann selbst vergeben werden. Maximale Zeichenlänge: 128.
+
+|Typ*
+|Das ist ein Pflichtfeld.
+
+|Vorname
+|Vorname des Kontakts
+
+|Nachname
+|Nachname des Kontakts
+
+|Geschlecht
+|Geschlecht des Kontakts
+
+|Titel
+|Titel des Kontakts
+
+|Newsletter
+|Zeitstempel, wann der Kontakt sich für den Newsletter registriert hat.
+
+|Kundenklasse
+|Kundenklasse des Kontakts, falls vorhanden. +
+*_Wichtig:_* Wenn Kundenklassen im System gespeichert sind, muss das Feld in der Importdatei mit der ID der Kundenklasse befüllt sein. Andernfalls werden die Kontakte nicht in Ihr plentymarkets System importiert. +
+Wenn Sie keine Kundenklassen im System erstellt haben, können Sie dieses Feld für den Import ignorieren.
+
+|Gesperrt
+|Kontakte können für einen bestimmten Mandanten gesperrt werden. +
+Mögliche Werte: +
+0 = nicht gesperrt +
+1 = gesperrt
+
+|Bewertung
+|Die Bewertung des Kontakts dient nur der internen Verwendung. +
+Mögliche Werte: +
+0 = 5 graue Sterne, keine Bewertung für den Kontakt gespeichert +
+5 = 5 gelbe Sterne (beste Bewertung) +
+4 = 4 gelbe Sterne +
+3 = 3 gelbe Sterne +
+2 = 2 gelbe Sterne +
+1 = 1 gelber Stern +
+-1 = 1 roter Stern +
+-2 = 2 rote Sterne +
+-3 = 3 rote Sterne +
+-4 = 4 rote Sterne +
+-5 = 5 rote Sterne (schlechteste Bewertung)
+
+|Debitorenkonto
+|Zusätzliche Nummer, die generell der Kundennummer oder der Debitorennummer des Kontakts in der Buchhaltung entspricht.
+
+|Sprache
+|Sprache des Kontakts wie im Kontaktdatensatz gespeichert.
+
+|Herkunft*
+|Das ist ein Pflichtfeld.
+
+|Plenty-ID
+|Mandant, der dem Kontakt zugeordnet ist
+
+|Eigner-ID
+|ID des Eigners, der dem Kontakt zugeordnet ist.
+
+|Geburtsdatum
+|Geburtsdatum des Kontakts
+
+|Valuta
+|Valuta des Kontakts wie im Kontaktdatensatz gespeichert.
+
+|Skontofrist
+|Skontofrist des Kontakts wie im Kontaktdatensatz gespeichert.
+
+
+|Skontosatz
+|Skontosatz des Kontakts wie im Kontaktdatensatz gespeichert.
+
+|Zahlungsziel
+|Zahlungsziel des Kontakts wie im Kontaktdatensatz gespeichert.
+
+|Handelsvertreter-ID
+|ID des Handelsvetreters, der dem Kontakt zugeordnet ist.
+
+|Kontakt-ID
+|ID des Kontakts
+
+|====
+
+[#400]
+=== Kontaktoptionen
+
+Für den Import von Kontaktoptionen stehen die in <<tabelle-zuordnungsfelder-kontaktoptionen>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-kontaktoptionen]]
+.Felder für den Import von Kontaktoptionen
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Telefon Privat +
+(Typ 1 Subtyp 4)
+|Private Telefonnummer
+
+|Telefon Geschäftlich +
+(Typ 1 Subtyp 1)
+|Geschäftliche Telefonnnummer
+
+|Mobiltelefon Privat +
+(Typ 1 Subtyp 2)
+|Private Mobiltelefonnummer
+
+|Mobiltelefon Geschäftlich +
+(Typ 1 Subtyp 3)
+|Geschäftliche Mobiltelefonnummer
+
+|E-Mail Privat +
+(Typ 2 Subtyp 4)
+|Private E-Mail-Adresse
+
+|E-Mail Geschäftlich +
+(Typ 2 Subtyp 1)
+|Geschäftliche E-Mail-Adresse
+
+|E-Mail PayPal +
+(Typ 2 Subtyp 5)
+|PayPal E-Mail-Adresse
+
+|Fax Privat +
+(Typ 3 Subtyp 4)
+|Private Faxnummer
+
+|Fax Geschäftlich +
+(Typ 3 Subtyp 1)
+|Geschäftliche Faxnummer
+
+|Homepage Privat +
+(Typ 1 Subtyp 2)
+|URL der privaten Homepage
+
+|Homepage Geschäftlich +
+(Typ 1 Subtyp 2)
+|URL der geschäftlichen Homepage
+
+|Marktplatz eBay +
+(Typ 5 Subtyp 6)
+|Marktplatz eBay
+
+|Marktplatz Amazon +
+(Typ 5 Subtyp 7)
+|Marktplatz Amazon
+
+|Identifikationsnummer Klarna +
+(Typ 6 Subtyp 8)
+|Identifikationsnummer Klarna
+
+|Identifikationsnummer DHL +
+(Typ 6 Subtyp 9)
+|Identifikationsnummer DHL
+
+|Zahlungsanbieter PayPal +
+(Typ 7 Subtyp 5)
+|Zahlungsanbieter PayPal
+
+|Zahlungsanbieter Klarna +
+(Typ 7 Subtyp 8)
+|Zahlungsanbieter Klarna
+
+|Payment
+|Payment
+
+|Benutzername Privat +
+(Typ 8 Subtyp 4)
+|Privater Benutzername
+
+|Benutzername Geschäftlich +
+(Typ 8 Subtyp 1)
+|Geschäftlicher Benutzername
+
+|Gastzugang +
+(Typ 10 Subtyp 11)
+|Zugangsart im alten Webshop (Callisto-Webshop). +
+Gastzugänge haben den Wert *1*.
+
+|Briefanrede Privat
+|Private Briefanrede
+
+|Briefanrede Geschäftlich
+|Geschäftliche Briefanrede
+
+|====
+
+[#500]
+=== Rechnungsadresse
+
+Für den Import von Rechnungsadressdaten stehen die in <<tabelle-zuordnungsfelder-rechnungsadresse>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-rechnungsadresse]]
+.Felder für den Import von Rechnungsadressdaten
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Adress-ID
+|ID der Rechnungsadresse
+
+|Name1* (oder 2/3)
+|Firmenname. +
+Das ist ein Pflichtfeld, wenn bei *Name2* und *Name3* kein Eintrag gemacht wird.
+
+|Name2* (oder 1/3)
+|Vorname des Kontakts. +
+Das ist ein Pflichtfeld, wenn bei *Name1* und *Name3* kein Eintrag gemacht wird.
+
+|Name3* (oder 1/3)
+|Nachname des Kontakts. +
+Das ist ein Pflichtfeld, wenn bei *Name1* und *Name2* kein Eintrag gemacht wird.
+
+|Name4
+|Zusatzangabe zum Kontakt, z.B. "z.Hd. Herrn Max Mustermann"
+
+|Adresse1* (oder 2/3)
+|Straße der Rechnungsadresse. +
+Das ist ein Pflichtfeld, wenn bei *Adresse2* und *Adresse3* kein Eintrag gemacht wird.
+
+|Adresse2* (oder 1/3)
+|Hausnummer der Rechnungsadresse. +
+Das ist ein Pflichtfeld, wenn bei *Adresse1* und *Adresse3* kein Eintrag gemacht wird.
+
+|Adresse3* (oder 1/3)
+|Adresszusatz der Rechnungsadresse, z.B. "Apartment 12a". +
+Das ist ein Pflichtfeld, wenn bei *Adresse1* und *Adresse2* kein Eintrag gemacht wird.
+
+|Adresse4
+|Feld zur freien Verfügung.
+
+|Postleitzahl
+|Postleitzahl
+
+|Ort*
+|Das ist ein Pflichtfeld.
+
+|Country-ID* (oder ISO)
+|Das ist ein Pflichtfeld.
+
+|State-ID
+|ID der Region, Bezirk, Bundesland, Kanton etc.
+
+|Überprüft am
+|Zeitstempel, wann die Rechnungsadresse geprüft wurde
+
+|Titel
+|Titel in der Rechnungsadresse
+
+|Country-ISO-Code* (oder ID)
+|Das ist ein Pflichtfeld.
+
+|State-ISO-Code
+|ISO-Code der Region, Bezirk, Bundesland, Kanton etc.
+
+|====
+
+[#600]
+=== Optionen Rechnungsadresse
+
+Für den Import von Rechnungsadressoptionen stehen die in <<tabelle-zuordnungsfelder-rechnungsadressoptionen>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-rechnungsadressoptionen]]
+.Felder für den Import von Rechnungsadressoptionen
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Umsatzsteuernummer (Typ 1)
+|
+
+|Externe Adress-ID (Typ 2)
+|
+
+|Gelangensbestätigung (Typ 3)
+|
+
+|Telefon (Typ 4)
+|
+
+|E-Mail (Typ 5)
+|
+
+|Postnummer (Typ 6)
+|
+
+|Personennummer (Typ 7)
+|
+
+|FSK (Typ 8)
+|
+
+|Geburtstag (Typ 9)
+|
+
+|Titel (Typ 11)
+|
+
+|Ansprechpartner (Typ 12)
+|
+
+|====
+
+[#700]
+=== Lieferadresse
+
+Für den Import von Lieferadressdaten stehen die in <<tabelle-zuordnungsfelder-lieferadresse>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-lieferadresse]]
+.Felder für den Import von Lieferadressdaten
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Adress-ID
+|ID der Lieferadresse
+
+|Name1* (oder 2/3)
+|Firmenname. +
+Das ist ein Pflichtfeld, wenn bei *Name2* und *Name3* kein Eintrag gemacht wird.
+
+|Name2* (oder 1/3)
+|Vorname des Kontakts. +
+Das ist ein Pflichtfeld, wenn bei *Name1* und *Name3* kein Eintrag gemacht wird.
+
+|Name3* (oder 1/3)
+|Nachname des Kontakts. +
+Das ist ein Pflichtfeld, wenn bei *Name1* und *Name2* kein Eintrag gemacht wird.
+
+|Name4
+|Zusatzangabe zum Kontakt, z.B. "z.Hd. Herrn Max Mustermann"
+
+|Adresse1* (oder 2/3)
+|Straße der Lieferadresse. +
+Das ist ein Pflichtfeld, wenn bei *Adresse2* und *Adresse3* kein Eintrag gemacht wird.
+
+|Adresse2* (oder 1/3)
+|Hausnummer der Lieferadresse. +
+Das ist ein Pflichtfeld, wenn bei *Adresse1* und *Adresse3* kein Eintrag gemacht wird.
+
+|Adresse3* (oder 1/3)
+|Adresszusatz der Lieferadresse, z.B. "Apartment 12a". +
+Das ist ein Pflichtfeld, wenn bei *Adresse1* und *Adresse2* kein Eintrag gemacht wird.
+
+|Adresse4
+|Feld zur freien Verfügung.
+
+|Postleitzahl
+|Postleitzahl
+
+|Ort*
+|Das ist ein Pflichtfeld.
+
+|Country-ID* (oder ISO)
+|Das ist ein Pflichtfeld.
+
+|State-ID
+|ID der Region, Bezirk, Bundesland, Kanton etc.
+
+|Titel
+|Titel in der Lieferadresse
+
+|Country-ISO-Code* (oder ID)
+|Das ist ein Pflichtfeld.
+
+|State-ISO-Code
+|ISO-Code der Region, Bezirk, Bundesland, Kanton etc.
+
+|====
+
+[#800]
+=== Optionen Lieferadresse
+
+Für den Import von Lieferadressoptionen stehen die in <<tabelle-zuordnungsfelder-lieferadressoptionen>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-lieferadressoptionen]]
+.Felder für den Import von Lieferadressoptionen
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+
+|Umsatzsteuernummer (Typ 1)
+|
+
+|Externe Adress-ID (Typ 2)
+|
+
+|Gelangensbestätigung (Typ 3)
+|
+
+|Telefon (Typ 4)
+|
+
+|E-Mail (Typ 5)
+|
+
+|Postnummer (Typ 6)
+|
+
+|Personennummer (Typ 7)
+|
+
+|FSK (Typ 8)
+|
+
+|Geburtstag (Typ 9)
+|
+
+|Titel (Typ 11)
+|
+
+|Ansprechpartner (Typ 12)
+|
+
+|====
+
+
+[#900]
+=== Firma
+
+Für den Import von Firmendaten stehen die in <<tabelle-zuordnungsfelder-firma>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-firma]]
+.Felder für den Import von Firmendaten
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Firma-ID
+|ID der Firma
+
+|Nummer
+|Zusätzliche Nummer für die Firma. Diese Nummer kann selbst vergeben werden. Maximale Zeichenlänge: 128.
+
+|Firmenname*
+|Das ist ein Pflichtfeld.
+
+|Steuer-ID
+|Umsatzsteueridentifikationsnummer der Firma
+
+|Valuta
+|Valuta der Firma
+
+|Skonto Tage
+|Skontofrist der Firma
+
+|Rabattsatz
+|Skontosatz der Firma
+
+|Zahlungsziel
+|Zahlungsziel der Firma
+
+|Handelsvertreter-ID
+|ID des Handelsvertreters
+
+|Eigner-ID
+|ID des Eigners
+
+|Lieferzeit
+|Lieferzeit in Tagen für Typ *Lieferant*
+
+|Mindestbestellwert
+|Mindestbestellwert in der Systemwährung für Typ *Lieferant*
+
+|====
+
+[#1000]
+=== Handelsvertreter
+
+Für den Import von Handelsvertreterdaten stehen die in <<tabelle-zuordnungsfelder-handelsvertreter>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-handelsvertreter]]
+.Felder für den Import von Handelsvertreterdaten
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Region-ID
+|ID der Region
+
+|PLZ-Bereich
+|PLZ-Bereich, in dem der Handelsvertreter tätig ist
+
+|Länder-ID
+|ID des Landes
+
+|====
+
+[#1100]
+=== Erlaubte Zahlungsarten
+
+Für den Import von Zahlungsarten, die für den Kontakt erlaubt sind, stehen die in <<tabelle-zuordnungsfelder-erlaubte-zahlungsarten>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[tabelle-zuordnungsfelder-erlaubte-zahlungsarten]]
+.Felder für den Import von erlaubten Zahlungsarten
+[cols="1,2"]
+|====
+|Zuordnungsfeld |Erläuterung
+
+|Lastschrift erlauben
+|Zahlungsart "Lastschrift" für den Kontakt erlauben. Die Zahlungsart muss im Menü *System » Aufträge » Zahlung » Zahlungsarten* aktiviert sein. +
+Mögliche Werte: +
+0 = nicht erlauben +
+1 = erlauben
+
+|Rechnung erlauben
+|Zahlungsart "Rechnung" für den Kontakt erlauben. Die Zahlungsart muss im Menü *System » Aufträge » Zahlung » Zahlungsarten* aktiviert sein. +
+Mögliche Werte: +
+0 = nicht erlauben +
+1 = erlauben
+
+|====
+
+[#2000]
+== Pflichtwerte für Sync-Aktionen von Kontakten, Firmen und Adressen
+
+<<tabelle-pflichtwerte-sync-aktionen-kontakte>> listet die Pflichtwerte für die Sync-Aktionen von Kontakten, Firmen und Adressen auf.
+
+[[tabelle-pflichtwerte-sync-aktionen-kontakte]]
 .Pflichtwerte für Sync-Aktionen von Kontakten, Firmen und Adressen
 [cols="1,2"]
 |====
@@ -56,6 +607,16 @@ a|
 a|
 * Kontakt-ID
 * zu ändernde Felder
+2+|*Firma*
+
+|Firma erstellen
+a|
+* Firmenname
+
+|Firma aktualisieren
+a|
+* Firmenname
+
 
 2+|*Adresse*
 
@@ -85,15 +646,6 @@ a|
 * Kontakt-ID
 * zu ändernde Felder
 
-2+|*Firma*
-
-|Firma erstellen
-a|
-* Firmenname
-
-|Firma aktualisieren
-a|
-* Firmenname
 
 2+|*Handelsvertreter*
 
