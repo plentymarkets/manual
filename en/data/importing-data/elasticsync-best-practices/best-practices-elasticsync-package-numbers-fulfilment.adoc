@@ -1,15 +1,13 @@
-= Package numbers and fulfilment
+= Importing package numbers from shipping service providers
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, import, orders, best practice, automated, package number, fulfilment
+:keywords: ElasticSync, Import, orders, Best Practice, automated, package numbers, shipping service provider
 :position: 110
-:url: data/importing-data/elasticsync-best-practices/best-practices-elasticsync-package-numbers-fulfillment
 
-== Best Practice: Importing package numbers from fulfilment service providers
+[#import-package-numbers]
+== Importing package numbers from shipping service providers
 
-This chapter describes how you can use *ElasticSync* to import package numbers for orders that are processed by your fulfilment service providers into your plentymarkets system.
-
-It makes sense to use a CSV file containing the order ID as well as the respective package number as a source file. Your fulfilment service provider usually provides you with such a file.
+This chapter describes how you can use *ElasticSync* to import package numbers for orders that are processed by your shipping service providers into your plentymarkets system. Usually, the shipping service provider provides a .csv or txt file which contains the order ID and the package number.
 
 === Creating the sync in ElasticSync
 
@@ -18,15 +16,81 @@ To import the package numbers, go to *Data » ElasticSync* and create a new sync
 [TIP]
 .Creating a new sync
 ====
-To ensure effective cooperation with your fulfilment service provider, we recommend that you create a separate sync for importing package numbers and only use this sync for this purpose. If the fields described below are added to an existing sync, wrong matching and malfunctions are likely to occur.
+To ensure effective cooperation with your shipping service provider, we recommend that you create a separate sync for importing package numbers and only use this sync for this purpose. If the fields described below are added to an existing sync, wrong mapping and malfunctions are likely to occur.
 ====
 
 * It is mandatory that the matching is carried out via the *Order ID*. It is not necessary to add further matching fields.
 
-* Add a new *Mapping* for the package number. Select the mapping field *Package number* as well as the option *Standard package*.
+* Add a new *Mapping* for the package number. Select the mapping field *Package number* as well as an option for the *Standard package*.
 
-* Use the *Edit* function within the *Standard package* mapping to select the name of the column whose values should be imported from the source file.
+* Within the *Standard package* mapping, select the name of the column whose values should be imported from the source file.
+
+* In the *Settings* area, select the *Source* that you use to import the file from the shipping service provider.
 
 * *Save* the settings.
 
-After carrying out and saving the settings, go to *Sync » Mapping* and test the sync. Once the *package number* has been successfully imported, it is displayed in the *Settings* tab of the respective order.
+After carrying out and saving the settings, go to *Sync » Matching* and test the sync. Once the *package number* has been successfully imported. it is displayed in the *Settings* tab of the respective order.
+
+[#import-sync-file-template]
+== Importing the sync file template
+
+To make it easier for you, we prepared a sync template for the package number import for you. You can simply import the sync file in the *Data » ElasticSync* menu.
+
+[#download-sync-file-template]
+=== Downloading the sync file template
+
+Download the sync file by clicking on the following link: link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/Sync-Datei_Paketnummern.json[Download sync file^].
+
+Please read the chapter <<data/importing-data/ElasticSync#1640, Exporting and importing a sync>> on the <<data/importing-data/ElasticSync#, Importing data with ElasticSync>> page of the manual. In this chapter, it is described how to import a sync file.
+
+Pay attention to the following information:
+
+* During import, you will receive an error message that the client deviates from your client. This is why we created the sync file in our test system. You can ignore this error message.
+* After you have imported the sync, click on *Search* in the overview and open the sync.
+
+[#upload-csv-file-shipping-service-provider]
+=== Uploading the CSV file of the shipping service provider
+
+Now open the sync and upload the CSV file of the shipping service provider in the *Source* area.
+
+.Data source
+image::data/importing-data/assets/BP-package-numbers-source.png[]
+
+*_Note:_* Currently, it is only possible to manually upload CSV files. If you want to upload .txt files, you have to upload them to a webspace.
+
+*_Important:_* The setting regarding the *header* is decisive. Before you import the CSV file, open it and check whether the file contains column headers. If a header is contained, you have to place a checkmark next to the option *Header row included*.
+
+.Header row included?
+image::data/importing-data/assets/BP-package-numbers-header.png[]
+
+[.subhead]
+Possible scenarios for importing with and without header:
+
+* If the file contained a header, but you do not place a checkmark, an error message would appear when matching the package numbers.
+
+* If the file did not contain a header, but you place a checkmark, the first order would be ignored since the matching would take place starting from the second line only.
+
+[#automatically-matching-csv-file]
+=== Automatically matching the CSV file
+
+Some shipping service providers upload the file with the package numbers to an FTP server. Instead of manually uploading the file, select *FTP* as source and select an *interval*. By means of this interval, the sync will be automatically carried out.
+
+And other shipping service providers save the file on an FTP server.
+
+The login details of the FTP server as well as further possibilities regarding the data transfer can be obtained from your shipping service provider.
+
+[#matching-order-id]
+=== Matching of the order ID
+
+As described above, the matching is only carried out via the order ID. It is required to select the column in the CSV file of your shipping service provider in which the order ID is contained. This column has to be selected in the *Matching* area of the sync. By doing so, errors can be avoided.
+
+.Column of the order ID
+image::data/importing-data/assets/BP-package-numbers-column-orderid.png[]
+
+[#select-shipping-package]
+=== Selecting the shipping package
+
+In this sync, you have to select the target of the imported package numbers in order that these numbers are saved in the shipping package. Select the shipping package from the drop-down list in order that the package numbers are assigned to this shipping package.
+
+.Selecting the shipping package
+image::data/importing-data/assets/BP-package-numbers-shipping-package.png[]
