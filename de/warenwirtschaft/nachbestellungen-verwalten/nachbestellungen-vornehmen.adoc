@@ -14,6 +14,7 @@ Eine Nachbestellung gliedert sich in folgende Arbeitsschritte:
 * <<#800, Nachbestellung anlegen>>
 * <<#1100, Auftragspositionen hinzufügen>>
 * <<#1200, Auftragspositionen bearbeiten>>
+* <<#1250, Weitere Informatinen hinterlegen>>
 * <<#1300, Nachbestellung auslösen und übermitteln>>
 * <<#1400, Waren einbuchen>>
 * <<#1500, Nachbestellung abschließen>>
@@ -317,13 +318,101 @@ Im Feld *Einkaufspreis* kannst du den voreingetragenen Einkaufspreis ändern, fa
 .Einkaufspreis für Varianten bearbeiten
 ====
 Das Bearbeiten des Einkaufspreises kann Auswirkungen auf deine im System gespeicherten Preise haben.
-Ist im Menü *System » Systemeinstellungen » Waren » Warenbestand » Wareineingang* für den *Einkaufspreis* eine der Optionen *Einkaufspreis auf Variante übertragen* oder *Einkaufspreis auf Variante und Lieferant übertragen* aktiviert, wird der an der Variante hinterlegte Einkaufspreis durch deine Eingabe während der Nachbestellung überschrieben. Weitere Informationen dazu findest du auf der Handbuchseite <<warenwirtschaft/wareneingaenge-verwalten#300, Wareneingänge verwalten>>.
+Ist im Menü *System » Systemeinstellungen » Waren » Warenbestand » Wareineingang* für den *Einkaufspreis* eine der Optionen *Einkaufspreis auf Variante übertragen* oder *Einkaufspreis auf Variante und Lieferant übertragen* aktiviert, wird der an der Variante hinterlegte Einkaufspreis durch deine Eingabe während der Nachbestellung überschrieben. Genauere Informationen dazu findest du auf der Handbuchseite <<warenwirtschaft/wareneingaenge-verwalten#300, Wareneingänge verwalten>>.
 ====
 
-Hast du alle notwendigen Änderungen an den Auftragspositionen vorgenommen, drücke auf *Speichern*.
+Hast du alle notwendigen Änderungen an den Auftragspositionen vorgenommen, drücke im Bereich *Warenkorb* auf *Speichern*.
+
+[#1250]
+== Weitere Informationen hinterlegen
+Der Bereich *Details* bietet dir die Möglichkeit, zur besseren Übersicht weitere Informationen an der Nachbestellung zu hinterlegen. <<tabelle-weitere-informationen-nachbestellung>> beschreibt die möglichen Informationen.
+
+[[tabelle-weitere-informationen-nachbestellung]]
+.Weitere Informationen für die Nachbestellung
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Lieferdatum*
+|Manuell das Lieferdatum wählen, soweit es vom Händler mitgeteilt wurde. Alternativ über die Funktion *Lieferdatum ermitteln* nutzen. Das System berechnet dann auf Basis der *Lieferzeit*, die im Tab *Lieferant* der Varianten hinterlegt ist, das voraussichtliche Lieferdatum. Weitere Informationen zum Hinterlegen der Lieferzeit an der Variante findest du auf der Handbuchseite <<artikel/artikel-verwalten#180, Artikel verwalten>>.
+
+|*Händlerzeichen*
+|Das zum Lieferanten gehörende Händlerzeichen eingeben.
+
+|*Eigner*
+|Benutzer auswählen, der als Eigner der Nachbestellung festgelegt werden soll. Alternativ werden hier, falls festgelegt, der <<#200, Standard-Eigner>> angezeigt.
+
+|*Währung*
+|Standardmäßig ist in diesem Feld die Systemwährung voreingestellt. Bei Bedarf eine abweichende *Währung* des Lieferanten plus den geltenden *Wechselkurs* für die gewählte Währung eingeben. Oben im Bereich *Details* der Nachbestellung wird dann der aktuell berechnete *Nettowarenwert* angezeigt.
+
+|====
 
 [#1300]
 == Nachbestellung auslösen und übermitteln
+Nachdem du alle nachzubestellenden Varianten zur Nachbestellung hinzugefügt hast, setzt du das Bestelldatum. Klicke dazu auf den Button *Bestellung auslösen* im Bereich *Details*.
+
+Nach dem Auslösen der Nachbestellung musst du noch deine Nachbestellung an den Lieferanten übermitteln. Dazu erstellst du den Bestellschein in Form des Dokuments *Nachbestellung*. Im Kapitel <<#600, Versand der Nachbestellung vorbereiten>> wurde bereits beschrieben, wie du die Dokumentenvorlage einrichtest und das Dokument automatisch an deinen Lieferanten übermittelst. Im Folgenden findest du jeweils eine Anleitung zum manuellen und zum automatisierten Erzeugen des Dokuments.
+
+[WARNING]
+.Auftragspositionen nicht mehr editierbar
+====
+Sobald du das Bestelldatum gesetzt hast, kannst du in der Nachbestellung keine Auftragspositionen mehr hinzufügen oder löschen. Setze das Datum also erst nach sorgfältiger Prüfung!
+====
+
+[#1330]
+=== Bestellschein manuell erstellen
+Gehe wie im Folgenden beschrieben vor, um den Bestellschein manuell zu erzeugen. Je nach Workflow kannst du auch einen Bestellschein hinterlegen, falls dir das Dokument vom Lieferanten übermittelt wurde.
+
+[.instruction]
+Bestellschein manuell erzeugen:
+
+. Öffne den Bereich *Dokumente*.
+. Klicke auf *Bestellschein hinzufügen*.
+. Wähle die Option *Lieferschein erzeugen*. +
+*_Alternativ_*: Wähle die Option *Lieferschein hochladen*, um einen vom Lieferanten erstellten Bestellschein hochzuladen. +
+→ Der Bestellschein wird erstellt und ist im Bereich *Dokumente* verfügbar.
+. Klicke auf *Aktionen*, um das Dokument herunterzuladen oder zu löschen.
+
+[#1350]
+== Bestellschein automatisch erzeugen
+Richte die folgende Ereignisaktion ein, um den Bestellschein automatisch zu erzeugen, sobald du das Bestelldatum gelöscht hast.
+
+[.collapseBox]
+.Erzeugen des Bestellscheins automatisieren:
+--
+. Öffne das Menü **System » Systemeinstellungen » Waren » Bestellwesen » Ereignisse**.
+. Klicke auf **Ereignisaktion hinzufügen**.  +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Gib einen Namen ein.
+. Wähle das **Ereignis** gemäß <<tabelle-ereignisaktion-bestellschein-erzeugen>>.
+. *Speichere* die Einstellungen.
+. Nimm die Einstellungen gemäß <<tabelle-ereignisaktion-bestellschein-erzeugen>> vor.
+. Setze ein Häkchen bei **Aktiv**.
+. *Speichere* die Einstellungen.
+--
+[[tabelle-ereignisaktion-bestellschein-erzeugen]]
+.Ereignisaktion zum automatischen Erzeugen des Bestellscheins
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+|*Ereignis*
+|*Bestellwesen > Bestellung ausgelöst*
+|
+
+|*Filter*
+|*Auftragstyp > Bestellung, Typ Nachbestellung*
+
+|*Aktion*
+|*Bestellwesen > Nachbestellungsdokument erzeugen*
+|
+|====
+
+[TIP]
+.Bestellschein automatisch an den Lieferanten senden
+====
+Möchtest du im Anschluss an das automatische Erzeugen des Bestellscheins diesen auch automatisiert an den Lieferanten senden, richte zusätzlich die im Kapitel <<#600, Versand der Nachbestellung vorbereiten>> beschriebene Ereignisaktion ein.
+====
 
 [#1400]
 == Waren einbuchen
