@@ -1,0 +1,604 @@
+= New: Working with reorders
+:lang: en
+include::{includedir}/_header.adoc[]
+:description: Learn how to work with the new reorder functionality in plentymarkets.
+:keywords: Reorder, reordering goods
+:position: 10
+:url:en/stock-management/managing-reorders/working-with-reorders
+
+[IMPORTANT]
+.New beta version of the reorder
+====
+This manual page describes how to reorder goods and manage reorders using the beta version of the new reorder functionality. This functionality will be implemented in all plentymarkets systems during the upcoming weeks. Until then, you can find further information on the upcoming release in this link:https://forum.plentymarkets.com/t/ankuendigung-releaseprozess-neue-nachbestellung/542252[forum post^] (Last update: 24-May-2019).
+====
+
+In the *Stock » Reorder management » Purchase order* menu, you do not only carry out <<stock-management/working-with-redistributions#, redistributions>>, but you also create reorders. Reorders are used to reorder goods from your suppliers.
+
+A reorder consists of the following steps:
+
+* <<#200, Identifying variations for the reorder>>
+* <<#300, Creating a reorder>>
+* <<#400, Adding order items>>
+* <<#500, Editing order items>>
+* <<#600, Submitting additional information>>
+* <<#700, Finishing and sending a reorder>>
+* <<#800, Using the backlog list>>
+* <<#900, Booking items in>>
+* <<#1000, Finishing a reorder>>
+
+We recommend carrying out some preparatory settings before working with reorders.
+
+[#100]
+== Preparatory settings
+The following chapters describe some preparatory settings. Carry them out before working with reorders for the first time. Usually, these settings only have to be made once. Set up the reorder level and the quantity suggestion for reorders to determine when items should be reordered. Create new order statuses especially for reorders and create tags to maintain a good overview. In addition, setting up a document for the *reorder* document is mandatory.
+
+[#110]
+=== Setting up the reorder level and quantity suggestion
+
+Prior to creating your first reorder, you should carry out the settings for the reorder level and the sales period. This way, you determine at which stock level variations are reordered.
+
+[.instruction]
+Setting up the reorder level and quantity suggestion:
+
+. Go to *System » System settings » Stock » Reorder management » Reorder » Settings*.
+. Carry out the settings according to the information provided in <table-reorder-level-quantity-suggestion-reorder>.
+. *Save* the settings.
+
+[[table-reorder-level-quantity-suggestion-reorder]]
+.Preparatory settings for reorders
+[cols="1,3"]
+|====
+
+|Setting |Explanation
+
+|*Default status*
+|Select a default status that should be preselected when creating a reorder. For further information on how to set up specific statuses for reorders, refer to the chapter <<#120, Creating statuses for reorders>>.
+
+|*Default owner*
+|Select one of the available options. +
+*Active owner preselected*: The user creating the reorder in the plentymarkets back end is preselected in the *Owner* field. +
+*No owner preselected*: If you select this option, no *Owner* is preselected when creating a new redistribution.
+
+|*Sales period*
+|Select a period of time. The sales period defines which period of time will be used to calculate the average consumption of the variation. The average consumption is relevant for suggesting a reorder quantity for a variation. The quantity suggestion for individual variations is displayed in the *Stock » Stocks* menu.
+
+|*Default value for reorder level/order quantity*
+a|This setting determines the way in which the order quantity for the quantity suggestion for the reorder is calculated. +
+You can choose between: +
+*Reorder level - net stock - ordered quantity* or +
+*(Reorder level - net stock - ordered quantity) \+ (Average consumption * (Replacement time + Stock turnover (in days))* +
+ +
+Parameters used for suggesting a reorder quantity:
+
+* *Reorder level* = the quantity at which a reorder should be placed. You can select a <<stock-management/managing-reorders#500, static or dynamic reorder level>>.
+* *Net stock* = the quantity of stock that can be sold.
+* *Ordered quantity* = the quantity that you already ordered from your supplier, but that is still to be delivered.
+* *Average consumption* = the average quantity consumed or or sold per day. The sales period that you select defines the period of time that will be used to calculate the average consumption per day.
+* *Replacement time* = the time needed by a supplier to deliver the ordered variations. The number of days required by the supplier to deliver a variation needs to be entered in the *Supplier* tab of a variation.
+* *Stock turnover (in days)* = The stock turnover (in days) saved. The stock turnover (in days) represents the number of days that you want your stock to last. The stock turnover (in days) is saved for each variation per warehouse in the *Warehouse* tab of the variation.
+
+|====
+
+[#120]
+=== Creating statuses for reorders
+A certain number of statuses is saved in your plentymarkets system by default. Those default order statuses can also be used for reorders. However, you can also create a number of individual statuses for particular uses. Creating new order statuses is described in detail in the respective chapter on the <<orders/managing-orders#1200, Managing orders>> page of the manual.
+
+[TIP]
+.Creating own statuses for reorders
+====
+We recommend setting up separate statuses that you use exlusively for working with the order type *reorder*. Make sure that the statuses can be distinguished from the statuses used for other order types by assigning different names.
+====
+
+[#130]
+=== Creating tags for reorders
+Tags are keywords that you create centrally before you can use them to mark data in different areas of your plentymarkets system. If you want to use tags with reorders, you need to create those tags beforehand in the *System » System settings » Settings » Tags* menu. To do so, follow the instructions on the <<basics/working-with-plentymarkets/tags#, Managing tags>> page of the manual.
+
+[#140]
+=== Setting up the reorder document
+The *reorder document* is a specific document that serves as an order form for the reorder. This document contains information on all variations included in the reorder. You as the seller send it to your supplier.
+
+[WARNING]
+.Document template must be set up
+====
+The document template for the *reorder document* has to be set up before creating such a document for the first time. As long as no document template has been set up, the reorder document cannot be created.
+====
+
+The following instructions describe how to transfer the default document template saved in your plentymarkets system.
+
+[.instruction]
+Setting up a template for the *reorder document*:
+
+. Go to *System » System settings » Stock » Reorder management » Reorder » Documents » Reorder*.
+. Open the *transfer* tab.
+. Select the language from the drop-down list above the tab title.
+. In the *Apply settings from default document template* area, click on *Accept*. +
+→ The default document template is applied to the document.
+
+If you wish to make individual changes to the *Reorder* document, such as displaying your company logo or further information, proceed according to the instructions provided on the <<orders/order-documents#300, order documents>> page of the manual.
+
+[#150]
+=== Preparing to send the reorder document
+After setting up the document template for the reorder document in the previous step, you should carry out the settings for sending the document to make sure that your supplier receives your reorder data. First you need to set up an email template that contains the reorder document attached as PDF.
+
+[.instruction]
+Setting up an email template:
+
+. Go to *System » System settings » Client » Select client » Email » Templates*.
+. Click on *New email template*.
+. Enter a name, for example "Reorder document to supplier”.
+. Select the owner or owners for whom the email template should be available.
+. *Save* the settings.
+. Select the option *Reorder (PDF)* from the drop-down menu *PDF attachment*.
+. Click on the *Email message* tab.
+. Enter a subject.
+. Enter the text that should be included in the email template.
+. *Save* the settings.
+
+In the next step, you can automate sending the reorder document to your supplier. This way, the reorder document is automatically sent to your supplier after it has been generated.
+
+Set up the following event procedure.
+
+[.collapseBox]
+.Automatically sending the reorder document to the supplier:
+--
+. Go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure*.  +
+→ The *Create new event procedure* window opens.
+. Enter a name.
+. Select the *event* listed in <<table-event-procedure-reorder-document-to-supplier>>.
+. *Save* the settings.
+. Carry out the settings as desired. Pay attention to the information given in table <<table-event-procedure-reorder-document-to-supplier>>.
+. Place a check mark next to the option *Active*.
+. *Save* the settings.
+--
+[[table-event-procedure-reorder-document-to-supplier]]
+.Event procedure for automatically sending the reorder document to the supplier
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|*Event*
+|*Purchase order > Reorder document generated*
+|
+
+|*Filter *
+|*Order type > Purchase order, type reorder*
+
+|*Procedure*
+|*Send email > Customized template e.g. "Reorder to supplier"*
+|
+|====
+
+[#160]
+=== Defining the reorder level of a variation
+If you wish to be notified as soon as it is time to reorder variations, you should set up a reorder level for each variation in your plentymarkets system. The reorder level represents the quantity that is left in stock at which a variation should be reordered.
+
+[TIP]
+.Set up warehouses to enter the reorder level
+====
+You can only enter a reorder level if you have assigned a warehouse to the variation. If you have not yet assigned a warehouse, do so beforehand.
+====
+
+[.instruction]
+Entering a static reorder level:
+
+. Go to *Item » Edit item » Open item » Open variation » Edit variation » Tab: Warehouse*.
+. Enter a quantity for the *reorder level*.
+. *Save* the settings.
+
+[TIP]
+.Displaying variations below the reorder level on the dashboard of your system
+====
+You can add an element that shows you variations that are below the reorder level on the dashboard of your system. To do so, add the element *Items below reorder level*. By clicking on the number of variations, you can open the *Stock » Stocks* menu and filter the variations that are below the reorder level.
+====
+
+[#dynamicReorderLevel.subhead]
+Status of the dynamic reorder level
+
+For each warehouse, you can decide whether you would like to use the dynamic reorder level or not. If you use the dynamic reorder level, your system calculates the dynamic reorder level automatically every night. This calculated reorder level is not visible in your system yet, meaning that the actual value is not displayed to you. However, if you use the dynamic reorder level, the general reorder level is based on this calculated value. The values is displayed to you e.g. in the stock overview. This way, you can identify the variations that have to be reordered in the stock overview.
+
+[IMPORTANT]
+.Do not save a static reorder level while using the dynamic reorder level
+====
+If you use the dynamic reorder level, you must not enter a static reorder level manually. Leave the reorder level for the variations in the warehouse on 0. If a reorder level bigger than 0 is saved manually, the calculation of the dynamic reorder level is not carried out.
+====
+
+The dynamic reorder level is calculated each night using the following formula:
+
+latexmath:[\\mbox{Dynamic reorder level} = {(\\mbox{Ø Sales period} \\cdot \\mbox{Stock turnover}) \+ (\\mbox{Ø Sales period} \\cdot \\mbox{Shortest delivery period})}]
+
+Explanation of the parameters:
+
+* Ø Sales period = Average quantity of items sold
+* Shortest delivery period = Shortest delivery period, regardless of which supplier
+
+The difference to the dynamic reorder level (RLΔ) is carried out by the system and is calculated as follows:
+
+latexmath:[\\mbox{RLΔ} = {(\\mbox{Dynamic reorder level} - (\\mbox{Net stock} \+ (\\mbox{reordered quantity})}]
+
+Set up the dynamic reorder level for each warehouse in the <<stock-management/setting-up-a-warehouse#300, warehouse settings>>.
+
+[#170]
+=== Defining the minimum order quantity of a variation
+
+The minimum order quantity is the quantity that you need to order as a minimum from your supplier. The suggested reorder quantity will be at least as hight as the minimum entered here. However, you will only get a suggestion if the reorder level has been reached.
+
+[TIP]
+.Assign a supplier to enter a minimum order quantity
+====
+You can only enter a minimum order quantity if you have assigned a supplier to the variation. If you have not yet assigned a supplier, do so now.
+====
+
+[.instruction]
+Defining the minimum order quantity of a variation:
+
+. Go to *Item » Edit item » Open item » Edit variation » Tab: Supplier*.
+. Enter a minimum order quantity.
+. *Save* the settings.
+
+The reorder suggestion remains on 0 if you do not enter a reorder level.
+
+[#200]
+== Identifying variations for the reorder
+To manage your stocks effectively, it is important to identify variations that have to be reordered in time before you run out of them. This way, you avoid running out of stocks and thus having to inform your customers of longer delivery periods.
+
+The variations that have to be reordered are most easily identified by checking them for their reorder levels. If you have not set up reorder levels, you can alternatively filter variations by their net stock.
+
+[.instruction]
+Identifying variations for the reorder:
+
+. Go to Stock » Stocks.
+. Select the option *Reorder level reached/below* for the *limitation* filter. +
+*__Or*: Select the option *Negative net stock or net stock equals 0* if you have not set up reorder levels.
+. Select a warehouse (optional).
+. Click on *Search*. +
+→ A list of variations that should be reordered is displayed.
+
+[#300]
+== Creating a reorder
+Depending on your needs, your plentymarkets system offers you different methods to create reorders. These methods are briefly described in the following chapters.
+
+[#310]
+=== Reordering variations below reorder level
+This chapter describes how you create a reorder for variations that are below reorder level. The <<#200, Identifying variations for the reorder>> chapter already explained how to identify which variations have reached the determined reorder level or are below it. The following steps have to be carried out after filtering for the variations mentioned above.
+
+[.instruction]
+Creating a reorder:
+
+. Go to *Stock » Stocks*.
+. Carry out a search for variations that have reached or are below reorder level according to the explanations provided in <<#200, Identifying variations for the reorder>>.  +
+. Click on *Accept suggestion* to use the suggested reorder quantity. +
+→ Manually enter your desired quantities, if necessary.
+. Click on *Create reorder*. +
+→  The reorder opens.
+
+[#320]
+=== Reordering variations per warehouse and supplier
+It may be necessary to create a reorder for a particular warehouse or supplier. To do so, proceed as described below.
+
+[.instruction]
+Reordering variations per warehouse and supplier:
+
+. Go to *Stock » Reorder management » Purchase order*.
+. Click on the *green Plus* icon.
+. Click on *New reorder*.
+. Select the supplier from the drop-down list in the *Supplier* field.
+. Select the warehouse to which the reorder should be delivered in the *Warehouse* field.
+. *_Optional:_* Select one or several *Tags* to mark the new reorder.
+. *_Optional:_* Select an *Owner*, meaning the user responsible for the reorder.
+. *Save* the reorder.
+
+Follow the steps described in chapters <<#400, Adding order items>> to <<#1000, Finishing a redistribution>> to complete the reorder process.
+
+[#330]
+=== Reordering variations from a specific order
+It is also possible to create a reorder for one or several variations from an existing order. To do so, proceed as described below.
+
+[.instruction]
+Reordering variations from a specific order:
+
+. Opens the *Orders » Edit orders* menu.
+. Open the order for which you wish to reorder variations.
+. Open the order's *Reorder* tab.
+. Click on *Reorder all items*. +
+*_Or_*: If not all order items should be reordered, select the order items that you wish to reorder and click on *Reorder selected items*. +
+→  The reorder opens.
+
+Follow the steps described in chapters <<#400, Adding order items>> to <<#1000, Finishing a redistribution>> to complete the reorder process.
+
+[TIP]
+.Reorder is assigned to the order
+====
+When reordering variations from an existing order as described above, the reordered stock is directly assigned to the corresponding order. The respective variations are marked with a shopping cart icon in the *Order items*area of the corresponding reorder. By clicking on the icon, the ID of the main order is displayed to you and the *Overview* tab of the main order is opened.
+====
+
+[#340]
+=== Reordering individual variations
+This method is useful if you only need to reorder one variation of a specific item. To do so, proceed as described below.
+
+[.instruction]
+Reordering individual variations:
+
+. Open the *Item » Edit item* menu.
+. Open the item that you wish to reorder.
+. Open the variation that you wish to reorder.
+. Click on the *Stock* tab of the variation.
+. Open the *Stock* sub-tab.
+. Click on *Accept suggestion* or enter a *Quantity*.
+. Click on *Create reorder*. +
+→  The reorder opens.
+
+Follow the steps described in chapters <<#400, Adding order items>> to <<#1000, Finishing a redistribution>> to complete the reorder process.
+
+[#400]
+== Adding order items
+In the previous chapters, several methods for creating a reorder in your plentymarkets system have been described. Now, you can enter further variations to the reorder by adding order items.
+
+[.instruction]
+Adding order items:
+
+. In the *Order items* area, click on *Add*. +
+→ A menu for adding order items opens.
+. Select one of the filters described in <<table-filter-item-search-reorder>> to search for order items.
+. Select a search term fitting the search filter in the *Item search* field.
+. Click on *Search*. +
+. Enter the item quantity that should be reordered in the *Quantity* column of the variation.
+. Click on the *Cart* icon. +
+→ The variations are added to the cart.
+. Repeat the steps described above until all variations that should be reordered are included in the cart in the desired quantities.
+. In the *Cart* area, click on *Save*. +
+→ The cart is saved. +
+→  The reorder opens.
+
+[[table-filter-item-search-reorder]]
+.Available filters in the item search
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Item ID*
+|Enter the ID to search for the item with this ID.
+
+|*Variation ID*
+|Enter the ID to search for the variation with this ID.
+
+|*Variation number*
+|Enter the variation number to search for the variation with this number.
+
+|*Barcode*
+|Enter the barcode to search for the variation with this barcode.
+
+|*Item name*
+|Enter the item data to search for the item with this name.
+
+|*Supplier number*
+|Enter the number of the supplier to search for items with this supplier number.
+
+|*Warehouse*
+|Enter the name of the warehouse to search for items linked to this warehouse.
+
+|====
+
+[#500]
+== Editing order items
+After adding the desired variations to the cart, you can edit them in the *Order items* area. For example, a *Delete* option which you can use to remove variations from the reorder is displayed for each variation.
+In the *Purchase price* field, you can change the pre-entered purchase price in case your supplier has agreed to a change in price on short notice.
+
+[IMPORTANT]
+.Editing the purchase price for variations
+====
+Editing the purchase price may affect the prices for variations already saved in your system.
+If one of the options *Save purchase price in variation data* or *Save purchase price in variation and supplier data* is activated for the *Purchase price* in the *System » System settings » Stock » Stock » Incoming items* menu, the previously saved purchase price for the variation is overwritten by your entry during the reorder. For more detailed information on these settings, refer to the <<stock-management/stock-management/new-incoming-items#300, Managing incoming items>> page of the manual.
+====
+
+Once you have made all necessary changes to the order items, click on *Save* in the *Cart* area.
+
+[#600]
+== Submitting additional information
+The *Details* area of the reorder offers you the possibility to submit additional information for a reorder. <<table-additional-information-reorder>> describes the possible information.
+
+[[table-additional-information-reorder]]
+.Additional information for a reorder
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Delivery date*
+|Manually select the delivery date in case your supplier has informed you about it. Alternatively, use the function *Calculate delivery date*. The system then calculates the estimated delivery date on the basis of the *Delivery time* saved in the *Supplier tab* of the variations included in the reorder. For more information on saving the delivery time for a variation, refer to the <<item/managing-items#180, Managing items>> page of the manual.
+
+|*Dealer sign*
+|Enter the dealer sign as communicated by the supplier.
+
+|*Owner*
+|Select a user who should be determined as the person responsible for the reorder. Alternatively, the <<#200, default owner>> is displayed in this field in case you have made the corresponding settings.
+
+|*Currency*
+|The system currency is displayed in this field by default. If needed, enter a different *Currency* for the supplier as well as the *Exchange rate* that is currently valid for the currency. The *Details* area will then include a display of the calculated *Net order value
+
+|====
+
+[#700]
+== Finishing and sending a reorder
+After adding all variations that should be reordered to the reorder, you set the order date. To do so, click on *Initiate order* in the *Details* area.
+
+After initiating the order, you still need to send the reorder to your supplier. To do so, generate the *Reorder* document. The chapter on <<#150, Preparing to send the reorder document>> already explained how to set up the document template and how to automatically send the document to your supplier. In the following, you find instructions on how to generate the document manually and automatically.
+
+[WARNING]
+.Order items cannot be edited any more
+====
+As soon as you have set the order date, you cannot add any more order items to the reorder or delete them. Thus, only set the order date after carefully checking whether the reorder is complete!
+====
+
+[#710]
+=== Manually generating a reorder document
+Proceed as described below to manually generate a reorder document. Depending on your individual workflow, you can also upload a document in case your supplier has sent it to you.
+
+[.instruction]
+Manually creating a reorder document:
+
+. Open the *Documents* area.
+. Click on *Add document*.
+. Select the option *Create reorder document*. +
+*_Or_*: Select the option *Upload reorder document* to upload a delivery note generated by and sent to you by your supplier. +
+→ The reorder document is generated and is available in the *Documents* area.
+. Click on *Procedures* to download or delete the document.
+
+[#720]
+=== Automatically generating a reorder document
+Set up the following event procedure to automatically generate the reorder document as soon as you have set the order date.
+
+[.collapseBox]
+.Automate generating the reorder document:
+--
+. Go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure*.  +
+→ The *Create new event procedure* window opens.
+. Enter a name.
+. Select the *event* listed in <<table-event-procedure-generate-reorder-document>>.
+. *Save* the settings.
+. Carry out the settings as desired. Pay attention to the information given in table <<table-event-procedure-generate-reorder-document>>.
+. Place a check mark next to the option *Active*.
+. *Save* the settings.
+--
+[[table-event-procedure-generate-reorder-document]]
+.Event procedure for automatically generating the reorder document
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|*Event*
+|*Purchase order > Purchase order initiated*
+|
+
+|*Filter*
+|*Order type > Purchase order, type reorder*
+|
+
+|*Procedure*
+|*Purchase order > Generate reorder document*
+|
+|====
+
+[TIP]
+.Automatically sending the reorder document to the supplier
+====
+If you wish to automatically send the reorder document after it has been generated, set up the additional event procedure described in the chapter <<#150, Preparing to send the reorder document>>.
+====
+
+[#800]
+== Using the backlog list
+If you have reordered a large quantity of variations or several reorders are pending at the same time, use the backlog list to keep track of all variations that you have reordered, but that have not been delivered yet. These variations are displayed in the *Stock » Reorder management » Backlog list* menu. For further information on the backlog list, refer to the <<stock-management/managing-reorders/managing-backlog-lists#, Managing backlog lists>> page of the manual.
+
+[#900]
+== Booking variations in
+As soon as the reordered variations arrive at your warehouse, they have to be booked in. Depending on whether all variations included in the reorder arrive at once or whether they arrive in separate deliveries, you book in partial quantities or all variations in one step.
+
+[IMPORTANT]
+.Storage location for booking variations in
+====
+If you have not set up separate warehouses and storage locations for your variations in your plentymarkets system, the variations are booked into the Default storage location that exists in your system by default.
+====
+
+[#910]
+=== Booking partial quantities in
+Proceed as described below to book in partial quantities belonging to separate deliveries of the same reorder.
+
+[.instruction]
+Booking partial quantities in:
+
+. Go to *Stock » Reorder management » Purchase order*.
+. Open the reorder for which variations should be booked in.
+. Open the *Order items* area.
+. Enter the quantity of delivered order items in the *Subset* field.
+. Click on *Create selected stock movements*. +
+→ The stock movements are created.
+. Open the *Stock movements* area. The green arrows in the table represent the prepared stock movements.
+. In the *Storage location* column, enter the ID of the storage location into which the order items should be booked.
+. Place a check mark in every line belonging to an item variation that should be booked in.
+. In the *Delivery note number* field, enter the number of the delivery note belonging to the reorder.
+. Click on *Book selected stock movements*. +
+→ The delivered partial quantity is booked into the desired storage locations.
+
+[#920]
+=== Booking all variations in
+Proceed as described below to book in all variations included in the reorder at once.
+
+[.instruction]
+Booking all variations in:
+
+. Go to *Stock » Reorder management » Purchase order*.
+. Open the reorder for which variations should be booked in.
+. Open the *Order items* area.
+. In the *Subset* field, enter the complete quantity of delivered variations.
+. Click on *Create all stock movements*. +
+→ The stock movements are created.
+. Open the *Stock movements* area. The green arrows in the table represent the prepared stock movements.
+. In the *Storage location* column, enter the ID of the storage location into which the order items should be booked.
+. In the *Delivery note number* field, enter the number of the delivery note belonging to the reorder.
+. Click on *Book all stock movements*. +
+→  The complete quantity is booked into the desired storage locations.
+
+[#1000]
+== Finishing a reorder
+As soon as you have received and booked in all variations included in the reorder, you can finish the reorder. To do so, go to the *Details* area of the reorder and click on *Finish reorder*. The current date is set as the finish date and the reorder cannot be edited any more.
+
+[TIP]
+.Unlocking a reorder
+====
+In case you have set the finish date by mistake, unlock the reorder by clicking on the icon once more. This way, the reorder is unlocked and can be edited again.
+====
+
+You should also finish the reorder if it is clear that particular variations included in the reorder will definitely not be delivered to your warehouse, for example due to loss during the delivery process. This way, the undelivered order items will also be removed from the <<stock-management/managing-reorders/managing-backlog-lists#, Backlog list>>.
+
+[#1100]
+== Searching for reorders
+When opening the *Stock » Reorder management » Purchase order* menu, all existing reorders and <<stock-management/working-with-redistributions#, redistributions>> are displayed. You can change the result by changing the filter settings. You can either choose to use more filters or to reset the filters and to get all reorders.
+
+[.instruction]
+Searching for reorders:
+
+. Go to *Stock » Reorder management » Purchase order*. +
+. Select one or several of the filters listed in <<table-reorder-search>> to limit the search results.
+. Click on *Search*.
+
+[[table-reorder-search]]
+.Available filters for searching for reorders
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Order ID*
+|Enter the order ID of the reorder to search for the reorder.
+
+|*Order type*
+|Select the order type *reorder* to restrict the search results to orders of the type *reorder*.
+
+|*Item ID*
+|Enter an item ID to search for reorders containing an item with this ID.
+
+|*Variation ID*
+|Enter a variation ID to search for reorders containing a variation with this ID.
+
+|*Variation number*
+|Enter a variation number to search for reorders containing a variation with this number.
+
+|*Item data*
+|Enter a search term or a numeric value to search for reorders that contain items with the term or number. The following data fields are searched: *Item ID*, *Item number* and *Name*. The descriptive texts such as the item text and the preview text are not searched.
+In addition, set the *Order type* filter to *Reorder*.
+
+|*Status*
+|Select a status from the list. In addition, set the *Order type* filter to the option *Reorder* to search for reorders with this status.
+
+|*Owner*
+|Select an owner from the list. In addition, set the *Order type* filter to the option *Reorder* to search for reorders with this owner.
+
+|*Order date from ... to*
+|Select a start and end date from the calendar. This selection limits the time period to include the order date of the reorder.
+
+|====
+
+[#1200]
+== Automating reorders
+Reorders can be partly automated with the help of the event procedures available in your plentymarkets system. One possibility of automating the generation of the reorder document has already been described in the <<#720, Automatically generating a reorder document>> chapter. In the *System » System settings » Orders » Events* menu, the events, filters and procedures available in the groups named *Purchase order* allow you to automate certain steps of the reorder. +
+
+For more detailed information on setting up event procedures, refer to the <<basics/automation/event-procedures#, Event procedures>> page of the manual. If you are working with event procedures for the first time, pay attention to the information provided on creating event procedures in the chapter <<automation/event-procedures#100, Creating a new event procedure>>.
