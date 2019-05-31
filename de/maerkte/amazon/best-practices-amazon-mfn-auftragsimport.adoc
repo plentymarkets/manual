@@ -1,12 +1,14 @@
 = Best Practice: MFN-Auftragsimport
 :lang: de
+include::{includedir}/_header.adoc[]
 :keywords: Amazon, Auftrag, Import, Händlerversand, MFN
 :position: 50
+:url: maerkte/amazon/best-practices-amazon-mfn-auftragsimport
 
 In diesem Best Practice werden unterschiedliche Lösungswege für Probleme aufgezeigt , welche dazu führen können, dass eure MFN-Aufträge (MFN = merchant fulfillment network, sprich Händlerversand) nicht importiert werden. Dabei gehen wir davon aus, dass in den Amazon-Grundeinstellungen der Auftragsimport bereits aktiviert wurde.
 
-[discrete]
-==== MWS-Registrierung
+[#100]
+== MWS-Registrierung
 
 Die MWS-Registrierung ist dafür zuständig, uns als Entwickler für den Zugriff auf euren Amazon-Account zu autorisieren. Durch die Registrierung wird das Zugriffrecht auch in eurer Seller Central unter *Einstellungen » Benutzerberechtigungen* im Bereich *Amazon MWS Entwicklerberechtigungen* sichtbar. Ist diese Berechtigung nicht vorhanden, können wir weder Daten von Amazon abrufen, noch Daten zu Amazon senden (die Anfragen werden von Amazon blockiert).
 
@@ -18,8 +20,8 @@ Ein weiteres Anzeichen dafür ist die Fehlermeldung: _Error:Access to Reports. (
 
 In unserem <<maerkte/amazon/amazon-einrichten#100, Handbuch>> wird beschrieben, wie ihr die MWS-Registrierung ausführt.
 
-[discrete]
-==== Auth-Token abgelaufen
+[#200]
+== Auth-Token abgelaufen
 
 Der Auth-Token wird bei der MWS-Registrierung generiert. Dieser wird für jeden Abgleich zwischen uns und Amazon verwendet und hängt direkt mit der Berechtigung zusammen. Dieser Token wurde seit geraumer Zeit mit einem Ablaufdatum versehen (letztlich zu eurem Schutz, damit bereits deaktivierte Schnittstellen auch wirklich keinen Zugriff mehr haben, nachdem der Token abgelaufen ist).
 Im Umkehrschluss bedeutet dies, dass der Token auch aktualisiert werden muss. Denn wenn dieser abläuft, ist die Entwicklerberechtigung der MWS-Registrierung außer Kraft gesetzt und es können keine Abgleiche mehr ausgeführt werden.
@@ -31,8 +33,8 @@ Ob der Token abgelaufen ist, erkennt ihr ebenfalls anhand der Entwicklerberechti
 
 Den Auth-Token könnt ihr im Bereich *Amazon MWS Entwicklerberechtigungen* im Seller Central unter *Einstellungen » Benutzerberechtigungen* aktualisieren (das Ablaufdatum wird in der Zukunft gesetzt, somit ist die Berechtigung wieder aktiv).
 
-[discrete]
-==== Zugangsdaten nicht korrekt
+[#300]
+== Zugangsdaten nicht korrekt
 
 Selbstverständlich müssen die Zugangsdaten in den Grundeinstellungen korrekt sein, damit von unserem System aus Kontakt mit eurem Amazon-Konto aufgenommen werden kann.
 
@@ -48,8 +50,8 @@ Der korrekte Token und eure Verkäufer-ID (auch Merchant-ID genannt) ist über d
 Nachdem ihr den Händler-Token in den Amazon-Grundeinstellungen geändert habt, führt bitte einmal *System » Systemeinstellungen » Märkte » Amazon » Datenaustausch » Berichte » Tab: Token-Refresh* aus, damit die Änderung direkt greifen kann.
 ====
 
-[discrete]
-==== Scheduled reports
+[#400]
+== Scheduled reports
 
 Sind die oberen Punkte korrekt konfiguriert, können die Abgleiche ausgeführt werden. Damit Aufträge importiert werden können, muss Amazon Berichte erzeugen, in denen die Aufträge enthalten sind. Diese Berichte werden von vom plentymarkets System abgerufen.
 
@@ -77,8 +79,8 @@ image::maerkte/assets/bp-amazon-mfn-auftragsimport-Lupe.png[Lupe Scheduled Repor
 
 Als Ergebnis seht ihr die bisher auf eurem Amazon-Konto aktivierten Scheduler. Für den MFN-Auftragsimport ist der Report Type *Get Orders Data* relevant und sollte auf 15 Minuten eingestellt sein. Diese Einstellung kann auch die Ursache dafür sein, dass Aufträge erst sehr spät importiert werden (hier sind von täglich bis wöchentlich schon alle Intervalle vorgekommen).
 
-[discrete]
-==== Weitere Fehlermeldung
+[#500]
+== Weitere Fehlermeldung
 
 Bei der Fehlermeldung _The seller does not have an eligible Amazon account to call Amazon MWS._ kann es ebenfalls die Ursache sein, dass keine Berechtigung für den Zugriff von unserem System auf Amazon vorliegt. Dazu einmal wie oben beschrieben die Entwicklerberechtigungen prüfen und wenn nicht vorhanden jene über die MWS-Registrierung hinzufügen.
 Sollte dies nicht helfen, bitte mit Amazon in Kontakt treten (entweder ist euer Seller-Account kein Power-Anbieter und die Amazon MWS-API kann nicht genutzt werden, oder euer Account ist noch nicht komplett freigeschaltet).

@@ -8,9 +8,15 @@ Du willst den neuen Checkout mit seiner Plugin-Fähigkeit und individuellen Anpa
 [NOTE]
 .Das Wichtigste vorab …
 ====
-* Dieses Best Practice beschreibt die Einrichtung des Ceres-Checkouts in ein Callisto-Template. Kopiere dir bitte dein Design und führe keine Anpassungen an deinem aktiven Layout durch.
+* Dieses Best Practice beschreibt die Einrichtung des Ceres-Checkouts in einen Callisto-Webshop. Kopiere dir bitte dein Design und führe keine Anpassungen an deinem *aktiven* Layout durch.
 * Um den Ceres-Checkout zu nutzen, benötigst du neben deinem Callisto-Webshop die aktuellen Versionen der Plugins link:https://marketplace.plentymarkets.com/plugins/templates/Ceres_4697[Ceres^] und link:https://marketplace.plentymarkets.com/plugins/templates/IO_4696[IO^]. Beide findest du im plentyMarketplace. Die Plugins müssen in einer Plugin-Set-Kopie installiert und aktiviert sein.
-* Um deine Zahlungsanbieter und Versanddienstleister im Ceres-Checkout benutzen zu können, musst du die jeweiligen Plugins aus dem link:https://marketplace.plentymarkets.com/plugins/payment[Marketplace] laden und installieren. Bitte beachte, dass es Zahlungsanbieter gibt, die bislang kein Plugin zur Verfügung stellen und auf deren Leistungen du daher mit dem Ceres-Checkout nicht zurückgreifen kannst.
+* Um deine Zahlungsanbieter im Ceres-Checkout benutzen zu können, musst du die jeweiligen Plugins aus dem link:https://marketplace.plentymarkets.com/plugins/payment[Marketplace] laden und installieren. Bitte beachte, dass es Zahlungsanbieter gibt, die bislang kein Plugin zur Verfügung stellen und auf deren Leistungen du daher mit dem Ceres-Checkout nicht zurückgreifen kannst.
+====
+
+[IMPORTANT]
+.Callisto-URL-Struktur für Artikel aktivieren
+====
+Wenn du einen Callisto-Webshop mit Ceres-Checkout nutzen möchtest, raten wir dir von der Option *Callisto-URL-Struktur für Artikel aktivieren* Gebrauch zu machen, um deine SEO-Werte nicht negativ zu beinflussen. Du findest die Einstellung im Menü *Plugin-Übersicht » Ceres » Konfiguration » Global*.
 ====
 
 [IMPORTANT]
@@ -21,9 +27,9 @@ Damit der Live-Betrieb des Webshops beim Testen des Ceres Checkouts nicht beeint
 
 [#standard]
 
-== Ceres-Checkout für Callisto-Webshops mit *individuellem Warenkorb* oder *Standard-Bestellvorgang*
+== Ceres-Checkout für Callisto-Webshops mit *Standard-Bestellvorgang*
 
-Wenn du einen Callisto-Shop betreibst, der entweder den *individuellen Warenkorb* oder den *Standard-Bestellvorgang* nutzt, musst du mit der Einbindung des Ceres-Checkouts etwas früher beginnen: Der individuelle Warenkorb wird zum 01.03.2019 abgestellt; der Standard-Bestellvorgang wird zum 01.06.2019 abgestellt. Wie du erfährst, welchen Bestellvorgang du verwendest, findest du in <<webshop/best-practices#bp-ceres-EOL, diesem Kapitel>>. +
+Wenn du einen Callisto-Shop betreibst, der den *Standard-Bestellvorgang* nutzt, musst du mit der Einbindung des Ceres-Checkouts etwas früher beginnen: der Standard-Bestellvorgang wird zum 01.07.2019 abgestellt. Wie du erfährst, welchen Bestellvorgang du verwendest, findest du in <<webshop/best-practices#bp-ceres-EOL, diesem Kapitel>>. +
 
 Wenn du die folgenden Anweisungen Schritt für Schritt durcharbeitest, kannst du deinen Callisto-Shop mit wenigen Handgriffen mit dem Ceres-Checkout ausstatten.
 
@@ -42,12 +48,6 @@ Einstellungen im Plugin IO vornehmen:
 → Alle Routen werden deaktiviert.
 . Aktiviere die Routen */basket*, */checkout*, */confirmation*, */login*, */register*, */password-reset*, sowie */place-order* & */execute-payment*.
 . *Speichere* die Einstellungen.
-
-[IMPORTANT]
-.ShopBuilder für Callisto-Shops mit Ceres Checkout
-====
-Wenn du einen Callisto-Shop mit Ceres-Checkout betreibst und den <<webshop/shop-builder#, ShopBuilder>> verwenden möchtest, musst du zusätzlich die erste Route */* aktivieren, da der ShopBuilder sonst nicht im Backend geladen wird. Beachte bitte, dass hierdurch die Callisto Startseite überschrieben wird. Wir empfehlen Änderungen in einer Plugin-Set-Kopie durchzuführen und nach den durchgeführten Änderungen die Startseite-Route */* wieder zu deaktivieren.
-====
 
 [.instruction]
 Einstellungen im Plugin Ceres vornehmen:
@@ -142,12 +142,6 @@ Einstellungen in IO vornehmen:
 . Aktiviere die Routen */checkout*, */confirmation*, */login*, */register*, *password-reset* sowie */place-order & /execute-payment*.
 . *Speichere* die Einstellungen.
 
-[IMPORTANT]
-.ShopBuilder für Callisto-Shops mit Ceres Checkout
-====
-Wenn du einen Callisto-Shop mit Ceres-Checkout betreibst und den <<omni-channel/online-shop/shop-builder#, ShopBuilder>> verwenden möchtest, musst du zusätzlich die erste Route */* aktivieren, da der ShopBuilder sonst nicht im Backend geladen wird. Beachte bitte, dass hierdurch die Callisto Startseite überschrieben wird. Wir empfehlen Änderungen in einer Plugin-Set-Kopie durchzuführen und nach den durchgeführten Änderungen die Startseite-Route */* wieder zu deaktivieren.
-====
-
 [.instruction]
 Einstellungen in Ceres vornehmen:
 
@@ -209,10 +203,19 @@ Backlinks für den Warenkorb setzen:
 . Klicke auf die Kategorie *Warenkorb*.
 . Wechsle in das Tab *Beschreibung 1*.
 . Suche den folgenden Code: `{% if ( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
-. Ersetze den Code durch: `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink={%if $Lang !== 'de' %}$Lang{% endif %}/checkout'; } %} $_check.$_backlink`
+. Ersetze den Code durch: `$_check.$_backlink`
 . *Speichere* die Einstellungen.
 
+In der Zeile vor dem gerade eingefügten `$_check.$_backlink` musst du nun noch den folgenden Code einfügen:
 
+[source,plenty]
+----
+include::assets/checkout_snippet.txt[]
+
+----
+
+*Speichere* deine Änderungen am Code. +
+Das *de* in der Zeile `{% if $Lang !== 'de' %}` bezieht sich hier auf die Standardprache des Webshops. Falls die Standardsprache nicht Deutsch ist, muss das Sprachkürzel entsprechend angepasst werden.
 
 
 [.instruction]
@@ -220,19 +223,41 @@ Backlinks für die Warenkorbvorschau setzen:
 
 . Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewBasketPreviewList*.
 . Suche den folgenden Code: `{% if( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
-. Ersetze den Code durch `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink={%if $Lang !== 'de' %}$Lang{% endif %}/checkout'; } %} $_check.$_backlink`
+. Ersetze den Code durch `$_check.$_backlink`
 . *Speichere* die Einstellungen.
+
+In der Zeile vor dem gerade eingefügten `$_check.$_backlink` musst du nun noch den folgenden Code einfügen:
+
+[source,plenty]
+----
+include::assets/checkout_snippet.txt[]
+
+----
+
+*Speichere* deine Änderungen am Code. +
+Das *de* in der Zeile `{% if $Lang !== 'de' %}` bezieht sich hier auf die Standardprache des Webshops. Falls die Standardsprache nicht Deutsch ist, muss das Sprachkürzel entsprechend angepasst werden.
 
 [.instruction]
 Backlinks für das Warenkorb-Overlay setzen:
 
 . Öffne das Menü *CMS » Webdesign » Layout » ItemView » ItemViewItemToBasketConfirmationOverlay*.
 . Suche den folgenden Code: `{% if( $CustomerID ) { Link_Checkout(3); } else { Link_Checkout(2); } %}`
-. Ersetze den Code durch: `{% if( $CustomerID ) { $_check = Link_Checkout(3); $_backlink = ''; } else { $_check = Link_Checkout(2); $_backlink = '?backlink={%if $Lang !== 'de' %}$Lang{% endif %}/checkout'; } %} $_check.$_backlink`
+. Ersetze den Code durch: `$_check.$_backlink`
 . *Speichere* die Einstellungen.
 
+In der Zeile vor dem gerade eingefügten `$_check.$_backlink` musst du nun noch den folgenden Code einfügen:
 
-Kunden, die zusätzliche individuelle Anpassungen an ihrem Layout vorgenommen haben, müssen überprüfen an welchen Stellen sie ihre Kunden zur Kaufabwicklung weiterleiten. Diese Stellen müssen so angepasst werden, dass sie auf die Route */checkout* verlinken. Wir können diese individuellen Anpassungen nicht abfangen und sie können von Kunde zu Kunde anders ausfallen.
+[source,plenty]
+----
+include::assets/checkout_snippet.txt[]
+
+----
+
+*Speichere* deine Änderungen am Code. +
+Das *de* in der Zeile `{% if $Lang !== 'de' %}` bezieht sich hier auf die Standardprache des Webshops. Falls die Standardsprache nicht Deutsch ist, muss das Sprachkürzel entsprechend angepasst werden. +
+
+
+Kunden, die zusätzliche individuelle Anpassungen an ihrem Layout vorgenommen haben, müssen überprüfen an welchen Stellen sie ihre Kunden zur Kaufabwicklung weiterleiten. Diese Stellen müssen so angepasst werden, dass sie auf die Route */checkout* verlinken. Wir können diese individuellen Anpassungen nicht abfangen, da sie von Kunde zu Kunde anders ausfallen können. +
 
 Der Ceres-Checkout wird sich von deinem bisherigen Callisto-Layout optisch unterscheiden. Du kannst Header und Footer des Checkouts und des Warenkorbs global über den <<webshop/shop-builder#95, ShopBuilder>> bearbeiten. Den Checkout selbst wirst du mit Ceres Version 3.1.0 über den ShopBuilder bearbeiten können. Weiterhin kannst du eigene Anpassungen über ein <<#theme, Theme>> realisieren.
 

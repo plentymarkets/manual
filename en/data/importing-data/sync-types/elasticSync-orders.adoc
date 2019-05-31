@@ -3,28 +3,55 @@
 include::{includedir}/_header.adoc[]
 :keywords: ElasticSync, Import orders, Sync, Sync type, order import
 :position: 30
+:url: data/importing-data/sync-types/elasticSync-orders
 
 With syncs of the type *Order*, you import order data.
 
 [#2010]
 == Fields for order matching
 
-Currently, there is only one matching field for identifying orders. The following matching field is available:
+<<table-matching-fields-order>> explains the fields that are available for matching order data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
-* Order ID
+[[table-matching-fields-order]]
+.Matching fields for importing orders
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|Orders
+|*Order ID* +
+External order ID
+
+|Package
+|*Package ID* +
+The ID of the shipping package is meant here.
+
+|Order item
+|*Order item* ID +
+*External item ID* +
+*External token ID*
+
+|Variation
+|*Variation ID* +
+*Market SKU* +
+*External variation ID* +
+*Variation number* +
+*Manufacturer variation number* +
+*Barcode: EAN*
+|====
 
 [#2020]
 == Fields for order mapping
 
-<<table-mapping-fields-orders>> explains the fields that are available for mapping order data. During the import, plentymarkets checks if the imported data record already exists based on the matching field. +
+<<table-mapping-fields-order>> explains the fields that are available for mapping order data. During the import, plentymarkets checks if the imported data record already exists based on the matching field. +
 
 [WARNING]
 .Mandatory fields for order mapping
 ====
-Note the fields flagged as *mandatory* listed in <<table-mapping-fields-orders>>. If you do not activate these mandatory fields, orders are not mapped correctly.
+Pay attention to the fields marked as *Mandatory field* in <<table-mapping-fields-order>>. If you do not activate these mandatory fields, orders are not mapped correctly.
 ====
 
-[[table-mapping-fields-orders]]
+[[table-mapping-fields-order]]
 .Mapping fields for importing orders
 [cols="1,1,2"]
 |====
@@ -33,49 +60,49 @@ Note the fields flagged as *mandatory* listed in <<table-mapping-fields-orders>>
 3+|*Order*
 
 |ID of the type +
-**Mandatory field**
+*Mandatory field*
 |Numeric
 a|Order types represent different business events. The following types are available:
 
 * Order = 1
 * Delivery order = 2
-* Return = 3
+* Returns = 3
 * Credit note = 4
 * Warranty = 5
 * Repair = 6
 * Offer = 7
-* Advance order =8
+* Advance order = 8
 * Multi-order = 9
 * Multi credit note = 10
 
 |ID of the status
 |Numeric
-|ID of the status. You determine the IDs in the range between 1.0000 and 18.9999. The statuses can be found in the *System » System settings » Orders » Status* menu.
+|ID of the status. You determine the IDs in the range between 1.0000 and 18.9999. View the existing order statuses in the *System » System settings  » Orders  » Status* menu.
 
 |ID of the owner
 |Numeric
-|ID of the owner. An owner is a user who is assigned as owner. The ID of the owner thus corresponds to the ID of the user. The user ID can be found in the *System » System settings » Settings » User » Accounts* menu. Orders can be assigned to an owner. This is optional.
+|ID of the owner. An owner is a user who is assigned as owner. The ID of the owner thus corresponds to the ID of the user. View the User ID in the *System » System settings » Settings » User » Accounts* menu. Orders can be assigned to an owner. This is optional.
 
 |PlentyID +
-**Mandatory field**
+*Mandatory field*
 |Numeric
-|ID of the client. The plentyID can be found in the *System » System settings » Client » Select client » Settings* menu.
+|ID of the client. View the PlentyID in the *System » System settings » Client » Select client » Settings* menu.
 
 |ID of the location
 |Numeric
-|ID of the location. The locations can be found in the *System » System settings » Client » Select client » Locations* menu.
+|ID of the location. View the locations in the *System » System settings » Client » Select client » Locations* menu.
 
 3+|*Order item*
 
 |Type +
-**Mandatory field**
+*Mandatory field*
 |Numeric
-a|The order item types represent different cost positions of an order. The costs involved can be negative or positive. The ID of the order item type is expected by default. The types that are available, are listed with their type ID. If your column does not contain the IDs, carry out the mapping yourself.
+a|The order item types represent different cost positions of an order. The costs involved can be negative or positive. The ID of the order item type is expected by default. The types that are available are listed here with their type ID. If your column does not contain the IDs, carry out the mapping yourself.
 
 * Variation = 1
 * Item bundle = 2
 * Bundle component = 3
-* Promotional coupon = 4
+* Coupon for special offers = 4
 * Gift card = 5
 * Shipping costs = 6
 * Payment surcharge = 7
@@ -88,10 +115,10 @@ The type *Order* is contained in multi-orders, for example.
 
 |Referrer
 |Numeric
-|The ID of the referrer is expected by default. The IDs can be found in the *System » System settings » Orders » Order referrer* menu. If your column does not contain the IDs, carry out the mapping yourself.
+|The ID of the referrer is expected by default. View the IDs in the *System » System settings » Orders » Order referrer* menu. If your column does not contain the IDs, carry out the mapping yourself.
 
 |Name +
-**Mandatory field**
+*Mandatory field*
 |Alpha-numeric
 |Select the column that contains the name of the order item. It is expected that the names are saved in the language of the system by default.
 
@@ -103,12 +130,12 @@ The type *Order* is contained in multi-orders, for example.
 |Numeric
 |The percentage value of the VAT rate is expected by default. Whether the number is expected to be separated by a comma or a dot depends on the selected import options. Set the import options in the *Matching* area.
 
-|VAT amount
+|Total VAT amount of the order
 |Numeric
 |Select the column that contains the amount of tax. The VAT amount for quantity 1 of the order item is expected by default. Whether the number is expected to be separated by a comma or a dot depends on the selected import options. Set the import options in the *Matching* area.
 
 |Quantity +
-**Mandatory field**
+*Mandatory field*
 |Numeric
 |Select the column that contains the number of an order item.
 
@@ -121,13 +148,13 @@ The type *Order* is contained in multi-orders, for example.
 |Select the column that contains the position of the order item. The position serves for the sorting within the order. It is, however, not taken into consideration yet.
 
 |Currency +
-**Mandatory field**
+*Mandatory field*
 |Alpha-numeric
 |The ISO code of a currency, e.g. EUR for Euro, is expected by default.
 
 |Exchange rate
 |Numeric
-|Select the column that contains the exchange rate. The exchange rate must contain the currency translation rate from the order currency to the system currency. The system currency is set in the *System » System settings » Orders » Payment » Currencies* menu. Whether the number is expected to be separated by a comma or a dot depends on the selected import options. Set the import options in the *Matching* area.
+|Select the column that contains the exchange rate. The exchange rate must contain the currency translation rate from the order currency to the system currency. View your system currency in the *System » System settings » Orders » Payment » Currencies* menu. Whether the number is expected to be separated by a comma or a dot depends on the selected import options. Set the import options in the *Matching* area.
 
 |Purchase price
 |Numeric
@@ -169,17 +196,23 @@ a|Select a property type and select the column that contains the property. The f
 * Coupon code
 * Coupon type
 * Unit
-* External item ID
-* Reason for return
+* External shipping item ID
+* Return reason
 * Item status
 * External order item ID
 
-Individual property types for order items can be created via link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] or link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^]. However, they are not displayed in the UI. +
-To display the property warehouse in the UI, go to *System » System settings » Orders » Settings* and for the mapping of the warehouse, select option b). Alternatively, select option a) and click *Edit* on the items.
+Own prpoerty types for order items can be created via the link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] or via link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^]. However, they are not displayed in the UI. +
+To display the property warehouse in the UI, go to *System » Orders » Settings* and for the mapping of the warehouse, select option b). Alternatively, select option a) and click *Edit* on the items.
+
+3+|*Order note*
+
+|Text
+|
+|Select the option *Text* to import the text included in the order note.
 
 3+|*Address relation*
 
-|Address ID
+|ID of the address
 |Numeric
 |Select whether the address is the invoice address or the delivery address of the order. Afterwards, select the column that contains the ID of the address. The address ID can be used to map already existing addresses of contacts. If it is an address, use the address mapping fields.
 
@@ -192,17 +225,17 @@ a|Select a property type and select the column that contains the property. The f
 * Warehouse
 * Shipping profile
 * Payment method
-* Payment status
+* Status of incoming payment
 * External shipping profile
-* Language in documents
+* Document language
 * External order ID
-* Customer identification sign
+* Customer sign
 * Dunning level
 * Seller account
 * Flag
-* VAT number
+* VAT identification number of the customer
 
-Individual property types for Orders can be created via link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] or link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^].
+Own property types for orders can be created via link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^]  or via link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^].
 
 3+|*Order date*
 
@@ -223,7 +256,7 @@ a|Select an order relation and select the column that contains the reference ID.
 * Warehouse - Sender: The reference ID is the ID of an existing warehouse and this warehouse is the sender of the order.
 * Warehouse - Recipient: The reference ID is the ID of an existing warehouse and this warehouse is the recipient of the order.
 
-3+|*Address*
+2+|*Address*
 |Regardless of which address field is selected, it is important to first select whether this field belongs to a delivery address or to an invoice address.
 
 |Name 1 (Company)
@@ -268,11 +301,11 @@ a|Select an order relation and select the column that contains the reference ID.
 
 |Country ID
 |Numeric
-|Select the invoice address or delivery address and select the column that contains the country ID. The IDs of the countries of delivery are expected by default. The IDs can be found in the *System » System settings » Orders » Shipping » Settings* menu.
+|Select the invoice address or delivery address and select the column that contains the country ID. The IDs of the countries of delivery are expected by default. View the IDs in the *System » System settings » Orders » Shipping  » Settings* menu.
 
 |ID of State/Province
 |Numeric
-|List of all countries that have a state/province. The IDs of the states/provinces are also listed: link:link:https://www.plentymarkets.eu/documents/category/3507/Bundeslaender.pdf[PDF file with a list of states/provinces] (in German)
+|List of all countries for which states/provinces are available, including the IDs of the states/provinces: link:https://www.plentymarkets.eu/documents/category/3507/Bundeslaender.pdf[PDF file including a list of states and provinces]
 
 |VAT number
 |Alpha-numeric
@@ -287,8 +320,7 @@ a|Select an order relation and select the column that contains the reference ID.
 |Select the invoice address or delivery address and select the column that contains the email address.
 
 3+|*Shipping package*
-
-|Regardless of which package information is selected, you have to select a shipping package and use this to compare this information. Shipping packages are set up in the *System » System settings » Orders » Shipping » Shipping packages* menu.
+|Regardless of which package information is selected, you have to select a shipping package and use this to compare this information. Shipping packages are set up in the *System » Orders » Shipping » Shipping packages* menu.
 
 |Weight
 |
@@ -330,15 +362,15 @@ a|Select the invoice address or delivery address and select the column that cont
 * 25 = Composite packaging
 * 26 = Package
 * 27 = Ring
-* 28 = Role
+* 28 = Roll
 * 29 = Sack
 * 30 = Unit
 * 31 = Tank
 * 32 = Drum
 * 34 = Crate
 * 35 = Quarter pallet
-* 36 = Other pallets
+* 36 Other pallets
 * 37 = Bin
 * 38 = One-way pallet
-* 39 = Foilbag
+* 39 = Foil bag
 |====
