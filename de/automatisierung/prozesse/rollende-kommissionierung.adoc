@@ -1,0 +1,309 @@
+= Best Practices: Rollende Kommissionierung
+:lang: de
+include::{includedir}/_header.adoc[]
+:position: 80
+:url: automatisierung/prozesse/rollende-kommissionierung
+
+Die rollende Kommissionierung ist eine Methode, mit der man mehrere Aufträge gleichzeitig picken und versandfertig vorsortiert an den Packtisch liefern kann. Diese Methode eignet sich besonders für kleinere Artikel.
+
+Die plentymarkets App beinhaltet eine Funktion zur rollenden Kommissionierung, die auf dieser Seite beschrieben wird. Zunächst folgt eine kurze Beschreibung der rollenden Kommissionierung zum besseren Verständnis. Danach werden die <<Einstellungen einmalig konfigurieren, Einstellungen>> beschrieben, die einmalig im Voraus konfiguriert werden müssen. Diese Einstellungen greifen dann später, wenn du die <<Mit der plentymarkets App kommissionieren, Funktion nutzt>>.
+
+[IMPORTANT]
+.Voraussetzungen
+====
+Diese Seite setzt voraus, dass du die plentymarkets App bereits <<schnelleinstieg/systemvoraussetzungen#200, heruntergeladen>> und auf der passenden Hardware installiert hast.
+====
+
+[#100]
+== Wie funktioniert die rollende Kommissionierung?
+
+Der Lagerist hat einen beweglichen Kommissionierwagen, den er mit sich durch das Lager zieht. Auf diesem Kommissionierwagen befindet sich eine beliebige Anzahl an Boxen. Jede Box repräsentiert einen Auftrag, der abgewickelt werden soll.
+
+image::automatisierung/prozesse/assets/Grafik-Rollende-Kommissionierung.png[]
+
+Während der Lagerist mit seinem Wagen durchs Lager läuft, sieht er auf einem mobilen Endgerät, welche Artikel gepickt werden sollen. Dabei werden gleiche Artikel gruppiert. Kommt der gleiche Artikel beispielsweise in zwei verschiedenen Aufträgen vor, sieht der Lagerist direkt, dass er zwei Exemplare dieses Artikels picken soll. Der Lagerist pickt den Artikel und legt ihn dann in die passende Box. Mit anderen Worten, der Lagerist ordnet jeden Artikel beim Picking direkt dem entsprechenden Auftrag zu.
+
+Sobald alle Boxen mit Artikeln befüllt sind, läuft der Lagerist zum Packtisch zurück. Nun scannt er die erste Box und ruft somit den entsprechenden Auftrag auf. Der Lagerist wickelt diesen Auftrag wie gewohnt ab. Wenn er fertig ist, wird die Verbindung zwischen Auftrag und Box aufgelöst. Somit steht die Box wieder zur Verfügung und kann vom Lagerist beim nächsten Durchlauf erneut verwendet werden.
+
+[#200]
+== Einstellungen einmalig konfigurieren
+
+[#300]
+=== Einstellungen im plentymarkets Backend vornehmen
+
+Bevor du <<Mit der plentymarkets App kommissionieren, das Tool nutzt>>, musst du ein paar Einstellungen einmalig in deinem plentymarkets System vornehmen. Diese Einstellungen bestimmen z.B., welche Boxen zur Verfügung stehen, welche Lageristen die rollende Kommissionierung nutzen dürfen und wann die Verknüpfung zwischen Auftrag und Box wieder aufgelöst werden soll.
+
+[#400]
+==== Boxen zur Verfügung stellen
+
+Jeder Artikel wird im Lager an seinem eigenen <<warenwirtschaft/lager-einrichten#kapitel_500, Lagerort>> aufbewahrt. Wenn der Lagerist einen Auftrag pickt, holt er den Artikel aus dem Lagerort und legt ihn in eine Box. Dort bleibt der Artikel so lange, bis der Auftrag fertig gepackt und versendet wurde.
+
+Somit sind Boxen im Prinzip nichts anderes als temporäre Lagerorte. Wie “normale” Lagerorte auch, musst du Boxen einmalig im Voraus erstellen. Konkret wirst du einen Lagerort pro Box erstellen und dann bestimmen, dass du diese Lagerorte zum Zweck der rollenden Kommissionierung verwenden möchtest.
+
+[.instruction]
+Boxen zur Verfügung stellen:
+
+. Melde dich in deinem plentymarkets System an.
+. Öffne das Menü *System » Systemeinstellungen » Waren » Lager » Lager wählen » Lagerorte*.
+. Erstelle neue Lagerorte für die rollende Kommissionierung. Beachte dabei die Erläuterungen im Kapitel <<warenwirtschaft/lager-einrichten#500, Lagerorte generieren>>.
+. Stelle den *Zweck* des Lagerortes auf *Box*.
+. *Speichere* die Einstellungen.
+
+[#500]
+==== Rechte an Lageristen vergeben
+
+Überlege zunächst, welche Mitarbeiter die rollende Kommissionierung nutzen werden. Sind alle Mitarbeiter in deiner Firma für das Picking und Packing zuständig, oder nur einzelne?
+
+Um Aufträge überhaupt picken und packen zu können, müssen Mitarbeiter z.B. auch die Rechte haben, Auftragsinformationen anzusehen und die Lagerorte der einzelnen Artikel zu erfahren. *Admin* <<basics/admin-aufgaben/benutzer-verwalten#10, Benutzer>> verfügen bereits über diese Rechte und ihre Konten müssen nicht angepasst werden. *Backend*- und *REST-API*-Zugänge hingegen verfügen nicht automatisch über diese Rechte.
+
+[.instruction]
+Rechte an Lageristen vergeben:
+
+. Melde dich in deinem plentymarkets System an.
+. Öffne das Menü *System » Systemeinstellungen » Einstellungen » Rechte » Benutzer*.
+. Klicke links oben auf *Suchen*. +
+→ Die Benutzerkonten werden in der Übersicht angezeigt.
+. Klicke auf das Benutzerkonto, dessen Rechte angepasst werden sollen. +
+→ Die Benutzerrechte werden geöffnet.
+. Vergebe die *nötigen Berechtigungen*. Beachte dabei die Erläuterungen in <<tabelle-einstellungen-rechte-kommissionierung>>.
+. *Speichere* die Einstellungen.
+
+[[tabelle-einstellungen-rechte-kommissionierung]]
+.Benutzerrechte vergeben
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Artikelbildname anzeigen*
+|Erlaube deinem Lagerist, ein Bild vom gekauften Artikel in die App zu sehen. +
+Unter *Berechtigungen*, klappe den Bereich *Artikel » Artikelbearbeitung » Artikelbild » Artikelbildname* auf. Setze neben *Artikelbildname anzeigen* ein Häkchen.
+
+|*Aufträge aktualisieren*
+|Erlaube deinem Lagerist, den Auftrag in einen neuen Status zu setzen. +
+Unter *Berechtigungen*, klappe den Bereich *Aufträge* auf. Setze neben *Aufträge aktualisieren* ein Häkchen.
+
+|*Aufträge anzeigen*
+|Erlaube deinem Lagerist, den Auftrag zu sehen. +
+Unter *Berechtigungen*, klappe den Bereich *Aufträge* auf. Setze neben *Aufträge anzeigen* ein Häkchen.
+
+|*Kommentar erstellen*
+|Erlaube deinem Lagerist, Notizen zu schreiben und diese am Auftrag anzuhängen. +
+Unter *Berechtigungen*, klappe den Bereich *Kommentare* auf. Setze neben *Kommentar erstellen* ein Häkchen.
+
+|*Lagerort anzeigen*
+|Erlaube deinem Lagerist, den Lagerort des gekauften Artikels zu erfahren. +
+Unter *Berechtigungen*, klappe den Bereich *Warenbestände » Lager » Lagerort* auf. Setze neben *Lagerort anzeigen* ein Häkchen.
+|====
+
+[TIP]
+.Mehrere Benutzerkonten gleichzeitig anpassen
+====
+Verwende <<basics/admin-aufgaben/benutzer-verwalten#70, Rollen>>, um mehreren Benutzern die gleichen Berechtigungen zu erteilen, ohne jedes Benutzerkonto einzeln bearbeiten zu müssen.
+====
+
+[#600]
+==== Abwicklungsprozesse anpassen
+
+Der Packvorgang der rollenden Kommissionierung kann im bestehenden <<automatisierung/prozesse/prozesse-einrichten, Auftragsabwicklungsprozess>> deines Unternehmens integriert werden. Dazu müssen jeweils eine Aktion und eine Subaktion zum bestehenden Abwicklungsprozess hinzugefügt werden.
+
+[.instruction]
+Bestehende Abwicklungsprozesse anpassen:
+
+. Melde dich in deinem plentymarkets System an.
+. Öffne das Menü *System » Systemeinstellungen » Prozesse » Prozess wählen*.
+. Füge die Aktion und die Subaktion hinzu. Beachte dabei die Erläuterungen in <<tabelle-aktion-subaktion-kommissionierung>>.
+. *Speichere* die Einstellungen.
+
+[[tabelle-aktion-subaktion-kommissionierung]]
+.Aktion und Subaktion für die rollende Kommissionierung
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Aktion: Auftragssuche*
+|Füge die Aktion *Auftragssuche* zum Arbeitsschritt *Auftragsbearbeitung* hinzu. Diese Aktion sucht nach einzelnen Aufträgen, um sie im Anschluss weiter zu bearbeiten. +
+Öffne die Einstellungen zur Aktion und stelle den *Modus* auf *Box-Suche*. Somit bestimmst du, dass dein Lagerist die Box - d.h. den temporären Lagerort - scannen und plentymarkets daraufhin den entsprechenden Auftrag abrufen soll.
+
+|*Subaktion: Entferne Auftrag von Box*
+|Füge die Subaktion *Entferne Auftrag von Box* zur Aktion *Auftrag* hinzu. Diese Subaktion löst die Verbindung zwischen Auftrag und Box. Somit steht die Box wieder frei zur Verfügung und kann beim nächsten Durchlauf wiederverwendet werden.
+|====
+
+[TIP]
+.Beispielprozess
+====
+Hast du noch keinen bestehenden Abwicklungsprozess, den du anpassen kannst? Oder willst du die Aktion und Subaktion im Kontext eines Beispielprozesses sehen? Kein Problem! Wir bieten dir ein Beispielprozess für die rollende Kommissionierung an.
+====
+
+[#700]
+=== Einstellungen in der plentymarkets App vornehmen
+
+Bevor du <<Mit der plentymarkets App kommissionieren, das Tool nutzen kannst>>, musst du ein paar Einstellungen einmalig in der plentymarkets App vornehmen. Diese Einstellungen bestimmen z.B., wie viele Aufträge auf einmal gepickt werden sollen und wie die App im Fehlerfall vorgehen soll.
+
+[.instruction]
+Einstellungen konfigurieren:
+
+. Melde dich bei der plentymarkets App an.
+. Tippe oben links auf das *Menüsymbol*.
+. Tippe auf *Einstellungen » Rollende Kommissionierung*. +
+→ Die Einstellungen zur rollenden Kommissionierung werden geöffnet.
+. Nehme die Einstellungen vor. Beachte dabei die Erläuterungen in <<tabelle-einstellungen-rollende-kommissionierung>>.
+
+[[tabelle-einstellungen-rollende-kommissionierung]]
+.Einstellungen in der plentymarkets App vornehmen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Ausgangsstatus*
+|Welche Aufträge möchtest du picken? Wenn du das Tool später nutzt, werden nur Aufträge, die sich in diesem Status befinden, auf deiner Artikelliste angezeigt. +
+*_Tipp:_* Die Status in dieser Dropdown-Liste können unter <<auftraege/auftraege-verwalten#1200, *System » Systemeinstellungen » Aufträge » Auftragsstatus*>> verwaltet werden.
+
+|*Neuer Status*
+|Wie möchtest du Aufträge, die sich gerade im Pickvorgang befinden, kennzeichnen? Setze Aufträge in einen neuen Status, damit sie nicht aus Versehen mehrmals für den Pickvorgang zur Verfügung gestellt werden. +
+*_Tipp:_* Die Status in dieser Dropdown-Liste können unter <<auftraege/auftraege-verwalten#1200, *System » Systemeinstellungen » Aufträge » Auftragsstatus*>> verwaltet werden.
+
+|*Fehlerstatus*
+|Wie soll die App im Fehlerfall vorgehen? Kommt es beim Picking eines Auftrags zu einem Fehler, wird der Auftrag in den hier ausgewählten Status gesetzt. Später kannst du dann in plentymarkets alle fehlerhaften Aufträge anhand des Status suchen und diese gesondert abarbeiten. +
+*_Tipp:_* Die Status in dieser Dropdown-Liste können unter <<auftraege/auftraege-verwalten#1200, *System » Systemeinstellungen » Aufträge » Auftragsstatus*>> verwaltet werden.
+
+|*Lager*
+|In welchem Lager möchtest du picken? Wenn du das Tool später nutzt, werden nur Aufträge, die sich in diesem Lager befinden, auf deiner Artikelliste angezeigt. +
+*_Tipp:_* Die Lager in dieser Dropdown-Liste können unter <<warenwirtschaft/lager-einrichten#200, *System » Systemeinstellungen » Waren » Lager*>> verwaltet werden.
+
+|*Standardanzahl Boxen*
+|Wie viele Aufträge möchtest du standardmäßig auf einmal picken? Wenn du das Tool später nutzt, ist die hier ausgewählte Anzahl voreingestellt. Während der Nutzung kannst du die Anzahl jedoch manuell erhöhen oder verringern.
+
+|*Vorlage*
+|Wie soll deine <<Artikel im Lager finden, Artikelliste>> aussehen? Die plentymarkets App verfügt bereits über eine Standard-Vorlage, die für die meisten Kommissionierungsprozesse geeignet ist. Du kannst allerdings auch weitere Vorlagen im Menü *System » Systemeinstellungen » plenty App » Mobile Pickliste* erstellen und dann hier in dieser Dropdown-Liste auswählen. +
+*_Tipp:_* Mit Vorlagen kannst du z.B. bestimmen, in welcher Reihenfolge und in welcher Schriftgröße einzelne Informationen später auf der Artikelliste dargestellt werden sollen.
+|====
+
+[#800]
+== Mit der plentymarkets App kommissionieren
+
+Nachdem du alle <<Einstellungen einmalig konfigurieren, Einstellungen einmalig konfiguriert>> hast, kannst du die plentymarkets App nutzen, um mehrere Aufträge gleichzeitig zu picken und versandfertig vorsortiert an den Packtisch zu liefern.
+
+[IMPORTANT]
+.Stehen Aufträge bereit?
+====
+Aufträge werden nur mit der App kommissioniert, wenn sie die Kriterien aus den <<Einstellungen einmalig konfigurieren, Einstellungen>> erfüllen, d.h. wenn sie sich auf das richtige Lager beziehen und sich aktuell im Ausgangsstatus befinden. Erfüllen zur Zeit keine Aufträge diese Kriterien, stehen keine Aufträge zum Kommissionieren bereit.
+====
+
+[#900]
+=== Anzahl der Boxen festlegen
+
+Wie viele Boxen sind auf dem rollenden Kommissionierwagen? Lege zuerst fest, mit wie vielen Boxen du arbeiten möchtest, d.h. wie viele Aufträge gleichzeitig kommissioniert werden sollen.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+[.instruction]
+Anzahl der Boxen festlegen:
+
+. Melde dich bei der plentymarkets App an.
+. Tippe oben links auf das *Menüsymbol*.
+. Tippe auf *Rollende Kommissionierung*. +
+→ Der Startbildschirm erscheint.
+. Tippe auf das Plus oder Minus, um die <<Einstellungen in der plentymarkets App vornehmen, vordefinierte Anzahl>> der Boxen zu erhöhen oder zu verringern.
+. Tippe auf *Start*, um fortzufahren. +
+→ Die entsprechenden Aufträge werden auf eine Artikelliste gestellt und in den selbst festgelegten <<Einstellungen in der plentymarkets App vornehmen, neuen Status>> gesetzt.
+
+
+[#1000]
+=== Artikel im Lager finden
+
+plentymarkets erstellt automatisch eine Auflistung aller Artikel, die nun im Lager gepickt werden sollen. Dabei werden gleiche Artikel gruppiert. Kommt der gleiche Artikel beispielsweise in zwei verschiedenen Aufträgen vor, sieht der Lagerist direkt, dass er zwei Exemplare picken soll.
+
+Die Liste enthält somit wichtige Informationen zu den Artikeln, die gepickt werden sollen. Der Lagerist sieht nicht nur, wie viele Exemplare eines Artikels gepickt werden soll, sondern auch, wo er diesen Artikel im Lager findet und wie der Artikel heißt. Du kannst im Voraus selbst bestimmen, welche Informationen auf der Liste angezeigt werden sollen. Dazu richtest du eine <<Einstellungen einmalig konfigurieren, Vorlage>> ein.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+Nun nimmt der Lagerist seinen Kommissionierwagen und läuft damit zum Lagerort des ersten Artikels. Dort angekommen, scannt er den Barcode des ersten Artikels. Alternativ tippt er in der App auf den Artikel.
+
+[.instruction]
+Mit der Artikelliste arbeiten:
+
+. Schaue auf die Liste, um herauszufinden, wo der Artikel gelagert wird.
+. Laufe mit dem Kommissionierwagen zum Artikel.
+. Scanne den Barcode des Artikels oder tippe in der App auf den Artikel.
+
+[TIP]
+.Von der vorgegebenen Pick-Reihenfolge abweichen
+====
+Beim Erstellen der Artikelliste berechnet plentymarkets eine wegoptimierte Route durch das Lager. Mit anderen Worten listet plentymarkets die Artikel in der Reihenfolge auf, die am günstigsten zu picken ist. Falls der Lagerist aber trotzdem von der vorgegebenen Reihenfolge abweichen möchte, braucht er nur auf das Dreipunktmenü zu tippen.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+Nun kann der Lagerist entscheiden, wie er fortfahren möchte. Er kann:
+
+* den ersten Artikel ans Ende der Liste schieben, z.B. wenn er diesen Artikel später noch picken möchte.
+* den ersten Artikel gänzlich von seiner Liste entfernen, z.B. wenn der Artikel zur Zeit nicht vorrätig ist. In diesem Fall werden alle Aufträge, die diesen Artikel enthalten, in einen <<Einstellungen einmalig konfigurieren, Fehlerstatus>> gesetzt.
+* eine Notiz hinterlegen. Die Notiz wird an alle Aufträge, die diesen Artikel enthalten, angehängt.
+====
+
+[#1100]
+=== Auftrag mit einer Box verknüpfen
+
+In welcher Box willst du diesen Artikel zwischenlagern? Scanne eine leere Box oder tippe auf eine leere Box in der App. Somit werden Auftrag und Box miteinander verknüpft.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+[TIP]
+.Entscheidungshelfer
+====
+Hast du Boxen in unterschiedlichen Größen und bist nicht sicher, welcher Box du wählen sollst? Streiche mit dem Finger nach links über den Bildschirm, um Informationen zum Auftrag zu finden. Hier siehst du die Größe vom Auftrag und kannst somit besser einschätzen, welche Box geeignet ist.
+====
+
+[IMPORTANT]
+.Aufträge mit mehreren Artikeln
+====
+Manche Aufträge enthalten mehr als nur einen Artikel. Hast du bereits den ersten Artikel eines Auftrags gescannt und mit einer Box verknüpft, brauchst du beim zweiten Artikel keine weitere Box zu verknüpfen, sondern kannst die bereits angefangene Box weiter verwenden.
+====
+
+[#1200]
+=== Artikel picken
+
+Die App zeigt dir einige wichtige Informationen zum Pickvorgang an. Du siehst, z.B.:
+
+* wie viele Exemplare des Artikels gepickt werden sollen
+* an welchem Lagerort der Artikel sich aktuell befindet
+* in welche Box du die Exemplare des Artikels legen sollst
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+[.instruction]
+Artikel picken:
+
+. Schaue in der App, um Informationen zum Pickvorgang zu erfassen.
+. Scanne den Artikel oder tippe auf das Plus/Minus, um die Anzahl der gepickten Exemplare anzupassen. +
+*_Hinweis:_* Beim Scannen erhöht sich die Anzahl automatisch um eins.
+. Lege die Exemplare in die entsprechende Box.
+. Tippe auf das grüne Häkchen, um den Pickvorgang abzuschließen. +
+→ Im Hintergrund verknüpft plentymarkets den Artikel mit der Box. Der Lagerort des Artikels wird somit auf den temporären Lagerort geändert. Im plentymarkets System ist eine <<warenwirtschaft/warenbestaende-verwalten#1100, Warenbewegung>> zu sehen.
+. Wiederhole Schritte 1 bis 4 für jeden Auftrag, der diesen Artikel enthält. +
+→ Wurde dieser Artikel fertig gepickt, wechselt der Bildschirm zurück zur <<Artikel im Lager finden, Artikelliste>> und du kannst mit dem nächsten Artikel fortfahren. +
+→ Wurden alle Artikel fertig gepickt, erscheint eine Erfolgsmeldung.
+. Klicke auf *Abschließen*, um die Erfolgsmeldung zu schließen.
+
+[TIP]
+.Nicht genügend Exemplare vorrätig?
+====
+Sind an einem Lagerort nicht genügend Exemplare eines Artikels vorrätig? Sollst du z.B. drei Exemplare picken aber nur zwei sind verfügbar? Dann musst du nicht den ganzen Pickvorgang abbrechen. Stelle einfach die Anzahl der verfügbaren Exemplare ein und tippe auf den braunen Pfeil. Daraufhin erscheint eine Meldung, die dich auf die falsche Menge hinweist. Hier kannst du auch eine Notiz erstellen, die in deinem plentymarkets System direkt am Auftrag angehängt wird. Der Auftrag wird in den Fehlerstatus geschoben und kann später gesondert abgearbeitet werden.
+====
+
+
+[#1300]
+=== Artikel packen
+
+Sobald alle Boxen mit Artikeln befüllt sind, läuft der Lagerist zum Packtisch zurück. Nun scannt er die erste Box und ruft somit den entsprechenden Auftrag auf. Der Lagerist <<Abwicklungsprozess anpassen, wickelt diesen Auftrag wie gewohnt ab>>. Dabei wird der Warenausgang vom Transferlagerort, d.h. von der Box, ausgeführt.
+
+Wenn er fertig ist, wird die Verbindung zwischen Auftrag und Box aufgelöst. Somit steht die Box wieder zur Verfügung und kann vom Lagerist beim nächsten Durchlauf erneut verwendet werden.
