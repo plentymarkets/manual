@@ -1,14 +1,14 @@
-= stockManagementWarehouses
+= accountContacts
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: orderItemAmounts, Report, Rohdaten
-:position: 150
-:url: daten/report/datenformate/stockmanagementwarehouses
+:keywords: users, Report, Rohdaten
+:position: 180
+:url: daten/report/datenformate/users
 
-:datenformat: pass:quotes[*stockManagementWarehouses*]
-:daten: Lager
-:spezifikationen: <<tabelle-spezifikationen-itemmanufacturer>>
-:datenspalten: <<tabelle-datenspalten-itemmanufacturer>>
+:datenformat: pass:quotes[*users*]
+:daten: Benutzer
+:spezifikationen: <<tabelle-spezifikationen-users>>
+:datenspalten: <<tabelle-datenspalten-users>>
 
 include::./_textblocks/einleitung.adoc[]
 
@@ -16,26 +16,36 @@ include::./_textblocks/einleitung.adoc[]
 
 include::./_textblocks/spezifikationen.adoc[]
 
-[[tabelle-spezifikationen-stockmanagementwarehouses]]
-.Technische Spezifikationen des Formats *stockManagementWarehouses*
-[cols=4]
+[[tabelle-spezifikationen-accountcontacts]]
+.Technische Spezifikationen des Formats *users*
+[cols="4"]
 |====
 |Eigenschaft |Bedeutung |Wert |Erläuterung
 
 |dataName
 |Name
-|stockManagementWarehouses
+|users
 |Name des Creator-Prozesses und Präfix der erstellten Datei. +
-Dateiname: *stockManagementWarehouses-xxx.csv.gz*
+Dateiname: *users-xxx.csv.gz*
 
 |fileFormat
 |Dateiformat
 |CSV, GZIP
 |Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
 
+|defaultActive
+|Standardmäßig aktiv
+|nein
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Daten » Rohdaten* aktiviert wurde.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
 |limitPage
 |Zeilen pro Anfrage
-|bis zu 1.000
+|bis zu 500
 |Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
 
 |limitDay
@@ -50,7 +60,7 @@ Dateiname: *stockManagementWarehouses-xxx.csv.gz*
 
 |dataUpdatedAtColumnName
 |Spaltenbezeichnung
-|smw_updated_at
+|u_updated_at
 |Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
 
 |deleteRawDataAfterDaysMinimum
@@ -62,16 +72,6 @@ Dateiname: *stockManagementWarehouses-xxx.csv.gz*
 |Maximale Anzahl an Tagen bis zur Löschung
 |80
 |Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
-
-|defaultActive
-|Standardmäßig aktiv
-|false
-|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Daten » Rohdaten* aktiviert wurde.
-
-|interval
-|Intervall
-|täglich
-|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
 
 |filterType
 |Filtertyp
@@ -89,8 +89,8 @@ Dateiname: *stockManagementWarehouses-xxx.csv.gz*
 
 include::./_textblocks/datenspalten.adoc[]
 
-[[tabelle-datenspalten-stockmanagementwarehouses]]
-.Datenspalten des Formats *stockManagementWarehouses*
+[[tabelle-datenspalten-users]]
+.Datenspalten des Formats *users*
 [cols="1,3,3,3"]
 |====
 |Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
@@ -100,48 +100,25 @@ include::./_textblocks/datenspalten.adoc[]
 |plenty id
 |ID des plentymarkets Systems
 
-|*smw_id (Primary key)*
+|*u_id (Primary key)*
 |VARCHAR NOT NULL
-|stock management warehouse ID
-|ID des Lagers
+|user id
+|ID des Benutzers
 
-|smw_type_id
-|SMALLINT
-|stock management warehouse type
-|Typ des Lagers +
-Mögliche Werte: +
-0 = Vertriebslager +
-1 = Reparaturlager +
-4 = Vorratslager +
-5 = Verteilerlager +
-6 = Umschlaglager +
-7 = Sonstiges Lager
+|u_real_name
+|VARCHAR NOT NULL
+|user real name
+|Realer Name des Benutzers
 
-|smw_logistics_type
+|u_lang
 |VARCHAR
-|stock management warehouse logistics type
-|Logistiktyp des Lagers +
-Mögliche Werte: +
-own = Eigenes Lager +
-amazon = Amazon FBA +
-dhl = DHL Fulfillment
+|user language
+|UI-Sprache des Benutzers
 
-|smw_priority
-|SMALLINT NOT NULL
-|stock management warehouse priority
-|Priorität des Lagers +
-Mögliche Werte: +
-5 (höchste Priorität) bis 1 (niedrigste Priorität)
-
-|smw_name
-|VARCHAR
-|stock management warehouse name
-|Name des Lagers
-
-|*smw_updated_at*
+|*u_updated_at*
 |TIMESTAMPTZ
-|stock management warehouse updated at
-|Zeitstempel der letzte Aktualisierung +
+|account contact updated at
+|Zeitstempel der letzten Aktualisierung +
 Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====
