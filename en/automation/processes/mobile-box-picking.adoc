@@ -1,0 +1,309 @@
+= Best Practices: Mobile box picking
+:lang: en
+include::{includedir}/_header.adoc[]
+:position: 80
+:url: automation/processes/mobile-box-picking
+
+Mobile box picking is a way to pick several orders at once and bring them all back to the packing table, pre-sorted and ready to be shipped. This method is particularly well-suited for small items.
+
+The plentymarkets app includes a function for mobile box picking, which is described on this page. First, you'll read a short description of mobile box picking to help you understand the concept. Then you'll learn about the <<Configuring one-time settings, settings>>, which need to be configured one time only. These settings go into effect when you begin <<Picking items with the plentymarkets app, using the function>>.
+
+[IMPORTANT]
+.Requirements
+====
+This page assumes that you've already <<quick-start/quick-start-system-requirements#200, downloaded>> the plentymarkets app and installed it on the appropriate hardware.
+====
+
+[#100]
+== How does mobile box picking work?
+
+The warehouse technician has a trolley, which he takes with him through the warehouse. Any number of boxes are loaded onto the trolley. Each box represents an order that's ready to be processed.
+
+image::automatisierung/prozesse/assets/Grafik-Rollende-Kommissionierung.png[]
+
+The warehouse technician takes his trolley through the warehouse and looks at a mobile device, which tells him which items need to be picked. Duplicate items are grouped together. For example, if the same item is included in two different orders, then the warehouse technician will see that he needs to pick two copies of the item. The warehouse technician picks the items and puts them in the appropriate boxes. In other words, the warehouse technician picks items and immediately matches them with their corresponding orders.
+
+Once all of the boxes have been filled with items, the warehouse technician walks back to the packing table. He scans the first box and thus loads the corresponding order. The warehouse technician processes the order as usual. When he's finished, the box and order are unlinked. In other words, the box is made available again and the warehouse technician can re-use it on his next trip through the warehouse.
+
+[#200]
+== Configuring one-time settings
+
+[#300]
+=== Configuring settings in the plentymarkets back end
+
+Before you <<Picking items with the plentymarkets app, use the tool>>, you'll need to configure a few settings one time only in your plentymarkets system. These settings specify, e.g. which boxes are available, which warehouse technicians are in charge of mobile box picking and when the order and box should be unlinked.
+
+[#400]
+==== Making boxes available
+
+In the warehouse, every item is stored in its own <<stock-management/setting-up-a-warehouse#500, storage location>>. When the warehouse technician picks an order, he goes and gets the item from its storage location, and he places the item in a box. The item stays in that box until the warehouse technician has finished packing and shipping the order.
+
+As such, boxes are essentially just temporary storage locations. Just like "normal" storage locations, you'll need to create boxes one time in advance. Specifically, you'll create one storage location for each box. Then you'll specify that these storage locations should be used for mobile box picking.
+
+[.instruction]
+Making boxes available:
+
+. Log into your plentymarkets system.
+. Go to *System » System settings » Stock » Warehouse » Select warehouse » Storage locations*
+. Create new storage locations for mobile box picking. Refer to the chapter on <<stock-management/setting-up-a-warehouse#500, creating storage locations>>.
+. Set the storage location’s *Purpose* to *Box*.
+. *Save* the settings.
+
+[#500]
+==== Granting rights to warehouse technicians
+
+Consider for a moment which employees will use the mobile box picking function. Is everyone in your company responsible for picking and packing, or only a few, specific employees?
+
+If you want employees to pick and pack orders, they'll need to be authorised e.g. to see order information and know where individual items are stored. *Admin* <<basics/admin-tasks/manage-users#10, users>> are already authorised to do this. You won't need to make any changes to their account settings. On the other hand, *Backend* and *REST-API* accounts don't automatically have these rights.
+
+[.instruction]
+Granting rights to warehouse technicians:
+
+. Log into your plentymarkets system.
+. Go to *System » System settings » Settings » User » Rights » User*.
+. Click on *Search* in the upper left corner. +
+→ The user accounts will be displayed in an overview.
+. Click on whichever user account you want to modify. +
+→ The user rights will open.
+. Grant the *necessary rights*. Note <<table-settings-rights-picking>>.
+. *Save* the settings.
+
+[[table-settings-rights-picking]]
+.Granting user rights
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Show item image name*
+|Allow your warehouse technician to see a picture of the item in the app. +
+Under *Authorisations*, open the section *Items » Item editing » Item image » Item image name*. Place a check mark next to *Show item image name*.
+
+|*Update orders*
+|Allow your warehouse technician to change the order's status. +
+Under *Authorisations*, open the section *Orders*. Place a check mark next to *Update orders*.
+
+|*Show orders*
+|Allow your warehouse technician to see the order. +
+Under *Authorisations*, open the section *Orders*. Place a check mark next to *Show orders*.
+
+|*Create comment*
+|Allow your warehouse technician to write notes and attach them to the order. +
+Under *Authorisations*, open the section *Comments*. Place a check mark next to *Create comment*.
+
+|*Show warehouse location*
+|Allow your warehouse technician to see where the item is stored. +
+Under *Authorisations*, open the section *Stock » Warehouses » Warehouse location*. Place a check mark next to *Show warehouse location*.
+|====
+
+[TIP]
+.Edit several user accounts at once
+====
+Use <<basics/admin-tasks/manage-users#70, roles>> to grant the same rights to multiple users. Roles save you from having to modify each user account individually.
+====
+
+[#600]
+==== Modifying the order process
+
+You can integrate the packing half of mobile box picking into your company's existing <<automation/processes/setting-up-processes#, order processes>>. All you need to do is add a procedure and a sub-procedure to your existing process.
+
+[.instruction]
+Modifying the existing order process:
+
+. Log into your plentymarkets system.
+. Go to *System » System settings » Processes » Select process*.
+. Add the procedure and sub-procedure. Note <<table-procedure-subprocedure-picking>>.
+. *Save* the settings.
+
+[[table-procedure-subprocedure-picking]]
+.Procedure and sub-procedure for mobile box picking
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Procedure: Order search*
+|Add the *Order search* procedure to the *Single order processing* work step. This procedure searches for individual orders, with the goal of processing them further afterward. +
+Open the procedure’s settings and set the *Mode* to *Box search*. This specifies that your warehouse technician will scan the box - i.e. the temporary storage location - and then plentymarkets will load the corresponding order.
+
+|*Sub-procedure: Remove order from box*
+|Add *Remove order from box* sub-procedure to the *Order* procedure. This sub-procedure unlinks the order from the box. This makes the box available again, so that it can be re-used on the next trip through the warehouse.
+|====
+
+[TIP]
+.Example process
+====
+You don't already have an existing order process to modify? Or you'd like to see the procedure and sub-procedure in the context of an example process? No problem! We're happy to provide you with an example process for mobile box picking.
+====
+
+[#700]
+=== Configuring settings in the plentymarkets app
+
+Before you <<Picking items with the plentymarkets app, use the tool>>, you'll need to configure a few settings one time only in the plentymarkets app. These settings specify, e.g. how many orders should be picked at once and how the app should react if something goes wrong.
+
+[.instruction]
+Configuring the settings:
+
+. Log into the plentymarkets app.
+. Tap on the *menu symbol* in the upper left corner.
+. Tap on *Settings » Mobile box picking*. +
+→ The settings for mobile box picking will open.
+. Carry out the settings. Note <<table-settings-mobile-box-picking>>.
+
+[[table-settings-mobile-box-picking]]
+.Configuring settings in the plentymarkets app
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Initial status*
+|Which orders do you want to pick? When you use the tool later, you'll see a list of items to pick. This list only includes items from orders that are currently in this status. +
+*_Tip:_* You can customise the statuses in this drop-down list. This is done in the menu <<orders/managing-orders#1200, *System » System settings » Orders » Status*>>.
+
+|*New status*
+|How do you want to flag orders that are currently being picked? Change the order's status, so that it's not possible to accidentally start picking the same order twice. +
+*_Tip:_* You can customise the statuses in this drop-down list. This is done in the menu <<orders/managing-orders#1200, *System » System settings » Orders » Status*>>.
+
+|*Error status*
+|How should the app react if something goes wrong? If an error occurs while picking an order, the app will change that order's status to whatever is selected here. Later, you can go into plentymarkets, search for all the faulty orders with this status and then process these orders separately. +
+*_Tip:_* You can customise the statuses in this drop-down list. This is done in the menu <<orders/managing-orders#1200, *System » System settings » Orders » Status*>>.
+
+|*Warehouse*
+|In which warehouse do you want to pick? When you use the tool later, you'll see a list of items to pick. This list only includes items that are stored in this warehouse. +
+*_Tip:_* You can customise the warehouses in this drop-down list. This is done in the menu <<stock-management/setting-up-a-warehouse#200, *System » System settings » Stock » Warehouse*>>.
+
+|*Default number of boxes*
+|How many orders do you typically pick at once? When you use the tool later, this number will be suggested by default. However, you will still be able to manually increase or decrease the number.
+
+|*Template*
+|What should the <<Finding the items in the warehouse, list of items>> look like? The plentymarkets app comes with a default template, which is appropriate for most picking processes. However, you can create additional templates in the menu *System » System settings » plenty app » Mobile pick list*. Once you've created a template, you'll be able to select it from the dropdown list here. +
+*_Tip:_* Templates let you control, e.g. which information is displayed first, second, third, etc and which font size each piece of information should have.
+|====
+
+[#800]
+== Picking items with the plentymarkets app
+
+Once you've finished <<Configuring one-time settings, configuring the one-time settings>>, you can begin using the plentymarkets app to pick several orders at once and bring them all back to the packing table, pre-sorted and ready to be shipped.
+
+[IMPORTANT]
+.Are any orders available?
+====
+The app will only process orders that meet the criteria saved in the <<Configuring one-time settings, settings>>. In other words, an order will only be processed if it relates to the correct warehouse and if it is currently in the initial status. If no orders currently meet these criteria, then there will be no orders to pick.
+====
+
+[#900]
+=== Specifying the number of boxes
+
+How many boxes are on your order picking trolley? Enter the number of boxes that you want to work with, i.e. the number of orders that you want to pick simultaneously.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+[.instruction]
+Specifying the number of boxes:
+
+. Log into the plentymarkets app.
+. Tap on the *menu symbol* in the upper left corner.
+. Tap *Mobile box picking*. +
+→ The start screen is displayed.
+. Tap the plus or minus to increase or decrease the <<Configuring settings in the plentymarkets app, pre-defined number>> of boxes.
+. Tap *Start* when you're ready to go. +
+→ The corresponding orders will be displayed on an item list. Their order status will change to whichever <<Configuring settings in the plentymarkets app, new status>> you chose in the settings.
+
+
+[#1000]
+=== Finding the items in the warehouse
+
+plentymarkets automatically creates a list of all the items that are ready to be picked in the warehouse. Duplicate items are grouped together. For example, if the same item is included in two different orders, then the warehouse technician will see that he needs to pick two copies of the item.
+
+The list includes important information about the items that are ready to be picked. Not only does the warehouse technician see how many copies of an item he should pick, but he also sees where the item is stored and what the item is called. You can control which information is displayed on the list. Simply create a <<Configuring one-time settings, template>> before you start picking items.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+Now the warehouse technician takes his trolley and walks over to where the first item is stored. Once he's there, he scans the barcode of the first item. Alternatively, he can tap on the item in the app.
+
+[.instruction]
+Working with the item list:
+
+. Take a look at the list to find out where the item is stored.
+. Take the order picking trolley over to the item.
+. Scan the item's barcode or tap on the item in the app.
+
+[TIP]
+.Picking a different item first, second, third, etc
+====
+While generating the item list, plentymarkets calculates the shortest possible path through the warehouse. In other words, plentymarkets sorts the items so that picking is as easy as possible. However, if the warehouse technician still wants to pick a different item first, second, third, all he needs to do is tap on the three dots.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+Now the warehouse technician can decide how he wants to proceed. He can:
+
+* move the item to the bottom of the list, e.g. if he'd prefer to pick this item later.
+* remove the item from the list completely, e.g. if the item is not currently in stock. In this case, all of the orders that contain this item are placed in an <<Configuring one-time settings, error status>>.
+* save a note. The note is attached to all of the orders that contain this item.
+====
+
+[#1100]
+=== Linking the order to a box
+
+Which box do you want to temporarily store this item in? Scan an empty box or tap on an empty box in the app. This links the order to the box.
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+[TIP]
+.Need help deciding?
+====
+Do you have boxes in several different sizes and you're not sure which box you should choose? Swipe left to see information about the order. Here you'll see how big the order is and you can decide which box is the best fit.
+====
+
+[IMPORTANT]
+.Orders with multiple items
+====
+Some orders contain more than just one item. If you've already scanned the first item and linked it to a box, then you won't need to link the second item with a new box too. Instead, you'll continue using the box that you've already linked.
+====
+
+[#1200]
+=== Picking items
+
+The app displays important information about the picking process. You'll see, e.g.:
+
+* how many copies of the item you should pick
+* where the item is currently stored, i.e. its storage location
+* which box you should put each copy of the item in
+
+////
+image::automatisierung/prozesse/assets/beispielprozess_grobkommissionierung.png[]
+////
+
+[.instruction]
+Picking items:
+
+. Take a look at the app to see information about the picking process.
+. Scan the item or tap the plus/minus to specify how many copies of the item you've picked. +
+*_Note:_* Every time you scan the item, the number automatically increases by one.
+. Place the item in the corresponding box.
+. Tap the green check mark to finish the picking process. +
+→ plentymarkets links the item to the box. The item's storage location is changed to the temporary storage location. plentymarkets keeps a record of this <<stock-management/managing-stocks#1100, stock movement>>.
+. Repeat steps 1 through 4 for every order that contains the item. +
+→ Once you've finished picking this item, the screen changes. You'll see the <<Finding the items in the warehouse, list of items>> again and you can begin picking the next item. +
+→ Once you've finished picking all of the items, you'll see a success message.
+. Click on *Complete* to close the success message.
+
+[TIP]
+.Not enough copies in stock?
+====
+Have you come across an item where there aren’t enough copies in the warehouse? For example, should you pick three copies but only two are available? You don't need to cancel the entire picking process. Simply enter however many copies of the item are available and then tap on the brown arrow. Afterwards, you'll see a message, which tells you that the quantity is incorrect. Here you can also write a note, which will be attached to the order in your plentymarkets system. The order will be switched to the error status and it can be processed separately later.
+====
+
+
+[#1300]
+=== Packing items
+
+Once all of the boxes have been filled with items, the warehouse technician walks back to the packing table. He scans the first box and thus loads the corresponding order. The warehouse technician <<Modifying the order process, processes this order as usual>>. Outgoing items are booked from the temporary storage location, i.e. from the box.
+
+When he's finished, the box and order are unlinked. In other words, the box is made available again and the warehouse technician can re-use it on his next trip through the warehouse.
