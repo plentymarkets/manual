@@ -40,7 +40,7 @@ Dateiname: *orders-xxx.csv.gz*
 
 |limitDay
 |Zeilen pro Tag
-|bis zu 50.0000
+|bis zu 100.000
 |Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
 
 |earliestPossibleDataDate
@@ -65,13 +65,23 @@ Dateiname: *orders-xxx.csv.gz*
 
 |defaultActive
 |Standardmäßig aktiv
-|nein
-|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Daten » Rohdaten* aktiviert wurde.
+|yes
+|Der Export läuft standardmäßig automatisch im Hintergrund.
 
 |interval
 |Intervall
 |täglich
 |Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
+|shouldProcessed
+|
+|ja
+|
 
 |====
 
@@ -81,31 +91,37 @@ include::./_textblocks/datenspalten.adoc[]
 
 [[tabelle-datenspalten-orders]]
 .Datenspalten des Formats *orders*
-[cols="1,3,3"]
+[cols="1,3,3,3"]
 |====
-|Spaltenname |Vollständige Bezeichnung |Erläuterung
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
 
 |plenty_id
+|INTEGER NOT NULL
 |plenty ID
 |ID des plentymarkets Systems
 
-|o_id
+|*o_id (Primary key)*
+|VARCHAR NOT NULL
 |order ID
 |ID des Auftrags
 
 |o_plenty_id
+|INTEGER NOT NULL
 |order plenty ID
 |ID des plentymarkets Systems oder Mandanten, über die der Auftrag angelegt wurde
 
 |o_origin_order_ID
+|VARCHAR
 |order origin order ID
 |ID des übergeordneten Hauptauftrags. Diese ID wird nur bei Auftragstypen ausgegeben, die einem sogenannten Hauptauftrag untergeordnet ist (beispielsweise Gutschriften, Retouren und Lieferaufträge).
 
 |o_status
+|DECIMAL(6,4) NOT NULL
 |order status
 |Status des Auftrags im Dezimalformat. Je nach den im System eingerichteten Status werden Zahlen mit bis zu 4 Nachkommastellen ausgegeben. Die IDs der Standardstatus finden Sie auf der Handbuchseite <<basics/interne-IDs#120, Interne IDs in plentymarkets>>.
 
 |o_referrer
+|DECIMAL(5,2)
 |order referrer
 |Herkunft des Auftrags. +
 Mögliche Werte: +
@@ -122,10 +138,12 @@ Mögliche Werte: +
 Weitere mögliche Werte für Auftragsherkünfte finden Sie auf der Handbuchseite <<basics/interne-IDs#90, Interne IDs in plentymarkets>>.
 
 |o_global_referrer
+|DECIMAL(5,2)
 |order global referrer
 |Globale Herkunft des Auftrags
 
 |o_type
+|VARCHAR NOT NULL
 |order type
 |Auftragstyp +
 Mögliche Werte: +
@@ -141,36 +159,42 @@ multi-order = Sammelauftrag +
 multi credit note = Sammelgutschrift
 
 |ac_id
+|VARCHAR NOT NULL
 |account contact id
 |ID des Kontakts, der dem Auftrag zugeordnet ist
 
 |o_shipping_profile
+|INTEGER NOT NULL
 |order shipping profile
 |ID des Versandprofil des Auftrags
 
+|smw_id
+|VARCHAR NOT NULL
+|stock management warehouse id
+|ID des Lagers, das dem Auftrag zugeordnet ist
+
 |o_created_at
+|TIMESTAMPTZ
 |order created at
 |Zeitstempel der Auftragsanlage +
 Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |o_goods_issue_at
+|TIMESTAMPTZ
 |order goods issue at
 |Zeitstempel der Buchung des Warenausgangs +
 Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |o_paid_at
+|TIMESTAMPTZ
 |order paid at
 |Zeitstempel der Buchung des Zahlungseingangs +
 Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |o_updated_at
+|TIMESTAMPTZ
 |order updated at
 |Zeitstempel der letzten Aktualisierung des Auftrags +
 Datumsformat: MM/DD/YY HH:MI:SS TZ
-
-|smw_id
-|stock management warehouse id
-|ID des Lagers, das dem Auftrag zugeordnet ist
-
 
 |====
