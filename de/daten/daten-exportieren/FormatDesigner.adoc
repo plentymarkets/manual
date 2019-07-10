@@ -697,38 +697,38 @@ Für den Export von Bestand stehen die in <<tabelle-felder-bestand>> aufgelistet
 |====
 |Feld |Erläuterung
 
-|warehouseId
-|ID des Lagers
-
-|reservedListing
-|Für Listings reservierte Menge
-
-|reservedBundles
-|Für Artikelpakete reservierte Menge
-
-|valueOfGoods
-|Warenwert (Einkaufspreis * Physischer Warenbestand)
-
-|purchasePrice
-|Einkaufspreis
-
-|physicalStock
-|Physischer Warenbestand
-
-|reservedStock
-|Reservierter Warenbestand
+|deltaReorderLevel
+|Benötigte nachbestellte Menge, um den Meldebestand zu erreichen
 
 |netStock
 |Netto-Warenbestand
 
+|physicalStock
+|Physischer Warenbestand
+
+|purchasePrice
+|Einkaufspreis
+
 |reorderLevel
 |Netto-Warenbestand + nachbestellte Menge + Reorder Level Delta
 
-|deltaReorderLevel
-|Benötigte nachbestellte Menge, um den Meldebestand zu erreichen
+|reservedBundles
+|Für Artikelpakete reservierte Menge
+
+|reservedListing
+|Für Listings reservierte Menge
+
+|reservedStock
+|Reservierter Warenbestand
+
+|valueOfGoods
+|Warenwert (Einkaufspreis * Physischer Warenbestand)
 
 |virtualPhysicalStock
 |Gesamter physischer Warenbestand; Warenbestand von allen Lagern mit dem Lager-Typ = 0 (Vertrieb)
+
+|warehouseId
+|ID des Lagers
 
 |warehouseName
 |Name des Lagers, aus dem die Ware ausgebucht oder in das die Ware eingebucht wurde.
@@ -747,26 +747,26 @@ Für den Export von Lagerorten stehen die in <<tabelle-felder-lagerorte>> aufgel
 |====
 |Feld |Erläuterung
 
-|storageLocationId
-|ID des Lagerorts
-
-|warehouseId
-|ID des Lagers
-
-|quantity
-|Menge
+|batch
+|Charge
 
 |bestBeforeDate
 |Mindesthaltbarkeitsdatum
 
-|batch
-|Charge
+|quantity
+|Menge
+
+|storageLocationId
+|ID des Lagerorts
+
+|storageLocationName
+|Name des Lagerorts
 
 |updatedAt
 |Datum der letzten Aktualisierung
 
-|storageLocationName
-|Name des Lagerorts
+|warehouseId
+|ID des Lagers
 |====
 
 
@@ -859,24 +859,6 @@ Für den Export von Lagerdaten stehen die in <<tabelle-felder-lager>> aufgeliste
 |====
 |Feld |Erläuterung
 
-|warehouseZoneId
-|ID der Lagerzone
-
-|reorderLevel
-|Meldebestand
-
-|maximumStock
-|Maximalbestand
-
-|stockTurnoverInDays
-|Lagerreichweite in Tagen
-
-|storageLocation
-|Lagerort
-
-|stockBuffer
-|Bestandspuffer
-
 |isBatch
 |Chargen aktiviert
 
@@ -885,6 +867,24 @@ Für den Export von Lagerdaten stehen die in <<tabelle-felder-lager>> aufgeliste
 
 |lastUpdateTimestamp
 |Zeitstempel der letzten Aktualisierung
+
+|maximumStock
+|Maximalbestand
+
+|reorderLevel
+|Meldebestand
+
+|stockBuffer
+|Bestandspuffer
+
+|stockTurnoverInDays
+|Lagerreichweite in Tagen
+
+|storageLocation
+|Lagerort
+
+|warehouseZoneId
+|ID der Lagerzone
 |====
 
 
@@ -3967,14 +3967,26 @@ Für den Export von Lagerorten stehen die in <<tabelle-felder-lagerorte>> aufgel
 |====
 |Feld |Erläuterung
 
+|fulllabel
+|Vollständiger Lagerortname (inklusive Pfad)
+
 |id
 |Lagerort-ID
+
+|label
+|Lagerortname (ohne Pfad)
 
 |levelId
 |Ebenen-ID
 
-|label
-|Lagerortname (ohne Pfad)
+|notes
+|Notizen
+
+|position
+|Position
+
+|properties
+|Eigenschaften
 
 |purposekey
 |Verwendungszweck
@@ -3982,20 +3994,8 @@ Für den Export von Lagerorten stehen die in <<tabelle-felder-lagerorte>> aufgel
 |statuskey
 |Status
 
-|position
-|Position
-
-|fulllabel
-|Vollständiger Lagerortname (inklusive Pfad)
-
 |types
 |Typ
-
-|notes
-|Notizen
-
-|properties
-|Eigenschaften
 |====
 
 [#1110]
@@ -4009,26 +4009,26 @@ Für den Export von Lagerortebenen stehen die in <<tabelle-felder-lagerortebenen
 |====
 |Feld |Erläuterung
 
-|id
-|Lagerortebenen-ID
-
-|parentId
-|Eltern-ID der Ebene
-
 |dimensionID
 |ID der Dimension
 
-|position
-|Position der Ebene
+|id
+|Lagerortebenen-ID
 
 |name
 |Name der Ebene
 
-|type
-|
+|parentId
+|Eltern-ID der Ebene
 
 |pathName
 |Lagerortpfad (ohne Lagerortname)
+
+|position
+|Position der Ebene
+
+|type
+|Typ der Ebene
 |====
 
 [#1120]
@@ -4042,14 +4042,14 @@ Für den Export von Lagerortdimensionen stehen die in <<tabelle-felder-lagerortd
 |====
 |Feld |Erläuterung
 
+|displayInName
+|Im Lagerortnamen anzeigen
+
 |id
 |ID der Dimension
 
-|parentID
-|Eltern-ID
-
-|warehouseID
-|Lager-ID
+|isActiveForPickupPath
+|In Laufweg einfließen lassen
 
 |level
 |Ebene
@@ -4057,17 +4057,17 @@ Für den Export von Lagerortdimensionen stehen die in <<tabelle-felder-lagerortd
 |name
 |Name der Dimension
 
-|shortcut
-|Kürzel
+|parentID
+|Eltern-ID
 
 |separator
 |Trenner
 
-|displayInName
-|Im Lagerortnamen anzeigen
+|shortcut
+|Kürzel
 
-|isActiveForPickupPath
-|In Laufweg einfließen lassen
+|warehouseID
+|Lager-ID
 |====
 
 [#1130]
@@ -4084,14 +4084,17 @@ Für den Export von Lagern stehen die in <<tabelle-felder-lager>> aufgelisteten 
 |id
 |Lager-ID
 
+|isInventoryModeActive
+|Inventur-Modus aktiv
+
+|logisticType
+|Zugeordnetes Reparaturlager (eigene Lager, DHL Fulfillment, Amazon)
+
 |name
 |Name des Lagers
 
 |note
 |Notiz
-
-|typeId
-|Lagertyp
 
 |onStockAvailability
 |Verfügbarkeit mit Bestand
@@ -4099,17 +4102,14 @@ Für den Export von Lagern stehen die in <<tabelle-felder-lager>> aufgelisteten 
 |outOfStockAvailability
 |Verfügbarkeit ohne Bestand
 
-|splitByShippingProfile
-|Nach Versandprofil splitten
-
 |repairWarehouseID
 |Zugeordnetes Reparaturlager
 
-|isInventoryModeActive
-|Inventur-Modus aktiv
+|splitByShippingProfile
+|Nach Versandprofil splitten
 
-|logisticType
-|Zugeordnetes Reparaturlager (eigene Lager, DHL Fulfillment, Amazon)
+|typeId
+|Lagertyp
 |====
 
 [#1140]
@@ -4144,77 +4144,77 @@ Während des Imports findet eine Korrektur des Warenbestands statt, d.h. der War
 |====
 |Feld |Erläuterung
 
-|*Stock*
-|Warenbestand
-
-|*WarehouseID*
-|ID des Lagers
-
-|*Reordered*
-|Nachbestellt
-
-|*StorageLocationId*
-|ID des Lagerortes
-
-|*StorageLocationName*
-|Name des Lagerortes
-
-|*ReservedStock*
-|Reservierter Warenbestand
-
-|*Batch*
-|Charge
-
-|*BestBefore*
-|Mindesthaltbarkeitsdatum
-
-|*ItemId*
-|ID des Artikels
-
-|*ItemDescriptionName*
-|Name der Artikelbeschreibung
-
-|*ItemFlagOne*
-|Artikelmarkierung 1
-
-|*ItemFlagTwo*
-|Artikelmarkierung 2
-
-|*ItemManufacturerName*
-|Name des Artikelherstellers
-
-|*ItemManufacturerId*
-|ID des Artikelherstellers
-
-|*VariationId*
-|ID der Variante
-
-|*VariationName*
-|Name der Variante
-
-|*VariationBarcode*
-|Barcode der Variante
-
-|*VariationIsActive*
-|Variante ist aktiv
-
-|*VariationModel*
-|Modell der Variante
-
-|*VariationNumber*
-|Nummer der Variante
-
-|*VariationTags*
-|Tags der Variante
-
-|*PurchasePrice*
-|Einkaufspreis
-
-|*AveragePrice*
+|*averagePrice*
 |Durchschnittspreis
 
-|*Bundle*
+|*batch*
+|Charge
+
+|*bestBefore*
+|Mindesthaltbarkeitsdatum
+
+|*bundle*
 |Paket
+
+|*itemDescriptionName*
+|Name der Artikelbeschreibung
+
+|*itemFlagOne*
+|Artikelmarkierung 1
+
+|*itemFlagTwo*
+|Artikelmarkierung 2
+
+|*itemId*
+|ID des Artikels
+
+|*itemManufacturerId*
+|ID des Artikelherstellers
+
+|*itemManufacturerName*
+|Name des Artikelherstellers
+
+|*purchasePrice*
+|Einkaufspreis
+
+|*reordered*
+|Nachbestellt
+
+|*reservedStock*
+|Reservierter Warenbestand
+
+|*stock*
+|Warenbestand
+
+|*storageLocationId*
+|ID des Lagerortes
+
+|*storageLocationName*
+|Name des Lagerortes
+
+|*variationBarcode*
+|Barcode der Variante
+
+|*variationId*
+|ID der Variante
+
+|*variationIsActive*
+|Variante ist aktiv
+
+|*variationModel*
+|Modell der Variante
+
+|*variationName*
+|Name der Variante
+
+|*variationNumber*
+|Nummer der Variante
+
+|*variationTags*
+|Tags der Variante
+
+|*warehouseID*
+|ID des Lagers
 |====
 
 [#1160]
@@ -4227,6 +4227,9 @@ In <<tabelle-felder-stock-movement>> werden Felder erläutert, die für den Expo
 |====
 |*Feld* |*Erläuterung*
 
+|attributeValues
+|Attributwerte
+
 |entryDate
 |Datum der Warenbewegung
 
@@ -4237,9 +4240,6 @@ In <<tabelle-felder-stock-movement>> werden Felder erläutert, die für den Expo
 |Anzahl des bewegten Bestands. Anhand des Vorzeichens ist erkennbar, ob Bestand ein- oder ausgebucht wurde. +
 -: Bestand wurde ausgebucht +
 +: Bestand wurde eingebucht
-
-|attributeValues
-|Attributwerte
 
 |reasonId
 |ID des Warenbeweggrundes

@@ -1,14 +1,14 @@
-= itemManufacturer
+= users
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: itemManufacturer, Report, Rohdaten
-:position: 50
-:url: daten/report/datenformate/itemmanufacturer
+:keywords: users, Report, Rohdaten
+:position: 180
+:url: daten/report/datenformate/users
 
-:datenformat: pass:quotes[*itemManufacturer*]
-:daten: Herstellerdaten
-:spezifikationen: <<tabelle-spezifikationen-itemmanufacturer>>
-:datenspalten: <<tabelle-datenspalten-itemmanufacturer>>
+:datenformat: pass:quotes[*users*]
+:daten: Benutzer
+:spezifikationen: <<tabelle-spezifikationen-users>>
+:datenspalten: <<tabelle-datenspalten-users>>
 
 include::./_textblocks/einleitung.adoc[]
 
@@ -16,17 +16,17 @@ include::./_textblocks/einleitung.adoc[]
 
 include::./_textblocks/spezifikationen.adoc[]
 
-[[tabelle-spezifikationen-itemmanufacturer]]
-.Technische Spezifikationen des Formats *itemManufacturer*
-[cols=4]
+[[tabelle-spezifikationen-users]]
+.Technische Spezifikationen des Formats *users*
+[cols="4"]
 |====
 |Eigenschaft |Bedeutung |Wert |Erläuterung
 
 |dataName
 |Name
-|itemManufacturer
+|users
 |Name des Creator-Prozesses und Präfix der erstellten Datei. +
-Dateiname: *itemManufacturer-xxx.csv.gz*
+Dateiname: *users-xxx.csv.gz*
 
 |fileFormat
 |Dateiformat
@@ -45,23 +45,23 @@ Dateiname: *itemManufacturer-xxx.csv.gz*
 
 |limitPage
 |Zeilen pro Anfrage
-|bis zu 250
+|bis zu 500
 |Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
 
 |limitDay
 |Zeilen pro Tag
-|bis zu 250
+|bis zu 1.000
 |Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
 
 |earliestPossibleDataDate
 |Frühester Zeitpunkt
-|2017-01-01
-|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nicht gefiltert.
+|2006-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
 
 |dataUpdatedAtColumnName
 |Spaltenbezeichnung
-|---
-|Die Herstellerdaten werden nicht gefiltert, da es sich bei dem Filtertyp um "singleDump" handelt.
+|u_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
 
 |deleteRawDataAfterDaysMinimum
 |Minimale Anzahl an Tagen bis zur Löschung
@@ -73,28 +73,47 @@ Dateiname: *itemManufacturer-xxx.csv.gz*
 |80
 |Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
 
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
 |====
 
 == Datenspalten
 
 include::./_textblocks/datenspalten.adoc[]
 
-[[tabelle-datenspalten-itemmanufacturer]]
-.Datenspalten des Formats *itemManufacturer*
-[cols="1,3,3"]
+[[tabelle-datenspalten-users]]
+.Datenspalten des Formats *users*
+[cols="1,3,3,3"]
 |====
-|Eigenschaft |Vollständige Bezeichnung |Erläuterung
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
 
 |plenty_id
-|plenty ID
+|INTEGER NOT NULL
+|plenty id
 |ID des plentymarkets Systems
 
-|im_id
-|item ID
-|ID des Herstellers
+|*u_id (Primary key)*
+|VARCHAR NOT NULL
+|user id
+|ID des Benutzers
 
-|im_name
-|item manufacturer name
-|Name des Herstellers
+|u_real_name
+|VARCHAR NOT NULL
+|user real name
+|Realer Name des Benutzers
+
+|u_lang
+|VARCHAR
+|user language
+|UI-Sprache des Benutzers
+
+|*u_updated_at*
+|TIMESTAMPTZ
+|user updated at
+|Zeitstempel der letzten Aktualisierung +
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====
