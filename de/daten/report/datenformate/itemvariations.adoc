@@ -2,14 +2,19 @@
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: itemVariations, Report, Rohdaten
-:position: 50
+:position: 60
 :url: daten/report/datenformate/itemvariations
 
-Der Datenformat-Creator *itemVariations* exportiert die im System vorhandenen Variantendaten gemäß der im Folgenden definierten Regeln und speichert diese im Cloud-Speicher ab.
+:datenformat: pass:quotes[*itemVariations*]
+:daten: Variantendaten
+:spezifikationen: <<tabelle-spezifikationen-itemvariations>>
+:datenspalten: <<tabelle-datenspalten-itemvariations>>
+
+include::./_textblocks/einleitung.adoc[]
 
 == Technische Spezifikationen
 
-<<tabelle-spezifikationen-itemvariations>> erläutert die verfügbaren Eigenschaften und die dazugehörigen Werte.
+include::./_textblocks/spezifikationen.adoc[]
 
 [[tabelle-spezifikationen-itemvariations]]
 .Technische Spezifikationen des Formats *itemVariations*
@@ -40,17 +45,17 @@ Dateiname: *itemVariations-xxx.csv.gz*
 
 |limitPage
 |Zeilen pro Anfrage
-|bis zu 4.000
+|bis zu 5.000
 |Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
 
 |limitDay
 |Zeilen pro Tag
-|bis zu 40.000
+|bis zu 100.000
 |Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
 
 |earliestPossibleDataDate
 |Frühester Zeitpunkt
-|2017-01-01
+|2014-01-01
 |Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
 
 |dataUpdatedAtColumnName
@@ -68,63 +73,79 @@ Dateiname: *itemVariations-xxx.csv.gz*
 |80
 |Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
 
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
 |====
 
 == Datenspalten
 
-<<tabelle-datenspalten-itemvariations>> erläutert die Datenspalten des Formats *itemVariations*, die beim Export der Rohdaten in der CSV-Datei gespeichert werden.
+include::./_textblocks/datenspalten.adoc[]
 
 [[tabelle-datenspalten-itemvariations]]
 .Datenspalten des Formats *itemVariations*
-[cols="1,3,3"]
+[cols="1,3,3,3"]
 |====
-|Spaltenname |Vollständige Bezeichnung |Erläuterung
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
 
 |plenty_id
+|INTEGER NOT NULL
 |plenty id
 |ID des plentymarkets Systems
 
-|iv_id
+|*iv_id (Primary key)*
+|VARCHAR NOT NULL
 |item variation id
 |ID der Variante
 
 |i_id
+|VARCHAR NOT NULL
 |item id
 |ID des Artikels
 
-|iv_id
-|item variation id
+|im_id
+|VARCHAR NOT NULL
+|item manufacturer id
 |ID des Herstellers
 
 |iv_attribute_value_set_id
+|VARCHAR
 |item variation attribute value set id
 |ID der Kombination aus Inhalt und Attributwert
 
 |c_id
+|VARCHAR
 |category id
 |ID der Kategorie
 
 |iv_number
+|VARCHAR
 |item variation number
 |Nummer der Variante
 
 |i_name
+|VARCHAR
 |item name
 |Name des Artikels
 
 |iv_active
+|SMALLINT NOT NULL
 |item variation active
 |Mögliche Werte: +
 0 = Variante ist inaktiv +
 1 = Variante ist aktiv
 
 |iv_availability
+|SMALLINT NOT NULL
 |item variation availability
 |ID der Verfügbarkeit der Variante +
 Mögliche Werte: +
 1 bis 10
 
-|iv_updated_at
+|*iv_updated_at*
+|TIMESTAMPTZ
 |item variation updated at
 |Zeitstempel der letzten Aktualisierung +
 Datumsformat: MM/DD/YYYY HH:MI:SS TZ

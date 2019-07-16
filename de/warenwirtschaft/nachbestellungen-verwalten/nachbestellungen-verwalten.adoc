@@ -1,0 +1,664 @@
+= Alt: Nachbestellungen verwalten
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Nachbestellung, Nachbestellungen
+:position: 30
+:url: warenwirtschaft/nachbestellungen-verwalten/nachbestellungen-verwalten
+
+Im Bestellwesen geht es hauptsächlich darum, zu erkennen welche Artikel bestellt werden müssen, diese anschließend zu bestellen und den Überblick zu behalten, wie weit die Bestellung ist. Um diesen Bereich effizient zu nutzen, ist es zu empfehlen, dass Sie im Vorfeld Lager anlegen und die Artikel mit Lieferanten verknüpfen. Nachdem eine Bestellung geliefert wurde, buchen Sie diese über den Wareneingang in Ihr System.
+
+[#100]
+== Bestellmengenvorschlag, Sortierung und Co vorbereiten
+
+Bevor Sie die erste Nachbestellung anlegen, legen Sie fest, welcher Zeitraum für die Berechnung des Nachbestellvorschlags verwendet wird.
+
+[.instruction]
+Bestellung vorbereiten:
+
+. Öffnen Sie das Menü **System » Systemeinstellungen » Waren » Bestellwesen » Einstellungen**.
+. Nehmen Sie die Einstellungen vor. Beachten Sie dabei die Erläuterungen in Tabelle 1.
+. **Speichern** Sie die Einstellungen.
+
+.Vorbereitende Einstellungen für das Bestellwesen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|**Abverkaufszeitraum**
+|Einen Zeitraum wählen. Der Zeitraum gibt vor, welcher Zeitraum für die Berechnung des durchschnittlichen Abverkaufs berücksichtigt wird. Dieser Durchschnittsverkauf fließt in die Berechnung des Nachbestellungsvorschlags von Artikeln ein.
+
+|**Voreingetragener Wert für Meldebestand/Bestellmenge**
+a|Die Einstellung bestimmt, wie der Bestellmengenvorschlag berechnet wird. +
+Sie können wählen zwischen: +
+**Meldebestand - Nettobestand - bestellte Menge** oder +
+**(Meldebestand - Nettobestand - bestellte Menge) + (Durchschnittsverbrauch * (Wiederbeschaffungszeit + Lagerreichweite))** +
+ +
+Berechnungsparameter für den Bestellmengenvorschlag:
+
+* **Meldebestand** = Bestandsmenge, bei der nachbestellt werden soll. Beachten Sie die Erläuterungen zum <<#500, statischen und dynamischen Meldebestand>>.
+* **Nettobestand** = Verkaufbare Menge des Lagerbestands.
+* **Bestellte Menge** = Bereits nachbestellt, aber noch nicht geliefert.
+* **Durchschnittsverbrauch** = Tagesdurchschnittsverkaufsmenge. Den Zeitraum, der zum Ermitteln des Tagesdurchschnitts verwendet wird, legen Sie mit dem Abverkaufszeitraum fest.
+* **Wiederbeschaffungszeit** = Lieferzeit eines Lieferanten. In einer Variante im Tab **Lieferant** wird die Lieferzeit in Tagen eingetragen.
+* **Lagerreichweite** = Eingetragene Lagerreichweite. Die Lagerreichweite wird pro Variante und Lager im Tab **Lager** einer Variante eingetragen und stellt einen Reichweitenwunsch dar, anhand dessen der Bestellmengenvorschlag ermittelt wird.
+
+|**Artikelsortierung in einer Nachbestellung**
+|Ein Sortierungskriterium und zwischen aufsteigender und absteigender Sortierung wählen. +
+**aufsteigend** = beginnt mit dem niedrigsten Wert +
+**absteigend** = beginnt mit dem höchsten Wert
+
+|**Voreingetragener Wert für Buchung/Teilmenge**
+|Zwischen **0** und der nachbestellten **Bestellmenge** einer Variante für den Mengenvorschlag zum Buchen einer Teillieferung wählen. +
+Weiter unten auf dieser Seite finden Sie alles zum Buchen einer **Teillieferung**.
+
+|**Artikelpakete**
+|Diese Option bestimmt, wie ein Artikelpaket einer Nachbestellung hinzugefügt werden soll. +
+Wenn die Option auf **splitten** steht, werden die **Basisartikel eines Artikelpakets** einer Nachbestellung hinzugefügt und nicht das komplette Paket. Wenn die Option auf **nicht splitten** steht, wird das **Artikelpaket** komplett einer Nachbestellung hinzugefügt. +
+**Wichtig:** Beachten Sie bitte folgende Besonderheit für die Option **nicht splitten**. Wenn Sie den **Wareneingang für ein Artikelpaket** buchen, werden die **Basisartikel des Pakets** eingebucht, da es technisch nicht möglich ist, ein Artikelpaket einzubuchen.
+|====
+
+Ein weiterer Faktor, der Einfluss auf den Bestellmengenvorschlag hat, ist die Mindestabnahme. Wenn Ihr Lieferant eine Mindestabnahme vorgibt und Sie diese Mindestabnahmemenge eintragen, beträgt der Bestellmengenvorschlag bei Unterschreitung des Meldebestands wenigstens die Mindestabnahme. Wo Sie die Mindestabnahme eintragen, erfahren Sie im Kapitel **Mindestabnahme einer Variante festlegen**.
+
+[#200]
+== Status für Nachbestellungen einrichten
+
+Neun Status stehen Ihnen für Nachbestellungen zur Verfügung. Die Status können in den Backend-Sprachen Deutsch und Englisch eingetragen werden. Für jeden Status ist bereits eine Standardbenennung in der Systemsprache gespeichert. Sie können auch eigene Benennungen eintragen.
+
+[.instruction]
+Bestellstatus einrichten:
+
+. Öffnen Sie das Menü **System » Systemeinstellungen » Waren » Bestellwesen » Bestellstatus**.
+. Wechseln Sie in das Tab **Neue Sprache**.
+. Wählen Sie Deutsch oder Englisch aus der Dropdown-Liste.
+. **Speichern** Sie die Einstellungen. +
+→ Die Sprache wird im Tab **Sprache** hinzugefügt und das Tab geöffnet.
+. Öffnen Sie die Sprache.
+. Tragen Sie eigene Benennungen für die Status ein.
+. **Speichern** Sie die Einstellungen.
+
+.Standardbenennung Bestellstatus und Bearbeitungsoptionen
+[cols="1,3"]
+|====
+|Standardbenennung |Erläuterung
+
+|**0 - Offen**
+|Nachbestellung ist noch nicht abgeschickt und Artikel können hinzugefügt, entfernt oder die Anzahl geändert werden.
+
+|**1 - Bestellt**
+|Nachbestellung wurde abgeschickt und Artikel können nicht mehr verändert werden. Wird beim Bestellen automatisch eingestellt.
+
+|**2 - Bestätigt**
+|Der Lieferant hat den Empfang der Nachbestellung bestätigt. Nur in diesem Status kann Ware in der Nachbestellung eingebucht werden.
+
+|**3 - Teilweise geliefert**
+|Nur ein Teil der nachbestellten Ware wurde geliefert. Wenn nur ein Teil der bestellten Ware gebucht wird, wird dieser Status automatisch eingestellt.
+
+|**4 - Geliefert**
+|Alle Artikel wurden in der bestellten Anzahl geliefert. Wenn die bestellte Ware in mehreren Schritten gebucht wurde, wird der Status automatisch gesetzt, sobald die Nachbestellung vollständig gebucht ist – siehe Kapitel <<warenwirtschaft/nachbestellungen-verwalten#1700, Teillieferung einbuchen>>.
+
+|**5 - Eingebucht**
+|Wenn die komplette Nachbestellung auf einmal geliefert und eingebucht wird, wird der Status automatisch eingestellt – siehe Kapitel **Ware einbuchen**.
+
+|**8 - Lieferung nicht möglich**
+|Lieferant kann nicht liefern.
+
+|**9 - Lieferung storniert**
+|Lieferung wird durch Lieferanten storniert oder durch Sie als Händler.
+|====
+
+[NOTE]
+.Standardbenennung wiederherstellen
+====
+Wenn Sie für einen Bestellstatus wieder die Standardbenennung verwenden möchten, löschen Sie den Eintrag unter **Eigene Bezeichnung** und klicken Sie auf Speichern.
+====
+
+[#300]
+== Dokument Nachbestellung einrichten
+
+Wenn Sie eine Nachbestellung abschicken, wird das Dokument Nachbestellung als PDF an Ihren Lieferanten gesendet. Welche Angaben wo und wie auf dem Dokument dargestellt werden, können Sie zuvor einrichten oder Sie arbeiten zunächst mit den vorhandenen Standardeinstellungen.
+
+[TIP]
+.Vorlage für das Nachbestellungsdokument mit Standardeinstellungen ist vorhanden
+====
+Der Bestellschein enthält Standardeinstellungen und muss deshalb nicht vorab eingerichtet werden, aber eine Anpassung an Ihr Unternehmen ist ratsam und kann jederzeit erfolgen.
+====
+
+[.instruction]
+Vorlagen anpassen:
+
+. Öffnen Sie das Menü **System » Systemeinstellungen » Aufträge » Dokumente » Nachbestellung**.
+. Nehmen Sie Einstellungen vor.
+. **Speichern** Sie die Vorlage.
+
+Wenn Sie von Lieferanten in verschiedensprachigen Ländern bestellen, legen Sie auch die Vorlage in verschiedenen Sprachen an.
+
+[#400]
+== Abschicken der Nachbestellung vorbereiten
+
+Mithilfe einer Ereignisaktion senden Sie beim Bestellen den Bestellschein automatisch an Ihren Lieferanten. Hierfür richten Sie zunächst eine E-Mail-Vorlage ein, die den Bestellschein als PDF im Anhang enthält. Anschließend richten Sie die Ereignisaktion ein. Die Ereignisaktion wird dann beim Bestellen automatisch ausgeführt und sorgt dafür, dass Ihr Lieferant die Bestellung als PDF erhält.
+
+[.instruction]
+E-Mail-Vorlage einrichten:
+
+. Öffnen Sie das Menü **System » Systemeinstellungen » Mandant » Mandant wählen » E-Mail » Vorlagen**.
+. Klicken Sie auf **Neue E-Mail-Vorlage**.
+. Tragen Sie einen Namen ein. +
+→
+Im Beispiel ist der Name "Bestellschein an Lieferant".
+. **Speichern** Sie die Einstellungen.
+. Wählen Sie aus der Dropdown-Liste **PDF-Anhang** die Option **Nachbestellung (PDF)**.
+. Wechseln Sie in das Tab **E-Mail-Nachricht**.
+. Tragen Sie einen Betreff ein.
+
+Richten Sie anschließend die Ereignisaktion für den automatischen E-Mail-Versand ein.
+
+[.collapseBox]
+.Senden des Bestellscheins an Lieferanten automatisieren:
+--
+. Öffnen Sie das Menü **System » Systemeinstellungen » Waren » Bestellwesen » Ereignisse**.
+. Klicken Sie auf **Ereignisaktion hinzufügen**.  +
+→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
+. Geben Sie einen Namen ein.
+. Wählen Sie das **Ereignis** gemäß Tabelle 3.
+. **Speichern** Sie die Einstellungen.
+. Nehmen Sie die Einstellungen gemäß Tabelle 3 vor.
+. Setzen Sie ein Häkchen bei **Aktiv**.
+. **Speichern** Sie die Einstellungen.
+--
+.Ereignisaktion zum automatischen Senden eines Bestellscheins an Lieferanten
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+|**Ereignis**
+|**Bestellscheindruck**
+|
+
+|**Filter 1**
+|**Lieferant**
+|**Alle, eine Auswahl oder einzelnen Lieferanten**
+
+|**Filter 2**
+|**Auftragslager**
+|**Alle oder eine Auswahl**
+
+|**Aktion**
+|**E-Mail versenden &gt; Eigene Vorlage "Bestellschein an Lieferant"**
+|
+|====
+
+[#500]
+== Meldebestand einer Variante festlegen
+
+Der Meldebestand zeigt an, bei welcher Menge einer Variante eine Nachbestellung veranlasst werden sollte. Sie können feste Werte für den Meldebestand pflegen, d.h. der Meldebestand ist statisch, oder den neuen dynamischen Meldebestand nutzen. Die Implementierung des dynamischen Meldebestands ist jedoch noch nicht vollumfänglich. Beachten Sie den Hinweis am Ende dieses Kapitels. +
+Im **Tab: Lager** einer Variante können Sie einen statischen **Meldebestand** eintragen. Zunächst ist die Menge 0 gespeichert, sodass erst dann eine Meldung erfolgt, wenn der komplette Bestand verkauft ist. Wenn Sie den Meldebestand bei 0 belassen, unterscheidet er sich im Grunde nicht von einem Nettobestand 0 und bietet Ihnen somit keine zusätzlichen Funktionen. Wenn Sie den Meldebestand sinnvoll nutzen möchten, tragen Sie einen Wert ein, der größer als 0 ist.
+
+[TIP]
+.Lager hinzufügen, um Meldebestand einzutragen
+====
+Ein statischer Meldebestand lässt sich nur eingeben, wenn der Variante ein Lager zugeordnet ist. Wenn kein Lager zugeordnet ist, fügen Sie zunächst das Lager hinzu.
+====
+
+[.instruction]
+Statischen Meldebestand eintragen:
+
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Variante öffnen » Tab: Lager**.
+. Tragen Sie eine Menge unter **Meldebestand** ein.
+. **Speichern** Sie die Einstellung.
+
+[TIP]
+.Artikel, die den Meldebestand unterschreiten, direkt auf der Startseite anzeigen
+====
+Auf der Startseite Ihres Systems können Sie anzeigen, wie viele Varianten eines Lagers den Meldebestand unterschritten haben. Fügen Sie dafür das Element **Artikel unter Meldebestand** hinzu. Ein Klick auf die Anzahl der Varianten öffnet das Menü **Waren » Warenbestände** und filtert nach Varianten unter Meldebestand.
+====
+
+Wenn weder eine Mindestabnahme noch ein Meldebestand für eine Variante eingetragen ist, beträgt der Bestellmengenvorschlag 0.
+
+[#dynamischerMeldebestand.subhead]
+Aktuelle Umsetzung des dynamischen Meldebestand
+
+Pro Lager können Sie entscheiden, ob Sie den dynamischen Meldebestand nutzen oder nicht. Wenn Sie den dynamischen Meldebestand nutzen, berechnet Ihr System den dynamischen Meldebestand jede Nacht im Hintergrund. Dieser berechnete dynamische Meldebestand wird noch in keinem Feld dargestellt, d.h. Sie sehen den Wert nicht. Die Differenz zum Meldebestand, MeldΔ, basiert jedoch auf dem berechneten Meldebestand. Die Differenz wird Ihnen z.B. in der Bestandsübersicht angezeigt. So können Sie anhand der Differenz absehen wann eine Nachbestellung erfolgen sollte.
+
+[IMPORTANT]
+.Wenn dynamischer Meldebestand genutzt wird, keinen statischen Meldebestand pflegen
+====
+Wenn Sie den dynamischen Meldebestand nutzen, dürfen Sie manuell keinen statischen Meldebestand eintragen. Belassen Sie den Meldebestand für die Varianten in dem Lager auf 0. Wenn ein Meldebestand größer als 0 gespeichert ist, wird die Berechnung des dynamischen Meldebestands nicht ausgeführt.
+====
+
+Der dynamische Meldebestand wird jede Nacht anhand der folgenden Formel berechnet:
+
+latexmath:[\mbox{Dynamischer Meldebestand} = {(\mbox{Ø Abverkauf} \cdot \mbox{Lagerreichweite}) + (\mbox{Ø Abverkauf} \cdot \mbox{kürzeste Lieferzeit})}]
+
+Erläuterung der Formelparameter:
+
+* Ø Abverkauf = durschnittlich verkaufte Menge
+* kürzeste Lieferzeit = kürzeste Lieferzeit einer Variante egal von welchem Lieferanten
+
+Die Differenz zum dynamischen Meldebestand (MeldΔ) wird im System dargestellt und berechnet sich folgendermaßen:
+
+latexmath:[\mbox{MeldΔ} = {(\mbox{dynamischer Meldebestand} - (\mbox{Nettobestand} + (\mbox{nachbestellte Menge})}]
+
+Die Einstellung für den dynamischen Meldebestand treffen Sie für jedes Lager in den <<warenwirtschaft/lager-einrichten/#Meldebestand_Variante_Lager, Lagereinstellungen>>.
+
+[#600]
+== Mindestabnahme einer Variante festlegen
+
+Die Mindestabnahme ist die Menge, die Sie Ihrem Lieferanten mindestens abnehmen müssen, wenn Sie bei Ihm bestellen. Wenn Sie eine Mindestabnahme für eine Variante eintragen, entspricht der Bestellmengenvorschlag für die Variante mindestens dieser Mindestabnahme. Ein Bestellmengenvorschlag wird wiederum nur angezeigt, wenn der Meldebestand erreicht wurde.
+
+[TIP]
+.Lieferant hinzufügen, um Mindestabnahme einzutragen
+====
+Eine Mindestabnahme lässt sich nur eingeben, wenn der Variante ein Lieferant zugeordnet ist. Wenn kein Lieferant zugeordnet ist, fügen Sie zunächst den Lieferanten hinzu.
+====
+
+[.instruction]
+Mindestabnahme festlegen:
+
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten » Artikel öffnen » Variante öffnen » Tab: Lieferant**.
+. Tragen Sie eine Menge unter Mindestabnahme ein.
+. **Speichern** Sie die Einstellung.
+
+Wenn weder eine Mindestabnahme noch ein Meldebestand für eine Variante eingetragen ist, beträgt der Vorschlag 0.
+
+[#700]
+== Varianten für die Nachbestellung identifizieren
+
+Am einfachsten erkennen Sie Varianten, die nachbestellt werden sollten, wenn Sie den Meldebestand in plentymarkets pflegen. Der Meldebestand ist der Bestand, bei dem eine Nachbestellung notwendig oder sinnvoll ist. Sobald also der Meldebestand erreicht oder unterschritten wurde, bestellen Sie am besten nach. +
+Die Höhe des Meldebestands bestimmen Sie für jede Variante individuell.
+
+Wenn Sie nicht mit dem Meldebestand arbeiten, haben Sie die Möglichkeit, Artikel anhand des Netto-Bestands zu filtern und anschließend alle Artikel, die den entsprechenden Bestandswert erreicht oder unterschritten haben, zu bestellen.
+
+[.instruction]
+Varianten für die Nachbestellung identifizieren:
+
+. Öffnen Sie das Menü **Waren » Warenbestände**.
+. Wählen Sie für den Filter **Beschränkung** die Option **Meldebestand erreicht/unterschritten**.
+. Wählen Sie für den Filter **Paket** die Option **Ohne**.
+. Wählen Sie für den Filter **Inaktiv** die Option **Nein**.
+. Wählen Sie ein Lager.
+. Klicken Sie auf **Suchen**.
+
+Wenn Sie alternativ Artikel anhand des Netto-Bestands filtern möchten, nutzen Sie den Filter **Warenbestand netto** mit der Option **&lt;=** und tragen einen Bestandswert ein.
+Setzen Sie außerdem den Filter **Beschränkung** auf **Alle**.
+
+[#800]
+== Nachbestellung anlegen
+
+Es stehen Ihnen vier Wege zur Verfügung, um Nachbestellungen anzulegen. +
+Sie können zuvor den Warenbestand prüfen und Nachbestellungen für Artikel anlegen, die den Meldebestand erreicht oder unterschritten haben.
+Sie können direkt aus einem Auftrag heraus für die im Auftrag enthaltenen Artikel eine Nachbestellung anlegen.
+Wenn Sie häufig Produktionsware verkaufen, können Sie so die Artikel direkt bei Ihrem Lieferanten bestellen. +
+Die dritte Möglichkeit besteht darin, eine Nachbestellung für einzelne Varianten im Datensatz eines Artikels anzulegen und die vierte darin, eine Nachbestellung unabhängig von Artikel, Bestand oder Auftragslage anzulegen.
+
+Egal auf welchem Weg Sie eine Nachbestellung anlegen, die folgenden Punkte gelten immer:
+
+* Nur Varianten mit einem Lieferanten und einem Lager sind bestellbar.
+* Pro Lager und Lieferant wird eine eigene Nachbestellung angelegt.
+* Angelegt heißt nicht, dass die Ware tatsächlich bestellt ist. So kann die Nachbestellung vor der Bestellung noch einmal geprüft werden.
+
+Eine angelegte Nachbestellung teilt sich in zwei Tabs, das Tab **Base** und das Tab **Ticket**. Das Tab **Base** einer Nachbestellung teilt sich wiederum in zwei Untermenüs, **Grundeinstellungen** und **Artikeldaten**. In den Grundeinstellungen erhalten Sie so auf einen Blick Informationen zu Status, Liefertermin, Lieferant etc. In den Artikeldaten sehen Sie dann bestellte, gelieferte und stornierte Artikel. Im Tab **Ticket** können Sie das Ticketsystem mit Ihren Nachbestellungen verbinden und so Arbeitsschritte bei einer Nachbestellung in Ihrem System abbilden.
+
+[#900]
+=== Nachbestellung für Varianten mit erreichtem oder unterschrittenem Meldebestand anlegen
+
+Auf diesem Weg bestellen Sie nur Artikel nach, die eine von Ihnen definierte Stückzahl erreicht haben. Im vorigen Kapitel wurde bereits beschrieben, wie Sie Artikel filtern, die den Meldebestand erreicht oder unterschritten haben. Die folgende Beschreibung schließt an das Filtern an.
+
+[IMPORTANT]
+.Bestellung erstellen nicht sichtbar
+====
+Wenn bei Ihnen die Schaltfläche **Bestellung erstellen** nicht sichtbar ist, prüfen Sie, ob links in den Filtern für **Bestellen** die Option **Ja** eingestellt ist. **Ja** muss eingestellt sein, damit Nachbestellungen ausgeführt werden können.
+====
+
+[.instruction]
+Nachbestellung für Artikel anlegen, die den Meldebestand erreicht oder unterschritten haben:
+
+. Öffnen Sie das Menü **Waren » Warenbestände**.
+. Führen Sie eine Suche nach Artikeln durch, die den Meldebestand erreicht oder untschritten haben.  +
+→ Siehe Kapitel **Varianten für die Nachbestellung identifizieren**.
+. Klicken Sie auf **Vorschläge übernehmen**, um den errechneten Bestellmengenvorschlag zu übernehmen. +
+→ Tragen Sie eventuell eigene Werte ein.
+. Klicken Sie auf **Bestellung erstellen**.
+
+[WARNING]
+.Nachbestellungen vor Seitenwechsel ausführen
+====
+Führen Sie eine Bestellung immer vor einem Seitenwechsel aus, da beim Seitenwechsel Ihre eingetragenen Mengen zurückgesetzt werden. So lange eine Bestellung für einen Lieferanten noch offen ist, werden weitere Artikel der Bestellung hinzugefügt.
+====
+
+Wenn Ihre Ergebnisliste mit Artikeln, die den Meldebestand erreicht oder unterschritten haben, mehrere Seiten umfasst hat, führen Sie die Suche erneut aus und bestellen Sie weitere Artikel. Solange eine Nachbestellung für den gleichen Lieferanten und das gleiche Lager offen ist, werden die Artikel der bereits vorhandenen Nachbestellung hinzugefügt.
+
+[#1000]
+===  Nachbestellung für Auftragspositionen anlegen
+
+Sie können aus einem Auftrag eine Nachbestellung anlegen. Im Auftrag haben Sie dann zwei Möglichkeiten für die Nachbestellung. Sie können alle Positionen des Auftrags nachbestellen oder nur ausgewählte Positionen.
+
+[TIP]
+.Unterschiede in der Nachbestellung beim Bestellen aller oder ausgewählter Positionen eines Auftrags
+====
+**Alle Positionen nachbestellen**
+
+Es wird eine auftragsbezogene Nachbestellung erzeugt, die alle Positionen enthält. Weitere Varianten können nachträglich nur noch in der Nachbestellung selbst hinzugefügt werden.
+
+**Einzelne Positionen wählen und nachbestellen**
+
+Wenn Sie eine Position wählen, wird ebenfalls eine auftragsbezogene Nachbestellung erzeugt. Jedoch können der Nachbestellung noch über mehrere Wege Varianten hinzugefügt werden: über andere Aufträge, über die Warenbestandssuche sowie in der Nachbestellung.
+====
+
+[.instruction]
+Alle Artikel eines Auftrags nachbestellen:
+
+. Öffnen Sie das Menü **Aufträge » Aufträge bearbeiten**.
+. Öffnen Sie einen Auftrag, für den Sie Ware bestellen möchten.
+. Öffnen Sie das Tab **Nachbestellung** des Auftrags.
+. Klicken Sie auf **Alle Positionen nachbestellen**. +
+→ Die Nachbestellung wird angelegt.
+
+Alternativ wählen Sie Auftragspositionen aus und klicken auf **Markierte Positionen nachbestellen**.
+
+[#1100]
+=== Nachbestellung für einzelne Variante anlegen
+
+Wenn Sie genau nur eine Variante eines Artikel bestellen möchten, bietet sich dieser Weg an.
+
+[.instruction]
+Nachbestellung für einzelne Variante anlegen:
+
+. Öffnen Sie das Menü **Artikel » Artikel bearbeiten**.
+. Öffnen Sie einen Artikel, für den Sie Ware bestellen möchten.
+. Öffnen Sie die Variante, die Sie bestellen möchten.
+. Öffnen Sie das Tab **Bestand** der Variante.
+. Öffnen Sie das Untertab **Warenbestand.**
+. Klicken Sie auf **Vorschläge übernehmen** oder tragen Sie eine **Menge** ein.
+. Klicken Sie auf **Bestellung erstellen**.
+
+[#1200]
+=== Nachbestellung für einen Lieferanten und ein Lager anlegen
+
+Sie haben auch die Möglichkeit, eine Nachbestellung für einen Lieferanten pro Lager anzulegen. Pro Lieferant und Lager deshalb, weil die Nachbestellung nur an einen Lieferanten geschickt werden kann, und pro Lager, damit eine Lieferadresse gilt. Sie wählen also zunächst den Lieferanten und das Lager und fügen in einem zweiten Schritt die Varianten hinzu. Die Varianten, die zum Hinzufügen angezeigt werden, sind abhängig vom gewählten Lieferanten und dem Lager. Der Lieferant muss also in den Variantendaten als Lieferant gespeichert sein und die Variante muss im gewählten Lager gelagert werden.
+
+[.instruction]
+Nachbestellung anlegen:
+
+.  Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+.  Klicken Sie auf **Neue Nachbestellung**. +
+→ Das Tab **Neue Nachbestellung** wird geöffnet.
+. Wählen Sie einen **Lieferanten**.
+. Wählen Sie ein **Lager**.
+. Wählen Sie eine **Währung**. +
+→ Der Umrechnungskurs wird automatisch aus dem Menü **System » Systemeinstellungen » Aufträge » Zahlung » Währungen** übernommen.
+. **Speichern** Sie die Einstellungen. +
+→ Das Tab **Base** der Nachbestellung wird geöffnet.
+
+Lassen Sie das Tab **Base** geöffnet und fügen Sie die Varianten hinzu, die Sie nachbestellen möchten.
+
+[.instruction]
+Varianten zur Nachbestellung hinzufügen:
+
+. Öffnen Sie den Bereich **Artikeldaten** durch einen Klick auf das **Plus**.  +
+→ Das Bearbeitungsmenü wird geöffnet.
+. Öffnen Sie das Tab **Artikel hinzufügen**.  +
+→ Das Lager und der Lieferant sind als Filter eingestellt. Sie können weitere Filter wählen.
+. Klicken Sie auf **Suchen**, um die Artikel aufzulisten.
+. Klicken Sie auf **Artikel hinzufügen** (Einkaufswagen), um die Variante zur Nachbestellung hinzuzufügen.  +
+→ Wiederholen Sie diesen Schritt mit weiteren Varianten.
+. Öffnen Sie das Tab **Artikel**.
+. Tragen Sie für jede Variante den **Einkaufspreis** ein.
+. Tragen Sie für jede Variante die **Menge** ein.
+. **Speichern** Sie die Einstellungen.
+
+[#1300]
+== Nachbestellung automatisch abschicken
+
+Nachdem Sie auf einem der zuvor beschriebenen Wege eine Nachbestellung angelegt haben, müssen Sie nun die Bestellung abschicken. Hierfür haben Sie das Dokument und die Ereignisaktion eingerichtet. Jetzt sorgen Sie dafür, dass per Ereignisaktion das Nachbestellungsdokument an den Lieferanten geschickt wird.
+
+[IMPORTANT]
+.Wie wird die Sprachvariante des PDF-Dokuments Nachbestellung gewählt?
+====
+Die Auswahl der Sprachvariante des Dokuments erfolgt anhand der Sprache Ihres Lieferanten. Die Sprache ist im Tab **Kundendaten** des Lieferanten gespeichert. Wenn in der Sprache des Lieferanten keine Vorlage eingerichtet wurde, wird die Vorlage in der Standardsprache Ihres Systems zum Erzeugen des Dokuments verwendet.
+
+Beachten Sie dazu auch die Erklärungen auf der Handbuchseite <<auftraege/auftragsdokumente#, Dokumente>>.
+====
+
+Prüfen Sie zunächst noch einmal den Bereich **Grunddaten** und nehmen Sie, wenn nötig, Änderungen vor. Nach der Prüfung und ggf. Korrektur der Grunddaten schicken Sie die Bestellung ab.
+
+.Grunddaten einer Nachbestellung
+[cols="1,3"]
+|====
+| Einstellung | Erläuterung
+
+|**Liefertermin**
+| Klicken Sie auf das **Zahnrad**, um das **Lieferdatum** zu ermitteln. +
+Zuerst wird geprüft, ob in den Variantendaten ein Liefertermin gespeichert ist. Sind mehrere Artikel in der Nachbestellung enthalten, wird der späteste Liefertermin gesetzt. Sind keine Liefertermine für die Varianten gespeichert, verwendet das System die Lieferzeit, die für den Lieferanten gespeichert wurde.
+
+|**Prozentualer Rabatt**
+| Hier wird der prozentuale Rabatt angezeigt, der für den Lieferanten gespeichert wurde.
+|====
+
+[.instruction]
+Bestellung abschicken:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+. Wählen Sie eine Nachbestellung, die Sie abschicken möchten.
+. Klicken Sie in der Zeile **Bestellen** auf **Nachbestellung abschicken**. +
+→ Der Status wechselt auf **Bestellt** und die zuvor eingerichtete Ereignisaktion zum Senden des Bestellscheins an den Lieferanten wird ausgeführt.
+
+Das PDF für die Nachbestellung können Sie sich über die Vorschau in der Zeile **Bestellen** ansehen.
+
+[#1400]
+== Nachbestellung bestätigen
+
+Nachdem Sie eine Nachbestellung an Ihren Lieferanten gesendet haben, setzen Sie die Bearbeitung fort, indem Sie die Nachbestellung zunächst bestätigen, wenn der Lieferant den Eingang der Bestellung bestätigt hat, und anschließend Ware einbuchen, wenn Ware geliefert wurde.
+
+Sie müssen eine Nachbestellung bestätigen, um Ware einzubuchen. Nur im Status **Bestätigt** können Sie Ware in der Nachbestellung einbuchen. +
+Statt Ware über die Nachbestellung einzubuchen, können Sie auch den <<warenwirtschaft/wareneingaenge-verwalten#, **Wareneingang**>> nutzen und anschließend den Status der Nachbestellung manuell auf **Ware eingebucht** stellen. Wenn Sie den Status manuell einstellen, wird dadurch keine Ware am Artikel eingebucht.
+
+[.instruction]
+Nachbestellung bestätigen:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+. Öffnen Sie eine bestellte Nachbestellung.
+. Setzen Sie den Status auf **Bestätigt**. +
+→ Unter **Grunddaten** wird die Option **Lieferung** sichtbar.
+
+[TIP]
+.Händlerzeichen der Bestätigung eintragen
+====
+Mit der Bestellbestätigung wird in der Regel eine Auftragsnummer oder ein ähnliches Händlerzeichen vergeben, das als Händlerzeichen bei der Nachbestellung vermerkt werden kann, um später die Ware korrekt zuzuordnen.
+====
+
+Die Vorschau ermöglicht per Klick auf das **Auge**, das PDF-Dokument der Nachbestellung jederzeit downzuloaden. Bei Änderungen der Vorlage oder der PDF-Vorlage der Nachbestellung auf das Reload-Icon klicken, um das PDF-Dokument zu aktualisieren.  +
+Wenn eine Bestellung bereits ausgelöst wurde, besteht die Möglichkeit, bei nachträglichen Änderungen oder wenn der Empfänger die Bestellung per E-Mail nicht erhalten hat, den Vorgang zu wiederholen. Dazu auf das **Reload-Icon** klicken.
+
+[#1500]
+== Ware einbuchen
+
+Zum Einbuchen der Ware über die Nachbestellung bieten sich Ihnen zwei Möglichkeiten. Sie können die Ware direkt und vollständig einbuchen oder Sie markieren die Ware zunächst als geliefert und buchen Sie dann ein. Der direkte Weg empfiehlt sich, wenn Sie 100%ig sicher sind, dass alles komplett geliefert wurde. Wenn Sie nur eine Teillieferung erhalten haben oder die Ware sowie die gelieferte Anzahl noch einmal genau durchgehen, bietet sich die zweite Möglichkeit an.
+
+[TIP]
+.Aufträge werden automatisch auf Status 5 gesetzt, wenn in der auftragsbezogenen Nachbestellung die Artikel eingebucht werden
+====
+Wenn Sie eine auftragsbezogene Nachbestellung öffnen und den Wareneingang über die Nachbestellung buchen, wird der Auftrag automatisch auf Status 5 gesetzt.
+====
+
+[#1600]
+=== Ware direkt und vollständig einbuchen
+
+Nutzen Sie diese Möglichkeit nur, wenn Sie die Ware vollständig erhalten haben. Nach dem Einbuchen, wechselt der Status automatisch in **5 Ware gebucht**.
+
+[.instruction]
+Vollständig und direkt einbuchen:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+. Öffnen Sie eine bestätigte Nachbestellung.
+. Tragen Sie in den **Grunddaten** unter **Lieferung** die Lieferscheinnummer ein.
+. Klicken Sie auf **Einbuchen** hinter der Lieferscheinnummer.  +
+→ Alle Artikel der Nachbestellung werden eingebucht und der Status wechselt automatisch in **5 Ware eingebucht**.
+
+[#1700]
+=== Teillieferung einbuchen
+
+Nachfolgend wird beschrieben, wie Sie eine Teillieferung einbuchen. Diese Vorgehensweise eignet sich nicht nur für Teillieferungen, sondern empfiehlt sich auch, wenn Sie beim Einbuchen die Ware noch einmal genau prüfen und deshalb für jeden Artikel die gelieferte Anzahl einzeln eintragen und bestätigen möchten.
+
+[.instruction]
+Teilmenge eintragen und buchen:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+. Öffnen Sie eine bestätigte Nachbestellung.
+. Öffnen Sie im Tab **Base** den Bereich **Artikeldaten**.  +
+→ Das Tab **Artikel** wird geöffnet.
+. Tragen Sie unter **Teilmenge** die gelieferte Menge für eine Variante ein.  +
+→ Das kann auch die gesamte Menge sein.
+. **Speichern** Sie die Einstellungen. +
+→ Die Nachbestellung wird aktualisiert. Die Varianten und die gelieferten Mengen sind nun im Tab **Gelieferte Artikel** zur Buchung verfügbar und der Status der Nachbestellung wechselt automatisch auf **Teilweise geliefert** oder **Geliefert**, wenn alle Varianten in der bestellten Menge eingetragen wurden.
+. Öffnen Sie die **Artikeldaten**.
+. Öffnen Sie das Tab **Gelieferte Artikel**.
+. Wählen Sie die Artikel, die Sie einbuchen möchten.
+. Wählen Sie einen Lagerort für die Artikel.
+. Tragen Sie unter **Lieferschein** eine Lieferscheinnummer ein.
+. Klicken Sie auf **Wareneingang buchen**.
+
+.Teilmenge; Lagerort und Lieferschein buchen
+image::warenwirtschaft/assets/DE-Nachbestellungen-verwalten-01.png[]
+Wenn Sie zu einer Nachbestellung alle Teillieferungen erhalten und eingebucht haben, wechselt der Status automatisch von **Teilweise geliefert** oder **Geliefert** in den Status **Gebucht**. Der Buchungsvorgang erhält eine ID und durch einen Klick auf die ID gelangen Sie in den dazugehörigen Wareneingang. Wenn Sie für eine Variante mehr eingebucht haben, als bestellt wurde, erhält die Variante in der Nachbestellung automatisch die Kennzeichnung überliefert.
+
+[#1800]
+==  Ware stornieren
+
+Sie können Ware so lange stornieren, wie die Nachbestellung noch im Status **Bestätigt** ist. Sobald Artikel geliefert wurden, kann nicht mehr storniert werden.
+
+.Artikel stornieren
+image::warenwirtschaft/assets/DE-Nachbestellungen-verwalten-02.png[]
+[.instruction]
+Ware stornieren:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+. Öffnen Sie eine bestätigte Nachbestellung.
+. Öffnen Sie im Tab **Base** den Bereich **Artikeldaten**.  +
+→ Das Tab **Artikel** wird geöffnet.
+.  Klicken Sie bei dem Artikel, den Sie stornieren möchten, auf **Löschen** (Bild 2, roter Pfeil). +
+→ Der Artikel wird gelöscht und Sie erhalten die Meldung, dass der Artikel storniert wurde (Bild 2, oranger Pfeil).
+.  Klicken Sie auf das Tab **Stornierte Artikel**, um die Stornierung anzuzeigen bzw. die korrekte Buchung dort zu prüfen (Bild 3, Pfeil).
+
+.Stornierte Varianten in einer Nachbestellung
+image::warenwirtschaft/assets/DE-Nachbestellungen-verwalten-03.png[]
+[#1900]
+==  Fehllieferung buchen
+
+Artikel, die Sie nicht bestellt hatten, die aber fälschlicherweise geliefert wurden, buchen Sie im Tab **Fehllieferung**. Nur wenn der Artikel im System existiert, können Sie eine Fehllieferung buchen. Wenn Sie den Artikel nicht im Sortiment haben und ihn trotzdem als Fehllieferung buchen möchten, müssen Sie zunächst einen Artikel anlegen. Fehllieferung ist eine reine Kennzeichnung in der Nachbestellung, die nicht in den Warenbestand oder die Warenbewegungen übernommen wird.
+
+.Fälschlicherweise gelieferte Varianten einbuchen
+image::warenwirtschaft/assets/DE-Nachbestellungen-verwalten-04.png[]
+[.instruction]
+Fehllieferung buchen:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.
+. Öffnen Sie eine Nachbestellung.
+. Öffnen Sie im Tab **Base** den Bereich **Artikeldaten**.  +
+→ Das Tab **Artikel** wird geöffnet.
+.  Wechseln Sie in das Tab **Fehllieferung**.
+.  Suchen Sie die fehlgelieferten Artikel.
+.  Wählen Sie den falsch gelieferten Artikel durch einen Klick auf den **Einkaufswagen** (Bild 4, Pfeil). +
+→ Anschließend tragen Sie im Tab **Artikel** die falsch gelieferte Teilmenge ein und verfahren mit dem Artikel wie mit normal gelieferten Artikeln.
+
+[#2000]
+==  Nachbestellungen suchen
+
+Beim Öffnen des Menüs werden immer alle offenen Nachbestellungen gesucht und angezeigt. Das Ergebnis können Sie durch Verändern der Filter einschränken, um so entweder alle oder ein weiter eingeschränktes Ergebnis anzuzeigen. Die Nachbestellungen werden anhand der Nachbestellungs-ID absteigend sortiert und so indirekt auch zeitlich sortiert.
+
+[.instruction]
+Nachbestellung suchen:
+
+. Öffnen Sie das Menü **Waren » Bestellwesen » Nachbestellungen**.  +
+→ Eine initiale Suche nach allen offenen Nachbestellungen wird ausgeführt.
+. Wählen Sie **Filter** für Ihre Suche.
+. Klicken Sie auf **Suchen**.
+
+.Nachbestellungsfilter
+[cols="1,3"]
+|====
+| Einstellung | Erläuterung
+
+|**Suchen**
+| Löst die Suche aus und die gefundenen Nachbestellungen werden in der Nachbestellungsübersicht aufgelistet.
+
+|**Reset**
+| Eingestellte Filter zurücksetzen
+
+|**Nachbestellungs-ID**
+| Nachbestellungs-ID eintragen, um die Nachbestellung suchen.
+
+|**Artikel-ID**
+| Artikel-ID eintragen, um Nachbestellungen zu suchen, die eine Variante des Artikels enthalten
+
+|**Varianten-ID**
+| Varianten-ID eintragen, um Nachbestellungen zu suchen, die die Variante enthalten
+
+|**Variantennummer**
+| Variantennummer eintragen, um Nachbestellungen zu suchen, die die Variante enthalten
+
+|**Händlerzeichen**
+| Händlerzeichen eintragen, um Nachbestellungen mit diesem Händlerzeichen zu suchen. Das Händlerzeichen finden Sie in einer Nachbestellung im Tab **Base**.
+
+|**Lieferanten-Artikelnummer**
+| Artikelnummer eines Lieferanten eintragen, um Nachbestellung zu suchen, die Artikel mit dieser Nummer enthaltenen. Die Lieferanten-Artikelnummer wird im **Tab: Bestand » Tab: Lieferant** einer Variante gespeichert.
+
+|**Lieferant**
+| Lieferanten wählen, um Nachbestellungen an diesen Lieferanten zu suchen
+
+|**Artikeldaten**
+| Suchbegriffe oder Zahlenwerte eintragen, um Nachbestellungen zu suchen, die Artikel mit diesen Daten enthalten. Durchsucht werden folgende Datenfelder: **Artikel-ID**, **Artikelnummer** und **Name**. Die Beschreibungstexte z.B. Artikeltext und Vorschautext werden nicht durchsucht. +
+__**Wichtig**__: Bei der Suche anhand von Artikeldaten reicht es generell aus, nur den Wortstamm einzugeben. Die Suchwörter können dabei am Ende fast beliebig gekürzt werden, am Wortanfang allerdings nicht! Bei der Suche nach Artikeln mit der Bezeichnung oder Teilbezeichnung **Startersets** führt **Starterset** oder **Starter** oder **Start** zum Ziel. Eine Suche nach **set** hingegen führt zu keinem Ergebnis!
+
+|**Lager**
+| Lager wählen, um Nachbestellungen für dieses Lager zu suchen.
+
+|**Eigner**
+| Nachbestellungen anhand des hinterlegten Eigners suchen. Der Eigner wird in der jeweiligen Nachbestellung im Tab **Base** hinterlegt.
+
+|**Status**
+| Nachbestellungen anhand des aktuellen Bestellstatus suchen. +
+Im Menü **System » Systemeinstellungen » Waren » Bestellwesen » Bestellstatus** sind die Statusbenennungen änderbar.
+
+|**Markierung**
+| Markierung wählen, um Nachbestellungen zu suchen, bei denen diese Markierung eingestellt ist.
+
+|**Datum**
+| Wählen, welches Datum die Grundlage für die Suche bilden soll. Die Optionen sind **Liefertermin** (Standard), **Liefertermin KW** und **Zahlungstermin**. Für **Liefertermin** und **Zahlungstermin** wählen Sie für die Felder **von** und **bis** Angaben aus. Wenn Sie die Option **Liefertermin KW** wählen, tragen Sie die Wochen in die Felder **von KW** und **bis KW** ein. +
+__**Beispiel**__: Wenn als Datum die Option **Liefertermin** gewählt und der Zeitraum vom 15.06.2013 bis 17.06.2013 eingestellt wurde, werden nur Nachbestellungen gesucht, deren Liefertermin innerhalb dieses Zeitraums liegt.
+
+|**von**
+| Startdatum aus dem Kalender wählen. Diese Angabe startet den Zeitraum für das gewählte Datum, Liefertermin oder Zahlungstermin.
+
+|**bis**
+| Enddatum aus dem Kalender wählen. Diese Angabe beendet den Zeitraum für das gewählte Datum, Liefertermin oder Zahlungstermin.
+
+|**von KW**
+| Eine Kalenderwoche für den Beginn des gewünschten Zeitraums eintragen. Diese Option ist nur verwendbar, wenn für die Option **Datum** die Einstellung **Liefertermin KW** gewählt wurde.
+
+|**bis KW**
+| Eine Kalenderwoche für das Ende des gewünschten Zeitraums eintragen. Diese Option ist nur verwendbar, wenn für die Option **Datum** die Einstellung **Liefertermin KW** gewählt wurde.
+
+|**Sortierung**
+| Ein Sortierungskriterium und die Sortierreihenfolge wählen
+|====
+
+In der Ergebnisliste erkennen Sie Nachbestellungen aus Aufträgen an einem kleinen Einkaufskorbsymbol neben dem Bestellstatus.
+
+[#2100]
+== Nachbestellungen löschen
+
+Gehen Sie wie nachfolgend beschrieben vor, um Bestellungen zu löschen.
+
+[.instruction]
+Bestellungen löschen:
+
+. Öffnen Sie das Menü **System » Systemeinstellungen » Waren » Bestellwesen » Bestellungen löschen**.
+. Wählen Sie unter **Startzeitpunkt** das Datum, ab dem Bestellungen gelöscht werden sollen.
+. Wählen Sie unter **Endzeitpunkt** das Datum, bis zu dem Bestellungen gelöscht werden sollen.
+. Wählen Sie einen **Status**, um nur Bestellungen in dem Status zu löschen.
+. Klicken Sie auf **Ausführen**.
+
+[#2200]
+==  Arbeitsschritte für Nachbestellungen einrichten
+
+Wenn Sie im Zusammenhang mit einer Nachbestellung bestimmte Vorgänge ausführen, können Sie mit Hilfe von **Vorlagen** bis zu 30 **Arbeitsschritte** erstellen, die mit einer **Nachbestellung** verknüpft werden. Die Arbeitsschritte werden abgebildet, indem jeweils ein **Ticket** angelegt wird. Die Tickets ermöglichen Ihnen, die Entwicklung der Arbeitsschritte zu verfolgen und andere Benutzer in die Bearbeitung mit einzubinden. Das Einrichten einer Vorlage und die Verknüpfung mit einer Nachbestellung wird unter <<warenwirtschaft/nachbestellungen-verwalten/nachbestellungen-in-arbeitsschritte-gliedern#8, **Nachbestellungen in Arbeitsschritte gliedern**>> beschrieben.
