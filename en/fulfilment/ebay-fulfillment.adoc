@@ -1,0 +1,1248 @@
+= eBay Fulfillment integration guide
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: eBay Fulfillment
+:description: Learn how to set up eBay Fulfillment in plentymarkets.
+:position: 35
+:icons: font
+:docinfodir: /workspace/manual-adoc
+:docinfo1:
+:url: fulfilment/ebay-fulfillment
+
+Adhering to the current e-commerce standards is essential for your business success. The customer expectations rise - deliveries should always be made free of charge, quickly and reliably. eBay Fulfillment allows you to adhere to these standards: All items meet the service standard requirements for eBay Plus and contribute to your company’s sales growth.
+
+[[image-start-image]]
+image::fulfilment/assets/Fiege-MegaCenter-Erfurt4.jpg[width=640, height=360]
+
+With the help of the eBay logistics partner Shutl Limited, leading e-commerce providers make an independent and competitive fulfilment and shipping network available: The pioneer of full-service logistics Fiege benefits from almost 150 years of logistics experience, innovative thinking and maximum flexibility. Through professional order management, synchronisation of stock movement as well as provision and upload of tracking numbers, the omni-channel ERP provider plentymarkets connects the different sales channels, fulfilment locations and logistics with each other.
+
+[#10]
+== Plugin download and installation
+
+[#20]
+=== Downloading and installing the eBay OAuth2 plugin
+
+Download the eBay OAuth2 plugin for free from plentyMarketplace. To be able to do this, you must be logged into the plentymarkets back end. To do so, proceed as follows:
+
+[.instruction]
+Downloading and installing the eBay OAuth2 plugin:
+
+. Go to *Plugins » Plugin overview*.
+. Click on *plentyMarketplace* (see <<image-plugin-overview>>). +
+→ A new browser tab opens.
+. Enter *eBay OAuth2* in the search.
+. On the link:https://marketplace.plentymarkets.com/en/plugins/channels/marktplaetze/ebayoauth2_4787[eBay OAuth2 plugin^] page, click on *Go to checkout*.
+. Buy the plugin. +
+→ The plugin is unlocked for your system.
+. In the *Plugins » Plugin overview* menu, select the *Not installed* option.
+. Click on *Search* (icon:search[]) to find the plugin you have just purchased. +
+→ The plugin is displayed.
+. Click on *Install plugin* in the line of the plugin on the right side (see <<image-install-plugin>>). +
+→ A window opens.
+. Select the latest version of the plugin and click on *Install*.
+. Click on the globe (*Active*) on the far left in the line of the plugin (see <<image-activate-plugin>>).
+. *Save* (icon:save[role="green"]) the settings. +
+→ The plugin is saved and deployed.
+
+[[image-plugin-overview]]
+.*Plugins » Plugin overview* menu > plentyMarketplace
+image::fulfilment/assets/eBay-Fulfillment-plugins-plugin-overview-plentyMarketplace.png[width=640, height=360]
+
+[[image-install-plugin]]
+.Installing a plugin
+image::fulfilment/assets/eBay-Fulfillment-install-plugin.png[width=640, height=360]
+
+[[image-activate-plugin]]
+.Activating a plugin
+image::fulfilment/assets/eBay-Fulfillment-activate-plugin.png[width=640, height=360]
+
+Make sure that an account exists in your plentymarkets back end in the *System » System settings » Markets » eBay » Accounts » OAuth2* menu. If you do not have an account yet, add an account in the menu *System » System settings » System settings » Markets » eBay » Accounts*.
+
+[#30]
+=== Downloading and installing the eBay Fulfillment plugin
+
+After you have been activated by eBay, go to the plentyMarketplace and purchase the link:https://marketplace.plentymarkets.com/plugins/en/integration/ebayfiege_6018[eBay Fulfillment plugin^] free of charge and install it. Proceed in the same way as described in the instructions in chapter <<fulfilment/ebay-fulfillment#20, Downloading and installing the eBay OAuth2 plugin>>.
+
+[IMPORTANT]
+.Different loading time when deploying the plugin
+====
+It is possible that the above steps 8 - 10 will need more time with the eBay Fulfillment plugin than with the previously installed OAuth2 plugin.
+====
+
+[#40]
+== System settings for eBay Fulfillment
+
+[#50]
+=== Activating an order referrer
+
+By deploying the eBay Fulfillment plugin, the order referrer *eBay Fulfillment* is automatically available in the *System » System settings » Orders » Order referrer* menu. You must activate this order referrer.
+
+[.instruction]
+Activating an order referrer:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Referrer*.
+. Search for *eBay Fulfillment*.
+. Activate the option by placing a check mark (see <<image-activate-order-referrer>>).
+. *Save* (icon:save[role="green"]) the settings.
+
+[[image-activate-order-referrer]]
+.Activating the order referrer *eBay Fulfillment*
+image::fulfilment/assets/eBay-Fulfillment-activate-order-referrer.png[width=640, height=360]
+
+[#60]
+=== Creating an EBFSKU
+
+Barcodes are used to identify items in plentymarkets. To uniquely identify the item between eBay Fulfillment and plentymarkets, create the barcode *EBFSKU*.
+
+[.instruction]
+Creating the EBFSKU:
+
+. In the plentymarkets back end, go to *System » System settings » Items » Barcode*.
+. Click on *New barcode*.
+. Enter the name *EBFSKU*.
+. Select the setting *CODE128* as *Type*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The barcode opens.
+. Select *eBay Fuflillment* as referrer (see <<image-create-ebfsku>>).
+. *Save* (icon:save[role="green"]) the setting again.
+
+[WARNING]
+.Item must have an EBFSKU
+====
+Note that eBay Fulfillment cannot manage items that have no EBFSKU. Therefore, shipments of items that have no EBFSKU will be rejected by the fulfilment service provider.
+====
+
+[[image-create-ebfsku]]
+.Creating an EBSFKU in the *System » System settings » Item » Barcode* menu
+image::fulfilment/assets/eBay-Fulfillment-create-ebfsku.png[width=640, height=360]
+
+[#70]
+=== Setting up a warehouse
+
+Set up 2 warehouses for eBay Fulfillment. Note that additional costs may occur when you book another sales warehouse. The costs depend on your plentymarkets tariff.
+
+[.instruction]
+Setting up warehouse 1 of warehouse type Sales:
+
+. In the plentymarkets back end, go to *System » System settings » Stock » Warehouse*.
+. Click on *New warehouse*.
+. Enter the name, e.g. *eBay Fulfillment Sales* (see <<image-create-warehouse>>). +
+→ *_Note:_* This warehouse is managed by eBay Fulfillment.
+. Select *Sales* as *Warehouse type*.
+. Select *Own warehouse* as *Logistics type*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The warehouse opens.
+. Enter the address of the warehouse.
+. For the option *Available for order referrers (with automatic warehouse selection)*, select the order referrers that should be used for this warehouse (see <<image-order-referrers-warehouse>>). +
+*→ Using the control resp. command button, you can select multiple referrers.*
+. *Save* (icon:save[role="green"]) the settings again.
+
+[.instruction]
+Setting up warehouse 2 of warehouse type Other:
+
+. In the plentymarkets back end, go to *System » System settings » Stock » Warehouse*.
+. Click on *New warehouse*.
+. Enter the name, e.g. *eBay Fulfillment Exception*.
+. Select *Other* as *Warehouse type*.
+. Select *Own warehouse* as *Logistics type*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The warehouse opens.
+. Enter the address of the warehouse.
+. *Save* (icon:save[role="green"]) the settings again.
+
+[[image-create-warehouse]]
+.Creating a warehouse
+image::fulfilment/assets/eBay-Fulfillment-create-warehouse.png[width=640, height=360]
+
+[[image-order-referrers-warehouse]]
+.Selecting the order referrers for the warehouse
+image::fulfilment/assets/eBay-Fulfillment-order-referrers-warehouse.png[width=640, height=360]
+
+[#80]
+=== Setting up a shipping service provider and a shipping profile
+
+Make sure that a shipping service provider and a shipping profile have been set up for all shipping service providers used for the eBay Fulfillment program.
+
+[IMPORTANT]
+.Create a shipping profile and a shipping service provider
+====
+For each new fulfilment service provider, a new shipping service provider as well as a new shipping profile must be available.
+====
+
+[#90]
+==== Activating countries of delivery
+
+eBay Fulfillment offers shipping to the following countries:
+
+* Germany
+* Austria
+* Italy
+* Belgium
+* Netherlands
+* United Kingdom
+
+To work correctly with these countries in plentymarkets, these countries of delivery must be activated in your plentymarkets system.
+
+[WARNING]
+.Note
+====
+Due to the limited number of active countries of delivery, delivery restrictions via other markets might occur.
+====
+
+[.instruction]
+Activating countries of delivery:
+
+. Go to *System » System settings » Orders » Shipping » Settings*. +
+→ The *Countries of delivery* tab opens.
+. Use the drop-down list in the *Active* column to set countries of delivery to *Active*.
+. In the *Language* column, select the language you want to activate for the country of delivery.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#100]
+==== Setting up the shipping service provider
+
+In plentymarkets back end, in the *System » System settings » System settings » Orders » Shipping » Options » Tab: Shipping service provider* menu, the shipping service provider, e.g. Hermes, must be created and its tracking URL saved.
+
+[.instruction]
+Setting up the shipping service provider:
+
+. Go to *System » System settings » Orders » Shipping » Settings » Tab: Shipping service provider*.
+. Click on *New* in the *Overview* tab. +
+→ A new line is added at the bottom of the overview.
+. Enter the name of the shipping service provider, e.g. Hermes, in the *Name (en)* field. +
+→ *_Note:_* This name is visible for your customers in the online store.
+. In the *Name (back end)* field, enter the name of the shipping service provider or an alternative name for internal use. +
+→ *_Note:_* This name is not visible for your customers. +
+→ Tip: If you have already set up a Hermes shipping profile, use an other name, e.g. *eBay Fulfillment*.
+. Select the shipping service provider, e.g. Hermes, from the drop-down list.
+. In the *Tracking URL* field, enter the tracking URL of the shipping service provider (e.g. for Hermes: https://tracking.hermesworld.com/?TrackID=$PaketNr)=$PaketNr) +
+→ Contact your provider and ask for the tracking URL, if necessary.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[image-create-shipping-service-provider]]
+.Creating a shipping service provider
+image::fulfilment/assets/eBay-Fulfillment-create-shipping-service-provider.png[width=640, height=360]
+
+[#110]
+==== Setting up a shipping profile
+
+In plentymarkets back end in the *System » System settings » System settings » Orders » Shipping » Options » Tab: Shipping profiles* menu, a shipping profile must be available with this shipping service provider.
+
+[.instruction]
+Setting up a shipping profile:
+
+. Go to *System » System settings » Orders » Shipping » Settings » Tab: Shipping profiles*.
+. Click on *New*.
+. Select the shipping service provider that you have just created from the drop-down list.
+. Enter the names in the fields *Name* and *Name (back end)*, e.g. Hermes.
+. In the area *Client (stores)*, place a check mark next to your online store.
+. In the area *Order referrer*, place a check mark next to the referrers that you want to process with eBay Fulfillment.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#120]
+=== Creating order statuses
+
+For a better overview, it is recommended that you create order statuses for inbound and outbound as well as for inbound and outbound orders that have not been sent.
+
+If the inbound or outbound order could not be sent, go to *System » System settings » Orders » Shipping » Fulfillment » eBay Fulfillment » Settings*. For *Inbound order not sent* and *Outbound order not sent* set the statuses so that the orders can be found and checked accordingly.
+
+[WARNING]
+.Only use free, unused order statuses
+====
+Search for free, unused order statuses and use them. Do not overwrite order status that are already in use. This may cause malfunctions since they might be uses in other areas in your system.
+
+Select the statuses between 5 and 8.
+====
+
+[#130]
+==== Order status for inbound (used for event procedures)
+
+[.instruction]
+Creating the order status for inbound:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.3*.
+. In the field *Name for new status*, enter the name, e.g. *eBay Fulfillment Inbound*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.3] eBay Fulfillment Inbound* is created.
+
+[#140]
+==== Order status for inbound order sent (automatic status update by plugin)
+
+In case of a successful transmission of the inbound order to eBay Fulfillment, the order is automatically changed to the status *Inbound sent*. This is done if you have carried out the following settings:
+
+[.instruction]
+Creating the order status for eBay Fulfillment Inbound sent:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.31*.
+. In the field *Name for new status*, enter the name, e.g. *eBay Fulfillment Inbound sent*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.31] eBay Fulfillment Inbound sent* is created.
+
+[#150]
+==== Order status for inbound order not sent (automatic status update by plugin)
+
+[.instruction]
+Creating the order status for *Inbound order not sent*:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.5*.
+. In the field *Name for new status*, enter the name, e.g. *eBay Fulfillment Inbound not sent*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.5] eBay Fulfillment Inbound not sent* is created.
+
+[#160]
+==== Order status for outbound order (released for shipping, used in event procedure)
+
+[.instruction]
+Creating an order status for *outbound order*:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.4*.
+. In the field *Name for new status*, enter the name, e.g. *eBay Fulfillment Outbound*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.4] eBay Fulfillment Outbound* is created.
+
+[#170]
+==== Order status for Outbound order sent (automatic status update by plugin)
+
+[.instruction]
+Creating an order status for *Outbound order sent*:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.41*.
+. In the field *Name for new status*, enter the name, e.g. *eBay Fulfillment Outbound sent*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.41] eBay Fulfillment Outbound sent* is created.
+
+[#180]
+==== Order status for outbound order not sent (automatic status update by plugin)
+
+[.instruction]
+Creating an order status for *Outbound order not sent*:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.6*.
+. In the field *Name for new status*, enter the name, e.g. *eBay Fulfillment Outbound not sent*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.6] eBay Fulfillment Outbound not sent* is created.
+
+[#190]
+==== Creating an order status for rejected order by fulfilment service provider
+
+[.instruction]
+Creating an order status for *rejected order* by fulfilment service provider:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field *New status*, enter the number, e.g. *5.7*.
+. In the field *Name for new status*, enter the name, e.g. *Order rejected*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[5.7] Order rejected* is created. +
+→ Afterwards, you can filter this status manually or set up an event procedure. This allows you to further edit the orders with this status. *How to set up event procedures, is described in the following.*
+
+[#200]
+==== Order status for cancellation of inbound order
+
+[.instruction]
+Creating the order status for *Cancellation of inbound order*:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Status*.
+. Click on *New status*.
+. In the field New status, enter the number, e.g. *8.2*.
+. In the field *Name for new status*, enter the name, e.g. *eBay cancellation inbound sent*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The new order status *[8.2] eBay cancellation inbound sent* is created.
+
+[#210]
+=== Automation settings
+
+In plentymarkets, it is possible to have routine tasks done by your system. When using the eBay Fulfillment services, the automatic sending of inbound notifications to eBay Fulfillment as well as the automatic booking of outgoing items facilitate your everyday life.
+
+With the event procedures, plentymarkets provides you with an efficient tool for setting up such automatic processes that are reliably managed by your plentymarkets system. The basic principle of event procedures is easy to understand: Certain events trigger specific procedures.
+
+[#220]
+==== Setting up an event procedure for eBay Fulfillment Inbound
+
+[.instruction]
+Setting up an event procedure for eBay Fulfillment Inbound:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the name *eBay Fulfillment Inbound*.
+
+*_Triggering event_*
+
+. From the *Event* drop-down list, select the option *Order change > Status change*.
+. From the *Status* drop-down list, select the newly created status for Inbound.
+. *Save* (icon:save[role="green"]) the settings.
+
+*_Filter criteria for orders_*
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order type*.
+. Click on *Add*.
+. Activate the option *Order*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Referrer*.
+. Click on *Add*.
+. Activate the option *Manual entry* only. +
+→ *_Important:_* Do not activate any other options here.
+
+*_Executing procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+ Select the *Plugins > Send Ebay inbound notification* procedure. +
+→ *_Note:_* This procedure is only available if you have installed and deployed the eBay Fulfillment plugin. +
+→ *_Note:_* Goods delivery notification to logistics partner = Inbound notification
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#230]
+==== Setting up an event procedure for eBay Fulfillment Outbound
+
+[.instruction]
+Setting up an event procedure for eBay Fulfillment Outbound:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the name *eBay Fulfillment Outbound*.
+
+*_Triggering event_*
+
+. From the Event drop-down list, select the option *Order change > Status change*.
+. From the *Status* drop-down list, select the newly created status for outbound.
+. *Save* (icon:save[role="green"]) the settings.
+
+*_Filter criteria for orders_*
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order type*.
+. Click on *Add*.
+. Activate the option *Order*.
+. Activate the option *Delivery order*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order warehouse*.
+. Click on *Add*.
+. Activate the option *eBay Fulfillment Sales*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Shipping > Country of delivery*.
+. Click on *Add*.
+. Activate the options *Germany*, *Austria*, *Italy*, *Belgium*, *Netherlands* and *UK*.
+
+*_Executing procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Plugins > Send shipping release to logistics partner*. +
+→ *_Note:_* This procedure is only available if you have installed and deployed the eBay Fulfillment plugin. +
+→ *_Note:_* Shipping release to logistics partner= Outbound notification.
+. Click on *Add*.
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#240]
+==== Setting up the event procedure for automated shipment tracking (sending the tracking URL) (optional)
+
+With your plentymarkets system, it is possible to send a shipping confirmation via email to your customers. It is required that you have set up the corresponding email template in your system.
+
+. In the plentymarkets back end, go to *System » System settings » Client » Standard » Email » Templates » General templates > Order: Shipping confirmation*.
+. Click on the *Email message* tab. +
+→ Here, you find a text that is saved in your system by default. You may change this text.
+. Insert the variable *$TrackingURL*in the desired place of the text.
+. *Save* (icon:save[role="green"]) the settings.
+
+[IMPORTANT]
+.Overview of all template variables
+====
+Click in the tab *Email templates* on the button *Template variables and functions* (on the right, next to the *save* button) to get an overview of all variables that you can insert in your email templates.
+====
+
+The following steps explain how you automatically send a shipping confirmation to your customers.
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the name, e.g. *Automated Tracking Outbound*.
+
+*_Triggering event_*
+
+. From the *Event* drop-down list, select the option *Order change > Package number*.
+
+*_Filter criteria for orders_*
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order type*.
+. Click on *Add*.
+. Activate the option *Order*.
+. Activate the option *Delivery order*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order warehouse*.
+. Click on *Add*.
+. Activate the option *eBay Fulfillment Sales*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Referrer*.
+. Click on *Add*. +
+. Activate all referrers except eBay. +
+→ *_Important:_* eBay sends an individual confirmation mail with the corresponding tracking URL.
+
+*_Executing procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Customer > Send email*.
+. Click on *Add*.
+. Within the procedure window, click on the arrow on the left-hand side so that the procedure overview opens.
+. Click on *Add* (icon:plus-square[role="green"]).
+. In the first field, select the option *Order: Shipping confirmation*.
+. In the second field, select the option *Customer*. +
+→ <image-procedure-send-email> shows the overview of a finalised procedure.
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[image-procedure-send-email]]
+.Settings within the procedure *Send email*
+image::fulfilment/assets/eBay-Fulfillment-settings-procedure-send-email.png[width=640, height=360]
+
+[#250]
+==== Automated sending of an outbound order to eBay Fulfillment
+
+In plentymarkets, it is possible to run the entire outbound process automatically without having to make any further manual settings. To implement this, create another event procedure as follows:
+
+////
+
+Note for the set-up team: In systems of existing customers, check the other event procedures regarding overlaps and adapt them if necessary.
+////
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the name, e.g. *Automation Outbound*.
+
+*_Triggering event_*
+
+. From the *Event* drop-down list, select the option *Order change > Status change*.
+. From the *Status* drop-down list, select the option *Cleared for shipping status*.
+. *Save* (icon:save[role="green"]) the settings.
+
+*_Filter criteria for orders_*
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order type*.
+. Click on *Add*.
+. Activate the option *Order*.
+. Activate the option *Delivery order*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order warehouse*.
+. Click on *Add*.
+. Activate the option *eBay Fulfillment Sales*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Payment method*.
+. Click on *Add*.
+. Activate all payment methods except *Cash on delivery*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Shipping > Country of delivery*.
+. Click on *Add*.
+. Activate the options *Germany*, *Austria*, *Italy*, *Belgium*, *Netherlands* and *UK*.
+
+*_Executing procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Order > Change status*.
+. Click on *Add*.
+. Select the previously created status *eBay Fulfillment Outbound* from the drop-down list.
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#260]
+==== Setting up an event procedure for outgoing items
+
+If eBay Fulfillment is able to process the order, the package number will automatically saved in the order. To then book the outgoing items and send the package number to eBay so that your customer can use the tracking service, set up another event procedure.
+
+////
+
+
+Note for set-up team:
+
+
+Note for set-up team: Check in the system of existing customers whether a similar event procedure has already been set up and adapt it, if required.
+
+////
+
+[.instruction]
+Setting up an event procedure for outgoing items:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the name, e.g. *eBay Fulfillment outgoing items*.
+
+*_Triggering event_*
+
+. From the *Event* drop-down list, select the option *Order change > Package number*.
+. *Save* (icon:save[role="green"]) the settings.
+
+*_Filter criteria for orders_*
+
+. Click on *Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order warehouse*.
+. Activate the option *eBay Fulfillment Sales*.
+
+*_Executing procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Order > Book outgoing items*.
+. Click on *Add*.
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#270]
+==== Setting up an event procedure for cancellation notification of the inbound order
+
+Set up an event procedure that automatically sends a cancellation notification of the inbound order to eBay Fulfillment. eBay Fulfillment will then inform Fiege about the inbound cancellation.
+
+The email that will be sent has the following content:
+
+*Subject*: Open advice note: Cancellation {XXXXX-XXXXX}
+
+*_Note:_* The variable will be automatically filled with the first 5 characters of the system EBFSKU and the plentymarkets order ID. +
+Example: {123AB-45678}
+
+*Content*: Account {ebay user ID} has cancelled their PO.
+
+*_Note:_* The eBay user ID will be automatically filled.
+
+[.instruction]
+Setting up an event procedure for the cancellation notification:
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the name, e.g. *Inbound cancellation*.
+
+*_Triggering event_*
+
+. From the *Event* drop-down list, select the option *Order change > Status change*.
+. Select from the drop-down list *Status* the <<fulfilment/ebay-fulfillment#200, newly created status for inbound cancellation notification>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+*_Filter criteria for orders_*
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order type*.
+. Click on *Add*.
+. Activate the option *Order*.
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Referrer*.
+. Click on *Add*.
+. Activate the option *Manual entry* only. +
+→ *_Important:_* Do not activate any other options here.
+
+*_Triggering procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Plugins > Send cancellation notification of inbound to logistics partner*. +
+→ *_Note:_* This procedure is only available if you have installed and deployed the eBay Fulfillment plugin.
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[WARNING]
+.Important
+====
+In order that the cancellation notification can be sent to the fulfilment service provider, it is required that the login details of the email inbox from which you want to send the emails are saved in the plentymarkets back end. +
+How to proceed is described in the following chapter <<fulfilment/ebay-fulfillment#280, Saving the email login details>>.
+====
+
+[#280]
+=== Saving the email server's access data
+
+In order that the cancellation notification can be sent to eBay Fulfillment, it is required that the login details of the email inbox from which you want to send the emails are saved in the plentymarkets back end.
+
+[.instruction]
+Saving the email server's access data:
+
+. In the plentymarkets back end, go to *System » System settings » Client* » _Select client_ » *Email » Login details*.
+. Carry out the settings. Note the explanations in <<table-ebay-fulfillment-email-server-login-details>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-ebay-fulfillment-email-server-login-details]]
+.Saving the login details of the email server
+[cols="1,3"]
+|====
+
+|Setting |Explanation
+
+|Test mode
+|*Active* = The test mode is activated. All emails are only sent to the saved email address. This allows you to test the settings before switching to the live mode. +
+*Inactive* = The live mode is activated. +
+*_Important:_* The test mode is only applied to this online store. The settings for additional clients (stores) are carried out in the client's menu.
+
+|Name of sender
+|Enter your name or the name of the online store. This name is displayed to the recipient. Avoid using special characters in order to allow for correct display.
+
+|Email address
+|Enter the email address as it is listed in the email program.
+
+|Outgoing mail server/SMTP server
+|Enter the outgoing mail server as specified by the provider (usually smtp.domain.co.uk or mail.domain.co.uk).
+
+|User name
+|Enter the user name that matches the email address.
+
+|Password
+|Enter the password that matches the user name and email address.
+
+|Port
+|Enter the value *465* if *SSL* is used as encryption method. +
+Enter the value *25* if *no encryption* is used. +
+*_Note:_* Otherwise, ask your provider about the correct port.
+
+|Encryption
+|Select *SSL*, *TLS* or *No encryption*.
+
+|====
+
+[#290]
+=== Settings in the eBay Fulfillment plugin
+
+Now carry out the settings in the eBay Fulfillment plugin. The following screenshot serves as an example:
+
+[[image-settings-ebay-fulfillment-plugin]]
+.Carrying out settings in the eBay Fulfillment plugin (example)
+image::fulfilment/assets/eBay-Fulfillment-plugin-settings.png[width=640, height=360]
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Fulfilment » eBay Fulfillment » Settings*.
+. In the *General settings* area, carry out the following settings: +
+- from the *Environment* drop-down list, activate the *productive* option +
+- activate the *Item master data* option +
+- activate the *Stock movements* option +
+- from the *Sales warehouse* drop-down list, select the *eBay Fulfillment Sales* option +
+- from the *Other warehouse* drop-down list, select the *eBay Fulfillment Exception* option +
+- from the *Barcode* drop-down list, select the *EBFSKU* option
+. In the *Order settings* area, select the order statuses that you have just created according to the statuses in the drop-down lists.
+. *Save* (icon:save[role="green"]) the settings.
+
+Now link the eBay shipping profile to the plentymarkets shipping profile.
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Fulfilment » eBay Fulfillment » Shipping profile link*.
+. Click on *Add mapping*.
+. In the *eBay shipping profile* area, click on *Find shipping profile*. +
+→ All shipping profiles available for eBay Fulfillment are displayed.
+. Select the shipping profile from the list.
+. In the *plentymarkets shipping profile* area, click on *Find shipping profile*. +
+→ All shipping profiles available for plentymarkets are displayed.
+. Select the shipping profile from the list.
+
+[#300]
+== Item activation and inbound
+
+[#310]
+=== Setting up items and obtaining the EBFSKU
+
+Set up the items that you would like to send via eBay Fulfillment. By activating the item, the EBFSKU is automatically transmitted to plentymarkets.
+
+[.instruction]
+Setting up items:
+
+. In the plentymarkets back end, go to *Item » Edit items*.
+. Open the variation that you would like to send via eBay Fulfillment. +
+→ The main variation opens.
+. In the area Sales prices, enter the desired sales price.
+. Click on the *Availability* tab.
+. In the area *Markets*, activate the options *eBay*, *eBay Fulfillment* and WEB API.
+. Click on the plus sign to activate the markets.
+. *Save* (icon:save[role="green"]) the settings.
+. Go back to the *Settings* tab.
+. In the *Availability* area, place a checkmark next to *Active*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The item is activated and the EBSFKU is automatically transmitted to plentymarkets.
+
+[WARNING]
+.Availability and eBay sales price must be saved
+====
+Item master data is only transmitted from plentymarkets to eBay Fulfillment when the availability and the eBay sales price are set.
+====
+
+[#320]
+=== Setting up item packages (bundles)
+
+A bundle, a so-called item package, consists of several items. The bundle price may be lower than the sum of the individual prices.
+
+If you have already set up item packages in your plentymarkets system, there are still two setting options for the items that you must make so that they can be processed by eBay Fulfillment.
+
+[#330]
+==== Bundle of several items as a unit
+The bundle consists of several items that form a unit. This means that the bundle is offered as such a unit and is sent to eBay Fulfillment in a single package. An EBFSKU is assigned to the complete package.
+
+*Example of a bundle of several Items as a unit:*
+
+A somewhat abstract example of a "fixed" bundle is a car. The car is sold as a unit and it is not planned, for example, to just remove the steering wheel and then sell it, although the steering wheel can still be a single items.
+
+[#340]
+==== Bundle of several individual items
+
+The bundle consists of several individual items. This means that you must set the availability in each component of this package as described in chapter <<fulfilment/ebay-fulfillment#310, Setting up items and obtaining the EBSFKU>>. This means that each item in the package has its own EBFSKU. When submitting an order to eBay Fulfillment, each component of the item package is treated like an individual item order.
+
+*Example of a bundle of several individual items:*
+
+You sell dining room chairs and dining room tables. You also offer a combination of the items as a bundle (1 dining room table and 4 dining room chairs). In contrast to the individual prices, the bundle price is as follows:
+
+[table-ebay-fulfillment-example-bundle]]
+.Example calculation of a bundle
+[cols="1,3,3"]
+|====
+
+|*Item* |*Unit price* |*Total price*
+
+|Dining room chair
+|EUR 59.99
+|Price x 4 = EUR 239.96
+
+|Dining room table
+|EUR 299.99
+|EUR 299.99
+
+|
+|
+|EUR 539.95
+
+3+|Bundle price = EUR 499.99
+
+|====
+
+[[image-edit-item]]
+.Overview in the *Item » Edit items* menu
+image::fulfilment/assets/eBay-Fulfillment-item-overview.png[width=640, height=360]
+
+[[image-tab-stock]]
+.Variation in the *Stock* tab
+image::fulfilment/assets/eBay-Fulfillment-bundle-tab-stock.png[width=640, height=360]
+
+[#350]
+=== Setting up the labels
+
+Now set up item labels. An item label is a note that you stick to the item or item packaging later.
+
+[.instruction]
+Setting up the label:
+
+. In the plentymarkets back end, go to *System » System settings » Items » Labels*.
+. Expand the *New template* area.
+. Enter the name *EBFSKU Item Labels*.
+
+*_Note that the following values are only given as an example. It might therefore be necessary to adjust the values to your label printer._*
+
+. For the page, enter *80* and *40*.
+. For the margin, enter *10* and *5*.
+. For the label, enter *70* and *35*.
+. For *Lines per page*, enter the value *1*.
+. For *Columns per page*, enter the value *1*.
+. For *Item ID*, enter the value *25* under *X* and the value *32* under *Y*. Select *5px* and *Normal* from the drop-down lists.
+. Make the following settings in the *GTIN Barcode* line: +
+→ e.g. for the coordinates and the mm specifications: X = 3, Y = *2, 25 mm, 25 mm (these are example values; here you must then check whether the distances for label printing fit visually)* +
+→ from the *GTIN* drop-down list, select the *EBFSKU* option +
+→ from the drop-down list *Format*, select the option *CODE128* +
+→ place a check mark next to the option *Display GTIN*
+. *Save* (icon:save[role="green"]) the settings.
+
+Furthermore, you have the possibility to determine in the same menu, which item-related information you want to add to the label. Also in this case, you have to make sure that the position needs to carried out according to the settings of your label printer.
+
+Possible selection fields (<<image-label-template>>) are:
+
+* Language
+* Item ID
+* Variation ID
+* Variation no.
+* Variation name
+* External variation ID
+* Model
+* Main variation ID
+* Item name
+
+By activating the option *Hide title*, you determine whether the title of the field should also be displayed (e.g. “Language: English”).
+
+[[image-label-template]]
+.Settings in the *System » System settings » Item » Labels* menu
+image::fulfilment/assets/eBay-Fulfillment-label-template.png[width=640, height=360]
+
+[#360]
+=== Inbound
+
+[#365]
+==== What does inbound mean?
+
+Inbound means that you supply eBay Fulfillment with items that they then deliver to your customers. The term inbound covers 2 aspects:
+
+. first, it describes the transmission of data to eBay Fulfillment in the form of an advice note (goods delivery announcement)
+. on the other hand, it is the process of physical goods receipt that you transfer from your warehouse to the warehouse of eBay Fulfillment
+
+*_Note that following the given order is absolutely necessary for the correct processing with eBay Fulfillment._*
+
+[#370]
+==== Creating an inbound order
+
+By deploying the eBay Fulfillment plugin, a contact record of eBay Fulfillment (e.g. Fiege) is automatically created in the menu *CRM » Contacts*.
+
+Create an inbound order with the recipient address of your fulfilment service provider. To create an order manually, search for the contact in the menu *CRM » Contacts*.
+
+Enter the name in the *Name* field (e.g. Fiege). Open the contact record and create a new order by clicking on *New order* on the left side.
+
+Add the items to the order that you want to send to your fulfilment service provider and set the <<fulfilment/ebay-fulfillment#560, item price to 0 EUR>>. *Save* the order.
+
+[[image-item-price-to-zero]]
+.Example of how to set the item price to 0 EUR in an inbound order
+image::fulfilment/assets/eBay-Fulfillment-item-price-zero.png[width=640, height=360]
+
+The automatic status change to *eBay Fulfillment Inbound sent* informs you that you can book the outgoing items in the respective order in the *Orders » Settings* menu.
+
+[[image-book-outgoing-items]]
+.Booking outgoing items after the status change to “eBay Fulfillment Inbound sent”
+image::fulfilment/assets/eBay-Fulfillment-book-outgoing-items.png[width=640, height=360]
+
+[WARNING]
+.Do not create the delivery note at the order
+====
+Do not create the delivery note at the order, but as described in chapter <<fulfilment/ebay-fulfillment#400, Inbound packages>>. Otherwise, the fulfilment service provider cannot stock the items.
+====
+
+
+[#380]
+==== Generating and applying labels
+
+Now create the EBFSKU labels in the order in the *Receipts* tab. Then print the labels and stick them on the items. To do so, proceed as described below.
+
+[.instruction]
+Generating the label:
+
+. In the plentymarkets back end, go to *Orders » Edit orders*.
+. Open the order that you want to send to eBay Fulfillment.
+. Click on the *Receipts* tab.
+. Select an option from the *Item labels* drop-down list. +
+→ The label is created.
+. *Save* (icon:save[role="green"]) the label on your computer.
+
+Then print the label using a suitable label printer and stick the label on the order items you want to send to eBay Fulfillment.
+
+[#390]
+==== Sending advice notes to the fulfilment service provider
+
+To automatically send the advice notes (goods delivery notification) to eBay Fulfillment, you must manually change the status of the order. To do so, open the order and change the status to*[5.3] eBay Fulfillment Inbound*.
+
+[#400]
+==== Inbound packages
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Shipping » Fulfillment » eBay Fulfillment » Inbound Packages*.
+. Enter the order ID.
+. Click on *Search* (icon:search[]).
+. Click on *URL* in the line of the order. +
+→ A file is generated and downloaded.
+. Print the file and put it into the package.
+
+Once you have carried out all the settings, there's nothing to stop your items from being stored in the eBay Fulfillment warehouse. To ensure a smooth transition, note that the notified quantity of items corresponds to the actual quantity of items shipped to the eBay Fulfillment warehouse.
+
+[#410]
+== Outbound
+
+[#420]
+=== What does outbound mean?
+
+The term outbound describes the sales and distribution process that the fulfilment service provider takes over for you: It packs the items, stores them temporarily and then sends them to your customers.
+
+[#430]
+=== Sending the first item
+
+As soon as stock was booked in the warehouse of eBay Fulfillment, the stock in the eBay Fulfillment warehouse will automatically be updated in your plentymarkets system. From this moment on and on condition that all settings in your plentymarkets system were carried out correctly, it is possible to transmit the first order to eBay Fulfillment.
+
+If you have received orders for the same item that you sold from your own warehouse in the past, the plentymarkets system does not transmit an order to eBay Fulfillment. Only does the transmission take place when eBay Fulfillment updates the stock for the corresponding warehouse.
+
+If you have already decided to <<fulfilment/ebay-fulfillment#250, send the eBay Fulfillment outbound orders automatically>>, nothing stands in the way of processing eBay Fulfillment orders. If you prefer sending the orders manually, proceed as described in the following steps.
+
+[#440]
+=== Manually sending an outbound order to eBay Fulfillment (standard process)
+
+After receipt of an order in your plentymarkets system and payment of the order, the order is automatically set to status *[5] Cleared for shipping*, provided the items have sufficient stock. From here, you can manually forward the orders to eBay Fulfillment as follows:
+
+. In the plentymarkets back end, go to *Orders » Edit orders*.
+. Filter in the left area under *Warehouse* according to the eBay Fulfillment distribution warehouse you have named, e.g.:eBay Fulfillment Sales.
+. Click on *Search* (icon:search[]). +
+→ An overview of all orders that you process via eBay Fulfillment is displayed.
+. Open the order by clicking on the order ID.
+. Select in the *Overview* tab in the *Status* area the previously created status *eBay Fulfillment Outbound* from the drop-down list. +
+→ The order moves from here to the status *eBay Fulfillment Outbound sent* or *eBay Fulfillment Outbound not sent*.
+
+*_Note:_* If the order could not be sent, check the settings or have a look in the chapter <<fulfilment/ebay-fulfillment#450, FAQ/Troubleshooting>>.
+
+[#445]
+=== Order splitting
+
+Initial situation: An order contains 2 items A and B. Item A is in an own warehouse and item B is in the eBay Fulfillment warehouse. +
+→ The items are split into different delivery orders.
+
+[#670]
+==== Splitting the delivery orders according to the item availability
+
+Go to *System » System settings » Orders » Settings* and select from the line *Assignment of warehouses* the setting *b) a warehouse can be assigned for each stock unit* and in the line *Automatic warehouse selection* the setting *d) depending on the warehouse priority and the highest stock level*.
+
+. In the plentymarkets back end, go to *System » System settings » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter the desired name for the event procedure, e.g. *eBay Fulfillment splitting*.
+
+*_Triggering event_*
+
+. From the *Event* drop-down list, select the option *Order change > Status change (shipping preparation)*.
+. *Save* (icon:save[role="green"]) the settings.
+
+*_Filter criteria for orders_*
+
+. Select the filter *Order > Order type*.
+. Click on *Add*.
+. Activate the option *Order*.
+
+. Click on*Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Order warehouse*.
+. Click on *Add*.
+. Activate the option *Several warehouses per order* in the filter.
+
+*_Executing procedure_*
+
+. Click on*Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Order > Generate delivery orders*.
+. Click on *Add*.
+
+. Place a check mark next to the word *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#450]
+== FAQ/Troubleshooting
+
+[WARNING]
+.Contact the eBay Customer Support in the following cases
+====
+Please contact the eBay Customer Support when the following causes occur: +
+
+* Orders that have already been transmitted to Fiege should be cancelled
+* Package number is not visible in the order
+* Stock differences +
+(If you have determined that more/less stock is available in the warehouse than stated in the plentymarkets back end, then you can contact eBay that they ask Fiege about the current stock level.)
+* Returning goods
+* Labelling service
+* General questions about the eBay Fulfillment contract
+====
+
+[#460]
+=== No EBSFKU saved in the item
+
+Possible causes for this are listed in the following:
+
+[#470]
+==== The item is not activated for eBay Fulfillment
+
+Go to *Items » Edit item* and search (icon:search[]) for the item. Open the item and check if the options *eBay Fulfillment* and *WEB API* are activated under *Availability*. The EBFSKUs will be automatically saved in the item after approx. 1 hour.
+
+[#480]
+==== Check the token
+
+Check whether the token/your accounts are activated. If not, update the token in the *System » System settings » Markets » eBay » Accounts* menu and in the *System » System settings » Markets » eBay » OAuth2* menu.
+Afterwards, go to *Plugins » Plugin overview* and save the plugin set once again. Select the active set and save the settings.
+
+The EBFSKUs will be automatically saved in the item after approx. 1 hour.
+
+[#490]
+==== Password changed
+
+If you have changed your eBay password, it is required that you update your eBay account and the eBay OAuth2 account in plentymarkets as well.
+
+[#495]
+==== Pay attention to version updates
+
+Pay attention if version updated are available and update the plugin in the *Plugins » Plugin overview* menu.
+
+[#500]
+=== Negative stock or stock differences
+
+To avoid negative stock or stock differences in your plentymarkets system, make sure that your basic warehouse settings are correct.
+
+[#510]
+==== Unilateral sale
+
+Your warehouse in the listing is the warehouse *eBay Fulfillment Sales*. With this setting, you make sure that this eBay item is only sold via the warehouse *eBay Fulfillment Sales*.
+
+[#520]
+==== Multi-Channel
+
+If you sell this item also via other platforms, you can define your warehouse settings according to your individual requirements. To do so, use the warehouse selection and warehouse priorities.
+
+Select as warehouse in the listing the option *Use basic settings*. The basic warehouse settings are carried out in the *System » System settings » Orders » Settings* menu.
+
+A correct selection of the stock dependency in the eBay listing is also required for an ideal warehouse selection. Further information can be found in the <<quick-start/quick-start-ebay#2800, plentymarkets manual>>.
+
+*Important note:*
+If you would like to exclude markets for eBay Fulfillment, do this by deactivating the referrers in the warehouse settings. To do so, go to *System » System settings » Stock » Warehouse* » Select warehouse » *Settings*.
+
+[#530]
+=== Common inbound mistakes
+
+Possible causes for this are listed in the following.
+
+[#535]
+==== Not possible to add items to the inbound order
+
+If items cannot be found in the search when creating an inbound order, check whether the referrer *Manual entry* is activated for the price linked in the item.
+
+Go to *System » System settings » Items » Sales price* _here price for eBay_ to carry out the settings.
+
+[[image-manual-entry-referrer-sales-price]]
+.Activating the manual referrer at the sales prices
+image::fulfilment/assets/eBay-Fulfillment-sales-price.png[width=640, height=360]
+
+[#540]
+==== Warehouse selection for inbound order
+
+When manually creating an order for the fulfilment service provider, please do “NOT” select *eBay Fulfillment Sales* or *eBay Fulfillment Exception* as warehouse.
+
+*_These warehouses are only managed by eBay Fulfillment._*
+
+Select for the order the warehouse from which you want to take and book the items for shipment to the fulfilment service provider.
+
+[#545]
+==== Order is stuck in status "eBay Fulfillment Inbound"
+
+A possible cause for this pending change of the status *Inbound* to *Inbound sent* or *Inbound not sent* is a missing standard shipping profile. This is saved in the *System » System settings » Client » Standard client » Orders* menu.
+
+[[image-select-standard-shipping-profile]]
+.Select the standard shipping profile
+image::fulfilment/assets/eBay-Fulfillment-select-standard-shipping-profile.png[width=640, height=360]
+
+The user must also have the necessary editing rights. You find this setting in the *System » System settings » Settings » User » Rights » User* menu. Enter the search criteria, open the corresponding user name and in the area *Rights*, click on the small grey arrow next to *Orders*. Activate the rights as you can see as an example in the following image.
+
+[[image-activate-user-rights]]
+.Activating user rights
+image::fulfilment/assets/eBay-Fulfillment-activate-user-rights.png[width=640, height=360]
+
+[#550]
+==== Inbound not sent
+
+All items/variations of the order must be <<fulfilment/ebay-fulfillment#310, active>> and must have an EBFSKU. Otherwise, the inbound order cannot be sent.
+
+[#555]
+==== Not possible to transfer inbound order
+
+Check whether you subsequently made changes to the items in the order and/or whether further items were subsequently added to the order.
+
+If the shipping packages have already been created - order search in the shipping centre with filters that apply also to the inbound order -, subsequent changes to the order cannot be applied automatically for the shipping packages, e.g. items could be “missing”.
+
+Therefore, it is necessary that you delete the shipping packages for this order in the shipping centre. In case of a new search or when updating the search, the shipping packages are again generated automatically with the current data from the order.
+
+If no subsequent changes were made to the order, check whether shipping packages were manually added to the order via the shipping centre or via a process. These cannot be filled with items automatically; empty shipping packages, however, are rejected by the API.
+
+If you should require further shipping packages to register the inbound order with a fulfilment service provider, you can do this after transmission of the inbound order to the fulfilment service provider. This is possible because currently only the “total content” spread on the packages is decisive. Empty shipping packages are not allowed.
+
+If this solution is not suitable for you, the package content list would be useful for this purpose since you can fill the packages according to your needs. Thus, you can exactly determine how many packages should be used and which number of items may be contained in the packages.
+
+However, you must ensure that no shipping packages were generated automatically beforehand. This is due to the fact that the automatic generation cannot work smoothly in line with the package content list.
+Delete the shipping packages that have already been created in the shipping centre, if necessary. This allows you to generate new shipping packages via the package content list.
+As soon as one shipping package at least was created via the package content list, the automatism for the generation of shipping packages in the shipping centre does no longer apply for the order.
+
+[#560]
+==== Sales figures
+
+Remember to set the item prices in the order to 0.00 EUR. By doing so, you make sure that the inbound orders do not have an influence on your sales figures.
+
+[#570]
+==== Stock maintenance
+
+Once the inbound order was sent, you can manually book the outgoing items in the order or have them booked via an event procedure.
+
+*Important note:*
+If you change the settings in your system and manually change the status of the inbound order, e.g. to move the order again to the desired status after having made a correction in the order to control whether a possible error could be solved by means of the settings changes, then please note the following:
+
+By *manually changing/moving the order status*, the automated events may no longer apply. Therefore, it could be the case that an event procedure that should book the outgoing items automatically does no longer apply. Therefore, you must manually book the outgoing items in the order.
+
+[#590]
+==== Not possible to change the status
+
+If it is not possible to change the status, the outgoing items might have been already booked (status ≥ 7). Or the required user rights are not activated (see chapter <<fulfilment/ebay-fulfillment#545, Order is stuck in status "eBay Fulfillment Inbound">>).
+
+The outgoing items booked can be reset in the order in the *Settings* tab in the area *Outgoing items* by clicking on *Reset*. After having carried out this setting, the order can again be set to status *5* and afterwards to the status *eBay Fulfillment Inbound*.  The order then moves to status *Inbound sent* automatically.
+
+[#600]
+==== Inbound: Difference between advice note and physical shipment
+
+*Under-delivery:*
+
+You have sent an <<fulfilment/ebay-fulfillment#365, advice note (goods delivery announcement)>> with your plentymarkets system to eBay Fulfillment. In this notification, you transfer a delivery of 15 pieces of a certain item. Actually, you only send only 13 pieces, however.
+
+In order that the quantity is correct in the warehouse of eBay Fulfillment and that you can avoid deficiencies on your side, you simply forward the missing items to the warehouse of eBay Fulfillment.
+→ In this case, 2 pieces.
+
+*Over-delivery:*
+
+If you have sent more items to the warehouse of eBay Fulfillment than notified before, send an advice note with the difference amount to your fulfilment service provider in order to synchronise the difference in the system.
+
+[#610]
+=== Common outbound mistakes
+
+[#615]
+==== Was the shipping release transmitted to Fiege?
+
+Open the *Orders » Edit orders* menu. Search (icon:search[]) for the order and open it. In the order, click on the *Properties* tab. If there is a value (e. g. _PL-XXXXX-123456_) saved in the field *EbayFiege:Outbound Order ID*, the outbound order was transmitted successfully.
+
+If you have any questions afterwards, please contact the eBay CS (Customer Support).
+
+[#630]
+=== Outbound not sent
+
+[#640]
+==== Token no longer valid
+
+See chapter <<fulfilment/ebay-fulfillment#480, Check the token>>.
+
+[#650]
+==== User rights not activated
+
+See chapter <<fulfllment/ebay-fulfillment#545, Order is stuck in status "eBay Fulfillment Inbound">>.
+
+[#660]
+==== Tracking by means of logs (example: Packstation)
+
+If the status of an order changes to *eBay Fulfillment Inbound not sent* or *eBay Fulfillment Outbound not sent*, you can have a look in the log for further details:
+
+. In the plentymarkets back end, go to *Data » Log*.
+. In the filter area on the left side, enter the plugin name *EbayFiege* in the field *Integration*.
+. Enter the log level *Error* in the field *Level*.
+. Click on *Search* (icon:search[]).
+
+After you have carried out the search, all events that were carried out on the system as well as their results will be listed. With the help of the *timestamp* when the status change was carried out in your order, you can find the corresponding log in the overview. When clicking on the desired log, a pop-up window opens where you can see the first details. By clicking on *Expand all* or on the arrow next to the last line, further details are displayed. In the last line of this report, you obtain the information that led to the status change.
+
+*Example:*
+
+You have transmitted an outbound order to eBay Fulfillment and the address contains a packstation, this outbound order will be refused automatically after the transmission since eBay Fulfillment does not deliver to packstations. The status of this order changes to *eBay Fulfillment outbound not sent*. By means of the time when the status was changed in the order, you can have a look in the list and search for the corresponding log entry. After clicking in the line of the log entry, the following information is displayed:
+
+[[image-log-entry]]
+.Log entry
+image::fulfilment/assets/eBay-Fulfillment-log-entry.png[width=640, height=360]
+
+In the last line that opens by clicking the arrow, you obtain detailed information that the outbound order could not be sent since the stated destination address is not supported by eBay Fulfillment.
+
+[#670]
+==== Change or cancel outbound
+
+If the outbound has already been sent to eBay Fulfillment, the order should not be changed, for example to send the shipment by yourself. In order to obtain the editing status from the fulfilment service provider or to stop the order from being edited, contact the eBay Customer Support.
+
+Currently, it is not possible to cancel the outbound order via the interface. Therefore, this has to be discussed with the eBay CS.
+Cancelling the outbound order in the system does not result in the order being cancelled with Fiege.
