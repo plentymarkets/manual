@@ -1,14 +1,14 @@
-= users
+= orderStatuses
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: users, Report, Rohdaten
-:position: 220
-:url: daten/report/datenformate/users
+:keywords: orderStatuses, Report, Rohdaten
+:position: 140
+:url: daten/report/datenformate/orderstatuses
 
-:datenformat: pass:quotes[*users*]
-:daten: Benutzer
-:spezifikationen: <<tabelle-spezifikationen-users>>
-:datenspalten: <<tabelle-datenspalten-users>>
+:datenformat: pass:quotes[*orderStatuses*]
+:daten: Auftragsstatus
+:spezifikationen: <<tabelle-spezifikationen-orderstatuses>>
+:datenspalten: <<tabelle-datenspalten-orderstatuses>>
 
 include::./_textblocks/einleitung.adoc[]
 
@@ -16,17 +16,17 @@ include::./_textblocks/einleitung.adoc[]
 
 include::./_textblocks/spezifikationen.adoc[]
 
-[[tabelle-spezifikationen-users]]
-.Technische Spezifikationen des Formats *users*
+[[tabelle-spezifikationen-orderstatuses]]
+.Technische Spezifikationen des Formats *orderStatuses*
 [cols="4"]
 |====
 |Eigenschaft |Bedeutung |Wert |Erläuterung
 
 |dataName
 |Name
-|users
+|orderStatuses
 |Name des Creator-Prozesses und Präfix der erstellten Datei. +
-Dateiname: *users-xxx.csv.gz*
+Dateiname: *orderStatuses-xxx.csv.gz*
 
 |fileFormat
 |Dateiformat
@@ -45,22 +45,22 @@ Dateiname: *users-xxx.csv.gz*
 
 |limitPage
 |Zeilen pro Anfrage
-|bis zu 500
+|bis zu 200
 |Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
 
 |limitDay
 |Zeilen pro Tag
-|bis zu 1.000
+|bis zu 200
 |Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
 
 |earliestPossibleDataDate
 |Frühester Zeitpunkt
-|2006-01-01
+|2016-01-01
 |Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
 
 |dataUpdatedAtColumnName
 |Spaltenbezeichnung
-|u_updated_at
+|os_updated_at
 |Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
 
 |deleteRawDataAfterDaysMinimum
@@ -75,8 +75,8 @@ Dateiname: *users-xxx.csv.gz*
 
 |filterType
 |Filtertyp
-|lastUpdate
-|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+|singleDump
+|Alle Daten werden in einer Datei ausgegeben.
 
 |====
 
@@ -84,8 +84,8 @@ Dateiname: *users-xxx.csv.gz*
 
 include::./_textblocks/datenspalten.adoc[]
 
-[[tabelle-datenspalten-users]]
-.Datenspalten des Formats *users*
+[[tabelle-datenspalten-orderstatuses]]
+.Datenspalten des Formats *orderStatuses*
 [cols="1,3,3,3"]
 |====
 |Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
@@ -95,25 +95,49 @@ include::./_textblocks/datenspalten.adoc[]
 |plenty id
 |ID des plentymarkets Systems
 
-|*u_id (Primary key)*
-|VARCHAR NOT NULL
-|user id
-|ID des Benutzers
+|*os_id (Primary key)*
+|DECIMAL (6, 4) NOT NULL
+|account contact id
+|ID des Kontakts
 
-|u_real_name
-|VARCHAR NOT NULL
-|user real name
-|Realer Name des Benutzers
-
-|u_lang
+|os_name
 |VARCHAR
-|user language
-|UI-Sprache des Benutzers
+|order status name
+|Name des Auftragsstatuses
 
-|*u_updated_at*
+|os_color
+|VARCHAR
+|order status colour
+|Farbe des Auftragsstatuses
+
+|os_is_frontend_visible
+|SMALLINT
+|order status is frontend visible
+|1 = sichtbar +
+0 = unsichtbar
+
+|os_is_reorder_visible
+|SMALLINT
+|order status is reorder visible
+|1 = sichtbar +
+0 = unsichtbar
+
+|os_is_redistribution_visible
+|SMALLINT
+|order status is redistribution visible
+|1 = sichtbar +
+0 = unsichtbar
+
+|*os_updated_at*
 |TIMESTAMPTZ
-|user updated at
+|order statuses updated at
 |Zeitstempel der letzten Aktualisierung +
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
+
+|os_created_at
+|TIMESTAMPTZ
+|order statuses created at
+|Zeitstempel der Erstellung +
 Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====

@@ -1,14 +1,14 @@
-= stockManagementWarehouses
+= payments
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: orderItemAmounts, Report, Rohdaten
-:position: 190
-:url: daten/report/datenformate/stockmanagementwarehouses
+:keywords: payments, Report, Rohdaten
+:position: 160
+:url: daten/report/datenformate/payments
 
-:datenformat: pass:quotes[*stockManagementWarehouses*]
-:daten: Lager
-:spezifikationen: <<tabelle-spezifikationen-itemmanufacturer>>
-:datenspalten: <<tabelle-datenspalten-itemmanufacturer>>
+:datenformat: pass:quotes[*payments*]
+:daten: Zahlungen
+:spezifikationen: <<tabelle-spezifikationen-payments>>
+:datenspalten: <<tabelle-datenspalten-payments>>
 
 include::./_textblocks/einleitung.adoc[]
 
@@ -16,52 +16,22 @@ include::./_textblocks/einleitung.adoc[]
 
 include::./_textblocks/spezifikationen.adoc[]
 
-[[tabelle-spezifikationen-stockmanagementwarehouses]]
-.Technische Spezifikationen des Formats *stockManagementWarehouses*
-[cols=4]
+[[tabelle-spezifikationen-payments]]
+.Technische Spezifikationen des Formats *payments*
+[cols="4"]
 |====
 |Eigenschaft |Bedeutung |Wert |Erläuterung
 
 |dataName
 |Name
-|stockManagementWarehouses
+|payments
 |Name des Creator-Prozesses und Präfix der erstellten Datei. +
-Dateiname: *stockManagementWarehouses-xxx.csv.gz*
+Dateiname: *payments-xxx.csv.gz*
 
 |fileFormat
 |Dateiformat
 |CSV, GZIP
 |Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
-
-|limitPage
-|Zeilen pro Anfrage
-|bis zu 1.000
-|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
-
-|limitDay
-|Zeilen pro Tag
-|bis zu 1.000
-|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
-
-|earliestPossibleDataDate
-|Frühester Zeitpunkt
-|2006-01-01
-|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
-
-|dataUpdatedAtColumnName
-|Spaltenbezeichnung
-|smw_updated_at
-|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
-
-|deleteRawDataAfterDaysMinimum
-|Minimale Anzahl an Tagen bis zur Löschung
-|20
-|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
-
-|deleteRawDataAfterDaysMaximum
-|Maximale Anzahl an Tagen bis zur Löschung
-|80
-|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
 
 |defaultActive
 |Standardmäßig aktiv
@@ -72,6 +42,36 @@ Dateiname: *stockManagementWarehouses-xxx.csv.gz*
 |Intervall
 |täglich
 |Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 8.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 200.000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2016-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|p_imported_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|deleteRawDataAfterDaysMinimum
+|Minimale Anzahl an Tagen bis zur Löschung
+|1095
+|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
+
+|deleteRawDataAfterDaysMaximum
+|Maximale Anzahl an Tagen bis zur Löschung
+|1095
+|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
 
 |filterType
 |Filtertyp
@@ -84,8 +84,8 @@ Dateiname: *stockManagementWarehouses-xxx.csv.gz*
 
 include::./_textblocks/datenspalten.adoc[]
 
-[[tabelle-datenspalten-stockmanagementwarehouses]]
-.Datenspalten des Formats *stockManagementWarehouses*
+[[tabelle-datenspalten-payments]]
+.Datenspalten des Formats *payments*
 [cols="1,3,3,3"]
 |====
 |Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
@@ -95,48 +95,63 @@ include::./_textblocks/datenspalten.adoc[]
 |plenty id
 |ID des plentymarkets Systems
 
-|*smw_id (Primary key)*
+|*p_id (Primary key)*
 |VARCHAR NOT NULL
-|stock management warehouse ID
-|ID des Lagers
+|payment id
+|ID der Zahlung
 
-|smw_type_id
+|p_amount
+|DECIMAL (17, 4) NOT NULL
+|payment amount
+|Höhe der Zahlung
+
+|p_exchange_ratio
+|DECIMAL (12, 6) NOT NULL
+|payment exchange ratio
+|Wechselkurs der Zahlung
+
+|p_parent_id
+|VARCHAR
+|payment parent id
+|ID der übergeordneten Zahlung, wenn vorhanden
+
+|p_deleted
 |SMALLINT
-|stock management warehouse type
-|Typ des Lagers +
-Mögliche Werte: +
-0 = Vertriebslager +
-1 = Reparaturlager +
-4 = Vorratslager +
-5 = Verteilerlager +
-6 = Umschlaglager +
-7 = Sonstiges Lager
+|payment deleted
+|1 = gelöscht +
+0 = nicht gelöscht
 
-|smw_logistics_type
-|VARCHAR
-|stock management warehouse logistics type
-|Logistiktyp des Lagers +
-Mögliche Werte: +
-own = Eigenes Lager +
-amazon = Amazon FBA +
-dhl = DHL Fulfillment
+|p_unaccountable
+|SMALLINT
+|payment unaccountable
+|1 = nachvollziehbar +
+0 = nicht nachvollziehbar
 
-|smw_priority
+|p_currency
+|VARCHAR NOT NULL
+|payment currency
+|Währung der Zahlung
+
+|p_is_system_currency
 |SMALLINT NOT NULL
-|stock management warehouse priority
-|Priorität des Lagers +
-Mögliche Werte: +
-5 (höchste Priorität) bis 1 (niedrigste Priorität)
+|payment is system currency
+|1 = Währung stimmt mit Systemwährung überein +
+0 = Währung stimmt nicht mit Systemwährung überein
 
-|smw_name
-|VARCHAR
-|stock management warehouse name
-|Name des Lagers
+|p_type
+|VARCHAR NOT NULL
+|payment type
+|Art der Zahlung
 
-|*smw_updated_at*
+|mop_id
+|INTEGER
+|method of payment id
+|ID der Zahlungsart
+
+|*p_imported_at*
 |TIMESTAMPTZ
-|stock management warehouse updated at
-|Zeitstempel der letzte Aktualisierung +
+|payment imported at
+|Zeitstempel der letzten Aktualisierung +
 Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====
