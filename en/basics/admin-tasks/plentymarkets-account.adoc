@@ -562,10 +562,72 @@ Setting up URL forwarding:
 → The available tabs are shown.
 . Click on the **Domain** tab.
 . Click on the **blue plus** icon next to the domain that you want to forward from.
-. Click on the **URL forwarding instructions**.
-. Read the information that is displayed.
-. Pay attention to the instructions and enter the forwarding information into the designated field.
-. Click on **Save URL forwarding**.
+. Enter redirects into the designated field. You can define one redirect per line. Note the following <<basics/admin-tasks/plentymarkets-account#265, syntax information>> while entering redirects.
+. Click on **Save URL forwarding**. +
+→ Any changes will be published on our web servers within 24 hours.
+
+[#265]
+==== Structure
+
+Redirects always consist of four parts that are separated by semicolons:
+
+* Source;Target;HTTP-code;Option
+
+[[table-redirect-structure]]
+.Redirects always consist of four parts
+[cols="1,3"]
+|====
+|Part |Explanation
+
+|*Source*
+|The source path you want to forward from (e.g. `/contact/`). Use an asterisk `\*` at the end of the source if you want all of the subpages to redirect to the target (e.g. `/contact/*`).
+
+|*Target*
+|The target path or target URL you want to forward to (e.g. `/company/contact/` or `\http://www.external-domain.com/contact/`).
+
+|*HTTP code*
+a|The following HTTP codes are supported and interpreted by search engines:
+
+* 301: The requested source is now available at the defined target (also called redirect). The old address (source) is no longer valid.
+* 304: The contents of the requested resource have not been modified since the last client query. Therefore, the contents are not retransmitted.
+
+|*Option*
+a|Specifying an option is not always necessary.
+
+* L: If you specify this option, no additional RewriteRule is run after this one.
+|====
+
+==== Examples
+
+[[table-redirect-examples]]
+.Example redirects
+[cols="1,3"]
+|====
+|Redirect |Explanation
+
+|`/mens/*;/fashion/mens/;301;L`
+|All URLs that start with `/mens/` are forwarded to the URL `/fashion/mens/`.
+
+|`/mens/trousers/;/fashion/mens/trousers/;301;L`
+|The URL `/mens/trousers/` is forwarded to the URL `/fashion/mens/trousers/`.
+
+|`/mens/basics-\*;/fashion/mens/*;301;L`
+|All URLs that start with `/mens/basic` are forwarded to the URL `/fashion/mens/...`. +
+*_Note:_* In this example, the part of the source URL that starts with `basics-` is appended to the target URL.
+
+|`/;\https://www.external-blog.com/;301;L`
+|The homepage is forwarded to the URL `\https://www.external-blog.com/`.
+
+|`/*;\https://www.externer-blog.com/;301;L`
+|All of the URLs, including the homepage, are forwarded to the URL `\https://www.external-blog.com/`. +
+*_Note:_* Never set this redirect for your main store. Otherwise the plentymarkets admin will no longer be accessible. However, you can use this redirect for additional clients (stores) without any problem.
+
+|`/blog/*;\https://www.external-blog.com/;301;L`
+|All URLs that start with `/blog/` are forwarded to the URL `\https://www.external-blog.com/`.
+
+|`^/fashion/trousers/$;/fashion/mens/trousers/;301;L`
+|This rule only applies to the address `your-domain.com/fashion/mens/` without anything before or after. The circumflex `^` symbolises the beginning of the string and the dollar sign `$` symbolises the end of the string. Use this syntax if you have multiple lines of redirects that have e.g. `/fashion/trousers/` as the source URL and you want to avoid undesired redirects or endless redirects.
+|====
 
 [#270]
 [#ssl-certificate]

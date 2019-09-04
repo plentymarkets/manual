@@ -565,10 +565,72 @@ URL-Weiterleitungen einrichten:
 → Die verfügbaren Tabs werden eingeblendet.
 . Wechsele in das Tab *Domain*.
 . Klicke auf das *blaue Plus* der Domain, von der du weiterleiten möchtest.
-. Klicke auf *Anleitung URL-Weiterleitungen*.
-. Lese dir die angezeigten Informationen durch.
-. Gib die gewünschten Weiterleitungen gemäß dieser Anleitung in das vorgesehene Feld ein.
-. Klicke auf *URL-Weiterleitungen speichern*.
+. Gib die gewünschten Weiterleitungen in das vorgesehene Feld ein. Pro Zeile kann eine Umleitung definiert werden. Beachte bei der Eingabe die nachfolgende <<basics/admin-aufgaben/plentymarkets-konto#265, Informationen zum Syntax>>.
+. Klicke auf *URL-Weiterleitungen speichern*. +
+→ Änderungen werden spätestens nach 24 Stunden auf den Webservern veröffentlicht.
+
+[#265]
+==== Aufbau
+
+Eine Umleitung besteht immer aus vier Angaben, die mit einem Semikolon getrennt eingegeben werden:
+
+* Quelle;Ziel;HTTP-Code;Option
+
+[[tabelle-weiterleitung-aufbau]]
+.Eine Umleitung besteht aus vier Angaben
+[cols="1,3"]
+|====
+|Angabe |Erläuterung
+
+|*Quelle*
+|Der Quell-Pfad von welchem weitergeleitet werden soll (z.B. `/kontakt/`). Verwende ein Sternchen `\*` am Ende der Quelle, um alle Unterseiten auf das Ziel umzuleiten (z.B. `/kontakt/*`).
+
+|*Ziel*
+|Der Ziel-Pfad oder die Ziel-URL auf welche weitergeleitet werden soll (z.B. `/unternehmen/kontakt/` oder `\http://www.externe-domain.com/kontakt/`).
+
+|*HTTP-Code*
+a|Die folgenden HTTP-Codes werden unterstützt und von Suchmaschinen interpretiert:
+
+* 301: Die angeforderte Quelle steht ab sofort unter dem definierten Ziel bereit (auch Redirect genannt). Die alte Adresse (Quelle) ist nicht länger gültig.
+* 304: Der Inhalt der angeforderten Ressource hat sich seit der letzten Abfrage des Clients nicht verändert und wird deshalb nicht übertragen.
+
+|*Option*
+a|Die Angabe einer Option ist nicht in jedem Fall erforderlich.
+
+* L: Wenn du diese Option angibst, wird nach dieser RewriteRule keine weitere mehr ausgeführt.
+|====
+
+==== Beispiele
+
+[[tabelle-weiterleitung-beispiele]]
+.Beispiel-Weiterleitungen
+[cols="1,3"]
+|====
+|Weiterleitung |Erläuterung
+
+|`/herren/*;/mode/herren/;301;L`
+|Alle URLs, welche mit `/herren/` beginnen werden auf die URL `/mode/herren/` weitergeleitet.
+
+|`/herren/hosen/;/mode/herren/hosen/;301;L`
+|Die URL `/herren/hosen/` wird auf die URL `/mode/herren/hosen/` weitergeleitet.
+
+|`/herren/basics-\*;/mode/herren/*;301;L`
+|Alle URLs, welche mit `/herren/basic` beginnen, werden auf die URL `/mode/herren/...` weitergeleitet. +
+*_Hinweis:_* hierbei der Teil der Quell-URL, welcher in diesem Beispiel mit `basics-` beginnt, an die Ziel-URL angehängt.
+
+|`/;\https://www.externer-blog.com/;301;L`
+|Die Startseite wird auf die URL `\https://www.externer-blog.com/` weitergeleitet.
+
+|`/*;\https://www.externer-blog.com/;301;L`
+|Alle URLs, inkl. der Startseite, werden auf die URL `\https://www.externer-blog.com/` weitergeleitet. +
+*_Hinweis:_* Bitte setze diese Weiterleitung niemals für deinen Hauptshop, da sonst der plentymarkets Admin nicht mehr erreichbar ist. Der Einsatz dieser Weiterleitung für einen zusätzlichen Mandantshop ist jedoch problemlos möglich.
+
+|`/blog/*;\https://www.externer-blog.com/;301;L`
+|Alle URLs, welche mit `/blog/` beginnen werden auf die URL `\https://www.externer-blog.com/` weitergeleitet.
+
+|`^/mode/hosen/$;/mode/herren/hosen/;301;L`
+|Diese Regel gilt nur für die Adresse `ihre-domain.de/mode/herren/` ohne etwas davor oder danach. Der Zirkumflex `^` ist hierbei das Symbol für Stringanfang und das Dollarzeichen `$` das Symbol für das Stringende. Durch diese Syntax vermeidest du, dass es zu unerwünschten Weiterleitungen oder Endlosweiterleitungen kommt, wenn du mehrere Zeilen an Weiterleitungen nutzt die z.B. `/mode/hosen/` als Quell-URL enthalten.
+|====
 
 [#270]
 [#ssl-zertifikat]
