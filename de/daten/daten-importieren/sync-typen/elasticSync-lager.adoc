@@ -9,16 +9,16 @@ include::{includedir}/_header.adoc[]
 :docinfodir: /workspace/manual-adoc
 :docinfo1:
 
-Mit einem Syncs des Typs *Lager* importierst du neue Lagerorte oder aktualisierst bestehende.
+Mit einem Sync des Typs *Lager* importierst du neue Lagerorte oder aktualisierst bestehende.
 
 Um Lagerorte per ElasticSync zu erstellen oder zu aktualisieren, musst du ein Lager angelegt haben.
 
 [#2231]
 == Felder für den Lagerortabgleich
 
-In <<tabelle-Abgleichfelder-Lagerorte>> werden Felder erläutert, die für den Abgleich von Lagerorten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<tabelle-Abgleichfelder-Lagerorte>> werden Felder erläutert, die für den Abgleich von Lagerorten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorten findest du auf der Handbuchseite link:https://knowledge.plentymarkets.com/warenwirtschaft/lager-einrichten[Lager einrichten^].
+Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte findest du auf der Handbuchseite link:https://knowledge.plentymarkets.com/warenwirtschaft/lager-einrichten[Lager einrichten^].
 
 [[tabelle-Abgleichfelder-Lagerorte]]
 .Abgleichfelder für Lagerortimport
@@ -26,10 +26,7 @@ Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte
 |====
 |Abgleichfeld |Erläuterung
 
-|Warehouse ID
-|ID des Lagers
-
-|Level Name
+|Level name
 |Name der Ebene, z.B. R01
 
 |Level ID
@@ -42,12 +39,18 @@ Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte
 |Name des Lagerorts ohne Pfad
 |====
 
+[IMPORTANT]
+.Vergabe der Ebenen-ID
+====
+Beim Import von neuen Lagerorten gilt es bei der Vergabe der *EbenenID* unbedingt zu beachten, dass die nächsthöhere ID der kleinsten Dimension verwendet wird. Wählt man hingegen die ID einer höheren Dimension, sind die Lagerorte nicht mehr sichtbar und die vorhandene Struktur geht verloren.
+====
+
 [#2232]
 == Felder für die Lagerortzuordnung
 
-In <<tabelle-Zuordnungsfelder-Lagerorte>> werden Felder erläutert, die für die Zuordnung von Lagerortdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<tabelle-Zuordnungsfelder-Lagerorte>> werden Felder erläutert, die für die Zuordnung von Lagerortdaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorten findest du auf der Handbuchseite link:https://knowledge.plentymarkets.com/warenwirtschaft/lager-einrichten[Lager einrichten^].
+Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte findest du auf der Handbuchseite link:https://knowledge.plentymarkets.com/warenwirtschaft/lager-einrichten[Lager einrichten^].
 
 
 [[tabelle-Zuordnungsfelder-Lagerorte]]
@@ -56,18 +59,19 @@ Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte
 |====
 |Zuordnungsfeld |Erläuterung
 
-2+|*Lagerorte*
+2+^|*Lagerorte*
 
-|Storage location Id
+|Lagerort-ID +
+(nur bei bestehenden Lagerorten)
 |ID des Lagerorts
 
-|Level ID
+|Ebenen-ID
 |ID der Ebene
 
-|Storage location name
+|Lagerortname
 |Name des Lagerorts ohne Pfad
 
-|Purpose
+|Verwendungszweck
 |Verwedungszweck des Lagerorts, z.B. Entnahme
 
 |Status
@@ -76,18 +80,24 @@ Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte
 |Position
 |Position des Lagerorts (Laufweg)
 
-2+|*Ebenen der Lagerorte*
+|Notizen
+|Notizen zum Lagerort
 
-|Level Parent ID
-|Parent-ID der Ebene
+|Lagerort löschen
+|Löschfunktion für den Lagerort
+
+2+^|*Ebenen der Lagerorte*
+
+|ID der Elternebene
+|ID der Elternebene
 
 |Dimension ID
 |ID der Dimension, z.B. Regal
 
-|Level Position
+|Position der Ebene
 |Position der Ebene
 
-|Level Name
+|Name der Ebene
 |Name der Ebene, z.B. R01, R02 usw.
 
 |====
@@ -101,15 +111,16 @@ Du kannst mit ElasticSync Lagerorte anpassen und z.B. den Namen oder die Positio
 Lagerort anpassen:
 
 . Öffne das Menü *Daten » ElasticSync*.
-. Klicke in der Sync-Übersicht auf den Sync.
-. Klicke auf *Abgleich*.
-. Aktiviere die Felder *WarehouseID* und *Storage location ID*.
-. Wähle *Überspringen* als Importoption.
+. Klicke in der Sync-Übersicht auf den Sync. +
+→ Die Einstellungen werden geöffnet.
+. Wechsele in das Tab *Abgleich*.
+. Aktiviere das Feld *Lagerort-ID*.
+. Wähle bei den *Importoptionen* die gewünsche Option.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 . Klicke auf *Zuordnung*.
 . Öffne die Zuordnung aus der Übersicht.
 . Klappe auf der rechten Seite den Bereich *Lagerorte* auf.
-. Aktiviere die Felder *Storage Location ID*, *Storage location name* und *Position*.
+. Aktiviere die Felder *Lagerort-ID*, *Lagerortname* und *Position*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 [#2250]
@@ -121,17 +132,18 @@ Du kannst mit ElasticSync neue Lagerorte erstellen.
 Lagerort erstellen:
 
 . Öffne das Menü *Daten » ElasticSync*.
-. Klicke in der Sync-Übersicht auf den Sync.
-. Klicke auf *Abgleich*.
-. Wähle die Felder *WarehouseID* und *Storage location ID*.
-. Wähle bei Importoption *erstellen*.
+. Klicke in der Sync-Übersicht auf den Sync. +
+→ Die Einstellungen werden geöffnet.
+. Wechsele in das Tab *Abgleich*.
+. Wähle das Feld *Lagerort-ID* (optional; die nächsthöhere ID wird automatisch vergeben).
+. Wähle bei den *Importoptionen* die gewünschte Option.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 . Klicke auf *Zuordnung*.
 . Öffne die Zuordnung aus der Übersicht.
 . Klappe auf der rechten Seite den Bereich *Lagerorte* auf.
-. Aktiviere die Felder *Level ID*, *Storage Location ID*, *Storage location name*, *Purpose*, *Status* und *Position*.
+. Aktiviere die Felder *Ebenen-ID* (optional), *Lagerort-ID* (optional), *Lagerortname*, *Verwendungszweck*, *Status* und *Position*.
 . Klappe auf der rechten Seite den Bereich *Ebene der Lagerorte* auf.
-. Aktiviere die Felder *Dimension ID*, *Level Position* und *Level name*.
+. Aktiviere die Felder *Dimension ID*, *Position der Ebene* und *Name der Ebene*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 [#2250]
@@ -143,10 +155,11 @@ Du kannst mit ElasticSync Lagerorte löschen.
 Lagerort löschen:
 
 . Öffne das Menü *Daten » ElasticSync*.
-. Klicke in der Sync-Übersicht auf den Sync.
-. Klicke auf *Abgleich*.
-. Wähle das Feld *Storage location ID*.
-. Wähle die Importoption *Nur vorhandene Daten aktualisieren*.
+. Klicke in der Sync-Übersicht auf den Sync. +
+→ Die Einstellungen werden geöffnet.
+. Wechsele in das Tab *Abgleich*.
+. Wähle das Feld *Lagerort-ID*.
+. Wähle bei den *Importoptionen* die gewünschte Option.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 . Klicke auf *Zuordnung*.
 . Öffne die Zuordnung aus der Übersicht.
