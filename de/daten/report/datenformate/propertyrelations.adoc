@@ -1,15 +1,14 @@
-= itemManufacturers
+= propertyRelations
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: itemManufacturer, Report, Rohdaten
-:position: 50
-:url: daten/report/datenformate/itemmanufacturer
-:id: GQZMVOH
+:keywords: propertyRelations, Eigenschaftsverknüpfungen, Report, Rohdaten
+:position: 163
+:url: daten/report/datenformate/properties
 
-:datenformat: pass:quotes[*itemManufacturers*]
-:daten: Herstellerdaten
-:spezifikationen: <<tabelle-spezifikationen-itemmanufacturers>>
-:datenspalten: <<tabelle-datenspalten-itemmanufacturers>>
+:datenformat: pass:quotes[*propertyRelations*]
+:daten: die im System vorhandenen Verknüpfungen zwischen Eigenschaften und anderen Daten
+:spezifikationen: <<tabelle-spezifikationen-propertyRelations>>
+:datenspalten: <<tabelle-datenspalten-propertyRelations>>
 
 include::./_textblocks/einleitung.adoc[]
 
@@ -17,17 +16,17 @@ include::./_textblocks/einleitung.adoc[]
 
 include::./_textblocks/spezifikationen.adoc[]
 
-[[tabelle-spezifikationen-itemmanufacturers]]
-.Technische Spezifikationen des Formats *itemManufacturers*
+[[tabelle-spezifikationen-propertyRelations]]
+.Technische Spezifikationen des Formats *propertyRelations*
 [cols=4]
 |====
 |Eigenschaft |Bedeutung |Wert |Erläuterung
 
 |dataName
 |Name
-|itemManufacturers
+|propertyRelations
 |Name des Creator-Prozesses und Präfix der erstellten Datei. +
-Dateiname: *itemManufacturers-xxx.csv.gz*
+Dateiname: *propertyRelations-xxx.csv.gz*
 
 |fileFormat
 |Dateiformat
@@ -36,12 +35,12 @@ Dateiname: *itemManufacturers-xxx.csv.gz*
 
 |limitPage
 |Zeilen pro Anfrage
-|bis zu 500
+|bis zu 8.000
 |Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
 
 |limitDay
 |Zeilen pro Tag
-|bis zu 500
+|bis zu 80.000
 |Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
 
 |earliestPossibleDataDate
@@ -51,23 +50,23 @@ Dateiname: *itemManufacturers-xxx.csv.gz*
 
 |deleteRawDataAfterDaysMinimum
 |Minimale Anzahl an Tagen bis zur Löschung
-|20
+|10
 |Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
 
 |deleteRawDataAfterDaysMaximum
 |Maximale Anzahl an Tagen bis zur Löschung
-|80
+|60
 |Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Daten » Rohdaten* definiert werden.
 
 |filterType
 |Filtertyp
-|singleDump
-|Alle Daten werden in einer Datei ausgegeben.
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
 
 |dataUpdatedAtColumnName
 |Spaltenbezeichnung
-|im_updated_at
-|Die Herstellerdaten werden nicht gefiltert, da es sich bei dem Filtertyp um "singleDump" handelt.
+|propr_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
 
 |defaultActive
 |Standardmäßig aktiv
@@ -85,31 +84,57 @@ Dateiname: *itemManufacturers-xxx.csv.gz*
 
 include::./_textblocks/datenspalten.adoc[]
 
-[[tabelle-datenspalten-itemmanufacturers]]
-.Datenspalten des Formats *itemManufacturers*
+[[tabelle-datenspalten-propertyRelations]]
+.Datenspalten des Formats *propertyRelations*
 [cols="1,3,3,3"]
 |====
 |Eigenschaft |Datentyp |Vollständige Bezeichnung |Erläuterung
 
 |plenty_id
 |INTEGER NOT NULL
-|plenty ID
+|plenty id
 |ID des plentymarkets Systems
 
-|*im_id (Primary key)*
+|*propr_id (Primary key)*
 |VARCHAR NOT NULL
-|item manufacturer ID
-|ID des Herstellers
+|property relation ID
+|ID der Eigenschaftsverknüpfung
 
-|im_name
+|prop_id
+|VARCHAR NOT NULL
+|property ID
+|ID der Eigenschaft, wie in der <<artikel/einstellungen/eigenschaften#600, Eigenschaftskonfiguration>> angegeben.
+
+|propr_type
+|VARCHAR NOT NULL
+|property relation type
+|Typ der Eigenschaftsverknüpfung, wie z.B. <<artikel/artikel-verwalten#4800, im Artikeldatezsatz>> angegeben.
+
+|propr_target_id
+|VARCHAR NOT NULL
+|property relation target ID
+|Target-ID der Eigenschaftsverknüpfung
+
+|propr_value
 |VARCHAR
-|item manufacturer name
-|Name des Herstellers
+|property relation value
+|Wert der Eigenschaft, wie z.B. <<artikel/artikel-verwalten#4800, im Artikeldatezsatz>> angegeben.
 
-|*im_updated_at*
+|propr_value_lang
+|VARCHAR
+|property relation value language
+|Sprache der Eigenschaftsverknüpfung
+
+|propr_created_at
 |TIMESTAMPTZ
-|item manufacturer updated at
-|Zeitstempel der letzten Aktualisierung +
-Datumsformat: MM/DD/YYYY HH:MI:SS TZ
+|property relation created at
+|Zeitstempel der Anlage der Eigenschaftsverknüpfung +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|*propr_updated_at*
+|TIMESTAMPTZ
+|property relation updated at
+|Zeitstempel der letzten Aktualisierung der Eigenschaftsverknüpfung +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 |====
