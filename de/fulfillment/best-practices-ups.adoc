@@ -1,4 +1,4 @@
-= Best Practices: UPS
+= FAQ: UPS
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: UPS, United Parcel Service, Versandanmeldung, Versandabwicklung, Fehler, Fehlermeldung, Fehlercode, 120, 120110, 120101, 120209, 120109, 120500, 120124, 120122, 10001
@@ -6,7 +6,69 @@ include::{includedir}/_header.adoc[]
 :url: fulfillment/best-practices-ups
 :id: 6TD0IZW
 
-Hier findest du Best Practices zum Versanddienstleister UPS.
+In den folgenden Unterkapiteln findest du Fehlermeldungen, die von UPS an plentymarkets über die Schnittstelle zurückgesendet werden, sowie mögliche Lösungen.
 
-[#best-practices-ups.adoc]
-include::../_best-practices/auftragsabwicklung/fulfillment/best-practices-ups.adoc[leveloffset=1]
+[#50]
+== API-Log abrufen
+
+Die Anmeldedaten und die Antwort mit eventuellen Fehlermeldungen können für zwei Wochen im Menü **Daten » API-Log » Tab: Versand Center API-Log** abgerufen werden. In der Spalte ganz rechts wird mit einem Klick auf **Anfrageprotokoll öffnen** ein Fenster geöffnet, das die Anmeldedaten anzeigt. Ein Klick auf *Antwortprotokoll öffnen* öffnet ein Fenster mit der Rückmeldung von UPS.
+
+[[bild-versand-center-api-log]]
+.Versand-Center API-Log
+image::fulfillment/assets/UPS_Versand_Center_API_Log.png[width=640, height=360]
+
+[#100]
+== Fehlermeldung: Keine Auftragsdaten vorhanden
+
+Diese Fehlermeldung deutet darauf hin, dass der Versanddienstleister und/oder das Versandprofil am Auftrag nicht zu der versuchten Anmeldung passt. Z.B. nachdem der Versanddienstleister am Auftrag geändert wurde, jedoch nicht das passende Versandprofil ausgesucht wurde.
+
+Screenshot aus dem Testsystem:
+
+image::fulfillment/assets/UPS_Versandprofil.png[width=640, height=360]
+
+Eine andere Ursache wäre, wenn das Standardversandprofil am Auftrag hinterlegt wurde, weil kein gültiges gefunden wurde. Es würde bei der Bearbeitung des Versandprofils die Meldung `Kein Wert gefunden` angezeigt werden.
+
+[#200]
+== Fehlermeldung: 120110 (Hard): Missing or invalid Shipper AttentionName oder 120101 (Hard): Missing or invalid Shipper Name
+
+Wie andere Versanddienstleister auch benötigt UPS Absenderdaten. Diese müssen jedoch nicht in den Einstellungen zum Versanddienstleister selbst gespeichert werden, sondern sind im Menü **Einrichtung » Aufträge » Versand » Dienstleister » Einstellungen** für die benötigten Lager anzugeben. **Shipper AttentionName** ist die Kontaktperson, **Shipper Name** die Angabe für Firma.
+
+[#300]
+== Fehlermeldung: 120209 (Hard): Missing or invalid Ship to phone number
+
+Die Telefonnummer des Empfängers wird bei internationalem Versand benötigt und darf nicht fehlen. Über die Schnittstelle wird jedoch auch für den Versand **innerhalb Deutschlands** eine Telefonnummer gefordert, auch wenn es z.B. über das UPS-Backend selbst nicht der Fall ist.
+
+[#400]
+== Fehlermeldung: 120109 (Hard): Missing or invalid shipper phone number
+
+Die Telefonnummer des Absenders darf nicht fehlen. Das für den Auftrag gewählte Lager wird unter **Einrichtung » Aufträge » Versand » Dienstleister » Einstellungen** nicht das geforderte Feld ausgefüllt haben. Dieses müsste in diesem Menü nachgepflegt werden. Beachte bitte, dass dies die "erste" Meldung sein kann, die wir zurückerhalten und daraufhin die weiteren Felder geprüft werden. Firma und Ansprechpartner müssen ebenfalls ausgefüllt sein, wie oben für Fehlercode <<fulfillment/best-practices-ups#200, 120110 und 120101>>  beschrieben.
+
+[#500]
+== Fehlermeldung: 120500 (Hard): Missing or invalid service code
+
+Bei dieser Fehlermeldung sollte die Portotabelle des Versandprofils geprüft werden. Es kann kein Service übertragen werden, wenn die Portotabelle einer Region nicht gespeichert wurde. Erkennbar ist dies an dem folgenden Hinweis:
+
+`Region wird im Versandprofil nicht verwendet. Preis eintragen und speichern, um Region zu verwenden. Portotabelle speichern und neu laden, um Versanddienstleister-Einstellungen anzulegen.`
+
+Screenshot aus dem Testsystem:
+
+image::fulfillment/assets/UPS_Portotabelle.png[width=640, height=360]
+
+[#600]
+== Fehlermeldung: 120124 (Hard) : The requested service is unavailable between the selected locations
+
+Sollte der gewählte UPS Service in der Portotabelle nicht für die Länder von Versender und Empfänger erlaubt sein, erscheint diese Fehlermeldung. Als Standardeinstellung wird der erste Wert für **UPS Services** beim Speichern der Portotabelle ausgewählt, welcher nicht unbedingt zulässig für bestimmte Länderkombinationen ist. Erfrage bitte, bei UPS, welche Länderkombinationen gültig sind.
+
+[#700]
+== Fehlermeldung: 120122 (Hard): Invalid Shipper ShipperNumber
+
+Hierzu sind uns zwei Ursachen bekannt, die zu der Meldung führen:
+
+1. Die im Menü **Einrichtung » Aufträge » Versand » Dienstleister » UPS** angegebene Kundennummer ist falsch.
+2. Die im Menü **Einrichtung » Aufträge » Versand » Dienstleister » UPS** angegebene Kundennummer wurde von UPS noch nicht verifiziert.
+
+[#800]
+== Fehlermeldung: Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. 10001: The XML document is not well formed
+
+Hier befindet sich die Ursache in den Daten, die übermittelt werden und die Datei "nicht gültig" machen. Es ist z.B. möglich, dass der direkte Login zu UPS funktioniert, die Schnittstelle jedoch strikter handelt. So könnten im Menü **Einrichtung » Aufträge » Versand » Dienstleister » UPS** Sonderzeichen und/oder Umlaute im Benutzernamen oder Passwort mit angegeben worden sein. Dies muss entsprechend angepasst werden.
+Versuche danach bitte die Anmeldung erneut.
