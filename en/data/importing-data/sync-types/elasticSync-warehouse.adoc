@@ -18,16 +18,13 @@ In order to create or update storage locations via ElasticSync, a warehouse must
 
 <<table-matching-fields-storage-locations>> explains the fields that are available for matching storage locations. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
-For further information about the terms dimensions, levels and storage locations, refer to the link:https://knowledge.plentymarkets.com/en/stock-management/setting-up-a-warehouse[Setting up a warehouse^] page of the manual.
+For further information on the terms dimensions, levels and storage locations, refer to the link:https://knowledge.plentymarkets.com/en/stock-management/setting-up-a-warehouse[Setting up a warehouse^] page of the manual.
 
 [[table-matching-fields-storage-locations]]
 .Matching fields for importing storage locations
 [cols="2,2"]
 |====
 |Matching field |Explanation
-
-|Warehouse ID
-|ID of the warehouse
 
 |Level name
 |Name of the level, e.g. R01
@@ -36,7 +33,7 @@ For further information about the terms dimensions, levels and storage locations
 |ID of the level
 
 |WarehouseLocationId
-|Storage location ID
+|ID of the storage location
 
 |WarehouseLocationName
 |Name of the storage location without path
@@ -47,7 +44,7 @@ For further information about the terms dimensions, levels and storage locations
 
 <<table-mapping-fields-storage-locations>> explains the fields that are available for mapping storage location data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
-For further information about the terms dimensions, levels and storage locations, refer to the link:https://knowledge.plentymarkets.com/en/stock-management/setting-up-a-warehouse[Setting up a warehouse^] page of the manual.
+For further information on the terms dimensions, levels and storage locations, refer to the link:https://knowledge.plentymarkets.com/en/stock-management/setting-up-a-warehouse[Setting up a warehouse^] page of the manual.
 
 
 [[table-mapping-fields-storage-locations]]
@@ -56,9 +53,10 @@ For further information about the terms dimensions, levels and storage locations
 |====
 |Mapping field |Explanation
 
-2+|*Storage locations*
+2+^|*Storage locations*
 
-|Storage location ID
+|Storage location ID +
+(only for existing storage locations)
 |ID of the storage location
 
 |Level ID
@@ -76,7 +74,13 @@ For further information about the terms dimensions, levels and storage locations
 |Position
 |Position of the storage location (distance)
 
-2+|*Levels of storage locations*
+|Notes
+|Notes on the storage location
+
+|Delete Storage Location
+|Delete function for storage locations
+
+2+^|*Levels of storage locations*
 
 |Level Parent ID
 |Parent ID of the level
@@ -92,6 +96,32 @@ For further information about the terms dimensions, levels and storage locations
 
 |====
 
+[IMPORTANT]
+.Use Level ID of the smallest dimension
+====
+When importing storage locations use the Level ID of the smallest dimension. In the following table this would be Level ID 309. +
+In case you select the ID of a higher dimension, the storage locations are no longer visible and the existing structure disappears.
+====
+
+[[table-level-id]]
+.Level IDs and level names
+[cols="2,2,2,2,2"]
+|====
+| |Level 1 |Level 2 |Level 3 |Storage location
+
+|*Name of the level*
+|Rack 1
+|Shelf 5
+|Box 17
+|102
+
+|*Level ID*
+|8
+|22
+|*309*
+|
+|====
+
 [#2240]
 == Adjusting storage locations
 
@@ -101,37 +131,37 @@ You can adjust storage locations via ElasticSync such as changing the name or th
 Adjusting storage locations:
 
 . Go to *Data » ElasticSync*.
-. Click on the sync in the sync overview.
-. Click on *Matching*.
-. Activate the fields *WarehouseID* and *Storage location ID*.
-. Select *Skip* as import option.
+. Click on the sync in the sync overview. +
+→ The settings open.
+. Switch to the *Matching* tab.
+. Activate the field *Warehouse Location ID*.
+. Select one of the *Import options*.
 . *Save* (icon:save[role="green"]) the settings.
 . Click on *Mapping*.
 . Open the mapping from the overview.
-. Expand the area *Storage locations* on the right-hand side.
-. Activate the fields *Storage Location ID*, *Storage location name* and *Position*.
+. Expand the area *Warehouse location* on the right-hand side.
+. Activate the fields *Storage location name* and *Position*.
 . *Save* (icon:save[role="green"]) the settings.
 
 [#2250]
 == Creating storage locations
 
-You can create new storage locations with ElasticSync.
+You can use ElasticSync to create new storage locations. Note that the structure of the warehouse has to be defined beforehand which means that at least one storage location already has to exist.
 
 [.instruction]
 Creating storage locations:
 
 . Go to *Data » ElasticSync*.
-. Click on the sync in the sync overview.
-. Click on *Matching*.
-. Select the fields *WarehouseID* and *Storage location ID*.
-. Select *create* as import option.
+. Click on the sync in the sync overview. +
+→ The settings open.
+. Switch to the *Matching* tab.
+. Select the field *Level ID*.
+. Select one of the *Import options*.
 . *Save* (icon:save[role="green"]) the settings.
 . Click on *Mapping*.
 . Open the mapping from the overview.
-. Expand the area *Storage locations* on the right-hand side.
-. Activate the fields *Level ID*, *Storage location ID*, *Storage location name*, *Purpose*, *Status* and *Position*.
-. Expand the area *Level of storage locations* on the right-hand side.
-. Activate the fields *Dimension ID*, *Level Position* and *Level name*.
+. Activate the lines in which the values *Storage location name*, *Purpose*, *Position* and *Status* can be found and select the respective source.
+. Expand the area *Warehouse location* on the right-hand side and map the fields *Storage location name*, *Purpose*, *Position* and *Status*. The *Storage location ID* is optional - if not selected, the next highest ID is automatically assigned.
 . *Save* (icon:save[role="green"]) the settings.
 
 [#2250]
@@ -143,14 +173,15 @@ You can delete storage locations with ElasticSync.
 Deleting storage locations:
 
 . Go to *Data » ElasticSync*.
-. Click on the sync in the sync overview.
-. Click on *Matching*.
-. Select the field *Storage location ID*.
-. Select *Only update existing data* as import option.
+. Click on the sync in the sync overview. +
+→ The settings open.
+. Switch to the *Matching* tab.
+. Select the field *Warehouse Location ID*.
+. Select one of the *Import options*.
 . *Save* (icon:save[role="green"]) the settings.
 . Click on *Mapping*.
 . Open the mapping from the overview.
-. Expand the area *Storage locations* on the right-hand side.
+. Expand the area *Warehouse location* on the right-hand side.
 . Activate the field *Delete storage location*.
 . You can either delete all storage locations or only specific ones. Carry out the respective settings. Pay attention to the explanations given in <<table-deleting-storage-locations>>.
 . *Save* (icon:save[role="green"]) the settings.
