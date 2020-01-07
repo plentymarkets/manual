@@ -1,4 +1,4 @@
-= Best Practices: DHL
+= FAQ: DHL
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: Der Vorgang konnte nicht korrekt durchgeführt werden, Bitte Dateneingabe prüfen, 1001, Fehler bei der Anmeldung, login failed, Exception in extension function, java.lang.RuntimeException, productId cannot be mapped, productId **EXP/OFP** cannot be mapped, Hard validation error occured, Bitte geben Sie einen Ort an, Bitte geben Sie Name 1 an, Bitte geben Sie eine Postleitzahl an, Bitte geben Sie eine Straße an, Bitte geben Sie eine Hausnummer an, Bitte geben Sie eine gültige Telefonnummer an, Es handelt sich um eine ungültige Postleitzahl, Bitte verwenden Sie das Format 99999, The Customer ID Number is invalid, Please check the Customer ID Number, Your order could not be processed, Ein interner Fehler ist aufgetreten, Keine gültigen Versandprofile vorhanden, SystemShippingController, unknown, Die Gewichtsangabe ist kleiner als im CN23-Formular, Invalid fieldlength: InvoiceDate, Bitte geben Sie die Anzahl an, Bitte geben Sie die Beschreibung an, Bitte geben Sie den Warenwert an, Bitte geben Sie das Gewicht an, Bitte geben Sie das Gewicht an, Bitte geben Sie die Art der Sendung an, Die angegebene Art der Sendung ist nicht gültig, Invalid fieldlength in element ‘Note’, Please refer to documentation, Invalid XML, Ungültiger Content wurde beginnend mit Element ‘Shipment’ gefunden, An dieser Stelle wird kein untergeordnetes Element erwartet, The current incoterms are not included in the list of the available incoterms, The current origin country code is not included in the list of the available countries, Export document is missing, Please enter weight for the packages, Terms of Trade have not been selected, The shipment weight may not be smaller than 0.1 kg for this product code, Please select a valid type of shipment, Please enter quantity of goods, Please enter a description of goods, Please enter the country of origin, Please enter value of goods, Please add an exportdoc position, The combination of shipping profile ID and shipping region ID does not exist, Code 1001, Der Nutzer des Webservice konnte nicht authentifiziert werden, Authorization Required
@@ -6,7 +6,313 @@ include::{includedir}/_header.adoc[]
 :url: fulfillment/best-practices-dhl
 :id: URSDY8P
 
-Hier findest du Best Practices zum Versanddienstleister DHL.
+Auf dieser Seite findest du Fehlermeldungen, die von DHL an plentymarkets über die Schnittstelle zurückgesendet werden, sowie mögliche Lösungen. Die Fehlermeldungen sind aus Gründen der Übersichtlichkeit in sechs Kategorien eingeordnet.
 
-[#best-practices-dhl.adoc]
-include::../_best-practices/auftragsabwicklung/fulfillment/best-practices-dhl.adoc[leveloffset=1]
+[#50]
+== Informationen zum API-Log
+
+Die Anmeldedaten und die Antwort mit eventuellen Fehlermeldungen können für zwei Wochen im Menü **Daten » API-Log » Tab: Versand Center API-Log** abgerufen werden. In der Spalte ganz rechts wird mit einem Klick auf **Anfrageprotokoll öffnen** ein Fenster geöffnet, das die Anmeldedaten anzeigt. Ein Klick auf *Antwortprotokoll öffnen* öffnet ein Fenster mit der Rückmeldung von DHL.
+
+.Versand-Center API-Log
+image::fulfillment/assets/DHL_Versand_Center_API_Log.png[]
+
+[#100]
+== Zugangsdaten, Passwort, Productive-Modus, Anmeldung
+
+Hier findest du Fehlermeldungen, die im Zusammenhang mit Zugangsdaten, Passwort, Productive-Modus und der Anmeldung in Verbindung stehen, sowie mögliche Lösungsvorschläge.
+
+[#200]
+=== Fehler bei der Anmeldung: (1001) login failed
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Es gab einen Fehler bei der Anmeldung: (1001) login failed.`
+
+Diese Fehlermeldung kann zwei Ursachen haben:
+
+* Fehlerhafte Login-Daten bzw. Zeichenbegrenzung überschritten
+
+* Passwortgültigkeit bei DHL abgelaufen
+
+[.subhead]
+Fehlerhafte Login-Daten bzw. Zeichenbegrenzung überschritten
+
+Überprüfe deine Login-Daten im plentymarkets Backend. Die Schnittstelle verlangt feste Vorgaben, die bei der Anmeldung über die Webseite von DHL nicht greifen. Die Schnittstelle arbeitet hier strikter: Häufig ist entweder die Zeichenbegrenzung von 20 Zeichen für Passwort und/oder Benutzernamen überschritten worden oder der Benutzername wurde “falsch” geschrieben. So könnte bei der Registrierung zwar z.B. das erste Zeichen ein Großbuchstabe sein, wird jedoch als Kleinbuchstabe gespeichert und so von der Schnittstelle gefordert.
+
+[.subhead]
+Passwortgültigkeit bei DHL abgelaufen
+
+Die Passwortgültigkeit für den Benutzer zum DHL-Backend beträgt bei GKP-Admin-Benutzern 90 Tage. Wenn das Passwort die Gültigkeit verloren hat, wird von DHL im plentymarkets Backend keine gesonderte Fehlermeldung ausgegeben, welches auf die Ungültigkeit des Passworts hinweist, sondern nur die oben genannte Fehlermeldung. Anders verhält es sich, wenn du dich direkt im DHL-Geschäftskundenportal anmelden möchtest. Dort wird dann angezeigt, dass du ein neues Passwort setzen musst.
+
+Es ist sinnvoll, einen Systembenutzer im DHL-Backend zu erstellen, da die Gültigkeit für diesen 365 Tage beträgt.
+
+Das neue Passwort musst du dann ebenfalls im plentymarkets Backend speichern:
+
+* im Plugin im Menü *Einrichtung » Aufträge » Versand » DHL Shipping » Grundeinstellungen*
+
+* in der Schnittstellenkonfiguration im Menü *Einrichtung » Aufträge » Versand » Dienstleister » DHL Intraship/Versenden*
+
+[#300]
+=== Code 1001: Der Nutzer des Webservice konnte nicht authentifiziert werden.
+
+`Code 1001 : Der Nutzer des Webservice konnte nicht authentifiziert werden.`
+
+In der Vergangenheit mussten Händler, die diese Fehlermeldung erhalten haben, das Passwort bei DHL ändern, da dieses seine Gültigkeit verloren hat. Im plentymarkets Backend wird von DHL keine gesonderte Fehlermeldung ausgegeben, welches auf die Ungültigkeit des Passworts hinweist, sondern nur die oben genannte Fehlermeldung. Anders verhält es sich, wenn du dich direkt im DHL-Geschäftskundenportal anmelden möchtest. Dort wird dann angezeigt, dass du ein neues Passwort setzen musst.
+
+Das neue Passwort musst du dann ebenfalls im plentymarkets Backend speichern:
+
+* im Plugin im Menü *Einrichtung » Aufträge » Versand » DHL Shipping » Grundeinstellungen*
+
+* in der Schnittstellenkonfiguration im Menü *Einrichtung » Aufträge » Versand » Dienstleister » DHL Intraship/Versenden*
+
+Das Passwort für das DHL-Backend ist 90 Tage gültig (für Admin-Benutzer) und DHL verlangt nach Ablauf der 90 Tage ein neues Passwort. Für einen Systembenutzer, den man im DHL-Backend erstellt, ist das Passwort für eine Dauer von 365 Tagen gültig.
+
+[#400]
+=== Code 1: Authorization Required oder Code 1: Unauthorized
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXX: Authorization Required.`
+
+oder
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXX: Unauthorized.`
+
+
+Prüfe, ob sich das DHL Shipping (Versenden)-Plugin im Produktivmodus und nicht im Testmodus befindet. Dazu öffnest du das Menü *Plugins » Plugin-Übersicht*, klickst auf das DHL Shipping (Versenden)-Plugin und wählst im Bereich *Konfiguration* aus der Dropdown-Liste die Einstellung *Productive*.
+
+Als Standardeinstellung ist der Testmodus gewählt. Dadurch wird eine Anmeldung in der Sandbox-Umgebung (DHL-Entwicklerportal) durchgeführt – hierfür werden eigene Zugangsdaten für das Entwicklerportal benötigt. Sobald der Produktivmodus gewählt und gespeichert wurde, läuft die Anmeldung gegen das Live-System.
+
+[#500]
+=== Invalid XML: cvc-complex-type.2.4.d: Ungültiger Content wurde beginnend mit Element 'Shipment' gefunden.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Invalid XML: cvc-complex-type.2.4.d: Ungültiger Content wurde beginnend mit Element 'Shipment' gefunden. An dieser Stelle wird kein untergeordnetes Element erwartet.`
+
+Diese Fehlermeldung haben Händler bisher erhalten, wenn sie eine größere Anzahl an Aufträgen im Menü *Aufträge » Versand-Center* anmelden wollten.
+
+Wir empfehlen in dem Fall in erster Linie, einen <<automatisierung/prozesse/prozesse-einrichten#, Prozess>> mit der Aktion <<automatisierung/prozesse/aktionen#430, Versand-Center>> einzurichten. Damit wird die Fehlermeldung nicht mehr angezeigt. Eine ander Möglichkeit ist, die Anzahl der ausgewählten Aufträge für die manuelle Anmeldung im Versand-Center zu verringern.
+
+[#510]
+=== Code: 1101 Das Recht zum Setzen dieses Attributes ist nicht ausreichend. Bitte wenden Sie sich an Ihren Kunden-Administrator.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen.`
+
+`Auftrag XXXX: Code: 1101 Das Recht zum Setzen dieses Attributes ist nicht ausreichend. Bitte wenden Sie sich an Ihren Kunden-Administrator.`
+`Das Recht zum Setzen dieses Attributes ist nicht ausreichend. Bitte wenden Sie sich an Ihren Kunden-Administrator.`
+
+Diese Fehlermeldung erscheint, wenn bei einer Nachnahmebestellung die Bankverbindung, die für das DHL Shipping-Plugin hinterlegt wurde, im Geschäftskundenportal nicht als Standardbankverbindung ausgewählt wurde. Eine erfolgreiche Anmeldung kann erfolgen, wenn die verwendete Bankverbindung für das DHL Shipping-Plugin auch die Standardbankverbindung im Geschäftskundenportal ist.
+
+[#600]
+== Produkte, EKP, Verfahren, Teilnahme, Abrechnungsnummern
+
+Hier findest du Fehlermeldungen, die im Zusammenhang mit Produkten, der EKP oder der Teilnahme in Verbindung stehen, sowie mögliche Lösungsvorschläge.
+
+[#700]
+=== Exception in extension function java.lang.RuntimeException: +**productId cannot be mapped**+
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen.	Exception in extension function java.lang.RuntimeException: **productId cannot be mapped**.`
+
+Diese Fehlermeldung besagt, dass keine Abrechnungsnummer, die die productId enthält, gespeichert wurde. Speichere die Abrechnungsnummer:
+
+* für das DHL Shipping-Plugin im Menü *Einrichtung » Aufträge » Versand » DHL Shipping » Abrechnungsnummern*
+
+* für die Schnittstellenintegration DHL Intraship/Versenden im Menü  *Einrichtung » Aufträge » Versand » Optionen » Tab: Versandprofile* in der Portotabelle der entsprechenden Region des DHL-Versandprofils
+
+[#800]
+=== Exception in extension function java.lang.RuntimeException: productId +**EXP/OFP**+ cannot be mapped
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Exception in extension function java.lang.RuntimeException: productId **EXP/OFP** cannot be mapped.`
+
+*DHL Paket* und *DHL Express* sind zwei unterschiedliche Dienstleister.
+
+DHL Intraship-Kunden können sowohl DHL Paket-Produkte als auch DHL Express-Produkte nutzen, z.B. OFP (Office Paket). Für Kunden des Geschäftskundenportals ist das leider nicht mehr möglich. Über das Geschäftskundenportal lassen sich nur DHL Paket-Produkte anmelden.
+
+Da plentymarkets noch die DHL Intraship-Schnittstelle nutzt und unsere Anmeldungen je nach Kundenkonto unter Umständen an das GKP weitergeleitet werden, erhalten GKP-Kunden mit Express-Produkten die Meldung, dass die Anmeldung nicht gemapped werden konnte.
+
+[#900]
+== Versandprofile
+
+Hier findest du Fehlermeldungen, die im Zusammenhang mit Versandprofilen in Verbindung stehen, sowie mögliche Lösungsvorschläge.
+
+[#1000]
+=== The combination of shipping profile ID xx and shipping region ID xx does not exist.
+
+`The combination of shipping profile ID xxxx and shipping region ID xxxx does not exist.`
+
+In diesem Fall konnte keine Versandeinstellung gefunden werden (Menü *Einrichtung » Aufträge » Versand » DHLShipping » Versandeinstellungen*), die mit dem Versandprofil am Auftrag erstellt wurde.
+
+Prüfe, welches Versandprofil bei den Versandeinstellungen für das Plugin gewählt wurde.
+
+Häufig wird das “alte” DHL-Versandprofil mit dem Auftrag verknüpft. Die Einstellungen sind jedoch mit einem “neuen” Versandprofil für das DHL Shipping (Versenden)-Plugin erstellt worden.
+
+Stimmt das Versandprofil mit dem am Auftrag überein, muss die Region überprüft werden.
+
+Kann die Region bei den Versandeinstellungen in dem Versandprofil nicht gewählt werden, muss die Region in der Portotabelle des Versandprofils im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versandprofile » Versandprofil öffnen » Tab: Portotabelle* geprüft werden. Der folgende Hinweistext darf *nicht* angezeigt werden:
+
+`Region wird im Versandprofil nicht verwendet. Preis eintragen und speichern, um Region zu verwenden. Portotabelle speichern und neu laden, um Versanddienstleister-Einstellungen anzuzeigen.`
+
+Beispielansicht einer nicht verwendeten Region im Versandprofil:
+
+.Nicht verwendete Region in der Portotabelle des Versandprofils
+image::fulfillment/assets/DHL_Portotabelle_Region.png[]
+
+[#1100]
+=== Ein interner Fehler ist aufgetreten
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Ein interner Fehler ist aufgetreten!`
+
+Prüfe, ob die Region in der Portotabelle des Versandprofils aktiv ist.
+
+Beispielansicht einer nicht verwendeten Region im Versandprofil:
+
+.Nicht verwendete Region in der Portotabelle des Versandprofils
+image::fulfillment/assets/DHL_Portotabelle_Region.png[]
+
+[#1200]
+=== Keine gültigen Versandprofile vorhanden: SystemShippingController
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Keine gültigen Versandprofile vorhanden: SystemShippingController`
+
+Prüfe im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versanddienstleister*, ob der korrekte Versanddienstleister gewählt wurde. Entsprechende Daten können nur geladen werden, wenn dies der Fall ist.
+
+Wenn man die Portotabellen betrachtet, würde auffallen, dass DHL-spezifischen Angaben nicht gemacht werden können, da Felder wie die DHL-Abrechnungsnummer und DHL-Services nicht vorhanden sind.
+
+[#1300]
+=== Bitte Dateneingabe prüfen. unknown
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. unknown`
+
+Diese Fehlermeldung sagt leider wenig aus und könnte verschiedene Ursachen haben:
+
+* Prüfe zuerst die eingestellte Abrechnungsnummer in der Portotabelle.
+Wurde evtl. eine Abrechnungsnummer gelöscht, die im verwendeten Versandprofil weiterhin abgerufen werden soll?
+
+* Sollte es sich um eine Ausfuhrlieferung handeln, die den Wert von 1000 € übersteigt, erscheint ebenfalls die Meldung `unknown`.
+
+Folgender Hinweis wird laut einem betroffenen Kunden bei Intraship angezeigt:
+
+_Achtung! Ausfuhranmeldung wird erforderlich.
+(Bitte fügen Sie eine ausgefüllte Ausfuhranmeldung bei und kennzeichnen sie Ihre Sendung mit dem Aufkleber "Achtung Ausfuhranmeldung").
+Wenn Ihr Versand geschäftlichen Zwecken dient und der Warenwert Ihres Paketes oder Päckchens 1000 Euro übersteigt, benötigen Sie zusätzlich zu Paketkarte, Zollinhaltserklärung und Handelsrechnung eine Ausfuhranmeldung.
+Bitte beachten Sie, dass diese Ausfuhranmeldung bereits ab einem Betrag > 1000 Euro von Ihren Zollamt vorab gefertigt (gestempelt) sein muss.
+Sollte Ihnen Ihr Zollamt bereits ein vereinfachtes Verfahren bewilligt haben, so geben Sie bitte die jeweilige Bewilligungsnummer auf der Handelsrechnung an.
+Die Aufkleber "Achtung Ausfuhranmeldung" erhalten Sie über unseren Vertrieb unter der Bestellnummer 915-830-000._
+
+[#1400]
+== Adressdaten Shipper/Receiver
+
+Hier findest du Fehlermeldungen, die im Zusammenhang mit Adressdaten in Verbindung stehen, sowie mögliche Lösungsvorschläge.
+
+[#1500]
+=== Invalid fieldlength in element ‘Note’. Please refer to documentation.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Invalid fieldlength in element 'Note'. Please refer to documentation.`
+
+Das Feld `Note` ist über die Schnittstelle auf 50 Zeichen begrenzt. Es wird von uns verwendet, wenn für die Hausnummer zu viele Zeichen (mehr als 7) oder ein Adresszusatz angegeben wurden.
+Hier muss die Angabe z.B. in der Lieferanschrift korrigiert werden.
+
+[#1600]
+=== The Customer ID Number is invalid. Please check Customer ID Number. Your order could not be processed.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: The Customer ID Number is invalid. Please check the Customer ID Number. Your order could not be processed Your order could not be processed.`
+
+Die in der Lieferadresse angegebene "Postnummer" ist nicht korrekt oder passt nicht zu den Daten des Kunden. Erfrage bei deinem Kunden die korrekten Daten. Bei der Validierung wird von DHL auch die Adresse geprüft, die übereinstimmen muss.
+
+[#1700]
+=== Invalid value in element ‘germany’
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Invalid value('3411') in element 'germany'. oder auch Invalid value('DE-34117') in element 'germany'.`
+
+oder
+
+`Auftrag XXXXXX: Hard validation error occured., Es handelt sich um eine ungültige Postleitzahl. Bitte verwenden Sie das Format 99999.`
+
+In der Lieferadresse ist eine ungültige Postleitzahl angegeben (in unserem Beispiel für Deutschland). Die Schnittstelle erwartet 5 Ziffern. Zusätzliche Angaben wie “DE” sind über die Schnittstelle nicht erlaubt.
+Für andere Länder würden entsprechende Meldungen erscheinen.
+
+Die ungültige Postleitzahl kannst du im Menü *Aufträge » Aufträge bearbeiten* im Feld *Kundendaten* suchen und korrigieren.
+
+[#1800]
+=== Hard validation error occured., Bitte geben Sie einen Ort / Name 1 / Postleitzahl / Straße / Hausnummer / Telefonnummer an.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: Hard validation error occured, Bitte geben Sie einen Ort an. Bitte geben Sie Name 1 an. Bitte geben Sie eine Postleitzahl an. Bitte geben Sie eine Straße an. Bitte geben Sie eine Hausnummer an.`
+
+oder
+
+`Hard validation error occured, Bitte geben Sie eine gültige Telefonnummer an.`
+
+Wenn eine der oben aufgelisteten Meldungen häufiger angezeigt wird, bezieht sich dies auf möglicherweise fehlerhaft angegebene oder fehlende Absenderdaten im Menü *Einrichtung » Aufträge » Versand » Dienstleister » DHL Intraship/Versenden*.
+
+.Absenderdaten im Menü *Einrichtung » Aufträge » Versand » Dienstleister » DHL Intraship/Versenden*
+
+image::fulfillment/assets/DHL_Absenderdaten_Intraship_Versenden.png[]
+
+Wenn kein Fehler “sichtbar” ist, könnte ein unsichtbares Steuerzeichen die Ursache sein. Dieses wird häufig unbewusst mit Copy & Paste hinzugefügt. Lösche also dieses unsichtbare Steuerzeichen in den Absenderdaten. Gegebenenfalls musst du den Wert erneut eingeben.
+
+Wenn eine der oben aufgelisteten Meldungen nur "einfach" angezeigt wird, prüfe die Empfängerdaten im Auftrag.
+
+[#1810]
+=== Hard validation error occured., Die angegebene Straße kann nicht gefunden werden.
+
+`Hard validation error occured., Die angegebene Straße kann nicht gefunden werden.`
+
+Diese Fehlermeldung wird von DHL an plentymarkets zurückgesendet. Die Angaben in der Lieferadresse werden von DHL über die API geprüft.
+
+In diesem Fall sollte zunächst mit dem Kunden geklärt werden, ob die Angaben in der Lieferadresse korrekt sind. Wenn der Kunde bestätigt, dass die Angaben korrekt sind, das Anmelden des Auftrags aber immer noch nicht funktioniert, ist es nötig, DHL zu kontaktieren und zu erfragen, wie genau die Schreibweise lauten soll, damit eine Anmeldung möglich ist. Wenn der Kunde einen Fehler in der Lieferadresse bestätigt, musst du diesen in deinem Backend korrigieren.
+
+Eine weitere Möglichkeit ist, die Etiketterzeugung zu erzwingen. Diese Einstellung nimmst du in den Grundeinstellungen des Plugins vor. Beachte, dass DHL gegebenenfalls ein Zusatzentgelt berechnet.
+
+[#1900]
+== Ausfuhrlieferungen
+
+Hier findest du Fehlermeldungen, die im Zusammenhang mit Ausfuhrlieferungen in Verbindung stehen, sowie mögliche Lösungsvorschläge.
+
+[#2000]
+=== Hard validation error occured., Die Gewichtsangabe ist kleiner als im CN23-Formular.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: Hard validation error occured., Die Gewichtsangabe ist kleiner als im CN23-Formular.`
+
+Diese Fehlermeldung erscheint, wenn Ausfuhrlieferungen bei DHL Versenden angemeldet werden sollen, die eine Artikelposition mit der Menge > 1 angegeben haben. Leider werden von DHL die Daten über die aktuelle Schnittstelle zu Versenden anders gemapped, sodass das Gewicht nicht korrekt angegeben werden kann.
+
+Wir haben DHL das Problem des öfteren gemeldet, aber es konnte keine gemeinsame Lösung gefunden werden.
+
+Mit dem link:https://marketplace.plentymarkets.com/plugins/integration/DHLShipping_4871[DHL Shipping (Versenden)-Plugin^], das wie alle Plugins nur mit plentymarkets Version 7 funktioniert, ist diese Problematik nicht mehr vorhanden.
+
+Wenn du noch die "alte" Schnittstelle und DHL Intraship nutzt, ist eine Anmeldungen mit deinem DHL Intraship-Zugangsdaten weiterhin möglich und die oben genannte Fehlermeldung wird nicht angezeigt.
+
+[#2100]
+=== Bitte geben Sie eine Anzahl / Beschreibung / Warenwert / Gewicht / Art der Sendung an. Die angegebene Art der Sendung ist nicht gültig.
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: Hard validation error occured., Bitte geben Sie die Anzahl an., Bitte geben Sie die Beschreibung an., Bitte geben Sie den Warenwert an., Bitte geben Sie das Gewicht an., Bitte geben Sie das Gewicht an., Bitte geben Sie die Art der Sendung an., Die angegebene Art der Sendung ist nicht gültig.`
+
+Hier fehlen Angaben, die für Ausfuhrlieferungen relevant sind. Meist liegt dies daran, dass keine Voranmeldung des CN23-Formulars möglich ist. (Voranmeldung bedeutet, dass plentymarkets die Artikeldaten im Vorfeld an DHL übermittelt. Dies ist bei Ausfuhrlieferungen verpflichtend.)
+
+Der Hintergrund dafür ist am häufigsten auf spezielle Gebiete in den Lieferländern zurückzuführen: Diese müssen zolltechnisch anders behandelt werden, gehören jedoch politisch zu einem EU-Land, das keine Ausfuhrpapiere benötigt. Ein Beispiel für Deutschland ist die Insel Helgoland; für Spanien die Kanarischen Inseln.
+
+Aktiviere daher das entsprechende Lieferland im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Lieferländer*, weise das Lieferland danach im Tab *Region* einer Region zu und ändere das Lieferland anschließend im Auftrag. Auf diese Weise können die fehlenden Angaben übermittelt werden  und die Anmeldung kann weitergeführt werden.
+
+Wenn du das DHL Shipping (Versenden)-Plugin verwendest, könnte die Meldung auch wegen der bereitgestellten Version des Plugins erscheinen, da man über Versionen, die älter als Version 1.3.0 sind, keine Ausfuhrlieferungen anmelden kann. Du musst also mindestens Plugin-Version 1.3.0 nutzen. Um zu prüfen, welche Version du nutzt, schaue unter *Plugins » Plugin-Übersicht* in der Spalte *Version aktiv* den Wert an.
+
+Screenshot aus dem Testsystem:
+
+.Pluginübersicht Version
+image::fulfillment/assets/DHL_Shipping_Plugin_Version_Aktiv.png[]
+
+Beachte, dass du jeweils eine Option in den Dropdown-Listen *Frankatur bei Auslandssendungen* und *Sendungsart* im Menü *Einrichtung » Aufträge » Versand » DHL Shipping » Versandeinstellungen* wählen musst.
+
+
+[#2200]
+=== incoterms, origin country code, export document missing, weight for packages, terms of trade, shipment weight may not be smaller than 0.1 kg, valid type of shipment, quantity of goods / description of goods / country of origin / value of goods, exportdoc position
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXX: The current incoterms are not included in the list of the available incoterms., The current origin country code is not included in the list of the available countries., Export document is missing., Your order could not be processed Your order could not be processed , Please enter weight for the packages, Terms of Trade have not been selected., The shipment weight may not be smaller than 0.1 kg for this product code., The shipment weight may not be smaller than 0.1 kg for this product code., Please select a valid type of shipment., Please enter quantity of goods., Please enter a description of goods., Please enter the country of ofigin., Please enter value of goods., Please add an exportdoc position.`
+
+In der Fehlermeldung ist von “incoterms” und “origin country” die Rede. Diese Fehlermeldung kommt von DHL und sagt aus, dass es sich um eine Ausfuhrlieferung handelt und Informationen für den Zoll fehlen. Das kann in der Regel zwei Ursachen haben:
+
+1. An den Artikeln fehlen Angaben wie Zolltarifnummer und/oder Herkunftsland des Produktes.
+
+2. Für die Lieferadresse wird das falsche Land genutzt. Deshalb werden die Daten von 1., obwohl vorhanden, nicht an DHL übermittelt. Das kann z.B. der Fall sein, wenn die Ware zu den Kanarischen Inseln geliefert werden soll, als Lieferland aber Spanien ausgewählt wurde.
+
+[#2300]
+=== Invalid fieldlength: InvoiceDate
+
+`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Invalid fieldlength: InvoiceDate`
+
+Bei Anmeldungen von Ausfuhrlieferung ist es für die Voranmeldung der Artikel notwendig, dass eine Rechnung am Auftrag erstellt wurde, damit das Pflichtfeld *InvoiceDate* gefüllt werden kann. Die Fehlermeldung erscheint, wenn dies nicht der Fall ist.
+
+"Voranmeldung" bedeutet, dass plentymarkets die Artikeldaten im Vorfeld an DHL übermittelt. Dies ist bei Ausfuhrlieferungen verpflichtend.
