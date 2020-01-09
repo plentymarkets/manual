@@ -4,13 +4,14 @@ include::{includedir}/_header.adoc[]
 :keywords: ElasticSync, Import, Sync, contacts, companies, addresses
 :position: 90
 :url: data/importing-data/sync-types/elasticSync-contacts
+:id: SMSK85D
 
 With syncs of the type *Contacts, companies and addresses*, you import new contact data or update existing data records. This data is for example the delivery address and invoice address, the date of birth of the contact, the customer type, contact options such as the private or business email address as well as company data.
 
 [TIP]
 .Requirements for importing countries of delivery
 ====
-In order that the newly imported or updated countries of delivery are displayed in a contact data record in the contact overview, these countries of delivery must be activated in the *System » Orders » Shipping » Options » Tab: Countries of delivery* menu.
+In order that the newly imported or updated countries of delivery are displayed in a contact data record in the contact overview, these countries of delivery have to be activated in the *Setup » Orders » Shipping » Options » Tab: Countries of delivery* menu.
 ====
 
 In order to import contact data via ElasticSync, the following data records must be present in plentymarkets:
@@ -21,9 +22,9 @@ In order to import contact data via ElasticSync, the following data records must
 * company data such as VAT number and payment due date, if necessary
 
 [#100]
-== Field for synchronising contacts, companies and addresses
+== Field for matching contacts, companies and addresses
 
-<<table-matching-fields-contacts>> explains the fields that are available for matching contact, company and address data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-matching-fields-contacts>> explains the fields that are available for matching contacts, company and address data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-matching-fields-contacts]]
 .Matching fields for importing contact data
@@ -34,7 +35,7 @@ In order to import contact data via ElasticSync, the following data records must
 |Contact ID
 |ID of the contact
 
-|Email address
+|Email
 |Email address of the contact
 
 |Invoice address ID
@@ -57,47 +58,72 @@ This chapter explains the fields that are available for mapping contact, company
 
 [[table-mapping-fields-contact]]
 .Fields for importing contact data
-[cols="1,3"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permitted import values |Explanation
 
 |External number
+|Alpha-numeric
 |External number for the contact
 
 |Number
+|Alpha-numeric
 |Additional number for the contact. This number is not assigned automatically. Maximum number of characters: 128.
 
 |Type*
-|This is a mandatory field.
+|Numeric (internal ID)
+|This is a mandatory field. It is possible to create further types. +
+Fixed values: +
+1 = Customer +
+2 = Interested party +
+3 = Sales representative +
+4 = Supplier +
+5 = Manufacturer +
+6 = Partner
 
 |First name
-|The contact's first name
+|Text
+|First name of the contact
 
 |Last name
-|The contact's last name
+|Text
+|Last name of the contact
 
 |Gender
-|Gender of the contact
+|
+|Gender of the contact. Is saved in the contact data record in the *Form of address* field. +
+Possible values: +
+Blank option = no entry +
+female = Female form of address +
+male = Male form of address +
+diverse = Diverse form of address
 
 |Title
-|Title of contact
+|Text
+|Title of the contact
 
 |Newsletter
+|Date
 |Time stamp when the contact registered for the newsletter.
 
 |Customer class
-|Customer class of the contact that is saved in the contact data record
+|Numeric (internal ID)
+|Customer class of the contact, if available. +
+*_Important:_* When customer classes are saved in the system, the field in the import file must be filled with the ID of the customer class. Otherwise, the contacts cannot be imported in your plentymarkets system. +
+If you did not create customer classes in the system, you can ignore this field.
 
 |Blocked
+|Numeric (internal ID)
 |Contacts can be blocked for a certain client. +
 Possible values: +
 0 = not blocked +
 1 = blocked
 
 |Feedback
-|Is used as internal feedback of the contact. +
+|Numeric (internal ID)
+|The feedback of the contact is used as internal feedback only and cannot be seen by third parties. +
 Possible values: +
-0 = 5 grey stars, no feedback saved for the contact. +
+0 = 5 grey stars, no feedback saved for the contact +
 5 = 5 yellow stars (best possible feedback) +
 4 = 4 yellow stars +
 3 = 3 yellow stars +
@@ -110,40 +136,51 @@ Possible values: +
 -5 = 5 red stars (worst possible feedback)
 
 |Debtor account
+|Alpha-numeric
 |Additional number that usually corresponds to the contact number or the debtor number of the contact in your administrative accounting.
 
 |Language
-|Language of the contact that is saved in the contact data record
+|
+|Language of the contact that is saved in the contact data record.
 
 |Referrer*
+|Numeric (internal ID)
 |This is a mandatory field.
 
-|plenty ID
+|Plenty-ID
+|Numeric (internal ID)
 |Client that is assigned to the contact
 
 |Owner ID
-|ID of the owner that is assigned to the contact
+|Numeric (internal ID)
+|ID of the owner that is assigned to the contact.
 
 |Date of birth
+|Date
 |Birthday of the contact
 
 |Valuta
+|Numeric
 |Valuta of the contact that is saved in the contact data record.
 
 |Days for early payment discount
+|Numeric
 |Days for early payment discount of the contact that is saved in the contact data record.
 
-
 |Percentage for early payment discount
+|Numeric
 |Percentage for early payment discount of the contact that is saved in the contact data record.
 
 |Payment due date
+|Numeric
 |Payment due date of the contact that is saved in the contact data record.
 
 |Sales representative ID
+|Numeric (internal ID)
 |ID of the sales representative that is assigned to the contact.
 
 |Contact ID
+|Numeric (internal ID)
 |ID of the contact
 
 |====
@@ -155,99 +192,126 @@ Possible values: +
 
 [[table-mapping-fields-contact-options]]
 .Fields for importing contact options
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permissible import value |Explanation
 
 |Private telephone number +
 (Type 1 Sub-type 4)
-|Private telephone number
+|Numeric
+|Private telephone number +
+*_Note:_* In order that the telephone number is automatically transferred in the order, the sub-type *Private* must be selected for the type *Telephone*.
 
-|Office telephone number +
+|Business telephone number +
 (Type 1 Sub-type 1)
-|Office telephone number
+|Numeric
+|Business telephone number
 
 |Private mobile phone number +
 (Type 1 Sub-type 2)
+|Numeric
 |Private mobile phone number
 
-|Office mobile phone number +
+|Business mobile phone number +
 (Type 1 Sub-type 3)
-|Office mobile phone number
+|Numeric
+|Business mobile phone number
 
 |Private email address +
 (Type 2 Sub-type 4)
-|Private email address
+|Alpha-numeric
+|Private email address +
+*_Note:_* In order that the email address is automatically transferred in the order, the sub-type *Private* must be selected for the type *Email*.
 
-|Office email address +
+|Business email address +
 (Type 2 Sub-type 1)
-|Office email address
+|Alpha-numeric
+|Business email address
 
 |PayPal email address +
 (Type 2 Sub-type 5)
+|Alpha-numeric
 |PayPal email address
 
 |Private fax number +
 (Type 3 Sub-type 4)
+|Numeric
 |Private fax number
 
-|Office fax number +
+|Business fax number +
 (Type 3 Sub-type 1)
-|Office fax number
+|Numeric
+|Business fax number
 
 |Private homepage +
 (Type 1 Sub-type 2)
+|URL
 |URL of the private homepage
 
-|Office homepage +
+|Business homepage +
 (Type 1 Sub-type 2)
-|URL of the office homepage
+|URL
+|URL of the business homepage
 
 |Market eBay +
 (Type 5 Sub-type 6)
-|Market eBay
+|Alpha-numeric
+|eBay name
 
 |Market Amazon +
 (Type 5 Sub-type 7)
-|Market Amazon
+|Alpha-numeric
+|Amazon name
 
 |Identification number at Klarna +
 (Type 6 Sub-type 8)
+|Numeric
 |Identification number at Klarna
 
 |Identification number at DHL +
 (Type 6 Sub-type 9)
+|Numeric
 |Identification number at DHL
 
-|Payment provider PayPal +
+|Payment PayPal +
 (Type 7 Sub-type 5)
-|Payment provider PayPal
+|
+|PayPal number
 
-|Payment provider Klarna +
+|Payment Klarna +
 (Type 7 Sub-type 8)
-|Payment provider Klarna
+|
+|Klarna number
 
-|Payment
-|Payment
+|Payment Standard
+|Numeric (internal ID)
+|Available payment methods. The payment methods are saved in the *Setup » Orders » Payment » Payment methods* menu. +
+The IDs for payment methods, payment method interfaces and marketplace payment methods are listed on the <<basics/internal-IDs# , Internal IDs in plentymarkets>> page of the manual in the <<basics/internal-IDs#65# Payment methods>> chapter.
 
 |Private user name +
 (Type 8 Sub-type 4)
+|Alpha-numeric
 |Private user name
 
-|Office user name +
+|Business user name +
 (Type 8 Sub-type 1)
-|Office user name
+|Alpha-numeric
+|Business user name
 
 |Guest account +
 (Type 10 Sub-type 11)
-|Account type in the old online store (Callisto online store). +
-Guest accounts have the value *1*.
+|Numeric (internal ID) +
+0 = Regular account +
+1 = Guest account
+|Account type in the old online store (Callisto online store).
 
 |Private form of address
+|Text
 |Private form of address
 
-|Office form of address
-|Office form of address
+|Business form of address
+|Text
+|Business form of address
 
 |====
 
@@ -258,111 +322,139 @@ Guest accounts have the value *1*.
 
 [[table-mapping-fields-invoice-address]]
 .Fields for importing invoice address data
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permissible import value |Explanation
 
-|Address ID
+|ID of the address
+|Numeric (internal ID)
 |ID of the invoice address
 
 |Name1* (or 2/3)
+|Alpha-numeric
 |Company name. +
 This is a mandatory field when there is no entry under *Name2* and *Name3*.
 
 |Name2* (or 1/3)
+|Text
 |First name of the contact. +
 This is a mandatory field when there is no entry under *Name1* and *Name3*.
 
 |Name3* (or 1/2)
-|The contact's last name. +
+|Text
+|Last name of the contact. +
 This is a mandatory field when there is no entry under *Name1* and *Name2*.
 
 |Name4
-|Additional information in the contact data record, e.g. "c/o Mr. John Doe"
+|Text
+|Additional information in the contact data record, e.g."c/o Mr. John Doe"
 
 |Address1* (or 2/3)
+|Text
 |The street listed in the invoice address. +
 This is a mandatory field when there is no entry under *Address2* and *Address3*.
 
 |Address2* (or 1/3)
+|Numeric
 |The house number listed in the invoice address. +
 This is a mandatory field when there is no entry under *Address1* and *Address3*.
 
 |Address3* (or 1/2)
+|Alpha-numeric
 |Additional address information in the invoice address, e.g. "Apartment 12a". +
 This is a mandatory field when there is no entry under *Address1* and *Address2*.
 
 |Address4
+|Alpha-numeric
 |This field can be freely used.
 
 |Postcode
+|Numeric
 |Postcode
 
 |Town*
+|Text
 |This is a mandatory field.
 
 |Country ID* (or ISO)
+|Numeric
 |This is a mandatory field.
 
 |State ID
+|Numeric (internal ID)
 |ID of the region, district, federal state, canton etc.
 
 |Confirmed at
+|Date
 |Time stamp when the invoice address was checked
 
 |Title
+|Text
 |Title in the invoice address
 
 |Country ISO code* (or ID)
+|Numeric
 |This is a mandatory field.
 
 |ISO code of the state
+|Numeric
 |ISO code of the region, district, federal state, canton etc.
 
 |====
 
 [#600]
-=== Invoice address options
+=== Options saved in the invoice address
 
 <<table-mapping-fields-invoice-address-options>> lists the fields available for importing invoice address options. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-invoice-address-options]]
 .Fields for importing invoice address options
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permitted import values |Explanation
 
 |VAT number (type 1)
-|
+|Numeric
+|VAT number of the company
 
 |External address ID (type 2)
+|Numeric
 |
 
 |Entry certificate (type 3)
 |
+|In order to be exempted from paying the value-added tax when sending items in another EU country, sellers have to prove by means of the entry certificate that the items from Germany arrived safely in another participating EU member state.
 
 |Telephone (type 4)
+|Numeric
 |
 
 |Email (type 5)
+|Alpha-numeric
 |
 
 |Post number (type 6)
-|
+|Numeric
+|The DHL customer number
 
 |Personal id (type 7)
-|
+|Numeric
+|Identity number in Sweden
 
 |Age rating (type 8)
-|
+|Numeric
+|Age rating
 
 |Birthday (type 9)
+|Date
 |
 
 |Title (type 11)
+|Text
 |
 
 |Contact person (type 12)
+|Text
 |
 
 |====
@@ -374,113 +466,138 @@ This is a mandatory field when there is no entry under *Address1* and *Address2*
 
 [[table-mapping-fields-delivery-address]]
 .Fields for importing delivery address data
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permissible import value |Explanation
 
 |ID of the address
+|Numeric (internal ID)
 |ID of the delivery address
 
 |Name1* (or 2/3)
+|Alpha-numeric
 |Company name. +
 This is a mandatory field when there is no entry under *Name2* and *Name3*.
 
 |Name2* (or 1/3)
+|Text
 |First name of the contact. +
 This is a mandatory field when there is no entry under *Name1* and *Name3*.
 
 |Name3* (or 1/2)
-|The contact's last name. +
+|Text
+|Last name of the contact. +
 This is a mandatory field when there is no entry under *Name1* and *Name2*.
 
 |Name4
-|Additional information in the contact data record, e.g. "c/o Mr. John Doe"
+|Text
+|Additional information in the contact data record, e.g."c/o Mr. John Doe"
 
 |Address1* (or 2/3)
+|Text
 |The street listed in the delivery address. +
 This is a mandatory field when there is no entry under *Address2* and *Address3*.
 
 |Address2* (or 1/3)
+|Numeric
 |The house number listed in the delivery address. +
 This is a mandatory field when there is no entry under *Address1* and *Address3*.
 
-|Address3* (or 1/3)
+|Address3* (or 1/2)
+|Alpha-numeric
 |Additional address information in the delivery address, e.g. "Apartment 12a". +
 This is a mandatory field when there is no entry under *Address1* and *Address2*.
 
 |Address4
+|Alpha-numeric
 |This field can be freely used.
 
 |Postcode
+|Numeric
 |Postcode
 
 |Town*
+|Text
 |This is a mandatory field.
 
 |Country ID* (or ISO)
+|Numeric
 |This is a mandatory field.
 
 |State ID
+|Numeric (internal ID)
 |ID of the region, district, federal state, canton etc.
 
 |Title
+|Text
 |The title saved in the delivery address
 
 |Country ISO code* (or ID)
+|Numeric
 |This is a mandatory field.
 
 |ISO code of the state
+|Numeric
 |ISO code of the region, district, federal state, canton etc.
 
 |====
 
 [#800]
-=== Delivery address options
+=== Options saved in the delivery address
 
 <<table-mapping-fields-delivery-address-options>> lists the fields available for importing delivery address options. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-delivery-address-options]]
 .Fields for importing delivery address options
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
-
+|Mapping field |Permitted import values |Explanation
 
 |VAT number (type 1)
-|
+|Numeric
+|VAT number of the company
 
 |External address ID (type 2)
+|Numeric
 |
 
 |Entry certificate (type 3)
 |
+|In order to be exempted from paying the value-added tax when sending items in another EU country, sellers have to prove by means of the entry certificate that the items from Germany arrived safely in another participating EU member state.
 
 |Telephone (type 4)
+|Numeric
 |
 
 |Email (type 5)
+|Alpha-numeric
 |
 
 |Post number (type 6)
-|
+|Numeric
+|The DHL customer number
 
 |Personal id (type 7)
-|
+|Numeric
+|Identity number in Sweden
 
 |Age rating (type 8)
-|
+|Numeric
+|Age rating
 
 |Birthday (type 9)
+|Date
 |
 
 |Title (type 11)
+|Text
 |
 
 |Contact person (type 12)
+|Text
 |
 
 |====
-
 
 [#900]
 === Company
@@ -489,44 +606,56 @@ This is a mandatory field when there is no entry under *Address1* and *Address2*
 
 [[table-mapping-fields-company]]
 .Fields for importing company data
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permitted import values |Explanation
 
+|Company ID
+|Numeric (internal ID)
 |ID of the company
-|The company's ID
 
 |Number
+|Numeric
 |Additional number for the company. This number is not assigned automatically. Maximum number of characters: 128.
 
 |Company name*
+|Alpha-numeric
 |This is a mandatory field.
 
 |VAT number
+|Numeric
 |VAT number of the company
 
 |Valuta
+|Numeric
 |Valuta of the company
 
 |Early payment discount (days)
+|Numeric
 |Days for early payment discount of the company
 
 |Percentage of discount
+|Numeric
 |Percentage for early payment discount of the company
 
 |Payment due date
+|Numeric
 |Payment due date of the company
 
 |Sales representative ID
+|Numeric (internal ID)
 |ID of the sales representative
 
 |Owner ID
+|Numeric (internal ID)
 |ID of the owner
 
 |Delivery period
+|Numeric
 |Delivery time in days for the type *Supplier*
 
 |Minimum order value
+|Numeric
 |Minimum order value in the currency of the system for the type *Supplier*
 
 |====
@@ -538,17 +667,20 @@ This is a mandatory field when there is no entry under *Address1* and *Address2*
 
 [[table-mapping-fields-sales-representative]]
 .Fields for importing sales representative data
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permitted import values |Explanation
 
 |Region ID
+|Numeric (internal ID)
 |ID of the region
 
 |Postcode area
+|Numeric
 |Postcode area within which the sales representative is working
 
 |Country ID
+|Numeric (internal ID)
 |ID of the country
 
 |====
@@ -556,22 +688,24 @@ This is a mandatory field when there is no entry under *Address1* and *Address2*
 [#1100]
 === Allowed payment methods
 
-<<table-mapping-fields-allowed-methods-of-payment>> lists the fields available for importing payment methods that are allowed for the contact. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+<<table-mapping-fields-allowed-methods-of-payment>> lists the fields available for importing methods of payment that are allowed for the contact. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
 [[table-mapping-fields-allowed-methods-of-payment]]
 .Fields for importing allowed payment methods
-[cols="1,2"]
+[cols="1,1,2"]
 |====
-|Mapping field |Explanation
+|Mapping field |Permitted import values |Explanation
 
 |Allow debit
-|Allow the payment method "Debit" for the contact. Go to *System » Orders » Payment » Payment methods* to activate the payment method. +
+|Numeric (internal ID)
+|Allow the payment method "Debit" for the contact. Go to *Setup » Orders » Payment » Payment methods* to activate the payment method. +
 Possible values: +
 0 = do not allow +
 1 = allow
 
 |Allow invoice
-|Allow the payment method "Invoice" for the contact. Go to *System » Orders » Payment » Payment methods* to activate the payment method. +
+|Numeric (internal ID)
+|Allow the payment method "Invoice" for the contact. Go to *Setup » Orders » Payment » Payment methods* to activate the payment method. +
 Possible values: +
 0 = do not allow +
 1 = allow
@@ -581,7 +715,7 @@ Possible values: +
 [#2000]
 == Mandatory values for sync procedures with contacts, companies and addresses
 
-<<table-mandatory-values-sync-procedures-contacts>> lists mandatory values for sync procedures with contacts, companies and addresses.
+<<table-mandatory-values-sync-procedures-contacts>> lists the mandatory values for sync procedures with contacts, companies and addresses.
 
 [[table-mandatory-values-sync-procedures-contacts]]
 .Mandatory values for sync procedures with contacts, companies and addresses
@@ -591,7 +725,7 @@ Possible values: +
 
 2+|*Contacts*
 
-|Creating a contact
+|Create contact
 a|
 * Referrer
 * Type
@@ -616,20 +750,19 @@ a|
 a|
 * Company name
 
-
 2+|*Address*
 
 |Create address
 a|
 * Contact ID
-* Select at least one of the following options: Name1, Name2, Name3
-* Select at least one of the following options: Address1, Address2, Address3
-* Select at least one of the following options: Country ID or country ISO code
+* at least one of the following options: Name1, Name2, Name3
+* at least one of the following options: Address1, Address2, Address3
+* at least one of the following options: Country ID or country ISO code
 * Town
 
 |Update address
 a|
-* Select at least one of the following options: Name1, Name2, Name3
+* at least one of the following options: Name1, Name2, Name3
 * Contact ID
 * fields to be changed
 

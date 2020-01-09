@@ -1,7 +1,7 @@
-= Best Practices: Procedure manager and event procedures
+= Practical example: Procedure manager and event procedures
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Automating processes, Automation, Best Practice, Orders, Event procedures, Procedure manager
+:keywords: Automating processes, Automation, Best Practice, Orders, Event procedures, Procedure manager, Postcode filter, Postal code filter
 :position: 30
 :url: automation/best-practices-automation
 :id: HLHXRPK
@@ -336,6 +336,67 @@ If you want to send a shipping confirmation to your customers as soon as the pac
 ====
 Almost all shipping providers offer your customers the possibility to track their deliveries online. You already saved a tracking URL while setting up your shipping service providers. Once the package number has been entered, your plentymarkets system has all necessary information to send customers a tracking URL for their packages. Use this option and make sure that the shipping confirmation email contains the variable *$TrackingURL*. We recommend that you test the first tracking URLs for yourself to ensure that they have been processed correctly and that all necessary information are displayed for the customer.
 ====
+
+=== Setting up the postcode filter
+
+In this chapter, we describe the postcode filter a little closer and give you an example of how you might set up an event procedure for it.
+
+==== How does the postcode filter work?
+
+The postcode filter was added to the filters of the <<automation/event-procedures#, event procedures>> to check the postcode in the *delivery address* of an order.
+A comparison of the entered values and the postcode will be done, starting with the first character and proceeding to the next.
+
+This means putting `W1U` in this field will result in the event procedure working for e.g. `W1U 6AG`, `W1S 2XG` and `W1T 1BX`.
+You might enter multiple values separated by a comma as `W1U, SE` if multiple regions are to be considered.
+
+==== What do you need to set up?
+
+Depending on your workflow in processing orders, some settings are useful such as activating 'special' delivery countries you are delivering to (Isle of Man, Canary Islands).
+
+To us it makes sense to create a new order status because you will be able to set filters in other menus regarding it.
+
+In the following example we created a new status in the *Setup » Orders » Status* menu named *check delivery address* in advance.
+
+.New order status
+image::automation/assets/Postcode-filter-new_order_status.png[width=640, height=360]
+
+We frequently get orders with shipment to 'special' countries which need to be processed in another way as for customs reasons or because the shipping costs are much higher for us.
+
+Las Palmas is such an example. The postcodes of the Canary Islands start with `35` or `38`. Politically, it belongs to Spain but is an autonomous community with most likely higher shipping costs compared to the costs for shipping to mainland Spain.
+
+To create our new event procedure we open the menu *Setup » Orders » Events*. After clicking on *Add event procedure*, plus sign in the bottom (icon:plus-square[role="green"]), we choose the name *Postcode filter* and click on the save button (icon:save[role="green"]).
+
+The event *Status Change* is most suitable to us because all our orders have to go through the status *In preparation for shipping*.
+
+Next, we add a new filter by clicking on icon:plus-square[role="green"] next to filter and select *Postcodes* in the *Order* folder.
+
+.Postcode filter
+image::automation/assets/Postcode-filter-add-filter.png[]
+
+Entering `35, 38` will do a check for postcodes beginning with `35` or `38`.
+
+In addition to this, we add the filter  *Shipping -> Country of delivery* and activate *Spain* because other countries don't need this check.
+
+After that, we add the procedure *Change Status* in the *Order* folder and select the order status *check delivery address* that we created in advance.
+
+.New event procedure
+image::automation/assets/Postcode-filter-filter-and-procedures.png[width=640, height=360]
+
+Now the event procedure looks out in all my new orders in status *in preparation for shipping*, if they were to be sent to Spain and if the postcode fit in the filter.
+
+There are two possible scenarios:
+
+1. The filters in the event procedure do not fit with the order. +
+  -> The event procedure does not have any impact on the order.
+2. The filters in the event procedure do fit with the order. +
+  -> The event procedure is processed and the order status will be changed to  *check delivery address*.
+
+[TIP]
+.Further options for the use of this filter
+====
+Of course, more filters can be used with the postcode filter, e.g. you can add a referrer or order types to have finer distinction in the event procedures. You know best, what you need.
+====
+
 
 == Practical examples: Procedure manager
 

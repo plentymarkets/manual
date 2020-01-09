@@ -1,10 +1,11 @@
-= Datenbank-Backup durchführen
+= Datenbank-Backup
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: Backup, Daten sichern, Rücksicherung, Datensicherung, rücksichern, Wiederherstellung, wiederherstellen
 :description: Erfahre, wie du in plentymarkets Daten sicherst und einspielst.
 :position: 60
 :url: daten/backup
+:id: XCMTBYE
 :icons: font
 :docinfodir: /workspace/manual-adoc
 :docinfo1:
@@ -84,70 +85,85 @@ Wähle den Bereich des Systems, der zurückgesetzt werden soll oder in dem gelö
 |Backup-Typ |Erläuterung
 
 |**Account** +
-|Firma, Kontakt und Adresse +
+|Stellt Firmendatensätze inklusive Adressen, deren Relation zur Firma, Adressoptionen, Kontakte, deren Relation zur Firma, Kontaktoptionen, Kontakttyp, Bankdaten, Kontakteigenschaften, erlaubte Zahlungsarten, Events und die Auftragsübersicht wieder her. +
+Nachrichten (ehemals Notizen) werden nicht berücksichtigt.
 
 |**Category** +
-|Kategorien des Menüs **Artikel » Kategorien**
+|Stellt die Kategorien und die Kategoriebaumstruktur im Menü *Artikel » Kategorien* wieder her. +
+Die Kategorien werden dabei nicht mit den einzelnen Varianten verknüpft. Verwende den Backup-Typ *ItemVariationCategoryValues*, um allein die Kategorieverknüpfungen wiederherzustellen. Verwende alternativ den Backup-Typ *ItemVariation*, um die Kategorieverknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**Listing** +
-|Informationen zu Listings und Market-Listings, aktiven Listings, Listing-Einstellungen für eBay, hood und ricardo, Verkaufsplanern, Listing-Verzeichnissen, Listing-Texten und Übersetzungen
+|Stellt Informationen zu Listings und Market-Listings, Listingtexte (Titel, Untertitel, Beschreibung), alle Informationen im *Marktplatz*-Tab eines Listings, eBay-Merkmale, Optionenvorlagen, Verkaufsplaner, Listing-Verzeichnisse, aktive Listings und die Auflistung zukünftiger Listings wieder her.
 
 |**Order**
-|Auftrag und Auftragspositionsdaten
+|Stellt alle Aufträge und die dazugehörigen Auftragsinformationen (auch Nachbestellungen) wieder her.
 
 |**Process**
-|Mit plentyBase automatisierte Abläufe +
-
-|**Reorder**
-|Nachbestellungen unter **Waren » Nachbestellungen**
+|Stellt die Prozesse im Menü *Einrichtung » Prozesse* inklusive deren Arbeitsschritte, Aktionen, Subaktionen und Steuerelemente wieder her. +
+<<automatisierung/prozesse/prozesse-einrichten#220, Systemspezifische Einstellungen>> wie Drucker und Status müssen ggf. neu gewählt werden.
 
 |**Ticket**
-|Ticket
+|Stellt Ticket-Daten, Ordner, Eigner, Fragen, Rollen, Typen, Referenzen, Status und Templates wieder her.
 
 |**User**
-|Im System registrierte Nutzer und die von diesen vorgenommenen Einstellungen
+|Stellt im System registrierte Nutzer und die von diesen vorgenommenen Einstellungen (Rechte, Rollen etc.) wieder her.
 
 |**Warehouse**
-|Lager und Lageraufbau, wie z.B. Dimensionen und Lagerorte; *_Hinweis:_* Beinhaltet nicht den Warenbestand! Jedoch kann der link:https://knowledge.plentymarkets.com/warenwirtschaft/best-practices-warenbestand[Warenbestand täglich gesichert] und somit ein Backup erstellt werden.
+|Stellt Lager und den Lageraufbau, wie z.B. Dimensionen und Lagerorte, wieder her. +
+Beinhaltet nicht den Warenbestand. Jedoch kann der link:https://knowledge.plentymarkets.com/warenwirtschaft/best-practices-warenbestand[Warenbestand täglich gesichert] und somit ein Backup erstellt werden.
 
 |**FacetDefinition**
-|Facetten für die Suche unter *Einrichtung » Mandant » Global » Dienste » Facettensuche*
+|Stellt die Facetten, Werte und Einstellungen im Menü *Einrichtung » Mandant » Global » Dienste » Facettensuche* wieder her.
 
 |**Item**
-|Artikelstammdaten, vorwiegend im Tab *Global*
+|Stellt Artikeldatensätze inklusive deren Beschreibungen, Versandprofil-Verknüpfungen, Cross-Selling-Einstellungen, FBA-Einstellungen und Artikelsets wieder her.
 
 |**ItemAttribute**
-|Attribute der Artikel unter **Einrichtung » Artikel » Attribute**
+|Stellt die Attribute und Attributwerte im Menü *Einrichtung » Artikel » Attribute* wieder her. +
+Die Attribute werden dabei nicht mit den einzelnen Varianten verknüpft. Verwende den Backup-Typ *ItemVariation*, um die Verknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**ItemBarcodeDefinition**
-|Verknüpfung des Barcodes an der Variante
+|Stellt die Barcodes im Menü *Einrichtung » Artikel » Barcode* wieder her. +
+Die Barcodes werden dabei nicht mit den einzelnen Varianten verknüpft. Verwende den Backup-Typ *ItemVariation*, um die Verknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**ItemCharacterDefinition**
-|Merkmale am Artikel
+|Stellt die Merkmale und Merkmalgruppen im Menü *Einrichtung » Artikel » Merkmale* wieder her. +
+Die Merkmale werden dabei nicht mit den einzelnen Artikeln verknüpft. Verwende den Backup-Typ *ItemCharacterValues*, um die Werte der Merkmalverknüpfungen wiederherzustellen.
 
 |**ItemCharacterValues**
-|Werte der Merkmalverknüpfungen
+|Stellt die Werte der Merkmalverknüpfungen, die direkt am Artikel im Tab *Merkmale* gespeichert sind, wieder her. +
+Setzt voraus, dass die Merkmale und Merkmalgruppen bereits existieren oder mit dem Backup-Typ *ItemCharacterDefinition* bereits wiederhergestellt wurden.
 
 |**ItemPriceCalculation**
-|Preiskalkulationen, die an der Variante hinterlegt sind
+|Stellt die Preiskalkulationen im Menü *Einrichtung » Artikel » Preiskalkulation* wieder her. +
+Die Preiskalkulationen werden dabei nicht mit den einzelnen Varianten verknüpft. Verwende den Backup-Typ *ItemVariation*, um die Verknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**ItemManufacturer**
-|Hersteller des Artikels
+|Stellt die Herstellerdaten im Menü *Einrichtung » Artikel » Hersteller* wieder her. +
+Die Hersteller werden dabei nicht mit den einzelnen Varianten verknüpft. Verwende den Backup-Typ *ItemVariation*, um die Verknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**ItemSalesPriceDefinition**
-|Verkaufspreisverknüpfung an der Variante
+|Stellt die Verkaufspreise im Menü *Einrichtung » Artikel » Verkaufspreise* wieder her. +
+Die Verkaufspreise werden dabei nicht mit den einzelnen Varianten verknüpft und die monetären Preise werden nicht eingetragen. Verwende den Backup-Typ *ItemVariationSalesPriceValues*, um allein die Verknüpfungen und Preise wiederherzustellen. Verwende alternativ den Backup-Typ *ItemVariation*, um die Verknüpfungen und Preise zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**ItemUnit**
-|Einheit der Variante
+|Stellt die Einheiten im Menü *Einrichtung » Artikel » Einheiten* wieder her. +
+Die Einheiten werden dabei nicht mit den einzelnen Varianten verknüpft. Verwende den Backup-Typ *ItemVariation*, um die Verknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen.
 
 |**ItemVariation**
-|Varianten des Artikels
+|Stellt Variantendatensätze inklusive allen Verknüpfungen, wie z.B. Barcodes, Kategorien, Standard-Kategorien, Bilder, ASIN, Preise, Lieferanten, Lager usw., wieder her.
+Artikelpakete werden ebenfalls wiederhergestellt. +
+Setzt voraus, dass die zu verknüpfenden Barcodes, Kategorien, Bilder usw. bereits existieren oder mit dem entsprechenden Backup-Typ wiederhergestellt wurden.
+Tags werden nicht wiederhergestellt.
 
 |**ItemVariationCategoryValues**
-|Kategorieverknüpfungen der Varianten
+|Stellt die Kategorieverknüpfungen, die direkt an der Variante im Tab *Kategorien* gespeichert sind, wieder her. +
+Verwende alternativ den Backup-Typ *ItemVariation*, um die Kategorieverknüpfungen zusammen mit weiteren Variantendaten wiederherzustellen. Setzt voraus, dass die Kategorien und die Kategoriebaumstruktur bereits existieren oder mit dem Backup-Typ *Category* wiederhergestellt wurden.
 
 |**ItemVariationSalesPriceValues**
-|Werte aus den Preisverknüpfungen der Varianten
+|Stellt die Verkaufspreisverknüpfungen und monetären Preise, die direkt an der Variante im Tab *Einstellungen* gespeichert sind, wieder her.
+Verwende alternativ den Backup-Typ *ItemVariation*, um die Verknüpfungen und Preise zusammen mit weiteren Variantendaten wiederherzustellen. +
+Setzt voraus, dass die Verkaufspreise bereits existieren oder mit dem Backup-Typ *ItemSalesPriceDefinition* wiederhergestellt wurden.
 |====
 
 === Backup-Logs anzeigen
