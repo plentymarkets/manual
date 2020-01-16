@@ -1,0 +1,391 @@
+= Artikelbilder
+:lang: de
+include::{includedir}/_header.adoc[]
+:description: Erfahre, welche Einstellungen du für deine Artikelbilder vornehmen kannst und wie du Bilder per FTP hochlädst.
+:url: artikel/einstellungen/bilder
+:icons: font
+:position: 90
+:docinfodir: /workspace/manual-adoc
+:docinfo1:
+
+Artikelbilder werden auf S3 gespeichert und über den CDN-Service CloudFront von AWS ausgeliefert. CDN steht für Content Delivery Network und ermöglicht eine komplett skalierbare Auslieferung der Artikelbilder. Dank CDN wird nur das Originalbild gespeichert. Erst wenn ein Bild aufgerufen wird, wird das Bild in den definierten Dimensionen erstellt und im CDN-Cache von CloudFront gespeichert.
+
+Erfahre, welche Einstellungen du für deine Artikelbilder vornehmen kannst und wie du Bilder per FTP hochlädst.
+
+[#100]
+== Artikelbilder einrichten
+
+Im Menü *Einrichtung » Artikel » Bilder » Einstellungen* nimmst du die folgenden Einstellungen für Artikelbilder vor:
+
+* Import und Export
+* Platzhalterbilder
+* Größe von Attributbildern
+* Bildnamen
+
+[.instruction]
+Einstellungen für Artikelbilder vornehmen:
+
+. Öffne das Menü *Einrichtung » Artikel » Bilder » Einstellungen*.
+. Nimm die Einstellungen vor. Beachte die Erläuterungen in <<tabelle-bildeinstellungen>>.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[[tabelle-bildeinstellungen]]
+.Bildeinstellungen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+2+|*Einstellungen*
+
+|*Exportiere Artikelbild-Position*
+|Positionsnummer des Artikelbildes für den Bildexport wählen, zum Beispiel für den Export zu einem Marktplatz. +
+Die Position wird im Tab <<artikel/artikel-verwalten#90, Bilder>> des Artikels eingestellt.
+
+|*Import von Bildern per FTP*
+|Wählen, ob importierte Bilder ergänzt werden sollen (Grundeinstellung) oder ob vorhandene Bilder vor dem Import der neuen Bilder gelöscht werden sollen.
+
+|*Bildernamen des FTP-Imports*
+|Wählen, ob die Dateinamen von <<artikel/einstellungen/bilder#600, per FTP-Server importierten Bilder>> die *Artikel-ID* oder die *Varianten-Nr.* enthalten.
+
+|*Platzhalterbild-URL*
+|URL für ein Platzhalterbild eingeben. Das Platzhalterbild wird angezeigt, wenn Artikelbilder nicht angezeigt werden können. Platzhalterbild im Menü *CMS » Webspace* hochladen.
+
+|*Platzhaltervorschaubild-URL*
+|URL für ein Platzhalterbild für Vorschaubilder eingeben. Das Platzhalterbild wird angezeigt, wenn Vorschaubilder nicht angezeigt werden können. Platzhalterbild im Menü *CMS » Webspace* hochladen.
+
+2+|*Attributbilder*
+
+|*Max. Höhe in Pixeln*
+|Maximale Höhe in Pixeln für Attributbilder eingeben. Standardmäßig ist der Wert *40* eingestellt.
+
+|*Max. Breite in Pixeln*
+|Maximale Breite in Pixeln für Attributbilder eingeben. Standardmäßig ist der Wert *40* eingestellt.
+
+2+|Name
+
+|*Originalname*; +
+*Artikel-ID*; +
+*Artikel-Nr.*; +
+*Name 1* - *Name 3*; +
+*Keywords*; +
+*Model*; +
+*Freitextfeld 1* - *Freitextfeld 20*; +
+*Eigenes Präfix*
+|Parameter wählen, die im Namen des Bildes enthalten sein sollen und die Position festlegen, an der der Parameter im Namen geführt wird. Parameter werden im Bildnamen durch Bindestriche getrennt. Die Angabe der *Artikel-ID* oder der *Artikelnummer* ist Pflicht. Der Bildname ist auf eine Länge von 32 Zeichen beschränkt.
+
+|*Präfix*
+|Ein eigenes Präfix eingeben, das in Bildnamen eingefügt wird. +
+*_Hinweis:_* Das eingegebene Präfix wird nur in den Bildnamen eingefügt, wenn in der Dropdown-Liste *Präfix* eine Position gewählt wurde.
+|====
+
+[#200]
+== Eigene Domain für Bild-URLs speichern
+
+Artikelbildern wird die URL der Standard-CDN-Domain zugewiesen. Deshalb enthalten die URLs von Artikelbildern standardmäßig den Domain-Namen "plentymarkets.com". Du hast jedoch auch die Möglichkeit, statt der Standard-CDN-Domain die Domain des Mandanten zu nutzen und eine eigene Subdomain für Artikelbilder zu speichern. <<tabelle-domain-bild-URLs>> zeigt die Unterschiede zwischen der Standard-CDN-Domain und einer eigenen CDN-Domain. Eine eigene CDN-Domain kann für von plentymarkets gehostete Domains und für extern gehostete Domains eingerichtet werden. Beachte jedoch die folgenden Einschränkungen:
+
+* Eine eigene Subdomain kann nur für die Hauptdomain gespeichert werden.
+* Pro Mandant kann nur eine eigene Subdomain gespeichert werden.
+* Die Subdomain darf nicht *www* enthalten.
+* Die Subdomain darf nicht im Service-Center vorhanden sein.
+
+[[tabelle-domain-bild-URLs]]
+.Eigene Domain für Bilder-URLs
+[cols="2,3,3"]
+|====
+| |Bild-URL mit Standard-Domain |Bild-URL mit eigener Domain
+
+|URL-Muster
+a|Die URL von Artikelbildern setzt sich wie folgt zusammen:
+
+. Subdomain *CDN1*, *CDN2* oder *CDN3*
+. Domain *plentymarkets.com*
+. Kunden-Hash
+. Dateipfad *item/images*
+. Artikel-ID
+. Ordnername der Bildgröße
+. Name der Bilddatei mit Dateierweiterung
+a|Statt der Standard-Domain wird die eigene Domain angegeben. Der Kunden-Hash wird nicht in der URL angezeigt:
+
+. Eigene Subdomain
+. Domain des Mandanten
+. Dateipfad *item/images*
+. Artikel-ID
+. Ordnername der Bildgröße
+. Name der Bilddatei mit Dateierweiterung
+
+|Beispiel-URL
+|https://*cdn01.plentymarkets.com/ +
+1abcd2e3fghi*/item/images/118/full/118-Relaxsessel-Rio.jpg
+|https://*ihresubdomain.ihrshop.de*/ +
+item/images/118/full/118-Relaxsessel-Rio.jpg
+|====
+
+Gehe wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern:
+
+* <<artikel/einstellungen/bilder#300, Für eine von plentymarkets gehostete Domain>>
+* <<artikel/einstellungen/bilder#400, Für eine von einem externen Provider gehostete Domain>>
+
+[#300]
+=== Eine von plentymarkets gehostete Domain
+
+Gehe wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern, wenn dein System von plentymarkets gehostet wird.
+
+[IMPORTANT]
+.Nach Erstellen der Subdomain die Domain aktivieren
+====
+Das Erstellen der Subdomain kann mehrere Stunden dauern. Erst wenn in allen drei Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen und die Domain kann aktiviert werden.
+====
+
+[.instruction]
+Eigene Domain für Bild-URLs speichern:
+
+. Öffne das Menü *Einrichtung » Mandant » Mandant öffnen » Domains*.
+. Klicke auf *Hinzufügen*. +
+→ Das Fenster *Neue Domain* wird geöffnet.
+. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<tabelle-cdn-domain>>.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Die Subdomain wird erstellt. +
+→ Für die Subdomain wird ein eigenes SSL-Zertifikat erstellt. +
+→ Für die Subdomain wird ein DNS-Eintrag erstellt. +
+→ Eine CloudFront-Instanz wird erstellt. +
+*_Hinweis:_* Dieser Vorgang kann mehrere Stunden dauern. Erst wenn in den Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen.
+. Wenn alle drei Häkchen angezeigt werden, klicke in der Spalte *Status* auf *Aktivieren*. +
+→ Die Domain wird aktiviert.
+
+[[tabelle-cdn-domain]]
+.Subdomain für Bilder-URLs festlegen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Bereich*
+|Den Typ der Subdomain aus der Dropdown-Liste wählen. Aktuell ist nur der Typ *CDN1* verfügbar.
+
+|*Subdomain*
+|Eigene Subdomain eingeben. Gültige Zeichen sind Buchstaben (a-z, A-Z), Ziffern (0-9), Unterstrich (_) und Bindestrich (-). Das erste Zeichen der Subdomain muss entweder ein Buchstabe oder eine Ziffer sein.
+
+|*Domain*
+|Domain aus der Dropdown-Liste wählen. Aktuell ist nur die Hauptdomain des Mandanten wählbar.
+|====
+
+[#400]
+=== Eine von einem externen Provider gehostete Domain
+
+Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen bei deinem Domain-Provider speichern. Gehe wie unten beschrieben vor, um eine eigene Domain für die Bilder-URLs eines Mandanten zu speichern und die DNS-Einstellungen beim externen Domain-Provider zu hinterlegen.
+
+[TIP]
+.Was ist DNS?
+====
+DNS steht für Domain Name System. Dieses System sorgt dafür, dass nicht die numerische IP-Adresse deines Webshops eingegeben werden muss, sondern auch der Domain-Name der richtigen IP-Adresse zugeordnet wird.
+====
+
+[.instruction]
+Eigene Domain für Bild-URLs speichern bei externer Domain:
+
+. Öffne das Menü *Einrichtung » Mandant » Mandant öffnen » Domains*.
+. Klicke auf *Hinzufügen*. +
+→ Das Fenster *Neue Domain* wird geöffnet.
+. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<tabelle-cdn-domain>>.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Für die Subdomain wird ein DNS-Eintrag erstellt.
+. Klicke in der Zeile des Domain-Eintrags auf *DNS-Infos*. +
+→ Das Fenster *DNS-Infos* wird geöffnet. +
+→ Die DNS-Einstellungen werden angezeigt.
+. Log dich in den Service-Bereich deines Domain-Providers ein.
+. Kopiere die in plentymarkets angezeigten DNS-Einstellungen in die dafür vorgesehenen Felder des Domain-Providers. +
+→ Informationen zur Vorgehensweise findest du in der Dokumentation des Domain-Providers.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Für die Subdomain wird ein eigenes SSL-Zertifikat erstellt. +
+→ Eine CloudFront-Instanz wird erstellt. +
+→ Die DNS-Einstellungen werden aktualisiert. +
+*_Hinweis:_* Es kann bis zu 72 Stunden dauern, bis die DNS-Einstellungen beim externen Provider wirksam werden. plentymarkets hat keinen Einfluss auf die Dauer dieses Vorgangs. +
+→ Wenn im Menü *Einrichtung » Mandant » Mandant öffnen » Domains* des plentymarkets Backend in den Spalten *SSL*, *DNS* und *Cloud-Status* grüne Häkchen angezeigt werden, ist der Vorgang abgeschlossen.
+. Wenn im Menü *Einrichtung » Mandant » Mandant öffnen » Domains* alle drei Häkchen angezeigt werden, klicke in der Spalte *Status* auf *Aktivieren*. +
+→ Die Domain wird aktiviert.
+
+[[tabelle-cdn-domain]]
+.Subdomain für Bilder-URLs festlegen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Bereich*
+|Den Typ der Subdomain aus der Dropdown-Liste wählen. Aktuell ist nur der Typ *CDN1* verfügbar.
+
+|*Subdomain*
+|Eigene Subdomain eingeben. Gültige Zeichen sind Buchstaben (a-z, A-Z), Ziffern (0-9), Unterstrich (_) und Bindestrich (-). Das erste Zeichen der Subdomain muss entweder ein Buchstabe oder eine Ziffer sein.
+
+|*Domain*
+|Domain aus der Dropdown-Liste wählen. Aktuell ist nur die Hauptdomain des Mandanten wählbar.
+|====
+
+[#500]
+== Größe von Artikelbildern festlegen
+
+Im Menü *Einrichtung » Artikel » Bilder » Größen* nimmst du Einstellungen für jede Bildgröße fest. Die folgenden Größen sind verfügbar:
+
+* *preview* = Größe des Vorschaubilds
+* *secondPreview* = Größe des zweiten Vorschaubilds
+* *middle* = Größe der mittleren Bildgröße
+* *full* = Größe der vollen Bildgröße
+
+Gehe wie unten beschrieben vor, um die verschiedenen Größen von Artikelbildern festzulegen.
+
+[.instruction]
+Größe von Artikelbildern festlegen:
+
+. Öffne das Menü *Einrichtung » Artikel » Bilder » Größen*.
+. Nimm für jede Bildgröße die Einstellungen vor. Beachte die Erläuterungen in <<tabelle-bildgroessen>>.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[[tabelle-bildgroessen]]
+.Bildgrößen festlegen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Bezeichnung*
+|Interne Bezeichnung eingeben, die für diese Größe verwendet wird.
+
+|*Ordnername*
+|Der Ordnername für diese Bildgröße. Der Ordnername ist nicht änderbar und ist Bestandteil der URL des Artikelbilds.
+
+|*Maximale Höhe in Pixeln*
+|Maximale Höhe in Pixeln eingeben, in der Bilder dieser Größe ausgeliefert werden. Überschreitet dein hinterlegtes Artikelbild diese Größe, wird das angezeigte Artikelbild nach unten skaliert. Dabei wird das Seitenverhältnis beibehalten.
+
+|*Maximale Breite in Pixeln*
+|Maximale Breite in Pixeln eingeben, in der Bilder dieser Größe ausgeliefert werden. Überschreitet dein hinterlegtes Artikelbild diese Größe, wird das angezeigte Artikelbild nach unten skaliert. Dabei wird das Seitenverhältnis beibehalten.
+
+|*Max. Cache-Lebensdauer in Tagen*
+|Anzahl der Tage eingeben, die erstellte Bilder im CloudFront-Cache gespeichert werden. Der Zeitpunkt gilt ab dem ersten Aufruf des Bildes in dieser Größe.
+
+|*Drehen basierend auf dem EXIF Orientation Tag*
+|Wählen, ob die Orientierung des Originalbilds (Bilddrehung um 90, 180, 270°) übernommen werden. +
+Aktiviert = Für skalierte Bilder dieser Größe wird die Rotation des Originalbilds übernommen.
+
+|*Metadaten (EXIF, XMP, IPTC) vom Orginalbild übernehmen*
+a|Wählen, ob die Metadaten des Originalbilds übernommen werden. +
+Metadaten sind zum Beispiel Beschreibungstexte, Geodaten (GPS), Datum und Uhrzeit.
+
+* *Aktiviert* = Für skalierte Bilder dieser Größe werden die Metadaten des Originalbilds übernommen. +
+*_Tipp:_* Besonders für Vorschaubilder kann es sinnvoll sein, die Metadaten nicht mit auszuliefern, um Ladezeit und Datenvolumen zu optimieren.
+
+|*Nicht vergrößern*
+a|Wählen, ob Originalbilder vergrößert werden.
+
+* *Nicht aktiviert* = Wenn das Originalbild kleiner ist als die für diese Größe definierten maximale Dimensionen, wird das Bild auf diese Größe skaliert.
+
+2+|JPG
+
+|*Qualität in Prozent*
+|Die Komprimierung von Originalbildern im JPG-Format in Prozent eingeben. Eine Komprimierung verringert die Ladezeiten und trägt zu besseren Pagespeed-Werten bei. +
+*_Tipp:_* Eine Komprimierung von 80&#160;% führt in der Regel zu keinem sichtbaren Qualitätsverlust.
+
+|*Progressiv*
+a|Wählen, ob Bilder dieser Größe bei Aufruf der Seite sofort angezeigt werden.
+
+* *Aktiviert* = Beim Aufruf der Seite ist das Bild sofort in geringer Auflösung verfügbar. Die Qualität des Bildes wird während des Seitenaufbaus nach und nach verbessert.
+
+2+|PNG
+
+|*Komprimierungslevel (0-9)*
+a|Komprimierungslevel für PNG-Dateien wählen.
+
+* *0* = Geringste Komprimierung
+* *9* = Höchste Komprimierung +
+PNG ist ein verlustfreies Format. Deshalb werden Bilder im PNG-Format immer in derselben Qualität dargestellt. Bei einem höheren Komprimierungslevel benötigt der Browser aber mehr Zeit, um die Komprimierung des Bildes wiederherzustellen.
+
+|*Progressiv*
+a|Wählen, ob Bilder dieser Größe bei Aufruf der Seite sofort angezeigt werden.
+
+* *Aktiviert* = Beim Aufruf der Seite ist das Bild sofort in geringer Auflösung verfügbar. Die Qualität des Bildes wird während des Seitenaufbaus nach und nach verbessert.
+|====
+
+[NOTE]
+.CDN-Cache invalidieren
+====
+Wenn du im Menü *Einrichtung » Artikel » Bilder* Änderungen vornimmst, kann es sein, dass die Bilder noch immer mit den alten Einstellungen angezeigt werden, da sich die Änderungen im Cache befinden. Klicke in diesem Fall auf *CDN-Cache invalidieren*, um die Änderungen schneller anzuzeigen. Die Cache-Invalidierung erfolgt durch CloudFront.
+Nachdem du den Cache invalidierst wird jede Bildgröße neu erstellt, wenn das Bild zum ersten Mal wieder aufgerufen wird.
+====
+
+[#600]
+== Artikelbilder per FTP-Server hochladen
+
+Jedes plentymarkets System hat einen eigenen <<basics/admin-aufgaben/ftpz-zugang#, FTP-Server>>. Auf diesem FTP-Server liegt der Ordner *upload_article_image_XXXX* (XXXX = plentyID), in den du Artikelbilder laden kannst. Der Ordner wird alle 60 Minuten auf Änderungen geprüft. Neue, korrekt benannte Bilder werden automatisch den richtigen Artikeln zugeordnet. Zum Hochladen von Dateien benötigst du ein FTP-Programm und deine FTP-Login-Daten.
+
+[#700]
+=== Artikelbilddateien für den FTP-Import benennen
+
+Im Menü *Einrichtung » Artikel » Bilder » Einstellungen* legst du über die Option *Bildernamen des FTP-Imports* fest, ob die Dateinamen von Artikelbildern die Artikel-ID oder die Varianten-Nr. enthalten. Abhängig von dieser Einstellung benennst du die Dateien entweder mit der Artikel-ID oder der Variantennummer.
+
+[NOTE]
+.Zulässige Zeichen für Dateinamen
+====
+Die Dateinamen von Bildern dürfen folgende Zeichen enthalten:
+
+* Buchstaben (a-z, A-Z) ohne Umlaute
+* Zahlen (0-9)
+* Unterstriche (_)
+* Bindestriche (-)
+
+Leerzeichen und andere Sonderzeichen sind nicht zulässig. Beim Hochladen der Bilddatei werden Leerzeichen und Sonderzeichen durch Bindestriche (-) ersetzt.
+====
+
+Wenn du mehrere Bilder pro Artikel hochladen möchtest, nummeriere die Dateien über ein Suffix durch. Dabei muss die Bildnummer der Artikel-ID oder Varianten-Nr. mit drei Bindestrichen, also mit *---*, nachgestellt werden. Pro Artikel sind bis zu 100 Bilder bei einer Nummerierung von 0 bis 99 möglich.
+
+[.instruction]
+Beispiel:
+
+Du möchtest Bilder für einen Artikel mit der Artikel-ID 4562 und der Variantennummer AQ3957 hochladen.
+
+.Beispiele für FTP-konforme Benennung von Artikelbildern
+[cols="2,1,1"]
+|====
+|Einstellung |Benennung 1 Bild pro Artikel |Benennung mehr als 1 Bild pro Artikel
+
+|*Bildernamen des FTP-Imports* = *Artikel-ID*
+a|
+* 4562.jpg
+* 4562.png
+* 4562.gif
+* 4562.svg
+
+a|
+* 4652---0.jpg
+* 4652---1.jpg
+* 4652---2.gif
+
+|*Bildernamen des FTP-Imports* = *Varianten-Nr.*
+a|
+* AQ3957.jpg
+* AQ3957.png
+* AQ3957.gif
+* AQ3957.svg
+
+a|
+* AQ3957---0.png
+* AQ3957---19.png
+
+|====
+
+[#800]
+=== Artikelbilder per FTP-Server importieren
+
+Gehe wie hier beschrieben vor, um Artikelbilder per FTP-Server zu importieren.
+
+[.instruction]
+Artikelbilder per FTP importieren:
+
+. Kopiere die Artikelbilder, die du hochladen möchtest, in einen Ordner auf deiner Festplatte.
+. Prüfe die <<artikel/einstellungen/bilder#700, Namen der Bildateien>>.
+. Passe die Namen der Bilddateien wenn nötig an.
+. Wähle in deinem FTP-Programm den Zielordner *upload_article_image_XXXX* (XXXX = plentyID).
+. Wähle im Bereich *Upload* des FTP-Programms die Dateien.
+. Starte den Upload. +
+→ Die Bilder werden den Artikeln zugeordnet und nach maximal 60 Minuten im Webshop angezeigt.
+
+[TIP]
+.Upload-Zeit berücksichtigen
+====
+Pro Durchlauf werden 200 Bilder oder bei eigenem Server 2000 Bilder verarbeitet. Daher kann der Upload je nach Datenmenge bis zu mehrere Stunden dauern, auch wenn du einen leistungsfähigen Rechner und eine schnelle Datenverbindung hast. Plane daher den Dateien-Upload so, dass du dadurch nicht in deinem Tagesgeschäft eingeschränkt wirst.
+====
