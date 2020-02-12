@@ -1,0 +1,133 @@
+= Neue Kategorien importieren
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: ElasticSync, Import, Kategorien, Best Practice, Praxisbeispiel
+:position: 55
+:url: daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-kategorien
+:id: GV1MLXQ
+
+Kategorien helfen dir Produkte übersichtlich zu gruppieren. Sie bestimmen, wie deine Artikel im Webshop strukturiert werden.
+
+Grundsätzlich gibt es zwei Möglichkeiten, Kategorien zu erstellen oder zu aktualisieren. Wenn du _nur wenige Kategorien_ anlegen oder modifizieren willst, empfiehlt es sich, dies <<artikel/einstellungen/kategorien#200,manuell zu tun>>. Hast du aber dagegen _eine Vielzahl an Kategorien_, dann ist es wahrscheinlich schneller, deine Kategoriedaten zu importieren.
+
+Darum geht es auf dieser Seite. Hier lernst du, Kategorieinformationen in plentymarkets zu importieren. Dies ist sinnvoll, wenn du viele neue Kategorien auf einmal erstellen willst oder wenn du viele bestehende Kategorien auf einmal aktualisieren willst.
+
+[TIP]
+.Voraussetzungen
+====
+Diese Seite setzt voraus, dass du bereits eine <<artikel/einstellungen/kategorien#100, sinnvolle Kategoriestruktur>> überlegt hast und dass du Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, ElasticSync-Tool>> hast.
+====
+
+== Praxisbeispiel: Ausgangssituation
+
+Stell dir mal vor, du verkaufst Kleidung in deinem Webshop. Du bist ganz neu bei plentymarkets und möchtest alle deine Kategoriedaten auf einmal importieren. Du willst deine Kategorien wie folgt strukturieren:
+
+[cols="3*^", grid=cols, frame=none, stripes=none]
+|====
+
+a|* Damen
+** Accessoires
+** Schuhe
+** Bekleidung
+*** Jeans
+*** Tops
+a|* Herren
+** Accessoires
+** Schuhe
+** Bekleidung
+*** Jeans
+*** Tops
+a|* Kinder
+** Accessoires
+** Schuhe
+** Bekleidung
+*** Jeans
+*** Tops
+|====
+
+== CSV-Datei einrichten
+
+Übertrage zunächst diese Kategoriestruktur in eine CSV-Datei. Dies ist die Datei, die du später in plentymarkets importieren wirst. In unserem Beispiel würden die Kategorien in der CSV-Datei so aussehen:
+
+image::daten/daten-importieren/assets/best-practice-kategorie-kategoriestruktur-csv.png[]
+
+Die Namen der Spaltenüberschriften können frei gewählt werden. In diesem Beispiel habe ich folgende Kategorieinformationen in die Spalten eingefügt:
+
+* *Name* = Der Name der Kategorie.
+* *Parentname* = Wenn dies eine Hauptkategorie sein soll, d.h. eine Kategorie auf der ersten Ebene, dann lass dieses Feld leer. Wenn dies eine Unterkategorie sein soll, dann gib den Pfad der direkt darüber liegenden Kategorie an. _Nutze Semikolons_, um die einzelnen Kategorieebenen zu trennen.
+* *Multiname* = Der vollständige Kategoriepfad, d.h. sowohl der Parentname als auch der Name. Entscheide, welches Trennzeichen du zur Trennung der einzelnen Kategorieebenen verwenden willst.
+
+[discrete]
+==== Zusätzliche Kategorie-Infos ergänzen
+
+Wahrscheinlich willst du viel mehr als nur eine nackte Kategoriestruktur schaffen. Vielleicht willst du ja Beschreibungstexte oder SEO-relevante Metadaten ebenfalls ergänzen.
+
+Füge weitere Spalten zu deiner CSV-Datei hinzu und verwende diese, um zusätzliche Kategorieinformationen anzugeben. Zum Beispiel so:
+
+image::daten/daten-importieren/assets/best-practice-kategorie-kategorieinfo-csv.png[]
+
+Die Namen der Spaltenüberschriften können frei gewählt werden. Du kannst einige oder alle der <<daten/daten-importieren/sync-typen/elasticSync-kategorien#2120, hier aufgeführten Kategorieinformationen>> hinzufügen. In diesem Beispiel habe ich mich entschieden, folgende Informationen zu ergänzen:
+
+* *Beschreibung* = Eine Beschreibung jeder Kategorie.
+* *Meta-Titel* = Ein Text, der als Tab-Titel im Webbrowser und als Suchergebnis in Suchmaschinen angezeigt werden soll.
+* *Sichtbar* = Ob ich möchte, dass die einzelnen Kategorien in die Sitemap aufgenommen werden.
++
+1 = Ja, die Kategorie soll in die Sitemap angezeigt werden. +
+0 = Nein, die Kategorie soll _nicht_ in die Sitemap angezeigt werden.
++
+In diesem Beispiel möchte ich nur die ersten beiden Kategorieebenen in die Sitemap aufnehmen, also füge ich die Zahlen 1 und 0 entsprechend hinzu.
+
+== Sync-Einstellungen wählen
+
+<<daten/daten-importieren/ElasticSync#1210, Erstelle ein neues Sync>>. Die meisten Einstellungen können frei gewählt werden. Da du jedoch _Kategoriedaten_ importieren wirst, stelle sicher, dass du den *Typ* auf *Kategorien* gesetzt hast.
+
+== Abgleich-Einstellungen wählen
+
+Während des Imports prüft plentymarkets, ob die Kategorie bereits existiert. Dies geschieht mit Hilfe eines sogenannten Abgleichfeldes.
+
+Da wir in diesem Beispiel _neue Kategorien_ importieren möchten, konfiguriere die Einstellungen wie folgt.
+
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Kategoriename kombiniert*
+|In welcher Spalte deiner CSV-Datei ist der vollständige Kategoriepfad aufgeführt? Wähle diese Spaltenüberschrift aus der ersten Dropdown-Liste. In unserem Beispiel wähle ich also die Spalte *Multiname*. +
+Wähle das Trennzeichen aus der zweiten Dropdown-Liste. In unserem Beispiel wähle ich _Semikolon_.
+
+|*Import Optionen*
+|Da du neue Kategorien importieren wirst, wähle die Option *Nur neue Daten importieren* oder *Neue Daten importieren, vorhandene aktualisieren*.
+|====
+
+== Zuordnung-Einstellungen wählen
+
+Deine CSV-Datei ist bereits mit einer Menge Kategorieinformationen gefüllt. Entscheide als nächstes, _wo in plentymarkets_ jede Information beim Import der Datei erscheinen soll. <<daten/daten-importieren/sync-typen/elasticSync-kategorien#2120, Siehe diese Seite>>, während du die Spalten deiner CSV-Datei zu den Feldern in plentymarkets zuordnest. In diesem Beispiel habe ich die Einstellungen wie folgt konfiguriert.
+
+image::daten/daten-importieren/assets/best-practice-kategorie-zuordnung-einstellungen.png[]
+
+Ich habe die nackte Kategoriestruktur erstellt, indem ich:
+
+* die Spalte *Name* meiner CSV-Datei mit dem Datenfeld *Details / Name* in plentymarkets zugeordnet habe.
+* die Spalte *Parentname* meiner CSV-Datei mit dem Datenfeld *Kategorie / Elternkategorie Name* in plentymarkets zugeordnet habe.
+* die *Eigener Wert* Option verwendet habe und *1* für das Datenfeld *Kategorie / Elternkategorie anlegen wenn nicht vorhanden* eingegeben habe. Anders gesagt, indem ich mich entschieden habe, die übergeordnete Kategorie zu erstellen, falls sie noch nicht existiert.
+
+Ich habe zusätzliche Kategorieinformationen hinzugefügt, indem ich:
+
+* die Spalte *Beschreibung* meiner CSV-Datei mit dem Datenfeld *Details / Beschreibung 1* in plentymarkets zugeordnet habe.
+* die Spalte *Meta-Titel* meiner CSV-Datei mit dem Datenfeld *Details / Meta-Titel* in plentymarkets zugeordnet habe.
+* die Spalte *Sichtbar* meiner CSV-Datei mit dem Datenfeld *Kategorie / Sichtbar* in plentymarkets zugeordnet habe.
+
+== Hat es funktioniert?
+
+Bereit, deine Kategorien zu importieren? Führe den Sync aus und kontrolliere, dass die Daten korrekt in plentymarkets importiert wurden.
+
+[.instruction]
+Sync ausführen und Ergebnis prüfen:
+
+. Aktiviere die zu importierenden Zeilen (icon:toggle-on[role="green"]).
+. Führe den Sync aus (icon:play-circle-o[role="darkGrey"]). +
+*_Hinweis:_* Dies kann einige Minuten dauern.
+. Öffne das Menü *Artikel » Kategorien*.
+. Prüfe, ob deine Kategorien richtig strukturiert wurden. +
+*_Hinweis:_* Klicke ganz links auf das Ordner-Symbol (icon:folder[role="darkGrey"]) einer Kategorie, um die darin enthaltenen Unterkategorien zu sehen.
+. Öffne einige Kategorien und prüfe ihre Einstellungen.
