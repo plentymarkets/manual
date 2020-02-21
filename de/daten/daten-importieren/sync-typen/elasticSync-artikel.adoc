@@ -7,8 +7,11 @@ include::{includedir}/_header.adoc[]
 :id: QUGDW1A
 :author: none
 
-Mit einem Sync des Typs *Artikel* importierst du Artikel- und Variantendaten.
+Diese Seite erläutert die Abgleich- und Zuordnungsfelder, die dir beim Importieren von Artikel- und Variantendaten zur Verfügung stehen. Diese Seite dient lediglich als Referenz und setzt voraus, dass du bereits Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, ElasticSync-Tool>> hast.
 
+[IMPORTANT]
+.Voraussetzungen
+====
 Um Artikeldaten per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
 * Kategorien (Menü *Artikel » Kategorien*)
@@ -17,6 +20,13 @@ Um Artikeldaten per ElasticSync zu importieren, müssen die folgenden Datensätz
 Um Variantendaten mit Attributen per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
 * Attribute und Attributwerte (Menü *Einrichtung » Artikel » Attribute*)
+====
+
+[TIP]
+.Praxisbeispiel: Neue Kategorien importieren
+====
+Stell dir mal vor, du bist ganz neu bei plentymarkets und möchtest alle deine Artikel und Varianten auf einmal importieren. Wie geht so etwas? Wirf einen Blick auf <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-variantenanlage#, dieses praktische Beispiel>>, welches dich Schritt für Schritt durch den Prozess führt.
+====
 
 [#1910]
 == Felder für den Artikelabgleich
@@ -57,137 +67,251 @@ Aus der zweiten Dropdown-Liste das Format wählen, in dem die Daten in der Datei
 [#1920]
 == Felder für die Artikelzuordnung
 
-In diesem Kapitel werden Felder erläutert, die für die Zuordnung von Artikeldaten zur Verfügung stehen.
+//rewrite. Something along the lines of: In den folgenden Kapitel werden Felder erläutert, die für die Zuordnung von Artikel- und Variantendaten zur Verfügung stehen.
+//since there are many different fields, the explainations have been divided into sub-chapters.
+##In diesem Kapitel werden Felder erläutert##, die für die Zuordnung von Artikeldaten zur Verfügung stehen.
+
+[TIP]
+.Kein Zuordnungsfeld? Standardwert greift!
+====
+Wenn du eine bestimmte Information nicht in deine CSV-Datei aufnimmst, d.h. wenn du ein bestimmtes Zuordnungsfeld _nicht verwendest_, dann erhält dein Artikel bzw. deine Variante den Standardwert.
+====
 
 [#2260]
 === Artikel
 
-Für den Artikelimport stehen die in <<tabelle-Zuordnungsfelder-Artikel>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-items>> werden Felder erläutert, die für die Zuordnung von Artikeldaten zur Verfügung stehen.
+##Diese Zuordnungsfelder entsprechen dem Tab *Global* innerhalb## des Artikeldatensatzes.
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Artikeldatensatz nach dem Import öffnest, siehst du, dass die Einstellungen ##im Tab *Global*## wie folgt konfiguriert wurden.
+
+//Für den Artikelimport stehen die in <<tabelle-Zuordnungsfelder-Artikel>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-Zuordnungsfelder-Artikel]]
 .Felder für Artikelimport
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Warentyp
-|0 = Lagerware +
-1 = Produktionsware +
-2 = Colli +
-3 = Bestellware
+|0 +
+1 +
+2 +
+3
 |
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Typ>>
+
+* 0 = Lagerware
+* 1 = Produktionsware
+* 2 = Colli
+* 3 = Bestellware
 
 |Shop-Aktion
-|0 = keine +
-1 = Sonderangebot +
-2 = Neuheit +
-3 = Top-Artikel
+|0 +
+1 +
+2 +
+3
 |
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Webshop » Option: Shop-Aktion>>
 
-|Eigner
+* 0 = Keine
+* 1 = Sonderangebot
+* 2 = Neuheit
+* 3 = Top-Artikel
+
+|##Eigner##
 |Nummerisch (interne User-ID)
+|
 |ID der Eigner siehe *Einrichtung » Einstellungen » Benutzer » Konten*
 
 |Hersteller-ID
 |Nummerisch (interne ID)
-|Siehe *Einrichtung » Artikel » Hersteller*
+|
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Hersteller>>
+
+Die Zuordnung erfolgt über die Hersteller-ID im Menü *Einrichtung » Artikel » Hersteller*.
 
 |Herstellungsland
 |Nummerisch (interne ID); +
 0 = unbekannt
-|IDs siehe <<basics/interne-IDs#20, Länder-IDs>>
+|
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Herstellungsland>>
+
+Die Zuordnung erfolgt über die <<basics/interne-IDs#20, Liste der Länder-IDs>>.
 
 |Zolltarifnummer
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Zolltarifnummer>>
 
-|Erlöskonto
+|##Erlöskonto##
+|0 = Nein +
+1 = Ja
 |
 |
 
 |Aktionsgutschein
-|0 = Möglich +
-1 = Verboten +
-2 = Nur mit Gutschein kaufbar
+|0 +
+1 +
+2
 |
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Aktionsgutschein/POS-Rabatt>>
+
+* 0 = Möglich
+* 1 = Verboten
+* 2 = Nur mit Gutschein kaufbar
 
 |Zustand
-|0 = Neu +
-1 = Gebraucht +
-2 = Neu und originalverpackt +
-3 = Neu mit Etikett +
-4 = B-Ware
-|Artikelzustand
+|0 +
+1 +
+2 +
+3 +
+4
+|
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Zustand>>
+
+* 0 = Neu
+* 1 = Gebraucht
+* 2 = Neu und originalverpackt
+* 3 = Neu mit Etikett
+* 4 = B-Ware
 
 |Zustand API
-|0 = Neu +
-1 = Gebraucht wie neu +
-2 = Gebraucht sehr gut +
-3 = Gebraucht gut +
-4 = Gebraucht annehmbar +
-5 = B-Ware
-|Zustand des Artikels; Übertragung über API an andere Marktplätze
+|0 +
+1 +
+2 +
+3 +
+4 +
+5
+|
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Zustand API>>
+
+* 0 = Neu
+* 1 = Gebraucht wie neu
+* 2 = Gebraucht sehr gut
+* 3 = Gebraucht gut
+* 4 = Gebraucht annehmbar
+* 5 = B-Ware
 
 |Abonnement (Ja/Nein)
-|0 = Nein +
-1 = Ja
-|Kann Artikel als Abo bestellt werden?
+|0 +
+1
+|
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Abonnement>>
+
+* 0 = Nein
+* 1 = Ja
 
 |Seriennummer (Ja/Nein)
-|0 = Nein +
-1 = Ja
-|Seriennummer zuweisen?
+|0 +
+1
+|
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Seriennummer>>
+
+* 0 = Nein
+* 1 = Ja
 
 |Versandpaket (Ja/Nein)
-|0 = Nein +
-1 = Ja
-|Versandpaket verwenden?
+|0 +
+1
+|
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Versandpaket>>
+
+* 0 = Nein
+* 1 = Ja
 
 |Amazon-Abwicklung (FBA)
-|0 = Nicht verwenden +
-1 = AMAZON EU +
-2 = AMAZON FE +
-3 = AMAZON NA +
--1 = FBA und SellerCentral
+|0 +
+1 +
+2 +
+3 +
+-1
 |
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: FBA-Abwicklung>>
+
+* 0 = Nicht verwenden
+* 1 = AMAZON_EU
+* 2 = AMAZON_FE
+* 3 = AMAZON_NA
+* -1 = FBA und SellerCentral
 
 |Versand durch Amazon (FBA)
 |0 = Nein +
 1 = Ja
-|FBA-Versand?
+|
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: Amazon FBA>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Amazon-Produkttyp
 |Nummerisch
-|IDs siehe <<basics/interne-IDs#130, Wertetabelle amazon_product_type>>
+|
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: Produkttyp>>
 
-|Amazon-FEDAS
+Die Zuordnung erfolgt über die <<basics/interne-IDs#130, Wertetabelle amazon_product_type>>.
+
+|##Amazon-FEDAS##
+//0 und 1 macht dafür gar kein Sinn
+|0 = Nein +
+1 = Ja
 |
 |FEDAS-Warengruppenschlüssel
 
 |Listing-Vorlage
 |Nummerisch (interne ID)
 |
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Listing-Voreinstellungen » Option: Listing-Vorlage>>
+
+Die Zuordnung erfolgt über die Listing-Vorlage-ID im Menü *Listings » Listings*.
 
 |Listing Kategorie 1; +
 Listing Kategorie 2
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Listing-Voreinstellungen » Option: Kategorie 1>>
 
 |Listing Shop-Kategorie 1; +
 Listing Shop-Kategorie 2
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Listing-Voreinstellungen » Option: Kategorie 1>>
+
 
 |Rakuten.de-Kategorien
 |Nummerisch (interne ID)
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Kategorieverknüpfung » Option: Rakuten.de>>
+
 
 |Markierung 1
 |Nummerisch (interne ID)
+|
 |ID der Markierung 1, siehe *Einrichtung » Artikel » Makierungen » Tab: Markierung 1*
 
 |Markierung 2
 |Nummerisch (interne ID)
+|
 |ID der Markierung 2, siehe *Einrichtung » Artikel » Makierungen » Tab: Markierung 2*
 
 |Altersfreigabe
@@ -200,10 +324,12 @@ Listing Shop-Kategorie 2
 50 = Nicht gekennzeichnet +
 88 = Nicht erforderlich +
 99 = Noch nicht bekannt
+|
 |FSK
 
 |Artikelbewertung
 |Nummerisch
+|
 |Erstbewertung von 1 bis 5 bzw. 1 bis 10
 
 |Feld 1; +
@@ -212,31 +338,37 @@ Feld 3; +
 ... +
 Feld 20
 |Alphanummerisch
+|
 |Freitextfelder 1 bis 20
 
 |Max. Artikelbestellmenge
 |Nummerisch
 |
+|
 
 |Typ
 |standard = Artikel des Typs *Standard* +
 multipack = Artikel des Typs *Multipack* +
+|
 |Wenn kein Artikeltyp angegeben wird, wird automatisch der Typ *Standard* angenommen.
 
 
 |Herstellername
 |Alphanummerisch
+|
 |Wenn nicht im System, wird neuer Hersteller angelegt.
 
 //wo findet man Artikelvorlage?
 //|Artikelvorlage
 //|Nummerisch
+//|
 //|ID der Kategorie der <<artikel/artikel-verwalten#720, Artikelvorlage>> +
 //*_Hinweis:_* Artikelvorlagen gibt es nur im alten Webdesign Callisto.
 
 |Artikel löschen
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
@@ -359,7 +491,7 @@ Für den Import von Versandprofilen stehen die in <<tabelle-zuordnungsfelder-ver
 |
 
 |Versandprofile (kommasepariert)
-|
+|Profil-ID1,Profil-ID2,...
 |Ermöglicht den Import von mehr als einem Versandprofil
 
 |Versandprofilverknüpfungen löschen (Profil-IDs, kommasepariert)
@@ -604,19 +736,23 @@ bundle_item = Variante ist Paketbestandteil
 |
 
 |Gewicht brutto aus Paketbestandteilen berechnen
-|
+|0 = Nein +
+1 = Ja
 |
 
 |Gewicht netto aus Paketbestandteilen berechnen
-|
+|0 = Nein +
+1 = Ja
 |
 
 |EK netto aus Paketbestandteilen berechnen
-|
+|0 = Nein +
+1 = Ja
 |
 
 |GLD EK netto aus Paketbestandteilen berechnen
-|
+|0 = Nein +
+1 = Ja
 |
 
 |Kommissionierung
@@ -741,7 +877,8 @@ oder
 |Namen der Kategorien, die von der Variante gelöst werden sollen.
 
 |Nicht gefundene Kategorien anlegen
-|
+|0 = Nein +
+1 = Ja
 |
 |====
 
@@ -765,7 +902,8 @@ Für den Import von Standardkategoriedaten stehen die in <<tabelle-zuordnungsfel
 |Name der Standardkategorie
 
 |Nicht gefundene Kategorien anlegen
-|
+|0 = Nein +
+1 = Ja
 |
 |====
 
@@ -866,7 +1004,8 @@ Import von mehr als zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Erstell nicht existierende Werte
-|
+|0 = Nein +
+1 = Ja
 |
 |====
 
@@ -940,7 +1079,7 @@ Mehrere Herkünfte können kommasepariert angegeben werden. +
 Alternativtext des Artikelbilds im Format *Name:Sprache1:Alternativtext,Name:Sprache2:Alternativtext*
 
 |Alternative Namen
-|
+|name1:sprache1,name2:sprache2
 |
 
 |Marktplatzattributverknüpfung (Attibutwert-ID)
@@ -1035,11 +1174,11 @@ Codes siehe <<basics/interne-IDs#10, Sprachen>>
 *Name1:Wert1:Sprache1;Name2:Wert2:Sprache2* etc.
 
 |Auswahleigenschaftkombination (Namen)
-|
+|propertyName:selectionName:language;propertyName:selectionName:language
 |
 
 |Auswahleigenschaftkombination (IDs)
-|
+|propertyID:selectionID:language;propertyID:selectionID:language
 |
 
 |Auswahl-ID
@@ -1092,7 +1231,7 @@ Für den Import von Tag-Verknüpfungen stehen die in <<tabelle-zuordnungsfelder-
 
 |Tag-Verknüpfung löschen (ID)
 |
-|
+|wird entfernt
 |====
 
 [#2420]
@@ -1142,7 +1281,8 @@ Für den Import von Vererbungen stehen die in <<tabelle-zuordnungsfelder-vererbu
 |
 
 |Eigenschaften
-|
+|0 = Nein +
+1 = Ja
 |
 
 |Tags
@@ -1204,8 +1344,9 @@ Für den Import von ASIN/ePID stehen die in <<tabelle-zuordnungsfelder-ASIN-ePID
 |
 
 |Löschen (IDs, kommasepariert)
-|
-|
+|Nummerisch (interne ID)
+|ASIN-IDs oder ePID-IDs im Format +
+ASIN-ID1,ASIN-ID2,ASIN-ID3 etc.
 |====
 
 [#2440]
@@ -1284,8 +1425,10 @@ Für den Import von Lieferantendaten stehen die in <<tabelle-zuordnungsfelder-li
 Diese ID wird automatisch von plentymarkets erzeugt. Die ID ist _nicht_ im plentymarkets Backend sichtbar. Sondern wird die ID lediglich im Hintergrund gespeichert. Möchtest du die ID trotzdem sehen, musst du diese Information zunächst aus deinem plentymarkets-System exportieren. Verwende dazu das Exportformat <<daten/daten-exportieren/FormatDesigner#385, VariationSupplier in FormatDesigner>>. +
 Das Zuordnungsfeld *Lieferantenverknüpfungs-ID* ist <<daten/daten-importieren/sync-typen/elasticSync-artikel#1930, je nach Anwendungsfall>> eine Pflichtangabe. Beispielsweise wird dieses Feld benötigt, um Lieferanten direkt beim Artikelimport anzulegen.
 
-|EK in Systemwährung
-|
+|##EK in Systemwährung##
+|0 = Nein +
+1 = Ja
+//0 und 1 macht kein Sinn dafür
 |
 
 //evtl das hier?
@@ -1323,11 +1466,11 @@ Das Zuordnungsfeld *Lieferantenverknüpfungs-ID* ist <<daten/daten-importieren/s
 |
 
 |EK in Bestellwährung
-|
+|Kommazahl
 |
 
 |Lieferanten-Artikel-Bezeichnung
-|
+|Alphanummerisch
 |
 
 |Lieferanten-ID
@@ -1393,8 +1536,8 @@ Für den Import von zusätzlichen SKUs stehen die in <<tabelle-zuordnungsfelder-
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID
-|
-|
+|Nummerisch
+|Eine existierende SKU ID
 
 |Marktplatz-ID
 |Nummerisch
@@ -1411,11 +1554,13 @@ eBay siehe *Einrichtung » Märkte » eBay » Konten*
 |
 
 |Existierende SKU
-|
-|
+|##Nummerisch?##
+|Der aktuelle Wert einer SKU
+//was für ein Wert?
 
 |Abgleich anhand von ID oder existierender SKU
-|
+|0 = Nein +
+1 = Ja
 |
 
 //|Parent-SKU
