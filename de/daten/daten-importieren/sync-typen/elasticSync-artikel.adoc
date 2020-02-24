@@ -23,7 +23,7 @@ Um Variantendaten mit Attributen per ElasticSync zu importieren, müssen die fol
 ====
 
 [TIP]
-.Praxisbeispiel: Neue Kategorien importieren
+.Praxisbeispiel: Neue Artikel importieren
 ====
 Stell dir mal vor, du bist ganz neu bei plentymarkets und möchtest alle deine Artikel und Varianten auf einmal importieren. Wie geht so etwas? Wirf einen Blick auf <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-variantenanlage#, dieses praktische Beispiel>>, welches dich Schritt für Schritt durch den Prozess führt.
 ====
@@ -250,8 +250,8 @@ a|Entspricht der Dropdown-Liste unter: +
 * -1 = FBA und SellerCentral
 
 |Versand durch Amazon (FBA)
-|0 = Nein +
-1 = Ja
+|0 +
+1
 |
 a|Entspricht der Checkbox unter: +
 <<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: Amazon FBA>>
@@ -303,34 +303,43 @@ Listing Shop-Kategorie 2
 |Entspricht dem Eingabefeld unter: +
 <<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Kategorieverknüpfung » Option: Rakuten.de>>
 
-
-|Markierung 1
+|Markierung 1; +
+Markierung 2
 |Nummerisch (interne ID)
 |
-|ID der Markierung 1, siehe *Einrichtung » Artikel » Makierungen » Tab: Markierung 1*
+|Entspricht der <<artikel/einstellungen/markierungen#, Markierung des Artikels>>.
 
-|Markierung 2
-|Nummerisch (interne ID)
-|
-|ID der Markierung 2, siehe *Einrichtung » Artikel » Makierungen » Tab: Markierung 2*
+Die Zuordnung erfolgt über die ID der Markierung im Menü *Einrichtung » Artikel » Makierungen » Tab: Markierung 1 bzw. Markierung 2*
 
 |Altersfreigabe
-|0 = Keine verfügbar +
-3 = FSK 3 +
-6 = FSK 6 +
-12 = FSK 12 +
-16 = FSK 16 +
-18 = FSK 18 +
-50 = Nicht gekennzeichnet +
-88 = Nicht erforderlich +
-99 = Noch nicht bekannt
+|0 +
+3 +
+6 +
+12 +
+16 +
+18 +
+50 +
+88 +
+99
 |
-|FSK
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Altersfreigabe>>
+
+* 0 = Keine verfügbar
+* 3 = FSK 3
+* 6 = FSK 6
+* 12 = FSK 12
+* 16 = FSK 16
+* 18 = FSK 18
+* 50 = Nicht gekennzeichnet
+* 88 = Nicht erforderlich
+* 99 = Noch nicht bekannt
 
 |Artikelbewertung
 |Nummerisch
 |
-|Erstbewertung von 1 bis 5 bzw. 1 bis 10
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Webshop » Option: Artikelbewertung>>
 
 |Feld 1; +
 Feld 2; +
@@ -339,14 +348,17 @@ Feld 3; +
 Feld 20
 |Alphanummerisch
 |
-|Freitextfelder 1 bis 20
+|Entspricht den Freitextfeldern 1 bis 20 unter: +
+<<artikel/artikel-verwalten#70, Tab: Felder>>
 
 |Max. Artikelbestellmenge
 |Nummerisch
 |
-|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Max. Bestellmenge>>
 
-|Typ
+|##Typ##
+//geht auch set? kann man nicht nachträglich ändern, oder?
 |standard = Artikel des Typs *Standard* +
 multipack = Artikel des Typs *Multipack* +
 |
@@ -356,7 +368,10 @@ multipack = Artikel des Typs *Multipack* +
 |Herstellername
 |Alphanummerisch
 |
-|Wenn nicht im System, wird neuer Hersteller angelegt.
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Hersteller>>
+
+Die Zuordnung erfolgt über den Herstellernamen. Wenn der Herstellerdatensatz nicht bereits im System vorhanden ist, wird ein neuer Herstellerdatensatz angelegt.
 
 //wo findet man Artikelvorlage?
 //|Artikelvorlage
@@ -366,55 +381,63 @@ multipack = Artikel des Typs *Multipack* +
 //*_Hinweis:_* Artikelvorlagen gibt es nur im alten Webdesign Callisto.
 
 |Artikel löschen
-|0 = Nein +
-1 = Ja
+|0 +
+1
 |
-|
+a|Möchtest du einige Artikel löschen und andere aktualisieren? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob der Artikel gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#3000]
-=== Artikelsets
+=== ##Artikelsets##
 
 Für den Import von Artikelsets stehen die in <<tabelle-zuordnungsfelder-artikelsets>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-artikelsets]]
 .Felder für Import von Artikelsets
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Bestandteile hinzufügen (IDs, kommasepariert)
 |Alphanummerisch
+|
 |IDs und Anzahl der Artikel, die zum Set hinzugefügt werden +
 Format: *artikelID:menge,artikelID:menge*
 
 |Bestandteile entfernen (IDs, kommasepariert)
 |Alphanummerisch
+|
 |IDs der Artikel, die aus dem Set entfernt werden
 
 |Rabatt
 |Dezimalzahl
+|
 |Rabatt auf den Gesamtpreis des Sets in %
 |====
 
 [#2310]
-=== Cross-Selling
+=== ##Cross-Selling##
 
 Für den Import von Cross-Selling-Verknüpfungen stehen die in <<tabelle-zuordnungsfelder-crossselling>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-crossselling]]
 .Felder für Import von Cross-Selling-Verknüpfungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Alle Cross-Selling-Verknüpfungen löschen
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Cross-Selling-Verknüpfungen hinzufügen
 |Alphanummerisch
+|
 |Cross-Selling-Verknüpfung im Format +
 *Artikel-ID:Beziehungstyp;Artikel-ID:Beziehungstyp;etc.* +
 Verfügbare Beziehungstypen: +
@@ -425,6 +448,7 @@ Bundle = Artikelpaket
 
 |Cross-Selling-Verknüpfungen löschen
 |Nummerisch
+|
 |Zu löschende Cross-Selling-Verknüpfungen im Format +
  *Artikel-ID;Artikel-ID;etc.*
 |====
@@ -437,65 +461,93 @@ Für den Import der Artikelbeschreibungen stehen die in <<tabelle-zuordnungsfeld
 
 [[tabelle-zuordnungsfelder-artikelbeschreibung]]
 .Felder für Import von Artikelbeschreibungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
-|Name
-|Alphanummerisch
-|
-
-|Name 2; +
+|Name; +
+Name 2; +
 Name 3
 |Alphanummerisch
 |
+|Gib einen Namen für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Name 1, 2, 3>>
 
 |Vorschautext
 |Alphanummerisch
 |
+|Gib einen Vorschautext für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Vorschautext>>
 
 |Meta-Beschreibung
 |Alphanummerisch
 |
+|Gib eine Meta-Beschreibung für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Meta-Beschreibung>>
 
 |Artikeltext
 |Alphanummerisch
 |
+|Gib einen Artikeltext für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Artikeltext>>
 
 |Technische Daten
 |Alphanummerisch
 |
+|Gib technische Daten für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Technische Daten>>
 
 |URL-Pfad
 |Link
 |
+|Gib einen URL-Pfad für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: URL-Pfad>>
 
 |Meta-Keywords
 |Alphanummerisch
 |
+|Gib Meta-Keywords für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Meta-Keywords>>
 |====
 
 [#2280]
-=== Versandprofil
+=== ##Versandprofil##
 
 Für den Import von Versandprofilen stehen die in <<tabelle-zuordnungsfelder-versandprofile>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-versandprofile]]
 .Abgleichfelder für Versandprofile
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Versandprofil-ID
 |Nummerisch
 |
+|
 
 |Versandprofile (kommasepariert)
 |Profil-ID1,Profil-ID2,...
+|
 |Ermöglicht den Import von mehr als einem Versandprofil
 
 |Versandprofilverknüpfungen löschen (Profil-IDs, kommasepariert)
 |Alphanummerisch
+|
 |
 |====
 
@@ -507,347 +559,454 @@ Für den Import von Variantendaten stehen die in <<tabelle-zuordnungsfelder-vari
 
 [[tabelle-zuordnungsfelder-varianten]]
 .Abgleichfelder für Varianten
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
-|ID
+|##ID##
 |Nummerisch
 |
+|Entspricht der ID der Variante.
 
-|Artikel-ID
+|##Artikel-ID##
 |Nummerisch
 |
+|Entspricht der ID des Artikels.
 
 |Position
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Position>>
 
 |Aktiv
-|0 = Nein +
-1 = Ja
-|Ist Variante aktiv, d.h. wird die Variante im Webshop und ggf. auf Marktplätzen angeboten?
+|0 +
+1
+|
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Aktiv>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Variantennr.
 |Alphanummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Variantennr.>>
 
 |Modell
 |Alphanummerisch
-|Modellbezeichnung
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Modell>>
 
 |Externe Varianten-ID
 |Alphanummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Ext. Varianten-ID>>
 
 |Verfügbarkeit
 |Nummerisch (interne ID)
 |
+|Entspricht den Verfügbarkeitssymbolen 1 bis 10 unter: +
+<<artikel/artikel-verwalten#190, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Verfügbarkeit>>
 
 |EK netto
 |Nummerisch
-|Einkaufspreis
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: EK netto>>
 
 |GLD EK netto
 |Nummerisch
-|Gleitender Durchschittseinkaufspreis netto
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: GLD EK netto>>
 
-|Preiskalkulation
+|##Preiskalkulation##
 |Nummerisch (interne ID)
+|
 |
 
 |WB-Beschränkung
-|0 = Keine Beschränkung +
-1 = Auf Netto-WB +
-2 = Keinen Bestand führen
+|0 +
+1 +
+2
 |
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#190, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Beschränkung>>
 
-|Sichtbarkeit Mandant: Automatisch sichtbar, wenn Netto-WB positiv
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+* 0 = Keine
+* 1 = Auf Netto-WB
+* 2 = Keinen WB für diese Variante führen
 
-|Sichtbarkeit Mandant: Automatisch unsichtbar, wenn kein Netto-WB
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+|Sichtbarkeit Mandant: Automatisch sichtbar, wenn Netto-WB positiv; +
+Sichtbarkeit Mandant: Automatisch unsichtbar, wenn kein Netto-WB
+|0 +
+1
+|
+a|Entspricht der gleichnamigen Checkbox unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
 
-|Verfügbarkeit Webshop: Automatisch verfügbar, wenn Netto-WB positiv
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
-|Verfügbarkeit Webshop: Automatisch nicht verfügbar, wenn kein Netto-WB
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+|Verfügbarkeit Webshop: Automatisch verfügbar, wenn Netto-WB positiv; +
+Verfügbarkeit Webshop: Automatisch nicht verfügbar, wenn kein Netto-WB
+|0 +
+1
+|
+a|Entspricht der gleichnamigen Checkbox unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 //|Sichtbarkeit Artikelauflistung: Immer unsichtbar
 //|0 = Nein +
 //1 = Ja
+//|
 //|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
 
-|Sichtbarkeit Artikelauflistung: Automatisch sichtbar, wenn Netto-WB positiv
+|Sichtbarkeit Artikelauflistung: Automatisch sichtbar, wenn Netto-WB positiv; +
+Sichtbarkeit Artikelauflistung: Automatisch unsichtbar, wenn kein Netto-WB
 |0 = Nein +
 1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+|
+a|Entspricht der gleichnamigen Checkbox unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
 
-|Sichtbarkeit Artikelauflistung: Automatisch unsichtbar, wenn kein Netto-WB
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Hauptlager
 |Nummerisch (interne ID)
 |
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#190, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Hauptlager>>
+
+Die Zuordnung erfolgt anhand der Lager-ID im Menü *Einrichtung » Waren » Lager » Lager öffnen » Einstellungen*.
 
 |Max. Bestellmenge
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Max. Bestellmenge>>
 
 |Min.-Bestellmenge
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Min.-Bestellmenge>>
 
 |Intervallbestellmenge
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Intervallbestellmenge>>
 
 |Verfügbar bis
-|Datum
-|Datum des letzten Tages der Verfügbarkeit
+|Datum +
+(DD.MM.YYYY)
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Verfügbar bis>>
 
 |Erscheinungsdatum
-|Datum
-|Datum, ab dem die Variante verfügbar ist
+|Datum +
+(DD.MM.YYYY)
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Erscheinungsdatum>>
 
 |Name
 |Alphanummerisch
-|Name der Variante
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Variantenname>>
 
-|Gewicht brutto g
+|Gewicht brutto g; +
+Gewicht netto g
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Gewicht brutto bzw. Gewicht netto>>
 
-|Gewicht netto g
+Achte darauf, dass du das _Gewicht in Gramm_ anstatt in Kilogramm angibst.
+
+|Breite mm; +
+Länge mm; +
+Höhe mm
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Länge/Breite/Höhe>>
 
-|Breite mm
-|Nummerisch
-|
-
-|Länge mm
-|Nummerisch
-|
-
-|Höhe mm
-|Nummerisch
-|
+Achte darauf, dass du die _Maße in Millimetern_ angibst.
 
 |Portoaufschlag 1; +
 Portoaufschlag 2
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#290, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Portoaufschlag 1 bzw. Portoaufschlag 2>>
 
-|VPE
+|##VPE##
 |Nummerisch
+|
 |Verpackungseinheit; Standard = 1
 
 |Anzahl der Packstücke
-|Nummerisch
+|0 +
+1 +
+2 +
+... +
+20
 |
+|Entspricht der _ersten Dropdown-Liste_ unter: +
+<<artikel/artikel-verwalten#290, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Packstücke>>
+
+Verwende dieses Zuordnungsfeld zusammen mit *Einheit der Packstücke*.
 
 |Einheit der Packstücke
-|0 = unverpackt +
-1 = Ballen +
-2 = Behälter +
-3 = Bund +
-4 = Rollpalette +
-5 = Colli +
-6 = Container +
-7 = Eimer +
-8 = Fass +
-9 = Flaschen +
-10 = Euro Pool Flachpalette +
-11 = Gestell +
-12 = Gasflasche +
-13 = Gitterboxpalette +
-14 = Hobbock +
-15 = Halbe Palette +
-16 = Lebensmittelpalette +
-17 = Holzuntersetzer +
-18 = IBC Container +
-19 = Kanne +
-20 = Korbflasche +
-21 = Kiste +
-22 = Kanister +
-23 = Kundenpalette +
-24 = Karton +
-25 = Kombinationsverpackung +
-26 = Pack +
-27 = Ring +
-28 = Rolle +
-29 = Sack +
-30 = Stück +
-31 = Tank +
-32 = Trommel +
-34 = Verschlag +
-35 = Viertelpalette +
-36 = sonstige Paletten +
-37 = Kasten +
-38 = Einwegpalette +
-39 = Folientüte
+|0 +
+1 +
+2 +
+... +
+39
 |
+a|Entspricht der _zweiten Dropdown-Liste_ unter: +
+<<artikel/artikel-verwalten#290, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Packstücke>>
+
+Verwende dieses Zuordnungsfeld zusammen mit *Anzahl der Packstücke*.
+
+* 0 = unverpackt
+* 1 = Ballen
+* 2 = Behälter
+* 3 = Bund
+* 4 = Rollpalette
+* 5 = Colli
+* 6 = Container
+* 7 = Eimer
+* 8 = Fass
+* 9 = Flaschen
+* 10 = Euro Pool Flachpalette
+* 11 = Gestell
+* 12 = Gasflasche
+* 13 = Gitterboxpalette
+* 14 = Hobbock
+* 15 = Halbe Palette
+* 16 = Lebensmittelpalette
+* 17 = Holzuntersetzer
+* 18 = IBC Container
+* 19 = Kanne
+* 20 = Korbflasche
+* 21 = Kiste
+* 22 = Kanister
+* 23 = Kundenpalette
+* 24 = Karton
+* 25 = Kombinationsverpackung
+* 26 = Pack
+* 27 = Ring
+* 28 = Rolle
+* 29 = Sack
+* 30 = Stück
+* 31 = Tank
+* 32 = Trommel
+* 34 = Verschlag
+* 35 = Viertelpalette
+* 36 = sonstige Paletten
+* 37 = Kasten
+* 38 = Einwegpalette
+* 39 = Folientüte
 
 |Transportkosten netto
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Transport netto>>
 
 |Lagerkosten netto
 |Nummerisch
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Lager netto>>
 
 |Zoll
 |Nummerisch
-|Prozentwert
+(Prozentwert)
+|
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Zoll>>
 
 |Betriebskosten
 |Nummerisch
-|Prozent
-
-|Umsatzsteuer
-|Nummerisch (%)
+(Prozentwert)
 |
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Betriebskosten>>
 
-|Paketart
+|##Umsatzsteuer##
+|Nummerisch
+(Prozentwert)
+|
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Umsatzsteuer>>
+
+|##Paketart##
 |bundle = Variante ist Paket +
 bundle_item = Variante ist Paketbestandteil
 |
+|
 
-|Sichtbarkeit Artikelauflistung: Immer unsichtbar
+|##Sichtbarkeit Artikelauflistung: Immer unsichtbar##
 |0 = Nein +
 1 = Ja
+|
 |
 
 |Grundpreis anzeigen
-|0 = Nein +
-1 = Ja
+|0 +
+1
 |
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Grundpreisanzeige>>
 
-|Gewicht brutto aus Paketbestandteilen berechnen
-|0 = Nein +
-1 = Ja
-|
+* 0 = Nein
+* 1 = Ja
 
-|Gewicht netto aus Paketbestandteilen berechnen
-|0 = Nein +
-1 = Ja
+|Gewicht brutto aus Paketbestandteilen berechnen; +
+Gewicht netto aus Paketbestandteilen berechnen; +
+EK netto aus Paketbestandteilen berechnen; +
+GLD EK netto aus Paketbestandteilen berechnen
+|0 +
+1
 |
+a|Entspricht den Checkboxen unter: +
+<<artikel/artikel-verwalten#265, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Paket » Option: Automatisch aus Paketbestandteilen berechnen>>
 
-|EK netto aus Paketbestandteilen berechnen
-|0 = Nein +
-1 = Ja
-|
+* 0 = Nein
+* 1 = Ja
 
-|GLD EK netto aus Paketbestandteilen berechnen
-|0 = Nein +
-1 = Ja
-|
+*_Hinweis_*: Diese Checkboxen sind nur für <<artikel/anwendungsfaelle/multipacks-pakete-sets#, Artikelpakete>> sichtbar.
 
 |Kommissionierung
-|single_picking = Einzelkommissionierung möglich +
-no_single_picking = Keine Einzelkommissionierung möglich +
-exclude_from_picklist = Von Pickliste ausschließen
+|single_picking +
+no_single_picking +
+exclude_from_picklist
 |
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Kommissionierung>>
+
+* single_picking = Einzelkommissionierung möglich
+* no_single_picking = Keine Einzelkommissionierung möglich
+* exclude_from_picklist = Von Pickliste ausschließen
 
 |Variante löschen
-|0 = Nein +
-1 = Ja
+|0 +
+1
 |
+a|Möchtest du einige Varianten löschen und andere aktualisieren? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Variante gelöscht werden soll.
 
-|Nummer der Hauptvariante
+* 0 = Nein
+* 1 = Ja
+
+|##Nummer der Hauptvariante##
+//in wie fern unterscheidet sich das von der Variantennr. ganz oben?
 |Alphanummerisch
+|
 |
 
 //|tagVariationId
 //|Nummerisch
 //|
+//|
 |====
 
 [#2320]
-=== Barcodes
+=== ##Barcodes##
 
 Für den Import von Barcode-Daten stehen die in <<tabelle-zuordnungsfelder-barcodes>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Barcode-Typ.
 
 [[tabelle-zuordnungsfelder-barcodes]]
 .Felder für Import von Barcodes
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Code
 |Alphanummerisch
+|
 |
 
 |Barcode löschen
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2330]
-=== Variantenpreise
+=== ##Variantenpreise##
 
 Für den Import von Variantenpreisen stehen die in <<tabelle-zuordnungsfelder-preis>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Verkaufspreis.
 
 [[tabelle-zuordnungsfelder-preis]]
 .Felder für Import von Variantenpreisen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Preis
 |Nummerisch
+|
 |Verkaufspreis aus der Dropdown-Liste rechts wählen, der dem Import zugewiesen werden soll.
 
 |Preis löschen
 |0 = Nein +
 1 = Ja
+|
 |Löscht einen zugeordneten Preis.
 
 |Nettopreis (Ja/Nein)
 |0 = Nein +
 1 = Ja
+|
 |Wählen, ob der Preis als Nettopreis importiert werden soll.
 |====
 
 [#2340]
-=== Kategorien
+=== ##Kategorien##
 
 Für den Import von Kategoriedaten stehen die in <<tabelle-zuordnungsfelder-kategorien>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-kategorien]]
 .Felder für Import von Kategorien
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID der Kategorie
 |Nummerisch (interne ID)
+|
 |Alternativ Name der Kategorie übergeben.
 
 |Position
 |Nummerisch
+|
 |
 
 |Ist Neckermann.de Hauptkategorie
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Name der Kategorie
 |Alphanummerisch
+|
 a|
 * Vollständigen Kategoriepfad, semikolongetrennt (z.B. Schuhe;Unisex) +
 oder
@@ -858,126 +1017,141 @@ oder
 |Alle Kategorieverknüpfungen löschen
 |0 = Nein +
 1 = Ja
+|
 |Löst alle verknüpften Kategorien.
 
 |Kategorie-IDs (kommasepariert)
 |Alphanummerisch
+|
 |IDs der Kategorien, die mit der Variante verknüpft werden sollen.
 
 |Kategorienamen (kommasepariert)
 |Alphanummerisch
+|
 |Name der Kategorien, die mit der Variante verknüpft werden sollen.
 
 |Verknüpfungen löschen (Kategorie-IDs, kommasepariert)
 |Alphanummerisch
+|
 |IDs der Kategorien, die von der Variante gelöst werden sollen.
 
 |Verknüpfungen löschen (Kategorienamen, kommasepariert)
 |Alphanummerisch
+|
 |Namen der Kategorien, die von der Variante gelöst werden sollen.
 
 |Nicht gefundene Kategorien anlegen
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2345]
-=== Standardkategorien
+=== ##Standardkategorien##
 
 Für den Import von Standardkategoriedaten stehen die in <<tabelle-zuordnungsfelder-standardkategorien>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-standardkategorien]]
 .Felder für Import von Standardkategorien
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID der Kategorie
 |Nummerisch (interne ID)
+|
 |ID der Standardkategorie
 
 |Name der Kategorie
 |Alphanummerisch
+|
 |Name der Standardkategorie
 
 |Nicht gefundene Kategorien anlegen
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2350]
-=== Bestand
+=== ##Bestand##
 
 Für den Import von Bestandsdaten stehen die in <<tabelle-zuordnungsfelder-bestand>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-bestand]]
 .Felder für Import von Bestand
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Lager
 |Nummerisch (interne ID)
+|
 |Kann nur in Kombination mit Menge und Lagerort übergeben werden.
 
 |Menge
 |Nummerisch
+|
 |Kann nur in Kombination mit Lager und Lagerort übergeben werden.
 
 |Lagerort
 |Nummerisch (interne ID)
+|
 |Kann nur in Kombination mit Lager und Menge übergeben werden.
 |====
 
 [#2360]
-=== Mandant (Shop)
+=== ##Mandant (Shop)##
 
 Für den Import der Mandantenverfügbarkeit stehen die in <<tabelle-zuordnungsfelder-mandant>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Mandant.
 
 [[tabelle-zuordnungsfelder-mandant]]
 .Abgleichfelder für Import von Mandantenverfügbarkeiten
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Aktiv
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2370]
-=== Märkte
+=== ##Märkte##
 
 Für den Import der Marktplatzverfügbarkeiten stehen die in <<tabelle-zuordnungsfelder-maerkte>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Marktplatz.
 
 [[tabelle-zuordnungsfelder-maerkte]]
 .Felder für Import von Marktplatzverfügbarkeiten
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Aktiv
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2380]
-=== Attribute
+=== ##Attribute##
 
 Für den Import von Attributverknüpfungen stehen die in <<tabelle-zuordnungsfelder-attribute>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Format.
 
 [[tabelle-zuordnungsfelder-attribute]]
 .Felder für Import von Attributverknüpfungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Attributauswahlkombination
 |Alphanummerisch
+|
 |Kombination aus *Attributname (intern)* und *Attributwert (intern)* im Format +
 *Attributname:Wertname;* oder *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* +
 Import von mehr als zwei Attributverknüpfungen. +
@@ -985,21 +1159,25 @@ Import von mehr als zwei Attributverknüpfungen. +
 
 |Attribute ID
 |Nummerisch
+|
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Attribute Name
 |Alphanummerisch
+|
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die Namen in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Wert Name
 |Alphanummerisch
+|
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die Namen in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Wert ID
 |Nummerisch
+|
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
@@ -1007,41 +1185,48 @@ Import von mehr als zwei Attributverknüpfungen. +
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2390]
-=== Artikelbilder
+=== ##Artikelbilder##
 
 Für den Import von Artikelbildern stehen die in <<tabelle-zuordnungsfelder-bilder>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-bilder]]
 .Abgleichfelder für Import von Artikelbildern
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID des Bildes
 |Nummerisch (interne ID)
+|
 |
 
 |Position
 |Nummerisch
 |
+|
 
 |Dateiname
 |Alphanummerisch
+|
 |
 
 |Base64 Data
 |Alphanummerisch
 |
+|
 
 |URL
 |Alphanummerisch
+|
 |Link zum Artikelbild
 
 |Multi-URL (kommasepariert)
 |Alphanummerisch
+|
 |Mehrere Bild-URLs im Format +
 *image1url;positionImage1,* +
 *image2url;positionImage2* +
@@ -1050,83 +1235,98 @@ Wenn keine Position übergeben wird, entspricht die Position der Reihenfolge der
 |Bilder löschen
 |0 = Nein +
 1 = Ja
+|
 |1 löscht alle Bilder des Artikels. Bilder, die erhalten bleiben sollen, müssen als URL im Sync angegeben werden.
 
 |Mit Variante verknüpfen
 |0 = Nein +
 1 = Ja
+|
 |1 verknüpft das Bild mit der Variante. +
 0 löscht eine vorhandene Verknüpfung.
 
 |Verfügbarkeit Mandant (Shop)
 |Nummerisch (interne ID)
+|
 |ID des Mandanten, siehe *Einrichtung » Mandant » Mandant öffnen » Einstellungen* +
 *-1* aktiviert alle Mandanten
 
 |Verfügbarkeit Herkünfte
 |Nummerisch (interne ID)
+|
 |ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>> +
 Mehrere Herkünfte können kommasepariert angegeben werden. +
 *-1* aktiviert alle Herkünfte
 
 |Verfügbarkeit Listings
 |Nummerisch (interne ID)
+|
 |*-1* aktiviert alle Listings
 
 |Namen
 |Alphanummerisch
+|
 |Name des Artikelbilds im Format *Name:Sprache1,Name:Sprache2* +
 Alternativtext des Artikelbilds im Format *Name:Sprache1:Alternativtext,Name:Sprache2:Alternativtext*
 
 |Alternative Namen
 |name1:sprache1,name2:sprache2
 |
+|
 
 |Marktplatzattributverknüpfung (Attibutwert-ID)
 |Nummerisch (interne ID)
+|
 |ID des Attributwerts
 
 |Alle Verfügbarkeiten entfernen
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2400]
-=== Merkmale
+=== ##Merkmale##
 
 Für den Import von Merkmalverknüpfungen stehen die in <<tabelle-zuordnungsfelder-merkmale>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-merkmale]]
 .Felder für Import von Merkmalverknüpfungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID
 |Nummerisch (interne ID)
+|
 |IDs siehe *Einrichtung » Artikel » Merkmale*
 
 |Merkmalkombination
 |Alphanummerisch
+|
 |Kombination aus Backend-Name, Wert und Sprache im Format +
 *Name1:Wert1:Sprache1;Name2:Wert2:Sprache2* etc.
 
 |Interner Name
 |Alphanummerisch
 |
+|
 
 |Wert
 |Alphanummerisch
 |
+|
 
 |Auswahl-ID
 |Nummerisch (interne ID)
+|
 |Nur bei Merkmalen des Typs *Auswahl*. Verknüpft die Auswahlwerte eines Merkmals über die ID. +
 Auswahl-IDs siehe *Einrichtung » Artikel » Merkmale » Merkmal öffnen*.
 
 |Sprache
 |Buchstaben
+|
 |Nur bei Merkmalen des Typs *Text* +
 Codes siehe <<basics/interne-IDs#10, Sprachen>>
 
@@ -1134,61 +1334,72 @@ Codes siehe <<basics/interne-IDs#10, Sprachen>>
 |0 = Nein +
 1 = Ja
 |
+|
 |====
 
 [#2410]
-=== Eigenschaften
+=== ##Eigenschaften##
 
 Für den Import von Eigenschaftsverknüpfungen stehen die in <<tabelle-zuordnungsfelder-eigenschaften>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
 [[tabelle-zuordnungsfelder-eigenschaften]]
 .Felder für Import von Eigenschaftsverknüpfungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID
 |Nummerisch (interne ID)
+|
 |IDs siehe *Einrichtung » Einstellungen » Eigenschaften » Konfiguration*
 
 |Sprache
 |Buchstaben
+|
 |Nur bei Eigenschaften des Typs *Text* oder *Kurztext* +
 Codes siehe <<basics/interne-IDs#10, Sprachen>>
 
 |Wert
 |Alphanummerisch
 |
+|
 
 |Beschreibung
 |Alphanummerisch
+|
 |
 
 |Interner Name
 |Alphanummerisch
 |
+|
 
 |Eigenschaftenkombination
 |Alphanummerisch
+|
 |Kombination aus Name, Wert und Sprache im Format +
 *Name1:Wert1:Sprache1;Name2:Wert2:Sprache2* etc.
 
 |Auswahleigenschaftkombination (Namen)
 |propertyName:selectionName:language;propertyName:selectionName:language
 |
+|
 
 |Auswahleigenschaftkombination (IDs)
 |propertyID:selectionID:language;propertyID:selectionID:language
 |
+|
 
 |Auswahl-ID
 |Nummerisch (interne ID)
+|
 |Nur bei Eigenschaften des Typs *Auswahl*. Verknüpft die Auswahlwerte einer Eigenschaft über die ID. +
 Auswahl-IDs siehe *Einrichtung » Einstellungen » Eigenschaften » Konfiguration » Eigenschaft öffnen » Werte*.
 
 |Löschen (Ja/Nein)
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
@@ -1199,37 +1410,44 @@ Für den Import von Tag-Verknüpfungen stehen die in <<tabelle-zuordnungsfelder-
 
 [[tabelle-zuordnungsfelder-tags]]
 .Felder für Import von Tags-Verknüpfungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Tag-ID
 |Nummerisch
+|
 |
 
 |Tag-Name
 |Alphanummerisch
 |
+|
 
 |Tag-Namen +
 (kommasepariert)
 |Alphanummerisch
+|
 |Tag-Liste
 
 |Alle Tag-Verknüpfungen löschen
 |0 = Nein +
 1 = Ja
+|
 |Alle Verknüpfungen aufheben?
 
 |Tag-Verknüpfung löschen (Name, kommasepariert)
 |Alphanummerisch
 |
+|
 
 |Tag-Verknüpfung löschen (ID, kommasepariert)
 |Alphanummerisch
 |
+|
 
 |Tag-Verknüpfung löschen (ID)
+|
 |
 |wird entfernt
 |====
@@ -1241,53 +1459,62 @@ Für den Import von Vererbungen stehen die in <<tabelle-zuordnungsfelder-vererbu
 
 [[tabelle-zuordnungsfelder-vererbung]]
 .Felder für Import von Vererbungen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Kategorie
 |0 = Nein +
 1 = Ja
+|
 |
 
 |Märkte
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Mandant
 |0 = Nein +
 1 = Ja
+|
 |
 
 |Verkaufspreis
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Lieferant
 |0 = Nein +
 1 = Ja
+|
 |
 
 |Lager
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Verfügbarkeit
 |0 = Nein +
 1 = Ja
+|
 |
 
 |Eigenschaften
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Tags
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
@@ -1298,21 +1525,24 @@ Für den Import des Inhalts stehen die in <<tabelle-zuordnungsfelder-inhalt>> au
 
 [[tabelle-zuordnungsfelder-inhalt]]
 .Felder für Import des Inhalts
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Inhalt Einheit
 |Nummerisch (interne ID)
+|
 |IDs siehe <<basics/interne-IDs#40, IDs der Einheiten>> +
 Alternativ *Inhalt Maßeinheit (ISO)* übergeben
 
 |Inhalt Menge
 |Nummerisch
+|
 |Kann nur in Kombination mit *Inhalt Einheit* oder *Inhalt Maßeinheit (ISO)* übergeben werden.
 
 |Inhalt Maßeinheit (ISO)
 |Alphanummerischer ISO-Code
+|
 |Alternativ *Inhalt Einheit* übergeben
 |====
 
@@ -1323,28 +1553,33 @@ Für den Import von ASIN/ePID stehen die in <<tabelle-zuordnungsfelder-ASIN-ePID
 
 [[tabelle-zuordnungsfelder-ASIN-ePID]]
 .Felder für Import von ASIN/ePID
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Land
 |Nummerisch (interne ID)
+|
 |IDs siehe <<basics/interne-IDs#20, Länder-IDs>>
 
 |Typ
 |ASIN; ePID
 |
+|
 
 |Position
 |Nummerisch
+|
 |
 
 |Wert
 |Alphanummerisch
 |
+|
 
 |Löschen (IDs, kommasepariert)
 |Nummerisch (interne ID)
+|
 |ASIN-IDs oder ePID-IDs im Format +
 ASIN-ID1,ASIN-ID2,ASIN-ID3 etc.
 |====
@@ -1356,12 +1591,13 @@ Für den Import von Lagerdaten stehen die in <<tabelle-zuordnungsfelder-lager>> 
 
 [[tabelle-zuordnungsfelder-lager]]
 .Felder für Import von Lagerdaten
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Zone
 |Nummerisch
+|
 |
 
 |Lagerorttyp
@@ -1371,40 +1607,49 @@ medium = mittel +
 large = groß +
 europallet = Europalette
 |
+|
 
 |Meldebestand
 |Nummerisch
+|
 |
 
 |Maximalbestand
 |Nummerisch
 |
+|
 
 |Lagerreichweite (in Tagen)
 |Nummerisch
+|
 |
 
 |Lagerort
 |Nummerisch (interne ID)
 |
+|
 
 |Bestandspuffer
 |Nummerisch
+|
 |
 
 |Charge (ja/nein)
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Mindeshaltbarkeitsdatum (ja/nein)
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Lagerverknüpfung löschen
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
@@ -1415,12 +1660,13 @@ Für den Import von Lieferantendaten stehen die in <<tabelle-zuordnungsfelder-li
 
 [[tabelle-zuordnungsfelder-lieferant]]
 .Felder für Import von Lieferantendaten
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Lieferantenverknüpfungs-ID
 |Nummerisch
+|
 |ID der Verknüpfung zwischen Variante und Lieferant. +
 Diese ID wird automatisch von plentymarkets erzeugt. Die ID ist _nicht_ im plentymarkets Backend sichtbar. Sondern wird die ID lediglich im Hintergrund gespeichert. Möchtest du die ID trotzdem sehen, musst du diese Information zunächst aus deinem plentymarkets-System exportieren. Verwende dazu das Exportformat <<daten/daten-exportieren/FormatDesigner#385, VariationSupplier in FormatDesigner>>. +
 Das Zuordnungsfeld *Lieferantenverknüpfungs-ID* ist <<daten/daten-importieren/sync-typen/elasticSync-artikel#1930, je nach Anwendungsfall>> eine Pflichtangabe. Beispielsweise wird dieses Feld benötigt, um Lieferanten direkt beim Artikelimport anzulegen.
@@ -1430,62 +1676,76 @@ Das Zuordnungsfeld *Lieferantenverknüpfungs-ID* ist <<daten/daten-importieren/s
 1 = Ja
 //0 und 1 macht kein Sinn dafür
 |
+|
 
 //evtl das hier?
 //|EK
 //|Nummerisch
+//|
 //|Einkaufspreis der Variante
 
 |Mindestabnahme
 |Nummerisch
 |
+|
 
 |Lieferanten-Artikel-Nr.
 |Alphanummerisch
+|
 |Externe Artikelnummer, die der Lieferant der Variante zuweist
 
 |Letzte Preisanfrage
 |Datum
+|
 |Datum der letzten Preisverhandlungen
 
 |Lieferzeit in Tagen
 |Nummerisch
 |
+|
 
 |Rabatt
 |Nummerisch
+|
 |Prozent
 
 |Rabattfähigkeit
 |0 = Nein +
 1 = Ja
 |
+|
 
 |Verpackungseinheit
 |Nummerisch
+|
 |
 
 |EK in Bestellwährung
 |Kommazahl
 |
+|
 
 |Lieferanten-Artikel-Bezeichnung
 |Alphanummerisch
 |
+|
 
 |Lieferanten-ID
 |Nummerisch
+|
 |Kontakt-ID des Lieferanten, siehe *CRM » Kontakte* +
 *_Tipp:_* Filter *Typ* auf *Lieferant* stellen, um nur Kontakte des Typs *Lieferant* anzuzeigen.
 
 |Lieferantenname
 |Alphanummerisch
+|
 |Name des Lieferanten, siehe *CRM » Kontakte* +
 *_Tipp:_* Filter *Typ* auf *Lieferant* stellen, um nur Kontakte des Typs *Lieferant* anzuzeigen.
 
 |Lieferantenverknüpfung löschen
 |0 = Nein +
 1 = Ja
+|
 |Hebt die Verknüpfung zwischen Lieferant und Variante auf.
 |====
 
@@ -1496,16 +1756,18 @@ Für den Import von SKUs stehen die in <<tabelle-zuordnungsfelder-SKU>> Felder A
 
 [[tabelle-zuordnungsfelder-SKU]]
 .Felder für Import von SKUs
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Marktplatz-ID
 |Nummerisch
+|
 |ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>>
 
 |Account-ID
 |Nummerisch
+|
 |ID des Marktplatzkontos +
 Amazon siehe *Einrichtung » Märkte » Amazon » Einstellungen* +
 eBay siehe *Einrichtung » Märkte » eBay » Konten*
@@ -1513,14 +1775,17 @@ eBay siehe *Einrichtung » Märkte » eBay » Konten*
 |SKU
 |Alphanummerisch
 |
+|
 
 |Parent-SKU
 |Alphanummerisch
+|
 |
 
 |SKU löschen
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
@@ -1531,20 +1796,23 @@ Für den Import von zusätzlichen SKUs stehen die in <<tabelle-zuordnungsfelder-
 
 [[tabelle-zuordnungsfelder-zusaetzliche-SKU]]
 .Felder für Import von zusätzlichen SKUs
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID
 |Nummerisch
+|
 |Eine existierende SKU ID
 
 |Marktplatz-ID
 |Nummerisch
+|
 |ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>>
 
 |Account-ID
 |Nummerisch
+|
 |ID des Marktplatzkontos +
 Amazon siehe *Einrichtung » Märkte » Amazon » Einstellungen* +
 eBay siehe *Einrichtung » Märkte » eBay » Konten*
@@ -1552,9 +1820,11 @@ eBay siehe *Einrichtung » Märkte » eBay » Konten*
 |SKU
 |Alphanummerisch
 |
+|
 
 |Existierende SKU
 |##Nummerisch?##
+|
 |Der aktuelle Wert einer SKU
 //was für ein Wert?
 
@@ -1562,14 +1832,17 @@ eBay siehe *Einrichtung » Märkte » eBay » Konten*
 |0 = Nein +
 1 = Ja
 |
+|
 
 //|Parent-SKU
 //|Alphanummerisch
+//|
 //|
 
 |Zusätzliche SKU löschen
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
@@ -1580,28 +1853,32 @@ Für den Import von Artikelpaketen stehen die in <<tabelle-zuordnungsfelder-pake
 
 [[tabelle-zuordnungsfelder-paket]]
 .Felder für Import von Paketen
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Paketbestandteile
 |Alphanummerisch
+|
 |Fügt Bestandteile zu einem Paket hinzu. Varianten-ID und Menge des Paketbestandteils eingeben. Varianten-ID und Menge durch Doppelpunkt trennen. Mehrere Bestandteile durch Semikolon trennen. Beispiel: +
 Varianten-ID:Menge;Varianten-ID:Menge;etc.
 
 |Paketbestandteile (Variantennummer)
 |Alphanummerisch
+|
 |Fügt Bestandteile zu einem Paket hinzu. Variantennummer und Menge des Paketbestandteils eingeben. Variantennummer und Menge durch Doppelpunkt trennen. Mehrere Bestandteile durch Semikolon trennen. Beispiel: +
 Variantennummer:Menge;Variantennummer:Menge;etc.
 
 |Paketbestandteile löschen
 |Alphanummerisch
+|
 |Löscht Bestandteile aus einem Paket raus. Varianten-ID des zu löschenden Paketbestandteils eingeben. Mehrere Varianten-IDs durch Semikolon trennen. Beispiel: +
 Varianten-ID;Varianten-ID
 
 |Paket löschen
 |0 = Nein +
 1 = Ja
+|
 |Löscht _alle_ Bestandteile aus einem Paket raus. Die Varianten-IDs der einzelne Bestandteile müssen nicht angegeben werden, da alle Paketbestandteile gleichzeitig gelöscht werden.
 |====
 
@@ -1612,21 +1889,24 @@ Für den Import von Seriennummern stehen die in <<tabelle-zuordnungsfelder-serie
 
 [[tabelle-zuordnungsfelder-seriennummer]]
 .Felder für Import von Seriennummern
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID
 |Nummerisch
+|
 |ID der Seriennummer
 
 |Nummer
 |Nummerisch
+|
 |Seriennummer
 
 |Seriennummer löschen
 |0 = Nein +
 1 = Ja
+|
 |
 |====
 
