@@ -1,0 +1,241 @@
+= OTTO market
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: OTTO market, OTTO, marketplace
+:description: Multi-Channel in plentymarkets: Set up the interface to OTTO market in your plentymarkets system.
+:position: 20
+:url: markets/otto/otto-market
+:id: SMKVRT7
+
+This page provides information about OTTO market, OTTO's marketplace model.
+
+[#100]
+== OTTO market
+
+OTTO market is OTTO's marketplace. You are shown as the seller of your products. You also manage the customer communication yourself.
+
+[#200]
+== Setting up OTTO market in plentymarkets
+
+OTTO market is set up with two assistants in the *Setup » Assistants* menu. Go to *Setup » Assistants* and work through these assistants to set up the market in your plentymarkets system:
+
+* *OTTO market Basic settings*: Set up your OTTO market account in plentymarkets with this assistant.
+* *OTTO market Creating catalogues*: Create catalogues and catalogue templates for OTTO market with this assistant. Catalogues are used to export items to OTTO market. For further information about catalogues, refer to the <<data/exporting-data/Managing-catalogs#, Managing catalogues>> page.
+
+[#250]
+=== Further settings in plentymarkets
+
+In order to use OTTO market in plentymarkets, you have to carry out a few more settings in addition to the assistants to ensure that your items are exported properly.
+
+* Activate an item's variation in an item's *Settings* tab.
+* Variations have to be linked with the OTTO market category group variation property.
+
+Connecting to this market allows for the following automatic functions to take place:
+
+* Order import every 15 minutes
+* Stock and price update every 15 minutes
+* Item data is updated once a day
+
+[#300]
+== Setting the item availability
+
+Items have to be available for OTTO market. This is done in the *Availability* tab of an item within the *Item » Edit item » Open item » Tab: Variation ID* menu.
+
+[.instruction]
+Setting the item availability for OTTO market:
+
+. Go to *Item » Edit item » Open item » Tab: Variation ID » Tab: Settings*.
+. Activate the main variation in the *Availability* section.
+. Click on the *Availability* tab.
+. Click in the selection field in the *Markets* section.  +
+→ A list with all available markets is displayed.
+. Activate the option *OTTO market*.
+. Activate the option *Web API*.
+. Click on *Add* (icon:plus-square[role="green"]). +
+→ The market is added.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The item is available on OTTO market.
+
+The availability for variations can be edited in the *Item » Edit item » Open item » Tab: Variations » Open variation » Tab: Variation ID » Tab: Availability* menu.
+
+[#350]
+== Setting the availability for images
+
+The availability *OTTO market* has to be saved for an image in the *Item » Edit item » Open item » Tab: Images* menu so that item images are displayed on OTTO market.
+
+[.instruction]
+Setting the item availability for images:
+
+. Go to *Item » Edit item » Open item » Tab: Images*.
+. Activate the option *OTTO market* in the *Availability* drop-down list.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The item image is displayed on OTTO market.
+
+[#400]
+== Defining a sales price
+
+Proceed as described below to define a sales price for the order referrer OTTO market. This price is displayed on OTTO market.
+
+[.instruction]
+Defining a sales price for OTTO market:
+
+. Go to *Setup » Item » Sales prices » Open sales price » Tab: Settings*.
+. Place a check mark next to the referrer *OTTO market*.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#500]
+== Setting up event procedures
+
+Set up <<automation/event-procedures#, event procedures>> to automatically inform OTTO market about order status changes. The following event procedures can be set up for OTTO market:
+
+* Auftragsbestätigung an OTTO melden (Send order confirmation to OTTO)
+* Versandinformation an OTTO melden (Send shipping confirmation to OTTO)
+* Auftragsstornierung an OTTO melden (Send order cancellation to OTTO)
+* Retoure an OTTO melden (Send return to OTTO)
+* Ablehnung der Retoure an OTTO melden (Send rejection of return to OTTO)
+
+The following chapters describe event procedures for generating a DHL return label and for sending order confirmations to OTTO market. Set up further event procedures in the same way.
+
+[#550]
+=== Generating a DHL return label with an event procedure
+
+When OTTO market orders are imported into your plentymarkets system, then DHL return labels must be generated for those orders before the shipping confirmation is sent to OTTO market. The procedure *Generate DHL return label* automatically creates a tracking number for a return (retTrackingNumber) which is saved for the order. This is to ensure that a tracking number exists if customers wish to return an item. +
+
+To ensure that the tracking number is sent to OTTO market along with the order confirmation, you have to create two event procedures which are triggered one after the other: 1. *Generate DHL Retoure Online label* and 2. *Auftragsbestätigung an OTTO melden* (Send order confirmation to OTTO).
+
+*Note:* At the moment, the return label can only be generated with DHL. Further shipping service providers will be available soon.
+
+[TIP]
+.Install DHL Retoure Online plugin
+====
+In order to generate a DHL return label, the *DHL Retoure Online* plugin has to be installed, activated and set up in your plentymarkets system. The plugin is available in the link:https://marketplace.plentymarkets.com/en/plugins/integration/dhlretoureonline_6714[plentyMarketplace^].
+====
+
+How to set up the event procedure to create a DHL return label is described below.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]). +
+→ The *Create new event procedure* window opens.
+. Enter a name.
+. Select the *event* listed in <<dhl-return-label-otto>>.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The event is created.
+. Carry out further settings as described in <<dhl-return-label-otto>>.
+. Place a check mark next to the option *Active*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The event procedure is saved.
+--
+
+[[dhl-return-label-otto]]
+.Event procedure to create a DHL return label
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|*Event*
+|*New order*
+|
+
+|*Filter 1*
+|*Order &gt; Order type*
+|*Order*
+
+|*Filter 2*
+|*Order &gt; Referrer*
+|*OTTO market*
+
+|*Procedure*
+|*Plugins > Generate DHL Retoure Online label*
+|
+|====
+
+[#600]
+=== Sending an order confirmation to OTTO
+
+The event procedure for sending an order confirmation to OTTO has to be triggered after a DHL return label was generated. How to set up the event procedure for sending an order confirmation to OTTO is described below.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]). +
+→ The *Create new event procedure* window opens.
+. Enter a name.
+. Select the *event* listed in <<order-confirmation-otto>>.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The event is created.
+. Carry out further settings as described in <<order-confirmation-otto>>.
+. Place a check mark next to the option *Active*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The event procedure is saved.
+--
+
+[[order-confirmation-otto]]
+.Event procedure to send an order confirmation to OTTO
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|*Event*
+|*Status change: select a status before shipping as needed*
+|
+
+|*Filter 1*
+|*Order &gt; Order type*
+|*Order*
+
+|*Filter 2*
+|*Order &gt; Referrer*
+|*OTTO market*
+
+|*Procedure*
+|*Plugins > Auftragsbestätigung an OTTO melden* (Send order confirmation to OTTO)
+|
+|====
+
+[#700]
+=== Sending the shipping confirmation to OTTO
+
+Set up an event procedure to inform OTTO market that an item has been shipped.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]). +
+→ The *Create new event procedure* window opens.
+. Enter a name.
+. Select the *event* listed in <<shipping-confirmation-otto>>.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The event is created.
+. Carry out further settings as described in <<shipping-confirmation-otto>>.
+. Place a check mark next to the option *Active*.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The event procedure is saved.
+--
+
+[[shipping-confirmation-otto]]
+.Event procedure to send a shipping confirmation to OTTO
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+|*Event*
+|*Status change: e.g. status [7] Shipped*
+|
+
+|*Filter 1*
+|*Order &gt; Order type*
+|*Order*
+
+|*Filter 2*
+|*Order &gt; Referrer*
+|*OTTO market*
+
+|*Procedure*
+|*Plugins > Versandinformation an OTTO melden* (Send shipping confirmation to OTTO)
+|
+|====
