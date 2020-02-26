@@ -29,26 +29,6 @@ Dieses Video bietet dir eine spielerische Einführung in das Thema:
 .Artikel und Varianten mit ElasticSync anlegen
 video::337232941[vimeo]
 
-[#infos]
-== Infos
-//können diese Infos eigentlich raus, weil sie in die allgemeine ElasticSync Seite sind? Oder weiter unten beim Sync ausführen?
-
-Unter *Einrichtung » Einstellungen » ElasticSync*, oder auch direkt im Sync findest du die Schaltfläche *Cache löschen*.
-
-Mit dieser Schaltfläche kannst du den ElasticSync-Cache zurücksetzen, damit du eine Datei ohne vorherige Änderung erneut importieren kannst.
-
-Eine weitere hilfreiche Schaltfläche ist *Testlauf*.
-
-.Testlauf
-
-image::daten/daten-importieren/assets/testlauf_button.png[]
-
-Damit werden die ersten 10 Zeilen der Datei ohne Cache importiert. So kannst du prüfen, ob alle Werte korrekt zugeordnet wurden, bevor du den Sync mit allen Zeilen startest.
-
-Gültige Werte für Felder in der Zuordnung findest du in der Beschreibung im Handbuch.
-
-Unter *Daten » Log* können Fehlermeldungen zum Sync eingesehen werden.
-
 [#aufbau_des_syncs]
 == Beispieldateien herunterladen
 
@@ -67,105 +47,210 @@ Wirf einen Blick auf die CSV-Datei und mache dich mit den Spaltenüberschriften 
 
 == Produktdaten in die CSV-Datei eingeben
 
-=== Allgemein
+=== Praxisbeispiel: Ausgangssituation
 
-Die Daten, die *global* am Artikel gepflegt werden, wie z.B. *der Name, die Beschreibung etc.* sollten in jeder Zeile, die Varianten eines Artikels beinhalten, hinterlegt werden. Alternativ kannst du auch eine separate Zuordnung mit entsprechendem Filter anlegen, in der die Beschreibung nur in der Zeile der Hauptvariante hinterlegt werden muss.
+Stell dir mal vor, du verkaufst ein T-Shirt, das in small oder medium und auch in gelb oder rot erhältlich ist. Du möchtest alle vier möglichen Kombinationen importieren: medium rot, small rot, small gelb und medium gelb.
 
-Daten, die *variantenbezogen* sind, müssen in die entsprechenden Zeilen der Varianten eingetragen werden.
-
-Wichtig bei der Anlage der Varianten ist, dass der Aufbau der Attribute und Werte so in der Datei hinterlegt ist, wie es in der Zuordnung eingestellt ist.
+##image##
+image::daten/daten-importieren/assets/best-practice-variante-ausgangssituation.png[]
 
 === Variantennummern
 
-In unserem Beispiel legen wir eine Hauptvariante mit 4 Varianten an. Als Zuordnung für die Varianten nutzen wir die Hauptvariantennummer.
+In unserem Beispiel wollen wir eine Hauptvariante mit 4 Untervarianten importieren.
+Jede Untervariante hat ihre eigene, eindeutige Nummer, und jede Untervariante entspringt derselben Hauptvariante.
 
-Da der Sync die Daten zeilenweise importiert, steht die Hauptvariante ganz oben in der Datei.
+Übertrage zunächst die Variantennummern in eine CSV-Datei.
+In unserem Beispiel würden die Nummern in der CSV-Datei so aussehen:
 
-Dort hinterlegen wir manuell die Variantennummer im gleichnamigen Feld. Das Feld *Hauptvariantennummer* bleibt leer.
-
-Diese Variantennummer wird nun wiederum bei den Varianten in das Feld *Hauptvariantennummer* geschrieben, damit sie eine Zuordnung zur Hauptvariante haben und nicht als Einzelartikel angelegt werden.
-
-Die Variantennummern der Untervarianten können ebenfalls eingetragen werden. Wenn das Feld frei gelassen wird, generiert das System die Nummern automatisch.
-
-Es sieht in der Datei dann so aus.
-
+##image##
 .Eintragung der Nummern bei Hauptvariante und Varianten
+image::daten/daten-importieren/assets/best-practice-variante-nummern.png[]
 
-image::daten/daten-importieren/assets/hvnummer.png[]
+Schauen wir uns zuerste die Spalte *Variantennummer* an:
+
+* Die Hauptvariante hat eine eindeutige Nummer (haupt123). Diese Nummer wird in die erste Zeile eingegeben wird.
+* Jede Untervariante hat ihre eigene, eindeutige Nummer (var123, var456, var567, var890). Diese Nummern werden ebenfalls in diese Spalte eingetragen.
+
+Schauen wir uns jetzt die Spalte *Hauptvariantennummer* an:
+
+* Jede Untervariante entspringt derselben Hauptvariante.
+Dies wird durch die Eingabe der Hauptvariantennummer neben jeder Untervariante dargestellt.
+
+[TIP]
+.Hauptvariante vor Untervarianten
+====
+Achte darauf, dass du immer zuerst die Hauptvariantennummer und dann die einzelnen Untervarianten einträgst. Warum? plentymarkets geht die Datei Zeile für Zeile durch. Zuerst wird also ein Hauptartikel erstellt. Und dann werden einzelne Untervarianten auf der Grundlage dieses Artikels erstellt.
+
+Würdest du es andersherum machen, dann würdest du plentymarkets sagen, es soll eine Variante zu einem noch nicht existierenden Hauptartikel erstellen. plentymarkets würde nicht verstehen, was du verlangst, und die Daten würden nicht korrekt importiert werden.
+====
+
+[TIP]
+.Keine Variantennummern? Kein Problem!
+====
+Technisch gesehen benötigst du für den Import keine Untervariantennummern (var123, var456, var567, var890). Falls du noch keine eindeutigen Variantennummern hast, dann lass diese Zeilen leer, und plentymarkets generiert automatisch eindeutige Nummern während des Imports.
+====
 
 [WARNING]
-.Variantennummern müssen eindeutig sein!
+.Variantennummern müssen eindeutig sein
 ====
 Sowohl die Nummer der Hauptvariante, als auch die Nummer der Untervarianten müssen eindeutig sein. Der Import schlägt fehl, wenn Nummern mehrfach vergeben werden.
 ====
 
 === Attribute
 
-In unserem Beispiel haben wir *Attributauswahlkombination* im Format *Attribut:Wert;Attribut:Wert* gewählt.
+Attribute sind Charakteristiken wie Farbe und Größe. Werden diese miteinander kombiniert, entsteht eine verkaufbare Artikelvariante, zum Beispiel ein kleines, rotes T-Shirt.
+Bevor du deine Artikel in plentymarkets importierst, stelle sicher, dass du <<artikel/einstellungen/attribute#, alle benötigten Attribute und Attributwerte erstellt hast>>.
 
+Öffne dann die Zuordnungseinstellungen und entscheide, wie du die Attribute (wie Farbe) und die Werte (wie Rot) formatieren willst.
+In diesem Beispiel arbeite ich mit dem Zuordnungsfeld *Attributauswahlkombination* und habe das Format *Attribut:Wert;Attribut:Wert* gewählt.
+Gib schließlich die Attribute und Werte in deine CSV-Datei mit genau dieser Formatierung ein.
+
+##image gegenüberstellung zuordnungsfeld und csv datei##
 .Erstellen von Varianten via Attributauswahlkombination
-
 image::daten/daten-importieren/assets/attribute.png[]
-
-Die oberste Zeile der Hauptvariante hat dabei keine Kombination erhalten, damit sie keine Attributverknüpfung erhählt.
 
 [TIP]
 .Hauptvariante ohne Attribute
 ====
+Die oberste Zeile der Hauptvariante hat dabei keine Kombination erhalten, damit sie keine Attributverknüpfung erhählt.
+
 Wenn man mit Variantenartikeln arbeitet und der Hauptvariante keine Attribute zuweist, ist man später flexibler in der Variantenerstellung. Gibt man der Hauptvariante ebenfalls eine Attributverknüpfung, kann man Varianten ausschließlich mit den verknüpften Attributen erzeugen.
 ====
 
 === Bilder
 
-In unserem Sync importieren wir die Bilder-URLs in einer Zuordnung mittels Multi-URL.
-Dazu muss das Feld *Multi-URL* in der Zuordnung gewählt werden. Das Format der URL wird wie folgt hinterlegt: *image1url;positionImage1,image2url;positionImage2*
+Egal, ob du die Produktbilder deines Lieferanten verwendest oder ob du deine eigenen Fotos machst: dein Ziel ist es, die URL des Bildes zu erhalten. Anders gesagt, könnte dein Lieferant Bilder auf einen FTP-Server hochladen oder du könntest deine eigenen Bilder auf den Webspace von plentymarkets hochladen.
+Egal wie du die URL erhältst, trage sie in deine CSV-Datei ein.
+In diesem Beispiel arbeite ich mit dem Zuordnungsfeld *Artikel Bilder / Multi-Url (Kommasepariert)* und gebe daher die Bild-URLs wie folgt in die CSV-Datei ein: *image1url;positionImage1,image2url;positionImage2*
 
-=== Kategorieverknüpfungen
+##image gegenüberstellung zuordnungsfeld und csv datei##
+image::daten/daten-importieren/assets/best-practice-variante-bilder.png[]
 
-Mehrere Kategorien können in einer Zuordnung kommasepariert verknüpft werden. Es können Kategorienamen oder Kategorie-ID's genutzt werden. Bei den Kategorienamen muss darauf geachtet werden, dass der gesamte Kategoriepfad angegeben wird. Die Ebenen werden dabei mit einem Semikolon getrennt.
+Beachte Folgendes zu den Bild-URLs:
 
-.Die Schreibweisen von Trennzeichen und Pfad sind wichtig für den Import.
+* Füge ein Semikolon (;) und eine Zahl nach der URL ein, um zu bestimmen, wann dein Kunde dieses Bild sehen soll. Also, ob das Bild als erstes, zweites, drittes usw. dargestellt werden soll.
+* Wenn du mehrere Produktbilder verwenden möchtest, trenne sie mit Kommas voneinander.
+* Du kannst Bilder hochladen, die die Hauptvariante, d.h. den Artikel als Ganzes, zeigen. Du kannst aber auch Bilder hochladen, die jede einzelne Variante zeigen.
 
-image::daten/daten-importieren/assets/kategorieverknuepfungen_neu.png[]
+=== Kategorien
 
+Kategorien helfen dir Produkte übersichtlich zu gruppieren. Sie bestimmen, wie deine Artikel im Webshop strukturiert sind.
+Bevor du deine Artikel in plentymarkets importierst, stelle sicher, dass du <<artikel/einstellungen/kategorien#, alle benötigten Kategorien erstellt hast>>.
 
-[WARNING]
-.Mapping und Datei
+Jede Kategorie hat eine eigene ID. In deiner CSV-Datei gibst du die ID der Kategorie ein, in der der Artikel erscheinen soll. Wenn der Artikel unter mehreren Kategorien erscheinen soll, dann trenne die Kategorie-IDs durch Kommas.
+Damit der Import funktioniert, muss jeder Artikel auch eine _Standardkategorie_ haben. Da Artikel in mehreren Kategorien erscheinen können, gibt die Standardkategorie im Grunde nur an, welche Kategorie am passendsten ist.
+//Wenn Kunden sich später diesen Artikel in deinem Webshop anschauen, geben die Breadcrumbs oben die Standardkategorie an. Da sich diese Einstellung auf deinen Webshop bezieht und manche Händler plentymarkets verwenden, um mehr als einen Webshop zu verwalten, musst du plentymarkets mitteilen, auf welchen Webshop du dich beziehst.
+
+##image gegenüberstellung zuordnungsfeld und csv datei##
+.Kategorie-IDs und die Standardkategorie-ID
+image::daten/daten-importieren/assets/best-practice-variante-kategorien.png[]
+
+[TIP]
+.Kategorie-ID oder Kategoriename?
 ====
-Achte darauf, dass die Werte in der Datei auch mit der Zuordnung übereinstimmen. Dabei geht es darum, dass du z.B. bei dem Feld Standardkategorie die ID oder den Namen im Mapping wählen kannst. In der CSV muss dann auch entsprechend die ID oder der Name stehen. Es geht nicht, dass im Mapping die ID, aber in der Datei der Name genutzt wird.
+Vielleicht arbeitest du lieber mit dem _Namen_ der Kategorie als mit ihrer ID. Kein Problem! Kategorienamen können genau so gut verwendet werden. Bei den Kategorienamen muss aber darauf geachtet werden, dass der gesamte Kategoriepfad angegeben wird. Die Ebenen werden dabei mit einem Semikolon getrennt.
+
+Achte auch darauf, dass die Werte in der CSV-Datei mit der Zuordnung übereinstimmen.
+Wenn du z.B. das Feld *Standardkategorien / ID der Kategorie* in den Zuordnungseinstellungen wählst, dann trage unbedingt die ID in deine CSV-Datei ein.
+Oder umgekehrt, wenn du das Feld *Standardkategorien / Name der Kategorie* in den Zuordnungseinstellungen wählst, dann trage unbedingt den Namen in deine CSV-Datei ein.
+====
+
+=== Verkaufspreise
+
+Verkaufspreise sind die Bedingungen, unter denen eine Variante zu einem bestimmten Preis verkauft wird.
+Bevor du deine Artikel in plentymarkets importierst, stelle sicher, dass du <<artikel/einstellungen/preise#, alle benötigten Verkaufspreise erstellt hast>>.
+
+Gib in den Zuordnungseinstellungen an, welchen Verkaufspreis du für den Import verwenden wirst. Und trage die entsprechenden Preise in deine CSV-Datei ein.
+
+##image gegenüberstellung zuordnungsfeld und csv datei##
+
+== Beispiel-Sync importieren
+
+Falls noch nicht bereits getan, ade den Beispiel-Sync herunter, entpacke die ZIP-Datei und <<daten/daten-importieren/ElasticSync#1640, Importiere die JSON-Datei in dein plentymarkets System>>.
+
+[TIP]
+.Prüfe die Voreinstellungen!
+====
+Im Beispiel-Sync wurden viele Einstellungen vorausgewählt. Prüfe diese Einstellungen und stelle sicher, dass sie deinen Anforderungen entsprechen.
 ====
 
 [#abgleich]
-== Abgleich
+== Abgleich-Einstellungen prüfen
 
-Für den Abgleich ist wichtig, dass ein variantenspezifisches Abgleichfeld genutzt wird. Dafür eignet sich z.B. die Variantennummer oder auch die Varianten-ID.
+Während des Imports prüft plentymarkets, ob die Variante bereits existiert. Dies geschieht mit Hilfe eines sogenannten Abgleichfeldes.
+Für den Abgleich ist wichtig, dass ein _variantenspezifisches Abgleichfeld_ genutzt wird. Dafür eignet sich z.B. die Variantennummer oder auch die Varianten-ID.
 
-Als Aktion muss „Neue Daten importieren, vorhandene aktualisieren“ eingestellt werden.
+Im Beispiel-Sync wurden die folgenden Einstellungen für den Abgleich vorausgewählt:
 
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Abgleichfeld: Variantennr.*
+|Die Spaltenüberschrift *Variantennummer* aus der CSV-Datei wurde hier vorausgewählt.
+
+|*Import Optionen*
+|Die Option *Neue Daten importieren, vorhandene aktualisieren* wurde hier vorausgewählt.
+|====
 
 [#Zuordnungen]
-== Zuordnung
+== Zuordnung-Einstellungen prüfen
 
-In der Zuordnung verknüpfen wir die Felder aus der CSV-Datei mit den Feldern aus plentymarkets.
+Deine CSV-Datei ist bereits mit einer Menge Artikelinformationen gefüllt. Entscheide als nächstes, _wo in plentymarkets_ jede Information beim Import der Datei erscheinen soll. <<daten/daten-importieren/sync-typen/elasticSync-artikel#1920, Siehe diese Seite>>, während du die Spalten deiner CSV-Datei zu den Feldern in plentymarkets zuordnest.
+Im Beispiel-Sync wurden viele Zuordnungseinstellungen vorausgewählt. Prüfe diese Einstellungen und stelle sicher, dass sie deinen Anforderungen entsprechen.
 
-.Eine Zuordnung muss angelegt werden
+.Prüfe die Zuordnungseinstellungen
+##image::daten/daten-importieren/assets/zuordnung_neu.png[]##
 
-image::daten/daten-importieren/assets/zuordnung_neu.png[]
+Es empfiehlt sich, nur die Felder in die Zuordnung aufzunehmen, die tatsächlich übergeben werden sollen. Überflüssige Felder sollten deaktiviert werden (icon:toggle-off[role="green"]), da sie sonst Fehler verursachen können.
 
-Es empfiehlt sich, nur die Felder in die Zuordnung aufzunehmen, die tatsächlich übergeben werden sollen. Überflüssige Felder sollten deaktiviert werden, da das zu Fehlern führen kann.
+[discrete]
+==== Pflichtfelder
 
-Für die Artikelanlage mit Varianten gibt es Pflichtfelder, die als Minimum in der Zuordnung enthalten sein müssen, damit der Sync funktioniert. Dabei handelt es sich um folgende Felder:
+Für die Artikelanlage mit Varianten gibt es _Pflichtfelder_, die als Minimum in der Zuordnung enthalten sein müssen, damit der Sync funktioniert. Dabei handelt es sich um folgende Felder:
 
-* Standardkategorie
+[cols="1,1"]
+|====
+|Was möchtest du importieren? |Pflichtfelder
+
+|Artikel- und Variantendaten
+a|* Standardkategorie
 * Hauptvariantennummer
 * Variantennummer
-* Will man Bestand importieren, müssen folgende Werte in der Zuordnung enthalten sein:
-Lager, Menge, Lagerort
 
-Der Sync ist jetzt einsatzbereit und kann gestartet werden.
+|Artikel- und Variantendaten + Bestand
+a|* Standardkategorie
+* Hauptvariantennummer
+* Variantennummer
+* Lager
+* Menge
+* Lagerort
+|====
+
+== Hat es funktioniert?
+
+Bereit, deine Artikel zu importieren? Führe den Sync aus und kontrolliere, dass die Daten korrekt in plentymarkets importiert wurden.
+
+[.instruction]
+Sync ausführen und Ergebnis prüfen:
+
+. Aktiviere die zu importierenden Zeilen (icon:toggle-on[role="green"]).
+. Teste den Sync (icon:plugin_stage_deploy[set=plenty]) oder führe den Sync aus (icon:play-circle-o[role="darkGrey"]). +
+*_Hinweis:_* Dies kann einige Minuten dauern.
+. Öffne das Menü *Artikel » Artikel bearbeiten*.
+. Öffne einige Artikeldatensätze und prüfe ihre Einstellungen.
 
 [TIP]
-.Testlauf
+.Testlauf nutzen
 ====
-Wir empfehlen, beim erstmaligen Sync vorab den Testlauf zu nutzen. So kann man prüfen, ob der Sync ordnungsgemäß läuft. Sollten sich Fehler eingeschlichen haben, kann man diese vor der kompletten Ausführung noch korrigieren.
+Wir empfehlen, beim erstmaligen Sync vorab den Testlauf (icon:plugin_stage_deploy[set=plenty]) zu nutzen.
+Damit werden die ersten 10 Zeilen der Datei ohne Cache importiert.
+So kann man prüfen, ob der Sync ordnungsgemäß läuft. Sollten sich Fehler eingeschlichen haben, kann man diese vor der kompletten Ausführung noch korrigieren.
+====
+
+[TIP]
+.Cache zurücksetzen
+====
+Direkt im Sync findest du die Schaltfläche *Cache löschen* (icon:reload[set=plenty]).
+Mit dieser Schaltfläche kannst du den ElasticSync-Cache zurücksetzen, damit du eine Datei ohne vorherige Änderung erneut importieren kannst.
 ====
