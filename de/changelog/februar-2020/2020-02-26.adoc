@@ -6,19 +6,117 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 27. Februar 2020
-:endWeekDate: 04. März 2020
-:nav-alias: Changelog 04. März 2020
+:startWeekDate: 20. Februar 2020
+:endWeekDate: 26. Februar 2020
+:nav-alias: Changelog 26. Februar 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
 Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<basics/admin-aufgaben/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
 
-[.tabs]
-====
-stable::
---
+== stable
+
 In diesem Bereich findest du alles, was in der letzten Woche auf *stable* veröffentlicht wurde.
+
+=== Neu
+
+[discrete]
+==== Amazon VCS
+
+* Ab sofort werden bei der Nutzung von VCS (Rechnungserstellung durch Amazon) noch mehr Daten an Aufträgen anhand der zugeordneten Berichtsdaten korrigiert.
+** Bisher wurde bereits Folgendes korrigiert:
+. die Umsatzsteuer-ID der Rechnungsadresse
+. die Rechnungsnummer von Amazon
+** Ab jetzt wird auch Folgendes korrigiert:
+. die Steuersätze an den Auftragsartikeln
+. die Netto- und Brutto-Werte an den Auftragsartikeln und am Gesamtauftrag
+** Bitte beachtet, dass es nicht möglich ist, dies für Auftragsartikel zu korrigieren, wenn folgende Kriterien alle erfüllt sind:
+. Es ist ein regulärer Artikel (keine Amazon Promotion, Geschenkservice etc.)
+. Es ist beim Import keine Zuordnung zu einer Varianten- bzw. Artikel-ID erfolgt.
+. Die SKU steht nicht in eckigen Klammern am Anfang des Artikelnamens der Auftragsposition.
+
+[discrete]
+==== Neckermann.at
+
+* Die Provisionsmodelle *281A* und *282A* wurden in den folgenden Menüpunkten ergänzt:
+** *Einrichtung » Märkte » Neckermann Österreich Enterprise » Tab: Einstellungen » Grundeinstellungen aufklappen » Bereich: Artikeleinstellungen » Option: Standard-Provisionsmodell*
+** *Artikel » Artikel bearbeiten » Artikel öffnen » Tab: Multi-Channel » Bereich: Neckermann.at Enterprise » Option: Provisionsmodell*
+
+=== Geändert
+
+[discrete]
+==== Automatisierte Prozesse
+
+* Unsere automatisierten Prozesse (Crons) mussten bisher nachts eine Zwangspause einlegen, da in dieser Zeit Backups und andere hardwareintensive Prozesse laufen. Da wir diese Prozesse und Backups inzwischen so weit optimieren konnten, dass sich die Auswirkung auf den Livebetrieb sehr stark in Grenzen hält, haben wir uns entschlossen, diese Zwangspause aufzuheben.
+
+[discrete]
+==== OTTO
+
+:otto-master-date: 21.02.2020
+:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/0/9/094e51d67f9e00d413a4839f621f05d6d4abdb68.xlsx
+
+include::./changelog/_textblocks/otto-master-file.adoc[]
++
+Die Editorial Nodes und die daraus resultierenden Merkmal- und Attributverknüpfungen wurden auf Basis dieser Datei aktualisiert.
+
+=== Behoben
+
+[discrete]
+==== Aufträge
+
+* Unter bestimmten Umständen wurde die primäre Lieferadresse in der UI nicht zur Auswahl angeboten. Dies wurde behoben.
+
+[discrete]
+==== Bestellungen
+
+* Durch das Hinzufügen von Tags zu einer bestimmten Nachbestellung oder Umbuchung wurde beim Öffnen einer weiteren Nachbestellung/Umbuchung der zuvor ausgewählte Tag bereits ausgewählt, obwohl dieser Tag nur der vorherigen Nachbestellung/Umbuchung hinzugefügt wurde.
++
+Dieses Verhalten wurde behoben, so dass zukünftig beim Öffnen einer anderen Nachbestellung/Umbuchung kein Tag als vorausgewählt im Dropdown angezeigt wird.
+* Im Bereich Purchase Order (Nachbestellungen und Umbuchungen) konnte die Filterung von Varianten nach der Variantennummer des Lieferanten führte zu keinem Suchergebnis. Dieses Verhalten trat aufgrund eines Problemes in Zusammenhang mit besagtem Filter auf.
++
+Dieses Problem wurde soweit behoben, so dass der Filter Lieferantennummer wieder verwendet werden kann.
+
+[discrete]
+==== ElasticSync
+
+* Wenn man doppelte Datenfelder im Bereich Zuordnungen raus gelöscht hat, kam es vor dass diese nach dem speichern wieder erschienen sind. Dieses Fehlverhalten haben wir behoben.
+
+[discrete]
+==== OTTO market
+* Im Assistenten für die Grundeinstellung ist es nun auch nach der initialen Anlage möglich, das Konto zu aktivieren oder deaktivieren.
+
+[discrete]
+==== PO-Lieferschein
+
+* Bei der Generierung eines PO-Lieferscheines in einer Umbuchung wurde unter Umständen der falsche Standort für die Steuersätze gesucht, was zu einem Fehler führte. Dies wurde behoben.
+
+[discrete]
+==== Rakuten.de
+
+* Die Ereignisaktion *Retoure an Rakuten senden* funktioniert wieder, wenn sie in Kombination mit einem Auftrag vom Typ *Auftrag* ausgelöst wird.
+
+[discrete]
+==== Royal Mail
+
+* Die fest integrierte Schnittstelle zu Royal Mail und die fest integrierte Schnittstelle zu Royal Mail über NetDespatch wurden aus dem plentymarkets Backend entfernt. Die Funktionalität, Pakete über Royal Mail zu versenden, wurde vom Anbieter NetDespatch schon vor längerer Zeit eingestellt.
++
+Zukünftig wird ein Plugin zur Verfügung stehen, an dem wir aktuell arbeiten.
+
+[discrete]
+==== Spezialexport Collmex
+
+* Wenn Rechnungen einen Präfix in der Rechnungsnummer haben, wurden stornierte Rechnungen nicht im Export ausgegeben, denn es kam zu einem Fehler im Abgleich der Rechnungsnummer (einmal mit und einmal ohne den Präfix).
+
+[discrete]
+==== Webshop
+
+* Wenn sich Kunden im Webshop anmelden, wird ab sofort die *primäre Rechnungsadresse* vorausgewählt. Falls keine Rechnungsadresse als primär definiert ist, wird wie bisher die zuerst angelegte Adresse vorausgewählt.
++
+Weitere Informationen zu primären Adressen findet ihr auf der Seite <<crm/kontakte-verwalten#, Kontakte verwalten>>.
+
+== early
+
+In diesem Bereich findest du alles, was in der letzten Woche auf *early* veröffentlicht wurde.
 
 === Neu
 
@@ -86,7 +184,7 @@ image::changelog/assets/shopbuilder-unterkategorie-icon.png[width=640, height=36
 image::changelog/assets/elasticsync-import.png[width=640, height=360, alt=Der Menüeintrag Import.]
 * Wenn man eine Datei mit einen sehr langen Dateinamen hochgeladen hat, hat sich die SyncÜbersicht unnötig aufgebläht. Dieses Fehlverhalten haben wir behoben. Der Dateiname wird ab sofort gekürzt:
 +
-image::changelog/assets/elasticync-kurze-dateinamen.png[width=640, height=360, alt=Ein gekürzter Dateiname.]
+image::changelog/assets/elasticsync-kurze-dateinamen.png[width=640, height=360, alt=Ein gekürzter Dateiname.]
 
 === Behoben
 
@@ -110,13 +208,6 @@ image::changelog/assets/elasticync-kurze-dateinamen.png[width=640, height=360, a
 *Es gab in den Prozessen das Problem, dass man zum einen bei Nachbestellungen nur die ersten 200 Positionen laden konnte und sich zum anderen maximal nur 150 Positionen einbuchen liesen.
 +
 Diese Limitierungen wurden nun behoben und es lassen sich nun auch große Nachbestellungen einbuchen. Dennoch gilt: je größer die Nachbestellung, desto länger das initiale Laden sowie das Einbuchen der Positionen.
---
-
-early::
---
-In diesem Bereich findest du alles, was in der letzten Woche auf *early* veröffentlicht wurde.
---
-====
 
 == Plugin-Updates
 
