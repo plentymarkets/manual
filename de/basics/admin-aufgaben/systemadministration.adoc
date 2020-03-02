@@ -6,7 +6,8 @@ include::{includedir}/_header.adoc[]
 :id: AIXO9P7
 :author: none
 
-Willst du neue Domains oder Subdomains einrichten? Musst du ein neues SSL-Zertifikat bestellen? Soll der Cache vorübergehend deaktiviert werden? Alle diese Themen werden auf dieser Handbuchseite beschrieben.
+Willst du neue Domains oder Subdomains einrichten? Musst du ein neues SSL-Zertifikat bestellen? Soll der Cache vorübergehend deaktiviert werden?
+Solche Aufgaben werden normalerweise von einem _Systemadministrator_ durchgeführt. Diese Handbuchseite dient als Referenz für Systemadministratoren und hilft ihnen, ihre Administratoraufgaben in plentymarkets zu erledigen.
 
 [#domain]
 [#50]
@@ -162,6 +163,7 @@ plentymarkets System verknüpfen:
 . Gib die Kontaktdaten des Domain-Inhabers ein.
 . Bereit, fortzufahren? Klicke auf *Weiter* icon:angle-right[role="blue"]
 
+[#190]
 [#200]
 [#210]
 [#220]
@@ -170,6 +172,7 @@ plentymarkets System verknüpfen:
 [#250]
 [#260]
 [#265]
+[#domain-nameserver]
 [#domain-auth-code]
 [#domain-mailserver]
 === Erweiterte Einstellungen auswählen
@@ -250,8 +253,8 @@ CNAME bezeichnet eine Subdomain, die namensbasiert auf eine Domain oder eine Sub
 Dies geschieht durch Eingabe einer Quelle und eines Ziels.
 In dem Beispiel im Bild unten ist die Quelle _mobile.ihrshop.de_ die mobile Variante der Domain _ihrshop.de_. Als Ziel verwendest du die Shopgate-Subdomain _cname.shopgate.com_. Durch diesen CNAME-Eintrag wird gewährleistet, dass die Auflösung des Shops seitens Shopgate korrekt durchgeführt wird.
 
-##.CNAME speichern##
-image::basics/arbeiten-mit-plentymarkets/assets/DE-ServiceCenter-Domain-AuthCode.png[CNAME speichern]
+.Konfiguration von CNAME Records
+image::basics/admin-aufgaben/assets/CNAME-Konfiguration.png[]
 
 --
 
@@ -352,24 +355,30 @@ a|Die Angabe einer Option ist nicht in jedem Fall erforderlich.
 --
 
 [#140]
-=== DNS-Einstellungen verwalten
+[#150]
+[#160]
+=== Aktuelle DNS Einstellungen
 
-//Im Konfigurationsschritt *Aktuelle DNS Einstellungen* werden die DNS-Einstellungen deiner Domain angezeigt.
+Hier werden die DNS-Einstellungen deiner Domain angezeigt.
 DNS steht für Domain Name System. DNS sorgt dafür, dass zum Aufrufen deines Webshops nicht die numerische IP-Adresse deines Webshops eingeben werden muss, sondern auch der Domain-Name der richtigen IP-Adresse zugeordnet wird.
 
-[#150]
-==== DNS-Einstellungen bei externem Domain-Provider speichern
+[TIP]
+.Praxisbeispiel: DNS-Einstellungen prüfen und anpassen
+====
+Weitere Informationen zu DNS-Einstellungen findest du in <<basics/admin-aufgaben/best-practices/dns-selbsthilfe#, diesem praktischen Beispiel>>. Die Seite führt dich Schritt für Schritt durch den Prozess, deine aktuell gespeicherten DNS-Einträge zu finden und sie bei Bedarf zu ändern.
+====
 
-Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen deines plentymarkets Systems bei diesem externen Domain-Provider speichern. Gehe wie unten beschrieben vor, um die DNS-Einstellungen abzurufen und beim externen Provider zu speichern.
+[.collapseBox]
+.*DNS-Einstellungen bei externem Domain-Provider speichern*
+--
 
+Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen deines plentymarkets Systems bei diesem externen Domain-Provider speichern.
+
+Hier kannst du die DNS-Einstellungen abrufen und sie dann beim externen Provider speichern.
 [.instruction]
 DNS-Einstellungen abrufen:
 
-. ##Öffne das Menü *Einrichtung » Assistenten » Grundeinrichtung*.##
-. ##Klicke auf den Domains-Assistenten.##
-. ##Klicke auf _eine der zuvor abgeschlossenen Domains_, um den Assistenten erneut zu öffnen.##
-. ##Klicke im Navigationsbaum links auf den Schritt *Aktuelle DNS-Einstellungen*.## +
-→  Die DNS-Einstellungen werden angezeigt. Diese Einstellungen werden in  <<table-account-dns-settings>> erläutert.
+. Wirf einen Blick auf die DNS-Einstellungen. Diese Einstellungen werden in  <<table-account-dns-settings>> erläutert.
 . Logge dich in den Service-Bereich deines Domain-Providers ein.
 . Kopiere die im plentymarkets angezeigten DNS-Einstellungen in die vorgesehenen Felder des Domain-Providers. +
 →  Informationen zur Vorgehensweise findest du in der Dokumentation des Domain-Providers.
@@ -382,22 +391,25 @@ DNS-Einstellungen abrufen:
 |====
 |Eintrag |Erläuterung
 
-|*DNS Source*
+|*Quelle*
 |DNS-Quelle
 
-|*DNS Record Type*
+|*Typ*
 |Typ des DNS-Eintrags +
 *A* =  Zuweisung einer IPv4-Adresse +
 *CNAME* = Zuweisung eines anderen Hosts
 
-|*DNS Target*
+|*Ziel*
 |Das Ziel, auf das der Eintrag verweist. +
 IP-Adresse = Die IP-Adresse, unter der das plentymarkets System erreichbar ist. +
 CNAME = Die Adresse des AWS-Loadbalancer-Endpunkts, der Elastic Load Balancing, also AutoScaling, bereitstellt.
 |====
 
-[#160]
-==== Externe Domain: DNS-Einstellungen für AutoScaling aktualisieren
+--
+
+[.collapseBox]
+.*Externe Domain: DNS-Einstellungen für AutoScaling aktualisieren*
+--
 
 Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen des plentymarkets Systems beim Domain-Provider anpassen, um von AutoScaling zu profitieren. Gehe wie unten beschrieben vor, um die DNS-Einstellungen der externen Domain anzupassen.
 
@@ -406,7 +418,7 @@ DNS-Einstellungen anpassen:
 
 . Öffne das Menü *Einrichtung » Assistenten » Grundeinrichtung*.
 . Klicke auf den Domains-Assistenten.
-. Klicke auf _eine der zuvor abgeschlossenen Domains_, um den Assistenten erneut zu öffnen.
+. Klicke auf eine Domain, um den Assistenten zu öffnen.
 . Klicke im Navigationsbaum links auf den Schritt *Aktuelle DNS-Einstellungen*. +
 →  Die DNS-Einstellungen werden angezeigt. Diese Einstellungen werden in <<table-account-dns-settings-2>> erläutert.
 . Prüfe, ob ein CNAME-Eintrag mit dem Alias xxxx.eu-central-1.elb.amazonaws.com vorhanden ist. +
@@ -423,22 +435,26 @@ DNS-Einstellungen anpassen:
 |====
 |Eintrag |Erläuterung
 
-|*DNS Source*
+|*Quelle*
 |DNS-Quelle
 
-|*DNS Record Type*
+|*Typ*
 |Typ des DNS-Eintrags +
 *A* =  Zuweisung einer IPv4-Adresse +
 *CNAME* = Zuweisung eines anderen Hosts
 
-|*DNS Target*
+|*Ziel*
 |Das Ziel, auf das der Eintrag verweist. +
 IP-Adresse = Die IP-Adresse, unter der das plentymarkets System erreichbar ist. +
 CNAME = Die Adresse des AWS-Loadbalancer-Endpunkts, der Elastic Load Balancing, also AutoScaling, bereitstellt.
 |====
 
+--
+
+////
 [#170]
-==== ##DNS-Check durchführen##
+[discrete]
+==== DNS-Check durchführen
 
 [.instruction]
 DNS-Check durchführen:
@@ -453,25 +469,7 @@ DNS-Check durchführen:
 . Klicke auf *DNS-Check*. +
 → Die Informationen werden in einem neuen Fenster angezeigt. +
 *_Tipp:_* MX steht für Mail Exchange Resource Record. Hierbei handelt es sich um die Parameter der <<basics/admin-aufgaben/plentymarkets-konto#domain-mailserver, Mailserver>>, die für den Empfang und den Versand von E-Mails zur Verfügung stehen.
-
-[#190]
-[#domain-nameserver]
-==== ##Nameserver-Daten anzeigen##
-
-Gehe wie unten beschrieben vor, um den Domain Name Server (DNS) anzuzeigen.
-
-[.instruction]
-DNS-Check durchführen:
-
-. Öffne das Menü *plentymarkets Logo (Start) » Service-Center*. +
-*_Tipp:_* Zeige dazu mit der Maus auf das plentymarkets Logo oben links. +
-→ Das Service-Center wird in einem neuen Browser-Tab geöffnet.
-. Klicke auf das blaue *Plus* des Systems. +
-→ Die verfügbaren Tabs werden eingeblendet.
-. Wechsele in das Tab *Domain*.
-. Klicke auf das blaue Plus der Domain. +
-→ Im Bereich *Nameserver* wird der aktuell verwendete Domain Name Server (DNS) angezeigt.
-
+////
 
 [#110]
 [#130]
@@ -673,59 +671,6 @@ Kostenloses SSL-Zertifikat aktivieren:
 → Das SSL-Zertifikat wird aktiviert. +
 *_Hinweis:_* Es kann bis zu 24 Stunden dauern, bis die Aktivierung abgeschlossen ist. +
 → Die Bereitstellungsgebühr wird von plentymarkets monatlich in Rechnung gestellt.
-
-[#370]
-== Mandanten (Shops)
-
-<<webshop#, Mandant (Shop)>> sind weitere Webshops, die über den zugeordneten Hauptshop in deinem plentymarkets System konfigurierbar sind. Im Menü *plentymarkets Logo (Start) » Service-Center » Tab: Mandant (Shop)* werden die vorhandenen Mandanten (Shops) angezeigt.
-
-[#380]
-=== Mandant (Shop) bestellen
-
-Gehe wie unten beschrieben vor, um einen Mandanten (Shop) zu bestellen.
-
-[IMPORTANT]
-.Domain angelegt?
-====
-Um einen Mandanten (Shop) zu bestellen, benötigst du eine <<basics/admin-aufgaben/plentymarkets-konto#domain, Domain>>. Diese Domain musst du vorher im Tab *Domain* für das Hauptsystem erstellen.
-====
-
-[.instruction]
-Mandanten (Shop) bestellen:
-
-. Öffne das Menü *plentymarkets Logo (Start) » Service-Center*. +
-*_Tipp:_* Zeige dazu mit der Maus auf das plentymarkets Logo oben links. +
-→ Das Service-Center wird in einem neuen Browser-Tab geöffnet.
-. Klicke auf das blaue *Plus* des Systems. +
-→ Die verfügbaren Tabs werden eingeblendet.
-. Wechsele in das Tab *Vertrag*.
-. Klicken auf *Tarifkonfigurator öffnen*. +
-→ Der Tarifkonfigurator wird geöffnet.
-. Bestelle den Mandanten.
-
-[#390]
-=== Mandant (Shop) kündigen
-
-Du kannst einen Mandanten (Shop) kündigen, indem du im Menü *plentymarkets Logo (Start) » Service-Center » Tab: Mandant (Shop)* auf *Mandant (Shop) kündigen* klickst. Bestätige im angezeigten Fenster deine Kündigung. Vertragsbeginn und -ende werden angezeigt.
-
-[.instruction]
-Mandanten (Shop) bestellen:
-
-. Öffne das Menü *plentymarkets Logo (Start) » Service-Center*. +
-*_Tipp:_* Zeige dazu mit der Maus auf das plentymarkets Logo oben links. +
-→ Das Service-Center wird in einem neuen Browser-Tab geöffnet.
-. Klicke auf das blaue *Plus* des Systems. +
-→ Die verfügbaren Tabs werden eingeblendet.
-. Wechsele in das Tab *Mandant (Shop)*.
-. Klicken auf *Mandant (Shop) kündigen*. +
-→ Ein Bestätigungsfenster wird geöffnet.
-. Bestätige die Kündigung. +
-→ Beginn und Ende des Vertrags werden angezeigt.
-
-[#400]
-=== Domain-Einstellungen von Mandanten (Shops) bearbeiten
-
-Im Tab *Mandant (Shop)* werden außerdem Informationen zu den Domains angezeigt, die deinen Mandanten zugeordnet sind. Nimm die Änderungen an diesen Einstellungen wie unter <<basics/admin-aufgaben/plentymarkets-konto#domain, Domain>> vor.
 
 [#410]
 [#cache]
