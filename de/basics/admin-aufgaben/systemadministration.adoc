@@ -6,10 +6,11 @@ include::{includedir}/_header.adoc[]
 :id: AIXO9P7
 :author: none
 
+[#domain]
+
 Willst du neue Domains oder Subdomains einrichten? Musst du ein neues SSL-Zertifikat bestellen? Soll der Cache vorübergehend deaktiviert werden?
 Solche Aufgaben werden normalerweise von einem _Systemadministrator_ durchgeführt. Diese Handbuchseite dient als Referenz für Systemadministratoren und hilft ihnen, ihre Administratoraufgaben in plentymarkets zu erledigen.
 
-[#domain]
 [#50]
 == Domains
 
@@ -57,13 +58,10 @@ dein_webshop
 [#100]
 === Domain-Typ festlegen
 
-[.instruction]
 . Öffne das Menü *Einrichtung » Assistenten » Grundeinrichtung*.
 . Klicke auf den Domains-Assistenten.
 . Klicke auf *Neue Konfiguration* (icon:plus[role="green"]).
-. Wähle den gewünschten Domain-Typ aus.
-Je nachdem, welchen Domain-Typ du wählst, ändern sich die nachfolgenden Schritte und Einstellungen des Assistenten.
-Klappe die Info-Box unten auf (icon:chevron-down[role="darkGrey"]), wenn du zusätzliche Informationen zu einer der Optionen benötigst.
+. Wähle den gewünschten Domain-Typ aus. Je nachdem, welchen Domain-Typ du wählst, ändern sich die nachfolgenden Schritte und Einstellungen des Assistenten. Klappe die Info-Box unten auf (icon:chevron-down[role="darkGrey"]), wenn du zusätzliche Informationen zu einer der Optionen benötigst.
 . Bereit, fortzufahren? Klicke auf *Weiter* icon:angle-right[role="blue"]
 
 [.collapseBox]
@@ -72,7 +70,7 @@ Klappe die Info-Box unten auf (icon:chevron-down[role="darkGrey"]), wenn du zus�
 
 [[table-assistant-domains]]
 [width="100%"]
-[cols="1,4a"]
+[cols="1,4"]
 |====
 |Ich möchte eine... |Zusätzliche Hinweise
 
@@ -86,7 +84,7 @@ Klappe die Info-Box unten auf (icon:chevron-down[role="darkGrey"]), wenn du zus�
 |Du kannst zu einer Domain beliebig viele Subdomains erstellen. Eine Registrierung dieser Subdomains ist nicht erforderlich. Du kannst zum Beispiel zur Domain *deinshop.de* die Subdomain *info.deinshop.de* erstellen, um über diese Domain Informationen zu deinem Webshop zur Verfügung zu stellen. Die Verknüpfung erfolgt über die Wahl der Hauptdomain in der Dropdown-Liste. Darüber hinaus muss das plentymarkets System zugeordnet werden.
 
 |Vorhandene Domain zu plentysystems transferieren
-|Die Bearbeitungszeiten können je nach Top-Level-Domain unterschiedlich sein:
+a|Die Bearbeitungszeiten können je nach Top-Level-Domain unterschiedlich sein:
 
 * Bei *.de*-Domains: bis zu 24 Stunden
 * Bei *.com*- und *.net*-Domains: 3 bis 7 Tage
@@ -109,7 +107,7 @@ Welche Einstellungen hier angezeigt werden, hängt davon ab, welche <<basics/adm
 
 [[table-assistant-domains-names]]
 [width="100%"]
-[cols="1,3a"]
+[cols="1,3"]
 |====
 |Einstellung |Erläuterung
 
@@ -163,15 +161,125 @@ plentymarkets System verknüpfen:
 . Gib die Kontaktdaten des Domain-Inhabers ein.
 . Bereit, fortzufahren? Klicke auf *Weiter* icon:angle-right[role="blue"]
 
+[#140]
+[#150]
+[#160]
+=== Aktuelle DNS Einstellungen
+
+Hier werden die DNS-Einstellungen deiner Domain angezeigt.
+DNS steht für Domain Name System. DNS sorgt dafür, dass zum Aufrufen deines Webshops nicht die numerische IP-Adresse deines Webshops eingeben werden muss, sondern auch der Domain-Name der richtigen IP-Adresse zugeordnet wird.
+
+[TIP]
+.Praxisbeispiel: DNS-Einstellungen prüfen und anpassen
+====
+Weitere Informationen zu DNS-Einstellungen findest du in <<basics/admin-aufgaben/best-practices/dns-selbsthilfe#, diesem praktischen Beispiel>>. Die Seite führt dich Schritt für Schritt durch den Prozess, deine aktuell gespeicherten DNS-Einträge zu finden und sie bei Bedarf zu ändern.
+====
+
+[.collapseBox]
+.*DNS-Einstellungen bei externem Domain-Provider speichern*
+--
+
+Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen deines plentymarkets Systems bei diesem externen Domain-Provider speichern.
+
+Hier kannst du die DNS-Einstellungen abrufen und sie dann beim externen Provider speichern.
+[.instruction]
+DNS-Einstellungen abrufen:
+
+. Wirf einen Blick auf die DNS-Einstellungen. Diese Einstellungen werden in die Tabelle erläutert.
+. Logge dich in den Service-Bereich deines Domain-Providers ein.
+. Kopiere die im plentymarkets angezeigten DNS-Einstellungen in die vorgesehenen Felder des Domain-Providers. +
+→  Informationen zur Vorgehensweise findest du in der Dokumentation des Domain-Providers.
+
+*_Hinweis:_* Es kann bis zu 72 Stunden dauern, bis die Änderungen wirksam werden. Hierauf hat plentymarkets keinen Einfluss.
+
+[[table-account-dns-settings]]
+[cols="1,3"]
+|====
+|Eintrag |Erläuterung
+
+|*Quelle*
+|DNS-Quelle
+
+|*Typ*
+|Typ des DNS-Eintrags +
+*A* =  Zuweisung einer IPv4-Adresse +
+*CNAME* = Zuweisung eines anderen Hosts
+
+|*Ziel*
+|Das Ziel, auf das der Eintrag verweist. +
+IP-Adresse = Die IP-Adresse, unter der das plentymarkets System erreichbar ist. +
+CNAME = Die Adresse des AWS-Loadbalancer-Endpunkts, der Elastic Load Balancing, also AutoScaling, bereitstellt.
+|====
+
+--
+
+[.collapseBox]
+.*Externe Domain: DNS-Einstellungen für AutoScaling aktualisieren*
+--
+
+Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen des plentymarkets Systems beim Domain-Provider anpassen, um von AutoScaling zu profitieren. Gehe wie unten beschrieben vor, um die DNS-Einstellungen der externen Domain anzupassen.
+
+[.instruction]
+DNS-Einstellungen anpassen:
+
+. Öffne das Menü *Einrichtung » Assistenten » Grundeinrichtung*.
+. Klicke auf den Domains-Assistenten.
+. Klicke auf eine Domain, um den Assistenten zu öffnen.
+. Klicke im Navigationsbaum links auf den Schritt *Aktuelle DNS-Einstellungen*. +
+→  Die DNS-Einstellungen werden angezeigt. Diese Einstellungen werden in die Tabelle erläutert.
+. Prüfe, ob ein CNAME-Eintrag mit dem Alias xxxx.eu-central-1.elb.amazonaws.com vorhanden ist. +
+→ Wenn der CNAME-Eintrag vorhanden ist, wurde das System auf AutoScaling vorbereitet. Fahre mit Schritt 6 fort.
+. Logge dich in den Service-Bereich deines Domain-Providers ein.
+. Kopiere die im plentymarkets angezeigten DNS-Einstellungen in die vorgesehenen Felder des Domain-Providers. +
+→  Informationen zur Vorgehensweise findest du in der Dokumentation des Domain-Providers.
+
+*_Hinweis:_* Es kann bis zu 72 Stunden dauern, bis die Änderungen wirksam werden. Hierauf hat plentymarkets keinen Einfluss.
+
+[[table-account-dns-settings-2]]
+[cols="1,3"]
+|====
+|Eintrag |Erläuterung
+
+|*Quelle*
+|DNS-Quelle
+
+|*Typ*
+|Typ des DNS-Eintrags +
+*A* =  Zuweisung einer IPv4-Adresse +
+*CNAME* = Zuweisung eines anderen Hosts
+
+|*Ziel*
+|Das Ziel, auf das der Eintrag verweist. +
+IP-Adresse = Die IP-Adresse, unter der das plentymarkets System erreichbar ist. +
+CNAME = Die Adresse des AWS-Loadbalancer-Endpunkts, der Elastic Load Balancing, also AutoScaling, bereitstellt.
+|====
+
+--
+
+////
+[#170]
+[discrete]
+==== DNS-Check durchführen
+
+[.instruction]
+DNS-Check durchführen:
+
+. Öffne das Menü *plentymarkets Logo (Start) » Service-Center*. +
+*_Tipp:_* Zeige dazu mit der Maus auf das plentymarkets Logo oben links. +
+→ Das Service-Center wird in einem neuen Browser-Tab geöffnet.
+. Klicke auf das blaue *Plus* des Systems. +
+→ Die verfügbaren Tabs werden eingeblendet.
+. Wechsele in das Tab *Domain*.
+. Klicke auf das blaue Plus der Domain.
+. Klicke auf *DNS-Check*. +
+→ Die Informationen werden in einem neuen Fenster angezeigt. +
+*_Tipp:_* MX steht für Mail Exchange Resource Record. Hierbei handelt es sich um die Parameter der <<basics/admin-aufgaben/plentymarkets-konto#domain-mailserver, Mailserver>>, die für den Empfang und den Versand von E-Mails zur Verfügung stehen.
+////
+
 [#190]
-[#200]
 [#210]
 [#220]
-[#230]
-[#240]
 [#250]
-[#260]
-[#265]
 [#domain-nameserver]
 [#domain-auth-code]
 [#domain-mailserver]
@@ -189,7 +297,6 @@ plentymarkets System verknüpfen:
 Hier sind die Mailserver hinterlegt, die für den Empfang und den Versand von E-Mails zur Verfügung stehen. Bei Verwendung des mailbox.org-Mailservers sind keine weiteren Einstellungen erforderlich. Für einen eigenen Server speicherst du die Werte für die IP-Adresse und bei Bedarf MX10 bis MX40.
 
 [[table-account-parameter-mailserver]]
-.Parameter für eigene Mailserver
 [cols="1,3"]
 |====
 |Einstellung |Erläuterung
@@ -235,15 +342,14 @@ Beachte folgende Punkte, um Probleme bei deinem Webhosting-Provider-Wechsel zu v
 In der Regel ist ein Provider-Wechsel problemlos und kurzfristig möglich. Wenn es jedoch bei der Abwicklung zu Problemen kommt, zum Beispiel weil Daten unvollständig oder unklar sind, kann der Wechsel vom alten Provider zunächst abgelehnt werden. Nimm in diesem Fall umgehend Kontakt zum alten Provider auf. Der aktuelle Provider kann den Wechsel erst freigeben, wenn keine Unklarheiten mehr bestehen.
 
 [TIP]
-.IPS-Tag
 ====
-Bei einem Domaintransfer von einer *.uk*- oder *.co.uk*-Domain eines anderen Domainproviders zu plentymarkets musst du vorher den IPS-Tag durch deinen aktuellen Domainprovider anpassen lassen. Der IPS-Tag unseres Domainproviders lautet:
+*IPS-Tag*: Bei einem Domaintransfer von einer *.uk*- oder *.co.uk*-Domain eines anderen Domainproviders zu plentymarkets musst du vorher den IPS-Tag durch deinen aktuellen Domainprovider anpassen lassen. Der IPS-Tag unseres Domainproviders lautet:
 
 *UNITEDDOMAINS-DE*
 ====
 
 --
-
+[#230]
 [.collapseBox]
 .*Konfiguration von CNAME Records*
 --
@@ -253,11 +359,11 @@ CNAME bezeichnet eine Subdomain, die namensbasiert auf eine Domain oder eine Sub
 Dies geschieht durch Eingabe einer Quelle und eines Ziels.
 In dem Beispiel im Bild unten ist die Quelle _mobile.ihrshop.de_ die mobile Variante der Domain _ihrshop.de_. Als Ziel verwendest du die Shopgate-Subdomain _cname.shopgate.com_. Durch diesen CNAME-Eintrag wird gewährleistet, dass die Auflösung des Shops seitens Shopgate korrekt durchgeführt wird.
 
-.Konfiguration von CNAME Records
 image::basics/admin-aufgaben/assets/CNAME-Konfiguration.png[]
 
 --
 
+[#240]
 [.collapseBox]
 .*Konfiguration von TXT Records*
 --
@@ -268,6 +374,7 @@ Dies geschieht durch Eingabe der Daten, die du vom Dienstanbieter erhalten hast.
 
 --
 
+[#200]
 [.collapseBox]
 .*Konfiguration von eigenen Nameservern für Subdomains*
 --
@@ -279,7 +386,7 @@ Hier gibst du einen oder mehrere Nameserver an, auf die eine Subdomain zeigen so
 * Gib den Domain-Namen des Nameservers ein.
 
 --
-
+[#260]
 [.collapseBox]
 .*URL Weiterleitungen*
 --
@@ -288,6 +395,7 @@ Hier definierst du kostenpflichtige Weiterleitungen.
 Dies geschieht durch Eingabe der gewünschten Weiterleitungen in das vorgesehene Feld ein. Pro Zeile kann eine Umleitung definiert werden. Beachte bei der Eingabe die nachfolgende Informationen zum Syntax.
 Änderungen werden spätestens nach 24 Stunden auf den Webservern veröffentlicht.
 
+[#265]
 [discrete]
 ==== Aufbau
 
@@ -296,7 +404,6 @@ Eine Umleitung besteht immer aus vier Angaben, die mit einem Semikolon getrennt 
 * Quelle;Ziel;HTTP-Code;Option
 
 [[table-forwarding-structure]]
-.Eine Umleitung besteht aus vier Angaben
 [cols="1,3"]
 |====
 |Angabe |Erläuterung
@@ -323,7 +430,6 @@ a|Die Angabe einer Option ist nicht in jedem Fall erforderlich.
 ==== Beispiele
 
 [[table-forwarding-examples]]
-.Beispiel-Weiterleitungen
 [cols="1,3"]
 |====
 |Weiterleitung |Erläuterung
@@ -354,128 +460,11 @@ a|Die Angabe einer Option ist nicht in jedem Fall erforderlich.
 
 --
 
-[#140]
-[#150]
-[#160]
-=== Aktuelle DNS Einstellungen
-
-Hier werden die DNS-Einstellungen deiner Domain angezeigt.
-DNS steht für Domain Name System. DNS sorgt dafür, dass zum Aufrufen deines Webshops nicht die numerische IP-Adresse deines Webshops eingeben werden muss, sondern auch der Domain-Name der richtigen IP-Adresse zugeordnet wird.
-
-[TIP]
-.Praxisbeispiel: DNS-Einstellungen prüfen und anpassen
-====
-Weitere Informationen zu DNS-Einstellungen findest du in <<basics/admin-aufgaben/best-practices/dns-selbsthilfe#, diesem praktischen Beispiel>>. Die Seite führt dich Schritt für Schritt durch den Prozess, deine aktuell gespeicherten DNS-Einträge zu finden und sie bei Bedarf zu ändern.
-====
-
-[.collapseBox]
-.*DNS-Einstellungen bei externem Domain-Provider speichern*
---
-
-Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen deines plentymarkets Systems bei diesem externen Domain-Provider speichern.
-
-Hier kannst du die DNS-Einstellungen abrufen und sie dann beim externen Provider speichern.
-[.instruction]
-DNS-Einstellungen abrufen:
-
-. Wirf einen Blick auf die DNS-Einstellungen. Diese Einstellungen werden in  <<table-account-dns-settings>> erläutert.
-. Logge dich in den Service-Bereich deines Domain-Providers ein.
-. Kopiere die im plentymarkets angezeigten DNS-Einstellungen in die vorgesehenen Felder des Domain-Providers. +
-→  Informationen zur Vorgehensweise findest du in der Dokumentation des Domain-Providers.
-
-*_Hinweis:_* Es kann bis zu 72 Stunden dauern, bis die Änderungen wirksam werden. Hierauf hat plentymarkets keinen Einfluss.
-
-[[table-account-dns-settings]]
-.Aktuelle DNS-Einstellungen
-[cols="1,3"]
-|====
-|Eintrag |Erläuterung
-
-|*Quelle*
-|DNS-Quelle
-
-|*Typ*
-|Typ des DNS-Eintrags +
-*A* =  Zuweisung einer IPv4-Adresse +
-*CNAME* = Zuweisung eines anderen Hosts
-
-|*Ziel*
-|Das Ziel, auf das der Eintrag verweist. +
-IP-Adresse = Die IP-Adresse, unter der das plentymarkets System erreichbar ist. +
-CNAME = Die Adresse des AWS-Loadbalancer-Endpunkts, der Elastic Load Balancing, also AutoScaling, bereitstellt.
-|====
-
---
-
-[.collapseBox]
-.*Externe Domain: DNS-Einstellungen für AutoScaling aktualisieren*
---
-
-Wenn deine Domain von einem externen Provider gehostet wird, musst du die DNS-Einstellungen des plentymarkets Systems beim Domain-Provider anpassen, um von AutoScaling zu profitieren. Gehe wie unten beschrieben vor, um die DNS-Einstellungen der externen Domain anzupassen.
-
-[.instruction]
-DNS-Einstellungen anpassen:
-
-. Öffne das Menü *Einrichtung » Assistenten » Grundeinrichtung*.
-. Klicke auf den Domains-Assistenten.
-. Klicke auf eine Domain, um den Assistenten zu öffnen.
-. Klicke im Navigationsbaum links auf den Schritt *Aktuelle DNS-Einstellungen*. +
-→  Die DNS-Einstellungen werden angezeigt. Diese Einstellungen werden in <<table-account-dns-settings-2>> erläutert.
-. Prüfe, ob ein CNAME-Eintrag mit dem Alias xxxx.eu-central-1.elb.amazonaws.com vorhanden ist. +
-→ Wenn der CNAME-Eintrag vorhanden ist, wurde das System auf AutoScaling vorbereitet. Fahre mit Schritt 6 fort.
-. Logge dich in den Service-Bereich deines Domain-Providers ein.
-. Kopiere die im plentymarkets angezeigten DNS-Einstellungen in die vorgesehenen Felder des Domain-Providers. +
-→  Informationen zur Vorgehensweise findest du in der Dokumentation des Domain-Providers.
-
-*_Hinweis:_* Es kann bis zu 72 Stunden dauern, bis die Änderungen wirksam werden. Hierauf hat plentymarkets keinen Einfluss.
-
-[[table-account-dns-settings-2]]
-.Aktuelle DNS-Einstellungen
-[cols="1,3"]
-|====
-|Eintrag |Erläuterung
-
-|*Quelle*
-|DNS-Quelle
-
-|*Typ*
-|Typ des DNS-Eintrags +
-*A* =  Zuweisung einer IPv4-Adresse +
-*CNAME* = Zuweisung eines anderen Hosts
-
-|*Ziel*
-|Das Ziel, auf das der Eintrag verweist. +
-IP-Adresse = Die IP-Adresse, unter der das plentymarkets System erreichbar ist. +
-CNAME = Die Adresse des AWS-Loadbalancer-Endpunkts, der Elastic Load Balancing, also AutoScaling, bereitstellt.
-|====
-
---
-
-////
-[#170]
-[discrete]
-==== DNS-Check durchführen
-
-[.instruction]
-DNS-Check durchführen:
-
-. Öffne das Menü *plentymarkets Logo (Start) » Service-Center*. +
-*_Tipp:_* Zeige dazu mit der Maus auf das plentymarkets Logo oben links. +
-→ Das Service-Center wird in einem neuen Browser-Tab geöffnet.
-. Klicke auf das blaue *Plus* des Systems. +
-→ Die verfügbaren Tabs werden eingeblendet.
-. Wechsele in das Tab *Domain*.
-. Klicke auf das blaue Plus der Domain.
-. Klicke auf *DNS-Check*. +
-→ Die Informationen werden in einem neuen Fenster angezeigt. +
-*_Tipp:_* MX steht für Mail Exchange Resource Record. Hierbei handelt es sich um die Parameter der <<basics/admin-aufgaben/plentymarkets-konto#domain-mailserver, Mailserver>>, die für den Empfang und den Versand von E-Mails zur Verfügung stehen.
-////
 
 [#110]
 [#130]
 === Domains löschen oder kündigen
 
-[.instruction]
 . Öffne das Menü *Einrichtung » Assistenten » Grundeinrichtung*.
 . Klicke auf den Domains-Assistenten.
 . Klicke oben rechts im Kästchen auf *Löschen* (icon:minus-circle[role="red"]).
