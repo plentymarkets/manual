@@ -1,155 +1,258 @@
 = Creating variations
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, import, items, creating items, best practice, automated, creating variations, importing variations
+:keywords: ElasticSync, import, items, creating items, best practice, example, automation, creating variations, importing variations
 :position: 120
 :url: data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations
 :id: K1IPG4S
 :author: none
 
-This best practice teaches you how to create items and variations using ElasticSync.
+Do you have products that need to be imported into plentymarkets? And to complicate things even further: Do you sell these products in different sizes and colours?
 
-NOTE: To benefit from this best practice, you should be familiar the basic functionality of ElasticSync. Check the <<data/importing-data/ElasticSync#, Importing data with ElasticSync>> page of the manual for general information about ElasticSync.
+You might already know that ElasticSync is a good tool for importing data. But you might not have tried your hand at a realistic example yet. This page of the manual guides you step by step through the process of creating new items and variations in plentymarkets.
+This page relies on an example sync, which you can download and import into your own system.
 
 [#requirements]
-== Requirements
+[TIP]
+.Requirements
+====
+This page assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, ElasticSync tool>>. Furthermore, make sure you’ve saved the following data in your system before you start importing items and variations with ElasticSync:
 
-To import items and variations using ElasticSync as described here, the following data must be saved in the system:
+* <<item/settings/attributes#, Attributes>>
+* <<item/settings/attributes#, Attribute values>>
+* <<item/settings/categories#, Categories>>
+* <<item/settings/prices#, Sales prices>>
+====
 
-* Attributes
-* Attribute values
-* Categories
-* Sales prices
+This video gives you a playful introduction to the topic:
 
-[#infos]
-== Info
+.Creating items and variations with ElasticSync
+video::336295453[vimeo]
 
-Go to *Setup » Settings » ElasticSync* to find the button *Delete cache*. Alternatively, you can find this button in any of the syncs you created.
+[#100]
+== Downloading the example files
 
-This button allows you to reset the ElasticSync cache in order to reimport a file that does not contain any changes.
+This page of the manual guides you step by step through the process of creating new items and variations in plentymarkets. This page relies on two example files, which you can download and import into your own system.
 
-Also helpful is the *Test run* button.
+* link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/BestPractice.csv[Example CSV file^]
+* link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/Best-Practice-25-02-20.json.zip[Example sync (JSON compressed as a ZIP file)^]
 
-.Test run button
+[TIP]
+.Importing syncs
+====
+Download the example sync, unzip the file and <<data/importing-data/ElasticSync#1640, import the JSON file into your plentymarkets system>>.
 
-image::data/importing-data/assets/EN-elasticsync-bp-variations-testrun.png[]
+Take a look at the CSV file and see which column headers it includes. Later, you’ll enter your own item and variation data into these columns.
+====
 
-This imports the first 10 rows of a file without cache. This allows you to check if all values have been assigned correctly before you start syncing all rows.
+[#200]
+== Entering product data into the CSV file
 
-Check the manual to find out which values are valid for these fields.
+[#300]
+=== Practical example: Initial situation
 
-Go to *Data » Log* to access the error messages related to the sync.
+Imagine you sell a t-shirt that’s available in small or medium and also in yellow or red. You want to import all four possible combinations: medium red, small red, small yellow and medium yellow.
 
-[#building_the_sync]
-== Example data for creating variations
+image::data/importing-data/assets/best-practice-variations-initial-situation.png[]
 
-Download the example CSV file and the JSON file that contains the sync.
-
-=== Example file
-The following link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/BestPractice_variations_EN.csv[sample file^] has been used for the sync.
-
-==== Example sync
-You can download the complete sync as a zipped link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/Best_Practice_Variations.json.zip[JSON file^] here.
-
-=== General
-
-The data that is saved *globally* at the item level, e.g. *the name, the description, etc.* should be saved in every row that contains variations of an item. Alternatively, you can create a separate mapping with specific filters in which you need to specify the description only in the row of the main variation.
-
-Data that is *variation based* must be entered into the relevant rows of the variations.
-
-When creating the variations, it is important that the structure of the attributes and values are saved in the file matches that of the mapping.
-
+[#400]
 === Variation numbers
 
-In this example, we will create a main variation with 4 variations. For mapping the variations, we use the main variation number.
+In our example, we want to import a main variation with 4 sub-variations.
+Each sub-variation has its own unique number and each sub-variation can be traced back to the same main variation.
 
-Because the sync imports data row by row, the main variation is at the top of the file.
-
-There, we manually save the variation number in the field of the same name. The field *Main variation number* remains empty.
-
-This variation number is now written into the field *Main variation number* of the variations in order to map them to the main variation. Otherwise, the variations would be imported as separate main variations.
-
-You can also enter the variation numbers of the child variations. If you leave the field empty, the system generates the numbers automatically.
-
-The file will look like this:
+First, transfer the variation numbers to a CSV file.
+In our example, the numbers would look like this in the CSV file:
 
 .Entering the numbers for main variation and variations
+image::data/importing-data/assets/best-practice-variations-numbers.png[]
 
-image::data/importing-data/assets/EN-elasticsync-bp-variations-number.png[]
+First, let’s look at the *Variation number* column:
+
+* The main variation has a unique number (main123). This number is displayed in the first line.
+* Each sub-variation has its own unique number (var123, var456, var567, var890). These numbers are also entered into this column.
+
+Now let’s look at the *Number of main variation* column:
+
+* Each sub-variation originates from the same main variation.
+This is represented by entering the main variation’s number next to each sub-variation.
+
+[TIP]
+.Main variation before sub-variations
+====
+Make sure that you always enter the main variation number first and then the individual sub-variations afterwards. Why? plentymarkets goes through the file line by line. So first it creates a main item. Then it creates the individual sub-variations based on this item.
+
+If you did it the other way around, then you’d be telling plentymarkets to create a variation on a main item that doesn’t exist yet. plentymarkets wouldn’t understand what you’re asking it to do and the data wouldn’t be imported correctly.
+====
+
+[TIP]
+.No variation numbers? No problem!
+====
+You don’t technically need sub-variation numbers for the import (var123, var456, var567, var890). If you don’t already have unique variation numbers, then just leave these lines blank and plentymarkets will automatically generate unique numbers for you during the import.
+====
 
 [WARNING]
-.Variation numbers must be unique!
+.Variation numbers must be unique
 ====
-Both the number of the main variation and those of the child variations must be unique. The import fails if numbers are assigned more than once.
+Both the number of the main variation and those of the sub-variations must be unique. The import fails if numbers are assigned more than once.
 ====
 
+[#500]
 === Attributes
 
-In our example, we selected *attribute selection combination* in the format *attribute:value;attribute:value*:
+Attributes are characteristics like colour and size. If you combine them together, you’ll get a saleable item variation, for example a small, red t-shirt.
+Before you start importing items into plentymarkets, make sure you’ve <<item/settings/attributes#, created all of the necessary attributes and attribute values>>.
+
+Then open the mapping settings and decide how you want to format the attributes (like colour) and the values (like red).
+In this example, I’m working with the mapping field *Attributes / Attribute value combinations* and I’ve selected the format *Attribute:Value;*.
+Finally, enter the attributes and values into your CSV file with this exact formatting.
 
 .Creating variations using the attribute selection combination
-
-image::data/importing-data/assets/EN-elasticsync-bp-variations-attributes.png[]
-
-The first row of the main variation has not been assigned a combination so it is not linked to any attributes.
+image::data/importing-data/assets/best-practice-variations-attributes.png[]
 
 [TIP]
-.Main variation without attributes
+.Don’t enter attributes for the main variation
 ====
-If you work with variation items, we recommend that you do not assign any attributes to the main variation. This provides you with more flexibility when you create variations. If you assign an attribute to the main variation, you can only create variations with the same attributes.
+In this example, I didn't enter any attributes or values for the main variation, i.e. the first line of the CSV file.This prevents the main variation from being linked to attributes.
+
+We recommend that you work with variations and that you don’t enter any attributes for the main variation. This will make you much more flexible while creating variations. If you were to link attributes to the main variation, then you would only be able to create variations with these same attributes.
 ====
 
+[#600]
 === Images
 
-In our sync, we will import the image URLs in one multi-URL mapping.
-For that, the field *Multi URL* must be selected in the mapping. The format of the URL is saved as follows: *image1url;positionImage1,image2url;positionImage2*
+Regardless whether you use your supplier’s product images, or you take your own photos, your goal here is to get the image’s URL. In other words, your supplier might upload images to an FTP server or you might upload your own images in the plenymarkets webspace.
+However you go about getting the URL, enter it into your CSV file.
+In this example, I’m working with the mapping field *Item images / Multi-Url (Comma-separated)*. Therefore, I’ll enter the image URLs into the CSV file like so: *image1url;positionImage1,image2url;positionImage2*
 
-=== Category links
+.Comparison of the mapping field and the column in the CSV file
+image::data/importing-data/assets/best-practice-variations-images.png[]
 
-You can link several categories in one mapping by specifying them separated by commas. You can either specify category names or category IDs. Also, make sure to specify the full category path for category names. The levels are separated by a semicolon.
+Note the following about image URLs:
 
-.Correct spelling of separators and paths are essential for the import.
+* Enter a semicolon (;) and a number after the URL to specify when your customer should see this image. So whether the image should be displayed first, second, third, and so on.
+* If you want to use multiple product images, then separate them with commas.
+* You can upload images that show the main variation, i.e. the item as a whole. Or you can upload images that display each individual variation.
 
-image::data/importing-data/assets/EN-elasticsync-bp-variations-categories.png[]
+[#700]
+=== Categories
 
+Categories help you group your products. They determine how items are structured in your online store.
+Before you start importing items into plentymarkets, make sure you’ve <<item/settings/categories#, created all of the necessary categories>>.
 
-[WARNING]
-.Mapping and file
-====
-Make sure that the values in the file match the mapping. This is because you can select different values in the mapping. For example, for the field Default category, you can select either the ID or the name. As such, the CSV file must contain either the ID or the name. You cannot use the ID in the mapping but the name in the file.
-====
+Each category has a unique ID. In your CSV file, enter the ID of whichever category the item should be listed in. If you want the item to be listed under multiple categories, then use commas to separate the category IDs.
+In order for the import to work, every item also needs to have a _default category_. Since items can be listed in multiple categories, the default category essentially just specifies which one is the best fit.
 
-[#synchronisation]
-== Synchronisation
-
-For the synchronisation, it is important that a variation-specific synchronisation field is used. A good choice is the variation number or the variation ID.
-
-You need to specify the action *Import new data, update existing*.
-
-
-[#mappings]
-== Mapping
-
-In the mapping, we map the fields in the CSV file with the fields in plentymarkets.
-
-.You need to create a mapping
-
-image::data/importing-data/assets/EN-elasticsync-bp-variations-mapping_new.png[]
-
-We recommend that you only map those fields that you actually want to import. Unnecessary fields can result in errors and should best be deactivated.
-
-There are some mandatory fields for creating items with variations. These fields must be mapped for the sync to work. Those mandatory fields are:
-
-* Default category
-* Main variation number
-* Variation number
-* If you want to import stock, the following values must be part of the mapping:
-Warehouse, Quantity, Storage location
-
-The sync is now ready to go and you can start it.
+.Category IDs and the default category ID
+image::data/importing-data/assets/best-practice-variations-categories.png[]
 
 [TIP]
-.Test run
+.Category ID or category name?
 ====
-We recommend that you do a test run before the first sync. This allows you to check if the sync functions as expected. If the sync does not perform as expected, you can now correct it before it is run for real.
+You might prefer to work with a category’s _name_ instead of its ID. No problem! Category names work just as well. If you use category names, make sure you specify the entire category path. The levels are separated by a semicolon.
+
+Also make sure that the values in the CSV file correspond to the mapping settings.
+For example, if you choose the field *Default categories / Category ID* in the mapping settings, then make sure you enter the ID in your CSV file.
+Or the other way around: if you choose the field *Default categories / Category name* in the mapping settings, then make sure you enter the name in your CSV file.
+====
+
+[#800]
+=== Sales prices
+
+Sales prices are the conditions under which a variation is sold at a specific price.
+Before you start importing items into plentymarkets, make sure you’ve <<item/settings/prices#, created all of the necessary sales prices>>.
+
+In the mapping settings, specify which sales price you want to use for the import. And enter the corresponding prices in your CSV file.
+
+.Comparison of the mapping field and the column in the CSV file
+image::data/importing-data/assets/best-practice-variations-prices.png[]
+
+[#900]
+== Importing the example sync
+
+If you haven’t already done so, download the example sync, unzip the file and <<data/importing-data/ElasticSync#1640, import the JSON file into your plentymarkets system>>.
+
+[TIP]
+.Check the default settings!
+====
+Lots of settings were pre-configured in the example sync. Check these settings and make sure that they meet your needs.
+====
+
+[#1000]
+== Checking the matching settings
+
+During the import, plentymarkets will check whether the variation already exists. This is done with the help of a so-called matching field.
+Make sure you use a _variation-specific matching field_. A good choice is the variation number or the variation ID.
+
+The following matching settings were pre-configured in the example sync:
+
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Matching field: Variation number*
+|The column header *Variation number* from the CSV file is pre-selected here.
+
+|*Import options*
+|The option *Import new, update existing data* is pre-selected here.
+|====
+
+[#1100]
+== Checking the mapping settings
+
+Your CSV file is already filled with a bunch of item information. Now you’ll decide _where in plentymarkets_ each piece of information should appear when you import the file. <<data/importing-data/sync-types/elasticSync-item#1920, Take a look at this page>> while you map the columns of your CSV file to the fields in plentymarkets.
+Lots of mapping settings were pre-configured in the example sync. Check these settings and make sure that they meet your needs.
+
+We recommend that you only map those fields that you actually want to import. Unnecessary fields should be deactivated (icon:toggle-off[role="red"]) because they might otherwise cause errors to occur.
+
+[discrete]
+==== Mandatory fields
+
+There are some _mandatory fields_ for creating items with variations. These fields must be mapped for the sync to work. Those mandatory fields are:
+
+[cols="1,1"]
+|====
+|What do you want to import? |Mandatory fields
+
+|Item and variation data
+a|* Default category
+* Main variation number
+* Variation number
+
+|Item and variation data + Stock
+a|* Default category
+* Main variation number
+* Variation number
+* Warehouse
+* Quantity
+* Storage location
+|====
+
+[#1200]
+== Did it work?
+
+Ready to import your items? Start the sync and check whether the data was correctly imported into plentymarkets.
+
+[.instruction]
+Starting the sync and checking the result:
+
+. Activate the lines that should be imported (icon:toggle-on[role="green"]).
+. Test the sync (icon:plugin_stage_deploy[set=plenty]) or start the sync (icon:play-circle-o[role="darkGrey"]). +
+*_Note:_* This can take a few minutes.
+. Go to *Item » Edit item*.
+. Open a few item data records and check their settings.
+
+[TIP]
+.Do a trial run
+====
+We recommend testing the sync (icon:plugin_stage_deploy[set=plenty]) before you start it for the first time.
+This imports the first 10 rows of the file and bypasses the cache.
+It gives you time to check whether the sync works correctly. If the sync does not perform as expected, you can correct it before importing the entire file.
+====
+
+[TIP]
+.Resetting the cache
+====
+Directly within the sync, you’ll find the button *Reset cache* (icon:reload[set=plenty]).
+This button allows you to reset the ElasticSync cache in order to reimport a file that does not contain any changes.
 ====
