@@ -1,14 +1,12 @@
-= plentymarkets Changelog
+= Changelog 18. März 2020
 :lang: de
 include::{includedir}/_header.adoc[]
 :author: kevin-stederoth
 :sectnums!:
-:position: 150
-:url: changelog
+:position: 470
 :id:
 :startWeekDate: 12. März 2020
 :endWeekDate: 18. März 2020
-:nav-alias: Changelog 18. März 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
@@ -25,6 +23,116 @@ stable::
 == Neu
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Gruppenfunktion und Stapelverarbeitung
+
+* Es ist jetzt möglich unter *Daten » Log* zu ausgeführten Gruppenfunktionen und Stapelverarbeitungen Logeinträge einzusehen. Mit dem Identifikator `GroupActionDataWriter::execute` könnt ihr genau nach diesen Einträgen filtern. Folgende Informationen werden gespeichert:
+** User-ID (UserInfo)
+** Startzeitpunkt/Endzeitpunkt
+** Anzahl an betroffenen Artikeln/Varianten (VariationInfo)
+** die ausgeführte Aktion (Actions)
+** Daten zu den einzelnen Aktionen (DataInfo)
+
++
+Anhand des Endzeitpunktes lässt sich auch erkennen, ob eine Gruppenfunktion oder Stapelverarbeitung abgebrochen wurde. +
+image:changelog/assets/log-gruppenfunktion-stapelverarbeitung.png[width=640, alt=Logeintrag.]
+
+[discrete]
+=== Import
+
+* Ab sofort ist es nicht mehr notwendig bei Erstellung einer neuen Zuordnung eine Positionsnummer zu vergeben. Das System vergibt diese automatisch. Die Reihenfolge könnt ihr weiterhin im Bereich *Einstellungen* anpassen.
+* In der Status-UI haben wir eine Spalte Namens *ID* hinzugefügt. Die einzelnen Importe können nun anhand dieser Nummer besser auseinander gehalten werden.
+
+[discrete]
+=== Messenger
+
+* Im Bereich Messenger des Kontaktdatensatzes wurde eine Stoppuhr hinzugefügt, die zu zählen beginnt, sobald man den Messenger öffnet. In dem Moment, in dem die Nachricht gesendet wird, wird die Stoppuhr automatisch auf 0 zurückgesetzt.
++
+image:changelog/assets/messenger-stoppuhr.png[width=640, alt=Stoppuhr.]
++
+Beim Wechsel von einem Kontaktdatensatz in einen anderen läuft die Uhr im Hintergrund weiter. Du kannst die Stoppuhr jederzeit pausieren und zurücksetzen.
+
+[discrete]
+=== Nachbestellungen
+
+* Es wird nun auch für die Positionen von Nachbestellungen das Lieferdatum ermittelt und angezeigt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Es ist nicht mehr möglich, die Menge von Bundle-Artikeln und ihren Bundle-Bestandteilen nachträglich in der Auftragsbearbeitung zu ändern. Dadurch wird sichergestellt, dass die Menge an Bundle-Artikeln und ihrer Bundle-Bestandteilen zueinander passen.
++
+Um die Menge manuell zu anzupassen, muss das Bundle in der gewünschten Menge dem Auftrag _neu_ hinzugefügt werden.
+* Für die oben genannte Änderung wurde eine neue Systemeinstellung eingeführt, die, wenn sie aktiviert wird, es weiterhin ermöglicht die Mengen von Bundle-Artikel und Bundle-Bestandteilen zu ändern.
++
+Die Einstellung ist zu finden unter *Einrichtung » Aufträge » Einstellungen*. Die Option *Mengenänderung von Bundle-Artikel und Bundle-Bestandteilen erlauben* wird im Standard auf *Nein* stehen und muss aktiv angepasst werden, wenn eine Änderung der Mengen im Auftrag gewollt.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 13.03.2020
+:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/1/f/1f4896c4208f67da83de57eb350532b1499eddd0.xlsx
+
+include::changelog/_textblocks/otto-master-file.adoc[]
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Attributliste unvollständig
+
+* Es kam zu dem Fehler, dass die Attributauflistung unter *Einrichtung » Artikel » Attribute* unvollständig war. Grund war ein Bug in der Paginierung der Liste. Dieser Bug wurde behoben und der Fix verteilt.
+
+[discrete]
+=== Bestellungen
+
+* Bei den Nachbestellungen wurden die Standard-Einstellungen der Umbuchung verwendet. Dieses Verhalten wurde behoben, sodass die korrekten Einstellungen wieder verwendet werden.
+
+[discrete]
+=== Hersteller-IDs
+
+* Wenn man einen Hersteller mit einer bereits vorhandenen ID erstellt, so wird dieser nicht mehr überschrieben. Man erhält stattdessen eine Fehlermeldung in der steht, dass die ID bereits verwendet wird.
+
+[discrete]
+=== Import
+
+* Nutzte man die Option *Datei löschen nachdem der Import ausgeführt wurde*, so wurden die Dateien nicht gelöscht.
+* Aufgrund eines Fehlers konnte man den Sync trotz deaktivierter Zuordnungen ausführen.
+* Aufgrund eines Fehlers funktionierte die Importoption *englische Schreibweise* nicht. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers wurden in einigen Systemen keine Syncs ausgeführt oder es wurden keine Daten importiert. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers wurde die StatusUI nicht korrekt geladen. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Kontakte
+
+* Bestimmte Eigenschaften unter *CRM » Kontakte* wurden nicht korrekt angezeigt, Eigenschaftswerte wurden in manchen Fällen nicht gespeichert und bei selbst definierten Kundentypen wurden Eigenschaften nicht ausgegeben. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Retourengrund bei Paketbestandteilen
+
+* Die Übernahme eines Paketes in eine Retoure hat bisher den Retourengrund nicht auf die Paket-Bestandteile der Retoure übertragen, sondern stattdessen denjenigen mit der geringsten Id. Dieser Verhalten wurde insofern geändert, dass der Retourengrund des Paketes auf die Bestandteile übertragen wird.
+
+--
+
+early::
++
+--
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
 === Datenbereinigung
@@ -59,7 +167,7 @@ Wir freuen uns bereits auf dein Feedback. Wenn du die neue UI erkundest und dir 
 [discrete]
 == Geändert
 
-Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
 === Aktionen
@@ -81,20 +189,12 @@ Benutzer, die bereits den Bereich *E-Mail* aktiviert hatten, haben diesen Bereic
 Für Backend-Benutzer, die nicht alle Berechtigungen im Bereich *E-Mail* bearbeiten können sollen, musst du diese anpassen. Gehe dazu in das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer* und öffne den zu bearbeitenden Benutzer und deaktiviere im Bereich *Berechtigungen* die Berechtigungen wie gewünscht.
 ======
 
-[discrete]
-=== OTTO
-
-:otto-master-date: 13.03.2020
-:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/1/f/1f4896c4208f67da83de57eb350532b1499eddd0.xlsx
-
-include::changelog/_textblocks/otto-master-file.adoc[]
-
 '''
 
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
 === Auftragsdokumente
@@ -122,26 +222,6 @@ Durch die Anpassung des Fehlverhaltens wird zukünftig bei der Betätigung des L
 
 --
 
-early::
-+
---
-[discrete]
-== Neu
-
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
-
-
-
-'''
-
-
-
-'''
-
-
-
---
-
 Plugin-Updates::
 +
 --
@@ -154,16 +234,12 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/cfourcontainerpopup_5932[Container Popup^]
+|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/comeback_5615[Komm zurück!]
 |1.1.0
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/sales/marketing/wesiocatalog_6759[Kataloggenerator^]
-|1.0.0
-|-
-
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/shopbuilder-widgets/d2gpmpluginshippingicons_6756[Versand Icons Widget^]
-|1.0.0
+|link:https://marketplace.plentymarkets.com/plugins/payment/sofort_5050[Sofort.^]
+|1.2.3
 |-
 
 |===
