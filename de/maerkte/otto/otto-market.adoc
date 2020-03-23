@@ -407,7 +407,8 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO m
 |Einstellung |Option |Auswahl
 
 |*Ereignis*
-|Ereignis wählen, z.B. *Auftragsanlage: Neue Retoure*
+|Ereignis wählen, z.B. *Auftragsanlage: Statuswechsel* +
+*Hinweis:* Wähle einen Status, der zu deinem Arbeitsablauf passt. Du kannst dazu beispielsweise den Status *[8.2] Retoure von OTTO ablehnen* erstellen.
 |
 
 |*Filter 1*
@@ -426,3 +427,36 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO m
 
 [#1100]
 == FAQ
+
+[qanda]
+
+Warum werden meine Artikel nicht zu OTTO market exportiert?::
+
+Durch die Suche folgender Logs kannst du feststellen, warum bestimmte Artikel nicht zu OTTO market exportiert werden und deshalb dort nicht verfügbar sind.
+
+[.instruction]
+. Suche im *Log* in der Dropdown-Liste *Integration* nach *Otto itemexport* und wähle *Plenty\Modules\Otto\Item\Services\ItemExportService*.
+. Suche in mehreren Durchläufen in der Dropdown-Liste *Level* sowohl nach *warning* als auch nach *error*.
+. Öffne die Logs mit der Nachricht *Variante ungültig*. +
+→ Im Log erhältst du die Varianten-ID und den Grund für die Ablehnung bzw. das fehlende Merkmal. +
+→ In diesem Beispiel geht es um die Varianten-ID 30170 und die fehlende productDescription.brand. Das heißt, dass hier der Hersteller bzw. die Marke fehlt.
+. Als nächstes solltest du nach der im *Log* genannten Variante suchen und dir Varianten anzeigen lassen, damit du auch direkt beim richtigen Artikel landest. +
+→ Den Hersteller findest du im Tab *Global* der Variante.
+. Im Katalog *Audio » Radios* ist die Marke *AudioAffairs* nicht gemapped, was zur Fehlermeldung bzw. der Ablehnung des Artikels führt.
+. Klicke auf *Marke hinzufügen* (icon:plus-square[role="green"]), um *AudioAffairs* hinzuzufügen.
+
+[qanda]
+
+Im Log erhalte ich den Fehler "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique". Wie kann ich diesen Fehler beheben?::
+
+Dieser Fehler wird im Log z.B. auch unter “SKU 1234 nicht generiert” angezeigt.
+
+Im Katalog wird an erster Stelle definiert, aus welcher Quelle die SKU generiert werden soll. Wir unterscheiden dort zwischen einer *Parent-SKU* und einer *Variation-SKU*. Die dort gewählte Quelle sollte sich auf eine Datenzeile beziehen, welche einmalig existiert. Es ist also nicht möglich, für verschiedene Artikel dieselbe SKU nochmals zu vergeben. Als Beispiel könnte man also die *Artikel-ID* sowie die *Variation-ID* verwenden. Beide IDs werden vom plentymarkets System bei der Anlage des Artikels vergeben und existieren jeweils nur einmal. Nun könnte jedoch der Fall eintreten, dass der Artikelexport stattgefunden hat und der Export aufgrund einer fehlenden Information im Katalog in einen Fehler gelaufen ist. Die SKU wurde aber trotzdem geschrieben und ist nun in der Variante im Tab *Verfügbarkeit* sichtbar. Beim nächsten Export würde das plentymarkets System wieder versuchen, eine SKU aus den im Katalog gewählten Quellen zu erstellen. Da diese SKU jedoch bereits existiert, kommt es zum Fehler "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique." / "SKU 1234 nicht generiert.".
+
+Deshalb ist es notwendig, eine Fallback-Lösung (Absicherung) im Katalog hinzuzufügen. Die Lösung würde dann wie folgt aussehen:
+
+[[sku]]
+.Parent-SKU und SKU
+image::maerkte/otto/assets/otto-market_fehlermeldung_sku.png[SKU]
+
+Es wird also eine zweite Quelle hinzugefügt. Beim nächsten Export wird zuerst auf die erste Quelle geschaut. Da in dieser Quelle bereits eine SKU existiert, wird die zweite Quelle ignoriert. Sollte in der ersten Quelle keine SKU existieren, dann wird mittels der zweiten Quelle eine neue SKU erstellt.
