@@ -39,6 +39,15 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 * Wir haben in der Status-UI eine neue Datumsauswahl implementiert, so dass ihr die Importe einfacher und schneller filtern könnt.
 
 [discrete]
+=== plentymarkets Status
+
+* plentymarkets Status benachrichtigt dich per E-Mail in Störungsfällen, bei wichtigen Änderungen wie z.B. der Beendigung der Softwarepflege eines Produkts oder auch bei internen sowie externen Wartungsarbeiten bei einem unserer Partner. Im Fall einer Störung wird in der E-Mail der voraussichtliche Zeitpunkt der Behebung bekannt gegeben.
++
+Um Status-E-Mails zu abonnieren, zeige mit der Maus auf die dein Benutzerbild oben rechts im plentymarkets Backend, klicke auf plentymarkets Status und aktiviere die Umschaltfläche.
++
+Weitere Informationen findest du im Handbuch auf der Seite <<basics/admin-tasks/plentymarkets-status#, plentymarkets Status>> oder im link:https://forum.plentymarkets.com/t/plentymarkets-status-wird-ausgerollt-plentymarkets-status-roll-out/583035[Forum^].
+
+[discrete]
 === Plugin-Übersicht
 
 * Du kannst ab jetzt die Inhalte deiner Plugin-Sets in der neuen Plugin-UI einsehen. Öffne dazu das Menü *Plugins » Plugin-Set-Übersicht (Alpha)* und klicke auf die Schaltfläche Plugin-Set bearbeiten.
@@ -82,10 +91,15 @@ Für Backend-Benutzer, die nicht alle Berechtigungen im Bereich *E-Mail* bearbei
 ======
 
 [discrete]
+=== Import
+
+* Bei der Auftragsanlage per REST oder ElasticSync ist es nun notwendig bei den Positionen einen Preis anzugeben.
+
+[discrete]
 === OTTO
 
-:otto-master-date: 13.03.2020
-:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/1/f/1f4896c4208f67da83de57eb350532b1499eddd0.xlsx
+:otto-master-date: 20.03.2020
+:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/9/2/92a5b6ae0d444546b4728e57ac965032fb868932.xlsx
 
 include::changelog/_textblocks/otto-master-file.adoc[]
 
@@ -95,6 +109,24 @@ include::changelog/_textblocks/otto-master-file.adoc[]
 == Behoben
 
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Amazon VCS
+
+* Bei den Korrekturen von Amazon-Gutschriften auf Basis der Amazon-Berichte wurde nicht beachtet, dass Amazon negative Beträge übermittelt, weswegen Gutschriften in plenty auch zu negativen Beträgen korrigiert wurden. Dies wurde nun behoben. Die Beträge bereits fehlerhaft durch diesen Prozess korrigierte Gutschriften werden invertiert. Promotions werden wieder negativ, andere Beträge wieder positiv.
++
+Dieser Fehler besteht seit der Einführung der Korrekturen Mitte Februar.
+
+[discrete]
+=== Aufträge
+
+* Bei der Anlage/Speicherung neuer Aufträge mit Paket-Artikeln konnte es zu dem Verhalten kommen, dass die Bestände der Komponenten kurzzeitig nicht reserviert wurden. Kurzzeitig bedeutet in diesem Kontext, dass jede ausgelöste Bestandsberechnung die Reservierung der Paketartikel und der dazugehörigen Bestandteile korrigiert hat.
++
+Dieses Verhalten wurde behoben, so dass zukünftig bei der Neuanlage eines Auftrages die Bestände der Paketbestandteile korrekt reserviert werden.
+* Bei Anlage von Amazon FBA Aufträgen mit Bundle-Artikeln kam es dazu, dass die Aufträge nicht im korrekten Status angelegt werden. Dies wurde behoben.
+* Bei der Anlage von Aufträgen mit Bundle-Artikeln konnte es erneut dazu kommen, dass Bestände nicht direkt reserviert wurden. Jede nachfolgende Bestandsberechnung hat die Reservierung korrigiert.
++
+Dieses Verhalten wurde behoben, so dass zukünftig bei der Neuanlage eines Auftrages mit Bundle-Artikeln die Bestände korrekt reserviert werden.
 
 [discrete]
 === Auftragsdokumente
@@ -107,6 +139,20 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 * In der Übersicht der Ereignisaktionen wurde bei einigen Aktionen und Filtern unnötigerweise *not yet implemented* angezeigt. Das wurde entfernt.
 
 [discrete]
+=== ElasticSearch-Index
+
+* Es kam zu dem Fehler, dass der ElasticSearch-Index nicht aktualisiert wurde, wenn neue Facetten erstellt oder der Haken *Gruppierbar in Artikellisten* am Attribut gesetzt wurde. Hierfür wurde ein Fix erstellt, so dass die Aktualisierung automatisch durchgeführt wird.
+
+[discrete]
+=== Import
+
+* Aufgrund eines Fehlers konnten keine Auftragsimporte durchgeführt werden. Diesen Fehler haben wir behoben.
+* Bei Aktualisierungen von Aufträgen via Import, kam es vereinzelt zu Problemen bei dem Laden der Auftragsdaten. Dies wurde behoben.
+* Aufgrund eines Fehlers wurden nicht alle Daten importiert wenn man das Format Item nutzte. Diesen Fehler haben wir behoben.
+* Beim Import von *EbayItemSpecifics* kam es zu einem Fehler, wenn der letzte Wert falsch formatiert war. Der Import wurde aufgrund eines fehlenden schließenden Hochkommas abgebrochen. Dieses Verhalten wird jetzt abgefangen, sodass der Import auch bei dieser Fehlkonfiguration funktioniert.
+* Aufgrund eines Fehlers konnten keine mathematischen Berechnungen beim Import durchgeführt werden.
+
+[discrete]
 === Nachbestellungen
 
 * Innerhalb einer Nachbestellung oder Umbuchung gelangt man durch die Betätigung des Links der Artikel-ID in die jeweilige Artikel-Detailsansicht. Über den Tab *Bestand* des Artikels und die dortige Betätigung des Links des physischen Warenbestandes, öffnet die Warenbewegungen der jeweils ausgewählten Variante.
@@ -114,6 +160,13 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 Dieses Verhalten führte bisher zu einem Fehler (Meldung: `Beim Öffnen der Warenbewegung ist ein Fehler aufgetreten.`), der in Zusammenhang mit dem beschriebenen Workflow steht. Es wurde eine Anpassung für beta7 zur Verfügung gestellt, die diesen Fehler behebt, so dass zukünftig die Warenbewegungen der Varianten problemlos geöffnet werden können.
 +
 Durch die Anpassung des Fehlverhaltens wird zukünftig bei der Betätigung des Links der Artikel-ID (in der Artikel-Liste der Nachbestellung) nicht mehr der Tab *Global* geöffnet, sondern stattdessen die jeweilige Detailsansicht der Variante.
+
+[discrete]
+=== PDF
+
+* Beim Zusammenführen mehrerer PDFs zu einem PDF wurden die Seitendimensionen und die Seitenausrichtung nicht korrekt übernommen.
++
+Nun werden sowohl die Dimensionen als auch die Ausrichtung jeder Seite von jedem PDF korrekt in das neue PDF übernommen.
 
 [discrete]
 === PO-Lieferschein
@@ -130,15 +183,80 @@ early::
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
+[discrete]
+=== Elastischer Export
 
+* Ab sofort ist es möglich über den FormatDesigner einen Export der Eigenschaften vom Typ Kontakt mit Bezug zur Kontakt-ID zu konfigurieren:
++
+ContactProperty wurde als Subtyp des Kontaktformats hinzugefügt und bietet als Filter die ID der Eigenschaft, den Wert der Eigenschaft, den Typ der Eigenschaft, die zur Eigenschaft verlinkte Kontakt-ID sowie die Option, alle zur Eigenschaft gespeicherten Daten zu exportieren.
+
+[discrete]
+=== Kataloge
+
+* Ab sofort kann man Kataloge 1:1 kopieren.
+* Ab sofort kann man Kataloge für den Export deaktivieren und aktivieren.
+* Ab sofort kann man über einen Toggle die nicht obligatorischen Felder ein- und ausblenden. Standardmäßig werden immer nur die Pflichtfelder des jeweiligen Kataloges angezeigt.
+* Ab sofort kann man den Katalognamen ändern.
+* Ab sofort werden im Katalog bei den einzelnen Bereichen Überschriften ausgegeben.
+* Ab sofort können Datenquellen miteinander kombiniert werden. Des Weiteren könnt ihr das Trennzeichen, das zwischen den Quellen stehen soll, beliebig wählen.
++
+Weitere Informationen findest du auf der Handbuchseite <<daten/daten-exportieren/kataloge-verwalten#70, Kataloge verwalten>>.
+* Ab sofort könnt ihr Eigene Werte exportieren.
++
+image:changelog/assets/kataloge-eigene-werte-exportieren.png[width=640, alt=Eigene Werte exportieren.]
 
 '''
 
+[discrete]
+== Geändert
 
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+=== Elastischer Export
+
+* Man konnte bislang nur seine ersten 50 Attribute im Attributs-Filter auswählen, dieses Limit wurde nun auf 350 hinauf gesetzt. Im Zuge der Änderung werden die Attribute nun auch alphabetisch sortiert.
+
+[discrete]
+=== Kataloge
+
+* Wir haben den Unterpunkt *Bild* in *Alle verfügbaren Bilder* umbenannt.
+
+[discrete]
+=== Prozesse
+
+* Ab sofort wird die Meldung *Keine Aufträge gefunden* nicht mehr als Fehlermeldung ausgegeben. Die Meldungen verschwinden nach kurzer Zeit wieder von allein.
 
 '''
 
+[discrete]
+== Behoben
 
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Import
+
+* Wenn man bei Anlage einer neuen Zuordnung nicht auf *Speichern* klickte und das Fenster erneut öffnete, so konnte man nicht auf *Speichern* klicken. Diesen Fehler haben wir nun behoben.
+
+[discrete]
+=== Kataloge
+
+* Die Schaltfläche *Quelle entfernen* hatte keine Funktion. Dieses Fehlverhalten haben wir nun behoben.
+* Es gab einen Fehler bei der Paginierung. Wenn man z.B. auf Seite 2 klickte, gelangte man auf Seite 1 zurück. Diesen Fehler haben wir behoben.
+* War der Sync-Name zu lang, so war kein Abstand zwischen den Buttons Status und Datei-Upload vorhanden. Diesen Fehler haben wir nun behoben.
+* Wurde in einem Sync nur eine Zuordnung angelegt und gespeichert, so erschien die Fehlermeldung *Die Positionsnummer ist bereits vergeben*. Diesen Fehler haben wir nun behoben.
+
+'''
+
+[discrete]
+== Gelöscht
+
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *early* gelöscht.
+
+[discrete]
+=== Facettensuche
+
+* Der Tab *Such-Index* in den Einstelungen der Facettensuche im Menü *Einrichtung » Mandant » Global » Dienste » Facettensuche* wurde gelöscht, da er nicht mehr gebraucht wird. Einstellungen an der Facettensuche werden im Menü *System » Artikel » Suche » Frontend » Sucheinstellungen* vorgenommen.
 
 --
 
@@ -153,6 +271,10 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Plugin-Name
 |Version
 |To-do
+
+|link:https://marketplace.plentymarkets.com/plugins/payment/payuponpickup_4757[Barzahlung^]
+|2.0.1
+|-
 
 |link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/notificationbar_6767[Ceres Beautifier: Notification Bar^]
 |1.0.0
@@ -170,6 +292,10 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |1.1.1
 |-
 
+|link:https://marketplace.plentymarkets.com/plugins/payment/ingenicozvt_5140[IngenicoZVT^]
+|1.0.3
+|-
+
 |link:https://marketplace.plentymarkets.com/plugins/sales/marketing/wesiocatalog_6759[Kataloggenerator^]
 |1.0.0
 |-
@@ -178,12 +304,24 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |1.0.6
 |-
 
+|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/cfourowlsliderwidget_6325[Owl Carousel Pro^]
+|1.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/payment/posinvoice_5590[plentyPOS Kauf auf Rechnung^]
+|1.2.1
+|-
+
 |link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/cfourseochecktool_5157[SEO Check Frontend Tool^]
 |1.2.1
 |-
 
 |link:https://marketplace.plentymarkets.com/plugins/individualisierung/shopbuilder-widgets/d2gpmpluginshippingicons_6756[Versand Icons Widget^]
 |1.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/payment/prepayment_4758[Vorkasse^]
+|3.0.1
 |-
 
 |===
