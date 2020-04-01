@@ -19,7 +19,7 @@ Die Anbindung von OTTO market an plentymarkets stellt folgende automatisierte Pr
 
 * Auftragsimport alle 15 Minuten
 * Preis- und Bestandsabgleich alle 15 Minuten
-* Artikeldaten werden einmal täglich aktualisiert
+* Tägliche Aktualisierung von Artikeldaten
 
 
 [#200]
@@ -94,6 +94,76 @@ Verkaufspreis für OTTO market festlegen:
 . Öffne das Menü *Einrichtung » Artikel » Verkaufspreise » Verkaufspreis öffnen » Tab: Einstellungen*.
 . Setze ein Häkchen bei der Herkunft *OTTO market*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+
+[#425]
+== Zahlungsart aktivieren
+
+Aktiviere die <<payment/zahlungsarten-verwalten#, Zahlungsart>> *Otto Payment*, wie im Folgenden beschrieben.
+
+[.instruction]
+Zahlungsart *Otto Payment* aktivieren:
+
+. Öffne das Menü *Einrichtung » Aufträge » Zahlung » Zahlungsarten*.
+. Aktiviere die Einstellung *Auch inaktive zeigen*.
+. Öffne den Ordner *International*.
+. Klicke auf *Otto Payment*. +
+→ Das Tab *Einstellungen* wird geöffnet.
+. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<zahlungsart-otto-market>>.
+. Setze ein Häkchen bei der Option *Aktiv*.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[[zahlungsart-otto-market]]
+.Einstellungen der Zahlungsart
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+|*Sprache*
+|Folgende Optionen werden sprachabhängig gespeichert: *Name*, *Infoseite*, *Infoseite (Intern)*, *Logo* und *Logo hochladen*. Damit hast du die Möglichkeit, die Werte für diese Optionen in mehreren Sprachen einzugeben. Die Werte einer Sprache werden aktiviert, wenn Käufer*innen im Webshop die Sprache wählen.
+
+|*Name*
+|Name eingeben, der im Webshop und auf Rechnungen etc. angezeigt werden soll.
+
+|*Infoseite*
+|Als Information zur Zahlungsart eine Kategorieseite vom Typ *Content* oder die URL einer Webseite eingeben.
+
+|*Infoseite (Extern)*
+|Wenn unter *Infoseite* die Einstellung *Infoseite (Extern)* gewählt wurde, hier die URL der Infoseite eingeben.
+
+|*Lieferländer*
+|Kein Lieferland wählen. +
+Du kannst die Zahlungsart nicht in deinem Webshop verwenden. Deshalb wird diese Zahlungsart in plentymarkets nur aktiviert, aber nicht vollständig eingerichtet.
+
+|*Logo*
+|Eine der folgenden Optionen für die Anzeige eines Logos wählen: +
+*Standardlogo anzeigen* = Das in plentymarkets für die Zahlungsart eingestellte Logo wird angezeigt. +
+*Kein Logo anzeigen* = Das in plentymarkets für die Zahlungsart eingestellte Logo wird nicht angezeigt. +
+*Upload-Logo anzeigen* = Blendet die Optionen *Logoansicht* und *Logo hochladen* ein.
+
+|*Logoansicht*
+|Wenn unter *Logo* die Option *Upload-Logo anzeigen* gewählt wurde, wird das hochgeladene Logo hier angezeigt.
+
+|*Logo hochladen*
+|Wenn unter *Logo* die Option *Upload-Logo anzeigen* gewählt wurde, hier ein externes Logo hochladen. +
+Auf *Dateien hochladen* klicken und das Logo wählen, das für die Zahlungsart hochgeladen werden soll. Erlaubte Datenformate: GIF, PNG und JPG.
+
+|*Priorität*
+|Priorität für die Anzeige der Zahlungsart im Webshop wählen.
+
+|*Kosten: Pauschal oder Prozentual*
+|Wenn bei der Zahlungsart zusätzliche Kosten berechnet werden, den Prozentwert oder Pauschalwert gemäß der Vertragskonditionen eingeben. *Wichtig*: Nicht in beide Felder einen Wert eingeben.  +
+Weitere Informationen findest du auf der Handbuchseite <<basics/arbeiten-mit-plentymarkets/statistik/statistiken-verwalten#, Statistiken verwalten>>. Ein Beispiel für pauschale und prozentuale Kosten findest du auf der Handbuchseite <<payment/zahlungsarten-verwalten#20, Zahlungsarten verwalten>>.
+|====
+
+[TIP]
+.Zahlungsart in Kundenklassen erlauben
+====
+Im Menü *Einrichtung » CRM » Kundenklassen* aktivierst oder deaktivierst du *erlaubte Zahlungsarten*. +
+Weitere Informationen findest du im Kapitel <<payment/zahlungsarten-verwalten#30, Zahlungsart in Kundenklasse erlauben>>.
+====
+
+Weitere Informationen findest du auf der Handbuchseite <<payment/zahlungsarten-verwalten#, Zahlungsarten verwalten>>.
 
 
 [#450]
@@ -173,6 +243,12 @@ Richte <<automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um OTTO mark
 
 In den folgenden Kapiteln wird beschrieben, wie du die Ereignisaktionen in plentymarkets einrichtest.
 
+[IMPORTANT]
+.Reihenfolge der Ereignisaktionen beachten
+====
+Beachte bei der Auftragsbearbeitung unbedingt die Reihenfolge der Ereignisaktionen. Zuerst muss die Ereignisaktion <<DHL-Retourenlabel generieren, DHL-Retourenlabel generieren>> ausgelöst werden, als nächstes die Ereignisaktion <<Auftragsbestätigung an OTTO melden, Auftragsbestätigung an OTTO melden>> und danach die Ereignisaktion <<Versandinformation an OTTO melden, Versandinformation an OTTO melden>>. Wenn die Ereignisaktionen nicht in dieser Reihenfolge ausgelöst werden, kann keine Versandbestätigung an OTTO market gesendet werden.
+====
+
 [#550]
 === DHL-Retourenlabel generieren
 
@@ -182,7 +258,7 @@ Damit die Tracking-Nummer zusammen mit der Versandbestätigung an OTTO market ge
 
 *Hinweis:* Das Retourenlabel kann momentan nur mit DHL generiert werden. Weitere Versanddienstleister folgen.
 
-[TIP]
+[IMPORTANT]
 .Plugin DHL Retoure Online installieren
 ====
 Um ein DHL-Retouren-Label generieren zu können, muss das Plugin *DHL Retoure Online* in deinem plentymarkets System installiert, aktiviert und eingerichtet sein. Das Plugin erhältst du im link:https://marketplace.plentymarkets.com/plugins/integration/dhlretoureonline_6714[plentyMarketplace^].
@@ -451,7 +527,27 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO m
 |====
 
 
+[#1050]
+== Auftragsbearbeitung bei OTTO market
+
+Im Folgenden erfährst du, wie Aufträge bei OTTO market verarbeitet werden.
+
 [#1100]
+=== Auftragsimport
+
+OTTO market-Aufträge werden als unbezahlt in Status *[3] Warten auf Zahlung* in plentymarkets importiert. Nachdem ein Auftrag von OTTO market bestätigt wurde, wechselt er in Status *[5] Freigabe Versand*. In plentymarkets wird eine Zahlung für den Auftrag erstellt und der Auftrag als *bezahlt* gekennzeichnet. Falls ein Kunde den Auftrag bei OTTO market per Überweisung bezahlt hat, kann die Auftragsbestätigung längern dauern als bei anderen Zahlungsarten. In plentymarkets wird die Zahlungsart immer als *OTTO Payment* angezeigt. +
+
+Wenn ein Auftrag nicht bezahlt wird, storniert OTTO market den Auftrag nach einer gewissen Zeit und sendet eine Stornierung an plentymarkets. In plentymarkets wechselt der unbezahlte Auftrag dann automatisch in Status *[8] Storniert*.
+
+[#1200]
+=== Rechnungsimport
+
+Rechnungen für OTTO market-Aufträge werden von OTTO market selbst erstellt und automatisch in plentymarkets importiert, sobald du den Versand der Ware bei OTTO market bestätigt hast. Eine Versandbestätigung sendest du mit der Ereignisaktion <<Versandinformation an OTTO melden, Versandinformation an OTTO melden>> an OTTO market. Die Rechnungsdokumente sind nach erfolgreicher Versandbestätigung im Tab *Belege* des Hauptauftrags verfügbar. Das heißt, dass du für OTTO market keine Rechnungen in plentymarkets erstellen kannst. +
+
+Da Rechnungen immer dann von OTTO market erstellt werden, wenn der Versand eines Artikels bestätigt wurde, werden auch Rechnungen für Teillieferungen generiert.
+
+
+[#1300]
 == FAQ
 
 [qanda]
@@ -487,7 +583,7 @@ Nachfolgend findest du ein exemplarisches DHL-Retourenetikett. Auf dem Etikett i
 image::maerkte/otto/assets/dhl-retourenetikett.png[DHL-Retourenetikett]
 
 Wie kann ich bei Kundenanfragen einen Auftrag von OTTO market im plentymarkets System finden?::
-Da die Frage “Wie kann ich bei Kundenanfragen einen Auftrag von Otto Market finden?” öfter im plentymarkets Forum aufkommt, nachfolgend eine kurze Beschreibung.
+Da die Frage “Wie kann ich bei Kundenanfragen einen Auftrag von OTTO market finden?” öfter im plentymarkets Forum aufkommt, nachfolgend eine kurze Beschreibung.
 +
 Im plentymarkets Forum wird öfters von *PositionID* (Beispiel: 715e9369-01e3-4d09-ae91-8688dfa139b2) und *SalesOrderID* (Beispiel: 4245eac7-4647-4f76-8c48-261afb19aa96) gesprochen, diese sind für dich als Händler jedoch nicht relevant. Diese IDs sind für dich nicht sichtbar - es handelt sich um die Bezeichnung des Auftrags und der enthaltenen Positionen in unserer plentymarkets Datenbank.
 +
@@ -515,7 +611,7 @@ image::maerkte/otto/assets/plentymarkets_externe-auftragsnummer.png[externe Auft
 +
 Sollte ein Kunde eine Rückfrage zu dem Auftrag haben, kannst du anhand der externen Auftragsnummer den Auftrag finden.
 +
-Außerdem kannst du mit dem Filter *Herkunft* natürlich immer alle Otto market-Aufträge filtern.
+Außerdem kannst du mit dem Filter *Herkunft* natürlich immer alle OTTO market-Aufträge filtern.
 
 Im Log erhalte ich den Fehler "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique". Wie kann ich diesen Fehler beheben?::
 Dieser Fehler wird im Log z.B. auch unter “SKU 1234 nicht generiert” angezeigt.

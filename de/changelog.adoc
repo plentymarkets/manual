@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 12. März 2020
-:endWeekDate: 18. März 2020
-:nav-alias: Changelog 18. März 2020
+:startWeekDate: 26. März 2020
+:endWeekDate: 01. April 2020
+:nav-alias: Changelog 01. April 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
@@ -27,38 +27,57 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Gruppenfunktion und Stapelverarbeitung
+=== Amazon
 
-* Es ist jetzt möglich unter *Daten » Log* zu ausgeführten Gruppenfunktionen und Stapelverarbeitungen Logeinträge einzusehen. Mit dem Identifikator `GroupActionDataWriter::execute` könnt ihr genau nach diesen Einträgen filtern. Folgende Informationen werden gespeichert:
-** User-ID (UserInfo)
-** Startzeitpunkt/Endzeitpunkt
-** Anzahl an betroffenen Artikeln/Varianten (VariationInfo)
-** die ausgeführte Aktion (Actions)
-** Daten zu den einzelnen Aktionen (DataInfo)
-
-+
-Anhand des Endzeitpunktes lässt sich auch erkennen, ob eine Gruppenfunktion oder Stapelverarbeitung abgebrochen wurde. +
-image:changelog/assets/log-gruppenfunktion-stapelverarbeitung.png[width=640, alt=Logeintrag.]
+* Es ist nun auch für Händler die kein VCS (auch nicht LITE bzw. VCS plentymarkets) nutzen möglich, die Gutschriftsdokumente zu Amazon hochzuladen. Die erst als Pflichtfeld angenommene Transaktions-ID ist für diese Fälle kein Pflichtfeld. Betroffenene Händler können dann also ebenfalls über die Ereignisaktion *Rechnung bei Amazon hochladen* die Gutschriftsdokumente zu Amazon hochladen.
+* Du kannst ab jetzt auch Amazon NL in den ASINS an der Variante auswählen.
 
 [discrete]
-=== Import
+=== Amazon VCS
 
-* Ab sofort ist es nicht mehr notwendig bei Erstellung einer neuen Zuordnung eine Positionsnummer zu vergeben. Das System vergibt diese automatisch. Die Reihenfolge könnt ihr weiterhin im Bereich *Einstellungen* anpassen.
-* In der Status-UI haben wir eine Spalte Namens *ID* hinzugefügt. Die einzelnen Importe können nun anhand dieser Nummer besser auseinander gehalten werden.
+* Für *Amazon VCS Lite* (VCS plentymarkets, d.h. Generierung der Dokumente durch den Händler) wurde nun implementiert, dass beim Abgleich der VIDR-Berichte von Amazon ebenfalls Gutschriften zugeordnet und auf Basis der Daten von Amazon korrigiert werden.
+Bevor eine Korrektur durchgeführt wird, werden für bereits existierende Gutschriftendokumente Stornobelege erzeugt. Im Anschluss an die Korrektur wird ein neuer Beleg erzeugt. Dieser wird dann automatisch in die Warteschleife für den Upload zu Amazon eingereiht.
++
+Ebenfalls angepasst wurde die Ereignisaktion *Rechnung bei Amazon hochladen*. Diese funktioniert nun auch für Gutschriften mit entsprechenden Dokumenten.
+Wichtig ist hier, dass die Ereignisaktion erst nach dem Import des VIDR-Berichts der Gutschrift funktioniert, da dieser Bericht die Transaktions-ID enthält, die für den Upload der Gutschriftendokumente notwendig ist. Die Transaktions-ID wird als OrderProperty mit der ID 79 zur Gutschrift hinzugefügt. Ohne diese Transaktions-ID ist es nicht möglich, ein Gutschriftendokument zu Amazon hochzuladen.
++
+Weil aktuell noch keine Möglichkeit gefunden wurde, die Transaktions-ID für Gutschriften zu erhalten, ohne den VIDR-Bericht zu importieren, können Händler, die weder VCS noch VCS Lite benutzen, weiterhin keine Gutschriftendokumente zu Amazon hochladen. Wir versuchen immer noch, eine Lösung für diese Händler zu finden.
 
 [discrete]
-=== Messenger
+=== Elastischer Export
 
-* Im Bereich Messenger des Kontaktdatensatzes wurde eine Stoppuhr hinzugefügt, die zu zählen beginnt, sobald man den Messenger öffnet. In dem Moment, in dem die Nachricht gesendet wird, wird die Stoppuhr automatisch auf 0 zurückgesetzt.
+* Ab sofort ist es möglich über den FormatDesigner einen Export der Eigenschaften vom Typ Kontakt mit Bezug zur Kontakt-ID zu konfigurieren:
 +
-image:changelog/assets/messenger-stoppuhr.png[width=640, alt=Stoppuhr.]
-+
-Beim Wechsel von einem Kontaktdatensatz in einen anderen läuft die Uhr im Hintergrund weiter. Du kannst die Stoppuhr jederzeit pausieren und zurücksetzen.
+ContactProperty wurde als Subtyp des Kontaktformats hinzugefügt und bietet als Filter die ID der Eigenschaft, den Wert der Eigenschaft, den Typ der Eigenschaft, die zur Eigenschaft verlinkte Kontakt-ID sowie die Option, alle zur Eigenschaft gespeicherten Daten zu exportieren.
 
 [discrete]
-=== Nachbestellungen
+=== Kataloge
 
-* Es wird nun auch für die Positionen von Nachbestellungen das Lieferdatum ermittelt und angezeigt.
+* Ab sofort kann man Kataloge 1:1 kopieren.
+* Ab sofort kann man Kataloge für den Export deaktivieren und aktivieren.
+* Ab sofort kann man über einen Toggle die nicht obligatorischen Felder ein- und ausblenden. Standardmäßig werden immer nur die Pflichtfelder des jeweiligen Kataloges angezeigt.
+* Ab sofort kann man den Katalognamen ändern.
+* Ab sofort werden im Katalog bei den einzelnen Bereichen Überschriften ausgegeben.
+* Ab sofort können Datenquellen miteinander kombiniert werden. Des Weiteren könnt ihr das Trennzeichen, das zwischen den Quellen stehen soll, beliebig wählen.
++
+Weitere Informationen findest du auf der Handbuchseite <<daten/daten-exportieren/kataloge-verwalten#70, Kataloge verwalten>>.
+* Ab sofort könnt ihr Eigene Werte exportieren.
++
+image:changelog/assets/kataloge-eigene-werte-exportieren.png[width=640, alt=Eigene Werte exportieren.]
+
+[discrete]
+=== Mahnungsprozess
+
+* Es gibt einen neuen Auftragsposition Typ *dunning charge* für die Mahngebühren (`typeId == 12`). Diese enthält keine Steuerinformationen (immer brutto).
+* Die neue Auftragsposition *dunning charge* hat eine Property (`typeId == 3`, Dokumentnummer) mit der Dokumentnummer der Mahnung, für die die Position hinzugefügt wurde.
+* Es gibt ein neues Dokument *Mahnungstorno* unter den Standortdokumenten (*Einrichtung » Mandant » Standorte » Dokumente » Stornobeleg Mahnung*), welches die letzte Mahnung storniert.
++
+Weitere Informationen findest du auf der Handbuchseite <<auftraege/auftragsdokumente/mahnungen-erzeugen#, Mahnungen>>.
+
+[discrete]
+=== Picklisten
+
+* Es ist nun möglich, Picklisten auch für Umbuchungen (*Waren » Bestellungen*) zu generieren. Diese kann z.B. über den Bereich *Aufträge » Fulfillment* in den Abschnitt *Pickliste* erstellt werden.
 
 '''
 
@@ -68,20 +87,51 @@ Beim Wechsel von einem Kontaktdatensatz in einen anderen läuft die Uhr im Hinte
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== Elastischer Export
 
-* Es ist nicht mehr möglich, die Menge von Bundle-Artikeln und ihren Bundle-Bestandteilen nachträglich in der Auftragsbearbeitung zu ändern. Dadurch wird sichergestellt, dass die Menge an Bundle-Artikeln und ihrer Bundle-Bestandteilen zueinander passen.
+* Man konnte bislang nur seine ersten 50 Attribute im Attributs-Filter auswählen, dieses Limit wurde nun auf 350 hinauf gesetzt. Im Zuge der Änderung werden die Attribute nun auch alphabetisch sortiert.
+
+[discrete]
+=== Import
+
+* Wir haben innerhalb der Status-UI, das Feld *ID* in *Verarbeitungs-ID* umbenannt.
+* Wir haben innerhalb der Status-UI im Datepicker *Endzeit bis* in *Startzeit bis* umbenannt.
+
+[discrete]
+=== Kataloge
+
+* Wir haben den Unterpunkt *Bild* in *Alle verfügbaren Bilder* umbenannt.
+
+[discrete]
+=== Mahnungsprozess
+
+* Es können maximal 4 Mahnungen erzeugt werden.
+* Um eine Mahnung erzeugen zu können, muss eine nicht stornierte Rechnung existieren.
+* Solange eine nicht stornierte Mahnung existiert, kann kein Stornobeleg zur Rechnung erzeugt werden.
+Die Anzeige der Mahngebühren am Auftrag erfolgt als steuerfreie Summe und nicht als Position in der Artikelliste.
 +
-Um die Menge manuell zu anzupassen, muss das Bundle in der gewünschten Menge dem Auftrag _neu_ hinzugefügt werden.
-* Für die oben genannte Änderung wurde eine neue Systemeinstellung eingeführt, die, wenn sie aktiviert wird, es weiterhin ermöglicht die Mengen von Bundle-Artikel und Bundle-Bestandteilen zu ändern.
+[IMPORTANT]
+.To-Do
+======
+Für die erfolgreiche Erzeugung eines Mahnungstornos muss zunächst die Dokument-Einstellung unter *Einrichtung » Mandant » Standorte » Dokumente » Stornobeleg Mahnung* konfiguriert werden
+======
 +
-Die Einstellung ist zu finden unter *Einrichtung » Aufträge » Einstellungen*. Die Option *Mengenänderung von Bundle-Artikel und Bundle-Bestandteilen erlauben* wird im Standard auf *Nein* stehen und muss aktiv angepasst werden, wenn eine Änderung der Mengen im Auftrag gewollt.
+image:changelog/assets/mahnauftrag.png[width=640, alt=Mahnauftrag.]
++
+image:changelog/assets/mahnstorno.png[width=640, alt=Mahnstorno.]
++
+Weitere Informationen findest du auf der Handbuchseite <<auftraege/auftragsdokumente/mahnungen-erzeugen#, Mahnungen>>.
+
+[discrete]
+=== Prozesse
+
+* Ab sofort wird die Meldung *Keine Aufträge gefunden* nicht mehr als Fehlermeldung ausgegeben. Die Meldungen verschwinden nach kurzer Zeit wieder von allein.
 
 [discrete]
 === OTTO
 
-:otto-master-date: 13.03.2020
-:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/1/f/1f4896c4208f67da83de57eb350532b1499eddd0.xlsx
+:otto-master-date: 27.03.2020
+:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/e/4/e46b27f140ece43452372ebdd108e2ad909c6073.xlsx
 
 include::changelog/_textblocks/otto-master-file.adoc[]
 
@@ -93,38 +143,98 @@ include::changelog/_textblocks/otto-master-file.adoc[]
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
-=== Attributliste unvollständig
+=== Amazon
 
-* Es kam zu dem Fehler, dass die Attributauflistung unter *Einrichtung » Artikel » Attribute* unvollständig war. Grund war ein Bug in der Paginierung der Liste. Dieser Bug wurde behoben und der Fix verteilt.
-
-[discrete]
-=== Bestellungen
-
-* Bei den Nachbestellungen wurden die Standard-Einstellungen der Umbuchung verwendet. Dieses Verhalten wurde behoben, sodass die korrekten Einstellungen wieder verwendet werden.
+* Beim Upload der Dokumente für Gutschriften von Amazon kam es zu einem Fehler, weil die Gesamtbeträge positiv statt negativ übermittelt wurden.
++
+Betroffene Gutschriften werden automatisch erneut hochgeladen.
 
 [discrete]
-=== Hersteller-IDs
+=== Amazon VCS
 
-* Wenn man einen Hersteller mit einer bereits vorhandenen ID erstellt, so wird dieser nicht mehr überschrieben. Man erhält stattdessen eine Fehlermeldung in der steht, dass die ID bereits verwendet wird.
+* Bei VCS Amazon (also nicht VCS plentymarkets / VCS Lite) kam es beim Importieren und Zuordnen der Transaktionen des Amazon-Umsatzsteuer-Kalkulationsberichts zu Fehlern, wenn zu einer Transaktion mehr als ein Transaktionstyp in einem Bericht vorhanden waren, z.B. _SHIPMENT_ und _REFUND_.
+Dieses Problem entstand durch die Gruppierung der CSV-Zeilen auf Basis der Shipment ID statt der Transaction ID und der fehlenden Gruppierung nach Transaktions-Typen.
+Dies wurde nun korrigiert.
++
+Zusätzlich wird die Transaction ID nun ebenfalls zusätzlich an den Aufträgen an der OrderProperty mit der Typ-ID 79 gespeichert. Dadurch wird sichergestellt, dass mehrere Gutschriften mit den gleichen Artikeln und -mengen und gleicher Shipment ID, aber unterschiedlicher Transaction ID, aus unterschiedlichen Berichten nicht demselben Auftrag zugeordnet werden.
+
+[discrete]
+=== Aufträge
+
+* Bei eBay-Aufträgen mit der Zahlungsart eBay-Payments konnte es dazu kommen, dass Aufträge im Status 4 verbleiben, obwohl ausreichend Bestand verfügbar war. Zukünftig werden diese Aufträge korrekt in den Status 5 verschoben.
+* Nachdem einige nicht länger genutzte Datenbank-Tabellen für Payment entfernt wurden, ist die Bereinigung der Aufträge fehlerhaft gelaufen. Nun werden wieder Aufträge bereinigt.
+
+[discrete]
+=== Auftragsdokumente
+
+* Beim neuen AdressDesign, wenn das Rechnungsland dem Systemland entsprach und die Lieferadresse ein abweichendes Land hatte, wurde auf den Auftragsdokumenten in der Rechnungsadresse das Lieferland angezeigt. Dies wurde behoben.
+
+[discrete]
+=== Facetten
+
+* Durch einen Fehler wurden Facetten, die aus Mehrfachauswahleigenschaften bestehen, nicht im ES-Index gespeichert. Dadurch konnten diese Facetten auch nicht im Webshop dargestellt werden. Dieser Fehler konnte behoben werden.
 
 [discrete]
 === Import
 
-* Nutzte man die Option *Datei löschen nachdem der Import ausgeführt wurde*, so wurden die Dateien nicht gelöscht.
-* Aufgrund eines Fehlers konnte man den Sync trotz deaktivierter Zuordnungen ausführen.
-* Aufgrund eines Fehlers funktionierte die Importoption *englische Schreibweise* nicht. Diesen Fehler haben wir behoben.
-* Aufgrund eines Fehlers wurden in einigen Systemen keine Syncs ausgeführt oder es wurden keine Daten importiert. Diesen Fehler haben wir behoben.
-* Aufgrund eines Fehlers wurde die StatusUI nicht korrekt geladen. Diesen Fehler haben wir behoben.
+* Wenn man bei Anlage einer neuen Zuordnung nicht auf *Speichern* klickte und das Fenster erneut öffnete, so konnte man nicht auf *Speichern* klicken. Diesen Fehler haben wir nun behoben.
+* In einigen Systemen konnte aufgrund eines Fehlers keine Dateien von SFTP-Servern importiert werden. Diesen Fehler haben wir behoben.
+* Dateien konnten nicht in das Archiv des SFTP-Servers verschoben werden. Diesen Fehler haben wir behoben.
 
 [discrete]
-=== Kontakte
+=== Kataloge
 
-* Bestimmte Eigenschaften unter *CRM » Kontakte* wurden nicht korrekt angezeigt, Eigenschaftswerte wurden in manchen Fällen nicht gespeichert und bei selbst definierten Kundentypen wurden Eigenschaften nicht ausgegeben. Dieses Verhalten wurde behoben.
+* Die Schaltfläche *Quelle entfernen* hatte keine Funktion. Dieses Fehlverhalten haben wir nun behoben.
+* Es gab einen Fehler bei der Paginierung. Wenn man z.B. auf Seite 2 klickte, gelangte man auf Seite 1 zurück. Diesen Fehler haben wir behoben.
+* War der Sync-Name zu lang, so war kein Abstand zwischen den Buttons Status und Datei-Upload vorhanden. Diesen Fehler haben wir nun behoben.
+* Wurde in einem Sync nur eine Zuordnung angelegt und gespeichert, so erschien die Fehlermeldung *Die Positionsnummer ist bereits vergeben*. Diesen Fehler haben wir nun behoben.
+* Aufgrund eines Fehlers liefen in einigen Systemen die zeitgesteuerten Syncs nicht zur gewünschten Zeit. Diesen Fehler haben wir behoben.
 
 [discrete]
-=== Retourengrund bei Paketbestandteilen
+=== Marktplatzverknüpfungen
 
-* Die Übernahme eines Paketes in eine Retoure hat bisher den Retourengrund nicht auf die Paket-Bestandteile der Retoure übertragen, sondern stattdessen denjenigen mit der geringsten Id. Dieser Verhalten wurde insofern geändert, dass der Retourengrund des Paketes auf die Bestandteile übertragen wird.
+* Beim Import der Marktplatzattributverknüpfung kam es zu folgendem Fehler:
++
+`Argument 1 passed to Plenty\Modules\Item\Syncs\Variation\Actions\UpdateItemImage::linkAttributeImage() must be of the type int, null given`
++
+Dieser Fehler konnte behoben werden.
+
+[discrete]
+=== Merkmale
+
+* Das Verknüpfen von Auswahlmerkmalen und das gleichzeitige Anlegen neuer Auswahlwerte der Merkmale funktioniert nun wieder wie gewohnt.
+
+[discrete]
+=== OTTO
+
+* Unter *Einrichtung » Märkte » OTTO » Modell » Tab: Artikelliste* gab es zwei Fehler:
+** War es nicht mehr möglich die Artikelkatalog-Log-Datei herunterzuladen und
+** wenn mehrere Bestandsdateien innerhalb eines Prozesses generiert wurden, stand nur die erste Datei zur Verfügung.
+
++
+Nachtrag: Neben der Artikelkatalog-Log-Datei werden alle anderen Dateien bis zum nächsten Export nicht zum Download zur Verfügung stehen, weil die Dateistruktur angepasst wurde.
+
+[discrete]
+=== REWE-Katalog
+
+* Innerhalb des REWE-Kataloges war nicht möglich hinzugefügte Quellen wieder zu entfernen. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Umbuchungen
+
+* Bei der Erstellung einer Umbuchung konnte es zu dem Verhalten kommen, dass die Waren doppelt in der Umbuchung aufgeführt werden. Dies trat nur unter der Bedingung auf, dass direkt nach der Speicherung der Umbuchung über den Warenkorb, die Umbuchung über die Schaltfläche *Bestellung auslösen* bestellt wurde. Dieses Verhalten wurde behoben, so dass doppelte Waren nicht mehr angezeigt werden.
+
+'''
+
+[discrete]
+== Gelöscht
+
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* gelöscht.
+
+[discrete]
+=== Facettensuche
+
+* Der Tab *Such-Index* in den Einstelungen der Facettensuche im Menü *Einrichtung » Mandant » Global » Dienste » Facettensuche* wurde gelöscht, da er nicht mehr gebraucht wird. Einstellungen an der Facettensuche werden im Menü *System » Artikel » Suche » Frontend » Sucheinstellungen* vorgenommen.
 
 --
 
@@ -137,32 +247,22 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Datenbereinigung
+=== Bestellungen
 
-* In der Bereinigungs-UI im Menü *Einrichtung » Einstellungen » Daten » Bereinigung* wurde das neue Eingabefeld *Löschung von Newsletter-Registrierungen (nach Tagen)* hinzugefügt. Hier wird die Löschung der abgelaufenen und nicht bestätigten Newsletter-Anmeldungen nach Tagen eingestellt. Täglich werden Newsletter-Einträge gelöscht, die älter sind als die konfigurierten Tage.
+* Bei Umbuchungen und Nachbestellungen (*Waren » Bestellung*), wurde die Möglichkeit hinzugefügt, eigene Dateien hochzuladen.
++
+image:changelog/assets/nachbestellung_umbuchung_dokumente_hochladen.png[width=640, alt=Andere Dokumente hochladen.]
+
+[discrete]
+=== Elastischer Export
+
+* Du kannst ab jetzt im elastischen Export nach dem Land von Kontakten filtern.
 
 [discrete]
 === Import
 
-* Für den Sync-Typ *Gutschein-Code* wurden die beiden Zuordnungsfelder *Anzahl der Einlösungen* und *Eingelöster Betrag* hinzugefügt.
-* Für den Sync-Typ *Kontakte, Firmen und Adressen* wurde das Zuordnungsfeld *Ansprechpartner* in den Kontaktoptionen hinzugefügt.
-* Wir haben in der Status-UI eine neue Datumsauswahl implementiert, so dass ihr die Importe einfacher und schneller filtern könnt.
-
-[discrete]
-=== Plugin-Übersicht
-
-* Du kannst ab jetzt die Inhalte deiner Plugin-Sets in der neuen Plugin-UI einsehen. Öffne dazu das Menü *Plugins » Plugin-Set-Übersicht (Alpha)* und klicke auf die Schaltfläche Plugin-Set bearbeiten.
-+
-Du kannst momentan folgende Aktionen in der neuen UI ausführen:
-** Plugin-Set-Name ändern
-** Plugin-Set bereitstellen
-** Plugin aktivieren
-** Plugin deaktivieren
-** Konfigurationen aller Plugins in einem Plugin-Set gesammelt exportieren
-** Konfigurationen aller Plugins in einem Plugin-Set gesammelt importieren
-
-+
-Wir freuen uns bereits auf dein Feedback. Wenn du die neue UI erkundest und dir etwas auffällt, das gut, schlecht oder auch total unverständlich ist, freuen wir uns auf eine entsprechende Rückmeldung link:https://forum.plentymarkets.com/t/feedback-neue-plugin-ui-feedback-for-new-plugin-ui/579903[im zugehörigen Thema in der Forumskategorie Plugin-Einrichtung^].
+* Im Menü *Daten » Import* haben wir unter Einstellungen, Abgleich und Zuordnung die Möglichkeit hinzugefügt, vor Ausführung eines Syncs zu prüfen, ob dieser einen Fehler enthält, wie z.B. keine aktiven Zuordnungen. Diesen Fehler könnt ihr außerdem kopieren und zum Beispiel direkt ins Forum einfügen.
+* Ab sofort findet ihr in der Detailansicht der Status-UI das komplette Protokoll eines durchgelaufenen Syncs. Sollten Fehler aufgetreten sein, könnt ihr das Protokoll direkt kopieren und z.B. im Forum einfügen. Dies reduziert den Supportaufwand erheblich.
 
 '''
 
@@ -172,24 +272,11 @@ Wir freuen uns bereits auf dein Feedback. Wenn du die neue UI erkundest und dir 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Aktionen
+=== Retourenlabels
 
-* Bei Aktionen (*Einrichtung » Aufträge » Aktionen*), kann nun auch eine tägliche Ausführung zwischen 24 und 7 Uhr gewählt werden.
-
-[discrete]
-=== Benutzerrechte
-
-* Die Benutzerrechte für das Menü *Einrichtung » Mandant » Mandant wählen » E-Mail* wurden angepasst. Bisher war es im Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer* im Bereich *Berechtigungen* nur möglich, eine Berechtigung für den gesamten Bereich *E-Mail* zu setzen. Demnach wurden alle weitere Unterpunkte (Zugangsdaten, Signatur, Infodienst, Newsletter, Vorlagen, Automatischer Versand und HTML-Design) automatisch mit vergeben.
+* Bisher wurden im Versand-Center zwar alle über einen Retourenauftrag angemeldeten Retourenlabels im Hauptauftrag angezeigt, jedoch im Retourenauftrag selbst nur das Retourenlabel, das als erstes angemeldet wurde.
 +
-Dieses Verhalten wurde angepasst, sodass du nun für jeden Backend-Benutzer die einzelnen Unterberechtigungen aktivieren bzw. deaktivieren kannst.
-+
-Benutzer, die bereits den Bereich *E-Mail* aktiviert hatten, haben diesen Bereich sowie alle dazugehörigen Unterpunkte immer noch aktiviert. Wenn diese Benutzer alle E-Mail-Bereiche bearbeiten können sollen, musst du nichts anpassen.
-+
-[IMPORTANT]
-.To-Do
-======
-Für Backend-Benutzer, die nicht alle Berechtigungen im Bereich *E-Mail* bearbeiten können sollen, musst du diese anpassen. Gehe dazu in das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer* und öffne den zu bearbeitenden Benutzer und deaktiviere im Bereich *Berechtigungen* die Berechtigungen wie gewünscht.
-======
+Dieses Verhalten wurde geändert, sodass im Versand-Center alle Retourenlabels, die über den Retourenauftrag erzeugt wurden, auch in diesem Retourenauftrag angezeigt werden und die Gesamtheit aller Retourenlabels (inklusive der Retourenlabels, die über den Hauptauftrag erzeugt wurden) am Hauptauftrag angezeigt werden.
 
 '''
 
@@ -199,28 +286,14 @@ Für Backend-Benutzer, die nicht alle Berechtigungen im Bereich *E-Mail* bearbei
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
-=== Auftragsdokumente
+=== Eigenschaften
 
-* Bei Auftragsdokumenten ist es in seltenen Konstellation beim Verwenden von zwei oder mehr Mandanten und Dokumenten ohne oder mit gleichem Präfix dazu gekommen, das diese überschrieben wurden. Dieser Fall konnte aber nur eintreten, wenn Dokumente des gleichen Typs zur gleichen Zeit geschrieben wurden. Dies wurde behoben.
-
-[discrete]
-=== Ereignisaktionen
-
-* In der Übersicht der Ereignisaktionen wurde bei einigen Aktionen und Filtern unnötigerweise *not yet implemented* angezeigt. Das wurde entfernt.
+* Wir haben den Bereich Eigenschaften an der Variante überarbeitet und verschiedene Fehler bzgl. der Verknüpfung, Vererbung und Speicherung behoben.
 
 [discrete]
-=== Nachbestellungen
+=== Kataloge
 
-* Innerhalb einer Nachbestellung oder Umbuchung gelangt man durch die Betätigung des Links der Artikel-ID in die jeweilige Artikel-Detailsansicht. Über den Tab *Bestand* des Artikels und die dortige Betätigung des Links des physischen Warenbestandes, öffnet die Warenbewegungen der jeweils ausgewählten Variante.
-+
-Dieses Verhalten führte bisher zu einem Fehler (Meldung: `Beim Öffnen der Warenbewegung ist ein Fehler aufgetreten.`), der in Zusammenhang mit dem beschriebenen Workflow steht. Es wurde eine Anpassung für beta7 zur Verfügung gestellt, die diesen Fehler behebt, so dass zukünftig die Warenbewegungen der Varianten problemlos geöffnet werden können.
-+
-Durch die Anpassung des Fehlverhaltens wird zukünftig bei der Betätigung des Links der Artikel-ID (in der Artikel-Liste der Nachbestellung) nicht mehr der Tab *Global* geöffnet, sondern stattdessen die jeweilige Detailsansicht der Variante.
-
-[discrete]
-=== PO-Lieferschein
-
-* Die PDF-Vorlage beim PO Lieferschein wird nun korrekt erkannt und benutzt.
+* Wollte man Werte kombinieren, so war es nicht möglich ein Leerzeichen als Trennzeichen zu verwenden. Diesen Fehler haben wir behoben.
 
 --
 
@@ -236,12 +309,24 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/comeback_5615[Komm zurück!]
-|1.1.0
+|link:https://marketplace.plentymarkets.com/plugins/sales/marktplaetze/elasticexportcdiscountcom_4738[Cdiscount.com^]
+|1.0.23
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/payment/sofort_5050[Sofort.^]
-|1.2.3
+|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/cfourstorespecialswidget_6363[Shopaktionen Widget^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/integration/simplyletter_5104[Simplyletter^]
+|1.5.5
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/payment/sumup_5141[SumUp^]
+|1.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/payment/verifonezvt_5504[VerifoneZVT^]
+|1.0.1
 |-
 
 |===
