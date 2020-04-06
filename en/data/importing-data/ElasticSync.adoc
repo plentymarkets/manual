@@ -92,7 +92,7 @@ Creating a sync:
 
 2+^|*Basic data*
 
-|*Full label*
+|*Name*
 |Enter a name. This name is displayed in the overview and can be used for the search.
 
 |*Interval*
@@ -136,7 +136,7 @@ Currently, *CSV/TXT* is the only available option, as only CSV or TXT files can 
 |Select whether the import file contains a header.
 
 |*Use global cache*
-|When using the same file for several syncs you can determine whether you want to use the global cache. If activated, the file is cached globally, thus for all syncs.
+|Determine whether the global cache should be used for a file or not. If the setting is activated, only modified data rows will be imported. If the setting is not activated, you can import one and the same file again at any time.
 
 |*Automatic mapping*
 |Select whether the mapping should be done automatically. The columns in the CSV or TXT file can be mapped automatically to the plentymarkets data fields. To ensure that the mapping works properly, the names of the fields that you selected in the FormatDesigner must not be changed.
@@ -188,7 +188,7 @@ After running a sync, the file is automatically deleted from the webspace. This 
         * *Port (mandatory field)* = Enter the port of the FTP server. If no port is entered, the standard port (22) is used.
         * *User name (mandatory field)* = Enter the user name for the FTP access.
         * *Password (mandatory field)* = Enter the password for the FTP access.
-        * *File name* = Enter the path and the name of the file from which the data is to be imported. The file name must end with .csv or .txt. +
+        * *File name* = Enter the path and the name of the file from which the data is to be imported. The file name has to end with .csv or .txt. +
         *_Note:_* You can use wildcard characters in the field *File name* by e.g. replacing a part of the file name with a ***. Only use wildcard characters in combination with the option *Move file to archive when import was successful*.
         * *Move file to archive when import was successful* = If this option is activated, the import file is automatically moved to the new *Archive* folder in the FTP directory once the import was successful.
 |====
@@ -271,26 +271,25 @@ Setting the matching:
 [#1500]
 == Creating a mapping
 
-With a mapping, you specify which column of your file corresponds to which data field in your system. Without this mapping, no data can be imported.
+With a mapping, you specify which column of your file corresponds to which data field in your system. Without this mapping, no data can be imported. You can create new mappings in the mapping tab. A position is automatically assigned to each new mapping and can be adjusted in the settings tab if necessary.
 
 [.instruction]
-Determining the mapping:
+Creating a mapping:
 
 . Go to *Data » Import*. +
 → The sync overview opens.
-. Click on the sync in the sync overview. +
+. Click on a sync. +
 → The settings open.
-. Switch to the *Matching* tab.
-. Click on *Add mapping* (icon:plus-square[role="green"]).
+. Switch to the *Mapping* tab.
+. Click on *Add mapping* (icon:plus-square[role="green"]). +
+→ A window opens.
 . Enter a name for the mapping.
-. Enter a position for the mapping (optional).
 . *Save* (icon:save[role="green"]) the settings. +
-→ The available mapping fields differ according to the sync type.
+→ The mapping opens. → The available mapping fields differ according to the sync type.
 . Select the data fields for the mapping by placing a checkmark in the fields. +
 → The selected data fields are added to the mapping.
 . Select a column from your file for each data field or select the option *Own value*.
 . *Save* (icon:save[role="green"]) the settings.
-
 
 You want to import a file into plentymarkets, but it's missing a few key pieces of information? No need to modify the file by hand! This video shows you how to use ElasticSync’s "Own Value" function to add missing information to your sync.
 
@@ -510,8 +509,59 @@ Adding a filter:
 
 //A report is available in the overview of a sync. This report shows all imported lines including the success and error messages, which can be opened by clicking on the *Message* column. Use the filter in order to retrieve specific sync data.
 
+[#1605]
+== Error messages and troubleshooting in ElasticSync
+
+ElasticSync offers you various possibilities to identify incorrect syncs beforehand and to perform troubleshooting. Thus, you can for example check syncs for errors before running them or you can view a log of concrete error messages once the sync has been imported. The different possibilities are listed below.
+[#1610]
+=== Checking syncs for errors before the run
+
+With the validation, syncs can already be checked for errors before the run to guarantee as smooth import.
+
+[.instruction]
+Checking syncs for errors before the run:
+
+. Go to *Data » Import*. +
+→ The sync overview opens.
+. Click on a sync. +
+→ The settings open.
+. In the settings, matching or mapping tab, click on *Validation* (icon:bug[role="yellow"]). +
+→ A window opens and shows a table with the respective error messages.
+. In case an error occurred and you need help in the forum, click on *Copy to clipboard* (icon:clone[role="yellow"]) and paste the information in the forum.
+
+[#1615]
+=== Testing the sync and importing sample data
+
+In the sync overview you can test (icon:flask[role="yellow"]) and run (icon:play-circle[role="grey"]) syncs. Testing allows you to quickly know whether your file can be imported correctly.
+
+[NOTE]
+.Testing the sync
+====
+If you select *Test sync*, only the first ten lines of the import file are imported.
+====
+
+[#1620]
+=== Viewing the log of a completed sync
+
+A log listing errors that may have occurred is automatically created for each completed sync.
+
+[.instruction]
+Viewing the log of a completed sync:
+
+. Go to *Data » Status*. +
+→ The status overview opens. +
+icon:map-signs[] *_Or:_* Go to *Data » Import*. +
+→ The sync overview opens.
+. Click on *Status* (icon:bars[role="yellow"]). +
+→ The status overview opens.
+. Click on a completed sync. +
+→ The detail view opens.
+. At the top, click on *Log* (icon:bars[role="yellow"]). +
+→ A window opens and shows the log of the completed sync.
+. In case an error occurred and you need help in the forum, click on *Copy to clipboard* (icon:clone[role="yellow"]) and paste the information in the forum.
+
 [#1625]
-== Viewing success and error messages of syncs
+=== Viewing success and error messages of syncs
 
 In the *Data » Log* menu you can see success and error messages of syncs. To find messages of specific syncs, select the reference type *elasticSyncId* or *elasticSyncName* and enter the respective reference value. The specific success or error messages can be found in the *Message* column.
 
@@ -577,21 +627,10 @@ Uploading files quickly and easily:
 
 . Go to *Data » Import*. +
 → The sync overview opens.
-. In the *File Name* column, click on *Upload file* (icon:upload[role="purple"]). +
+. In the *File name* column, click on *Upload file* (icon:upload[role="purple"]). +
 → Your files open.
 . Select a file and click on *Open*. +
 → The file is uploaded and the file name is displayed in the column. After running the sync, the file name disappears.
-
-[#1700]
-== Testing the sync and importing data
-
-It is possible to test and carry out syncs. Testing allows you to quickly know whether your file can be imported correctly.
-
-[NOTE]
-.Testing the sync
-====
-If you select *Test sync*, only the first ten lines of the import file are imported.
-====
 
 [#1710]
 == Processing jobs in the queue
@@ -620,6 +659,9 @@ In each sync line, there is also a separate status button you can use to open th
 [cols="1,3"]
 |====
 |*Setting* |*Explanation*
+
+|*Run ID*
+|Each time an import of a sync is started, a Run ID is created in order to better distinguish between the different imports.
 
 |*Sync-ID*
 |ID of the sync
@@ -659,7 +701,7 @@ By using the filter in the status overview, you can filter for syncs of the last
 |====
 |*Setting* |*Explanation*
 
-|*ID*
+|*Sync-ID*
 |ID of the sync
 
 |*Name*
@@ -669,22 +711,16 @@ By using the filter in the status overview, you can filter for syncs of the last
 |Current status of the sync. Select between *In progress* or *Completed*.
 
 |*Start date from*
-|Select the date from which you want to filter.
+|Select the date as of which you want to filter.
 
-|*Hours*
-|Select the time.
-
-|*Minutes*
-|Select the time.
+|*Start time from*
+|Select the time as of which you want to filter. The start time refers to the start of the sync.
 
 |*Start date to*
-|Select the date to which you want to filter.
+|Select the date up to which you want to filter.
 
-|*Hours*
-|Select the time.
-
-|*Minutes*
-|Select the time.
+|*Start time to*
+|Select the time up to which you want to filter. The start time refers to the start of the sync.
 |====
 
 === Detail view of sync errors
@@ -703,14 +739,8 @@ In the status overview, you can click on a sync to access the detail view where 
 |*Column name*
 |Name of the column where the error occurred
 
-|*Value*
-|Value of the import file
-
 |*Error*
 |Concrete description of the occurred error
-
-|*Imported rows*
-|Number of lines that have been imported from the CSV or TXT files
 
 |*Raw data*
 |Raw data of the error
