@@ -103,6 +103,11 @@ Dieses Verhalten wurde geändert, sodass im Versand-Center alle Retourenlabels, 
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Amazon
+
+* Wenn beim Anlegen einer Retoure/Gutschrift sowohl das Paket als auch die Paketbestandteile übernommen wurden, konnte die Transaktion von Amazon nicht mehr der Gutschrift zugeordnet werden. Dadurch konnte auch das Dokument nicht hochgeladen werden.
+
+[discrete]
 === Amazon-VCS
 
 * Beim Import des Amazon-Umsatzsteuer-Kalkulationsberichts für VCS Amazon (nicht VCS plentymarkets / VCS Lite) gab es ein Problem, welches verursachte, dass der Bericht als gelesen markiert wurde, während die enthaltenen Transaktionen nicht importiert wurden.
@@ -124,6 +129,22 @@ Dieses Problem existiert vom 31.03.2020 bis zum 06.04.2020. Betroffene Berichte 
 === Kataloge
 
 * Wollte man Werte kombinieren, so war es nicht möglich ein Leerzeichen als Trennzeichen zu verwenden. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== OTTO
+
+* Seit dem 01.04.2020 wurden wegen eines Problems bei der Validierung der Varianten in plentymarkets keine Artikel mit Varianten mehr exportiert. Dies ist nun nicht mehr der Fall.
++
+[NOTE]
+.Hinweis
+======
+Dieses Problem betraf nicht OTTO market und auch nur OTTO-Händler, die mit der RDV-Version der Schnittstelle arbeiten.
+======
+
+[discrete]
+=== Preiskalkulation
+
+* Nach dem Löschen einer Preiskalkulation unter *Einrichtung » Artikel » Preiskalkulation*, wurde die Preiskalkulation nicht an der Variante entfernt. Dieser Fehler konnte behoben werden.
 
 --
 
@@ -150,6 +171,19 @@ Nach dem Klicken auf die Schaltfläche *Import abbrechen* wird der Import tatsä
 ** Eigenschaftstyp
 ** Eigenschaftswert
 ** die mit der Eigenschaft verlinkte Kontakt-ID
+
+[discrete]
+=== Prozesse
+
+* Wenn Prozesse von verschiedenen Rechnern gestartet wurden und beide auf Aufträge zugriffen, konnte es durch die doppelte Bearbeitung der betroffenen Aufträge zu Problemen wie z.B. doppelten Versandanmeldungen kommen, weil gleichzeitig gestartete Prozesse auf Aufträge in einem bestimmten Auftragsstatus zugreifen konnten.
++
+Mit der kommenden Anpassung wird dieses Verhalten wie folgt behandelt, um den Ablauf nutzerfreundlicher und weniger fehleranfällig zu gestalten:
++
+Wurde bereits ein Prozess gestartet, der auf Aufträge zugreift, erscheint beim Versuch, einen zweiten Prozess zu starten, die folgende Meldung in der Prozessübersicht:
++
+image:changelog/assets/prozesse-warteschlange.png[width=640, alt=Ein anderer Prozess ruft gerade Aufträge ab. Der Prozess wird automatisch fortgesetzt, sobald der Abruf abgeschlossen ist.]
++
+Der zweite Prozess wird in eine Warteschlange aufgenommen und automatisch gestartet, sobald der erste Prozess den Auftragsabruf durchlaufen hat. Zusätzlich wird die Schaltfläche *Prozesse* deaktiviert, um ein Beenden des Prozesses zu verhindern und Fehlfunktionen zu vermeiden.
 
 [discrete]
 === Versanddienstleister
