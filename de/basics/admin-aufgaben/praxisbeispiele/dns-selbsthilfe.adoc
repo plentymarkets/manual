@@ -37,15 +37,17 @@ Namen sind leichter zu merken als eine bis zu 12-stellige Zahlenkombination. Aus
 
 *_Hinweis:_* Diese Tabelle dient lediglich der Veranschaulichung. Die Gewichtung der Adressteile steht in keinem Zusammenhang.
 
-== Welche DNS-Daten müssen angepasst werden?
+== DNS-Einstellungen kennenlernen
 
-=== A-Record
+In diesem Kapitel werden die DNS-Einstellungen erläutert, die für das Einrichten der Domain in plentymarkets wichtig sind. Dabei handelt es sich um den A-Record-Eintrag und den CNAME-Record-Eintrag.
 
-Mit einem A-Resource-Record wird einem DNS-Namen, also z.B. einer link:https://de.wikipedia.org/wiki/Uniform_Resource_Locator[URL^] wie plentymarkets.eu, eine IPv4-Adresse zugeordnet.
+=== A-Record-Eintrag
 
-=== CNAME
+Mit dem A-Record-Eintrag wird einem DNS-Namen, also z.B. einer link:https://de.wikipedia.org/wiki/Uniform_Resource_Locator[URL^] wie plentymarkets.eu, eine IPv4-Adresse zugeordnet.
 
-Ein CNAME Resource Record (CNAME RR) ist im DNS dazu vorgesehen, einer Domäne einen weiteren Namen zuzuordnen. Ein CNAME-Eintrag darf nicht für die eigentliche Domain (plentymarkets.eu), sondern lediglich für Subdomains (knowledge.plentymarkets.eu) verwendet werden! Ein CNAME-Eintrag überschreibt grundsätzlich alle anderen Einträge der gleichen Subdomain.
+=== CNAME-Record-Eintrag
+
+Der CNAME-Record-Eintrag ist im DNS dazu vorgesehen, einer Domäne einen weiteren Namen zuzuordnen. Ein CNAME-Eintrag darf nicht für die eigentliche Domain (plentymarkets.eu), sondern lediglich für Subdomains (knowledge.plentymarkets.eu) verwendet werden! Ein CNAME-Eintrag überschreibt grundsätzlich alle anderen Einträge der gleichen Subdomain.
 
 *_Beispiel:_* Der Name eines Shops lautet plentymarkets.eu. Wir möchten, dass dieser Shop ebenfalls unter dem Namen www.plentymarkets.eu zu erreichen ist. Durch das Eintragen eines CNAMES für www.plentymarkets.eu wird dafür gesorgt, dass www.plentymarkets.eu die Anfrage zum Darstellen der Internetseite an plentymarkets.eu weitergibt.
 
@@ -53,73 +55,67 @@ Ein CNAME Resource Record (CNAME RR) ist im DNS dazu vorgesehen, einer Domäne e
 ====
 Für den Betrieb des Systems auf link:https://forum.plentymarkets.com/t/information-source-autoscaling-informationen-und-koordination/46996[AutoScaling^] ist ein CNAME-Record für die Subdomain `**www**.plentymarkets.eu` zwingend erforderlich!
 Der hierfür notwendige Eintrag wird für die jeweilige Domain im Assistenten angezeigt.
-[[styleguide-assets]]
-.DNS-Einstellungen
-image::basics/admin-aufgaben/best-practices/assets/DNS-Einstellungen.png[]
+
+image::basics/admin-aufgaben/best-practices/assets/DNS-Einstellungen.png[width=640, height=360, alt=DNS-Einstellungen]
+
 Gleiches gilt für alle anderen Sub-Domains.
 ====
 
-== Wie sehe ich meine aktuell hinterlegten DNS-Einträge?
+== Hinterlege DNS-Einstellungen prüfen
+
+Du hast verschiedene Möglichkeiten um zu prüfen, ob die DNS-Einstellungen in deinem System richtig hinterlegt sind.
 
 === Per Internet-Browser
 
-Auf der Internetseite link:https://www.whatsmydns.net/[whatsmydns.net^] kann kannst du sehen welche DNS-Einstellungen bei deinem Domain-Provider hinterlegt sind. Weiterhin bietet die Seite die Möglichkeit, den Stand der weltweiten Verteilung der DNS-Daten auf allen DNS-Servern nachzuverfolgen.
+Auf der Internetseite link:https://www.whatsmydns.net/[whatsmydns.net^] kannst du sehen welche DNS-Einstellungen bei deinem Domain-Provider hinterlegt sind. Weiterhin bietet die Seite die Möglichkeit, den Stand der weltweiten Verteilung der DNS-Daten auf allen DNS-Servern nachzuverfolgen.
 
-==== A-Record-Eintrag ermitteln
+[.instruction]
+A-Record-Eintrag ermitteln:
 
-1. Trage in Feld #**A**# die Domain und Top-Level-Domain ein, deren A-Record ermittelt werden soll - z.B. plentymarkets.eu (**nicht** `**www.**plentymarkets.eu`).
-2. Wähle bei Feld #**B**# den zu ermittelnden Ressource-Record-Eintrag aus - in diesem Fall **A**.
-3. Um die Suche zu starten, klicke auf **Search**. +
+1. Trage in das Textfeld die Domain und Top-Level-Domain ein, deren A-Record ermittelt werden soll - z.B. plentymarkets.eu (**nicht** `**www.**plentymarkets.eu`).
+2. Wähle aus der Dropdown-Liste die Option **A** aus.
+3. Klicke auf **Search**. +
 → Es erscheint eine Liste der weltweiten Haupt-DNS-Server mit dem derzeit eingetragenen, dem Server bekannten A-Record in Form einer IPv4-Adresse.
 
-[[styleguide-assets]]
-.A-Record
-image::basics/admin-aufgaben/best-practices/assets/dnsselbsthilfe_pic002.png[]
+[.instruction]
+CNAME-Record-Eintrag ermitteln:
 
-==== CNAME-Record-Eintrag ermitteln
-
-1. Trage in Feld #**A**# die Subdomain, Hauptdomain und Top-Level-Domain ein, deren CNAME-Record ermittelt werden soll, z.B. www.meinshop.de.
-2. Wähle bei Feld #**B**# den zu ermittelnden Ressource-Record-Eintrag aus - in diesem Fall **CNAME**.
-3. Um die Suche zu starten, klicke auf **Search**. +
+1. Trage in das Textfeld die Subdomain, Hauptdomain und Top-Level-Domain ein, deren CNAME-Record ermittelt werden soll, z.B. www.meinshop.de.
+2. Wähle aus der Dropdown-Liste die Option **CNAME** aus.
+3. Klicke auf **Search**. +
 → Es erscheint eine Liste der weltweiten Haupt-DNS-Server mit dem derzeit eingetragenen, dem Server bekannten CNAME-Record.
-
-[[styleguide-assets]]
-.CNAME
-image::basics/admin-aufgaben/best-practices/assets/dnsselbsthilfe_pic003.png[]
 
 === Linux, MacOS und Windows Kommandozeilentools
 
-==== A-Record-Eintrag ermitteln:
+Du kannst die Einträge auch über die Kommandozeile deines Betriebssystems ermitteln.
+
+[.instruction]
+A-Record-Eintrag ermitteln:
 
 1. Öffne auf ein Terminalfenster (Linux/MacOS) bzw. die Eingabeaufforderung (Windows).
-2. Um des A-Record-Eintrage zu ermitteln, führe folgenden Befehl aus: +
+2. Um den A-Record-Eintrag zu ermitteln, führe folgenden Befehl aus: +
 `nslookup plentymarkets.eu` (*nicht* `**www.**plentymarkets.eu`)
 → Es erscheint die nachfolgende Ausgabe mit dem entsprechenden A-Record-Eintrag.
++
+image::basics/admin-aufgaben/best-practices/assets/dnsselbsthilfe_pic004.png[width=640, height=360, alt=A-Record ermitteln]
 
-[[styleguide-assets]]
-.A-Record ermitteln
-image::basics/admin-aufgaben/best-practices/assets/dnsselbsthilfe_pic004.png[]
-
-==== CNAME-Record-Eintrag ermitteln:
+[.instruction]
+CNAME-Record-Eintrag ermitteln:
 
 1. Öffne auf ein Terminalfenster (Linux/MacOS) bzw. die Eingabeaufforderung (Windows).
-2. Um des A-Record-Eintrage zu ermitteln, führe folgenden Befehl aus: +
+2. Um den CNAME-Record-Eintrag zu ermitteln, führe folgenden Befehl aus: +
 `nslookup -q=CNAME www.plentymarkets.eu` (*Bitte exakte Schreibweise beachten!*)
 → Es erscheint die nachfolgende Ausgabe mit dem entsprechenden CNAME-Record-Eintrag.
++
+image::basics/admin-aufgaben/best-practices/assets/dnsselbsthilfe_pic005.png[width=640, height=360, alt=CNAME-Record ermitteln]
 
-[[styleguide-assets]]
-.CNAME ermitteln
-image::basics/admin-aufgaben/best-practices/assets/dnsselbsthilfe_pic005.png[]
-
-=== Wo finde ich die benötigten, korrekten DNS-Einträge?
+=== Benötigte DNS-Einträge ermitteln
 
 Die korrekten DNS-Einstellungen findest du innerhalb des Domain-Assistenten im Menü *Einrichtung » Assistenten » Grundeinrichtung » Domains-Assistenten » Schritt: Aktuelle DNS-Einstellungen*.
 
-[[styleguide-assets]]
-.Beispiel DNS-Einstellungen
-image::basics/admin-aufgaben/best-practices/assets/DNS-Einstellungen.png[]
+image::basics/admin-aufgaben/best-practices/assets/DNS-Einstellungen.png[width=640, height=360, alt=Beispiel DNS-Einstellungen]
 
-== Wie ändere ich meine extern hinterlegten DNS-Einträge?
+== Extern hinterlegten DNS-Einträge ändern
 
 Prinzipiell liegt die Verantwortung, dass die DNS-Einstellungen bei *extern gehosteten Domains* richtig hinterlegt sind beim Domain-Inhaber - also bei dir. plentysystems bietet keinen Support für das Einrichten von externen Domains an.
 
