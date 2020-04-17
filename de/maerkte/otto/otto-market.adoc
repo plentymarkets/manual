@@ -25,7 +25,7 @@ Die Anbindung von OTTO market an plentymarkets stellt folgende automatisierte Pr
 [#200]
 == Konto einrichten
 
-Die Grundeinstellungen für OTTO market nimmst du im Menü *Einrichtung » Assistenten » Omni-Channel* mit dem Assistenten *OTTO market Grundeinstellungen* vor. Mit diesem Assistenten richtest du dein OTTO market-Konto in plentymarkets ein. +
+Die Grundeinstellungen für OTTO market nimmst du im Menü *Einrichtung » Assistenten » Omni-Channel* mit dem Assistenten *OTTO market Grundeinstellungen* vor. Mit diesem Assistenten richtest du dein OTTO market-Konto in plentymarkets ein. Dort gibst du deine API-Zugangsdaten ein, aktivierst den Datenaustausch mit OTTO market und verknüpfst Versanddienstleister. +
 
 Um den Assistenten zu starten, öffne das Menü *Einrichtung » Assistenten » Omni-Channel* und klicke auf den Assistenten *OTTO market Grundeinstellungen*. Der Assistent öffnet sich und du kannst mit der Kontoeinrichtung beginnen.
 
@@ -39,7 +39,7 @@ Damit du Artikel, Merkmale etc. mit OTTO market verknüpfen kannst, muss im Men�
 Auftragsherkunft für OTTO market aktivieren:
 
 . Öffne das Menü *Einrichtung » Aufträge » Auftragsherkunft*.
-. Setze bei *OTTO market* ein Häkchen.
+. Aktiviere die Option *OTTO market*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 
@@ -92,7 +92,7 @@ Gehe wie im Folgenden beschrieben vor, um für die Auftragsherkunft OTTO market 
 Verkaufspreis für OTTO market festlegen:
 
 . Öffne das Menü *Einrichtung » Artikel » Verkaufspreise » Verkaufspreis öffnen » Tab: Einstellungen*.
-. Setze ein Häkchen bei der Herkunft *OTTO market*.
+. Aktiviere die Herkunft *OTTO market*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 
@@ -110,7 +110,7 @@ Zahlungsart *Otto Payment* aktivieren:
 . Klicke auf *Otto Payment*. +
 → Das Tab *Einstellungen* wird geöffnet.
 . Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<zahlungsart-otto-market>>.
-. Setze ein Häkchen bei der Option *Aktiv*.
+. Setze ein Häkchen bei *Aktiv*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 [[zahlungsart-otto-market]]
@@ -354,6 +354,12 @@ Die Ereignisaktion, mit der du die Auftragsbestätigung an OTTO meldest, muss au
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO market über den Versand des Artikels zu informieren.
 
+[TIP]
+.Adresse des Absenders hinterlegen
+====
+Die Versandbestätigung wird nur an OTTO market gesendet, wenn die Absenderadresse des Händlers hinterlegt wurde. Die Adresse speicherst du in den Einstellungen eines Lagers unter *Einrichtung » Waren » Lager »* _Lager wählen_ *Einstellungen*. Du musst die Adresse in dem Lager speichern, das für den jeweiligen Auftrag verwendet wird.
+====
+
 [.collapseBox]
 .Ereignisaktion einrichten
 --
@@ -509,7 +515,7 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO m
 |Einstellung |Option |Auswahl
 
 |*Ereignis*
-|Ereignis wählen, z.B. *Auftragsanlage: Statuswechsel* +
+|Ereignis wählen, z.B. *Auftragsänderung: Statuswechsel* +
 *Hinweis:* Wähle einen Status, der zu deinem Arbeitsablauf passt. Du kannst dazu beispielsweise den Status *[8.2] Retoure von OTTO ablehnen* erstellen.
 |
 
@@ -620,8 +626,24 @@ Im Katalog wird an erster Stelle definiert, aus welcher Quelle die SKU generiert
 +
 Deshalb ist es notwendig, eine Fallback-Lösung (Absicherung) im Katalog hinzuzufügen. Die Lösung würde dann wie folgt aussehen:
 +
-[[sku]]
-.Parent-SKU und SKU
-image::maerkte/otto/assets/otto-market_fehlermeldung_sku.png[SKU]
+[[weitere-quelle]]
+.Quelle hinzufügen
+image::maerkte/otto/assets/otto-market_weitere_quelle.png[Quelle hinzufügen]
++
+[IMPORTANT]
+.Quelle hinzufügen
+====
+Wenn du eine weitere Quelle hinzufügst, ist es zwingend notwendig, dafür die Schaltfläche *Quelle hinzufügen* (icon:link[role="yellow"]) auf der rechten Seite des Katalogs zu verwenden. Benutze _nicht_ die Schaltfläche *+ zusätzliche Quelle* (icon:plus-square[role="green"]), da ansonsten deine SKUs doppelt erstellt werden und der Fehler auf diese Weise nicht behoben werden kann.
+====
 +
 Es wird also eine zweite Quelle hinzugefügt. Beim nächsten Export wird zuerst auf die erste Quelle geschaut. Da in dieser Quelle bereits eine SKU existiert, wird die zweite Quelle ignoriert. Sollte in der ersten Quelle keine SKU existieren, dann wird mittels der zweiten Quelle eine neue SKU erstellt.
+
+Im Log erhalte ich die Fehler "Code:“200009 - ATTRIBUTE_CHANGE_DENIED" oder "title: Der Wert dieses Feldes kann nicht geändert werden." Wie kann ich diese Fehler beheben?::
++
+Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vorgenommen hast. Diese Änderung wird von OTTO jedoch nicht akzeptiert und es ist nicht möglich, das Attribut für diesen Artikel zu ändern. Das dort bemängelte Attribut kann sich zum Beispiel auf ein variantenbildendes Attribut oder auch auf ein titelbildendes Attribut beziehen. Auch weitere OTTO-Attribute spielen hierbei eine Rolle.
++
+[TIP]
+.Artikel können bei OTTO market nicht gelöscht werden
+====
+Ein Artikel kann bei OTTO market _nicht_ gelöscht werden, weder durch plentymarkets noch durch OTTO selbst. Es ist lediglich möglich, den Artikel auf OTTO market als *nicht verfügbar* zu kennzeichnen. Deshalb solltest du vor der Artikelübertragung immer sicherstellen, dass im Katalog die korrekten Quellen verknüpft wurden.
+====
