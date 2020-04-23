@@ -24,7 +24,7 @@ Um Artikel auf bol.com anzubieten, richte bol.com in plentymarkets ein. Gehe daz
 bol.com in plentymarkets einrichten:
 
 . Öffne das Menü *Einrichtung » Märkte » bol.com » Einstellungen*.
-. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<grundeinstellungen-bol>>.
+. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<#grundeinstellungen-bol>>.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 [[grundeinstellungen-bol]]
@@ -38,11 +38,19 @@ bol.com in plentymarkets einrichten:
 
 |*öffentlicher API-Schlüssel*
 |API-Schlüssel eintragen, wie von bol.com erhalten. +
-*Hinweis:* Momentan muss der API-Schlüssel für Version 2.0 verwendet werden.
+*_Hinweis:_* Momentan muss der API-Schlüssel für Version 2.0 verwendet werden.
 
 |*privater API-Schlüssel*
 |API-Schlüssel eintragen, wie von bol.com erhalten. +
-*Hinweis:* Momentan muss der API-Schlüssel für Version 2.0 verwendet werden.
+*_Hinweis:_* Momentan muss der API-Schlüssel für Version 2.0 verwendet werden.
+
+| *Client ID*
+|Client ID für Version 3.0 eingeben, wie von bol.com erhalten. +
+*_Hinweis:_* Sobald Client ID und Client Secret gespeichert wurden, werden Daten über API-Version 3.0 mit bol.com ausgetauscht.
+
+| *Client Secret*
+|Client Secret für Version 3.0 eingeben, wie von bol.com erhalten. +
+*_Hinweis:_* Sobald Client ID und Client Secret gespeichert wurden, werden Daten über API-Version 3.0 mit bol.com ausgetauscht.
 
 |*Mandant*
 |Mandanten wählen. Aufträge werden beim Auftragsimport mit diesem Mandanten verknüpft.
@@ -57,7 +65,11 @@ bol.com in plentymarkets einrichten:
 
 Die Anbindung des Marktplatzes stellt folgende automatisierte Prozesse bereit:
 
-* Auftragsimport alle 15 Minuten
+* Auftragsimport alle 15 Minuten +
+*_Hinweis:_* Aufträge, bei denen bol.com versendet, werden nicht importiert.
+* Einmal stündliche Aktualisierung von Angeboten für Varianten, deren Bestand in den letzten 90 Minuten aktualisiert wurde +
+*_Hinweis:_* Die Erstellung des Angebots muss abgeschlossen sein, bevor Bestandsaktualisierungen gesendet werden können. Der Erstellungsstatus wird einmal täglich geprüft. Es kann also bis zu 24 Stunden dauern, bis ein Angebot nach der Erstellung erstmals aktualisiert wird.
+
 
 [#250]
 == Auftragsherkunft aktivieren
@@ -148,9 +160,9 @@ Verkaufspreis für bol.com festlegen:
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 [#600]
-== Artikel- und Angebotsexport einrichten
+== Artikelexport einrichten
 
-In diesem Kapitel wird beschrieben, wie du deine Artikel und Angebote zu bol.com überträgst. Artikel und Angebote werden über den elastischen Export zu bol.com übertragen. Zunächst legst du das Datenformat *BolItemExport* und *BolOfferExport* an und übermittelst im Anschluss die Dateien zu bol.com. Beide Dateien müssen an bol.com übergeben werden, damit deine Artikel bei bol.com verkauft werden können.
+In diesem Kapitel wird beschrieben, wie du deine Artikel zu bol.com überträgst. Artikel werden über den elastischen Export zu bol.com übertragen. Zunächst legst du das Datenformat *BolItemExport* an und übermittelst im Anschluss die Datei zu bol.com.
 
 Folgende Pflichtfelder müssen für den Artikelexport mitgegeben werden:
 
@@ -162,18 +174,8 @@ Folgende Pflichtfelder müssen für den Artikelexport mitgegeben werden:
 * Bild
 * Hersteller
 
-Folgende Pflichtfelder müssen für den Angebotsexport mitgegeben werden:
-
-* EAN
-* SKU
-* Bestand
-* Preis
-* Artikelzustand
-* Versandverfügbarkeit
-* Versand durch
-
 [.instruction]
-Export einrichten:
+Artikelexport einrichten:
 
 . Öffne das Menü *Daten » Elastischer Export*.
 . Klicke auf *Neuer Export*.
@@ -198,7 +200,7 @@ Export einrichten:
 |Typ *Artikel* aus der Dropdown-Liste wählen.
 
 |*Format*
-|Format *BolItemExport* für den Artkelexport wählen oder *BolOfferExport* für den Angebotsexport aus der Dropdown-Liste wählen.
+|Format *BolItemExport* für den Artkelexport aus der Dropdown-Liste wählen.
 
 |*Limit*
 |Zahl eingeben. Wenn mehr als 10000 Datensätze an bol.com übertragen werden sollen, wird die Ausgabedatei für 24 Stunden nicht noch einmal neu generiert, um Ressourcen zu sparen.
@@ -212,12 +214,10 @@ Export einrichten:
 *Benutzername*, +
 *Passwort*, +
 *Pfad*
-|Parameter eingeben. Die Zugangsdaten für den Server inklusive Passwort und Benutzername werden von bol.com zur Verfügung gestellt. Der Dateiname beim BolOfferExport hat den Aufbau &lt;SellerID&gt;.csv. Der Dateiname beim BolItemExport hat den Aufbau &lt;SellerID&gt;.txt. +
-Die Datei für das Format *BolItemExport* muss im Ordner */SQUARE/feed* gespeichert werden. +
-Die Datei für das Format *BolOfferExport* muss im Ordner */inbound* gespeichert werden.
+|Parameter eingeben. Die Zugangsdaten für den Server inklusive Passwort und Benutzername werden von bol.com zur Verfügung gestellt. Der Dateiname hat den Aufbau &lt;SellerID&gt;.txt. Die Datei muss im Ordner */SQUARE/feed* gespeichert werden. +
 
 |*Übertragung*
-|*Täglich* für den Artikelexport wählen, da bol.com nur maximal 4 Exporte pro Tag zulässt. *Stündlich* für den Angebotsexport.
+|*Täglich* wählen, da bol.com nur maximal 4 Exporte pro Tag zulässt.
 |====
 
 [#650]
@@ -324,12 +324,23 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 [#800]
 == Retourenstatus automatisch senden
 
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um bol.com automatisch über den Status einer Retoure zu informieren. Bei Retouren muss ein Status an bol.com übertragen werden. Folgende Stornierungsgründe können an bol.com übertragen werden:
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um bol.com automatisch über den Status einer Retoure zu informieren. Bei Retouren muss ein Status an bol.com übertragen werden. Folgende Retourenstatus können an bol.com übertragen werden:
 
-* Retoure erhalten
-* Repariert oder ersetzt
-* Retoure unvollständig
-* Rückerstattung ohne Rücksendung
+////
+API-Version 2 (veraltet)
+
+* Retoure erhalten (v2)
+* Repariert oder ersetzt (v2)
+* Retoure unvollständig (v2)
+* Rückerstattung ohne Rücksendung (v2)
+////
+
+* Retoure erhalten (v4)
+* Artikel wird umgetauscht (v4)
+* Retoure entspricht nicht den Anforderungen (v4)
+* Artikel muss repariert werden (v4)
+* Kunde behält Ware (v4)
+* Retoure in Rücksprache mit Kunde angenommen (v4)
 
 :table-event-procedure: <<#ereignisaktion-retourenstatus-bol>>
 
@@ -363,8 +374,25 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um bol.com automatisch über Stornierungen zu informieren. Bei Stornierungen muss ein Grund für die Stornierung an bol.com übertragen werden. Erstelle im Menü *Einrichtung » Aufträge » Auftragsstatus* ggf. zusätzliche Auftragsstatus. Folgende Stornierungsgründe können an bol.com übertragen werden:
 
-* Artikel nicht vorrätig
-* Stornierung durch Kunden
+////
+API-Version 2
+
+* Stornierung durch Kunden (v2)
+* Ausverkauft (v2)
+////
+
+* Nicht vorrätig (v3)
+* Stornierung von Kunde angefragt (v3)
+* Artikel in schlechtem Zustand (v3)
+* Höhere Versandkosten (v3)
+* Falscher Preis (v3)
+* Nicht rechtzeitig lieferbar (v3)
+* Keine Garantie durch bol.com (v3)
+* Artikel doppelt bestellt (v3)
+* Artikel züruckbehalten (v3)
+* Technisches Problem (v3)
+* Artikel nicht auffindbar (v3)
+* Sonstiges (v3)
 
 :table-event-procedure: <<#ereignisaktion-stornierungen-bol>>
 
