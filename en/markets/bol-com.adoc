@@ -8,7 +8,14 @@ include::{includedir}/_header.adoc[]
 :url: markets/bol-com
 :id: 0WQSMLF
 
-The Dutch market link:http://bol.com[bol.com^]{nbsp}icon:external-link[] is the leading online market in Benelux and distributes many different products, including multimedia, electronics, toys etc.
+The Dutch market link:http://bol.com[bol.com^]{nbsp}icon:external-link[] is the leading online market in Benelux and distributes many different products, including multimedia, electronics, toys, etc.
+
+[IMPORTANT]
+.New API version 3.0
+====
+Version 2.0 of the bol.com API interface will be deactivated on the 12th of May 2020. You can now update to version 3.0 of the API interface. Go to the link:https://forum.plentymarkets.com/t/bol-com-integration-neuer-api-versionen-3-und-4-integration-of-new-api-versions-3-and-4/587773[plentymarkets forum^]{nbsp}icon:external-link[] to find out more.
+====
+
 
 [#100]
 == Registering with bol.com
@@ -24,7 +31,7 @@ Set up bol.com in plentymarkets to sell items on bol.com. To do so, proceed as d
 Setting up bol.com in plentymarkets:
 
 . Go to *Setup » Markets » bol.com » Settings*.
-. Carry out the settings. Pay attention to the explanations given in <<basic-settings-bol>>.
+. Carry out the settings. Pay attention to the explanations given in <<#basic-settings-bol>>.
 . *Save* (icon:save[role="green"]) the settings.
 
 [[basic-settings-bol]]
@@ -33,21 +40,36 @@ Setting up bol.com in plentymarkets:
 |====
 |Setting |Explanation
 
-|*Activate the automatic data exchange*
-|If the data exchange is activated, then items are imported daily, stock is synchronised hourly, and orders are imported every 15 minutes.
+| *Activate the automatic data exchange*
+|If the data exchange is activated, the following data is exchanged with bol.com: +
+* Daily item export +
+* Hourly stock synchronisation +
+* Order import every 15 minutes +
+* Hourly import of returns registered on bol.com +
+*_Tip:_* Returns are imported with the status [9.00] by default.
 
-|*Public key*
+| *Public key*
 |Enter the API key as received from bol.com. +
-*Note:* At the moment, you have to use the API key for version 2.0.
+*_Note:_* At the moment, you have to use the API key for version 2.0. +
+*_Note:_* As soon as you save the client ID and client secret, data is exchanged with bol.com via API version 3.0. If you delete the client ID and client secret from the settings and the API keys are still saved, the API version 2.0 is used again.
 
-|*Private key*
+| *Private key*
 |Enter the API key as received from bol.com. +
-*Note:* At the moment, you have to use the API key for version 2.0.
+*_Note:_* At the moment, you have to use the API key for version 2.0. +
+*_Note:_* As soon as you save the client ID and client secret, data is exchanged with bol.com via API version 3.0. If you delete the client ID and client secret from the settings and the API keys are still saved, the API version 2.0 is used again.
 
-|*Client*
+| *Client ID*
+|Enter the client ID for version 3.0 as received from bol.com. +
+*_Note:_* As soon as you save the client ID and client secret, data is exchanged with bol.com via API version 3.0. If you delete the client ID and client secret from the settings and the API keys are still saved, the API version 2.0 is used again.
+
+| *Client Secret*
+|Enter the client secret for version 3.0 as received from bol.com. +
+*_Note:_* As soon as you save the client ID and client secret, data is exchanged with bol.com via API version 3.0. If you delete the client ID and client secret from the settings and the API keys are still saved, the API version 2.0 is used again.
+
+| *Client*
 |Select a client. Orders are assigned to this client during the order import.
 
-|*Warehouse selection*
+| *Warehouse selection*
 |Select the stock quantity for the offer export. Select one of the following options: +
 *Use stock quantity sum of all sales warehouses* +
 *Use main warehouse of item* +
@@ -57,18 +79,22 @@ Setting up bol.com in plentymarkets:
 
 Connecting to this market allows for the following automatic processes to take place:
 
-* Order import every 15 minutes
+* Order import every 15 minutes +
+*_Note:_* Orders that are fulfilled by bol.com are not imported.
+* Hourly update of offers for variations with stock changes in the last 90 minutes +
+*_Note:_* The offer must have been created before stock updates can be sent. The order creation status is checked once a day. As such, it may take up to 24 hours before an offer is updated after its creation.
+
 
 [#250]
 == Activating the order referrer
 
-In order to link items, properties etc. with bol.com, you have to activate the order referrer bol.com in the *Setup » Orders » Order referrer* menu.
+In order to link items, characteristics etc. with bol.com, you have to activate the order referrer bol.com in the *Setup » Orders » Order referrer* menu.
 
 [.instruction]
 Activating the order referrer bol.com:
 
 . Go to *Setup » Orders » Order referrer*.
-. Activate the referrer *bol.com*.
+. Activate the option *bol.com*.
 . *Save* (icon:save[role="green"]) the settings.
 
 [#300]
@@ -79,17 +105,17 @@ You need to activate all variations that you want to sell on bol.com. This is do
 [TIP]
 .Selling all variations of an item on bol.com
 ====
-If you want to sell all variations of an item on bol.com, carry out the settings below for the item's main variation. All other variations of the item then inherit the settings of the main variation.
+To sell all variations of an item on bol.com, carry out the settings described below for the main variation. The settings are then passed on to all variations of the item.
 ====
 
 [.instruction]
-Activating the variation availability for bol.com:
+Setting the variation availability for bol.com:
 
 . Go to *Item » Edit item » Open item » Tab: Variation ID » Tab: Settings*.
 . Open the variation that you want to sell on bol.com.
-. In the *Availability* area, active the option *Active*.
+. In the *Availability* area, activate the option *Active*.
 . Click on the *Availability* tab.
-. In the *Markets* area, click in the selection field.  +
+. In the *Markets* area, click in the selection field. +
 → A list of all available markets is displayed.
 . Activate the option *bol.com*.
 . Click on *Add* (icon:plus-square[role="green"]). +
@@ -115,25 +141,25 @@ Linking categories:
 . *Save* (icon:save[role="green"]) the settings.
 
 [#450]
-== Creating properties
+== Creating characteristics
 
-Next create <<item/managing-items#480, properties>> and link these to the bol.com properties. Matching properties to a bol.com category can be found within the bol.com data model file. Download the bol.com data model file link:https://developers.bol.com/datamodel/[here^]{nbsp}icon:external-link[].
+Next create <<item/managing-items#480, characteristics>> and link these to the bol.com characteristics. Matching characteristics to a bol.com category can be found within the bol.com data model file. Download the bol.com data model file link:https://developers.bol.com/datamodel/[here^]{nbsp}icon:external-link[] .
 
 [.instruction]
-Creating a property:
+Creating a characteristic:
 
 . Go to *Setup » Item » Characteristics*.
-. Click on the *New property* tab.
-. Enter a name for the property under *Name (internal)*.
+. Click on the *New characteristic* tab.
+. Enter a name for the characteristic under *Name (internal)*.
 . Select *nl* for Dutch from the *Language* drop-down list.
-. Enter the Dutch name that you want to use for this property into the *Name* field.
-. Select the option *Text* from the *Property type* drop-down list.
-. Enter the bol.com property which can be found in the column *Attribute name* within the bol.com data model file into the line *bol.com property*.
+. Enter the Dutch name that you want to use for this characteristic into the *Name* field.
+. Select the option *Text* from the *Characteristic type* drop-down list.
+. Enter the bol.com characteristic which can be found in the column *Attribute name* within the bol.com data model file into the line *bol.com characteristic*.
 . *Save* (icon:save[role="green"]) the settings.
 
-*bol_fulfillment* is a mandatory field for the offer export. This indicates whether the item is shipped by you or by bol.com. Enter the bol.com property *bol_fulfillment* into the line *bol.com property*.
+*bol_fulfillment* is a mandatory field for the offer export. This indicates whether the item is shipped by you or by bol.com. In the line *bol.com characteristic*, enter the bol.com characteristic *bol_fulfillment*.
 
-If you want to sell used items on bol.com, you have to indicate this by using the property *bol_used*. Enter the bol.com property *bol_used* into the line *bol.com property*.
+If you want to sell used items on bol.com, you have to indicate this by using the property *bol_used*. In the line *bol.com characteristic*, enter the bol.com characteristic *bol_used*.
 
 [#500]
 == Defining a sales price
@@ -148,9 +174,9 @@ Defining a sales price for bol.com:
 . *Save* (icon:save[role="green"]) the settings.
 
 [#600]
-== Setting up the item export and offer export
+== Setting up the item export
 
-This chapter explains how to export your items and offers to bol.com. Items and offers are transferred to bol.com with the elastic export. First, create the data formats *BolItemExport* and *BolOfferExport* and then send the CSV files to bol.com. Both files have to be sent in order to sell items on bol.com.
+This section explains how to transfer your items to bol.com. Items are transferred to bol.com with the elastic export. First, create the data format *BolItemExport* and then send the CSV file to bol.com.
 
 The following fields are mandatory for the item export:
 
@@ -162,18 +188,8 @@ The following fields are mandatory for the item export:
 * Image
 * Manufacturer
 
-The following fields are mandatory for the offer export:
-
-* EAN
-* SKU
-* Stock
-* Price
-* Item condition
-* Shipping availability
-* Fulfilment by
-
 [.instruction]
-Setting up the export:
+Setting up the item export:
 
 . Go to *Data » Elastic export*.
 . Click on *New export*.
@@ -191,33 +207,31 @@ Setting up the export:
 
 2+|Settings
 
-|*Name*
+| *Name*
 |Enter a name. The export format is listed by this name in the overview within the *Exports* tab.
 
-|*Type*
+| *Type*
 |Select the type *item* from the drop-down list.
 
-|*Format*
-|Select the format *BolItemExport* for the item export or *BolOfferExport* for the offer export.
+| *Format*
+|From the drop-down list, select the format *BolItemExport* for the item export.
 
-|*Limit*
+| *Limit*
 |Enter a number. If you want to transfer more than 10,000 data records to bol.com, then the output file is not generated again for another 24 hours. This is to save resources.
 
-|*Provisioning*
-|Select *FTPS*.
+| *Provisioning*
+| Select *FTPS*.
 
-|*File name*, +
+| *File name*, +
 *server*, +
 *port*, +
 *user name*, +
 *password*, +
 *path*
-|Enter a parameter. The access data including the password and user name are provided by bol.com. The file name for BolOfferExport has the structure <SellerID>.csv. The file name for BolItemExport has the structure <SellerID>.txt. +
-The file for the format *BolItemExport* must be saved in the */SQUARE/feed* folder. +
-The file for the format *BolOfferExport* must be saved in the */inbound* folder.
+|Enter a parameter. The access data including the password and user name are provided by bol.com. The file name is created based on the pattern <sellerID>.txt. You need to save the file in the folder */SQUARE/feed*. +
 
-|*Transfer*
-|Select *daily* for the item export, as bol.com allows a maximum of 4 exports per day. Select *hourly* for the offer export.
+| *Transfer*
+| Select *daily* as bol.com allows a maximum of 4 exports per day.
 |====
 
 [#650]
@@ -243,39 +257,39 @@ Activating the bol.com payment method:
 |====
 |Setting |Explanation
 
-|*Language*
+| *Language*
 |The following options are saved for the language selected: *Name*, *Info page*, *Info page (internal)*, *Logo*, and *Upload logo*. This enables you to enter values for these options in various languages. The values for a language are activated as soon as a buyer selects the language in the online store.
 
-|*Name*
+| *Name*
 |Enter the name that should be displayed in the online store and on invoices etc.
 
-|*Info page*
+| *Info page*
 |Select a category page of the type *content* or enter the URL of a website to provide information about the payment method.
 
-|*Info page (external)*
+| *Info page (external)*
 |If you selected the *Info page (external)* option under *Info page*, then enter the URL of the info page here.
 
-|*Countries of delivery*
+| *Countries of delivery*
 |Do not select a country of delivery. +
 You cannot use the payment method in your online store. Therefore, this payment method is only activated in plentymarkets. It is not completely set up.
 
-|*Logo*
+| *Logo*
 |Select one of the following options for displaying the logo: +
 *Show standard logo* = The logo that is saved in plentymarkets for this payment method is displayed. +
 *Do not show a logo* = The logo that is saved in plentymarkets for this payment method is not displayed. +
 *Show upload logo* = The options *Logo view* and *Upload logo* are displayed.
 
-|*Logo view*
+| *Logo view*
 |If *Show upload logo* was selected from the *Logo* drop-down list, then the logo that was uploaded is displayed here.
 
-|*Upload logo*
+| *Upload logo*
 |If *Show upload logo* was selected from the *Logo* drop-down list, then upload an external logo here. +
 Click on *Upload files* and select the logo that you want to upload for the payment method. Permitted data formats: GIF, PNG, and JPG.
 
-|*Priority*
+| *Priority*
 |Select the priority for displaying the payment method in the online store.
 
-|*Costs: Flat rate or percentage*
+| *Costs: Flat rate or percentage*
 |If the payment method results in additional costs, enter the percentage value or flat rate value. The choice depends on the conditions of your contract. *Important:* Do not enter a value into both fields.  +
 For further information, refer to the <<basics/working-with-plentymarkets/statistics/managing-statistics#, Managing statistics>> page. For an example of flat rate and percentage costs, refer to the <<payment/managing-payment-methods#20, Managing payment methods>> page.
 |====
@@ -304,32 +318,43 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 |Setting |Option |Selection
 
-|*Event*
-|*Order change: Outgoing items booked*
+| *Event*
+| *Order change: Outgoing items booked*
 |
 
-|*Filter 1*
-|*Order > Order type*
-|*Order*
+| *Filter 1*
+| *Order > Order type*
+| *Order*
 
-|*Filter 2*
-|*Order > Referrer*
-|*bol.com*
+| *Filter 2*
+| *Order > Referrer*
+| *bol.com*
 
-|*Procedure*
-|*Shipping > Send shipping confirmation to bol.com*
+| *Procedure*
+| *Shipping > Send shipping confirmation to bol.com*
 |
 |====
 
 [#800]
 == Automatically sending the return status
 
-Set up an <<automation/event-procedures#, event procedure>> to automatically inform bol.com of the status of a return. bol.com requests the status of returns. The following cancellation reasons can be transferred to bol.com:
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform bol.com of the status of a return. bol.com requests the status of returns. The following return statuses can be sent to bol.com in API version 3.0 and higher:
 
-* Return received
-* Repaired or exchanged
-* Incomplete return
-* Refund without returning goods
+////
+API version 2 (deprecated)
+
+* Repaired or exchanged (v2)
+////
+
+* *Return received (v4)* +
+  ** previously *Return received (v2)*
+* *Item will be exchanged (v4)*
+* *Return does not meet conditions (v4)* +
+  ** previously *Incomplete return (v2)*
+* *Item must be repaired (v4)*
+* *Customer keeps item (v4)* +
+  ** previously *Refund without returning goods (v2)*
+* *Return accepted after consultation with customer (v4)*
 
 :table-event-procedure: <<#event-procedure-return-status-bol>>
 
@@ -341,30 +366,42 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 |Setting |Option |Selection
 
-|*Event*
-|*New return*
+| *Event*
+| *New return*
 |
 
-|*Filter 1*
-|*Order > Order type*
-|*Return*
+| *Filter 1*
+| *Order > Order type*
+| *Return*
 
-|*Filter 2*
-|*Order > Referrer*
-|*bol.com*
+| *Filter 2*
+| *Order > Referrer*
+| *bol.com*
 
-|*Procedure*
-|*Order > Send return status to bol.com*
+| *Procedure*
+| *Order > Send return status to bol.com*
 |Select a status.
 |====
 
 [#900]
 == Automatically sending cancellations
 
-Set up an <<automation/event-procedures#, event procedure>> to automatically inform bol.com of cancellations. Whenever you are dealing with cancellations, you need to send bol.com a reason for the cancellation. Open the *System » Orders » Status* menu and create additional order statuses as needed. The following cancellation reasons can be transferred to bol.com:
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform bol.com of cancellations. Whenever you are dealing with cancellations, you need to send bol.com a reason for the cancellation. Open the *System » Orders » Status* menu and create additional order statuses as needed. The following cancellation reasons can be transferred to bol.com in version 3.0 and higher:
 
-* Item not in stock
-* Customer cancellation
+* *Out of stock (v3)* +
+  ** previously *Out of stock (v2)*
+* *Cancellation requested by customer (v3)*
+  ** previously *Customer cancelled order (v2)*
+* *Item is in a bad condition (v3)*
+* *Higher shipping costs (v3)*
+* *Incorrect price (v3)*
+* *Item not available in time (v3)*
+* *No bol.com warranty (v3)*
+* *Item ordered twice (v3)*
+* *Item retained (v3)*
+* *Technical issue (v3)*
+* *Item untraceable (v3)*
+* *Other (v3)*
 
 :table-event-procedure: <<#event-procedure-cancellations-bol>>
 
@@ -376,33 +413,83 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 |Setting |Option |Selection
 
-|*Event*
-|*Status change: [8.1] Cancelled by customer*
+| *Event*
+| *Status change: [8.1] Cancelled by customer*
 |
 
-|*Filter 1*
-|*Order > Order type*
-|*Order*
+| *Filter 1*
+| *Order > Order type*
+| *Order*
 
-|*Filter 2*
-|*Order > Referrer*
-|*bol.com*
+| *Filter 2*
+| *Order > Referrer*
+| *bol.com*
 
-|*Procedure*
-|*Order > Send cancellation to bol.com*
-|*Customer cancellation*
+| *Procedure*
+| *Order > Send cancellation to bol.com*
+| *Customer cancellation*
 |====
 
+[#800]
+== Sending information on direct returns to bol.com
+
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform bol.com about returns that customers sent back to you directly without registering the return with bol.com first. bol.com requests the status of returns. The following return statuses can be sent to bol.com in API version 3.0 and higher:
+
+* Return received (v4)
+* Item will be exchanged (v4)
+* Return does not meet conditions (v4)
+* Item must be repaired (v4)
+* Customer keeps item (v4)
+* Return accepted after consultation with customer (v4)
+
+:table-event-procedure: <<#event-procedure-return-bol>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[event-procedure-return-bol]]
+.Event procedure to inform bol.com about returns
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Status change: [9.5] Credit note created*
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Return*
+
+| *Filter 2*
+| *Order > Referrer*
+| *bol.com*
+
+| *Procedure*
+| *Order > Create a return at bol.com*
+
+|Select a status.
+|====
+
+
 [#1000]
-== Viewing the API log
+== Viewing the log
 
-The *Data » API log* menu contains a history of processes that run via the bol.com interface.
+:marktplatz: bol.com
+:identifikator: bol.com
 
-[.instruction]
-Viewing the API log:
+include::_textblocks/instructions/viewing_logs.adoc[]
 
-. Go to *Data » API log » Tab: API log*.
-. Select the format *bol.com* from the *Process* drop-down list.
-. Select a *date* if you only want to see entries for a specific day.
-. Click on *Search* (icon:search[role="blue"]) to carry out the search. +
-→ The processes are displayed.
+Use the following reference types and reference values to filter the search results.
+
+[[table-reference-types]]
+.Reference types and reference values for bol.com
+[cols="1,3,3"]
+|====
+|Reference type |Explanation |Reference value
+
+|*action*
+|Filters by events.
+|Select a reference type to filter for specific events. +
+*shippingConfirmation* = Shipping confirmations +
+*orderImport* = Order import
+|====
