@@ -1,7 +1,7 @@
 = Importing data with ElasticSync
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Importing data, import data, data import, ElasticSync, sync, Elastic Sync, synchronise, synchronisation, data format, data formats, dynamic import, mapping, matching, import option, import data
+:keywords: Importing data, import data, data import, ElasticSync, sync, Elastic Sync, Elastic-Sync, synchronise, synchronize, synchronisation, synchronization, data format, data formats, dynamic import, mapping, matching, import option, import data, sync process, create sync, creating syncs, data type, manual upload, manually upload data, own value, RegEx function, Reg-Ex, Reg Ex, Regular Expression, FTP, HTTPS, SFTP, mathematical calculation, own assignment, filter import data, filtering import data, manipulate import file, manipulating import files, error message, troubleshooting, status, log, error log, test sync, testing syncs, run sync, running syncs, copy sync, copying syncs, import sync, importing syncs, export sync, exporting syncs, run, processing, jobs, queue, cancel import, cancel sync, cancel sync import, canceling syncs, cancelling syncs, canceling imports, cancelling imports, backup, restore backup, restoring backups
 :description: Find out how to import data in plentymarkets using ElasticSync.
 :position: 10
 :url: data/importing-data/ElasticSync
@@ -136,7 +136,7 @@ Currently, *CSV/TXT* is the only available option, as only CSV or TXT files can 
 |Select whether the import file contains a header.
 
 |*Use global cache*
-|When using the same file for several syncs you can determine whether you want to use the global cache. If activated, the file is cached globally, thus for all syncs.
+|Determine whether the global cache should be used for a file or not. If the setting is activated, only modified data rows will be imported. If the setting is not activated, you can import one and the same file again at any time.
 
 |*Automatic mapping*
 |Select whether the mapping should be done automatically. The columns in the CSV or TXT file can be mapped automatically to the plentymarkets data fields. To ensure that the mapping works properly, the names of the fields that you selected in the FormatDesigner must not be changed.
@@ -242,7 +242,7 @@ a|Select *German spelling* or *English spelling*.
 * *English spelling* = Decimal numbers are separated by a full stop and a comma serves as thousands separator.
 
 |*Date format*
-|Enter the date format. If the date in the file corresponds to the standard format Y-m-d H:i:s, it is not necessary to enter another format. Other formats, however, have to be entered here. All link:http://php.net/manual/de/function.date.php[php-compliant date formats^] are allowed.
+|Enter the date format. If the date in the file corresponds to the standard format Y-m-d H:i:s, it is not necessary to enter another format. Other formats, however, have to be entered here. All link:http://php.net/manual/de/function.date.php[php-compliant date formats^]{nbsp}icon:external-link[] are allowed.
 
 |====
 
@@ -391,7 +391,7 @@ Replacing values:
 [NOTE]
 .Info about RegEx
 ====
-For further information on RegEx see link:http://php.net/manual/en/reference.pcre.pattern.syntax.php[this^] page or have a look link:https://regexr.com/[here^].
+For further information on RegEx see link:http://php.net/manual/en/reference.pcre.pattern.syntax.php[this^] page or have a look link:https://regexr.com/[here^]{nbsp}icon:external-link[].
 On the latter page, the RegEx engine setting has to be changed to PCRE. This can be done in the dropdown menu on the top right where Javascript is preset.
 ====
 
@@ -503,8 +503,65 @@ Adding a filter:
 . Add additional filters as necessary. +
 → Only data that meets all filter criteria is imported.
 
+
+//[#1620]
+//== Report of sync import
+
+//A report is available in the overview of a sync. This report shows all imported lines including the success and error messages, which can be opened by clicking on the *Message* column. Use the filter in order to retrieve specific sync data.
+
+[#1605]
+== Error messages and troubleshooting in ElasticSync
+
+ElasticSync offers you various possibilities to identify incorrect syncs beforehand and to perform troubleshooting. Thus, you can for example check syncs for errors before running them or you can view a log of concrete error messages once the sync has been imported. The different possibilities are listed below.
+[#1610]
+=== Checking syncs for errors before the run
+
+With the validation, syncs can already be checked for errors before the run to guarantee as smooth import.
+
+[.instruction]
+Checking syncs for errors before the run:
+
+. Go to *Data » Import*. +
+→ The sync overview opens.
+. Click on a sync. +
+→ The settings open.
+. In the settings, matching or mapping tab, click on *Validation* (icon:bug[role="yellow"]). +
+→ A window opens and shows a table with the respective error messages.
+. In case an error occurred and you need help in the forum, click on *Copy to clipboard* (icon:clone[role="yellow"]) and paste the information in the forum.
+
+[#1615]
+=== Testing the sync and importing sample data
+
+In the sync overview you can test (icon:flask[role="yellow"]) and run (icon:play-circle[role="grey"]) syncs. Testing allows you to quickly know whether your file can be imported correctly.
+
+[NOTE]
+.Testing the sync
+====
+If you select *Test sync*, only the first ten lines of the import file are imported.
+====
+
+[#1620]
+=== Viewing the log of a completed sync
+
+A log listing errors that may have occurred is automatically created for each completed sync.
+
+[.instruction]
+Viewing the log of a completed sync:
+
+. Go to *Data » Status*. +
+→ The status overview opens. +
+icon:map-signs[] *_Or:_* Go to *Data » Import*. +
+→ The sync overview opens.
+. Click on *Status* (icon:bars[role="yellow"]). +
+→ The status overview opens.
+. Click on a completed sync. +
+→ The detail view opens.
+. At the top, click on *Log* (icon:bars[role="yellow"]). +
+→ A window opens and shows the log of the completed sync.
+. In case an error occurred and you need help in the forum, click on *Copy to clipboard* (icon:clone[role="yellow"]) and paste the information in the forum.
+
 [#1625]
-== Viewing success and error messages of syncs
+=== Viewing success and error messages of syncs
 
 In the *Data » Log* menu you can see success and error messages of syncs. To find messages of specific syncs, select the reference type *elasticSyncId* or *elasticSyncName* and enter the respective reference value. The specific success or error messages can be found in the *Message* column.
 
@@ -560,6 +617,25 @@ If you want to import and update a sync, a mapping and a matching are required. 
 If you just want to import a sync, a mapping alone is sufficient.
 ====
 
+[#1645]
+== Cancelling a sync during the import
+
+Under *Data » Status* you can cancel a sync import that has already been started. Thus, this function is only available if the sync is currently being processed.
+
+[.instruction]
+Cancelling a sync during the import:
+
+. Go to *Data » Status*. +
+→ The status overview opens. +
+icon:map-signs[] *_Or:_* Go to *Data » Import*. +
+→ The sync overview opens.
+. Click on *Status* (icon:bars[role="yellow"]). +
+→ The status overview opens.
+. At the very right in the line of the sync that you want to cancel, click on *Cancel import* (icon:window-close[role="red"]). +
+→ A window opens and you need to confirm your decision.
+. Click on *Cancel import*. +
+→ The import is cancelled and only those rows that had already been imported when cancelling are in the system.
+
 [#1650]
 == Uploading files quickly and easily
 
@@ -574,17 +650,6 @@ Uploading files quickly and easily:
 → Your files open.
 . Select a file and click on *Open*. +
 → The file is uploaded and the file name is displayed in the column. After running the sync, the file name disappears.
-
-[#1700]
-== Testing the sync and importing data
-
-It is possible to test and carry out syncs. Testing allows you to quickly know whether your file can be imported correctly.
-
-[NOTE]
-.Testing the sync
-====
-If you select *Test sync*, only the first ten lines of the import file are imported.
-====
 
 [#1710]
 == Processing jobs in the queue
