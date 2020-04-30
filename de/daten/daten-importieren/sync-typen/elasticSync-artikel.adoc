@@ -7,8 +7,11 @@ include::{includedir}/_header.adoc[]
 :id: QUGDW1A
 :author: team-item
 
-Mit einem Sync des Typs *Artikel* importierst du Artikel- und Variantendaten.
+Diese Seite erläutert die Abgleich- und Zuordnungsfelder, die dir beim Importieren von Artikel- und Variantendaten zur Verfügung stehen. Diese Seite dient lediglich als Referenz und setzt voraus, dass du bereits Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, ElasticSync-Tool>> hast.
 
+[IMPORTANT]
+.Voraussetzungen
+====
 Um Artikeldaten per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
 * Kategorien (Menü *Artikel » Kategorien*)
@@ -17,13 +20,20 @@ Um Artikeldaten per ElasticSync zu importieren, müssen die folgenden Datensätz
 Um Variantendaten mit Attributen per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
 * Attribute und Attributwerte (Menü *Einrichtung » Artikel » Attribute*)
+====
+
+[TIP]
+.Praxisbeispiel: Neue Artikel importieren
+====
+Stell dir mal vor, du bist ganz neu bei plentymarkets und möchtest alle deine Artikel und Varianten auf einmal importieren. Wie geht so etwas? Wirf einen Blick auf <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-variantenanlage#, dieses praktische Beispiel>>, welches dich Schritt für Schritt durch den Prozess führt.
+====
 
 [#1910]
 == Felder für den Artikelabgleich
 
-In <<tabelle-Abgleichfelder-Artikel>> werden Felder erläutert, die für den Abgleich von Artikeldaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-matching-fields-item>> werden Felder erläutert, die für den Abgleich von Artikeldaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-[[tabelle-Abgleichfelder-Artikel]]
+[[table-matching-fields-item]]
 .Abgleichfelder für Artikelimport
 [cols="1,3"]
 |====
@@ -39,7 +49,7 @@ In <<tabelle-Abgleichfelder-Artikel>> werden Felder erläutert, die für den Abg
 |
 
 |Barcode
-|Aus der zweiten Dropdown-Liste den Barcode-Typ wählen.
+|Aus der zweiten Dropdown-Liste den <<artikel/einstellungen/barcodes#100, Barcode-Typ>> wählen.
 
 |Artikel-ID
 |Bei Varianten mit Attributen dieses Feld nur in Kombination mit Attributauswahlkombination nutzen.
@@ -57,205 +67,357 @@ Aus der zweiten Dropdown-Liste das Format wählen, in dem die Daten in der Datei
 [#1920]
 == Felder für die Artikelzuordnung
 
-In diesem Kapitel werden Felder erläutert, die für die Zuordnung von Artikeldaten zur Verfügung stehen.
+//since there are many different fields, the explainations have been divided into sub-chapters.
+In diesem Kapitel werden Felder erläutert, die für die Zuordnung von Artikel- und Variantendaten zur Verfügung stehen.
+
+Da für den Sync-Typ *Artikel* viele verschiedene Zuordnungsfelder zur Verfügung stehen, wurden die nachfolgenden Erläuterungen in Unterkapitel unterteilt.
+
+[TIP]
+.Kein Zuordnungsfeld? Standardwert greift!
+====
+Wenn du eine bestimmte Information nicht in deine CSV-Datei aufnimmst, d.h. wenn du ein bestimmtes Zuordnungsfeld _nicht verwendest_, dann erhält dein Artikel bzw. deine Variante den Standardwert.
+====
 
 [#2260]
 === Artikel
+//evtl Tab Global und aaaa und bbbb anstatt die obere Tab-Leiste
 
-Für den Artikelimport stehen die in <<tabelle-Zuordnungsfelder-Artikel>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-items>> werden Felder erläutert, die für die Zuordnung diverser _Artikeldaten_ zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen, z.B. den Tabs <<artikel/artikel-verwalten#40, Global>>, <<artikel/artikel-verwalten#45, Multi-Channel>> und <<artikel/artikel-verwalten#70, Felder>> innerhalb der <<artikel/einleitung/struktur#200, oberen Tab-Leiste>> eines Artikeldatensatzes.
 
-[[tabelle-Zuordnungsfelder-Artikel]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Artikeldatensatz nach dem Import öffnest, siehst du, dass die Einstellungen in der oberen Tab-Leiste wie folgt konfiguriert wurden.
+
+[[table-mapping-fields-items]]
 .Felder für Artikelimport
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
-
-|Typ
-|standard = Artikel des Typs *Standard* +
-multipack = Artikel des Typs *Multipack* +
-|Wenn kein Artikeltyp angegeben wird, wird automatisch der Typ *Standard* angenommen.
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Warentyp
-|0 = Lagerware +
-1 = Produktionsware +
-2 = Colli +
-3 = Bestellware
-|
+|0 +
+1 +
+2 +
+3
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Typ>>
+
+* 0 = Lagerware
+* 1 = Produktionsware
+* 2 = Colli
+* 3 = Bestellware
 
 |Shop-Aktion
-|0 = keine +
-1 = Sonderangebot +
-2 = Neuheit +
-3 = Top-Artikel
-|
+|0 +
+1 +
+2 +
+3
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Webshop » Option: Shop-Aktion>>
 
-|Eigner
-|Nummerisch (interne User-ID)
-|ID der Eigner siehe *Einrichtung » Einstellungen » Benutzer » Konten*
+* 0 = Keine
+* 1 = Sonderangebot
+* 2 = Neuheit
+* 3 = Top-Artikel
 
 |Hersteller-ID
-|Nummerisch (interne ID)
-|Siehe *Einrichtung » Artikel » Hersteller*
+|Numerisch (interne ID)
+|- k.A. -
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Hersteller>>
+
+Die Zuordnung erfolgt über die Hersteller-ID im Menü *Einrichtung » Artikel » Hersteller*.
 
 |Herstellungsland
-|Nummerisch (interne ID); +
+|Numerisch (interne ID); +
 0 = unbekannt
-|IDs siehe <<basics/interne-IDs#20, Länder-IDs>>
+|Deutschland
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Herstellungsland>>
+
+Die Zuordnung erfolgt über die <<basics/interne-IDs#20, Liste der Länder-IDs>>.
 
 |Zolltarifnummer
-|Nummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Zolltarifnummer>>
 
 |Erlöskonto
-|
-|
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Erlöskonto>>
 
 |Aktionsgutschein
-|0 = Möglich +
-1 = Verboten +
-2 = Nur mit Gutschein kaufbar
-|
+|0 +
+1 +
+2
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Aktionsgutschein/POS-Rabatt>>
+
+* 0 = Möglich
+* 1 = Verboten
+* 2 = Nur mit Gutschein kaufbar
 
 |Zustand
-|0 = Neu +
-1 = Gebraucht +
-2 = Neu und originalverpackt +
-3 = Neu mit Etikett +
-4 = B-Ware
-|Artikelzustand
+|0 +
+1 +
+2 +
+3 +
+4
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Zustand>>
+
+* 0 = Neu
+* 1 = Gebraucht
+* 2 = Neu und originalverpackt
+* 3 = Neu mit Etikett
+* 4 = B-Ware
 
 |Zustand API
-|0 = Neu +
-1 = Gebraucht wie neu +
-2 = Gebraucht sehr gut +
-3 = Gebraucht gut +
-4 = Gebraucht annehmbar +
-5 = B-Ware
-|Zustand des Artikels; Übertragung über API an andere Marktplätze
+|0 +
+1 +
+2 +
+3 +
+4 +
+5
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Zustand API>>
 
-|Abonnement (ja/nein)
-|0 = Nein +
-1 = Ja
-|Kann Artikel als Abo bestellt werden?
+* 0 = Neu
+* 1 = Gebraucht wie neu
+* 2 = Gebraucht sehr gut
+* 3 = Gebraucht gut
+* 4 = Gebraucht annehmbar
+* 5 = B-Ware
 
-|Seriennummer (ja/nein)
-|0 = Nein +
-1 = Ja
-|Seriennummer zuweisen?
+|Abonnement (Ja/Nein)
+|0 +
+1
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Abonnement>>
 
-|Versandpaket (ja/nein)
-|0 = Nein +
-1 = Ja
-|Versandpaket verwenden?
+* 0 = Nein
+* 1 = Ja
+
+|Seriennummer (Ja/Nein)
+|0 +
+1
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Seriennummer>>
+
+* 0 = Nein
+* 1 = Ja
+
+|Versandpaket (Ja/Nein)
+|0 +
+1
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Versandpaket>>
+
+* 0 = Nein
+* 1 = Ja
 
 |Amazon-Abwicklung (FBA)
-|0 = Nicht verwenden +
-1 = AMAZON EU +
-2 = AMAZON FE +
-3 = AMAZON NA +
--1 = FBA und SellerCentral
-|
+|0 +
+1 +
+2 +
+3 +
+-1
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: FBA-Abwicklung>>
+
+* 0 = Nicht verwenden
+* 1 = AMAZON_EU
+* 2 = AMAZON_FE
+* 3 = AMAZON_NA
+* -1 = FBA und SellerCentral
 
 |Versand durch Amazon (FBA)
-|0 = Nein +
-1 = Ja
-|FBA-Versand?
+|0 +
+1
+|0
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: Amazon FBA>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Amazon-Produkttyp
-|Nummerisch
-|IDs siehe <<basics/interne-IDs#130, Wertetabelle amazon_product_type>>
+|Numerisch
+|Unbekannt
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Amazon » Option: Produkttyp>>
+
+Die Zuordnung erfolgt über die <<basics/interne-IDs#130, Wertetabelle amazon_product_type>>.
 
 |Amazon-FEDAS
+//0 und 1 macht dafür gar kein Sinn
+|0 +
+1
 |
-|FEDAS-Warengruppenschlüssel
+a|FEDAS-Warengruppenschlüssel
+
+* 0 = Nein
+* 1 = Ja
 
 |Listing-Vorlage
-|Nummerisch (interne ID)
-|
+|Numerisch (interne ID)
+|- k.A. -
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Listing-Voreinstellungen » Option: Listing-Vorlage>>
+
+Die Zuordnung erfolgt über die Listing-Vorlage-ID im Menü *Listings » Listings*.
 
 |Listing Kategorie 1; +
 Listing Kategorie 2
-|Nummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Listing-Voreinstellungen » Option: Kategorie 1>>
 
 |Listing Shop-Kategorie 1; +
 Listing Shop-Kategorie 2
-|Nummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Listing-Voreinstellungen » Option: Shop-Kategorie 1>>
+
 
 |Rakuten.de-Kategorien
-|Nummerisch (interne ID)
-|
+|Numerisch (interne ID)
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#45, Tab: Multi-Channel » Bereich: Kategorieverknüpfung » Option: Rakuten.de>>
 
-|Markierung 1
-|Nummerisch (interne ID)
-|ID der Markierung 1, siehe *Einrichtung » Artikel » Makierungen » Tab: Markierung 1*
+|Markierung 1; +
+Markierung 2
+|Numerisch (interne ID)
+|- k.A. -
+|Entspricht der <<artikel/einstellungen/markierungen#, Markierung des Artikels>>.
 
-|Markierung 2
-|Nummerisch (interne ID)
-|ID der Markierung 2, siehe *Einrichtung » Artikel » Makierungen » Tab: Markierung 2*
+Die Zuordnung erfolgt über die ID der Markierung im Menü *Einrichtung » Artikel » Makierungen » Tab: Markierung 1 bzw. Markierung 2*
 
 |Altersfreigabe
-|0 = Keine verfügbar +
-3 = FSK 3 +
-6 = FSK 6 +
-12 = FSK 12 +
-16 = FSK 16 +
-18 = FSK 18 +
-50 = Nicht gekennzeichnet +
-88 = Nicht erforderlich +
-99 = Noch nicht bekannt
-|FSK
+|0 +
+3 +
+6 +
+12 +
+16 +
+18 +
+50 +
+88 +
+99
+|0
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Altersfreigabe>>
+
+* 0 = Keine verfügbar
+* 3 = FSK 3
+* 6 = FSK 6
+* 12 = FSK 12
+* 16 = FSK 16
+* 18 = FSK 18
+* 50 = Nicht gekennzeichnet
+* 88 = Nicht erforderlich
+* 99 = Noch nicht bekannt
 
 |Artikelbewertung
-|Nummerisch
-|Erstbewertung von 1 bis 5 bzw. 1 bis 10
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Webshop » Option: Artikelbewertung>>
 
 |Feld 1; +
 Feld 2; +
 Feld 3; +
 ... +
 Feld 20
-|Alphanummerisch
-|Freitextfelder 1 bis 20
+|AlphaNumerisch
+|- k.A. -
+|Entspricht den Freitextfeldern 1 bis 20 unter: +
+<<artikel/artikel-verwalten#70, Tab: Felder>>
 
 |Max. Artikelbestellmenge
-|Nummerisch
-|
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Max. Bestellmenge>>
+
+|Typ
+|standard +
+multipack +
+set
+|standard
+a|_Beim Erstellen eines neuen Artikels_, entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#20, Tab zum Erstellen eines neuen Artikels » Bereich: Artikeldaten » Option: Typ>>
+
+* standard = Artikel des Typs *Standard*
+* multipack = Artikel des Typs *Multipack*
+* set = Artikel des Typs *Set*
+
 
 |Herstellername
-|Alphanummerisch
-|Wenn nicht im System, wird neuer Hersteller angelegt.
+|AlphaNumerisch
+|- k.A. -
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#40, Tab: Global » Bereich: Grundeinstellungen » Option: Hersteller>>
 
-|Artikelvorlage
-|Nummerisch
-|ID der Kategorie der <<artikel/artikel-verwalten#720, Artikelvorlage>> +
-*_Hinweis:_* Artikelvorlagen gibt es nur im alten Webdesign Callisto.
+Die Zuordnung erfolgt über den Herstellernamen. Wenn der Herstellerdatensatz nicht bereits im System vorhanden ist, wird ein neuer Herstellerdatensatz angelegt.
+
+//wo findet man Artikelvorlage?
+//|Artikelvorlage
+//|Numerisch
+//|
+//|ID der Kategorie der <<artikel/artikel-verwalten#720, Artikelvorlage>> +
+//*_Hinweis:_* Artikelvorlagen gibt es nur im alten Webdesign Callisto.
 
 |Artikel löschen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+|0
+a|Möchtest du einige Artikel löschen und andere aktualisieren? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob der Artikel gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#3000]
 === Artikelsets
 
-Für den Import von Artikelsets stehen die in <<tabelle-zuordnungsfelder-artikelsets>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-item-sets>> werden Felder erläutert, die für die Zuordnung von Artikelsets zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/anwendungsfaelle/multipacks-pakete-sets#3700, Bestandteile zu einem Setartikel hinzuzufügen>>.
 
-[[tabelle-zuordnungsfelder-artikelsets]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Setartikel nach dem Import öffnest, siehst du, dass die Einstellungen im Tab *Set* wie folgt konfiguriert wurden.
+
+//Für den Import von Artikelsets stehen die in <<table-mapping-fields-item-sets>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-item-sets]]
 .Felder für Import von Artikelsets
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Bestandteile hinzufügen (IDs, kommasepariert)
-|Alphanummerisch
+|AlphaNumerisch
 |IDs und Anzahl der Artikel, die zum Set hinzugefügt werden +
 Format: *artikelID:menge,artikelID:menge*
 
 |Bestandteile entfernen (IDs, kommasepariert)
-|Alphanummerisch
+|AlphaNumerisch
 |IDs der Artikel, die aus dem Set entfernt werden
 
 |Rabatt
@@ -266,1161 +428,2013 @@ Format: *artikelID:menge,artikelID:menge*
 [#2310]
 === Cross-Selling
 
-Für den Import von Cross-Selling-Verknüpfungen stehen die in <<tabelle-zuordnungsfelder-crossselling>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-cross-selling>> werden Felder erläutert, die für die Zuordnung von Cross-Selling-Artikeln zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/webshop/cross-selling#, zusätzliche Verkäufe mittels Cross-Selling zu erzielen>>.
 
-[[tabelle-zuordnungsfelder-crossselling]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Artikel nach dem Import öffnest, siehst du, dass die Cross-Selling-Verbindungen wie folgt konfiguriert wurden.
+
+//Für den Import von Cross-Selling-Verknüpfungen stehen die in <<table-mapping-fields-cross-selling>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-cross-selling]]
 .Felder für Import von Cross-Selling-Verknüpfungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Alle Cross-Selling-Verknüpfungen löschen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Möchtest du <<artikel/webshop/cross-selling#600, alle Cross-Selling-Verbindungen aus dem Artikeldatensatz löschen>>? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Cross-Selling-Verbindungen gelöscht werden sollen.
+
+* 0 = Nein
+* 1 = Ja
 
 |Cross-Selling-Verknüpfungen hinzufügen
-|Alphanummerisch
-|Cross-Selling-Verknüpfung im Format +
-*Artikel-ID:Beziehungstyp;Artikel-ID:Beziehungstyp;etc.* +
-Verfügbare Beziehungstypen: +
-Accessory = Zubehör +
-ReplacementPart = Ersatzteil +
-Similar = Ähnlich +
-Bundle = Artikelpaket
+|AlphaNumerisch
+a|Möchtest du <<artikel/webshop/cross-selling#300, neue Cross-Selling-Verbindungen erstellen>>? Gib Informationen über die Verbindung in diesem Format ein:
+
+*Artikel-ID:Beziehungstyp;Artikel-ID:Beziehungstyp;etc.*
+
+Verfügbare Beziehungstypen:
+
+* Accessory = Zubehör
+* ReplacementPart = Ersatzteil
+* Similar = Ähnlich
+* Bundle = Artikelpaket
 
 |Cross-Selling-Verknüpfungen löschen
-|Nummerisch
-|Zu löschende Cross-Selling-Verknüpfungen im Format +
- *Artikel-ID;Artikel-ID;etc.*
+|Numerisch
+|Möchtest du <<artikel/webshop/cross-selling#600, einige der Cross-Selling-Verbindungen aus dem Artikeldatensatz löschen>>? Gib die zu löschende Cross-Selling-Verknüpfungen in diesem Format ein:
+
+*Artikel-ID;Artikel-ID;etc.*
 |====
 
 
 [#2270]
 === Artikelbeschreibung
 
-Für den Import der Artikelbeschreibungen stehen die in <<tabelle-zuordnungsfelder-artikelbeschreibung>> aufgelisteten Felder zur Verfügung. Pro Sprache wird eine Zuordnung erstellt. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-item-description>> werden Felder erläutert, die für die Zuordnung von Artikelbeschreibungen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also den <<artikel/artikel-verwalten#50, Einstellungen im Artikeltext-Tab>>.
 
-[[tabelle-zuordnungsfelder-artikelbeschreibung]]
+Gib die Texte in deine CSV-Datei ein. Pro Sprache wird eine Zuordnung erstellt.
+Wenn du den Artikel nach dem Import öffnest, siehst du, dass diese Texte für den Artikel gespeichert wurden.
+
+//Für den Import der Artikelbeschreibungen stehen die in <<table-mapping-fields-item-description>> aufgelisteten Felder zur Verfügung. Pro Sprache wird eine Zuordnung erstellt. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-item-description]]
 .Felder für Import von Artikelbeschreibungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
-|Name
-|Alphanummerisch
-|
-
-|Name 2; +
+|Name; +
+Name 2; +
 Name 3
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Gib einen Namen für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Name 1, 2, 3>>
 
 |Vorschautext
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Gib einen Vorschautext für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Vorschautext>>
 
 |Meta-Beschreibung
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Gib eine Meta-Beschreibung für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Meta-Beschreibung>>
 
 |Artikeltext
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Gib einen Artikeltext für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Artikeltext>>
 
 |Technische Daten
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Gib technische Daten für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Technische Daten>>
 
 |URL-Pfad
 |Link
-|
+|Gib einen URL-Pfad für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: URL-Pfad>>
 
 |Meta-Keywords
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Gib Meta-Keywords für den Artikel in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch die Sprache ein.
+
+Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#50, Tab: Texte » Option: Meta-Keywords>>
 |====
 
 [#2280]
 === Versandprofil
 
-Für den Import von Versandprofilen stehen die in <<tabelle-zuordnungsfelder-versandprofile>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-shipping-profile>> werden Felder erläutert, die für die Zuordnung von Versandprofilen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#40, Versandprofile mit Artikeln zu verknüpfen>>.
 
-[[tabelle-zuordnungsfelder-versandprofile]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Artikel nach dem Import öffnest, siehst du, dass die Versandprofile wie folgt verknüpft wurden.
+
+//Für den Import von Versandprofilen stehen die in <<table-mapping-fields-shipping-profile>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-shipping-profile]]
 .Abgleichfelder für Versandprofile
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Versandprofil-ID
-|Nummerisch
-|
+|Numerisch
+|Gib die ID des Versandprofils ein, das mit dem Artikel verknüpft werden soll.
+
+Versandprofil-IDs können im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versandprofile* nachgeschlagen werden.
 
 |Versandprofile (kommasepariert)
-|
-|Ermöglicht den Import von mehr als einem Versandprofil
+|Numerisch
+|Möchtest du mehr als nur einem Versandprofil verknüpfen? Gib die IDs aller Versandprofile ein, die mit dem Artikel verknüpft werden sollen.
+Gib die IDs in diesem Format ein:
+
+*Profil-ID1,Profil-ID2,...*
+
+Versandprofil-IDs können im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versandprofile* nachgeschlagen werden.
 
 |Versandprofilverknüpfungen löschen (Profil-IDs, kommasepariert)
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Möchtest du einige Verknüpfungen löschen? Gib die IDs aller Versandprofile ein, die _nicht mehr_ mit dem Artikel verknüpft werden sollen.
+Gib die IDs in diesem Format ein:
+
+*Profil-ID1,Profil-ID2,...*
+
+Versandprofil-IDs können im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versandprofile* nachgeschlagen werden.
 |====
 
 
 [#2300]
 === Varianten
+//evtl Tab Einstellungen einer Variante anstatt die untere Tab-Leiste
 
-Für den Import von Variantendaten stehen die in <<tabelle-zuordnungsfelder-varianten>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-variations>> werden Felder erläutert, die für die Zuordnung von Variantendaten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also Angaben in der <<artikel/einleitung/struktur#200, unteren Tab-Leiste>> eines Artikeldatensatzes.
 
-[[tabelle-zuordnungsfelder-varianten]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Einstellungen in der unteren Tab-Leiste wie folgt konfiguriert wurden.
+
+//Für den Import von Variantendaten stehen die in <<table-mapping-fields-variations>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-variations]]
 .Abgleichfelder für Varianten
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |ID
-|Nummerisch
-|
+//weitere Info hinzufügen
+|Numerisch
+|- k.A. -
+|Entspricht der ID der Variante.
 
 |Artikel-ID
-|Nummerisch
-|
+//weitere Info hinzufügen
+|Numerisch
+|- k.A. -
+|Entspricht der ID des Artikels.
 
 |Position
-|Nummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Position>>
 
 |Aktiv
-|0 = Nein +
-1 = Ja
-|Ist Variante aktiv, d.h. wird die Variante im Webshop und ggf. auf Marktplätzen angeboten?
+|0 +
+1
+|0
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Aktiv>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Variantennr.
-|Alphanummerisch
-|
+|AlphaNumerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Variantennr.>>
 
 |Modell
-|Alphanummerisch
-|Modellbezeichnung
+|AlphaNumerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Modell>>
 
 |Externe Varianten-ID
-|Alphanummerisch
-|
+|AlphaNumerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Ext. Varianten-ID>>
 
 |Verfügbarkeit
-|Nummerisch (interne ID)
-|
+|Numerisch (interne ID)
+|1
+|Entspricht den Verfügbarkeitssymbolen 1 bis 10 unter: +
+<<artikel/artikel-verwalten#190, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Verfügbarkeit>>
 
 |EK netto
-|Nummerisch
-|Einkaufspreis
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: EK netto>>
 
 |GLD EK netto
-|Nummerisch
-|Gleitender Durchschittseinkaufspreis netto
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: GLD EK netto>>
 
 |Preiskalkulation
-|Nummerisch (interne ID)
-|
+|Numerisch (interne ID)
+|- k.A. -
+|Wendet eine Preiskalkulation auf die für die Variante gespeicherten Preise an. Entspricht also der _dritten_ Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#240, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verkaufspreise>>
 
-|VPE
-|Nummerisch
-|Verpackungseinheit; Standard = 1
-
-|Anzahl der Packstücke
-|Nummerisch
-|
-
-|Einheit der Packstücke
-|0 = unverpackt +
-1 = Ballen +
-2 = Behälter +
-3 = Bund +
-4 = Rollpalette +
-5 = Colli +
-6 = Container +
-7 = Eimer +
-8 = Fass +
-9 = Flaschen +
-10 = Euro Pool Flachpalette +
-11 = Gestell +
-12 = Gasflasche +
-13 = Gitterboxpalette +
-14 = Hobbock +
-15 = Halbe Palette +
-16 = Lebensmittelpalette +
-17 = Holzuntersetzer +
-18 = IBC Container +
-19 = Kanne +
-20 = Korbflasche +
-21 = Kiste +
-22 = Kanister +
-23 = Kundenpalette +
-24 = Karton +
-25 = Kombinationsverpackung +
-26 = Pack +
-27 = Ring +
-28 = Rolle +
-29 = Sack +
-30 = Stück +
-31 = Tank +
-32 = Trommel +
-34 = Verschlag +
-35 = Viertelpalette +
-36 = sonstige Paletten +
-37 = Kasten +
-38 = Einwegpalette +
-39 = Folientüte
-|
-
-|Transportkosten netto
-|Nummerisch
-|
-
-|Lagerkosten netto
-|Nummerisch
-|
-
-|Zoll
-|Nummerisch
-|Prozentwert
-
-|Betriebskosten
-|Nummerisch
-|Prozent
-
-|Umsatzsteuer
-|Nummerisch (%)
-|
-
-|Paketart
-|bundle = Variante ist Paket +
-bundle_item = Variante ist Paketbestandteil
-|
-
-|Unsichtbar in Artikellisten
-|0 = Nein +
-1 = Ja
-|
-
-|Kommissionierung
-|single_picking = Einzelkommissionierung möglich +
-no_single_picking = Keine Einzelkommissionierung möglich +
-exclude_from_picklist = Von Pickliste ausschließen
-|
+Die Zuordnung erfolgt anhand der Preiskalkulation-ID im Menü *Einrichtung » Artikel » Preiskalkulation » Preiskalkulation öffnen*.
 
 |WB-Beschränkung
-|0 = Keine Beschränkung +
-1 = Auf Netto-WB +
-2 = Keinen Bestand führen
-|
+|0 +
+1 +
+2
+|1
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#190, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Beschränkung>>
 
-|Sichtbarkeit Mandant: Automatisch sichtbar, wenn Netto-WB positiv
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+* 0 = Keine
+* 1 = Auf Netto-WB
+* 2 = Keinen WB für diese Variante führen
 
-|Sichtbarkeit Mandant: Automatisch unsichtbar, wenn kein Netto-WB
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+|Sichtbarkeit Mandant: Automatisch sichtbar, wenn Netto-WB positiv; +
+Sichtbarkeit Mandant: Automatisch unsichtbar, wenn kein Netto-WB
+|0 +
+1
+|0
+a|Entspricht der gleichnamigen Checkbox unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
 
-|Sichtbarkeit Artikelauflistung: Immer unsichtbar
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
-|Sichtbarkeit Artikelauflistung: Automatisch sichtbar, wenn Netto-WB positiv
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+|Verfügbarkeit Webshop: Automatisch verfügbar, wenn Netto-WB positiv; +
+Verfügbarkeit Webshop: Automatisch nicht verfügbar, wenn kein Netto-WB
+|0 +
+1
+|0
+a|Entspricht der gleichnamigen Checkbox unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
 
-|Sichtbarkeit Artikelauflistung: Automatisch unsichtbar, wenn kein Netto-WB
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
-|Verfügbarkeit Webshop: Automatisch verfügbar, wenn Netto-WB positiv
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+//|Sichtbarkeit Artikelauflistung: Immer unsichtbar
+//|0 = Nein +
+//1 = Ja
+//|
+//|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
 
-|Verfügbarkeit Webshop: Automatisch nicht verfügbar, wenn kein Netto-WB
-|0 = Nein +
-1 = Ja
-|Entspricht die gleiche <<artikel/artikel-verwalten#230, Verfügbarkeitseinstellung>> in der Artikelübersicht.
+|Sichtbarkeit Artikelauflistung: Automatisch sichtbar, wenn Netto-WB positiv; +
+Sichtbarkeit Artikelauflistung: Automatisch unsichtbar, wenn kein Netto-WB
+|0 +
+1
+|0
+a|Entspricht der gleichnamigen Checkbox unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Hauptlager
-|Nummerisch (interne ID)
-|
+|Numerisch (interne ID)
+|- k.A. -
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#190, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Hauptlager>>
+
+Die Zuordnung erfolgt anhand der Lager-ID im Menü *Einrichtung » Waren » Lager » Lager öffnen » Einstellungen*.
 
 |Max. Bestellmenge
-|Nummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Max. Bestellmenge>>
 
 |Min.-Bestellmenge
-|Nummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Min.-Bestellmenge>>
 
 |Intervallbestellmenge
-|Nummerisch
-|
-
-|Grundpreis anzeigen
-|0 = Nein +
-1 = Ja
-|
-
-|tagVariationId
-|Nummerisch
-|
-
-|Variante löschen
-|0 = Nein +
-1 = Ja
-|
-
-|Nummer der Hauptvariante
-|Alphanummerisch
-|
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Intervallbestellmenge>>
 
 |Verfügbar bis
-|Datum
-|Datum des letzten Tages der Verfügbarkeit
+|Datum +
+(DD.MM.YYYY)
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Verfügbar bis>>
 
 |Erscheinungsdatum
-|Datum
-|Datum, ab dem die Variante verfügbar ist
+|Datum +
+(DD.MM.YYYY)
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#230, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit » Option: Erscheinungsdatum>>
 
 |Name
-|Alphanummerisch
-|Name der Variante
+|AlphaNumerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#_grundeinstellungen_an_der_hauptvariante_vornehmen, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Grundeinstellungen » Option: Variantenname>>
 
-|Gewicht brutto g
-|Nummerisch
-|
+|Gewicht brutto g; +
+Gewicht netto g
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Gewicht brutto bzw. Gewicht netto>>
 
-|Gewicht netto g
-|Nummerisch
-|
+Achte darauf, dass du das _Gewicht in Gramm_ anstatt in Kilogramm angibst.
 
-|Breite mm
-|Nummerisch
-|
+|Breite mm; +
+Länge mm; +
+Höhe mm
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Länge/Breite/Höhe>>
 
-|Länge mm
-|Nummerisch
-|
-
-|Höhe mm
-|Nummerisch
-|
+Achte darauf, dass du die _Maße in Millimetern_ angibst.
 
 |Portoaufschlag 1; +
 Portoaufschlag 2
-|Nummerisch
+|Numerisch
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#290, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Portoaufschlag 1 bzw. Portoaufschlag 2>>
+
+|VPE
+|Numerisch
+|1
+|Verpackungseinheit. Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: VPE>>
+
+|Anzahl der Packstücke
+|0 +
+1 +
+2 +
+... +
+20
+|- k.A. -
+|Entspricht der _ersten Dropdown-Liste_ unter: +
+<<artikel/artikel-verwalten#290, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Packstücke>>
+
+Verwende dieses Zuordnungsfeld zusammen mit *Einheit der Packstücke*.
+
+|Einheit der Packstücke
+|0 +
+1 +
+2 +
+... +
+39
+|- k.A. -
+a|Entspricht der _zweiten Dropdown-Liste_ unter: +
+<<artikel/artikel-verwalten#290, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Packstücke>>
+
+Verwende dieses Zuordnungsfeld zusammen mit *Anzahl der Packstücke*.
+
+* 0 = unverpackt
+* 1 = Ballen
+* 2 = Behälter
+* 3 = Bund
+* 4 = Rollpalette
+* 5 = Colli
+* 6 = Container
+* 7 = Eimer
+* 8 = Fass
+* 9 = Flaschen
+* 10 = Euro Pool Flachpalette
+* 11 = Gestell
+* 12 = Gasflasche
+* 13 = Gitterboxpalette
+* 14 = Hobbock
+* 15 = Halbe Palette
+* 16 = Lebensmittelpalette
+* 17 = Holzuntersetzer
+* 18 = IBC Container
+* 19 = Kanne
+* 20 = Korbflasche
+* 21 = Kiste
+* 22 = Kanister
+* 23 = Kundenpalette
+* 24 = Karton
+* 25 = Kombinationsverpackung
+* 26 = Pack
+* 27 = Ring
+* 28 = Rolle
+* 29 = Sack
+* 30 = Stück
+* 31 = Tank
+* 32 = Trommel
+* 34 = Verschlag
+* 35 = Viertelpalette
+* 36 = sonstige Paletten
+* 37 = Kasten
+* 38 = Einwegpalette
+* 39 = Folientüte
+
+|Transportkosten netto
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Transport netto>>
+
+|Lagerkosten netto
+|Numerisch
+|0
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Lager netto>>
+
+|Zoll
+|Numerisch
+(Prozentwert)
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Zoll>>
+
+|Betriebskosten
+|Numerisch
+(Prozentwert)
+|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Betriebskosten>>
+
+|Umsatzsteuer
+//welcher Standardwert?
+|Numerisch
+(Prozentwert)
+|
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Kosten » Option: Umsatzsteuer>>
+
+|Paketart
+//infos ergänzen
+|bundle = Variante ist Paket +
+bundle_item = Variante ist Paketbestandteil
+|
+|
+
+|Sichtbarkeit Artikelauflistung: Immer unsichtbar
+//infos ergänzen
+|0 = Nein +
+1 = Ja
+|
+|
+
+|Grundpreis anzeigen
+|0 +
+1
+|0
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Grundpreisanzeige>>
+
+* 0 = Nein
+* 1 = Ja
+
+|Gewicht brutto aus Paketbestandteilen berechnen; +
+Gewicht netto aus Paketbestandteilen berechnen; +
+EK netto aus Paketbestandteilen berechnen; +
+GLD EK netto aus Paketbestandteilen berechnen
+//standardwerte ergänzen
+|0 +
+1
+|
+a|Entspricht den Checkboxen unter: +
+<<artikel/artikel-verwalten#265, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Paket » Option: Automatisch aus Paketbestandteilen berechnen>>
+
+* 0 = Nein
+* 1 = Ja
+
+*_Hinweis_*: Diese Checkboxen sind nur für <<artikel/anwendungsfaelle/multipacks-pakete-sets#, Artikelpakete>> sichtbar.
+
+|Kommissionierung
+|single_picking +
+no_single_picking +
+exclude_from_picklist
+|no_single_picking
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Versand » Option: Kommissionierung>>
+
+* single_picking = Einzelkommissionierung möglich
+* no_single_picking = Keine Einzelkommissionierung möglich
+* exclude_from_picklist = Von Pickliste ausschließen
+
+|Variante löschen
+|0 +
+1
+|0
+a|Möchtest du einige Varianten löschen und andere aktualisieren? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Variante gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
+
+|Nummer der Hauptvariante
+//infos ergänzen
+//in wie fern unterscheidet sich das von der Variantennr. ganz oben?
+|AlphaNumerisch
+|
 |
 |====
 
 [#2320]
 === Barcodes
 
-Für den Import von Barcode-Daten stehen die in <<tabelle-zuordnungsfelder-barcodes>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Barcode-Typ.
+In <<table-mapping-fields-barcodes>> werden Felder erläutert, die für die Zuordnung von Barcode-Daten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/einstellungen/barcodes#300, Barcodes zu Artikeln zuordnen>>.
 
-[[tabelle-zuordnungsfelder-barcodes]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Artikel nach dem Import öffnest, siehst du, dass die Barcodes wie folgt verknüpft wurden.
+
+//Für den Import von Barcode-Daten stehen die in <<table-mapping-fields-barcodes>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Barcode-Typ.
+
+[[table-mapping-fields-barcodes]]
 .Felder für Import von Barcodes
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Code
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Barcode » Option: Code>>
+
+Gib den alphanumerischen Code in deine CSV-Datei ein.
+Wähle den Barcode-Typ aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Barcode löschen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Willst du einen Barcode aus dem Artikeldatensatz löschen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob der Barcode gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
+
+Wähle den zu löschenden Barcode-Typ aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 |====
 
 [#2330]
 === Variantenpreise
 
-Für den Import von Variantenpreisen stehen die in <<tabelle-zuordnungsfelder-preis>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Verkaufspreis.
+In <<table-mapping-fields-prices>> werden Felder erläutert, die für die Zuordnung von Preisen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#240, Preise für Varianten zu speichern>>.
 
-[[tabelle-zuordnungsfelder-preis]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Preise wie folgt hinterlegt wurden.
+
+//Für den Import von Variantenpreisen stehen die in <<table-mapping-fields-prices>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Verkaufspreis.
+
+[[table-mapping-fields-prices]]
 .Felder für Import von Variantenpreisen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Preis
-|Nummerisch
-|Verkaufspreis aus der Dropdown-Liste rechts wählen, der dem Import zugewiesen werden soll.
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#280, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verkaufspreise » Option: Preis>>
+
+Gib den Geldbetrag in deine CSV-Datei ein.
+Wähle den <<artikel/einstellungen/preise#, Verkaufspreis>> aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Preis löschen
-|0 = Nein +
-1 = Ja
-|Löscht einen zugeordneten Preis.
+|0 +
+1
+a|Willst du einen Preis aus dem Artikeldatensatz löschen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob der Preis gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
+
+Wähle den zu löschenden <<artikel/einstellungen/preise#, Verkaufspreis>> aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Nettopreis (Ja/Nein)
-|0 = Nein +
-1 = Ja
-|Wählen, ob der Preis als Nettopreis importiert werden soll.
+|0 +
+1
+a|Ist der Geldbetrag als Nettopreis zu verstehen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob der Preis ein Nettopreis sein soll.
+
+* 0 = Nein (es handelt sich um einen Bruttopreis)
+* 1 = Ja (es handelt sich um einen Nettopreis)
+
+Wähle den <<artikel/einstellungen/preise#, Verkaufspreis>> aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 |====
 
 [#2340]
 === Kategorien
 
-Für den Import von Kategoriedaten stehen die in <<tabelle-zuordnungsfelder-kategorien>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-categories>> werden Felder erläutert, die für die Zuordnung von Kategoriedaten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/einstellungen/kategorien#1300, Artikel in Kategorien einzusortieren>>.
 
-[[tabelle-zuordnungsfelder-kategorien]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Kategorien wie folgt verknüpft wurden.
+
+//Für den Import von Kategoriedaten stehen die in <<table-mapping-fields-categories>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-categories]]
 .Felder für Import von Kategorien
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID der Kategorie
-|Nummerisch (interne ID)
-|Alternativ Name der Kategorie übergeben.
+|Numerisch (interne ID)
+|Verknüpft _eine_ Kategorie mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Verknüpfte Kategorien » Option: ID>>
+
+Gib eine Kategorie-ID in die CSV-Datei ein. Die Kategorie-IDs findest du im Menü *Artikel » Kategorien* (ID erscheint beim Mouseover).
 
 |Position
-|Nummerisch
-|
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Verknüpfte Kategorien » Option: Position>>
+
+Gib die Positionsnummer in die CSV-Datei ein.
 
 |Ist Neckermann.de Hauptkategorie
+//infos ergänzen
 |0 = Nein +
 1 = Ja
 |
 
 |Name der Kategorie
-|Alphanummerisch
-a|
-* Vollständigen Kategoriepfad, semikolongetrennt (z.B. Schuhe;Unisex) +
-oder
-* ID der Kategorie
+|AlphaNumerisch
+|Verknüpft _eine_ Kategorie mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Verknüpfte Kategorien » Option: Kategorie>>
 
-*_Tipp:_* Für weitere Kategorien zusätzliche Mappings erstellen.
+Gib den vollständigen Kategoriepfad, durch Semikolons getrennt, ein. Zum Beispiel: +
+*Schuhe;Unisex*
 
 |Alle Kategorieverknüpfungen löschen
-|0 = Nein +
-1 = Ja
-|Löst alle verknüpften Kategorien.
+|0 +
+1
+a|Willst du _alle_ Kategorieverknüpfungen aus dem Artikeldatensatz löschen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Verknüpfungen gelöscht werden sollen.
+
+* 0 = Nein
+* 1 = Ja
+
+*_Hinweis_*: Die Kategorien selbst werden nicht gelöscht. Die Verknüpfungen werden lediglich von der Variante entfernt.
 
 |Kategorie-IDs (kommasepariert)
-|Alphanummerisch
-|IDs der Kategorien, die mit der Variante verknüpft werden sollen.
+|AlphaNumerisch
+|Verknüpft _mehrere_ Kategorien mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Verknüpfte Kategorien » Option: ID>>
+
+Gib die Kategorie-IDs in die CSV-Datei ein. Trenne die IDs durch Kommas. Zum Beispiel: +
+*ID1,ID2,ID3,usw*
+
+Die Kategorie-IDs findest du im Menü *Artikel » Kategorien* (ID erscheint beim Mouseover).
 
 |Kategorienamen (kommasepariert)
-|Alphanummerisch
-|Name der Kategorien, die mit der Variante verknüpft werden sollen.
+|AlphaNumerisch
+|Verknüpft _mehrere_ Kategorien mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Verknüpfte Kategorien » Option: Kategorie>>
+
+Gib den vollständigen Kategoriepfad, durch Semikolons getrennt, ein. Trenne mehrere Kategoriepfade durch Kommas. Zum Beispiel: +
+*Schuhe;Unisex,Schuhe;Damen,Schuhe;Herren*
 
 |Verknüpfungen löschen (Kategorie-IDs, kommasepariert)
-|Alphanummerisch
-|IDs der Kategorien, die von der Variante gelöst werden sollen.
+|AlphaNumerisch
+|Willst du _einige_ Kategorieverknüpfungen aus dem Artikeldatensatz löschen?
+Gib die IDs der zu löschenden Kategorien in deine CSV-Datei ein.
+Trenne die IDs durch Kommas. Zum Beispiel: +
+*ID1,ID2,ID3,usw*
+
+Die Kategorie-IDs findest du im Menü *Artikel » Kategorien* (ID erscheint beim Mouseover).
+
+*_Hinweis_*: Die Kategorien selbst werden nicht gelöscht. Die Verknüpfungen werden lediglich von der Variante entfernt.
 
 |Verknüpfungen löschen (Kategorienamen, kommasepariert)
-|Alphanummerisch
-|Namen der Kategorien, die von der Variante gelöst werden sollen.
+|AlphaNumerisch
+|Willst du _einige_ Kategorieverknüpfungen aus dem Artikeldatensatz löschen?
+Gib die Namen der zu löschenden Kategorien in deine CSV-Datei ein.
+Trenne mehrere Kategoriepfade durch Kommas. Zum Beispiel: +
+*Schuhe;Unisex,Schuhe;Damen,Schuhe;Herren*
+
+*_Hinweis_*: Die Kategorien selbst werden nicht gelöscht. Die Verknüpfungen werden lediglich von der Variante entfernt.
 
 |Nicht gefundene Kategorien anlegen
-|
-|
+|0 +
+1
+a|Möchtest du die Kategorie erstellen, falls sie noch nicht existiert? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Kategorie erstellt werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#2345]
 === Standardkategorien
 
-Für den Import von Standardkategoriedaten stehen die in <<tabelle-zuordnungsfelder-standardkategorien>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-default-categories>> werden Felder erläutert, die für die Zuordnung von Standardkategoriedaten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, anzugeben, welche Kategorie am passendsten ist.
 
-[[tabelle-zuordnungsfelder-standardkategorien]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Standardkategorie wie folgt verknüpft wurde.
+
+//Für den Import von Standardkategoriedaten stehen die in <<table-mapping-fields-default-categories>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-default-categories]]
 .Felder für Import von Standardkategorien
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID der Kategorie
-|Nummerisch (interne ID)
-|ID der Standardkategorie
+|Numerisch (interne ID)
+|Verknüpft die Standardkategorie mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Standardkategorien>>
+
+Gib eine Kategorie-ID in die CSV-Datei ein. Die Kategorie-IDs findest du im Menü *Artikel » Kategorien* (ID erscheint beim Mouseover).
 
 |Name der Kategorie
-|Alphanummerisch
-|Name der Standardkategorie
+|AlphaNumerisch
+|Verknüpft die Standardkategorie mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Standardkategorien>>
+
+Gib den vollständigen Kategoriepfad, durch Semikolons getrennt, ein. Zum Beispiel: +
+*Schuhe;Unisex*
 
 |Nicht gefundene Kategorien anlegen
-|
-|
+|0 +
+1
+a|Möchtest du die Standardkategorie erstellen, falls sie noch nicht existiert? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Standardkategorie erstellt werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#2350]
 === Bestand
+//info in die einleitung ergänzen
 
-Für den Import von Bestandsdaten stehen die in <<tabelle-zuordnungsfelder-bestand>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+Für den Import von Bestandsdaten stehen die in <<table-mapping-fields-stock>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-[[tabelle-zuordnungsfelder-bestand]]
+[[table-mapping-fields-stock]]
 .Felder für Import von Bestand
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Lager
-|Nummerisch (interne ID)
+|Numerisch (interne ID)
 |Kann nur in Kombination mit Menge und Lagerort übergeben werden.
 
 |Menge
-|Nummerisch
+|Numerisch
 |Kann nur in Kombination mit Lager und Lagerort übergeben werden.
 
 |Lagerort
-|Nummerisch (interne ID)
+|Numerisch (interne ID)
 |Kann nur in Kombination mit Lager und Menge übergeben werden.
 |====
 
 [#2360]
-=== Mandant
+=== Mandant (Shop)
 
-Für den Import der Mandantenverfügbarkeit stehen die in <<tabelle-zuordnungsfelder-mandant>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Mandant.
+In <<table-mapping-fields-client>> wird das Feld erläutert, das für die Zuordnung der Mandantenverfügbarkeit verwendet wird.
+Dieses Zuordnungsfeld entspricht also deine Möglichkeit, die <<artikel/artikel-verwalten#_verfügbarkeit_für_mandanten_einstellen, Variante für bestimmte Mandanten verfügbar zu machen>>.
 
-[[tabelle-zuordnungsfelder-mandant]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Mandantenverfügbarkeit wie folgt hinterlegt wurde.
+
+//Für den Import der Mandantenverfügbarkeit stehen die in <<table-mapping-fields-client>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Mandant.
+
+[[table-mapping-fields-client]]
 .Abgleichfelder für Import von Mandantenverfügbarkeiten
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Aktiv
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Willst du die Variante für einen bestimmten Mandanten (Shop) verfügbar machen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+Welchen Wert du wählst, bestimmt, ob ein Häkchen (icon:check-square[role="blue"]) neben dem Mandanten gesetzt wird.
+
+* 0 = Nein
+* 1 = Ja
+
+Wähle den zu aktivierenden Webshop aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 |====
 
 [#2370]
 === Märkte
 
-Für den Import der Marktplatzverfügbarkeiten stehen die in <<tabelle-zuordnungsfelder-maerkte>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Marktplatz.
+In <<table-mapping-fields-markets>> wird das Feld erläutert, das für die Zuordnung der Marktplatzverfügbarkeiten verwendet wird.
+Dieses Zuordnungsfeld entspricht also deinen Möglichkeiten, die <<artikel/artikel-verwalten#235, Variante für bestimmte Marktplätze verfügbar zu machen>>.
 
-[[tabelle-zuordnungsfelder-maerkte]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Marktplatzverfügbarkeiten wie folgt hinterlegt wurden.
+
+//Für den Import der Marktplatzverfügbarkeiten stehen die in <<table-mapping-fields-markets>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Marktplatz.
+
+[[table-mapping-fields-markets]]
 .Felder für Import von Marktplatzverfügbarkeiten
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Aktiv
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Willst du die Variante für bestimmte Märkte verfügbar machen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+Welchen Wert du wählst, bestimmt, ob der Markt in die folgende Liste aufgenommen wird: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: Märkte>>
+
+* 0 = Nein
+* 1 = Ja
+
+Wähle den zu aktivierenden Markt aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 |====
 
 [#2380]
 === Attribute
+//die Beschreibungen in der Tabelle könnten noch verständlicher geschrieben werden
 
-Für den Import von Attributverknüpfungen stehen die in <<tabelle-zuordnungsfelder-attribute>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Format.
+In <<table-mapping-fields-attributes>> werden Felder erläutert, die für die Zuordnung von Attributverknüpfungen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, Attribute für Varianten zu speichern.
 
-[[tabelle-zuordnungsfelder-attribute]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass sie mit den folgenden Attributen angelegt wurde.
+
+//Für den Import von Attributverknüpfungen stehen die in <<table-mapping-fields-attributes>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Format.
+
+[[table-mapping-fields-attributes]]
 .Felder für Import von Attributverknüpfungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Attributauswahlkombination
-|Alphanummerisch
+|AlphaNumerisch
 |Kombination aus *Attributname (intern)* und *Attributwert (intern)* im Format +
 *Attributname:Wertname;* oder *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* +
 Import von mehr als zwei Attributverknüpfungen. +
 *_Hinweis:_* Jede Attributauswahlkombination muss pro Variante einzigartig sein.
 
 |Attribute ID
-|Nummerisch
+|Numerisch
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Attribute Name
-|Alphanummerisch
+|AlphaNumerisch
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die Namen in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Wert Name
-|Alphanummerisch
+|AlphaNumerisch
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die Namen in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
 
 |Wert ID
-|Nummerisch
+|Numerisch
 |Import von bis zu zwei Attributverknüpfungen. +
 *_Tipp:_* Bei zwei Verknüpfungen müssen die IDs in verschiedenen Spalten vorliegen. Eine Zuordnung im Format *Attributname:Wertname;* und eine weitere im Format *Attributname&lt;&gt;Wertname&lt;&#x007C;&#x007C;&gt;* erstellen und die separaten Spalten zuordnen.
+
+|Erstell nicht existierende Werte
+|0 +
+1
+a|Möchtest du die Attributwerte erstellen, falls sie noch nicht existieren? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Werte erstellt werden sollen.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#2390]
 === Artikelbilder
 
-Für den Import von Artikelbildern stehen die in <<tabelle-zuordnungsfelder-bilder>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-item-images>> werden Felder erläutert, die für die Zuordnung von Artikelbildern zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#90, Bilder für Artikel>> und <<artikel/artikel-verwalten#_artikelbilder_mit_varianten_verknüpfen, Varianten>> zu speichern.
 
-[[tabelle-zuordnungsfelder-bilder]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Artikelbilder wie folgt gespeichert wurden.
+
+//Für den Import von Artikelbildern stehen die in <<table-mapping-fields-item-images>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-item-images]]
 .Abgleichfelder für Import von Artikelbildern
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID des Bildes
-|Nummerisch (interne ID)
+//woher weiß man die ID? Wo findet man diese Info?
+|Numerisch (interne ID)
 |
 
 |Position
-|Nummerisch
-|
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Position>>
+
+Gib die Positionsnummer in die CSV-Datei ein.
 
 |Dateiname
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Auf das Bild klicken » Dateiname oben>>
+
+Gib die Dateiname in die CSV-Datei ein.
 
 |Base64 Data
-|Alphanummerisch
+//was ist das? Woher weiß man das?
+|AlphaNumerisch
 |
 
 |URL
-|Alphanummerisch
-|Link zum Artikelbild
+|AlphaNumerisch
+|Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » URL>>
+
+Gib die URL in die CSV-Datei ein.
 
 |Multi-URL (kommasepariert)
-|Alphanummerisch
-|Mehrere Bild-URLs im Format +
-*image1url;positionImage1,* +
-*image2url;positionImage2* +
+|AlphaNumerisch
+|Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » URL>>
+
+Gib mehrere Bild-URLs im folgenden Format in die CSV-Datei ein. +
+
+*image1url;positionImage1,image2url;positionImage2* +
 Wenn keine Position übergeben wird, entspricht die Position der Reihenfolge der URLs.
 
 |Bilder löschen
-|0 = Nein +
-1 = Ja
-|1 löscht alle Bilder des Artikels. Bilder, die erhalten bleiben sollen, müssen als URL im Sync angegeben werden.
+|0 +
+1
+a|Möchtest du alle Bilder des Artikels löschen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Bilder gelöscht werden sollen.
+
+* 0 = Nein
+* 1 = Ja
+
+*_Hinweis_*: Bilder, die erhalten bleiben sollen, müssen als URL im Sync angegeben werden.
 
 |Mit Variante verknüpfen
-|0 = Nein +
-1 = Ja
-|1 verknüpft das Bild mit der Variante. +
-0 löscht eine vorhandene Verknüpfung.
+|0 +
+1
+a|Möchtest du das Bild mit der Variante verknüpfen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+
+* 0 = Löscht eine vorhandene Verknüpfung
+* 1 = Verknüpft das Bild mit der Variante
 
 |Verfügbarkeit Mandant (Shop)
-|Nummerisch (interne ID)
-|ID des Mandanten, siehe *Einrichtung » Mandant » Mandant öffnen » Einstellungen* +
+|Numerisch (interne ID)
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Verfügbarkeit>>
+
+Gib die IDs aller zu aktivierenden Mandanten ein. Trenne die IDs durch Kommas.
+Die Mandanten-IDs findest du im Menü *Einrichtung » Mandant » Mandant öffnen » Einstellungen*
+
 *-1* aktiviert alle Mandanten
 
 |Verfügbarkeit Herkünfte
-|Nummerisch (interne ID)
-|ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>> +
-Mehrere Herkünfte können kommasepariert angegeben werden. +
+|Numerisch (interne ID)
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Verfügbarkeit>>
+
+Gib die IDs aller zu aktivierenden Herkünfte ein. Trenne die IDs durch Kommas.
+Die <<basics/interne-IDs#90, Herkunft-IDs>> findest du im Menü *Einrichtung » Aufträge » Auftragsherkunft*
+
 *-1* aktiviert alle Herkünfte
 
 |Verfügbarkeit Listings
-|Nummerisch (interne ID)
-|*-1* aktiviert alle Listings
+|Numerisch (interne ID)
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Verfügbarkeit>>
+
+Gib die IDs aller zu aktivierenden Listing-Herkünfte ein. Trenne die IDs durch Kommas.
+Die <<basics/interne-IDs#90, Listing-Herkunft-IDs>> findest du im Menü *Einrichtung » Aufträge » Auftragsherkunft*
+
+*-1* aktiviert alle Listings
 
 |Namen
-|Alphanummerisch
-|Name des Artikelbilds im Format *Name:Sprache1,Name:Sprache2* +
-Alternativtext des Artikelbilds im Format *Name:Sprache1:Alternativtext,Name:Sprache2:Alternativtext*
+|AlphaNumerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Name>>
+
+Gib den Namen des Artikelbildes im folgenden Format in die CSV-Datei ein. +
+*Name1:Sprache1,Name2:Sprache2*
+
+|Alternative Namen
+|AlphaNumerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Alternativtext>>
+
+Gib den Alternativtext des Artikelbildes im folgenden Format in die CSV-Datei ein. +
+*Name1:Sprache1:Alternativtext1,Name2:Sprache2:Alternativtext2*
 
 |Marktplatzattributverknüpfung (Attibutwert-ID)
-|Nummerisch (interne ID)
-|ID des Attributwerts
+|Numerisch (interne ID)
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#300, Tab: Bilder » Option: Marktplatzattributverknüpfung>>
+
+Gib die ID des Attributwerts in die CSV-Datei ein.
 
 |Alle Verfügbarkeiten entfernen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Möchtest du alle Verfügbarkeiten entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#2400]
 === Merkmale
 
-Für den Import von Merkmalverknüpfungen stehen die in <<tabelle-zuordnungsfelder-merkmale>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-characteristics>> werden Felder erläutert, die für die Zuordnung von Merkmalverknüpfungen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#80, Merkmale mit Artikeln zu verknüpfen>>.
 
-[[tabelle-zuordnungsfelder-merkmale]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du den Artikel nach dem Import öffnest, siehst du, dass die Merkmale wie folgt verknüpft wurden.
+
+//Für den Import von Merkmalverknüpfungen stehen die in <<table-mapping-fields-characteristics>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-characteristics]]
 .Felder für Import von Merkmalverknüpfungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID
-|Nummerisch (interne ID)
-|IDs siehe *Einrichtung » Artikel » Merkmale*
+|Numerisch (interne ID)
+|Verknüpft das Merkmal mit dem Artikel. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#80, Tab: Merkmale » Bereich: Merkmale>>
+
+Gib eine Merkmal-ID in die CSV-Datei ein. Die Merkmal-IDs findest du im Menü *Einrichtung » Artikel » Merkmale*.
 
 |Merkmalkombination
-|Alphanummerisch
-|Kombination aus Backend-Name, Wert und Sprache im Format +
+|AlphaNumerisch
+|Gib die Kombination aus Backend-Name, Wert und Sprache in die CSV-Datei ein. Gib diese Informationen im folgenden Format ein: +
 *Name1:Wert1:Sprache1;Name2:Wert2:Sprache2* etc.
 
 |Interner Name
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Verknüpft das Merkmal mit dem Artikel. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#80, Tab: Merkmale » Bereich: Merkmale>>
+
+Gib den internen Namen in die CSV-Datei ein. Die internen Namen findest du im Menü *Einrichtung » Artikel » Merkmale*.
 
 |Wert
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht dem Wert des Merkmals unter: +
+<<artikel/artikel-verwalten#80, Tab: Merkmale » Bereich: Merkmale>>
+
+Gib den Wert in die CSV-Datei ein.
+Je nach Typ des Merkmals kann der Wert z.B. ein Text oder eine Zahl sein.
+
+|Auswahl-ID
+|Numerisch (interne ID)
+|Nur bei Merkmalen des Typs *Auswahl*. Verknüpft die Auswahlwerte eines Merkmals über die ID.
+
+Gib eine Auswahl-ID in die CSV-Datei ein. Die Auswahl-IDs findest du im Menü *Einrichtung » Artikel » Merkmale » Merkmal vom Typ Auswahl öffnen*.
 
 |Sprache
 |Buchstaben
-|Nur bei Merkmalen des Typs *Text* +
-Codes siehe <<basics/interne-IDs#10, Sprachen>>
+|Nur bei Merkmalen des Typs *Text*. Gibt an, in welcher Sprache der Text verfasst ist.
 
-|Auswahl-ID
-|Nummerisch (interne ID)
-|Nur bei Merkmalen des Typs *Auswahl*. Verknüpft die Auswahlwerte eines Merkmals über die ID. +
-Auswahl-IDs siehe *Einrichtung » Artikel » Merkmale » Merkmal öffnen*.
+Gib einen <<basics/interne-IDs#10, Sprachcode>> in die CSV-Datei ein.
 
 |Löschen (Ja/Nein)
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Möchtest du das Merkmal aus dem Artikeldatensatz entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob das Merkmal gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
+
+*_Hinweis_*: Das Merkmal selbst wird nicht gelöscht. Das Merkmal wird lediglich vom Artikeldatensatz entfernt.
 |====
 
 [#2410]
 === Eigenschaften
 
-Für den Import von Eigenschaftsverknüpfungen stehen die in <<tabelle-zuordnungsfelder-eigenschaften>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-properties>> werden Felder erläutert, die für die Zuordnung von Eigenschaftsverknüpfungen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#4800, Eigenschaften mit Varianten zu verknüpfen>>.
 
-[[tabelle-zuordnungsfelder-eigenschaften]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Eigenschaften wie folgt verknüpft wurden.
+
+//Für den Import von Eigenschaftsverknüpfungen stehen die in <<table-mapping-fields-properties>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-properties]]
 .Felder für Import von Eigenschaftsverknüpfungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID
-|Nummerisch (interne ID)
-|IDs siehe *Einrichtung » Einstellungen » Eigenschaften » Konfiguration*
+|Numerisch (interne ID)
+|Verknüpft die Eigenschaft mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#4800, Tab: ID einer Variante » Tab: Eigenschaften oder Texte>>
+
+Gib eine Eigenschaft-ID in die CSV-Datei ein. Die Eigenschaft-IDs findest du im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration*.
 
 |Sprache
 |Buchstaben
-|Nur bei Eigenschaften des Typs *Text* oder *Kurztext* +
-Codes siehe <<basics/interne-IDs#10, Sprachen>>
+|Nur bei Eigenschaften des Typs *Text* oder *Kurztext*. Gibt an, in welcher Sprache der Text verfasst ist.
+
+Gib einen <<basics/interne-IDs#10, Sprachcode>> in die CSV-Datei ein.
 
 |Wert
-|Alphanummerisch
-|
+//stimmt es, dass die Wert auch für den Typ Text gilt?
+|AlphaNumerisch
+|Entspricht dem Wert der Eigenschaft unter: +
+<<artikel/artikel-verwalten#4800, Tab: ID einer Variante » Tab: Eigenschaften oder Texte>>
+
+Gib den Wert in die CSV-Datei ein.
+Je nach Eigenschaft-Typ kann der Wert z.B. ein Text oder eine Zahl sein.
 
 |Beschreibung
-|Alphanummerisch
+//info ergänzen
+|AlphaNumerisch
 |
 
 |Interner Name
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Verknüpft die Eigenschaft mit der Variante. Entspricht den Angaben unter: +
+<<artikel/artikel-verwalten#4800, Tab: ID einer Variante » Tab: Eigenschaften oder Texte>>
+
+Gib den internen Namen in die CSV-Datei ein. Die internen Namen findest du im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration*.
 
 |Eigenschaftenkombination
-|Alphanummerisch
-|Kombination aus Name, Wert und Sprache im Format +
+|AlphaNumerisch
+|Gib die Kombination aus Backend-Name, Wert und Sprache in die CSV-Datei ein. Gib diese Informationen im folgenden Format ein: +
 *Name1:Wert1:Sprache1;Name2:Wert2:Sprache2* etc.
 
+|Auswahleigenschaftkombination (Namen)
+|AlphaNumerisch
+|Nur bei Eigenschaften des Typs *Auswahl*. Gib die Kombination aus Eigenschaft-Name, Auswahlwert-Name und Sprache in die CSV-Datei ein. Gib diese Informationen im folgenden Format ein: +
+*EigenschaftName1:AuswahlwertName1:Sprache1;EigenschaftName2:AuswahlwertName2:Sprache2*
+
+|Auswahleigenschaftkombination (IDs)
+|AlphaNumerisch
+|Nur bei Eigenschaften des Typs *Auswahl*. Gib die Kombination aus Eigenschaft-ID, Auswahlwert-ID und Sprache in die CSV-Datei ein. Gib diese Informationen im folgenden Format ein: +
+*EigenschaftID1:AuswahlwertID1:Sprache1;EigenschaftID2:AuswahlwertID2:Sprache2*
+
 |Auswahl-ID
-|Nummerisch (interne ID)
-|Nur bei Eigenschaften des Typs *Auswahl*. Verknüpft die Auswahlwerte einer Eigenschaft über die ID. +
-Auswahl-IDs siehe *Einrichtung » Einstellungen » Eigenschaften » Konfiguration » Eigenschaft öffnen » Werte*.
+|Numerisch (interne ID)
+|Nur bei Eigenschaften des Typs *Auswahl*. Verknüpft den Auswahlwert einer Eigenschaft über die ID. Gib die Auswahl-ID in die CSV-Datei ein. +
+
+Die Auswahl-IDs findest du im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration » Eigenschaft öffnen » Werte*.
+
+|Mehrfachauswahl-IDs (kommasepariert)
+|Numerisch (interne ID)
+|Nur bei Eigenschaften des Typs *Mehrfachauswahl*. Verknüpft die Auswahlwerte einer Eigenschaft über die IDs. Gib die Auswahl-IDs kommasepariert in die CSV-Datei ein. +
+
+Die Auswahl-IDs findest du im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration » Eigenschaft öffnen » Werte*.
 
 |Löschen (Ja/Nein)
 |0 = Nein +
 1 = Ja
-|
+a|Möchtest du die Eigenschaft aus dem Variantendatensatz entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Eigenschaft gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
+
+*_Hinweis_*: Die Eigenschaft selbst wird nicht gelöscht. Die Eigenschaft wird lediglich vom Variantendatensatz entfernt.
 |====
 
 [#2290]
 === Varianten-Tags
 
-Für den Import von Tag-Verknüpfungen stehen die in <<tabelle-zuordnungsfelder-tags>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-tags>> werden Felder erläutert, die für die Zuordnung von Tags zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#150, Tags mit Varianten zu verknüpfen>>.
 
-[[tabelle-zuordnungsfelder-tags]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Tags wie folgt verknüpft wurden.
+
+//Für den Import von Tag-Verknüpfungen stehen die in <<table-mapping-fields-tags>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-tags]]
 .Felder für Import von Tags-Verknüpfungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Tag-ID
-|Nummerisch
-|
+//hinweis - es gibt keine Möglichkeit, mehrere Tag IDs auch kommasepariert eingeben - das ginge nur über den Tag-Namen
+|Numerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#150, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Tags>>
+
+Gib eine Tag-ID in die CSV-Datei ein.
+Die Tag-IDs findest du im Menü *Einrichtung » Einstellungen » Tags » Tag öffnen*.
 
 |Tag-Name
-|Alphanummerisch
-|
+|AlphaNumerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#150, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Tags>>
+
+Gib einen Namen für das Tag in die CSV-Datei ein.
+Die Tag-Namen findest du im Menü *Einrichtung » Einstellungen » Tags » Tag öffnen*.
 
 |Tag-Namen +
 (kommasepariert)
-|Alphanummerisch
-|Tag-Liste
+|AlphaNumerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#150, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Tags>>
 
-|Alle verknüpften Tags löschen
-|0 = Nein +
-1 = Ja
-|Alle Verknüpfungen aufheben?
+Gib die Namen von mehreren Tags in die CSV-Datei ein. Verwende Kommas, um die Namen wie folgt zu trennen: +
+name1,name2,name3...
 
-|Tag-Verknüpfungen löschen (Name, kommasepariert)
-|Alphanummerisch
-|
+Die Tag-Namen findest du im Menü *Einrichtung » Einstellungen » Tags » Tag öffnen*.
 
-|Tag-Verknüpfungen löschen (ID, kommasepariert)
-|Alphanummerisch
-|
+|Alle Tag-Verknüpfungen löschen
+|0 +
+1
+//|0
+a|Möchtest du _alle Tags_ von einer Variante entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Tag-Verknüpfungen gelöscht werden sollen.
+
+* 0 = Nein
+* 1 = Ja
+
+*_Hinweis_*: Die Tags selbst werden nicht gelöscht. Die Tags werden lediglich von der Variante entfernt.
+
+|Tag-Verknüpfung löschen (Name, kommasepariert)
+|AlphaNumerisch
+//|- k.A. -
+a|Möchtest du _einige der Tags_ von einer Variante entfernen?
+Gib die Namen der zu entfernenden Tags in die CSV-Datei ein. Verwende Kommas, um die Namen wie folgt zu trennen: +
+name1,name2,name3…​
+
+Die Tag-Namen findest du im Menü *Einrichtung » Einstellungen » Tags » Tag öffnen*.
+
+*_Hinweis_*: Die Tags selbst werden nicht gelöscht. Die Tags werden lediglich von der Variante entfernt.
+
+|Tag-Verknüpfung löschen (ID, kommasepariert)
+|AlphaNumerisch
+//|- k.A. -
+a|Möchtest du _einige der Tags_ von einer Variante entfernen?
+Gib die IDs der zu entfernenden Tags in die CSV-Datei ein. Verwende Kommas, um die IDs wie folgt zu trennen: +
+id1,id2,id3…​
+
+Die Tag-IDs findest du im Menü *Einrichtung » Einstellungen » Tags » Tag öffnen*.
+
+*_Hinweis_*: Die Tags selbst werden nicht gelöscht. Die Tags werden lediglich von der Variante entfernt.
 |====
 
 [#2420]
 === Vererbung
+//standardwerte ergänzen
 
-Für den Import von Vererbungen stehen die in <<tabelle-zuordnungsfelder-vererbung>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-inheritance>> werden Felder erläutert, die für die Zuordnung von Vererbungen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/einleitung/vererbung#, Daten mit der Vererbungsfunktion weiter zu geben>>.
 
-[[tabelle-zuordnungsfelder-vererbung]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Vererbungsfunktionen wie folgt aktiviert oder deaktiviert wurden.
+
+//Für den Import von Vererbungen stehen die in <<table-mapping-fields-inheritance>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-inheritance]]
 .Felder für Import von Vererbungen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Kategorie
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#300, Tab: ID einer Variante » Tab: Kategorien » Bereich: Verknüpfte Kategorien>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Märkte
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: Märkte>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Mandant
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#_verfügbarkeit_für_mandanten_einstellen, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: Mandant (Shop)>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Verkaufspreis
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#240, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verkaufspreise>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Lieferant
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Lager
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Verfügbarkeit
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#240, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verfügbarkeit>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
+
+|Eigenschaften
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#4800, Tab: ID einer Variante » Tab: Eigenschaften>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 
 |Tags
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Sollte die <<artikel/einleitung/vererbung#, Vererbung>> aktiviert oder deaktiviert sein unter: +
+<<artikel/artikel-verwalten#150, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Tags>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Vererbung aktiviert werden soll.
+
+* 0 = Deaktiviert
+* 1 = Aktiviert
 |====
 
 [#2420a]
 === Inhalt
 
-Für den Import des Inhalts stehen die in <<tabelle-zuordnungsfelder-inhalt>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-content>> werden Felder erläutert, die für die Zuordnung von Inhalten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, den <<artikel/artikel-verwalten#270, Inhalt und Einheit einer Variante>> anzugeben.
 
-[[tabelle-zuordnungsfelder-inhalt]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Inhalte wie folgt gespeichert wurden.
+
+//Für den Import des Inhalts stehen die in <<table-mapping-fields-content>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-content]]
 .Felder für Import des Inhalts
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
 |Inhalt Einheit
-|Nummerisch (interne ID)
-|IDs siehe <<basics/interne-IDs#40, IDs der Einheiten>> +
-Alternativ *Inhalt Maßeinheit (ISO)* übergeben
+|Numerisch
+(interne ID)
+|Stück
+|Entspricht der _Dropdown-Liste_ unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Inhalt>>
+
+Gib die ID der Einheit in die CSV-Datei ein.
+Die Einheit-IDs findest du im Menü *Einrichtung » Artikel » Einheiten*.
+
+*_Hinweis_*: Verwende dieses Zuordnungsfeld in Kombination mit *Inhalt Menge*.
+
+//IDs siehe <<basics/interne-IDs#40, IDs der Einheiten>> +
+//Alternativ *Inhalt Maßeinheit (ISO)* übergeben
 
 |Inhalt Menge
-|Nummerisch
-|Kann nur in Kombination mit *Inhalt Einheit* oder *Inhalt Maßeinheit (ISO)* übergeben werden.
+|Numerisch
+|1
+|Entspricht dem _Eingabefeld_ unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Inhalt>>
+
+Gib den numerischen Inhalt in die CSV-Datei ein.
+
+*_Hinweis_*: Verwende dieses Zuordnungsfeld in Kombination mit *Inhalt Einheit* oder *Inhalt Maßeinheit (ISO)*.
 
 |Inhalt Maßeinheit (ISO)
-|Alphanummerischer ISO-Code
-|Alternativ *Inhalt Einheit* übergeben
+|AlphaNumerischer ISO-Code
+|Stück
+|Entspricht der _Dropdown-Liste_ unter: +
+<<artikel/artikel-verwalten#270, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Maße » Option: Inhalt>>
+
+Gib den ISO-Code für die Einheit in die CSV-Datei ein.
+Die ISO-Codes findest du im Menü *Einrichtung » Artikel » Einheiten*.
+
+*_Hinweis_*: Verwende dieses Zuordnungsfeld in Kombination mit *Inhalt Menge*.
+
 |====
 
 [#2430]
 === ASIN/ePID
 
-Für den Import von ASIN/ePID stehen die in <<tabelle-zuordnungsfelder-ASIN-ePID>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-ASIN-ePID>> werden Felder erläutert, die für die Zuordnung von ASIN/ePIDs zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#260, ASIN/ePIDs für Varianten zu speichern>>.
 
-[[tabelle-zuordnungsfelder-ASIN-ePID]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Einstellungen im *Tab: Einstellungen » Bereich: ASIN/ePID* wie folgt gespeichert wurden.
+
+//Für den Import von ASIN/ePID stehen die in <<table-mapping-fields-ASIN-ePID>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-ASIN-ePID]]
 .Felder für Import von ASIN/ePID
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Land
-|Nummerisch (interne ID)
-|IDs siehe <<basics/interne-IDs#20, Länder-IDs>>
+|Numerisch (interne ID)
+|Entspricht der _ersten_ Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#260, Tab: ID einer Variante » Tab: Einstellungen » Bereich: ASIN/ePID>>
+
+Mit anderen Worten: Entspricht der _Länderplattform_, z.B. Amazon Deutschland, eBay Frankreich, eBay UK, usw.
+
+Gib die Länder-ID in deine CSV-Datei ein. Die Länder-IDs findest du im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Lieferländer*.
+
+Eine <<basics/interne-IDs#20, Liste von IDs ist auch im Online-Handbuch>> zu finden.
 
 |Typ
-|ASIN; ePID
-|
+|ASIN +
+ePID
+|Entspricht der _zweiten_ Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#260, Tab: ID einer Variante » Tab: Einstellungen » Bereich: ASIN/ePID>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+Welchen Wert du wählst, bestimmt, ob es sich um eine ASIN oder ePID handelt.
 
 |Position
-|Nummerisch
+//infos ergänzen
+|Numerisch
 |
 
 |Wert
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#260, Tab: ID einer Variante » Tab: Einstellungen » Bereich: ASIN/ePID>>
+
+Gib die ASIN oder ePID in deine CSV-Datei ein.
+
+|Löschen (IDs, kommasepariert)
+|Numerisch (interne ID)
+a|Möchtest du einige ASINs oder ePIDs von einer Variante entfernen?
+Gib die IDs der zu entfernenden ASINs oder ePIDs in die CSV-Datei ein. Verwende Kommas, um die IDs wie folgt zu trennen: +
+ASIN-ID1,ASIN-ID2,ASIN-ID3 etc.
+
+//gibt es ein Menü, wo man die ASIN bzw ePID-IDs findet?
 |====
 
 [#2440]
 === Lager
 
-Für den Import von Lagerdaten stehen die in <<tabelle-zuordnungsfelder-lager>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Lager.
+In <<table-mapping-fields-warehouse>> werden Felder erläutert, die für die Zuordnung von Lagerdaten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, anzugeben, <<artikel/artikel-verwalten#312, wo eine bestimmte Variante gelagert ist>>.
 
-[[tabelle-zuordnungsfelder-lager]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Einstellungen im Tab *Lager* wie folgt gespeichert wurden.
+
+//Für den Import von Lagerdaten stehen die in <<table-mapping-fields-warehouse>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. Die Zuordnung erfolgt pro Lager.
+
+[[table-mapping-fields-warehouse]]
 .Felder für Import von Lagerdaten
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Zone
-|Nummerisch
-|
+|Numerisch
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Zone>>
+
+//wo kann man die Zone-ID nachschlagen? Also in welchem Menü?
+//Die Zuordnung erfolgt anhand der Zone-ID im Menü *Einrichtung » Waren » Lager » Lager öffnen » Einstellungen*.
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Lagerorttyp
-|none = kein +
-small = klein +
-medium = mittel +
-large = groß +
-europallet = Europalette
-|
+|none +
+small +
+medium +
+large +
+europallet
+a|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Lagerorttyp>>
+
+* none = Kein Typ ausgewählt
+* small = Klein
+* medium = Mittel
+* large = Groß
+* europallet = Europalette
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Meldebestand
-|Nummerisch
-|
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Meldebestand>>
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Maximalbestand
-|Nummerisch
-|
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Maximalbestand>>
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Lagerreichweite (in Tagen)
-|Nummerisch
-|
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Lagerreichweite>>
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Lagerort
-|Nummerisch (interne ID)
-|
+|Numerisch (interne ID)
+|Entspricht der Dropdown-Liste unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Lagerortvorschlag>>
+
+Die Zuordnung erfolgt anhand der Lagerort-ID im Menü *Einrichtung » Waren » Lager » Lager öffnen » Lagerorte*.
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Bestandspuffer
-|Nummerisch
-|
+|Numerisch
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Bestandspuffer>>
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Charge (ja/nein)
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: Charge>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Mindeshaltbarkeitsdatum (ja/nein)
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#312, Tab: ID einer Variante » Tab: Lager » Spalte: MHD>>
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
 
 |Lagerverknüpfung löschen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Möchtest du das Lager von einer Variante entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob das Lager gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
+
+Wähle das betreffende Lager aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
+
+*_Hinweis_*: Das Lager selbst wird nicht gelöscht. Das Lager wird lediglich von der Variante entfernt.
 |====
 
 [#2450]
 === Lieferant
 
-Für den Import von Lieferantendaten stehen die in <<tabelle-zuordnungsfelder-lieferant>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-supplier>> werden Felder erläutert, die für die Zuordnung von Lieferantendaten zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#312, Lieferanten zu Varianten hinzuzufügen>>.
 
-[[tabelle-zuordnungsfelder-lieferant]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Einstellungen im Tab *Lieferant* wie folgt gespeichert wurden.
+
+//Für den Import von Lieferantendaten stehen die in <<table-mapping-fields-supplier>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-supplier]]
 .Felder für Import von Lieferantendaten
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Lieferantenverknüpfungs-ID
-|Nummerisch
+|Numerisch
+//|- k.A. -
 |ID der Verknüpfung zwischen Variante und Lieferant. +
 Diese ID wird automatisch von plentymarkets erzeugt. Die ID ist _nicht_ im plentymarkets Backend sichtbar. Sondern wird die ID lediglich im Hintergrund gespeichert. Möchtest du die ID trotzdem sehen, musst du diese Information zunächst aus deinem plentymarkets-System exportieren. Verwende dazu das Exportformat <<daten/daten-exportieren/FormatDesigner#385, VariationSupplier in FormatDesigner>>. +
 Das Zuordnungsfeld *Lieferantenverknüpfungs-ID* ist <<daten/daten-importieren/sync-typen/elasticSync-artikel#1930, je nach Anwendungsfall>> eine Pflichtangabe. Beispielsweise wird dieses Feld benötigt, um Lieferanten direkt beim Artikelimport anzulegen.
 
-|EK
-|Nummerisch
-|Einkaufspreis der Variante
+|EK in Systemwährung
+|Kommazahl
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: EK in Systemwährung>>
+
+Gib die Zahl in deine CSV-Datei ein.
 
 |Mindestabnahme
-|Nummerisch
-|
+|Numerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Mindestabnahme>>
+
+Gib die Menge in deine CSV-Datei ein.
 
 |Lieferanten-Artikel-Nr.
-|Alphanummerisch
-|Externe Artikelnummer, die der Lieferant der Variante zuweist
+|AlphaNumerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Lieferanten-Artikel-Nr.>>
 
-|Letzte Preisabfrage
+Gib die externe Artikelnummer in deine CSV-Datei ein.
+
+|Letzte Preisanfrage
 |Datum
-|Datum der letzten Preisverhandlungen
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Letzte Preisanfrage>>
+
+Gib das Datum der letzten Preisverhandlung in deine CSV-Datei ein.
 
 |Lieferzeit in Tagen
-|Nummerisch
-|
+|Numerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Lieferzeit in Tagen>>
+
+Gib die Anzahl an Tagen in deine CSV-Datei ein.
 
 |Rabatt
-|Nummerisch
-|Prozent
+|Numerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Rabatt>>
+
+Gib den prozentualen Rabatt in deine CSV-Datei ein.
+
+*_Hinweis_*: Der Rabatt wird in Nachbestellungen nur berücksichtigt, wenn auch die Rabattfähigkeit aktiviert wurde.
 
 |Rabattfähigkeit
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+//|- k.A. -
+a|Entspricht der Checkbox unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Rabattfähigkeit>>
+
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob das Häkchen gesetzt wird.
+
+* 0 = Kein Häkchen
+* 1 = Häkchen
 
 |Verpackungseinheit
-|Nummerisch
-|
+|Numerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Verpackungseinheit>>
+
+Gib den numerischen Wert in deine CSV-Datei ein.
+
+|EK in Bestellwährung
+|Kommazahl
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: EK in Bestellwährung>>
+
+Gib die Zahl in deine CSV-Datei ein.
+
+|Lieferanten-Artikel-Bezeichnung
+|AlphaNumerisch
+//|- k.A. -
+|Entspricht dem Eingabefeld unter: +
+<<artikel/artikel-verwalten#310, Tab: ID einer Variante » Tab: Lieferant » Spalte: Lieferanten-Artikel-Bez.>>
+
+Gib den externen Namen in deine CSV-Datei ein.
 
 |Lieferanten-ID
-|Nummerisch
-|Kontakt-ID des Lieferanten, siehe *CRM » Kontakte* +
-*_Tipp:_* Filter *Typ* auf *Lieferant* stellen, um nur Kontakte des Typs *Lieferant* anzuzeigen.
+|Numerisch
+//|- k.A. -
+|Entspricht der Kontakt-ID des Lieferanten, wie im Menü *CRM » Kontakte* aufgeführt.
 
-|Lieferanten-Name
-|Alphanummerisch
-|Name des Lieferanten, siehe *CRM » Kontakte* +
-*_Tipp:_* Filter *Typ* auf *Lieferant* stellen, um nur Kontakte des Typs *Lieferant* anzuzeigen.
+*_Tipp_*: Setze den Filter *Typ* auf *Lieferant*, um nur Kontakte des Typs *Lieferant* anzuzeigen.
 
-|Lieferant löschen
-|0 = Nein +
-1 = Ja
-|Hebt die Verknüpfung zwischen Lieferant und Variante auf.
+|Lieferantenname
+|AlphaNumerisch
+//|- k.A. -
+|Entspricht den Namen des Lieferanten, wie im Menü *CRM » Kontakte* aufgeführt.
+
+*_Tipp_*: Setze den Filter *Typ* auf *Lieferant*, um nur Kontakte des Typs *Lieferant* anzuzeigen.
+
+|Lieferantenverknüpfung löschen
+|0 +
+1
+//|- k.A. -
+a|Möchtest du die Verknüpfung zwischen Lieferant und Variante aufheben? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Verknüpfung gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#2460]
 === SKU
 
-Für den Import von SKUs stehen die in <<tabelle-zuordnungsfelder-SKU>> Felder Abgleichfelder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-SKU>> werden Felder erläutert, die für die Zuordnung von SKUs zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#235, SKUs für Varianten zu speichern>>.
 
-[[tabelle-zuordnungsfelder-SKU]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Einstellungen im *Tab: Verfügbarkeit » Bereich: SKU* wie folgt gespeichert wurden.
+
+//Für den Import von SKUs stehen die in <<table-mapping-fields-SKU>> Felder Abgleichfelder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-SKU]]
 .Felder für Import von SKUs
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Marktplatz-ID
-|Nummerisch
-|ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>>
+|Numerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: SKU » Option: Herkunft>>
+
+Die Zuordnung erfolgt anhand der Auftragsherkunft-ID im Menü *Einrichtung » Aufträge » Auftragsherkunft*.
+
+Eine <<basics/interne-IDs#90, Liste von IDs ist auch im Online-Handbuch>> zu finden.
 
 |Account-ID
-|Nummerisch
-|ID des Marktplatzkontos +
+|Numerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: SKU » Option: Konto>>
+
+Die Zuordnung erfolgt anhand der Marktplatzkonto-ID. +
 Amazon siehe *Einrichtung » Märkte » Amazon » Einstellungen* +
-eBay siehe *Einrichtung » Märkte » eBay » Konten*
+eBay siehe *Einrichtung » Märkte » eBay » Einstellungen » Kontoeinstellungen*
 
 |SKU
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: SKU » Option: SKU>>
+
+Gib die SKU in deine CSV-Datei ein.
 
 |Parent-SKU
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: SKU » Option: Parent-SKU>>
+
+Gib die Parent-SKU in deine CSV-Datei ein.
 
 |SKU löschen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Möchtest du die SKU von einer Variante entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die SKU gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#3000]
 === Zusätzliche SKU
 
-Für den Import von zusätzlichen SKUs stehen die in <<tabelle-zuordnungsfelder-zusaetzliche-SKU>> Felder Abgleichfelder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-additional-SKU>> werden Felder erläutert, die für die Zuordnung von zusätzlichen SKUs zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/artikel-verwalten#235, zusätzliche SKUs für Varianten zu speichern>>.
 
-[[tabelle-zuordnungsfelder-zusaetzliche-SKU]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Einstellungen im *Tab: Verfügbarkeit » Bereich: Zusätzliche SKU* wie folgt gespeichert wurden.
+
+//Für den Import von zusätzlichen SKUs stehen die in <<table-mapping-fields-additional-SKU>> Felder Abgleichfelder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-additional-SKU]]
 .Felder für Import von zusätzlichen SKUs
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
+|ID
+//infos ergänzen
+|Numerisch
+|Eine existierende SKU ID
+
 |Marktplatz-ID
-|Nummerisch
-|ID der Auftragsherkunft, IDs siehe <<basics/interne-IDs#90, IDs der Auftragsherkünfte>>
+|Numerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: Zusätzliche SKU » Option: Herkunft>>
+
+Die Zuordnung erfolgt anhand der Auftragsherkunft-ID im Menü *Einrichtung » Aufträge » Auftragsherkunft*.
+
+Eine <<basics/interne-IDs#90, Liste von IDs ist auch im Online-Handbuch>> zu finden.
 
 |Account-ID
-|Nummerisch
-|ID des Marktplatzkontos +
+|Numerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: Zusätzliche SKU » Option: Konto>>
+
+Die Zuordnung erfolgt anhand der Marktplatzkonto-ID. +
 Amazon siehe *Einrichtung » Märkte » Amazon » Einstellungen* +
-eBay siehe *Einrichtung » Märkte » eBay » Konten*
+eBay siehe *Einrichtung » Märkte » eBay » Einstellungen » Kontoeinstellungen*
 
 |SKU
-|Alphanummerisch
-|
+|AlphaNumerisch
+|Entspricht dem Feld unter: +
+<<artikel/artikel-verwalten#235, Tab: ID einer Variante » Tab: Verfügbarkeit » Bereich: Zusätzliche SKU » Option: SKU>>
 
-|Parent-SKU
-|Alphanummerisch
-|
+Gib die SKU in deine CSV-Datei ein.
 
-|Zusätzliche SKU löschen
+|Existierende SKU
+//infos ergänzen
+|Numerisch
+//ist numerisch richtig?
+|Der aktuelle Wert einer SKU
+//was für ein Wert?
+
+|Abgleich anhand von ID oder existierender SKU
+//infos ergänzen
 |0 = Nein +
 1 = Ja
 |
+
+|Zusätzliche SKU löschen
+|0 +
+1
+a|Möchtest du die zusätzliche SKU von einer Variante entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die zusätzliche SKU gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#2470]
 === Paket
 
-Für den Import von Artikelpaketen stehen die in <<tabelle-zuordnungsfelder-paket>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-bundle>> werden Felder erläutert, die für die Zuordnung von Artikelpaketen zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/anwendungsfaelle/multipacks-pakete-sets#2000, Bestandteile zu einem Paket hinzuzufügen>> und Bestandteile wieder aus einem Paket zu entfernen.
 
-[[tabelle-zuordnungsfelder-paket]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du das Paket nach dem Import öffnest, siehst du, dass die Bestandteile wie folgt hinzugefügt oder entfernt wurden.
+
+//Für den Import von Artikelpaketen stehen die in <<table-mapping-fields-bundle>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-bundle]]
 .Felder für Import von Paketen
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |Paketbestandteile
-|Alphanummerisch
-|Fügt Bestandteile zu einem Paket hinzu. Varianten-ID und Menge des Paketbestandteils eingeben. Varianten-ID und Menge durch Doppelpunkt trennen. Mehrere Bestandteile durch Semikolon trennen. Beispiel: +
-Varianten-ID:Menge;Varianten-ID:Menge;etc.
+|AlphaNumerisch
+|Fügt Bestandteile zu einem Paket hinzu.
+Gib die Varianten-ID und Menge des Paketbestandteils in deine CSV-Datei ein.
+Trenne die Varianten-ID und Menge durch einen Doppelpunkt.
+Trenne mehrere Bestandteile durch einen Semikolon. Beispiel: +
+*Varianten-ID:Menge;Varianten-ID:Menge;etc.*
 
 |Paketbestandteile (Variantennummer)
-|Alphanummerisch
-|Fügt Bestandteile zu einem Paket hinzu. Variantennummer und Menge des Paketbestandteils eingeben. Variantennummer und Menge durch Doppelpunkt trennen. Mehrere Bestandteile durch Semikolon trennen. Beispiel: +
-Variantennummer:Menge;Variantennummer:Menge;etc.
+|AlphaNumerisch
+|Fügt Bestandteile zu einem Paket hinzu.
+Gib die Variantennummer und Menge des Paketbestandteils in deine CSV-Datei ein.
+Trenne die Variantennummer und Menge durch einen Doppelpunkt.
+Trenne mehrere Bestandteile durch einen Semikolon. Beispiel: +
+*Variantennummer:Menge;Variantennummer:Menge;etc.*
 
 |Paketbestandteile löschen
-|Alphanummerisch
-|Löscht Bestandteile aus einem Paket raus. Varianten-ID des zu löschenden Paketbestandteils eingeben. Mehrere Varianten-IDs durch Semikolon trennen. Beispiel: +
-Varianten-ID;Varianten-ID
+|AlphaNumerisch
+|Löscht Bestandteile aus einem Paket raus.
+Gib die Varianten-ID des zu löschenden Paketbestandteils in deine CSV-Datei ein.
+Trenne mehrere Varianten-IDs durch einen Semikolon. Beispiel: +
+*Varianten-ID;Varianten-ID*
 
 |Paket löschen
-|0 = Nein +
-1 = Ja
-|Löscht _alle_ Bestandteile aus einem Paket raus. Die Varianten-IDs der einzelne Bestandteile müssen nicht angegeben werden, da alle Paketbestandteile gleichzeitig gelöscht werden.
+|0 +
+1
+a|Löscht _alle_ Bestandteile aus einem Paket raus. Die Varianten-IDs der einzelne Bestandteile müssen nicht angegeben werden, da alle Paketbestandteile gleichzeitig gelöscht werden.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 [#sync-seriennummer]
 === Seriennummer
 
-Für den Import von Seriennummern stehen die in <<tabelle-zuordnungsfelder-seriennummer>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-serial-number>> werden Felder erläutert, die für die Zuordnung von Seriennummern zur Verfügung stehen.
+Diese Zuordnungsfelder entsprechen also deinen Möglichkeiten, <<artikel/anwendungsfaelle/seriennummern#100, einen Pool von Seriennummern im Artikeldatensatz aufzubauen>>.
 
-[[tabelle-zuordnungsfelder-seriennummer]]
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie die Einstellung beim Import konfiguriert wird.
+
+Mit anderen Worten: Wenn du die Variante nach dem Import öffnest, siehst du, dass die Seriennummer-Einstellungen wie folgt gespeichert wurden.
+
+//Für den Import von Seriennummern stehen die in <<table-mapping-fields-serial-number>> aufgelisteten Felder zur Verfügung. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+
+[[table-mapping-fields-serial-number]]
 .Felder für Import von Seriennummern
-[cols="1,1,2"]
+[cols="2,1,4"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
 |ID
-|Nummerisch
-|ID der Seriennummer
+|Numerisch
+|Entspricht dem Feld unter: +
+<<artikel/anwendungsfaelle/seriennummern#200, Seriennummern-Symbol in die obere Leiste (icon:item_serial_number[set=plenty]) » Bereich: Seriennummern » Option: ID>>
+
+Gib die ID der Seriennummer in deine CSV-Datei ein.
 
 |Nummer
-|Nummerisch
-|Seriennummer
+|Numerisch
+|Entspricht dem Feld unter: +
+<<artikel/anwendungsfaelle/seriennummern#200, Seriennummern-Symbol in die obere Leiste (icon:item_serial_number[set=plenty]) » Bereich: Seriennummern » Option: Seriennummer>>
+
+Gib die Seriennummer in deine CSV-Datei ein.
 
 |Seriennummer löschen
-|0 = Nein +
-1 = Ja
-|
+|0 +
+1
+a|Möchtest du die Seriennummer von einer Variante entfernen? Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Seriennummer gelöscht werden soll.
+
+* 0 = Nein
+* 1 = Ja
 |====
 
 
 [#1930]
 == Pflichtwerte für Artikel-Sync-Aktionen
 
-<<tabelle-Aktionen-Artikel-Sync>> listet mögliche Aktionen für Syncs des Typs Artikel und erläutert die Werte, die zum Ausführen dieser Aktionen unbedingt angegeben werden müssen.
+<<table-procedures-item-sync>> listet mögliche Aktionen für Syncs des Typs Artikel und erläutert die Werte, die zum Ausführen dieser Aktionen unbedingt angegeben werden müssen.
 
-[[tabelle-Aktionen-Artikel-Sync]]
+[[table-procedures-item-sync]]
 .Aktionen für Artikel-Sync
 |====
 |Aktion |Erforderliche Werte
