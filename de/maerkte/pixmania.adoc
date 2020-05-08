@@ -141,16 +141,130 @@ Datenformat exportieren:
 
 Sende die CSV-Datei an den PIXmania-Kundenservice. Du erhältst darauf von PIXmania eine Excel-Datei, aus der du eine CSV-Datei erzeugst, die dem Datenformat *Producer* entspricht.
 
-[.instruction]
-Datenformat importieren:
+Mit ElasticSync importierst du die Brand-IDs in dein plentymarkets System. Dazu erstellst du einen Sync vom Typ <<daten/daten-importieren/sync-typen/elasticSync-hersteller#, Hersteller>>. Nachdem du den Sync erstellt hast, musst du noch die Importoptionen für den Sync bestimmen, den Abgleich festlegen und die Zuordnung erstellen.
 
-. Öffne das Menü *Daten » Dynamischer Import*.
-. Wähle das Feldtrennzeichen.
-. Wähle unter *Format* dein Datenformat.
-. Klicke auf *Datei auswählen*.
-. Öffne die CSV-Datei.
-. Klicke auf das Zahnrad *Import*. +
-→ Nach dem Import der Brand-IDs findest du die PIXmania-ID eines Herstellers im Menü *Einrichtung » Artikel » Hersteller*.
+[discrete]
+=== Sync erstellen
+
+Erstelle zunächst einen Sync vom Typ *Hersteller*.
+
+[.instruction]
+Sync erstellen:
+
+. Öffne das Menü *Daten » Datenimport: Import*. +
+→ Die Sync-Übersicht wird geöffnet.
+. Klicke auf *Sync hinzufügen* (icon:plus-square[role="green"]). +
+→ Der Bearbeitungsbereich *Neuer Sync* wird angezeigt.
+. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<#hersteller-sync-pixmania>>.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Der Sync wird erstellt. +
+→ Die Abgleicheinstellungen des Syncs werden geöffnet.
+
+[[hersteller-sync-pixmania]]
+.Sync erstellen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+2+^| *Grunddaten*
+
+| *Name*
+|Name eingeben. Dieser Name wird in der Übersicht angezeigt und kann für die Suche genutzt werden.
+
+| *Intervall*
+|Intervall für den Import von Syncs wählen. +
+Mit der Option *Zeitplan* kann festgelegt werden, wie oft und zu welchem Zeitpunkt der Import von Syncs gestartet werden soll.
+
+| *Typ*
+|Typ <<daten/daten-importieren/sync-typen/elasticSync-hersteller#, Hersteller>> aus der Dropdown-Liste wählen. Mit diesem Sync-Typ werden Herstellerdaten importiert.
+
+2+^| *Import*
+
+| *Datentyp*
+|Dateiformat der Importdatei wählen. +
+Aktuell ist nur die Auswahl *CSV/TXT* verfügbar, da nur CSV- oder TXT-Dateien importiert werden können.
+
+| *Zeichensatz*
+|Zeichensatz der Datei oder die Option *Automatisch erkennen* wählen.
+
+| *Beginne ab Zeile*
+|Wählen, ab welcher Zeile der Datei Daten importiert werden sollen.
+
+| *Kopfzeile enthalten*
+|Wählen, ob die Importdatei eine Kopfzeile enthält.
+
+| *Globalen Cache nutzen*
+|Festlegen, ob der globale Cache für eine Datei genutzt werden soll oder nicht. Ist die Einstellung aktiviert, werden nur geänderte Datenzeilen importiert. Ist die Einstellung nicht aktiviert, kann ein und dieselbe Datei jederzeit erneut importiert werden.
+
+| *Automatische Zuordnung*
+|Wählen, ob die automatische Zuordnung verwendet werden soll. Die Spalten der CSV- oder TXT-Datei können automatisch den plentymarkets Datenfeldern zugeordnet werden. Damit die Zuordnung funktioniert, darf die Benennung der im FormatDesigner gewählten Felder nicht geändert werden.
+
+2+^| *Trennzeichen*
+
+| *Trennzeichen*
+|Das Trennzeichen der CSV- oder TXT-Datei wird automatisch erkannt. Diese Einstellung ist standardmäßig aktiviert. +
+Alternativ kann das Trennzeichen, das in der Importdatei verwendet wird, um die Datenfelder (Spalten) eines Datensatzes voneinander zu trennen, manuell gewählt werden. +
+Mögliche Trennzeichen sind *Semikolon*, *Komma*, *Tabulator* oder *Pipe*.
+
+| *Feldbegrenzungszeichen*
+|Begrenzungszeichen innerhalb von Feldern wählen, die mehrere Werte enthalten können. +
+* " = einzelne Werte innerhalb eines Feldes sind durch doppelte Anführungszeichen voneinander getrennt.
+* ' = einzelne Werte innerhalb eines Feldes sind durch einfache Anführungszeichen voneinander getrennt.
+
+2+^| *Quelle*
+
+| *Quelle*
+a| *Manueller Upload*, *FTP*, *HTTPS* oder *SFTP* wählen. +
+Je nach gewählter Option werden weitere Einstellungen sichtbar:
+
+*Manueller Upload* = lokale Datei wählen und direkt hochladen. +
+Nachdem ein Sync ausgeführt wurde, wird die Datei automatisch vom Webspace gelöscht. Dies ist standardmäßig voreingestellt. Um die Datei zu speichern, muss der Haken in der Checkbox entfernt werden. *_Hinweis_*: Das Speichern der Datei auf dem Webspace ist kostenpflichtig.
+
+*FTP* = Host, Port, Benutzername, Passwort und Dateiname werden als Einstellungen sichtbar.
+
+    * *Host (Pflichtfeld)* = Host des FTP-Servers eingeben. +
+      *_Tipp:_* Nutze hierzu deinen plentymarkets FTP-Zugang.
+    * *Port* = Port des FTP-Servers. Wenn kein Port eingetragen ist, wird der Standard-Port (22) verwendet.
+    * *Benutzername (Pflichtfeld)* = Benutzer für FTP-Zugang eingeben.
+    * *Passwort (Pflichtfeld)* = Passwort für FTP-Zugang eingeben.
+    * *Dateiname* = Pfad und Name der Datei eingeben, aus der Daten importiert werden sollen. Der Dateiname muss auf .csv oder .txt enden. +
+    *_Hinweis:_* Wildcards können im Feld *Dateiname* verwendet werden, indem z.B. ein Teil des Dateinamens durch ein *** ersetzt wird. Wildcards nur in Kombination mit der Option *Datei nach erfolgreichem Import in Archiv verschieben* verwenden.
+    * *Datei nach erfolgreichem Import in Archiv verschieben* = Wenn diese Option aktiv ist, wird nach erfolgreichem Import die Importdatei automatisch in einen neuen Ordner *Archiv* auf dem FTP-Verzeichnis verschoben.
+
+
+*HTTPS* = *Externe URL* wählen.
+
+        * *Externe URL* = URL eingeben, unter der die Importdatei erreichbar ist. +
+         *_Tipp:_* Speichere die Datei auf dem plentymarkets Webspace.
+          * *Authentifizierung*: Wählen, ob für den Zugriff auf die Datei eine Authentifizierung erforderlich ist oder nicht.
+            ** *keine* = keine Authentifizierung erforderlich
+            ** *HTTP-Authentifizierung* = Authentifizierung per Benutzer und Passwort erforderlich
+
+*SFTP* = Host, Port, Benutzername, Passwort und Dateiname werden als Einstellungen sichtbar.
+
+        * *Host (Pflichtfeld)* = Host des FTP-Servers eingeben. +
+        * *Port (Pflichtfeld)* = Port des FTP-Servers. Wenn kein Port eingetragen ist, wird der Standard-Port (22) verwendet.
+        * *Benutzername (Pflichtfeld)* = Benutzer für FTP-Zugang eingeben.
+        * *Passwort (Pflichtfeld)* = Passwort für FTP-Zugang eingeben.
+        * *Dateiname* = Pfad und Name der Datei eingeben, aus der Daten importiert werden sollen. Der Dateiname muss auf .csv oder .txt enden. +
+        *_Hinweis:_* Wildcards können im Feld *Dateiname* verwendet werden, indem z.B. ein Teil des Dateinamens durch ein *** ersetzt wird. Wildcards nur in Kombination mit der Option *Datei nach erfolgreichem Import in Archiv verschieben* verwenden.
+        * *Datei nach erfolgreichem Import in Archiv verschieben* = Wenn diese Option aktiv ist, wird nach erfolgreichem Import die Importdatei automatisch in einen neuen Ordner *Archiv* auf dem FTP-Verzeichnis verschoben.
+|====
+
+[discrete]
+=== Importoptionen festlegen
+
+Nachdem du den Sync vom Typ *Hersteller* erstellt hast, legst du die Importoptionen fest. Nimm dazu die Einstellungen vor wie im Kapitel <<daten/daten-importieren/ElasticSync#1300, Importoptionen festlegen>> auf der ElasticSync-Handbuchseite beschrieben.
+
+[discrete]
+=== Abgleich festlegen
+
+Als Nächstes legst du den Abgleich für den Sync fest. Nimm dazu die Einstellungen vor wie im Kapitel <<daten/daten-importieren/ElasticSync#1400, Abgleich festlegen>> auf der ElasticSync-Handbuchseite beschrieben.
+
+[discrete]
+=== Zuordnung erstellen
+
+Zuletzt musst du noch die Zuordnung der Datenfelder erstellen. Nimm dazu die Einstellungen vor wie im Kapitel <<daten/daten-importieren/ElasticSync#1500, Zuordnung erstellen>> auf der ElasticSync-Handbuchseite beschrieben.
 
 [#600]
 == Kategorien verknüpfen
