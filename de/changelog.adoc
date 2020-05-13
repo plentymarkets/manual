@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 30. April 2020
-:endWeekDate: 06. Mai 2020
-:nav-alias: Changelog 06. Mai 2020
+:startWeekDate: 07. Mai 2020
+:endWeekDate: 13. Mai 2020
+:nav-alias: Changelog 13. Mai 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
@@ -27,149 +27,20 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Bol.com
-
-* Ab sofort kannst du auf Version 3.0 der API-Schnittstelle von bol.com wechseln. Version 2.0 der API-Schnittstelle von bol.com wird am 12.05.2020 deaktivert.
-+
-Folgende Bestandteile der neuen API wurden in den folgenden Versionen implementiert:
-+
-[cols="3, 1"]
-|===
-|Funktion
-|API-Version
-
-|Angebotsanlage /-update
-|Version 3
-
-|Auftragsimport
-|Version 3
-
-|Versandmeldung
-|Version 3
-
-|Stornomeldung
-|Version 3
-
-|Retourenimport
-|Version 4
-
-|Retourenstatus melden
-|Version 4
-
-|Retouren anlegen
-|Version 4
-
-|===
-+
-Neu hinzugekommen ist folgende Funktionalität:
-
-. Ein stündlicher Import der Retouren, die von EndkundInnen auf bol.com angemeldet wurden.
-. Eine neue Ereignisaktion zum Melden von Retouren, die EndkundInnen direkt an den Händler versendet haben, ohne diese bei bol.com anzumelden.
-. Separate Optionen zur Eingabe der API-Zugangsdaten für die Version 3 und 4.
-
-+
-Außerdem hat sich folgendes geändert:
-
-. Die Gründe für die Stornierungs- und Retourenmeldung. Die neuen Gründe wurden ergänzt und in der Benutzeroberfläche mit einer Markierung für die zugehörige API-Version versehen (v2/v3/v4).
-. Die Art der Übertragung der Angebotsdaten. Angebote werden nun statt über einen FTP stündlich über die API erstellt und übermittelt. Beachte, dass ganz neue Angebote erst in einem täglichen Export endgültig aktiviert werden, da die Verarbeitung asynchron erfolgt. Es kann also bis zu 24 Stunden dauern, bis neue Angebote aktiviert werden.
-+
-[IMPORTANT]
-.To-Do vor dem 12.05.2020
-======
-Im Zuge des Updates musst du folgende Schritte durchführen:
-
-. Im Händlerbereich von bol.com API-Zugangsdaten für die Version 3 erstellen (diese Zugangsdaten sind auch für die Version 4 gültig) und diese Zugangsdaten unter *Einrichtung » Märkte » bol.com » Einstellungen* eintragen. Sobald die Zugangsdaten für die Version 3 hinterlegt sind, wird diese neue API-Version benutzt. Um auf die Version 2 zurückzustellen, entferne die neuen Zugangsdaten einfach wieder falls notwendig.
-. Deine bestehenden Ereignisaktionen für Stornos und Retouren auf die neuen Gründe umstellen oder neue Ereignisaktionen dafür anlegen.
-. Ab Version 3 kann das Format "BolOfferExport" nicht mehr zum Erstellen und Aktualisieren von Angeboten genutzt werden. Bitte prüfe deine Exporte mit diesem Format im Menü *Daten » Elastischer Export*. Lösche entweder den Export oder ändere die Einstellung Bereitstellung auf URL, damit das Format nicht mehr zum FTP von bol.com exportiert wird.
-======
-
-'''
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Dynamischer Import
-
-* Der Menüpunkt *Daten » Dynamischer Import* wurde entfernt.
-
-[discrete]
-=== Listings
-
-* Die Schaltfläche für aktive Listings im Market Listing ist nun auch klickbar, wenn es zu diesem Listing ein augeblendetes Listing gibt. Zuvor war die Schaltfläche bei einem ausgeblendeten Listing ausgegraut.
-
-[discrete]
-=== OTTO
-
-:otto-master-date: 03.05.2020
-:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/mQ5kQM5kH7mFNkIDZlScuFW1B1K.xlsx
-
-include::changelog/_textblocks/otto-master-file.adoc[]
-
-'''
-
-[discrete]
-== Behoben
-
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
-
-[discrete]
 === Artikel
 
-* Man kann nun auch die Vererbung deaktivieren, wenn keine Eigenschaften oder Text-Eigenschaften an der Hauptvariante hinterlegt sind und somit Text-Eigenschaften hinzufügen.
-* Die Schaltfläche *Bilder-Galerie* auf der Kategorie-Seite wurde gelöscht, da sie nicht mehr benötigt wird.
+* Bisher konnten Verkaufspreise, die als Quell- oder Zielpreises einer Preiskalkulation gesetzt waren, einfach gelöscht werden. Dadurch wurde automatisch der Einkaufspreis als Quelle gesetzt, was zu Folgefehlern führte. Durch diese Anpassung lassen sich keine Verkaufspreise mehr löschen, die als Quell- oder Zielpreis angegeben sind, bis ein anderer Preis gewählt wurde.
+* Die Herkunft bol.com wurde bei den Verkaufspreisen ergänzt.
 
 [discrete]
-=== Aufträge
+=== Artikellisten
 
-* Es kam vor das Tickets in der Auftrags-UI zum Teil nicht korrekt geladen wurden. Dieser Fehler wurde nun behoben.
-* Wenn eine Mahnung existiert und der Kunde die Rechnung ohne die Mahngebühren bezahlt hat, wurde der Auftrag auf `unterbezahlt` gesetzt. Nach der Stornierung der Mahnung blieb der Auftrag auf `unterbezahlt`. Dies wurde gefixt, der Zahlungsstatus des Auftrages wird nach Entfernung der Mahngebühr neu bestimmt.
-* In der Auftragsübersicht wird nun die Anzahl der Pakete richtig angezeigt und Pakete ohne Paketnummer werden nun auch ausgegeben und können bearbeitet werden.
+* In den E-Mail-Vorlagen sind zwei neue Template-Variablen für das Tab *Artikelliste* verfügbar:
+** `$ItemAvailabilityPhysicalStockId`
+** `$ItemAvailabilityPhysicalStockLabel`
 
-[discrete]
-=== Elastischer Export
-
-* Wurden mehrere Lager für den Export ausgewählt, wurde nur das Lager mit der niedrigsten ID exportiert.
-
-[discrete]
-=== Hood
-
-* Bisher konnten nur Sendungsnummern zu Hood übertragen werden, die manuell am Auftrag hinzugefügt wurden. Das verhalten wurde behoben.
-
-[discrete]
-=== Import
-
-* Im Status wurden die Vorgänge Abgebrochen und Fehlgeschlagen vertauscht. Diesen Fehler haben wir behoben.
-* Verknüpfte man Felder im Bereich Zuordnung und ging man ohne zu speichern in einen anderen plenty Tab, so gingen die Werte verloren. Diesen Fehler haben wir behoben.
-
-[discrete]
-=== Nachbestellungen
-
-* Die Einstellung *Schriftart* berücksichtigt die erweiterten Alphabete nun korrekt.
 +
-image:changelog/assets/reorder-pdf-extended-alphabets.png[width=640, alt=East Asian, Arabic, Cyrillic.]
-
-[discrete]
-=== Paketnummern
-
-* Die Statushistorie und Ereignisaktion wird nun beim Updaten von Paketen nicht mehr fehlerhaft ausgelöst.
-
-[discrete]
-=== Prozesse
-
-* In den Prozessen wurde beim Bearbeiten einer Pickliste der Status nicht aktualisiert, sodass diese immer den Status `Offen` hatte. Mit diesem Update werden die Status `In Bearbeitung` und `Geschlossen` wieder korrekt gesetzt. Zusätzlich wurden Abfragen in der Picklisten-Suche hinzugefügt, ob bei der Suche nach einer bestimmten Pickliste diese Pickliste auch geöffnet werden soll, wenn sie bereits geschlossen wurde oder in Bearbeitung ist.
-
---
-
-early::
-+
---
-[discrete]
-== Neu
-
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Der physische Warenbestand gibt den echten Wert aus, nachdem der Artikel in einem Auftrag reserviert wurde.
 
 [discrete]
 === Aufträge
@@ -188,6 +59,138 @@ Um die neue Funktionalität nutzen zu können, muss Folgendes gewährleistet sei
 +
 Weitere Informationen findest du auf der Handbuchseite <<auftraege/buchhaltung#620, Buchhaltung>>.
 
+[discrete]
+=== Nachbestellungen
+
+* Durch einen Fehler im Release sind die bei der Keynote zum Kongress angekündigten Felder für die Zusatzkosten an der Nachbestellung bereits eine Woche früher als geplant veröffentlicht worden.
+
+[discrete]
+=== OTTO market
+
+* Vor dem Erhalt der physischen Retoure bietet OTTO Market an der API die Information über angemeldete Retouren an. Wir haben einen Prozess entwickelt, der diese Retouren-Anmeldungen in plentymarkets als Retouren-Aufträge importiert.
++
+Der Retouren-Import kann über den Grundeinstellungs-Assistenten für OTTO Market aktiviert werden. Beim Import wird der gewählte Auftragsstatus aus dem Assistenten am Auftrag gesetzt. Jede retournierte Auftragsposition wird als einzelner Retouren-Auftrag am Ursprungsauftrag angehangen.
+
+[discrete]
+=== Versandeinstellungen
+
+* Du kannst ab jetzt im Assistenten *Versandeinstellungen* alle Berechnungstypen einrichten, die auch in den Versandprofilen zur Verfügung stehen. Ebenso kannst du nun im Assistenten auch die Pauschalen und die Beschränkungen aller Beschränkungstypen einrichten.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 08.05.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/hvXDpZNDefeJ5YFnwk8ClJqLMGQ.xlsx
+
+include::changelog/_textblocks/otto-master-file.adoc[]
+
+[discrete]
+=== Versandeinstellungen
+
+* Der Name, den man im Assistenten *Versandeinstellungen* beim Erstellen einer neuen Konfiguration wählen konnte, hatte keinen Bezug zum Versandprofil selbst. Dies wurde geändert. Der Name den man künftig eingibt, ist der Name, der im Versandprofil als Backend-Name angegeben wird.
++
+Beim Namen, der im ersten Schritt des Assistenten konfiguriert wird, handelt es sich nun ebenfalls um den Backend-Namen und nicht mehr um den Frontend-Namen.
++
+Bezüglich der Regionen konnte bisher im Assistenten gewählt werden, ob man eine bestehende Region verwenden oder eine neue erstellen möchte. Dies wurde in das Overlay beim Erstellen der Konfiguration verschoben. Man wählt dort nun entweder eine bestehende Region aus, oder wählt, dass man eine neue Region erstellen möchte. Wenn man eine neue Region erstellen möchte, kann man diese wie gewohnt dann im Assistenten einrichten.
++
+Die Informationen auf der Kachel (und der Tabelle) im Assistenten wurden angepasst. Bisher wurde nur ein Name (der keinerlei weiteren Bezug hatte) angezeigt. Künftig wird hier der Backend-Name des Versandprofils sowie die Region angezeigt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* Beim Editieren von Auftragspositionen, z.B. Ändern der Menge, wurde unter seltenen Konstellationen ein anderer nicht korrekter Preis genommen. Das lag daran, dass das Lieferland nicht berücksichtigt wurde und ein falscher Verkaufspreis genommen wurde. Wir haben es gefixt, das Lieferland wird jetzt berücksichtigt.
+* Seit der Einführung der link:https://forum.plentymarkets.com/t/taric-table-for-order-vat-calculation-taric-tabelle-fuer-die-steuersatz-ermittlung-von-auftraegen/588478[Taric-Tabelle^] hat sich ein Fehler eingeschlichen, der es nicht erlaubt den Steuersatz an bestehenden Auftragspositionen zu ändern. Dies wurde behoben.
+
+[discrete]
+=== Ceres 5
+
+* Bei der Anlage von Retouren aus dem MyAccount Bereich bei Ceres 5 wurde nicht das Ereignis `Neue Retoure (durch Kunde)` bei den Ereignisaktionen ausgelöst, sondern das Ereignis `Neue Retoure`. Dieser Fehler wurde nun behoben.
+
+[discrete]
+=== Import
+
+* Die Operatoren *Und* und *Oder* funktionieren wieder.
+* Filter werden nicht mehr übersprungen.
+
+[discrete]
+=== Nachbestellungen
+
+* In der Nachbestellung wird nicht länger AED als Währung angezeigt, wenn am Lieferanten keine Währung hinterlegt ist.
+
+[discrete]
+=== Prozesse
+
+* Beim Löschen von Versandpaketen über Prozesse kam es nun nicht mehr zu dem Fehler `Type error: Argument 1 passed to ShippingPackageType2OrderDataWriter::getPackageNum() must be of the type int, null given, called in /modules/order/packages/package_type2order/ShippingPackageType2OrderDataWriter.class.php on line 109
+`.
+* Wenn aus einem Prozess heraus ein PDF erzeugt werden soll, konnte es unter Umständen passieren, dass die PlentyID des Auftrages nicht gesetzt war, was zum Abbruch der Dokumenterzeugung führte. Dies wird nun abgefangen und das Dokument zu Ende erzeugt.
+* Bei der Bearbeitung einer Pickliste innerhalb eines Prozesses wird die Pickliste automatisch in den Status in Bearbeitung gesetzt. Bei der weiteren Bearbeitung der Pickliste über das Backend wurde eine Fehlermeldung angezeigt, wenn Benutzer erst aus der App und im Folgenden aus den Prozessen auf dieselbe Pickliste zugegriffen haben. Dieses Verhalten wurde behoben.
+
+'''
+
+[discrete]
+== Gelöscht
+
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* entfernt.
+
+[discrete]
+=== Dynamischer Import
+
+* Der dynamische Import wurde abgeschaltet.
+
+--
+
+early::
++
+--
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Die Ereignisaktionen wurden um die Ereignisse `Externe Rechnung hochgeladen` und `Externe Gutschrift hochgeladen` erweitert.
+* Es wird bei Aufträgen eine Warnung angezeigt, wenn eine Zahlung aber keine Rechnung existiert. Dies ist auch bei Gutschriften ohne Gutschrift-Dokument der Fall.
+
+[discrete]
+=== Import
+
+* Im Sync des Typs Attribut sind weitere Sprachen für den Import hinzugefügt worden
+
+[discrete]
+=== Kontakte
+
+* Im Filterbereich in den Menüs *CRM » Kontakte* und *CRM » Schnellsuche* wurde im Filter *Land* die Einstellung *Alle außer Deutschland* hinzugefügt. Wenn du diese Filtereinstellung wählst, werden Kontakte aus allen Ländern außer Deutschland angezeigt.
+* In den Menüs *CRM » Kontakte* und *CRM » Schnellsuche* werden in der Übersicht zusätzlich zu den bisherigen Daten ab sofort auch die Bewertung und die Kundenklasse angezeigt.
+
+[discrete]
+=== Plugins
+
+* Du kannst ab jetzt Plugins in der neuen Plugin-UI aktualisieren.
++
+Außerdem wird ab jetzt sowohl vor dem Aktualisieren als auch vor dem Installieren von Plugins geprüft, ob alle anderen Plugins, die für die ausgewählte Version benötigt werden, bereits in dem Plugin-Set vorliegen.
++
+image:changelog/assets/plugin_kompatibel.png[width=640, alt=Meldung, dass ein Plugin kompatibel mit dem Rest des Plugin-Sets ist.]
++
+Um ein Plugin-Set in der neuen UI zu bearbeiten, öffne das Menü *Plugins » Plugin-Set-Übersicht (Alpha)* und klicke auf die Schaltfläche *Plugin-Set bearbeiten*.
++
+Wir freuen uns bereits auf dein Feedback. Wenn du die neue UI erkundest und dir etwas auffällt, das gut, schlecht oder auch total unverständlich ist, freuen wir uns auf eine entsprechende Rückmeldung link:https://forum.plentymarkets.com/t/feedback-neue-plugin-ui-feedback-for-new-plugin-ui/579903[im zugehörigen Thema im Forum in der Kategorie Plugin-Einrichtung^].
+
 '''
 
 [discrete]
@@ -195,7 +198,10 @@ Weitere Informationen findest du auf der Handbuchseite <<auftraege/buchhaltung#6
 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
+[discrete]
+=== Aufträge
 
+* Es ist nicht mehr möglich, einer Gutschrift eine Soll-Zahlung zuzuordnen.
 
 '''
 
@@ -204,7 +210,30 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
+[discrete]
+=== Artikel
 
+* Es kam zu dem Fehler, dass wenn alle Bildverfügbarkeiten bis auf eine gesetzt werden sollten, trotzdem alle gesetzt wurden. Durch den Fix werden nur genau die Verfügbarkeiten gesetzt, die angegeben sind.
+
+[discrete]
+=== Aufträge
+
+* In der Auftragssuche wurde ein fehlerhafter Sendungsverfolgungslink generiert mit doppelten Paketnummern. Dieses Problem wurde behoben.
+
+[discrete]
+=== Import
+
+* Es ist nun wieder möglich, die Vererbung der Felder für die Artikelauflistung per Import zu aktivieren.
+
+[discrete]
+=== Newsletter
+
+* Beim Löschen von Newsletter Ordnern mit vorhandenen Newsletter Anmeldungen wurde die gespeicherte Ordner-ID am entsprechendem Kontakt nicht mit entfernt. Dieses Fehlverhalten wurde behoben.
+
+[discrete]
+=== OTTO market
+
+* Unter seltenen Konstellationen konnte das Stornieren eines Auftrages zu einem Fehler führen, so z.B. wenn der Auftrag bereits gelöscht ist oder schon den zu setzenden Storno-Status bereits hat. Dies wurde behoben.
 
 --
 
@@ -220,20 +249,8 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/edon_6618[FairGeben^]
-|1.1.1
 |-
-
-|link:https://marketplace.plentymarkets.com/plugins/payment/novalnet_5231[Novalnet^]
-|2.0.12
 |-
-
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/ordernow_6541[Order now - Jetzt bestellen, wann versendet?^]
-|1.0.6
-|-
-
-|link:https://marketplace.plentymarkets.com/plugins/payment/payment-integrationen/paypal_4690[PayPal^]
-|4.4.0
 |-
 
 |===
@@ -246,27 +263,11 @@ App::
 --
 
 [discrete]
-== Geändert
-
-Folgende Neuerungen wurden in Version 1.1.10 der *plentymarkets App* veröffentlicht.
-
-* Auf dem Kassenbeleg können nun Zusatzinformationen zu Artikelpositionen ausgegeben werden. Weitere Informationen findest du auf der Handbuchseite <</pos/pos-einrichten#120, POS einrichten>>.
-* Um die Anforderungen der Kassensicherungsverordnung (KassenSichV) zu erfüllen ist es nun möglich, eine technische Sicherheitseinrichtung (TSE) der Marke EPSON mit plentyPOS zu verwenden. Weitere Informationen findest du link:https://forum.plentymarkets.com/t/plentypos-und-kassensichv-wichtige-informationen-im-ueberblick/586112[im Forum^]{nbsp}icon:external-link[] und auf der Handbuchseite <<pos/pos-rechtssicherheit#400, Rechtssicher arbeiten mit POS>>.
-* Um die Anforderungen der Kassensicherungsverordnung (KassenSichV) zu erfüllen ist es nun außerdem möglich, im Menü *Aufträge » POS » DSFinV-K-Export* einen DSFinV-K-Export (Digitale Schnittstelle der Finanzverwaltung für Kassensysteme) zu erstellen. Auch zu diesem Thema findest du weitere Informationen auf der Handbuchseite <<pos/pos-rechtssicherheit#950, Rechtssicher arbeiten mit POS>>.
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in Version 1.1.10 der *plentymarkets App* veröffentlicht.
-
-* Die Steuersätze im Tagesabschluss werden jetzt vom höchsten bis zum niedrigsten Steuersatz sortiert dargestellt.
-
-[discrete]
 == Behoben
 
 Folgende Probleme wurden in Version 1.1.10 der *plentymarkets App* behoben.
 
-* Bei Rechnungsdokumenten mit mehreren Artikelpositionen kam es zu Formatierungsfehlern. Dieses Verhalten wurde behoben.
+* Vereinzelt wurden während der Erstellung des Tagesabschlussberichts korrupte Daten geladen und der Tagesabschluss konnte nicht erstellt werden. Dieses Verhalten wurde behoben.
 
 --
 
