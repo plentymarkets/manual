@@ -53,7 +53,7 @@ The data exchange includes the daily item export, the stock synchronisation ever
 |Select whether the orders should be listed with an *open* or *booked* incoming payment when they are transferred into your plentymarkets system. The payments that you receive from PIXmania are grouped together. If you choose to import the payments as *booked*, then the orders that are still awaiting payment from PIXmania are already marked as paid when they are imported into your system.
 
 | *Referrer*
-|Select *PIXmania*.
+| Select *PIXmania*.
 
 2+|Delivery period in full days
 
@@ -74,34 +74,34 @@ Connecting to this market allows for the following automatic functions to take p
 [#250]
 == Activating the order referrer
 
-In order to link items, properties etc. with PIXmania, you have to activate the order referrer PIXmania in the *Setup » Orders » Order referrer* menu.
+In order to link items, characteristics etc. with PIXmania, you have to activate the order referrer PIXmania in the *Setup » Orders » Order referrer* menu.
 
 [.instruction]
 Activating the order referrer PIXmania:
 
 . Go to *Setup » Orders » Order referrer*.
-. Activate the referrer *PIXmania*.
+. Activate the option *PIXmania*.
 . *Save* (icon:save[role="green"]) the settings.
 
 [#300]
 == Setting the variation availability
 
-You need to activate all variations that you want to sell on PIXmania. This is done in the *Availability* tab of a variation within the *Item » Edit item » Open item » Tab: Variation ID* menu.
+Items have to be available for PIXmania. This is done in the *Availability* tab of an item within the *Item » Edit item » Open item » Tab: Variation ID* menu.
 
 [TIP]
 .Selling all variations of an item on PIXmania
 ====
-If you want to sell all variations of an item on PIXmania, carry out the settings below for the item's main variation. All other variations of the item then inherit the settings of the main variation.
+To sell all variations of an item on PIXmania, carry out the settings described below for the main variation. The settings are then passed on to all variations of the item.
 ====
 
 [.instruction]
-Activating the variation availability for PIXmania:
+Setting the variation availability for PIXmania:
 
 . Go to *Item » Edit item » Open item » Tab: Variation ID » Tab: Settings*.
 . Open the variation that you want to sell on PIXmania.
-. In the *Availability* area, active the option *Active*.
+. In the *Availability* area, activate the option *Active*.
 . Click on the *Availability* tab.
-. In the *Markets* area, click in the selection field.  +
+. In the *Markets* area, click in the selection field. +
 → A list of all available markets is displayed.
 . Activate the option *PIXmania*.
 . Activate the option *Web API*.
@@ -141,16 +141,130 @@ Exporting the data format:
 
 Send the CSV file to the PIXmania customer service. You will then receive an Excel file from PIXmania. Generate a CSV file from this Excel file which corresponds to the *Producer* data format.
 
-[.instruction]
-Importing the data format:
+Import the brand IDs into your plentymarkets system using ElasticSync. To do so, create a sync of the type <<data/importing-data/sync-types/elasticSync-manufacturer#, Manufacturer>>. After you have created the sync, you have to set the import options for the sync, set the matching, and create the mappings.
 
-. Go to *Data » Dynamic import*.
-. Select the field separator.
-. Select your data format under *Format*.
-. Click on *Select file*.
-. Open the CSV file.
-. Click on *Import*. +
-→ After having imported the brand IDs, you can find the PIXmania ID of a manufacturer in the *Setup » Item » Manufacturers* menu.
+[discrete]
+=== Creating a sync
+
+First create a sync of the type *Manufacturer*.
+
+[.instruction]
+Creating a sync:
+
+. Go to *Data » Data import: Import*. +
+→ The sync overview opens.
+. Click on *Add sync* (icon:plus-square[role="green"]). +
+→ The editing area *New sync* is displayed.
+. Carry out the settings. Pay attention to the explanations given in <<#manufacturer-sync-pixmania>>.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The sync is created. +
+→ The matching settings of the sync open.
+
+[[manufacturer-sync-pixmania]]
+.Creating a sync
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+2+^| *Basic data*
+
+| *Name*
+|Enter a name. This name is displayed in the overview and can be used for the search.
+
+| *Interval*
+|Select an interval for the import of syncs. +
+By choosing the option *Schedule* you can determine how often and at what time the import of syncs shall be started.
+
+| *Type*
+|Select the type <<data/importing-data/sync-types/elasticSync-manufacturer#, Manufacturer>> from the drop-down list. This sync type is used to import manufacturer data.
+
+2+^| *Import*
+
+| *Data type*
+|Select the file format of the import file. +
+Currently, *CSV/TXT* is the only available option, as only CSV or TXT files can be imported.
+
+| *Character set*
+|Select the character set of the file or the option *Detect automatically*.
+
+| *Starting in line*
+|Select a line starting from which the data should be imported.
+
+| *Header is included*
+|Select whether the import file contains a header.
+
+| *Use global cache*
+|Determine whether the global cache should be used for a file or not. If the setting is activated, only modified data rows will be imported. If the setting is not activated, you can import one and the same file again at any time.
+
+| *Automatic mapping*
+|Select whether the mapping should be done automatically. The columns in the CSV or TXT file can be mapped automatically to the plentymarkets data fields. To ensure that the mapping works properly, the names of the fields that you selected in the FormatDesigner must not be changed.
+
+2+^| *Separator*
+
+| *Separator*
+|The separator of the CSV or TXT file is automatically detected. This setting is activated by default. +
+Alternatively, you can manually select the field separator that is set in the import file in order to separate the data fields (columns) of a data record from each other. +
+Possible separators are *Semicolon*, *Comma*, *Tab* and *Pipe*.
+
+| *Delimiter*
+|Select delimiters within the fields that may contain multiple values. +
+* " = individual values within one field are separated by double quotation marks.
+* ' = individual values within one field are separated by single quotation marks.
+
+2+^| *Source*
+
+| *Source*
+a| Select *Manual upload*, *FTP*, *HTTPS* or *SFTP*. +
+Depending on the selected option, the following settings are displayed:
+
+*Manual upload* = Select and upload a local file. +
+After running a sync, the file is automatically deleted from the webspace. This is preset by default. In order to save the file you need to remove the check mark. *_Note_*: storing the file on the webspace is subject to a fee.
+
+*FTP* = Host, port, user name, password and file name are displayed.
+
+    * *Host (mandatory field)* = Enter the host of the FTP server. +
+      *_Tip:_* Use your plentymarkets FTP access.
+    * *Port* = Enter the port of the FTP server. If no port is entered, the standard port (22) is used.
+    * *User name (mandatory field)* = Enter the user name for the FTP access.
+    * *Password (mandatory field)* = Enter the password for the FTP access.
+    * *File name* = Enter the path and the name of the file from which the data is to be imported. The file name has to end with .csv or .txt. +
+    *_Note:_* You can use wildcard characters in the field *File name* by e.g. replacing a part of the file name with a ***. Only use wildcard characters in combination with the option *Move file to archive when import was successful*.
+    * *Move file to archive when import was successful* = If this option is activated, the import file is automatically moved to the new *Archive* folder in the FTP directory once the import was successful.
+
+
+*HTTPS* = *Select External URL.
+
+        * *External URL* = Enter the URL to access the import file. +
+         *_Tip:_* Save the file on your plentymarkets webspace.
+          * *Authentication:* Select whether an authentication is required to access the file.
+            ** *none* = no authentication required
+            ** *HTTP authentication* = = an authentication is required for each user and password
+
+*SFTP* = Host, port, user name, password and file name are displayed.
+
+        * *Host (mandatory field)* = Enter the host of the FTP server. +
+        * *Port (mandatory field)* = Enter the port of the FTP server. If no port is entered, the standard port (22) is used.
+        * *User name (mandatory field)* = Enter the user name for the FTP access.
+        * *Password (mandatory field)* = Enter the password for the FTP access.
+        * *File name* = Enter the path and the name of the file from which the data is to be imported. The file name has to end with .csv or .txt. +
+        *_Note:_* You can use wildcard characters in the field *File name* by e.g. replacing a part of the file name with a ***. Only use wildcard characters in combination with the option *Move file to archive when import was successful*.
+        * *Move file to archive when import was successful* = If this option is activated, the import file is automatically moved to the new *Archive* folder in the FTP directory once the import was successful.
+|====
+
+[discrete]
+=== Setting the import options
+
+After you created a *Manufacturer* sync, you set the import options. To do so, carry out the settings as described in the <<data/importing-data/ElasticSync#1300, Setting the import options>> chapter on the ElasticSync page.
+
+[discrete]
+=== Setting the matching
+
+Next, set the matching for the sync. To do so, carry out the settings as described in the <<data/importing-data/ElasticSync#1400, Setting the matching>> chapter on the ElasticSync page.
+
+[discrete]
+=== Creating a mapping
+
+Last, you have to create the mappings for the data fields. To do so, carry out the settings as described in the <<data/importing-data/ElasticSync#1500, Creating a mapping>> chapter on the ElasticSync page.
 
 [#600]
 == Linking categories
@@ -223,12 +337,12 @@ Activate the <<payment/managing-payment-methods#, payment method>> *PIXmania Pay
 Activating the PIXmania payment method:
 
 . Go to *Setup » Orders » Payment » Methods*.
-. Activate the option *Also show inactive*.
+. Activate the setting *Also show inactive*.
 . Open the folder *International*.
 . Click on *PIXmania Payment*. +
 → The *Settings* tab opens.
 . Carry out the settings. Pay attention to the explanations given in <<#settings-payment-method-pixmania>>.
-. Activate the option *Active*.
+. Place a check mark next to the option *Active*.
 . *Save* (icon:save[role="green"]) the settings.
 
 [[settings-payment-method-pixmania]]
@@ -271,7 +385,7 @@ Click on *Upload files* and select the logo that you want to upload for the paym
 
 | *Costs: Flat rate or percentage*
 | If the payment method results in additional costs, enter the percentage value or flat rate value. The choice depends on the conditions of your contract. *Important:* Do not enter a value into both fields. +
-For further information, refer to the <<business-decisions/business-intelligence/statistics#, Managing statistics>> page. For an example of flat rate and percentage costs, refer to the <<payment/managing-payment-methods#20, Managing payment methods>> page.
+For further information, refer to the <<business-decisions/business-intelligence/statistics#, Statistics>> page of the manual. For an example of flat rate and percentage costs, refer to the <<payment/managing-payment-methods#20, Managing payment methods>> page.
 |====
 
 [TIP]
