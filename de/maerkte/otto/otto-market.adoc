@@ -521,7 +521,10 @@ Sollte ein Kunde eine Rückfrage zu dem Auftrag haben, kannst du anhand der exte
 +
 Außerdem kannst du mit dem Filter *Herkunft* natürlich immer alle OTTO Market-Aufträge filtern.
 
-Im Log erhalte ich den Fehler "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique". Wie kann ich diesen Fehler beheben?::
+Mir wird ein Fehler im Log angezeigt. Wie kann ich den Fehler beheben?::
++
+* *Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.*
++
 Dieser Fehler wird im Log z.B. auch unter “SKU 1234 nicht generiert” angezeigt.
 +
 Im Katalog wird an erster Stelle definiert, aus welcher Quelle die SKU generiert werden soll. Wir unterscheiden dort zwischen einer *Parent-SKU* und einer *Variation-SKU*. Die dort gewählte Quelle sollte sich auf eine Datenzeile beziehen, welche einmalig existiert. Es ist also nicht möglich, für verschiedene Artikel dieselbe SKU nochmals zu vergeben. Als Beispiel könnte man also die *Artikel-ID* sowie die *Variation-ID* verwenden. Beide IDs werden vom plentymarkets System bei der Anlage des Artikels vergeben und existieren jeweils nur einmal. Nun könnte jedoch der Fall eintreten, dass der Artikelexport stattgefunden hat und der Export aufgrund einer fehlenden Information im Katalog in einen Fehler gelaufen ist. Die SKU wurde aber trotzdem geschrieben und ist nun in der Variante im Tab *Verfügbarkeit* sichtbar. Beim nächsten Export würde das plentymarkets System wieder versuchen, eine SKU aus den im Katalog gewählten Quellen zu erstellen. Da diese SKU jedoch bereits existiert, kommt es zum Fehler "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique." / "SKU 1234 nicht generiert.".
@@ -539,8 +542,8 @@ Wenn du eine weitere Quelle hinzufügst, ist es zwingend notwendig, dafür die S
 ====
 +
 Es wird also eine zweite Quelle hinzugefügt. Beim nächsten Export wird zuerst auf die erste Quelle geschaut. Da in dieser Quelle bereits eine SKU existiert, wird die zweite Quelle ignoriert. Sollte in der ersten Quelle keine SKU existieren, dann wird mittels der zweiten Quelle eine neue SKU erstellt.
-
-Im Log erhalte ich die Fehler "Code:“200009 - ATTRIBUTE_CHANGE_DENIED" oder "title: Der Wert dieses Feldes kann nicht geändert werden." Wie kann ich diese Fehler beheben?::
++
+* *Code: 200009 - ATTRIBUTE_CHANGE_DENIED* oder *title: Der Wert dieses Feldes kann nicht geändert werden.*
 +
 Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vorgenommen hast. Diese Änderung wird von OTTO jedoch nicht akzeptiert und es ist nicht möglich, das Attribut für diesen Artikel zu ändern. Das dort bemängelte Attribut kann sich zum Beispiel auf ein variantenbildendes Attribut oder auch auf ein titelbildendes Attribut beziehen. Auch weitere OTTO-Attribute spielen hierbei eine Rolle.
 +
@@ -549,3 +552,33 @@ Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vor
 ====
 Ein Artikel kann bei OTTO Market _nicht_ gelöscht werden, weder durch plentymarkets noch durch OTTO selbst. Es ist lediglich möglich, den Artikel auf OTTO Market als *nicht verfügbar* zu kennzeichnen. Deshalb solltest du vor der Artikelübertragung immer sicherstellen, dass im Katalog die korrekten Quellen verknüpft wurden.
 ====
++
+* *productDescription.brand*
++
+Dieser Fehler zeigt an, dass die Marke der Variante, die übertragen werden soll, nicht im Katalog verknüpft ist. Die Marke kannst du auf zwei verschiedenen Arten mit der Variante verknüpfen:
++
+* über den Hersteller des Artikels im *Tab: Global* des Artikels
+* über eine Eigenschaft
++
+Stelle sicher, dass im Katalog eine Quelle für die Marke hinterlegt wurde und dass diese Quelle mit deinem Artikel verknüpft und ausgefüllt ist.
++
+* *mediaAssets.IMAGE*
++
+Dieser Fehler zeigt an, dass du im Katalog entweder keine Bildquelle gewählt hast, oder keines deiner Artikelbilder für die Herkunft *OTTO Market* freigegeben ist. Öffne dazu das *Tab: Bilder* des Artikels aktiviere die Herkunft *OTTO Market*, wie im Kapitel <<Verfügbarkeit am Bild einstellen, Verfügbarkeit am Bild einstellen>> beschrieben.
++
+* *delivery.type*
++
+Dieser Fehler zeigt an, dass die Versandart nicht verknüpft ist. Die Versandart kann über zwei verschiedene Quellen festgelegt werden:
++
+* über ein Versandprofil
+* über eine Eigenschaft
++
+Stelle sicher, dass die im Katalog hinterlegte Quelle mit dem Artikel verknüpft ist. Bei dem Versandprofil ist dies das aktivierte Versandprofil im *Tab: Global* des Artikels. Bei der Eigenschaft ist dies die aktivierte und gefüllte Eigenschaft an der jeweiligen Variante.
++
+* *productDescription.category*
++
+Dieser Fehler zeigt an, dass die Kategorieverknüpfung im Katalog fehlt. Prüfe im Katalog, ob mindestens eine Kategorie der gewünschten Variante mit einer OTTO Market-Kategorie verknüpft ist.
++
+* Fehlermeldungen zum Auftragsablauf: *Carrier ID (X) not mapped in OTTO market config.*
++
+Prüfe, ob im Assistenten *OTTO Market Grundeinstellungen* im Menü *Einrichtung » Assistenten » Omni-Channel* im Schritt *Versanddienstleister* Versanddienstleister mit OTTO Market verknüpft wurden.
