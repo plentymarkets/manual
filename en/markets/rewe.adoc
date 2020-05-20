@@ -1,9 +1,443 @@
 = REWE
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Rewe, market
+:author: team-multi-channel
+:keywords: Rewe, marketplace, rewe.de, setting up Rewe, Rewe setup, set up Rewe, Rewe marketplace, Rewe market, multi-Channel, multichannel, multi-channel rewe, multichannel rewe, multi channel rewe
 :description: Multi-Channel in plentymarkets: Set up the interface to the market REWE in your plentymarkets system.
 :position: 210
 :url: markets/rewe
+:id: VCPKDKC
 
-Information about setting up REWE in plentymarkets can be found in the REWE plugin link:https://marketplace.plentymarkets.com/en/plugins/channels/marktplaetze/etsy_4689[user guide^].
+[IMPORTANT]
+.Download the REWE plugin
+====
+You need a plugin to link plentymarkets to REWE. Visit the link:https://marketplace.plentymarkets.com/en/plugins/sales/marktplaetze/rewe_5901[plentyMarketplace^]{nbsp}icon:external-link[] to download the REWE plugin.
+====
+
+[#100]
+== Registering with REWE
+
+REWE is a closed marketplace. Therefore, REWE will carry out a number of checks before you can register as a seller. Contact REWE at partnersupport@rewe.de and provide the following information:
+
+* Name of your company
+* your company's website or your online shop
+* list of your product range (number of SKUs, categories, required specifications)
+* contact information
+
+For further information on the check and the registration as seller, contact REWE at partnersupport@rewe.de.
+
+After you have registered as a seller, you will receive access data from REWE.
+
+
+[IMPORTANT]
+.Assigning rights
+====
+When creating the API client credentials at REWE, make sure to assign enough rights. Select the *Admin client* template or create a new client and assign all rights that are available.
+====
+
+After installing the REWE plugin, the following automatic processes are available:
+
+* daily item export
+* hourly stock synchronisation
+* hourly price synchronisation
+* order import every 15 minutes
+
+[#200]
+== Installing REWE in plentymarkets
+
+After buying the REWE plugin in the plentyMarketplace, install the market in the *Plugins » Plugin overview* menu.
+
+[#300]
+=== Authentication
+
+After you have installed the REWE plugin, carry out an authentication to enable access to the interface.
+
+[.instruction]
+Activating the access to the interface:
+
+. Go to *Setup » Markets » REWE » Account settings*.
+. Enter the access data that you have received from REWE into the fields *User name*, *Password*, and *Product key*.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#400]
+== Activating the automatic data exchange
+
+Open the *Setup » Markets » REWE » Basic Settings* menu to set up the market REWE in plentymarkets. Activate the item export, the stock and price synchronisation, and the order import in this menu so that data is exchanged with REWE automatically.
+
+[.instruction]
+Activating the automatic data exchange:
+
+. Go to *Setup » Markets » REWE » Basic settings*.
+. Activate the settings *Item export*, *Stock and price update*, and *Order import* to activate the automatic data exchange with REWE.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#450]
+== Defining stock export
+
+By default, the stock information for each variation is exported based on the option you selected for the *Limitation* setting. From plugin version 1.18.0 and higher, you can also ignore this setting and instead export the actual net stock for all variations to REWE.
+
+[.instruction]
+Defining stock export:
+
+. Go to *Setup » Markets » REWE » Basic settings*.
+. Select an option for *Export stock*. Pay attention to the explanations given in <<#rewe-stock>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[rewe-stock]]
+.Defining stock export
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Export stock* +
+(plugin version 1.18.0 and higher)
+a| * *Consider variation setting 'Limitation'* (default setting) = Stock is exported as specified for each variation. Stock limitation is managed in the *Item » Edit item »* _Open item_ *» Tab: Variation ID » Tab: Settings » Area: Availability* menu using the option *Limitation*. +
+*_Note:_* For variations for which the *Limitation* setting is set to *Do not administer stock for this variation*, a stock of 1000 is exported to REWE. +
+* *Export actual net stock* = The stock *Limit* setting is ignored for all variations during export to REWE. Instead, the actual net stock is exported to REWE for each variation. You can check the actual net stock in the *Item » Edit item »* _Open item_ *» Tab: Variation ID » Tab: Stock » Tab: Stock* menu in the column *Net*. +
+*_Note:_* For variations for which the *Limitation* setting is set to *Do not administer stock for this variation*, a stock of 0 is exported to REWE. As such, the variation cannot be bought on REWE. +
+*_Tip:_* The net stock is the quantity of a variation that is available for sale. The net stock is a subset of the physical stock. Substract all reserved quantities from the physical stock and you will get the net stock.
+
+|====
+
+[#500]
+== Setting the commission
+
+[TIP]
+.Commission settings are optional
+====
+The settings for the commission for REWE are optional. If you do not set a commission, orders will be imported into plentymarkets with the sales prices that are displayed at REWE. +
+If no commission is set, prices will also be displayed without commission on the delivery note.
+====
+
+The standard commission is set up in the *Setup » Markets » REWE » Basic settings* menu. The commission serves to calculate the order sums free of commission.
+
+Order sums free of commission are calculated with this formula:
+
+* Sales price REWE = Sales price customer * (1 - conversion factor)
+* Conversion factor = Commission * (1 + VAT rate)
+
+For the calculation, the percentages for commission and VAT rate are converted into the corresponding factor, that is, divided by 100. The conversion factor is rounded to 3 decimal places.
+
+[.instruction]
+Setting the commission:
+
+. Go to *Setup » Markets » REWE » Basic settings*.
+. In the *Commission* area, enter a number for the commission in percent.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The commission is the default commission for all items except for any variations for which a separate commission was set up.
+
+You can set up a separate commission for variations. To do so, use the *REWE commission* variation property. The variation property *REWE commission* is created automatically when the REWE plugin is installed. In order to set up a separate commission for a variation, link the variation to the variation property *REWE commission*.
+
+[.instruction]
+Setting up a separate commission for variations:
+
+. Go to *Item » Edit item*.
+. Open the item.
+. Click on the *Variations* tab.
+. Open the variation that you would like to set up a separate commission for.
+. Open the variation's *Properties* tab.
+. From the *Properties* drop-down list, select *REWE commission*.
+. Click on *Add* (icon:plus-square[role="green"]). +
+→ The property is linked to the variation.
+. Enter a whole number or a decimal number into the *Value* field for the commission in percent.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#600]
+== Activating the order referrer
+
+An order referrer tags an order with the sales channel on which the order was generated. You also need to activate the order referrer in order to link items, properties etc. with REWE. Go to *Setup » Orders » Order referrer* to activate the order referrer.
+
+[.instruction]
+Activating the order referrer for REWE:
+
+. Go to *Setup » Orders » Order referrer*.
+. Activate the setting *Rewe*.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#700]
+== Setting the variation availability
+
+Variations have to be available for REWE. This is done in the *Availability* tab of an item within the *Item » Edit item »* _Open item_ *» Tab: Variation ID* menu.
+
+[TIP]
+.Selling all variations of an item on REWE
+====
+To sell all variations of an item on REWE, carry out the settings described below for the main variation. The settings are then passed on to all variations of the item.
+====
+
+[.instruction]
+Setting the variation availability for REWE:
+
+. Go to *Item » Edit item »* _Open item_ *» Tab: Variation ID » Tab: Settings*.
+. Open the variation that you want to sell on REWE.
+. In the *Availability* area, activate the option *Active*.
+. Click on the *Availability* tab.
+. In the *Markets* area, click in the selection field. +
+→ A list of all available markets is displayed.
+. Activate the option *REWE*.
+. Click on *Add* (icon:plus-square[role="green"]). +
+→ The market is added.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The variation is available on REWE.
+
+[#800]
+== Linking the variation property REWE product type
+
+Items that you want to sell on REWE have to be linked with the *REWE product type* variation property. This variation property is created in your plentymarkets system as soon as you have installed the REWE plugin.
+
+[.instruction]
+Linking items with the REWE product type variation property:
+
+. Go to *Item » Edit item »* _Open item_ *» Tab: Variation ID » Tab: Properties*.
+. In the *Variation properties* area, click on *Add* (icon:plus-square[role="green"]).
+. Select the property *REWE product type*.
+. Select the appropriate *value* from the drop-down list. +
+→ The REWE product types can be selected.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#900]
+== Setting up the item export
+
+Item data is exported to REWE via catalogue templates. Go to *Data » Catalogs* to create catalogues. For further information about catalogues, refer to the Managing catalogues <<data/exporting-data/managing-catalogues>> page of the manual.
+
+[TIP]
+.Visibility of the menu
+====
+The menu *Data » Catalogs* only becomes visible after you have installed a plugin which provides a catalogue template.
+====
+
+In order to export your items to REWE, you have to create catalogues for the different REWE product categories. Link the REWE data fields with item data saved in plentymarkets in the catalogue template afterwards. The catalogue templates are exported automatically to REWE once a day if you have activated the *Item export* in the *Setup » Markets » REWE » Basic settings* menu.
+
+At present, the REWE plugin allows you to create catalogues for the following REWE product categories:
+
+* *Household*
+* *Multimedia*
+* *Drugstore*
+* *Fashion*
+* *Leisure/sports*
+* *Stationary*
+* *Toys*
+* *Garden*
+* *Food*
+
+
+*Information for the food product category*:
+
+* Food specifications must always be made for 100g.
+* Energy information must be provided in kcal.
+* If the *Nutrition information for prepared and non-prepared foods* field is not linked, the value *non-prepared* is transferred to REWE by default.
+
+
+[.instruction]
+Creating a catalogue:
+
+. Go to *Data » Catalogues*.
+. Click on *Create catalogue*.
+. Enter a name for the catalogue.
+. Select a catalogue template from the drop-down list.
+. *Save* (icon:save[role="green"]) the settings.
+
+After you have created a catalogue, link the market's data fields with item data saved in plentymarkets. For more information about the plentymarkets data sources that can be linked, refer to the <<data/exporting-data/managing-catalogues#_mapping_data_sources, Mapping data sources>> chapter.
+
+[.instruction]
+Linking data fields in the catalogue:
+
+. Go to *Data » Catalogues*.
+. Click on the catalogue. +
+→ The catalogue opens. +
+→ The market's data fields are displayed on the left-hand side. +
+*_Tip_*: Mandatory fields are marked with an asterisk.
+. Select a plentymarkets data source for the market's data fields from the drop-down list.
+. Click on *Add source* to assign another plentymarkets data source to a data field. +
+→ A new line is displayed. +
+*_Note:_* Only one value is exported even if you assign more than one data source to a data field. The data is checked in the order in which you assigned it. This means that if the first data field does not provide a value, the second data field is exported etc.
+. Link the desired data fields. +
+*_Note:_* All mandatory fields marked with an * must be linked to a plentymarkets data source.
+. *Save* (icon:save[role="green"]) the settings.
+
+
+[TIP]
+.Link all mandatory fields
+====
+The mandatory fields for the templates are marked with an *. To make sure that REWE approves your items for sale, link at least the mandatory fields.
+====
+
+[TIP]
+.Linking values
+====
+In the data fields in the lower area of the catalogue template, you have to link values specified by REWE to plentymarkets data sources. For those fields, the names given by REWE are exported to the marketplace.
+====
+
+
+An example of how you can link the mandatory field *Produktbeschreibung* (product description) to data saved in plentymarkets is described below.
+
+. Go to *Data » Catalogues*.
+. Click on the catalogue. +
+→ The catalogue opens.
+. Select a plentymarkets data source for the REWE catalogue field *Produktbeschreibung* (product description) from the drop-down list, e.g. *Item text > Name 1, Name 2, Name 3* that should be displayed on REWE as the product description.
+. Link the other data fields in the same way. Link at least all mandatory fields.
+. *Save* (icon:save[role="green"]) the settings.
+
+[TIP]
+.Link SKU
+====
+We recommend to link the data field *SKU* with the plentymarkets data source *Variation ID* because the variation ID is clearly assigned to the variation.
+====
+
+[TIP]
+.Using properties
+====
+Use <<item/managing-items#3000, properties>> to export values for data fields that have no corresponding item data saved in plentymarkets, such as *Durchmesser* (diameter).
+====
+
+[#1000]
+== REWE product groups and variants
+
+REWE differentiates between *product groups* and *variants*:
+
+* *Product groups* in plentymarkets are items with variations with at least one REWE group attribute, depending on the product type.
+* *Variants* in plentymarkets are variations of an item which do not have more than one REWE variant attribute, depending on the product type.
+
+For REWE group attributes, more than one different attributes can be set, for example colour and motive. For REWE variant attributes, only one variant attribute can be set, for example only size or only volume.
+
+The REWE group attributes and REWE variant attributes for each product type are available in the catalogue templates. Open the drop-down lists *Attribute for variant group* and *Attribute for product group* in the catalogue template to view the available attributes.
+
+Items in plentymarkets can have more than one REWE group attribute. However, only one REWE group attribute can be used to form product groups. Therefore, the *Attribute for product group* field has to be matched so that the first attribute will always be the attribute that you want to use to form a product group. If an item, for example a t-shirt, differs in colour and print and the print should be used as the REWE group attribute, you first have to link the print in the *Attribute for product group* field and the colour only afterwards.
+
+An item should not be linked to more than one attribute which was assigned as REWE variant attribute in the catalogue.
+
+[#1100]
+== Matching shipping service providers
+
+Shipping service providers saved in plentymarkets are matched with REWE shipping service providers in the *Setup » Markets » REWE » Shipping service provider matching* menu. If you do not match shipping service providers, then the shipping service provider *unknown* is sent to REWE.
+
+[.instruction]
+Matching shipping service providers:
+
+. Go to *Setup » Markets » REWE » Shipping service provider matching*.
+. Select the REWE shipping service provider from the drop-down list.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#1200]
+== Matching reasons for return
+
+Return reasons saved in plentymarkets are matched with REWE return reasons int the *Setup » Markets » REWE » Return reason matching* menu. If you do not match reasons for return, then the reason for return *Other* is sent to REWE. For further information about REWE reasons for return, refer to the seller documentation that you have received from REWE.
+
+[.instruction]
+Linking return reasons:
+
+. Go to *Setup » Markets » REWE » Return reason matching*.
+. Select the REWE return reason from the drop-down list.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#1300]
+== Synchronising tax categories
+
+If the tax categories were changed at REWE, you have to synchronise the tax categories in plentymarkets. Tax categories are synchronised with REWE in the *Setup » Markets » REWE » Basic settings* menu in the *Tax categories* area.
+
+[.instruction]
+Synchronising tax categories:
+
+. Go to *Setup » Markets » REWE » Basic settings*.
+. Go to the *Tax categories* area and click on *Synchronise*. +
+→ The tax categories are synchronised with REWE.
+
+*Last update* indicates the last time the tax categories were synchronised with REWE.
+
+[WARNING]
+.Synchronise tax categories before switching to REWE live system
+====
+You need to synchronise the tax categories in plentymarkets before you switch from the REWE stage test environment to the live system. Otherwise, your item catalogue will not be exported. Enter your access data and the product key for the live system prior to switching to the live system. Afterwards, synchronise the tax categories. You have to map the tax categories again in your REWE catalogues after you synchronised them.
+====
+
+[#1400]
+== Synchronising brands
+
+Brands are automatically synchronised with REWE once per day. Additionally, you can manually synchronise brands with REWE at any time. To do so, open the *Setup » Markets » REWE » Basic settings* menu.
+
+[.instruction]
+Manually synchronising brands:
+
+. Go to *Setup » Markets » REWE » Basic settings*.
+. In the *Brands* area, click on *Synchronise*. +
+→ The brands are synchronised with REWE. +
+*_Tip:_* *Last update* indicates the last time the brands were synchronised with REWE.
+
+[#1500]
+== Automatically updating the order status for REWE
+
+Set up an <<automation/event-procedures#, event procedure>> to automatically update the order status on REWE whenever specific events occur. You can set up the following event procedures:
+
+* Send out-of-stock status to REWE
+* Send buyer cancellation to REWE
+* Send seller cancellation to REWE
+* Send shipping preparation to REWE
+* Send shipping preparation completion to REWE
+* Send shipping confirmation to REWE
+* Send parcel delivery completion to REWE
+* Send return completion to REWE
+
+An example of an event procedure you can use to report the shipping confirmation to REWE is described below. Set up other event procedures in the same way.
+
+:table-event-procedure: <<#rewe-procedure>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[rewe-procedure]]
+.Event procedure for reporting order status to REWE
+[cols="1,2,2"]
+|===
+| *Setting*
+| *Option*
+| *Selection*
+
+| *Event*
+| *Order change: Status change*
+| Select a *status*.
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Filter 2*
+| *Order > Referrer*
+| *Rewe*
+
+| *Procedure*
+| *Plugin*
+| *Send shipping confirmation to REWE*
+|===
+
+[IMPORTANT]
+.Matching reasons for return
+====
+You need to match plentymarkets reasons for return with the reasons for return predefined by REWE. For example, when the event procedure *Send return completion to REWE* is triggered, a reason for return must be saved. For further information about matching reasons for return, refer to the chapter <<#1200, Matching reasons for return>>.
+====
+
+[#1600]
+== REWE delivery periods
+
+The variation availability in plentymarkets is assigned to delivery periods at REWE. An overview of the delivery periods at REWE and the corresponding plentymarkets availabilities can be found in <<#rewe-availability>>.
+
+[[rewe-availability]]
+.REWE delivery periods
+[cols="1,2"]
+|===
+| *plentymarkets availability* | *REWE delivery period*
+|1 |1-3 working days
+|2 |ca. 3-6 working days
+|3 |ca. 6-8 working days
+|4 |ca. 8-10 working days
+|5 |ca. 10-15 working days
+|6 |ca. 15-20 working days
+|7 |ca. 20-30 working days
+|8 |ca. 30-40 working days
+|9 |ca. 40-50 working days
+|10 |ca. 50-60 working days
+|===
+
+[IMPORTANT]
+.Availability in case of errors
+====
+If an availability error occurs, the availability *longer than 3 months* is displayed on the REWE marketplace.
+====

@@ -1,9 +1,11 @@
 = Best Practice: Rechnungsservice VCS nutzen
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: Amazon, VCS, Rechnungsservice, Rechnung, Umsatzsteuerservice
+:author: team-multi-channel
+:keywords: Amazon, VCS, Rechnungsservice, Rechnung, Umsatzsteuerservice, VCS plentymarkets, VCS Amazon, Amazon-Rechnung, Amazon Rechnung, Amazon Rechnungserstellung
 :position: 70
 :url: maerkte/amazon/best-practices-amazon-vcs
+:id: CLPVTBO
 
 Dieses Best Practice soll euch dabei unterstützen, den Amazon-Rechnungsservice VCS in eurem plentymarkets System einzurichten.
 
@@ -14,7 +16,7 @@ In plentymarkets könnt ihr zwei verschiedene Varianten des Amazon VCS-Services 
 * VCS Amazon (Rechnungserstellung durch Amazon)
 * VCS plentymarkets (Rechnungserstellung durch plentymarkets)
 
-In eurem plentymarkets System aktiviert ihr den Amazon-Rechnungsservice im Menü *System » Systemeinstellungen » Märkte » Amazon » Einstellungen » Amazon-Konto wählen » Tab: Einstellungen* unter der Option *Rechnung erzeugen*.
+In eurem plentymarkets System aktiviert ihr den Amazon-Rechnungsservice im Menü *Einrichtung » Märkte » Amazon » Einstellungen » Amazon-Konto wählen » Tab: Einstellungen* unter der Option *Rechnung erzeugen*.
 
 [IMPORTANT]
 .Voraussetzungen für Amazon VCS
@@ -33,20 +35,23 @@ Bitte berücksichtigt bei eurem Arbeitsablauf, dass vor der Rechnungserstellung 
 [#100]
 == VCS Amazon (Rechnungserstellung durch Amazon)
 
-[.subhead]
-Wissenswertes
+[discrete]
+===== Wissenswertes
 
 * Die Auftragsnummern der Aufträge im System müssen mit denen von Amazon abgeglichen werden können. Andernfalls funktioniert die Rechnungserstellung durch Amazon mit VCS nicht.
 * Der Prozess funktioniert vollautomatisiert. Es ist kein manueller Eingriff und keine Erstellung einer Ereignisaktion notwendig.
 * Wenn ihr diese Variante von VCS, also die Option VCS Amazon, verwendet, werden die Rechnungen für sämtliche Amazon-Aufträge (MFN, FBA, B2B) automatisch von Amazon erzeugt.
 * Rechnungen können *nicht* mehr auf eine andere Art erstellt werden (d.h. Rechnungen können beispielsweise *nicht* mehr manuell oder durch Ereignisse erstellt werden).
+* Umsatzsteuernummern werden in plentymarkets importiert.
+* Auftragssummen der Artikelpositionen werden in plentymarkets importiert.
 
-[.subhead]
-Ablauf der Rechnungserstellung durch Amazon
+[discrete]
+===== Ablauf der Rechnungserstellung durch Amazon
 
 * Aufträge werden durch den regulären Auftragsimport angelegt.
 * Die manuelle Rechnungserstellung für Amazon-Aufträge wird vom System blockiert.
 * Es wird täglich ein neuer Steuerbericht von Amazon (Typ: SC_VAT_TAX_REPORT) erstellt und in plentymarkets importiert.
+* Umsatzsteuernummern werden in plentymarkets importiert, wenn vorhanden.
 * Der importierte Steuerbericht (Typ: SC_VAT_TAX_REPORT) erstellt ein externes Rechnungsdokument an Aufträgen, welches die Rechnungsnummer von Amazon enthält. +
 *Achtung:* Die Rechnungen werden nicht heruntergeladen. Es handelt sich lediglich um ein angelegtes externes und nicht aufrufbares Dokument, damit dieses im Finanzexport erscheint.
 
@@ -61,8 +66,8 @@ image::maerkte/assets/bp-amazon-vcs-amazon-de.png[Rechnungserstellung durch Amaz
 [#200]
 == VCS plentymarkets (Rechnungserstellung durch plentymarkets)
 
-[.subhead]
-Wissenswertes
+[discrete]
+===== Wissenswertes
 
 * Die Auftragsnummern der Aufträge im System müssen mit denen von Amazon abgeglichen werden können. Andernfalls funktioniert die Rechnungserstellung durch plentymarkets mit VCS nicht.
 * Die SKUs der Artikel im System müssen mit denen von Amazon abgeglichen werden können. Andernfalls funktioniert die Rechnungserstellung durch plentymarkets mit VCS nicht.
@@ -71,8 +76,8 @@ Wissenswertes
 * Rechnungen können *nicht* mehr auf eine andere Art erstellt werden (d.h. Rechnungen können beispielsweise nicht mehr manuell oder durch Ereignisse erstellt werden).
 * Es ist derzeit nicht möglich, den Auftrag/die Rechnung nachträglich zu stornieren (beispielsweise aufgrund einer gewünschten Änderung der Rechnungsadresse).
 
-[.subhead]
-Ablauf der Rechnungserstellung durch plentymarkets
+[discrete]
+===== Ablauf der Rechnungserstellung durch plentymarkets
 
 * Aufträge werden durch den regulären Auftragsimport angelegt.
 * Die manuelle Rechnungserstellung für Amazon-Aufträge wird vom System blockiert.
@@ -97,13 +102,13 @@ Derzeit gibt es folgende Möglichkeiten, Fehlerquellen bei der Rechnungserstellu
 * Logs
 * Plugin
 
-[.subhead]
-Mögliche Fehlerquellen erkennen
+[discrete]
+===== Mögliche Fehlerquellen erkennen
 
 * Ob eine Rechnung am Auftrag erstellt wurde, siehst du im Auftrag selbst.
 * Ob VCS-Berichte importiert werden, kannst du unter *Daten » Log* im *Identifikator* *importVCSConnection* überprüfen.
 * Ob Umsatzsteuer-IDs importiert und angepasst werden, kannst du unter *Daten » Log* im *Identifikator* *importVCSConnection* überprüfen.
 * Ob die Rechnungen korrekt (oder überhaupt) hochgeladen werden, kannst du unter *Daten » Log* im Identifikator *VCS invoice upload* überprüfen.
-* Wenn das Plugin link:https://marketplace.plentymarkets.com/plugins/channels/marktplaetze/amazonvcsdashboard_6279[VCS-Dashboard^] in deinem plentymarkets System aktiv ist, kannst du in einem separaten Menü eventuelle Probleme beim Abgleich der Daten zwischen Amazon und plentymarkets einsehen. Das Amazon VCS-Dashboard-Plugin erhältst du im link:https://marketplace.plentymarkets.com/plugins/channels/marktplaetze[plentyMarketplace^].
+* Wenn das Plugin link:https://marketplace.plentymarkets.com/plugins/channels/marktplaetze/amazonvcsdashboard_6279[VCS-Dashboard^] in deinem plentymarkets System aktiv ist, kannst du in einem separaten Menü eventuelle Probleme beim Abgleich der Daten zwischen Amazon und plentymarkets einsehen. Das Amazon VCS-Dashboard-Plugin erhältst du im link:https://marketplace.plentymarkets.com/plugins/channels/marktplaetze[plentyMarketplace^]{nbsp}icon:external-link[].
 
 Wenn die oben genannten Identifikatoren bei euch im Log nicht verfügbar sind oder keine Einträge vorhanden sind, bedeutet dies, dass für diesen Prozess noch kein Vorgang stattgefunden hat.

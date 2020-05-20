@@ -4,157 +4,283 @@ include::{includedir}/_header.adoc[]
 :keywords: ElasticSync, Import, Kategorien
 :position: 80
 :url: daten/daten-importieren/sync-typen/elasticSync-kategorien
+:id: GV1MLXQ
+:author: team-item
 
-Mit einem Sync des Typs *Kategorien* importierst du Kategoriedaten.
+Diese Seite erläutert die Abgleich- und Zuordnungsfelder, die dir beim Importieren von Kategorien zur Verfügung stehen. Diese Seite dient lediglich als Referenz und setzt voraus, dass du bereits Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, ElasticSync-Tool>> hast.
+
+[TIP]
+.Praxisbeispiel: Neue Kategorien importieren
+====
+Stell dir mal vor, du bist ganz neu bei plentymarkets und möchtest alle deine Kategoriedaten auf einmal importieren. Wie geht so etwas? Wirf einen Blick auf <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-kategorien#, dieses praktische Beispiel>>, welches dich Schritt für Schritt durch den Prozess führt.
+====
 
 [#2110]
 == Felder für den Kategorieabgleich
 
-In <<tabelle-Abgleichfelder-Kategorie>> werden Felder erläutert, die für den Abgleich von Kategoriedaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-matching-fields-categories>> werden Felder erläutert, die für den Abgleich von Kategoriedaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-[[tabelle-Abgleichfelder-Kategorie]]
+[[table-matching-fields-categories]]
 .Abgleichfelder für Kategorieimport
-[cols="1,2"]
+[cols="1,3"]
 |====
 |Einstellung |Erläuterung
 
-|KategorieId
-|ID der Kategorie
+| *Kategorie-ID*
+|In welcher Spalte der CSV-Datei werden Kategorie-IDs aufgelistet? Wähle diese Spalte hier.
+Diese Option ist sinnvoll, wenn du _bestehende Kategorien aktualisieren_ möchtest.
 
-|Kategoriename Kombiniert
-|Aus der zweiten Dropdown-Liste das Trennzeichen wählen.
+*_Hintergrund-Info_*: Jede neu angelegte Kategorie erhält automatisch eine ID, die nicht geändert werden kann.
+Die ID dient zur eindeutigen Kennzeichnung der Kategorie.
+Da die ID eindeutig ist, lässt sich damit gut prüfen, ob der importierte Datensatz bereits in plentymarkets vorhanden ist.
 
-|Kategoriename Ebene 1 - 6
-|
+| *Kategoriename Kombiniert*
+|In welcher Spalte der CSV-Datei wird der vollständige Kategoriepfad aufgeführt? Wähle diese Spalte aus der ersten Dropdown-Liste und das Trennzeichen aus der zweiten Dropdown-Liste.
+Diese Option ist sinnvoll, wenn du _neue Kategorien anlegen_ möchtest.
+
+| *Kategoriename Ebene 1 - 6*
+|In welcher Spalte der CSV-Datei wird der Kategoriename für diese Ebene aufgeführt? Wähle diese Spalte hier.
 |====
 
 [#2120]
 == Felder für die Kategoriezuordnung
 
-In <<tabelle-Zuordnungsfelder-Kategorie>> werden Felder erläutert, die für die Zuordnung von Kategoriedaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-mapping-fields-categories>> werden Felder erläutert, die für die Zuordnung von Kategoriedaten zur Verfügung stehen.
 
-[[tabelle-Zuordnungsfelder-Kategorie]]
+[TIP]
+.Kein Zuordnungsfeld? Standardwert greift!
+====
+Wenn du eine bestimmte Information nicht in deine CSV-Datei aufnimmst, d.h. wenn du ein bestimmtes Zuordnungsfeld _nicht verwendest_, dann erhält deine Kategorie den Standardwert.
+====
+
+[[table-mapping-fields-categories]]
 .Zuordnungsfelder für Kategorieimport
-[cols="1,1,2"]
+[cols="2,1,1,4"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zuordnungsfeld |Zulässige Importwerte |Standardwert |Erläuterung
 
-3+|*Kategorie*
+4+| *Kategorie*
 
-|Elternkategorie ID
-|Nummerisch (interne ID)
-|
+| *Elternkategorie ID*
+|Numerisch (interne ID)
+| - k.A. -
+|Wird in einer Spalte deiner CSV-Datei die ID der übergeordneten Kategorie aufgeführt? Falls ja, dann ordne die Spalte diesem Datenfeld zu.
 
-|Elternkategorie Name
-|Alphanummerisch
-|
+| *Elternkategorie Name*
+|Alphanumerisch
+| - k.A. -
+|Wird in einer Spalte deiner CSV-Datei der Name der übergeordneten Kategorie aufgeführt? Falls ja, dann ordne die Spalte diesem Datenfeld zu.
 
-|Typ
-|item = Artikel +
-container = Container +
-content = Content +
-blog = Blog (nicht in Verwendung)
-|
+| *Typ*
+|item +
+container +
+content +
+blog
+|item
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, <<artikel/einstellungen/kategorien#700, welcher Kategorietyp>> beim Import vergeben wird.
 
-|In Linkliste anzeigen
-|0 = Nein +
-1 = Ja
-|
+Mit anderen Worten: Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Typ* gesetzt wurde.
 
-|right
-|all = Kategorie und alle Unterkategorien sind öffentlich sichtbar +
-customer = Kategorie und alle Unterkategorien sind nur für eingeloggte Webshop-Besucher sichtbar +
-|Entspricht Backend-Einstellung *Sichtbar*
+* item = Artikel (Standardeinstellung)
+* container = Container
+* content = Content
+* blog = Blog
 
-|Sichtbar (Sitemap)
-|0 = Nein +
-1 = Ja
-|Entspricht Backend-Einstellung *Sitemap*
+| *In Linkliste anzeigen*
+|0 +
+1
+|0
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die <<artikel/einstellungen/kategorien#700, Kategorie in der Webshop-Navigation angezeigt>> wird.
 
-|Kategorie löschen
-|0 = Nein +
-1 = Ja
-|
+Mit anderen Worten: Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *In Linkliste* gesetzt wurde.
 
-3+|*Details (Zuordnung pro Kombination aus Sprache und Mandant (Shop))*
+* 0 = Nicht anzeigen
+* 1 = Anzeigen
 
-|Name
-|Alphanummerisch
-|Pflichtwert
+| *right*
+|all +
+customer
+|all
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+Welchen Wert du wählst, bestimmt, ob die <<artikel/einstellungen/kategorien#700, Kategorie nur für eingeloggte Benutzer sichtbar>> sein wird.
 
-|Beschreibung 1
-|Alphanummerisch
-|
+Mit anderen Worten: Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Sichtbar* gesetzt wurde.
 
-|Beschreibung 2
-|Alphanummerisch
-|
+* all = Öffentlich
+* customer = Nach Login
 
-|Kurzbeschreibung
-|Alphanummerisch
-|
+| *Sichtbar*
+|0 +
+1
+|0
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+Welchen Wert du wählst, bestimmt, ob die <<artikel/einstellungen/kategorien#700, Kategorie in die Sitemap>> aufgenommen wird.
 
-|Meta-Keywords
-|Alphanummerisch
-|
+Mit anderen Worten: Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Sitemap* gesetzt wurde.
 
-|Meta-Beschreibung
-|Alphanummerisch
-|
+* 0 = Nicht anzeigen
+* 1 = Anzeigen
 
-|Meta-Titel
-|Alphanummerisch
-|
+| *Kategorie löschen*
+|0 +
+1
+|0
+a|Möchtest du einige Kategorien löschen und andere aktualisieren? Gib einen der zulässigen Importwerte in deine CSV-Datei ein.
+Welchen Wert du wählst, bestimmt, ob die Kategorie gelöscht werden soll.
 
-|URL-Name
-|Alphanummerisch
-|
+* 0 = Nein
+* 1 = Ja
 
-|Position
-|Nummerisch
-|
+| *Elternkategorie anlegen wenn nicht vorhanden*
+|0 +
+1
+|0
+a|Möchtest du die übergeordnete Kategorie erstellen, falls sie noch nicht existiert?
+Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die Elternkategorie mit erstellt werden soll.
 
-|Template-Liste
-|Alphanummerisch
-|
+* 0 = Nein
+* 1 = Ja
 
-|Template-Produkt
-|Alphanummerisch
-|
+4+| *Details*
 
-|Template-Seite
-|Alphanummerisch
-|
+| *Name* +
+[red]#(Pflichtwert)#
+|Alphanumerisch
+| - k.A. -
+|Gib den <<artikel/einstellungen/kategorien#700, Namen der Kategorie>> in die CSV-Datei ein.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
 
-|Volltextsuche
-|0 = Nein +
-1 = Ja
-|
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass dieser Name in das Feld *Name* eingetragen wurde.
 
-|Robots
-|Alphanummerisch
-|*all* = Webseite der Kategorie in Suchmaschinenindex aufnehmen und Links auf Seite folgen. +
-*index* = In Suchmaschinenindex aufnehmen. +
-*nofollow* = Links auf der Seite nicht folgen. +
-*noindex* = Nicht in den Suchmaschinenindex aufnehmen. +
-*nofollow_noindex* = Links nicht folgen und Webseite der Kategorie nicht in Suchmaschinenindex aufnehmen.
+| *Beschreibung 1*; +
+*Beschreibung 2*
+|Alphanumerisch
+| - k.A. -
+|Gib eine <<artikel/einstellungen/kategorien#800, Beschreibung der Kategorie>> in die CSV-Datei ein.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
 
-|Platzhalter übersetzen
-|Alphanummerisch
-|*Y* = Ja +
-*N* = Nein +
-*L* = Nur Link-Template-Variablen und -Funktionen werden übersetzt
+Wenn du die Kategorie nach dem Import öffnest, siehst du, dass dieser Text im Tab *Beschreibung 1* bzw. im Tab *Beschreibung 2* eingetragen wurde.
 
-|canonical
-|Alphanummerisch
-|URL einer Kategorie mit dem gleichen Inhalt, max. 256 Zeichen
+| *Kurzbeschreibung*; +
+*Meta-Keywords*; +
+*Meta-Beschreibung*; +
+*Meta-Titel*; +
+*URL-Name*
+|Alphanumerisch
+|URL-Name = Kategoriename
+|Gib den Text in die CSV-Datei ein.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
 
-3+|Mandant (Shop) (Zuordnung pro Mandant)
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass dieser Text <<artikel/einstellungen/kategorien#700, in das entsprechende Feld eingetragen>> wurde.
 
-|Aktiv
-|0 = Nein +
-1 = Ja
-|
+| *Position*
+|Numerisch
+|0
+|Gib eine <<artikel/einstellungen/kategorien#700, Positionsnummer>> in die CSV-Datei ein.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass diese Nummer in das Feld *Position* eingetragen wurde.
+
+| *Template-Liste*; +
+*Template-Produkt*; +
+*Template-Seite* +
+(nur für den alten Callisto-Webshop relevant)
+|Alphanumerisch
+|ItemViewCategoriesList; +
+ItemViewSingleItem; +
+PageDesignContent
+|Gib den <<artikel/einstellungen/kategorien#700, Namen der gewünschten Vorlage>> in die CSV-Datei ein.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass diese Vorlage ausgewählt wurde.
+
+| *Volltextsuche*
+|0 +
+1
+|0
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die <<artikel/einstellungen/kategorien#700, Kategorie zum Suchindex der Kategoriesuche im Webshop>> hinzugefügt wird.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Volltextsuche* gesetzt wurde.
+
+* 0 = Nein
+* 1 = Ja
+
+| *Robots*
+|all +
+index +
+nofollow +
+noindex +
+nofollow_noindex
+|all
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, wie <<artikel/einstellungen/kategorien#700, Suchmaschinen-Crawlern>> mit der Seite und den Links auf dieser Seite verfahren werden.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Robots* gesetzt wurde.
+
+* *all* = Webseite der Kategorie in Suchmaschinenindex aufnehmen und Links auf Seite folgen. +
+* *index* = In Suchmaschinenindex aufnehmen. +
+* *nofollow* = Links auf der Seite nicht folgen. +
+* *noindex* = Nicht in den Suchmaschinenindex aufnehmen. +
+* *nofollow_noindex* = Links nicht folgen und Webseite der Kategorie nicht in Suchmaschinenindex aufnehmen.
+
+| *Platzhalter übersetzen*
+|Y +
+N +
+L
+|Y
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob <<artikel/einstellungen/kategorien#700, Template-Variablen und -Funktionen übersetzt>> werden.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Template-Variablen und -Funktionen übersetzen* gesetzt wurde.
+
+* Y = Ja
+* N = Nein
+* L = Nur Link-Template-Variablen und -Funktionen
+
+| *Canonical*
+|Alphanumerisch
+| - k.A. -
+|Gibt es eine andere Kategorie mit dem gleichen Inhalt? Falls ja, gib <<artikel/einstellungen/kategorien#700, die URL für diese Kategorie>> in deine CSV-Datei ein.
+Die URL ist auf max. 256 Zeichen begrenzt.
+Stell im Bereich *Zuordnung* auch die Sprache und den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass diese URL in das Feld *Canonical* eingetragen wurde.
+
+4+| *Elmar*
+
+| *Elmar-Kategorie*
+|Alphanumerisch
+| - k.A. -
+|Gib den <<artikel/einstellungen/kategorien#700, Namen der Elmar-Kategorie>> in deine CSV-Datei ein. Stell im Bereich *Zuordnung* auch den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass diese Elmar-Kategorie ausgewählt wurde.
+
+| *Verknüpfung löschen*
+|0 +
+1
+|0
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die <<artikel/einstellungen/kategorien#700, Verknüpfung der Elmar-Kategorie>> gelöscht werden soll.
+Stell im Bereich *Zuordnung* auch den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass die *Elmar-Kategorie* überall dort gelöscht wurde, wo die Zahl 1 eingetragen wurde.
+
+* 0 = Nicht löschen
+* 1 = Löschen
+
+4+| *Mandant (Shop)*
+
+| *Aktiv*
+|0 +
+1
+|0
+a|Gib einen der zulässigen Importwerte in deine CSV-Datei ein. Welchen Wert du wählst, bestimmt, ob die <<artikel/einstellungen/kategorien#700, Kategorie für einen bestimmten Webshop aktiviert>> werden soll.
+Stell im Bereich *Zuordnung* auch den Webstore ein.
+
+Wenn du die Kategorie nach dem Import öffnest und den Tab *Einstellungen* betrachtest, siehst du, dass einer der folgenden Werte für die Einstellung *Mandant (Shop)* gesetzt wurde.
+
+* 0 = Für den angegebenen Mandanten _nicht aktiviert_.
+* 1 = Für den angegebenen Mandanten _aktiviert_.
 |====
 
 
