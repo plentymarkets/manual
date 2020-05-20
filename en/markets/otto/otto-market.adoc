@@ -18,7 +18,7 @@ OTTO market is OTTO's marketplace. You are shown as the seller of your products.
 Connecting to this market allows for the following automatic processes to take place:
 
 * Order import every 15 minutes
-* Stock synchronisation (every 15 minutes)
+* Stock synchronisation every 15 minutes
 * Daily update of item data
 * Hourly import of return announcements by customers
 
@@ -105,7 +105,7 @@ Activate the <<payment/managing-payment-methods#, payment method>> *Otto Payment
 Activating the *Otto payment* method:
 
 . Go to *Setup » Orders » Payment » Methods*.
-. Activate the option *Also show inactive*.
+. Activate the setting *Also show inactive*.
 . Open the folder *International*.
 . Click on *Otto Payment*. +
 → The *Settings* tab opens.
@@ -486,7 +486,7 @@ a|image::markets/otto/assets/variation-id.png[Variation ID]
 How can I assign a return package to the correct order in my plentymarkets system?::
 An example of a DHL return label is provided below. The label contains all necessary data.
 +
-[[dhl-return-label]].
+[[dhl-return-label]]
 .DHL return label
 image::markets/otto/assets/dhl-return-label.png[DHL return label]
 
@@ -517,7 +517,10 @@ If customers have further questions concerning an order, you can find an order b
 +
 Additionally, you can use the *Referrer* filter to filter OTTO Market orders.
 
-The log shows the error "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique". How can I solve this error?::
+The log shows an error. How can I solve this error?::
++
+* *Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.*
++
 This error is also indicated as “SKU 1234 not generated” in the log.
 +
 How SKUs should be generated is defined in the catalogue. There is a distinction between the *Parent SKU* and the *Variation SKU*. The source selected here should be a data record which exists only once. Hence, it is not possible to use the same SKU for different items. For example, you could use the *Item ID* and the *Variation ID*. Both IDs are generated when the item is created in plentymarkets and only exist once. However, it might happen that the item export is carried out with errors because of missing information in the catalogue. The SKU is created anyway and can now be found in the *Availability* tab of a variation. During the next export, your plentymarkets system will try again to create an SKU from the sources selected in the catalogue. However, as this SKU already exists, the error “Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique." / “SKU 1234 not generated.” occurs.
@@ -535,8 +538,8 @@ When adding another source, it is mandatory to use the *Add source* button (icon
 ====
 +
 A second source is added. During the next export, the first source will be retrieved first. As the SKU is already included in this source, the second source will be ignored. If the first source does not contain an SKU, then a new SKU will be generated using the second source.
-
-The log shows the errors "Code:“200009 - ATTRIBUTE_CHANGE_DENIED" or "title: Der Wert dieses Feldes kann nicht geändert werden." ("title: The value of this field cannot be changed.") How can I solve these errors?::
++
+* *Code: 200009 - ATTRIBUTE_CHANGE_DENIED* or *title: Der Wert dieses Feldes kann nicht geändert werden.* (title: The value of this field cannot be changed.)
 +
 These errors indicate that you changed an OTTO item attribute. However, OTTO does not accept the change and it is not possible the change the attribute for this item. The indicated attribute can relate to a variation attribute or a title attribute. Other OTTO attributes are important here, too.
 +
@@ -545,3 +548,33 @@ These errors indicate that you changed an OTTO item attribute. However, OTTO doe
 ====
 An item _cannot be deleted_ at OTTO Market, neither by plentymarkets nor by OTTO. It is only possible to mark the item as *not available* at OTTO Market. Therefore, you should always make sure that the correct sources are mapped in the catalogue prior to transferring your items.
 ====
++
+* *productDescription.brand*
++
+This error indicates that the variation’s brand that should be exported has not been mapped in the catalogue. The brand can be linked to the variation in two different ways:
++
+* via the *Manufacturer* setting in an item’s *Global* tab
+* via property
++
+Make sure that a source is saved for the brand in the catalogue and that the source is linked to the item.
++
+* *mediaAssets.IMAGE*
++
+This error indicates that either you did not select an image source in the catalogue or that none of your item images is linked to the referrer *OTTO Market*. To do so, open an item’s *Images* tab and activate the referrer *OTTO market* as described in the <<Setting the availability for images, Setting the availability for images>> chapter.
++
+* *delivery.type*
++
+This error indicates that the shipping method is not linked. The shipping method can be defined via two different sources:
++
+* via a shipping profile
+* via property
++
+Make sure that the source saved in the catalogue is linked to the item. For the shipping profile, activate the shipping profile in the item’s *Global* tab. For the property, activate the property for the desired variation.
++
+* *productDescription.category*
++
+This error indicates that the category link in the catalogue is missing. In the catalogue, check whether at least one category of the desired variation is linked to an OTTO Market category.
++
+* Error messages concerning order processing: *Carrier ID (X) not mapped in OTTO market config.*
++
+Check whether shipping service providers were linked to OTTO Market. This is done in the *Shipping service provider* step of the *OTTO Market Basic settings* assistant in the *Setup » Assistants » Omni-Channel* menu.
