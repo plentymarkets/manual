@@ -19,7 +19,7 @@ Du solltest die folgenden Anpassungen in einer Kopie deines aktiven Plugin-Sets 
 
 == CSS-Anpassungen 
 
-Um sämtliche Verweise auf Nettopreise in eurem Webshop auszublenden, muss das CSS angepasst werden. Am einfachsten ist es, dafür link:https://marketplace.plentymarkets.com/plugins/storefront/widgets/cfourcustomcssjs_5143[das Plugin Custom CSS/JS im Frontend]{nbsp}icon:external-link[] zu verwenden.
+Um sämtliche Verweise auf Nettopreise in deinem Webshop auszublenden, muss das CSS angepasst werden. Am einfachsten ist es, dafür link:https://marketplace.plentymarkets.com/plugins/storefront/widgets/cfourcustomcssjs_5143[das Plugin Custom CSS/JS im Frontend]{nbsp}icon:external-link[] zu verwenden.
 
 Füge das Plugin deinem plentymarkets System hinzu <<plugins/plugins-system-hinzufuegen#, wie hier beschrieben>>. Danach <<plugins/hinzugefuegte-plugins-installieren#, installierst du das Plugin>>.
 
@@ -37,39 +37,35 @@ Nach dem erneuten Bereitstellen deines Plugin-Sets werden keine Nettopreise mehr
 
 == Anpassungen im ShopBuilder
 
-Im ShopBuilder musst du 3 Seiten anpassen: den Warenkorb, die Bestellbestätigung und den Checkout. Auf diesen Seiten musst du jeweils ein Text-Widget einfügen. 
+Im ShopBuilder musst du 3 Seiten anpassen: den Warenkorb, die Bestellbestätigung und den Checkout. Auf diesen Seiten musst du jeweils ein Code-Widget einfügen. 
 
-=== Text-Widgets platzieren
+=== Code-Widgets platzieren
 
-Um deinen Webshop auch in der Übergangszeit rechtssicher zu betreiben, musst du einen Hinweis ausgeben, dass sich die angezeigten Preise inklusive Mehrwertsteuer verstehen. Damit dieser Hinweis auch automatisch in anderen Sprachen, die du pflegst, ausgegeben wird, verwenden wir dafür den Eintrag **Ceres::Template.itemInclVAT** aus der Mehrsprachigkeit. Ein "Inkl. ges. MwSt." reicht aus, aber es steht dir natürlich frei, diesen Text anzupassen.
+Um deinen Webshop auch in der Übergangszeit rechtssicher zu betreiben, musst du einen Hinweis ausgeben, dass sich die angezeigten Preise inklusive Mehrwertsteuer verstehen. Damit dieser Hinweis auch automatisch in anderen Sprachen, die du pflegst, ausgegeben wird, verwenden wir dafür den Mehrsprachigkeits-Eintrag **Ceres::Template.itemInclVAT** für B2C- und **Ceres::Template.itemExclVAT** für B2B-Kunden. Dadurch wird B2C-Kunden der Preis als Bruttopreis inklusive Mehrwertsteuer, und B2B-Kunden der Nettopreis exklusive Mehrwertsteuer angezeigt. 
 
 [instruction]
 . Öffne das Menü *CMS » Mehrsprachigkeit*.
 . Klappe den Bereich *Artikel* aus.
-. Überprüfe den Text im Eintrag **itemInclVAT** und passe diesen ggf. in deinen Webshop-Sprachen an.
+. Überprüfe den Text in den Einträgen **itemInclVAT** und **itemExclVAT** und passe diese ggf. in deinen Webshop-Sprachen an.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Öffne nun den ShopBuilder unter **CMS » ShopBuilder**. Auf deinen Inhalten für den Warenkorb, die Bestellbestätigung und den Checkout musst du nun ein Text-Widget unterhalb der Summen-Widgets platzieren. Für jedes dieser 3 Text-Widgets befolgst du nun die folgenden Schritte: +
+Öffne nun den ShopBuilder unter **CMS » ShopBuilder**. Auf deinen Inhalten für den Warenkorb, die Bestellbestätigung und den Checkout musst du nun ein Code-Widget unterhalb der Summen-Widgets platzieren. In jedes dieser 3 Code-Widgets fügst du den folgenden Code ein: +
 
-[instruction]
 
-. Öffne das **Inline-Editing**, indem du auf das Stiftsymbol (icon:prencil[role="blue"]) auf dem Widget klickst. +
-→ Der Text-Editor wird geöffnet.
-. Gib ein beliebiges Wort ein und wähle es mit dem Cursor aus. +
-→ Das Kontextmenü wird geöffnet.
-. Klicke auf das Sprechblasen-Symbol ganz rechts im Kontextmenü. +
-→ Das Eingabefeld **Übersetzungsschlüssel eingeben** wird geöffnet.
-. Gib **Ceres::Template.itemInclVAT** ein.
-. Bestätige die Eingabe durch Klick auf den grünen Haken in der rechten Ecke des Eingabefelds. +
-→ Dein in Schritt 2 eingegebenes Wort wird durch den Text ersetzt, den du in der Mehrsprachigkeit hinterlegt hast, bspw. "Inkl. ges. MwSt."
-. **Speichere** (icon:save[role="green"]) die Änderungen an deinem ShopBuilder-Inhalt.
+[source,plenty]
+----
+include::assets/vat-code-widget.txt[]
+
+----
+
+**Speichere** (icon:save[role="green"]) die Änderungen an deinem ShopBuilder-Inhalt.
 
 
 == Anpassungen an Ceres-Templates
 
-Es gibt 2 Stellen im Webshop, auf denen der Mehrwertsteuer-Hinweis nicht über den ShopBuilder eingefügt werden kann: die Auftragshistorie und die Warenkorbvorschau. Um trotzdem rechtssicher verkaufen zu können, kannst du 3 kleine Code-Stellen im Ceres-Plugin anpassen, um den Hinweis auch auf diesen Seiten ausgeben zu lassen. Die Anpassungen am Code, sorgen dafür, dass der gleiche Text aus der Mehrsprachigkeit genommen wird, der auch in den Text-Widgets erscheint, die ihr vorher im ShopBuilder hinzugefügt habt. +
+Es gibt 2 Stellen im Webshop, auf denen der Mehrwertsteuer-Hinweis nicht über den ShopBuilder eingefügt werden kann: die Auftragshistorie und die Warenkorbvorschau. Um trotzdem rechtssicher verkaufen zu können, kannst du 3 kleine Code-Stellen im Ceres-Plugin anpassen, um den Hinweis auch auf diesen Seiten ausgeben zu lassen. Die Anpassungen am Code, sorgen dafür, dass der gleiche Text aus der Mehrsprachigkeit genommen wird, der auch in den Text-Widgets erscheint, die du vorher im ShopBuilder hinzugefügt hast. +
 
-Die 3 Anpassungen sind im Folgenden detailliert aufgeführt. Wir haben zusätzlichen einen Pull Request offen, in dem du die Code-Änderungen direkt nachverfolgen kannst. Diesen Pull Request findest du link:https://github.com/plentymarkets/plugin-ceres/compare/fix/vat_changes?expand=1[auf GitHub]{nbsp}icon:external-link[]. Scrolle auf der Seite weiter nach unten, um die Datei-Änderungen einzusehen.
+Die 3 Anpassungen sind im Folgenden detailliert aufgeführt. Wir haben zusätzlichen einen Pull Request offen, in dem du die Code-Änderungen direkt nachverfolgen kannst. Diesen Pull Request findest du link:https://github.com/plentymarkets/plugin-ceres/compare/fix%2Fvat_changes?diff=unified&expand=1[auf GitHub]{nbsp}icon:external-link[]. Scrolle auf der Seite weiter nach unten, um die Datei-Änderungen einzusehen.
 
 === Auftragshistorie anpassen
 
@@ -89,8 +85,14 @@ Um den Hinweis zur Mehrwersteuer auch in der Auftragshistorie im Mein Konto-Bere
 . Klicke darin auf den Ordner **Macros**.
 . Klicke auf die Datei **OrderTotals.twig**. +
 → Die Datei wird im Editor geöffnet.
-. Füge den folgenden Code nach dem `{% endif %}`-Element in Zeile 186 in einer neuen Zeile ein: `<dt class="w-100">{{ trans("Ceres::Template.itemInclVAT") }}</dt>`
+. Füge den unten aufgeführten Code nach dem `{% endif %}`-Element in Zeile 186 in einer neuen Zeile ein.
 . **Speichere** (icon:save[role="green"]) deine Änderungen.
+
+[source,plenty]
+----
+include::assets/vat-template-order-history.txt[]
+
+----
 
 Durch diese Anpassung wird der Text, der in der Mehrsprachigkeit im Eintrag **itemInclVAT** hinterlegt ist, auch in der Auftragshistorie angezeigt.
 
@@ -114,8 +116,15 @@ Für ShopBuilder-Inhalte, bei denen du keinen eigenen Header verwendest, muss de
 . Klicke darin auf den Ordner **Header**.
 . Klicke auf die Datei **DefaultHeader.twig**. +
 → Die Datei wird im Editor geöffnet.
-. Füge den folgenden Code nach Zeile 119 in einer neuen Zeile ein: `{{ trans("Ceres::Template.itemInclVAT") }}`
+. Füge den unten aufgeführten Code nach Zeile 118 in einer neuen Zeile ein.
 . **Speichere** (icon:save[role="green"]) deine Änderungen.
+
+[source,plenty]
+----
+include::assets/vat-template-default-header.txt[]
+
+----
+
 
 Durch diese Anpassung wird der Text, der in der Mehrsprachigkeit im Eintrag **itemInclVAT** hinterlegt ist, auch in der Warenkorbvorschau des Standard-Headers angezeigt.
 
@@ -139,8 +148,14 @@ Für ShopBuilder-Inhalte, für die du einen eigenen Header angelegt hast, muss d
 . Klicke darin auf den Ordner **Header**.
 . Klicke auf die Datei **TopBarWidget.twig**. +
 → Die Datei wird im Editor geöffnet.
-. Füge den folgenden Code nach Zeile 212 in einer neuen Zeile ein: ` {{ Twig.print('trans("Ceres::Template.itemInclVAT")') }}`
+. Füge den unten aufgeführten Code nach Zeile 210 in einer neuen Zeile ein.
 . **Speichere** (icon:save[role="green"]) deine Änderungen.
+
+[source,plenty]
+----
+include::assets/vat-template-custom-header.txt[]
+
+----
 
 Durch diese Anpassung wird der Text, der in der Mehrsprachigkeit im Eintrag **itemInclVAT** hinterlegt ist, auch in der Warenkorbvorschau von Headern angezeigt, die ihr selbst im ShopBuilder bearbeitet habt. +
 
