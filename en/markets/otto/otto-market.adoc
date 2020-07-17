@@ -294,7 +294,46 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 [#900]
 === Sending returns to OTTO
 
-Set up an <<automation/event-procedures#, event procedure>> to inform OTTO Market about a return.
+In order that OTTO Market accepts the return, you have to create an order of the type *Credit note*. Set up an <<automation/event-procedures#, event procedure>> for that.
+
+[[image-return-otto-credit-note]]
+.Event procedure to create an order of the type *Credit note*
+image::markets/otto/assets/otto-market-return-credit-note.png[width=640, height=360]
+
+
+:table-event-procedure: <<#return-otto-credit-note>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[return-otto-credit-note]]
+.Event procedure to create an order of the type *Credit note*
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select an event, for example *Order change: Status change* +
+*_Note:_* Select a status that suits your workflow. Select the status *[9.11] Send return to OTTO*, for example.
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Return*
+
+| *Filter 2*
+| *Order > Referrer*
+| *OTTO Market*
+
+| *Procedure*
+| *Order > Create credit note (order)*
+|
+|====
+
+Set up another <<automation/event-procedures#, event procedure>> to inform OTTO Market about a return.
+
+[[image-return-otto]]
+.Event procedure to send returns to OTTO Market
+image::markets/otto/assets/otto-market-accept-return.png[width=640, height=360]
 
 :table-event-procedure: <<#return-otto>>
 
@@ -307,13 +346,12 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| Select an event, for example *Order change: Status change* +
-*_Note:_* Select a status that suits your workflow. For example, you can create the status *[8.3] Send return to OTTO*.
+| Select an event, for example *Order generation: New credit note*.
 |
 
 | *Filter 1*
 | *Order > Order type*
-| *Return*
+| *Credit note*
 
 | *Filter 2*
 | *Order > Referrer*
@@ -321,7 +359,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 
 | *Procedure*
 | *Plugins > Retoure an OTTO melden* (Send return to OTTO)
-| *_Note:_* The action *Send return to OTTO* triggers a credit note and the buyer receives a refund.
+| *_Note:_* The procedure *Send return to OTTO* triggers a credit note and the buyer receives a refund. The credit note document created by OTTO is automatically attached to the order of the type *Credit note*.
 |====
 
 [#1000]
