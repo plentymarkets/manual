@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 09. Juli 2020
-:endWeekDate: 15. Juli 2020
-:nav-alias: Changelog 15. Juli 2020
+:startWeekDate: 16. Juli 2020
+:endWeekDate: 22. Juli 2020
+:nav-alias: Changelog 22. Juli 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
@@ -25,155 +25,6 @@ stable::
 == Neu
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Amazon
-
-* Der neue Gutschriftenimport für VCS kann nun auch:
-** Gutschriften erzeugen, in denen nur Versandkosten erstattet werden.
-** Für VCS Amazon interne Gutschriftendokumente erzeugen, für den Fall, dass Amazon in seinen VCS-Bericht keine Gutschriftennummer bereitstellt, weil Amazon dies bei bestimmten Konstellationen nicht muss.
-
-[discrete]
-=== Prozesse
-
-* Beim Erstellen oder Bearbeiten eines Prozesses kann man nun die Option **Aktiver Benutzer** bei der Sichtbarkeit **Benutzer** auswählen.
-
-[discrete]
-=== Ticketsystem
-
-* Wir haben im Menü *Einrichtung » CRM » Ticketsystem » Ereignisse* die Ereignisaktion *Neue Nachricht vom Mitarbeiter* erweitert:
-** Der Filter *Gastbestellung* wurde hinzugefügt.
-** In der Aktion *E-Mail versenden* wurde in der Dropdown-Liste die Einstellung *Rechnungsadresse - Auftrag* hinzugefügt, damit die E-Mail an die Rechnungsadresse aus dem Auftrag gesendet wird.
-** Außerdem wurde in der Aktion *E-Mail versenden* die Einstellung *der Kunde* umbenannt in *Kontakt (CRM)*.
-
-'''
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Amazon
-
-* Wenn die folgenden zwei Optionen entweder über die Einstellungen oder den Assistenten beide aktiviert sind, werden Gutschriften nicht mehr über die Finances API importiert, sondern über die entsprechenden Berichte für VCS bzw. VCS Lite.
-** Über die Einstellungen (*Einrichtung » Märkte » Amazon » Einstellungen » _Konto öffnen_*):
-. Option *Rechnung erzeugen* mit der Auswahl _VCS Amazon_ oder _VCS plentymarkets_ unter *Tab: Einstellungen » Bereich: Basiseinstellungen*
-. Option *Gutschriftenimport* unter *Einrichtung » Märkte » Amazon » Einstellungen » _Konto öffnen_ » Tab: Auftragseinstellungen » Bereich: Eigener Versand (MFN)*
-** Über den Assistenten (*Einrichtung » Assistenten » Omni-Channel » Amazon Grundeinstellungen » _Konto öffnen_*):
-. Option *Wer soll Rechnungen für Amazon-Bestellungen erzeugen?* mit der Auswahl _Amazon-Rechnungsservice_ oder _plentymarkets Rechnungsservice_ mit Daten von Amazon im Schritt *Automatische Datenübertragung*.
-. Option *Möchtest du FBA-Gutschriften in plentymarkets importieren?* im Schritt *Versand durch Amazon (FBA)*.
-
-
-Das bedeutet, dass die Gutschriften nicht mehr erst über die Finances API importiert und dann im Nachgang korrigiert werden. Stattdessen werden die Gutschriften direkt vollständig und korrekt gemäß VCS-Bericht importiert und die externe Gutschriftennummer ergänzt bzw. das interne Gutschriftendokument erzeugt und zu Amazon hochgeladen.
-
-Es wird natürlich weiterhin vorab geprüft, ob die Gutschrift bereits existiert, weil sie bereits automatisch importiert oder manuell erzeugt wurde. Die Kriterien zur Zuordnung bleiben dabei unverändert, außer dass nach der ersten Zuordnung die Transaktions-ID an der Gutschrift gespeichert wird, um die nächste Zuordnung zu vereinfachen (Order Property Type 79). Falls eine Gutschrift bereits existiert, wird dann nur die Gutschrift korrigiert, wenn eine Abweichung zu den Berichtsdaten vorliegt.
-
-[IMPORTANT]
-.Achtung!
-======
-Eine Gutschrift wird nicht importiert, wenn der entsprechende Auftrag nicht zugeordnet werden konnte. Folgende Voraussetzungen müssen für eine Zuordnung gegeben sein:
-
-. Der ursprüngliche Auftrag muss importiert sein und die Auftragsnummer von Amazon als externe Auftragsnummer hinterlegt sein.
-. Nur bei FBA-Aufträgen: Der Standort des Auftragslagers muss mit dem Versandland aus dem VCS-Bericht übereinstimmen.
-. Die Auftragsartikel müssen anhand einer ID oder SKU aus dem VCS-Bericht zuzuordnen sein.
-* Bei VCS Amazon wird anhand der SKU zugeordnet:
-** Dem Auftragsartikel ist eine Variante zugeordnet, die eine SKU oder zusätzliche SKU für Amazon hat, die der SKU aus dem Bericht entspricht.
-** Der Auftragsartikel wurde nicht zugeordnet, aber im Artikelnamen steht die SKU in eckigen Klammern zu Beginn, z.B. `[02040040-M2_py_sc] Toller Artikelname`.
-* Bei VCS Lite/ VCS plentymarkets wird anhand der Externen Auftragsartikel-ID (Order Property Type 17) zugeordnet, die am Auftrag vorliegen muss.
-. Die Aufträge müssen eine ausreichende Menge der Artikel aufweisen, damit eine Gutschrift möglich ist. Dabei wird ebenfalls berücksichtigt, ob bereits Gutschriften erzeugt werden.
-
-*Beispiel für Punkt 4:*
-Daten aus dem Bericht: SKU 1234, Menge 2
-
-Fälle:
-
-. Auftrag mit SKU 1234, Menge 1 => Keine Zuordnung
-. Auftrag mit SKU 1234, Menge 2 => Zuordnung
-. Auftrag mit SKU 1234, Menge 2 und bereits exitsierende Gutschrift für Menge 1 => keine Zuordnung
-. Auftrag mit SKU 1234, Menge 3 und bereits exitsierende Gutschrift für Menge 1 => Zuordnung
-======
-
-[discrete]
-=== eBay
-
-* Die Preise für das automatische annehmen bzw. ablehnen eines Preisvorschlags werden im Listing nicht mehr in jedem Fall in Euro angegeben. Ab jetzt muss der Preis in der Währung eingegeben werden, die für die eBay-Plattform gilt. Zuvor konnte es durch die Umwandlung vom Euro-Preis zum Plattform-Preis zu Rundungen kommen, die teilweise nicht den gewünschten Wert an eBay übermittelt haben.
-+
-[IMPORTANT]
-.To-Do
-======
-Im Zuge des Updates musst du folgende Schritte durchführen:
-
-. Schaue nach bei welchen internationalen Listings du einen Preisvorschlag anbietest.
-. Korrigiere den Preis für das automatische annehmen/ablehnen auf den Wert für die entsprechende Währung.
-. Aktualisiere diese Listings mit der Option *Menge, Preis und Varianten*.
-======
-
-[discrete]
-=== Listings
-
-* Die Werte für die Dauer werden nun in Abhängigkeit vom Listing-Typ und Listing-Marktplatz angezeigt. Vorher wurden immer alle Werte angezeigt.
-
-[discrete]
-=== OTTO
-
-* Die Editorial Nodes und die daraus resultierenden Merkmal- und Attributberknüpfungen wurden auf Basis der von OTTO am 10.07.2020 bereitgestellten Datei **Merkmalstrukturen_Master** aktualisiert. Die aktuelle **Merkmalstrukturen_Master**-Datei kann link:https://forum.plentymarkets.com/t/aktuelle-merkmalsstrukturen-master-datei/532293[^hier] heruntergeladen werden.
-
-'''
-
-[discrete]
-== Behoben
-
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
-
-[discrete]
-=== Aufträge
-
-* Wenn Kontaktinformationen geändert wurden, wurde diese Änderungen nur dann in einer Nachbestellung übernommen, wenn man die Seite aktualisiert hat. Dies wurde nun behoben, die geänderten Daten werden automatisch übernommen.
-* In den Breadcrumbs in der Nachbestellung wurde der gleiche Auftrag manchmal zweimal angezeigt, wodurch zwei gleiche Einträge in den *Details* entstanden sind. Dies wurde nun behoben.
-
-[discrete]
-=== Artikel
-
-* Es ist nun wieder möglich, einen leeren Wert bei den Variantenfeldern der Untervarianten zu importieren, um z.B. die Vererbung zu aktivieren.
-
-* Es ist nun wieder möglich, Attributwerte per Import anzulegen.
-
-[discrete]
-=== Ereignisaktionen
-
-* Das Ereignis *Paketnummer* löst nun nicht mehr aus, wenn alle Pakete entfernt werden.
-* Das Ereignis *Paketnummer* löst nun nicht mehr doppelt aus.
-
-[discrete]
-=== Kataloge
-
-* Es kam vor, dass angelegte Kataloge in der Übersicht nicht mehr sichtbar waren. Diesen Fehler haben wir behoben.
-
-* Es kam vor, dass beim Speichern des Kataloges falsche Daten abgelegt wurden. Diesen Fehler haben wir für alle neuen Kataloge behoben.
-+
-[IMPORTANT]
-.To-Do
-======
-Solltet ihr Kataloge haben, die nicht exportiert werden, dann gebt uns bitte Bescheid.
-======
-
-[discrete]
-=== Prozesse
-* Artikelbilder werden wieder korrekt beim Ausführen von Prozessen zur Erfassung von Seriennummern angezeigt.
-
-* Die Option *Pickliste automatisch in Bearbeitungsstatus setzen* ist nun automatisch aktiv, wenn eine neue Aktion *Artikelerfassung* in den Prozessen angelegt wird.
-
---
-
-early::
-+
---
-
-[discrete]
-== Neu
-
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
 === eBay
@@ -196,9 +47,48 @@ Der Auftrag ist dazu berechtigt eine sofortige Rückerstattung einzuleiten. Um d
 '''
 
 [discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 17.07.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/cNH4W5tUV3uxHt0mIqXJHps2sV3.xlsx
+
+include::changelog/_textblocks/otto-master-file.adoc[]
+
+[discrete]
+=== Plugins
+
+* Die Container-Verknüpfungen werden jetzt nicht mehr gesammelt im Menü *CMS » Container-Verknüpfungen* gesetzt, sondern in den Einstellungen der einzelnen Plugins. Gehe dabei wie folgt vor:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne die Einstellungen des Plugins, das du bearbeiten möchtest.
+. Klicke auf *Container-Verknüpfungen*.
+. Aus der Dropdown-Liste, wähle den Datenanbieter, den du verknüpfen möchtest.
+. Wähle den Container, mit dem du den Datenanbieter verknüpfen möchtest.
+. Wiederhole Schritte 5 und 6 für alle Datenanbieter, die du verknüpfen möchtest.
+. Speichere die Einstellungen.
+
++
+Wir erwarten, dass im Zuge dieses Updates auch einige der Probleme behoben werden, bei denen Container-Verknüpfungen unerwartet entfernt werden.
+
+[discrete]
+=== ShopBuilder
+
+* Beim Öffnen eines Inhalts im ContentManager wird ab jetzt das SCSS Serverseitig kompiliert. Die SCSS Kompilierung fand bisher im Client statt. Durch die Änderung wird der Client entlastet und die Zeit bis zur ersten Interaktion reduziert.
++
+Die Zeit bis zur ersten Interaktion wurde in unseren Tests mit einem MacBook um ~20% reduziert, ältere Clients sollten dementsprechend höhere Reduzierungen erzielen.
+
+'''
+
+[discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Aufträge
@@ -206,6 +96,92 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 * Wenn zwei parallele Prozesse die Erzeugung eines Stornobelegs für einen Auftrag angestoßen haben, wurde unter Umständen der Stornobeleg doppelt mit unterschiedlichen Nummern erzeugt. Dies wurde behoben.
 
 * Durch die schrittweise Änderung auf die neue Auftragslogik wurde auch die Speicherung der Auftragssummen geändert. In den E-Mail-Vorlagen wurde dies nicht angepasst, sodass die falsche Währung in **$Currency** gesetzt wurde. Das wurde behoben.
+
+* Bei der Ermittlung eines gültigen Verkaufspreises per ElasticSync, REST sowie Interface wurde ein eventueller Rabatt durch die Kundenklasse nicht einberechnet. Dies wurde angepasst. link:https://forum.plentymarkets.com/t/auftraege-verkaufspreise-fuer-auftrags-positionen-ermitteln-orders-determine-sales-prices-for-order-items/595326[Weitere Informationen zur ursprügnlichen Neuerung findest du in diesem Forumsbeitrag.^]
+
+[discrete]
+=== Netto
+
+* Bisher war es nur möglich Artikel mit reduzierter oder voller Mehrwertsteuer zu übertragen. Versuchte man Artikel ohne Mehrwertsteuer zu übertragen, wurden diese stattdessen mit voller Mehrwertsteuer exportiert.
++
+Dies wurde nun behoben und Artikel ohne Mehrwertsteuer werden nun auch ohne Mehrwertsteuer exportiert.
+
+[discrete]
+=== OTTO market
+
+* Durch einen Fehler wurden Stornierungen von OTTO Market nicht mit Status 8 importiert. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Prozesse
+
+* Für das Anlegen einer Retoure ist nun ein Artikelstatus notwendig. Wenn der Artikelstatus nicht gesetzt ist, wird nun eine Fehlermeldung angezeigt.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Option für das voraussichtliche Versanddatum für die Auftragsbestätigung und Angebot hinzugefügt, welche das Versanddatum am Auftrag ausliest.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Bestellungen
+
+* Es wurde das Styling der Eingabefelder im Bereich *Bestellung* verbessert (z.B. im Warenkorb).
+
+[discrete]
+=== Kataloge
+
+* Ab sofort wird eine Warnmeldung angezeigt wenn der Toggle für die Anzeige der Pflichtfelder aktiviert ist.
++
+image:changelog/assets/kataloge-pflichtfelder-warnmeldung.png[width=640, alt=Der Toggle für die Anzeige der Pflichtfelder ist aktiviert. Alle anderen Felder werden nicht angezeigt.]
+* Wir haben die neue Tabelle in der Übersicht hinzugefügt.
+
+[discrete]
+=== Prozesse
+
+* Beim Ausführen eines Prozesses wird nun an den folgenden Stellen zusätzlich zu den weiteren Artikelinformationen die Varianten-ID angezeigt:
+** In der Artikelvorschau der Aktion Auftragssuche.
+** In der Artikelvorschau der Aktion Retoure anlegen/bearbeiten bei der Auswahl zu retournierender Artikel.
+* Bei der Auftragssuche, der Retourenanlage und beim Wareneingang innerhalb der Prozesse wurden Fehlermeldungen zu Warnungen geändert. Zudem wird bei der Aktion Wareneingang (einfach) eine Fehlermeldung ausgegeben, wenn für die einzubuchende Variante kein Warenbestand geführt wird.
+
+[discrete]
+=== ShopBuilder
+
+* Beim Öffnen eines Inhalts im ContentManager werden ab jetzt die möglichen Widgets Serverseitig gefiltert. Die Filterung fand bisher im Client statt. Durch die Änderung wird der Client entlastet und die Zeit bis zur ersten Interaktion reduziert.
++
+Die Zeit bis zur ersten Interaktion wurde in unseren Tests mit einem MacBook um ~10% reduziert, ältere Clients sollten dementsprechend höhere Reduzierungen erzielen.
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== CRM
+
+* Beim Umwandeln eines Gastbestellers zu einem regulären Kundenkonto wurde das Datum der Umwandlung als Geburtstag gesetzt, sofern dieses nicht am Gast vorhanden war. Dieses Fehlverhalten wurde nun behoben.
+
+[discrete]
+=== Eigenschaften
+
+* Es war möglich das man Eigenschaften in mehrere Gruppen legen konnte. Diesen Fehler haben wir behoben.
+* Es war möglich das man Eigenschaften mehrmals am Artikel verknüpfen konnte. Diesen Fehler haben wir behoben.
 
 --
 
@@ -221,75 +197,29 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/dhlshipping_4871[DHL Shipping (Versenden)^]
-|3.0.6
+|link:https://marketplace.plentymarkets.com/amazonloginandpay_5072[Amazon Pay^]
+|1.6.1
 |-
 
-|link:https://marketplace.plentymarkets.com/allegro_6260[Allegro^]
-|1.1.2
+|link:https://marketplace.plentymarkets.com/ergoversicherungsmodul_5976[ERGO Versicherungsmodul^]
+|2.1.0
 |-
 
-|link:https://marketplace.plentymarkets.com/socialshareplugin_6783[SoShare^]
+|link:https://marketplace.plentymarkets.com/cfourgridwidget_6860[Grid Widget^]
 |1.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/avocadostore_6430[Avocado Order Import Plugin^]
-|1.0.18
+|link:https://marketplace.plentymarkets.com/invoice_4760[Kauf auf Rechnung^]
+|2.0.6
 |-
 
-|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
-|2.3.1
-|-
-
-|link:https://marketplace.plentymarkets.com/payone_5434[PAYONE^]
-|1.1.14
-|-
-
-|link:https://marketplace.plentymarkets.com/displaycallistoitemproperties_6079[Display Callisto Item Properties]
-|1.2.1
-|-
-
-|link:https://marketplace.plentymarkets.com/heidelpaymgw_6844[heidelpay merchant gateway^]
-|1.0.0
-|-
-
-|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
-|2.0.24
-|-
-
-|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
-|2.1.1
-|-
-
-|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
-|1.3.10
+|link:https://marketplace.plentymarkets.com/prepayment_4758[Vorkasse^]
+|3.0.3
 |-
 
 |===
 
 Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
---
-
-App::
-+
---
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in Version 1.10.2 der *plentymarkets App* veröffentlicht.
-
-* Der QR-Code zum digitalen Belegabruf im Kundendisplay verweist nun nicht mehr auf die URL *{domain}/receipt2go*, sondern auf *{domain}/rest/store/pos/receipt2go*.
-
-[discrete]
-== Behoben
-
-Folgende Probleme wurden in Version 1.10.2 der *plentymarkets App* behoben.
-
-* Bei Click&Collect-Aufträgen in Kombination mit aktivierter Anzeige von Nettopreisen am POS wurde der zu zahlende Betrag falsch berechnet. Dieser Fehler wurde behoben.
-
-* Die technische Sicherheitseinrichtung konnte aufgrund eines nicht korrekt durchgeführten Selbsttest nicht initialisiert werden. Dieser Fehler wurde nun behoben.
-
 --
 
 ====
