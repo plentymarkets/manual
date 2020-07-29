@@ -5,9 +5,9 @@ include::{includedir}/_header.adoc[]
 :position: 80
 :url: data/importing-data/sync-types/elasticSync-categories
 :id: GV1MLXQ
-:author: none
+:author: team-item
 
-This page explains the matching and mapping fields that you can use while importing categories. This page serves purely as a reference and it assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, ElasticSync tool>>.
+This page explains the matching and mapping fields that you can use while importing categories. This page serves purely as a reference and it assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, import tool>>.
 
 [TIP]
 .Practical example: Importing new categories
@@ -15,8 +15,8 @@ This page explains the matching and mapping fields that you can use while import
 Imagine you’re new to plentymarkets and you want to import all of your category data at once. How would that work? Take a look at <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-categories#, this practical example>>, which guides you through the process step-by-step.
 ====
 
-[#2110]
-== Fields for matching categories
+[#10]
+== Matching fields
 
 <<table-matching-fields-categories>> explains the fields that are available for matching category data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
@@ -42,10 +42,18 @@ This option is useful if you want to _update existing categories_.
 |Which column of your CSV file contains the category name for this level? Choose this column here.
 |====
 
-[#2120]
-== Fields for mapping categories
+[#20]
+== Mapping fields
 
-<<table-mapping-fields-categories>> explains the fields that are available for mapping category data.
+This chapter explains the fields that are available for mapping category data.
+Use these fields to specify which _column of your file_ corresponds to which _data field in your system_.
+
+[.instruction]
+Basic procedure:
+
+. *_In your CSV file_*: Enter a valid import value into a column.
+. *_In plentymarkets_*\: Assign this column to the appropriate mapping field.
+. *_After the import_*: Check the result in the back end.
 
 [TIP]
 .No mapping field? Default value applies!
@@ -53,245 +61,529 @@ This option is useful if you want to _update existing categories_.
 If you don’t include a certain piece of information in your CSV file, i.e. if you _don’t use_ a certain mapping field, then your category will be given the default value.
 ====
 
-[[table-mapping-fields-categories]]
-.Mapping fields for importing categories
-[cols="2,1,1,4"]
+[#30]
+=== Category
+
+[#40]
+==== Parent category ID
+
+Enter the higher-level category ID in your CSV file.
+This tells plentymarkets how the categories relate to each other.
+For example, whether a row of the CSV file should be interpreted as a subcategory and if so, which category is above it.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric (internal category ID)
+
+'''
+[#50]
+==== Parent category name
+
+Enter the higher-level category name in your CSV file.
+This tells plentymarkets how the categories relate to each other.
+For example, whether a row of the CSV file should be interpreted as a subcategory and if so, which category is above it.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+'''
+[#60]
+==== Type
+
+What do you want to use the category for? In plentymarkets, categories can be used to group products together or to create content pages for your store.
+
+*_Default value_*: `item`
+
+[[table-mapping-categories-type]]
+[cols="1,1"]
 |====
-|Mapping field |Permitted import values |Default value |Explanation
+|Permitted import values in CSV file |Options in the drop-down list in the back end
 
-4+| *Category*
+|`item`
+|Item
 
-| *Parent category ID*
-|Numeric (internal ID)
-| - n/a -
-|Does a column of your CSV file list the ID of whichever category is directly above it? If so, then map the column to this data field.
+|`container`
+|Container
 
-| *Parent category name*
-|Alphanumeric
-| - n/a -
-|Does a column of your CSV file list the name of whichever category is directly above it? If so, then map the column to this data field.
+|`content`
+|Content
 
-| *Type*
-|item +
-container +
-content +
-blog
-|item
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines <<item/settings/categories#700, which category type>> will be assigned during the import.
+|`blog`
+|Blog
+|====
 
-In other words: If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Type* setting.
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-use-case, Item » Category » Tab: Settings » Drop-down list: Type>>
 
-* item = Item (default setting)
-* container = Container
-* content = Content
-* blog = Blog
+'''
+[#70]
+==== In link list
 
-| *In link list*
-|0 +
-1
-|0
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines whether the <<item/settings/categories#700, category will be displayed in the store navigation>>.
+Decide whether the category should be displayed in the online store’s navigation.
 
-In other words: If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *In link list* setting.
+*_Default value_*: `0`
 
-* 0 = Do not display
-* 1 = Display
+[[table-mapping-categories-linklist]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
 
-| *right*
-|all +
-customer
+|`0`
+|Do not display
+
+|`1`
+|Display
+|====
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-in-link-list, Item » Category » Tab: Settings » Drop-down list: In link list>>
+
+'''
+[#80]
+==== right
+
+Decide whether the category should only be visible for users who have logged in.
+
+*_Default value_*: `all`
+
+[[table-mapping-categories-right]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
+
+|`all`
+|Public
+
+|`customer`
+|After login
+|====
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-login, Item » Category » Tab: Settings » Drop-down list: Visible>>
+
+'''
+[#90]
+==== Visible
+
+Decide whether the category should be included in the sitemap.
+
+*_Default value_*: `0`
+
+[[table-mapping-categories-visible]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
+
+|`0`
+|Do not display
+
+|`1`
+|Display
+|====
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-sitemap, Item » Category » Tab: Settings » Drop-down list: Sitemap>>
+
+'''
+[#100]
+==== Delete category
+
+Do you want to delete the category?
+
+*_Default value_*: `0`
+
+[[table-mapping-categories-delete-category]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Category will _not_ be deleted
+
+|`1`
+|Category will be deleted
+|====
+
+'''
+[#110]
+==== Create parent category if not found
+
+Do you want to create the category directly above it, if this category doesn’t already exist?
+
+*_Default value_*: `0`
+
+[[table-mapping-categories-create-parent]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Parent category will _not_ be created
+
+|`1`
+|Parent category will be created
+|====
+
+'''
+[#120]
+=== Category settings
+
+[#130]
+==== Name
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the category name into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-category-name, Item » Category » Tab: Settings » Entry field: Name>>
+
+'''
+[#140]
+==== Description 1
+
+Enter the category description into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#800, Item » Category » Tab: Description 1>>
+
+'''
+[#150]
+==== Description 2
+
+Enter the category description into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#800, Item » Category » Tab: Description 2>>
+
+'''
+[#160]
+==== Short description
+
+Enter the short description into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-short-description, Item » Category » Tab: Settings » Entry field: Short description>>
+
+'''
+[#170]
+==== Meta keywords
+
+Enter keywords into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-meta-keywords, Item » Category » Tab: Settings » Entry field: Meta keywords>>
+
+'''
+[#180]
+==== Meta description
+
+Enter a meta description into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-meta-description, Item » Category » Tab: Settings » Entry field: Meta description>>
+
+'''
+[#190]
+==== Meta title
+
+Enter a meta title into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-meta-data, Item » Category » Tab: Settings » Entry field: Meta title>>
+
+'''
+[#200]
+==== URL name
+
+Enter a URL name into the CSV file.
+This name is used to form the category URL.
+
+*_Default value_*: URL name = Category name
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-url, Item » Category » Tab: Settings » Entry field: URL name>>
+
+*_Example_*: The URL name `new-category` will transform into the URL `www.your-domain.com/new-category`
+
+'''
+[#210]
+==== Position
+
+Enter a position number in the CSV file.
+
+*_Default value_*: `0`
+
+*_Permitted import values_*: Numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-position, Item » Category » Tab: Settings » Entry field: Position>>
+
+'''
+[#220]
+==== Template list
+
+icon:warning[role="red"] [red]#Only relevant for the old Callisto store#
+
+Enter the name of the template into the CSV file.
+
+*_Default value_*: ItemViewCategoriesList
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-template-list, Item » Category » Tab: Settings » Drop-down list: Template list>>
+
+'''
+[#230]
+==== Template product
+
+icon:warning[role="red"] [red]#Only relevant for the old Callisto store#
+
+Enter the name of the template into the CSV file.
+
+*_Default value_*: ItemViewSingleItem
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-template-product, Item » Category » Tab: Settings » Drop-down list: Template product>>
+
+'''
+[#240]
+==== Template page
+
+icon:warning[role="red"] [red]#Only relevant for the old Callisto store#
+
+Enter the name of the template into the CSV file.
+
+*_Default value_*: PageDesignContent
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-template-page, Item » Category » Tab: Settings » Drop-down list: Template page>>
+
+'''
+[#250]
+==== Full text search
+
+Decide whether the category should be added to the store’s category search index.
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+*_Default value_*: `0`
+
+[[table-mapping-categories-fulltext]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
+
+|`0`
+|No
+
+|`1`
+|Yes
+|====
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-full-text-search, Item » Category » Tab: Settings » Drop-down list: Full text search>>
+
+'''
+[#260]
+==== Robots
+
+Decide how search engine crawlers should deal with the page and any links on the page.
+
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
+
+*_Default value_*: `all`
+
+[[table-mapping-categories-robots]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
+
+|`all`
 |all
-a|Enter one of the permitted import values into your CSV file.
-Which value you choose determines whether the <<item/settings/categories#700, category will only be visible to users who have logged in>>.
 
-In other words: If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Visible* setting.
+|`index`
+|index
 
-* all = Public
-* customer = After login
+|`nofollow`
+|nofollow
 
-| *Visible*
-|0 +
-1
-|0
-a|Enter one of the permitted import values into your CSV file.
-Which value you choose determines whether the <<item/settings/categories#700, category will be included in the sitemap>>.
+|`noindex`
+|noindex
 
-In other words: If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Sitemap* setting.
+|`nofollow_noindex`
+|nofollow, noindex
+|====
 
-* 0 = Do not display
-* 1 = Display
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-robots, Item » Category » Tab: Settings » Drop-down list: Robots>>
 
-| *Delete category*
-|0 +
-1
-|0
-a|Do you want to delete some categories and update others? Enter one of the permitted import values into your CSV file.
-Which value you choose determines whether the category should be deleted.
+'''
+[#270]
+==== Translate placeholder
 
-* 0 = No
-* 1 = Yes
+Decide whether template variables and template functions should be translated.
 
-| *Create parent category if not found*
-|0 +
-1
-|0
-a|Do you want to create the category directly above it, if this category doesn’t already exist?
-Enter one of the permitted import values into your CSV file. Which value you choose determines whether the parent category should be created too.
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
 
-* 0 = No
-* 1 = Yes
+*_Default value_*: `Y`
 
-4+| *Category settings*
+[[table-mapping-categories-placeholder]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
 
-| *Name* +
-[red]#(Required field)#
-|Alphanumeric
-| - n/a -
-|Enter the <<item/settings/categories#700, category name>> into the CSV file.
-Make sure you also select the language and webstore within the *Mapping* area.
+|`Y`
+|Yes
 
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that this name was entered into the *Name* field.
+|`N`
+|No
 
-| *Description 1*; +
-*Description 2*
-|Alphanumeric
-| - n/a -
-|Enter the <<item/settings/categories#800, category description>> into the CSV file.
-Make sure you also select the language and webstore within the *Mapping* area.
+|`L`
+|Template variables and template functions for links only
+|====
 
-If you open the category after it was imported, then you’ll see that this text was entered into the *Description 1* or *Description 2* tab.
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-variables-functions, Item » Category » Tab: Settings » Drop-down list: Translate template variables and template functions>>
 
-| *Short description*; +
-*Meta keywords*; +
-*Meta description*; +
-*Meta title*; +
-*URL name*
-|Alphanumeric
-|URL name = Category name
-|Enter the text into the CSV file.
-Make sure you also select the language and webstore within the *Mapping* area.
+'''
+[#280]
+==== Canonical
 
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that this text was <<item/settings/categories#700, entered into the corresponding field>>.
-
-| *Position*
-|Numeric
-|0
-|Enter the <<item/settings/categories#700, position number>> into the CSV file.
-Make sure you also select the language and webstore within the *Mapping* area.
-
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that this number was entered into the *Position* field.
-
-| *Template list*; +
-*Template product*; +
-*Template page* +
-(only relevant for the old Callisto store)
-|Alphanumeric
-|ItemViewCategoriesList; +
-ItemViewSingleItem; +
-PageDesignContent
-|Enter the <<item/settings/categories#700, name of the template>> into the CSV file.
-Make sure you also select the language and webstore within the *Mapping* area.
-
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that this template was selected.
-
-| *Full text search*
-|0 +
-1
-|0
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines whether the <<item/settings/categories#700, category will be added to the search index in the store>>.
-Make sure you also select the language and webstore within the *Mapping* area.
-
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Full text search* setting.
-
-* 0 = No
-* 1 = Yes
-
-| *Robots*
-|all +
-index +
-nofollow +
-noindex +
-nofollow_noindex
-|all
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines how <<item/settings/categories#700, search engine crawlers>> will deal with the page and any links on the page.
-Make sure you also select the language and webstore within the *Mapping* area.
-
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Robots* setting.
-
-* *all* = Include the website of the category in search engine index and follow links on page. +
-* *index* = Include in search engine index. +
-* *nofollow* = Do not follow links on page. +
-* *noindex* = Do not include in search engine index. +
-* *nofollow_noindex* = Do not follow links and do not include webpage in search index.
-
-| *Translate placeholder*
-|Y +
-N +
-L
-|Y
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines whether <<item/settings/categories#700, template variables and functions will be translated>>.
-Make sure you also select the language and webstore within the *Mapping* area.
-
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Translate template variables and template functions* setting.
-
-* Y = Yes
-* N = No
-* L = Template variables and template functions for links only
-
-| *Canonical*
-|Alphanumeric
-| - n/a -
-|Is there another category with the same content? If so, then enter <<item/settings/categories#700, the URL for this category>> into your CSV file.
+Is there another category with the same content? If so, then enter the URL for this category into your CSV file.
 The URL is limited to a maximum of 256 characters.
-Make sure you also select the language and webstore within the *Mapping* area.
+This prevents so-called “duplicate content”.
 
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that this URL was entered into the *Canonical* field.
+*_Default value_*: No default value
 
-4+| *Elmar*
+*_Permitted import values_*: Alpha-numeric
 
-| *Elmar-category*
-|Alphanumeric
-| - n/a -
-|Enter the <<item/settings/categories#700, name of the Elmar category>> into the CSV file. Make sure you also select the webstore within the *Mapping* area.
+[TIP]
+Also use the drop-down lists to select the language and the webstore.
 
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that this Elmar category was selected.
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-canonical, Item » Category » Tab: Settings » Entry field: Canonical>>
 
-| *Delete existing*
-|0 +
-1
-|0
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines whether the <<item/settings/categories#700, Elmar category link>> should be deleted.
-Make sure you also select the webstore within the *Mapping* area.
+'''
+[#290]
+=== Elmar
 
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that the *Elmar category* was deleted everywhere the number 1 was entered.
+[#300]
+==== Elmar-category
 
-* 0 = Do not delete
-* 1 = Delete
+Enter the name of the Elmar category into your CSV file.
 
-4+| *Client (store)*
+*_Default value_*: No default value
 
-| *Active*
-|0 +
-1
-|0
-a|Enter one of the permitted import values into your CSV file. Which value you choose determines whether the <<item/settings/categories#700, category will be activated for a particular store>>.
-Make sure you also select the webstore within the *Mapping* area.
+*_Permitted import values_*: Alpha-numeric
 
-If you open the category after it was imported and look at the *Settings* tab, then you’ll see that one of the following values was used for the *Client (store)* setting.
+[TIP]
+Also use the drop-down list to select the webstore.
 
-* 0 = _Not activated_ for the specified client.
-* 1 = _Activated_ for the specified client.
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-elmar-category, Item » Category » Tab: Settings » Drop-down list: Elmar category>>
+
+'''
+[#310]
+==== Delete existing
+
+Do you want to delete the Elmar category link?
+
+*_Default value_*: `0`
+
+[[table-mapping-categories-delete-elmar-link]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Link will _not_ be deleted
+
+|`1`
+|Link will be deleted
 |====
 
+[TIP]
+Also use the drop-down list to select the webstore.
 
-////
-[.subhead]
-Example 1: Price and stock synchronisation of a variation.
+'''
+[#320]
+=== Client (store)
 
-Create a sync to keep prices and stock of a variation up-to-date. Once the assignment for the sync took place, a mapping has to be created. To do so, select the plentymarkets fields VariationSalesPrice and VariationStock within the Select values area of the mapping. Next, select the sales prices (price, RRP) which should be updated for VariationSalesPrice. It is possible to update several different sales prices with one sync. Now link the filed of the data source. Not only can you select the warehouse for the stock but also the storage location. For VariationStock, select the warehouse for which stock should be booked. Optionally, select the storage location. To use the quantity from the data source, link the plentymarkets field quantity with the field of the data source. A stock correction is always carried out in the process.
+[#330]
+==== Active
 
-[.subhead]
-Example 2: Importing item descriptions
+Should the category be activated for a particular store?
 
-Name, technical data and meta keywords should be imported for an item. First, select these plentymarkets fields within the Select values area of the mapping. Next, you have to select the language for this item descriptions. You can select more than one option. The fields Name, Technical data and Meta keywords are linked with the desired fields of the data source. This means that the entries listed in the data source will be now imported for the previously selected plentymarkets fields. In addition, use the filter options to further specify the import. For example, import the item descriptions only for items that belong to a specific brand.
-////
+[TIP]
+Also use the drop-down list to select the webstore.
+
+*_Default value_*: `0`
+
+[[table-mapping-categories-client-active]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|_Not activated_ for the specified client.
+
+|`1`
+|_Activated_ for the specified client.
+|====
+
+You can find the result of the import in the back end menu: <<item/settings/categories#intable-client, Item » Category » Tab: Settings » Check box: Client (store)>>
