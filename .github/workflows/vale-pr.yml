@@ -38,20 +38,12 @@ jobs:
     # Checks the changed files with Vale
     - name: Checks files
       run: |
-        echo "Das Prüfen des Pull Requests hatte folgendes Ergebnis:" >> output/vale_results.txt
-        echo ${{ steps.files.outputs.all }} >> output/vale_results.txt
+        echo "Das Prüfen des Pull Requests hatte folgendes Ergebnis:" >> vale_results.txt
+        echo ${{ steps.files.outputs.all }} >> vale_results.txt
         for changed_file in ${{ steps.files.outputs.all }}; do
           vale ${changed_file} >> vale_results.txt
         done
         
-    - uses: actions/upload-artifact@v1
-      with:
-        name: vale_results
-        path: output
-    - uses: actions/download-artifact@v1
-      with:
-        name: vale_results
-          
     # Posts output to a PR comment
     - name: Comments PR
       uses: machine-learning-apps/pr-comment@1.0.0
