@@ -38,20 +38,19 @@ jobs:
     # Checks the changed files with Vale
     - name: Checks files
       run: |
-        echo "Das Prüfen des Pull Requests hatte folgendes Ergebnis:" >> vale_output.txt
-        echo ${{ steps.files.outputs.all }}
+        echo "Das Prüfen des Pull Requests hatte folgendes Ergebnis:" >> output/vale_results.txt
+        echo ${{ steps.files.outputs.all }} >> output/vale_results.txt
         for changed_file in ${{ steps.files.outputs.all }}; do
-          vale ${changed_file} >> vale_output.txt
+          vale ${changed_file} >> vale_results.txt
         done
         
     - uses: actions/upload-artifact@v1
       with:
-        name: vale_output
-        path: vale_output.txt
+        name: vale_results
+        path: output
     - uses: actions/download-artifact@v1
       with:
-        name: vale_output
-        path: vale_output.txt
+        name: vale_results
           
     # Posts output to a PR comment
     - name: Comments PR
@@ -60,4 +59,4 @@ jobs:
         GITHUB_TOKEN: ${{ SECRETS.GITHUB_TOKEN }}
       with:
         # file path
-        path: vale_output
+        path: vale_results.txt
