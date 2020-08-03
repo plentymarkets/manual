@@ -44,6 +44,14 @@ jobs:
           vale ${added_modified_file} >> vale_output.txt
         done
         
+    - uses: actions/upload-artifact@v1
+      with:
+        name: results
+        path: vale_output.txt
+    - uses: actions/download-artifact@v1
+      with:
+        name: vale_output
+          
     # Posts output to a PR comment
     - name: Comments PR
       uses: machine-learning-apps/pr-comment@1.0.0
@@ -51,4 +59,4 @@ jobs:
         GITHUB_TOKEN: ${{ SECRETS.GITHUB_TOKEN }}
       with:
         # file path
-        path: vale_output.txt
+        path: vale_output
