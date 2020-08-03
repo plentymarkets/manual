@@ -39,14 +39,14 @@ jobs:
     - name: Checks files
       run: |
         echo "Das Prüfen des Pull Requests hatte folgendes Ergebnis:" >> vale_output.txt
-        echo ${{ steps.files.outputs.added_modified }}
-        for added_modified_file in ${{ steps.files.outputs.added_modified }}; do
-          vale ${added_modified_file} >> vale_output.txt
+        echo ${{ steps.files.outputs.all }}
+        for changed_file in ${{ steps.files.outputs.all }}; do
+          vale ${changed_file} >> vale_output.txt
         done
         
     - uses: actions/upload-artifact@v1
       with:
-        name: results
+        name: vale_output
         path: vale_output.txt
     - uses: actions/download-artifact@v1
       with:
