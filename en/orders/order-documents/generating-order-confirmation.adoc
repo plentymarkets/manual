@@ -1,0 +1,146 @@
+= Order confirmation
+:lang: en
+include::{includedir}/_header.adoc[]
+:position: 50
+:url: orders/order-documents/generating-order-confirmations
+:id: SHG0UBG
+:keywords: order confirmation, generate order confirmations, order documents, working with documents working with orders, order process, order workflow, delivery, document template, template, client, location, order, number, document number, receipt, document type, document, PDF, PDF template, PDF file
+:author: team-order-payment
+
+Send order confirmations for incoming orders to your customers. In plentymarkets, you can generate order confirmations as PDF files, for example if you want to print them or send them to your customers as an email attachment.
+
+[#100]
+== Setting up a document template for order confirmations
+
+Before generating order confirmations, you have to set up a document template. Go to *Setup » Client » _Select client_ » Locations » _Select location_ » Documents » Order confirmation* to set up the template. +
+Further information and instructions on setting up the document template are available on the <<orders/order-documents#, Order documents>> page of the manual.
+
+[#200]
+== Generating a single order confirmation
+
+You can generate order confirmations directly in an order. To do so, proceed as follows.
+
+[.instruction]
+Generating a single order confirmation:
+
+. Go to *Orders » Edit orders*. +
+→ The *Order overview* opens.
+. Use the filters to search (icon:search[role="blue"]) for the order for which you want to generate an order confirmation.
+. Open the required order.
+. Go to the *Receipts* tab.
+. Select the document *Order confirmation* from the *Create receipt* drop-down list. +
+. Carry out the settings according to <<table-generate-order-confirmation>>.
+. *Save* (icon:save[role="green"]) the settings to generate the order confirmation. +
+→ A *PDF file* of the just generated order confirmation opens.
+
+[[table-generate-order-confirmation]]
+.Settings for order confirmations in *Create receipt* menu
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Date*
+|Enter a date to be displayed on the order confirmation. The present date is set by default.
+
+| *Number*
+|The document number is assigned automatically. No entry is required in this field.
+
+| *Value date/payment due/early payment discount*
+| Select by choosing *YES* or *NO* whether value date, payment due or early payment discount are displayed on the order confirmation. +
+*Note*: In order for these information to be displayed correctly on the order confirmation, they have to be deposited for the corresponding customer in the *Account* area in the *CRM » Contacts* menu.
+
+| *Payment due*
+| If this information is not already deposited in the customer data, enter a number of days in this field to define the payment due date which is displayed on the order confirmation.
+
+| *Early payment discount from X % if paid within X days*
+|If this information is not already deposited in the customer data, enter a percentage and a number of days in these fields to define the early payment discount conditions.
+
+|*Book outgoing items*
+|Select by choosing *YES* or *NO* whether outgoing items should be booked when the order confirmation is generated.
+
+| *Change order status to status*
+|Choose an order status to which the order is to be changed after the order confirmation is generated. If you don’t want the order status to change, select *No change* .
+
+|*Comment*
+|The text entered here is displayed below the order items. The entry of a text is optional.
+
+|====
+
+[#300]
+== Automating generating and sending order confirmations
+
+You can set up event procedures to automate generating and sending order confirmations. This way, you don’t have to have an eye on incoming orders at all times and don’t have to generate each order confirmation manually. Instead you can create an easier workflow by automating these events. As a first step, set up an event procedure for generating the document. Then, set up a second event procedure to send the generated order confirmation to your customers. To do so, proceed as follows.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]). +
+→ The *Create new event procedure* window opens.
+. Enter a distinct name for the event procedure.
+. Select the *event* listed in <<table-event-procedure-generate-order-confirmation>>.
+. *Save* (icon:save[role="green"]) the settings.
+. Carry out further settings as described in <<table-event-procedure-generate-order-confirmation>>.
+. Place a check mark next to the option *Active*.
+. *Save* (icon:save[role="green"]) the settings.
+--
+
+[[table-event-procedure-generate-order-confirmation]]
+.Setting up the event procedure *Generate order confirmation*
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Order generation » New order*
+|
+
+| *Filter*
+| *Order > Order type*
+| *Order*
+
+| *Procedure*
+| *Documents » Generate order confirmation*
+|If needed, activate the options *Payment due* or Early payment discount or enter a Comment that will be displayed blow the order items on the generated invoice. +
+|====
+
+If you want to send the order confirmation to your customers as a PDF attachment in an email directly after the generation, we recommend the event procedure described in <<table-event-procedure-send-order-confirmation>>.
+
+[.collapseBox]
+.Setting up an event procedure
+--
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]). +
+→ The *Create new event procedure* window opens.
+. Enter a distinct name for the event procedure.
+. Select the *event* listed in <<table-event-procedure-send-order-confirmation>>.
+. *Save* (icon:save[role="green"]) the settings.
+. Carry out further settings as described in <<table-event-procedure-send-order-confirmation>>.
+. Place a check mark next to the option *Active*.
+. *Save* (icon:save[role="green"]) the settings.
+--
+
+[[table-event-procedure-send-order-confirmation]]
+.Setting up the event procedure *Send order confirmation*
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Documents » Order confirmation generated*
+|
+
+| *Filter*
+| *Order > Order type*
+| *Order*
+
+| *Procedure*
+| *Customer > Send email*
+|Click on *Add* (icon:plus-square[role="green"]) to add the corresponding email template for sending the order confirmation for the selection *Customer* (e.g. "Send order confirmation as PDF").
+|====
+
+[TIP]
+.You don’t see the corresponding email template?
+====
+You don’t see the corresponding email template for the event action "Send order confirmation"? That’s probably because you haven’t created it yet. You can do this in the *Setup » Client » _Select client_ » Email » Templates menu*. Click on *New email template* (icon:plus-square[role="green"]) and create the template according to your requirements. The name you enter here for the email template is then displayed in the event procedures. For further information about setting up email templates, refer to the <<crm/sending-emails#1200, Sending emails>> page of the manual.
+====
