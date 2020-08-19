@@ -1,880 +1,2059 @@
-= Contacts, companies and addresses
+= Contacts, accounts and addresses
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, Import, Sync, contacts, companies, addresses
+:keywords: ElasticSync, Import, contacts, account, companies, addresses
 :position: 90
 :url: data/importing-data/sync-types/elasticSync-contacts
 :id: SMSK85D
 :author: team-crm
 
-With syncs of the type *Contacts, companies and addresses*, you import new contact data or update existing data records. This data is for example the delivery address and invoice address, the date of birth of the contact, the customer type, contact options such as the private or business email address as well as company data.
+This page explains the matching and mapping fields that you can use while importing contacts, accounts and addresses. This page serves purely as a reference and it assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, import tool>>.
 
 [TIP]
-.Requirements for importing countries of delivery
+.Practical example: Importing contact data
 ====
-In order that the newly imported or updated countries of delivery are displayed in a contact data record in the contact overview, these countries of delivery have to be activated in the *Setup » Orders » Shipping » Options » Tab: Countries of delivery* menu.
+Imagine you’re new to plentymarkets and you want to import all of your contact data at once. How would that work? Take a look at <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-contact-data#, this practical example>>, which guides you through the process step-by-step.
 ====
 
-In order to import contact data via ElasticSync, the following data records must be present in plentymarkets:
+[#matching-fields]
+== Matching fields
 
-* Contacts (*CRM » Contacts* menu)
-* contact options such as telephone number and email address, if necessary
-* address data (invoice address, delivery address), if necessary
-* company data such as VAT number and payment due date, if necessary
+<<#table-matching-fields-contacts-accounts-addresses>> explains the fields that are available for matching contacts, account and address data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
 
-[#100]
-== Field for matching contacts, companies and addresses
-
-<<#table-matching-fields-contacts>> explains the fields that are available for matching contacts, company and address data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
-
-[[table-matching-fields-contacts]]
-.Matching fields for importing contact data
+[[table-matching-fields-contacts-accounts-addresses]]
+.Matching fields for importing contact, account and address data
 [cols="1,3"]
-|====
-|Matching field |Explanation
+|===
+|Setting |Explanation
 
 |Contact ID
-|ID of the contact
+|Which column of your CSV file lists the contact IDs? Choose this column here. This option is useful if you want to _update existing contacts_. +
+If you want to import new contacts, leave this field empty. The IDs for the contacts are automatically assigned when carrying out the import.
+
+*_Background info:_* Every new contact automatically receives an ID, which can not be changed. The ID is used to uniquely identify the contact. Because the ID is unique, it’s a good way to check whether the imported data record already exists in plentymarkets.
 
 |Email
-|Email address of the contact
+|Which column of your CSV file lists the email addresses? Choose this column here. This option is useful if you want to _update existing contacts_.
 
 |Invoice address ID
-|ID of the invoice address
+|Which column of your CSV file lists the invoice address IDs? Choose this column here. This option is useful if you want to _update existing invoice addresses of existing contacts_.
+
 
 |Delivery address ID
-|ID of the delivery address
+|Which column of your CSV file lists the delivery address IDs? Choose this column here. This option is useful if you want to _update existing delivery addresses of existing contacts_.
 
-|====
+|===
 
-[#200]
-== Fields for mapping contacts, companies and addresses
+[#mapping-fields]
+== Mapping fields
 
-This chapter explains the fields that are available for mapping contact, company and address data.
+This chapter explains the fields that are available for mapping contact, account and address data. Use these fields to specify which _column of your file_ corresponds to which _data field in your system_.
 
-[#300]
+[.instruction]
+Basic procedure:
+
+. *_In your CSV file_*: Enter a valid import value into a column.
+. *_In plentymarkets_*: Assign this column to the appropriate mapping field.
+. *_After the import_*: Check the result in the back end.
+
+[TIP]
+.No mapping field? Default value applies!
+====
+If you don’t include a certain piece of information in your CSV file, i.e. if you _don’t use_ a certain mapping field, then your contact will be given the default value.
+====
+
+[#mapping-field-contact]
 === Contact
 
-<<#table-mapping-fields-contact>> lists the fields available for importing contact data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-contact-external-id]
+==== External ID
 
-[[table-mapping-fields-contact]]
-.Fields for importing contact data
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the external ID in your CSV file. This could be, for example, the customer number from another system that you used before. This ID helps you not to lose the assignment when you import the data in plentymarkets.
 
-|External number
-|Alphanumeric
-|External number for the contact
+*_Default value:_* No default value
 
-|Number
-|Alphanumeric
-|Additional number for the contact. This number is not assigned automatically. Maximum number of characters: 128.
+*_Permitted import values:_* Alpha-numeric
 
-|Type*
-|Numeric (internal ID)
-a|This is a mandatory field. It is possible to create further types. +
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details>>.
 
-Fixed values: +
+'''
 
-* 1 = Customer +
-* 2 = Interested party +
-* 3 = Sales representative +
-* 4 = Supplier +
-* 5 = Manufacturer +
-* 6 = Partner
+[#mapping-field-contact-number]
+==== Number
 
-|First name
-|Text
-|First name of the contact
+This is an additional number for the contact that you can determine yourself.
 
-|Last name
-|Text
-|Last name of the contact
+*_Default value:_* No default value
 
-|Gender
-|blank option +
-female +
-male +
-diverse
-a|Gender of the contact. Is saved in the contact data record in the *Form of address* field. +
+*_Permitted import values:_* Alpha-numeric, maximum number of characters: 128
 
-* blank option = no entry +
-* female = female form of address +
-* male = male form of address +
-* diverse = diverse form of address
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details>>.
 
-|Title
-|Text
-|Title of the contact
+'''
 
-|Newsletter
-|Date
-|Time stamp when the contact registered for the newsletter.
+[#mapping-field-contact-type]
+==== Type
 
-|Customer class
-|Numeric (internal ID)
-|Customer class of the contact, if available. +
-*_Important:_* When customer classes are saved in the system, the field in the import file must be filled with the ID of the customer class. Otherwise, the contacts cannot be imported in your plentymarkets system. +
+icon:warning[role="red"] [red]#Required field#
+
+Which type do you want to assign the contact? Types are used to classify and differentiate contacts. Enter the type’s ID into the CSV file.
+
+[TIP]
+ID 1 to 6 are already specified and cannot be changed. You can create further types in the *Setup » CRM » Types* menu and assign one of these types to the contact before your carry out the import.
+
+*_Default value:_* `1`
+
+*_Permitted import values:_* Numeric (internal ID)
+
+[[table-mapping-contacts-type]]
+[cols="1,1"]
+|===
+
+|Permitted import values in CSV file |Result in the back end
+
+|`1`
+|Customer
+
+|`2`
+|Interested party
+
+|`3`
+|Sales representative
+
+|`4`
+|Supplier
+
+|`5`
+|Hersteller
+
+|`6`
+|Partner
+
+|`further IDs`
+|Names of the types that you created
+
+|===
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Drop-down list: Type>>.
+
+'''
+
+[#mapping-field-contact-first-name]
+==== First name
+
+What’s the first name of the contact? Enter the first name in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Field: First name>>.
+
+'''
+
+[#mapping-field-contact-last-name]
+==== Last name
+
+What’s the last name of the contact? Enter the last name in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Field: Last name>>.
+
+'''
+
+[#mapping-field-contact-form-of-address]
+==== Form of address
+
+Enter the contact’s form of address in your CSV file.
+
+*_Default value:_* blank option or `0`
+
+[table-mapping-contacts-form-of-address]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
+
+|Blank option or `0`
+|The drop-down list *Form of address* in the contact data record is empty.
+
+| `female` or `1`
+|The drop-down list *Form of address* in the contact data record shows *Ms.*.
+
+| `male` or `2`
+|The drop-down list *Form of address* in the contact data record shows *Mr.*.
+
+| `diverse` or `3`
+|The drop-down list *Form of address* in the contact data record shows *Diverse*.
+
+|===
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Drop-down list: Form of address>>.
+
+'''
+
+[#mapping-field-contact-title]
+==== Title
+
+Does the contact have a title? Enter contact’s title in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Field: Title>>.
+
+'''
+
+[#mapping-field-contact-newsletter]
+==== Newsletter
+
+Enter the date in your CSV file when the contact registered for your newsletter.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Date in the format dd.mm.yyyy
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Field: Newsletter>>.
+
+'''
+
+[#mapping-field-contact-customer-class]
+==== Customer class
+
+icon:warning[role="red"] [red]#Required field# when you saved customer classes in plentymarkets.
+
+Do you want to assign a customer class to the contact?
+
+[TIP]
+When customer classes are saved in the system, the field in the import file _must_ be filled with the ID of the customer class. Otherwise, the contact cannot be imported in your plentymarkets system.
 If you did not create customer classes in the system, you can ignore this field.
 
-|Blocked
-|0 +
-1
-a|Contacts can be blocked for a certain client. +
+*_Default value:_* No default value
 
-* 0 = not blocked +
-* 1 = blocked
+*_Permitted import values:_* Numeric (internal ID)
 
-|Feedback
-|0 +
-5 +
-4 +
-3 +
-2 +
-1 +
--1 +
--2 +
--3 +
--4 +
--5
-a|The feedback of the contact is used as internal feedback only and cannot be seen by third parties. +
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Drop-down list: Customer class>>.
 
-0 = 5 grey stars, no feedback saved for the contact +
-5 = 5 yellow stars (best possible feedback) +
-4 = 4 yellow stars +
-3 = 3 yellow stars +
-2 = 2 yellow stars +
-1 = 1 yellow star +
--1 = 1 red star +
--2 = 2 red stars +
--3 = 3 red stars +
--4 = 4 red stars +
--5 = 5 red stars (worst possible feedback)
+'''
 
-|Debtor account
-|Alphanumeric
-|Additional number that usually corresponds to the contact number or the debtor number of the contact in your administrative accounting.
+[#mapping-field-contact-blocked]
+==== Blocked
 
-|Language
-|
-|Language of the contact that is saved in the contact data record.
+Decide whether the contact is blocked for the assigned client or not.
 
-|Referrer*
-|Numeric (internal ID)
-|This is a mandatory field.
+[TIP]
+When creating a new contact data record, the default client is automatically assigned.
 
-|Plenty-ID
-|Numeric (internal ID)
-|Client that is assigned to the contact
+*_Default value:_* `0`
 
-|Owner ID
-|Numeric (internal ID)
-|ID of the owner that is assigned to the contact.
+[[table-mapping-contacts-blocked]]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
 
-|Date of birth
-|Date
-|Birthday of the contact
+|`0`
+|not blocked
 
-|Valuta
-|Numeric
-|Valuta of the contact that is saved in the contact data record.
+|`1`
+|blocked
+|===
 
-|Days for early payment discount
-|Numeric
-|Days for early payment discount of the contact that is saved in the contact data record.
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Setting: Contact blocked>>.
 
-|Percentage for early payment discount
-|Numeric
-|Percentage for early payment discount of the contact that is saved in the contact data record.
+'''
 
-|Payment due date
-|Numeric
-|Payment due date of the contact that is saved in the contact data record.
+[#mapping-field-contact-rating]
+==== Rating
 
-|Sales representative ID
-|Numeric (internal ID)
-|ID of the sales representative that is assigned to the contact.
+How do you want to rate the contact? Enter a number between -5 for the worst rating and 5 for the best rating in your CSV file. The rating of the contact is used as internal feedback only and cannot be seen by third parties.
 
-|Contact ID
-|Numeric (internal ID)
-|ID of the contact
+*_Default value:_* `0`
 
-|====
+[[table-mapping-contacts-rating]]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
 
-[#400]
+|`0`
+|5 grey stars. No rating saved for the contact.
+
+|`5`
+|5 yellow stars (best possible rating)
+
+|`4`
+|4 yellow stars
+
+|`3`
+|3 yellow stars
+
+|`2`
+|2 yellow stars
+
+|`1`
+|1 yellow star
+
+|`-1`
+|1 red star
+
+|`-2`
+|2 red stars
+
+|`-3`
+|3 red stars
+
+|`-4`
+|4 red stars
+
+|`-5`
+|5 red stars (worst possible rating)
+
+
+|===
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Drop-down list: Rating>>.
+
+'''
+
+[#mapping-field-contact-debtor-account]
+==== Debtor account
+
+The debtor account is an additional number that usually corresponds to the contact number or the debtor number of the contact in your administrative accounting department.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Field: Debtor account>>.
+
+'''
+
+[#mapping-field-contact-language]
+==== Language
+
+Enter contact’s language in your CSV file.
+
+[TIP]
+If you later save templates in the language that you entered here in the *Setup » Client* » _Select client_ » *Email » Templates* menu, for example `nl`, the email templates will be sent to the contact in this language (in our example in Dutch).
+
+[TIP]
+<<data/internal-IDs#10, This page of the manual>> lists the languages abbreviations used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Language abbreviations following the pattern `nl`, `de`, `ro` etc.
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Drop-down list: Language>>.
+
+'''
+
+[#mapping-field-contact-referrer]
+==== Referrer
+
+icon:warning[role="red"] [red]#Required field#
+
+What’s the referrer of the contact?
+
+*Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+*_Important:_* ID `0` = manual entry will not be effective because the import tool is not a manual entry in the strict sense.
+Basically, you can import every order referrer ID that you activated in the *Setup » Orders » Order referrer* menu. Note that it is currently not possible to filter or show the IDs of the markets in the contact data record. In the future, it will however be possible to filter the referrer of your contacts in the contact overview.
+
+'''
+
+[#mapping-field-contact-plenty-id]
+==== plenty ID
+
+Which plentymarkets ID (which client) do you want to assign to the contact? Enter the plentymarkets ID in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Drop-down list: Client>>.
+
+'''
+
+[#mapping-field-contact-owner-id]
+==== Owner ID
+
+Which owner do you want to assign to the contact? Enter the owner ID in your CSV file.
+
+[TIP]
+Only owners for whom the *Customer* option has been activated in the *Owner* tab can be selected from the drop-down list. You find the owner IDs in the *Setup » Settings » User » Rights » User* menu.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details>>.
+
+'''
+
+[#mapping-field-contact-date-of-birth]
+==== Date of birth
+
+Enter the contact’s date of birth in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Date in the format yyyy-mm-dd
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Field: Date of birth>>.
+
+'''
+
+[#mapping-field-contact-valuta]
+==== Valuta
+
+This mapping field is currently without function and cannot be used to import contact data. You can, however, import a valuta value for the <<#mapping-field-account-valuta, account>>.
+
+'''
+
+[#mapping-field-contact-days-for-early-payment-discount]
+==== Days for early payment discount
+
+This mapping field is currently without function and cannot be used to import contact data. You can, however, import a days for early payment discount value for the <<#mapping-field-account-days-for-early-payment-discount, account>>.
+
+'''
+
+[#mapping-field-contact-percentage-for-early-payment-discount]
+==== Percentage for early payment discount
+
+This mapping field is currently without function and cannot be used to import contact data. You can, however, import a percentage for early payment discount value for the <<#mapping-field-account-percentage-for-early-payment-discount, account>>.
+
+'''
+
+[#mapping-field-contact-payment-due-date]
+==== Payment due date
+
+This mapping field is currently without function and cannot be used to import contact data. You can, however, import a payment due date value for the <<#mapping-field-account-payment-due-date, account>>.
+
+'''
+
+
+[#mapping-field-contact-sales-representative-id]
+==== Sales representative ID
+
+Enter the ID of the sales representative that you want to assign to the contact in your CSV file.
+
+[TIP]
+The sales representative has to be saved as type *Sales representative* in the contact data record to assign it to a contact.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details>>.
+
+'''
+
+[#mapping-field-contact-contact-id]
+==== Contact ID
+
+If you want to update the data of a certain contact only, enter the contact’s ID in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+'''
+
+[#mapping-field-contact-options]
 === Contact options
 
-<<#table-mapping-fields-contact-options>> lists the fields available for importing contact options. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-contact-options-telephone-private]
+==== Private telephone number
 
-[[table-mapping-fields-contact-options]]
-.Fields for importing contact options
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the contact’s private telephone number in your CSV file.
 
-|Private telephone number +
-(Type 1 Sub-type 4)
-|Numeric
-|Private telephone number +
-*_Note:_* In order that the telephone number is automatically transferred in the order, the sub-type *Private* must be selected for the type *Telephone*.
+*_Default value:_* No default value
 
-|Business telephone number +
-(Type 1 Sub-type 1)
-|Numeric
-|Business telephone number
+*_Permitted import values:_* Numeric
 
-|Private mobile phone number +
-(Type 1 Sub-type 2)
-|Numeric
-|Private mobile phone number
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
 
-|Business mobile phone number +
-(Type 1 Sub-type 3)
-|Numeric
-|Business mobile phone number
+'''
 
-|Private email address +
-(Type 2 Sub-type 4)
-|Alphanumeric
-|Private email address +
-*_Note:_* In order that the email address is automatically transferred in the order, the sub-type *Private* must be selected for the type *Email*.
+[#mapping-field-contact-options-telephone-number-business]
+==== Business telephone number
 
-|Business email address +
-(Type 2 Sub-type 1)
-|Alphanumeric
-|Business email address
+Enter the contact’s business telephone number in your CSV file.
 
-|PayPal email address +
-(Type 2 Sub-type 5)
-|Alphanumeric
-|PayPal email address
+*_Default value:_* No default value
 
-|Private fax number +
-(Type 3 Sub-type 4)
-|Numeric
-|Private fax number
+*_Permitted import values:_* Numeric
 
-|Business fax number +
-(Type 3 Sub-type 1)
-|Numeric
-|Business fax number
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
 
-|Private homepage +
-(Type 1 Sub-type 2)
-|URL
-|URL of the private homepage
+'''
 
-|Business homepage +
-(Type 1 Sub-type 2)
-|URL
-|URL of the business homepage
+[#mapping-field-contact-options-mobile-phone-private]
+==== Private mobile phone number
 
-|Market eBay +
-(Type 5 Sub-type 6)
-|Alphanumeric
-|eBay name
+Enter the contact’s private mobile phone number in your CSV file.
 
-|Market Amazon +
-(Type 5 Sub-type 7)
-|Alphanumeric
-|Amazon name
+*_Default value:_* No default value
 
-|Identification number at Klarna +
-(Type 6 Sub-type 8)
-|Numeric
-|Identification number at Klarna
+*_Permitted import values:_* Numeric
 
-|Identification number at DHL +
-(Type 6 Sub-type 9)
-|Numeric
-|Identification number at DHL
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
 
-|Payment PayPal +
-(Type 7 Sub-type 5)
-|
-|PayPal number
+'''
 
-|Payment Klarna +
-(Type 7 Sub-type 8)
-|
-|Klarna number
+[#mapping-field-contact-options-mobile-phone-business]
+==== Business mobile phone number
 
-|Payment Standard +
-(Type 7 Sub-type 14)
-|Numeric (internal ID)
-|Available payment methods. The payment methods are saved in the *Setup » Orders » Payment » Payment methods* menu. +
-The IDs for payment methods, payment method interfaces and marketplace payment methods are listed on the <<data/internal-IDs# , Internal IDs in plentymarkets>> page of the manual in the <<data/internal-IDs#65# Payment methods>> chapter.
+Enter the contact’s business mobile phone number in your CSV file.
 
-|Private user name +
-(Type 8 Sub-type 4)
-|Alphanumeric
-|Private user name
+*_Default value:_* No default value
 
-|Business user name +
-(Type 8 Sub-type 1)
-|Alphanumeric
-|Business user name
+*_Permitted import values:_* Numeric
 
-|Guest account +
-(Type 10 Sub-type 11)
-|Numeric (internal ID) +
-0 +
-1
-a|Account type in the old online store (Callisto online store). +
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
 
-* 0 = Regular account +
-* 1 = Guest account
+'''
 
-|Additional contact person +
-(Type 11 Sub-type 12)
-|Alphanumeric
-|Additional contact person
+[#mapping-field-contact-options-email-private]
+==== Private email address
 
-|Private form of address +
-(Type 12 Sub-type 4)
-|Text
-|Private form of address
+Enter the contact’s private email address in your CSV file.
 
-|Business form of address +
-(Type 12 Sub-type 1)
-|Text
-|Business form of address
+*_Default value:_* No default value
 
-|====
+*_Permitted import values:_* Alpha-numeric
 
-[#500]
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-email-business]
+==== Business email address
+
+Enter the contact’s business email address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-email-paypal]
+==== PayPal email address
+
+Enter the contact’s PayPal email address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-fax-private]
+==== Private fax number
+
+Enter the contact’s private fax number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-fax-business]
+==== Business fax number
+
+Enter the contact’s business fax number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-homepage-private]
+==== Private homepage
+
+Enter the contact’s private homepage in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-homepage-business]
+==== Business homepage
+
+Enter the contact’s business homepage in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-marketplace-ebay]
+==== Market eBay
+
+Enter contact’s eBay name in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-marketplace-amazon]
+==== Market Amazon
+
+Enter contact’s Amazon name in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-identification-number-klarna]
+==== Identification number at Klarna
+
+What’s the contact’s Klarna identification number? Enter the number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-identification-number-dhl]
+==== Identification number at DHL
+
+What’s the contact’s DHL customer number? Enter the number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-payment-paypal]
+==== Payment provider PayPal
+
+Enter the contact’s PayPal email address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-payment-klarna]
+==== Payment provider Klarna
+
+Enter the contact’s Klarna customer number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-payment-standard]
+==== Payment
+
+Enter the ID of the available payment method in your CSV file.
+
+[TIP]
+<<data/internal-IDs#65, This page of the manual>> lists the IDs of payment methods, payment integrations and payment methods for markets used in plentymarkets. The payment methods are saved in the *Setup » Orders » Payment » Payment methods* menu.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-user-name-private]
+==== Private user name
+
+Enter contact’s private user name in your CSV file.
+
+*_Default value:_* No default value
+
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-user-name-business]
+==== Business user name
+
+Enter contact’s business user name in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-guest-account]
+==== Guest account
+
+This option is available for all guest orders and marketplaces, but not for Ceres guest orders. Decide which type of access should be saved for the contact and enter the corresponding ID in your CSV file.
+
+*_Default value:_* `0`
+
+[[table-mapping-contacts-guest-account]]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
+
+|0
+|Regular account
+
+|1
+|Guest account
+
+|===
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-contact-person]
+==== Contact person
+
+Enter the name of the contact’s contact person in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-form-of-address-private]
+==== Private form of address
+
+Enter the contact’s private form of address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-contact-options-form-of-address-business]
+==== Business form of address
+
+Enter the contact’s business form of address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Contact options>>.
+
+'''
+
+[#mapping-field-invoice-address]
 === Invoice address
 
-<<#table-mapping-fields-invoice-address>> lists the fields available for importing invoice address data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-invoice-address-id]
+==== Address ID
 
-[[table-mapping-fields-invoice-address]]
-.Fields for importing invoice address data
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the invoice address ID in your CSV file.
 
-|ID of the address
-|Numeric (internal ID)
-|ID of the invoice address
+*_Default value:_* No default value
 
-|Name1* (or 2/3)
-|Alphanumeric
-|Company name. +
-This is a mandatory field when there is no entry under *Name2* and *Name3*.
+*_Permitted import values:_* Numeric
 
-|Name2* (or 1/3)
-|Text
-|First name of the contact. +
-This is a mandatory field when there is no entry under *Name1* and *Name3*.
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
 
-|Name3* (or 1/2)
-|Text
-|Last name of the contact. +
-This is a mandatory field when there is no entry under *Name1* and *Name2*.
+'''
 
-|Name4
-|Text
-|Additional information in the contact data record, e.g."c/o Mr. John Doe"
+[#mapping-field-invoice-address-name1]
+==== Name1* (or 2/3)
 
-|Address1* (or 2/3)
-|Text
-|The street listed in the invoice address. +
-This is a mandatory field when there is no entry under *Address2* and *Address3*.
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Name2* and *Name3*.
 
-|Address2* (or 1/3)
-|Numeric
-|The house number listed in the invoice address. +
-This is a mandatory field when there is no entry under *Address1* and *Address3*.
+Enter the account name of the invoice address in your CSV file.
 
-|Address3* (or 1/2)
-|Alphanumeric
-|Additional address information in the invoice address, e.g. "Apartment 12a". +
-This is a mandatory field when there is no entry under *Address1* and *Address2*.
+*_Default value:_* No default value
 
-|Address4
-|Alphanumeric
-|This field can be freely used.
+*_Permitted import values:_* Alpha-numeric
 
-|Postcode
-|Numeric
-|Postcode
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
 
-|Town*
-|Text
-|This is a mandatory field.
+'''
 
-|Country ID* (or ISO)
-|Numeric
-|This is a mandatory field.
+[#mapping-field-invoice-address-name2]
+==== Name2* (or 1/3)
 
-|State ID
-|Numeric (internal ID)
-|ID of the region, district, federal state, canton etc.
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Name1* and *Name3*.
 
-|Confirmed at
-|Date
-|Time stamp when the invoice address was checked
+Enter the contact’s first name from the invoice address in your CSV file.
 
-|Title
-|Text
-|Title in the invoice address
+*_Default value:_* No default value
 
-|Country ISO code* (or ID)
-|Numeric
-|This is a mandatory field.
+*_Permitted import values:_* Text
 
-|ISO code of the state
-|Numeric
-|ISO code of the region, district, federal state, canton etc.
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
 
-|====
+'''
 
-[#600]
+[#mapping-field-invoice-address-name3]
+==== Name3* (or 1/2)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Name1* and *Name2*.
+
+Enter the contact’s last name from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-name4]
+==== Name4
+
+Enter additional information in your CSV file, e.g. “c/oMr. John Doe”.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-address1]
+==== Address1* (or 2/3)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Address2* and *Address3*.
+
+Enter the street from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-address2]
+==== Address2* (or 1/3)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Address1* and *Address3*.
+
+Enter the house number from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-address3]
+==== Address3* (or 1/2)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Address1* and *Address2*.
+
+Enter the additional address information from the invoice address in your CSV file. ""Apartment 12a".
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-address4]
+==== Address4
+
+Enter more additional information. You can enter whatever you want.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-postcode]
+==== Postcode
+
+Enter the postcode from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-town]
+==== Town
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the town from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-country-id]
+==== Country ID* (or ISO)
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the country ID or the ISO code in your CSV file.
+
+[TIP]
+<<data/internal-IDs#20, This page of the manual>> lists the internal country IDs and the ISO codes used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-fields-invoice-address-state-id]
+==== State ID
+
+Enter the ID of the region, county, federal state, canton etc. in your CSV file.
+
+[TIP]
+<<data/internal-IDs#30, This page of the manual>> lists the internal IDs used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-checked-at]
+==== Checked at
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Date in the format yyyy-mm-dd
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-title]
+==== Title
+
+Enter the title from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-invoice-address-contact-person]
+==== Contact person
+
+Enter the contact person from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-invoice-address-country-iso-code]
+==== Country ISO code* (or ID)
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the country ID or the ISO code in your CSV file.
+
+[TIP]
+<<data/internal-IDs#20, This page of the manual>> lists the internal country IDs and the ISO codes used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-invoice-address-state-iso-code]
+==== State ISO code
+
+Enter the ISO code of the region, county, federal state, canton etc. in your CSV file.
+
+[TIP]
+<<data/internal-IDs#30, This page of the manual>> lists the internal IDs used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-fields-options-invoice-address]
 === Options saved in the invoice address
 
-<<#table-mapping-fields-invoice-address-options>> lists the fields available for importing invoice address options. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-fields-options-invoice-address-vat-number]
+==== VAT number
 
-[[table-mapping-fields-invoice-address-options]]
-.Fields for importing invoice address options
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the VAT number in your CSV file.
 
-|VAT number (type 1)
-|Numeric
-|VAT number of the company
+*_Default value:_* No default value
 
-|External address ID (type 2)
-|Numeric
-|
+*_Permitted import values:_* Numeric
 
-|Entry certificate (type 3)
-|
-|In order to be exempted from paying the value-added tax when sending items in another EU country, sellers have to prove by means of the entry certificate that the items from Germany arrived safely in another participating EU member state.
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Telephone (type 4)
-|Numeric
-|
+'''
 
-|Email (type 5)
-|Alphanumeric
-|
+[#mapping-fields-options-invoice-address-external-address-id]
+==== External address ID
 
-|Post number (type 6)
-|Numeric
-|The DHL customer number
+Enter the external address ID in your CSV file.
 
-|Personal id (type 7)
-|Numeric
-|Identity number in Sweden
+*_Default value:_* No default value
 
-|Age rating (type 8)
-|Numeric
-|Age rating
+*_Permitted import values:_* Numeric
 
-|Birthday (type 9)
-|Date
-|
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Title (type 11)
-|Text
-|
+'''
 
-|Contact person (type 12)
-|Text
-|
+[#mapping-fields-options-invoice-address-entry-certificate]
+==== Entry certificate
 
-|====
+Do you want to activate the entry certificate in the contact’s address options?
 
-[#700]
+[TIP]
+In order to be exempted from paying the value-added tax when sending items in another EU country, sellers have to prove by means of the entry certificate that the items from Germany arrived safely in another participating EU member state.
+
+*_Default value:_* `0`
+
+[[table-mapping-invoice-address-entry-certificate]]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Entry certificate is _not_ activated in the address options.
+
+|`1`
+|Entry certificate is activated in the address options.
+
+|===
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-options-invoice-address-telephone]
+==== Telephone
+
+Enter the telephone number from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-address-email]
+==== Email
+
+Enter the email address from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-address-postnumber]
+==== Post number
+
+The post number is the DHL customer number. Enter the post number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-address-personal-number]
+==== Personal number
+
+Enter the contact’s personal number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-age-rating]
+==== Age rating
+
+Enter a value for the age rating in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-address-date-of-birth]
+==== Birthday
+
+Enter the date of birth from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Date in the format yyyy-mm-dd
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-address-title]
+==== Title
+
+Enter the title from the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-fields-options-invoice-address-contact-person]
+==== Contact person
+
+Enter the contact person in the invoice address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-delivery-address]
 === Delivery address
 
-<<#table-mapping-fields-delivery-address>> lists the fields available for importing delivery address data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-delivery-address-address-id]
+==== Address ID
 
-[[table-mapping-fields-delivery-address]]
-.Fields for importing delivery address data
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the delivery address ID in your CSV file.
 
-|ID of the address
-|Numeric (internal ID)
-|ID of the delivery address
+*_Default value:_* No default value
 
-|Name1* (or 2/3)
-|Alphanumeric
-|Company name. +
-This is a mandatory field when there is no entry under *Name2* and *Name3*.
+*_Permitted import values:_* Numeric
 
-|Name2* (or 1/3)
-|Text
-|First name of the contact. +
-This is a mandatory field when there is no entry under *Name1* and *Name3*.
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
 
-|Name3* (or 1/2)
-|Text
-|Last name of the contact. +
-This is a mandatory field when there is no entry under *Name1* and *Name2*.
+'''
 
-|Name4
-|Text
-|Additional information in the contact data record, e.g."c/o Mr. John Doe"
+[#mapping-field-delivery-address-name1]
+==== Name1* (or 2/3)
 
-|Address1* (or 2/3)
-|Text
-|The street listed in the delivery address. +
-This is a mandatory field when there is no entry under *Address2* and *Address3*.
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Name2* and *Name3*.
 
-|Address2* (or 1/3)
-|Numeric
-|The house number listed in the delivery address. +
-This is a mandatory field when there is no entry under *Address1* and *Address3*.
+Enter the account name of the delivery address in your CSV file.
 
-|Address3* (or 1/2)
-|Alphanumeric
-|Additional address information in the delivery address, e.g. "Apartment 12a". +
-This is a mandatory field when there is no entry under *Address1* and *Address2*.
+*_Default value:_* No default value
 
-|Address4
-|Alphanumeric
-|This field can be freely used.
+*_Permitted import values:_* Alpha-numeric
 
-|Postcode
-|Numeric
-|Postcode
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
 
-|Town*
-|Text
-|This is a mandatory field.
+'''
 
-|Country ID* (or ISO)
-|Numeric
-|This is a mandatory field.
+[#mapping-field-delivery-address-name2]
+==== Name2* (or 1/3)
 
-|State ID
-|Numeric (internal ID)
-|ID of the region, district, federal state, canton etc.
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Name1* and *Name3*.
 
-|Title
-|Text
-|The title saved in the delivery address
+Enter the contact’s first name from the delivery address in your CSV file.
 
-|Country ISO code* (or ID)
-|Numeric
-|This is a mandatory field.
+*_Default value:_* No default value
 
-|ISO code of the state
-|Numeric
-|ISO code of the region, district, federal state, canton etc.
+*_Permitted import values:_* Text
 
-|====
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
 
-[#800]
+'''
+
+[#mapping-field-delivery-address-name3]
+==== Name3* (or 1/2)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Name1* and *Name2*.
+
+Enter the contact’s last name from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-name4]
+==== Name4
+
+Enter additional information in your CSV file, e.g. “c/oMr. John Doe”.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-address1]
+==== Address1* (or 2/3)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Address2* and *Address3*.
+
+Enter the contact’s street from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-address2]
+==== Address2* (or 1/3)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Address1* and *Address3*.
+
+Enter the contact’s house number from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-address3]
+==== Address3* (or 1/2)
+
+icon:warning[role="red"] [red]#Required field# if you do not import any values for *Address1* and *Address2*.
+
+Enter the additional address information from the delivery address in your CSV file. ""Apartment 12a".
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-address4]
+==== Address4
+
+Enter more additional address information. You can enter whatever you want.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-postcode]
+==== Postcode
+
+Enter the postcode from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-town]
+==== Town
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the town of the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-country-id]
+==== Country ID* (or ISO)
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the country ID or the ISO code in your CSV file.
+
+[TIP]
+<<data/internal-IDs#20, This page of the manual>> lists the internal country IDs and the ISO codes used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-state-id]
+==== State ID
+
+Enter the ID of the region, county, federal state, canton etc. in your CSV file.
+
+[TIP]
+<<data/internal-IDs#30, This page of the manual>> lists the internal IDs used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-checked-at]
+==== Checked at
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Date in the format yyyy-mm-dd
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-title]
+==== Title
+
+Enter the title from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-delivery-address-contact-person]
+==== Contact person
+
+Enter the contact person from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-delivery-address-country-iso-code]
+==== Country ISO code* (or ID)
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the country ID or the ISO code in your CSV file.
+
+[TIP]
+<<data/internal-IDs#20, This page of the manual>> lists the internal country IDs and the ISO codes used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-delivery-address-state-iso-code]
+==== State ISO code
+
+Enter the ISO code of the region, county, federal state, canton etc. in your CSV file.
+
+[TIP]
+<<data/internal-IDs#30, This page of the manual>> lists the ISO codes used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Addresses>>.
+
+'''
+
+[#mapping-field-options-delivery-address]
 === Options saved in the delivery address
 
-<<#table-mapping-fields-delivery-address-options>> lists the fields available for importing delivery address options. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-options-delivery-address-vat-number]
+==== VAT number
 
-[[table-mapping-fields-delivery-address-options]]
-.Fields for importing delivery address options
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the VAT number in your CSV file.
 
-|VAT number (type 1)
-|Numeric
-|VAT number of the company
+*_Default value:_* No default value
 
-|External address ID (type 2)
-|Numeric
-|
+*_Permitted import values:_* Numeric
 
-|Entry certificate (type 3)
-|
-|In order to be exempted from paying the value-added tax when sending items in another EU country, sellers have to prove by means of the entry certificate that the items from Germany arrived safely in another participating EU member state.
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Telephone (type 4)
-|Numeric
-|
+'''
 
-|Email (type 5)
-|Alphanumeric
-|
+[#mapping-field-options-delivery-address-external-address-id]
+==== External address ID
 
-|Post number (type 6)
-|Numeric
-|The DHL customer number
+Enter the external address ID in your CSV file.
 
-|Personal id (type 7)
-|Numeric
-|Identity number in Sweden
+*_Default value:_* No default value
 
-|Age rating (type 8)
-|Numeric
-|Age rating
+*_Permitted import values:_* Numeric
 
-|Birthday (type 9)
-|Date
-|
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Title (type 11)
-|Text
-|
+'''
 
-|Contact person (type 12)
-|Text
-|
+[#mapping-field-options-delivery-address-entry-certificate]
+==== Entry certificate
 
-|====
+Do you want to activate the entry certificate in the contact’s address options?
 
-[#900]
-=== Company
+[TIP]
+In order to be exempted from paying the value-added tax when sending items in another EU country, sellers have to prove by means of the entry certificate that the items from Germany arrived safely in another participating EU member state.
 
-<<#table-mapping-fields-company>> lists the fields available for importing company data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+*_Default value:_* `0`
 
-[[table-mapping-fields-company]]
-.Fields for importing company data
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+[[table-mapping-delivery-address-entry-certificate]]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
 
-|Company ID
-|Numeric (internal ID)
-|ID of the company
+|`0`
+|Entry certificate is _not_ activated in the address options.
 
-|Number
-|Numeric
-|Additional number for the company. This number is not assigned automatically. Maximum number of characters: 128.
+|`1`
+|Entry certificate is activated in the address options.
 
-|Company name*
-|Alphanumeric
-|This is a mandatory field.
+|===
 
-|VAT number
-|Alphanumeric
-|VAT number of the company. +
-Example of a VAT number in Great Britain: GB1234567890
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Valuta
-|Numeric
-|Valuta of the company
+'''
 
-|Early payment discount (days)
-|Numeric
-|Days for early payment discount of the company
+[#mapping-field-options-delivery-address-telephone]
+==== Telephone
 
-|Percentage of discount
-|Numeric
-|Percentage for early payment discount of the company
+Enter the telephone number from the delivery address in your CSV file.
 
-|Payment due date
-|Numeric
-|Payment due date of the company
+*_Default value:_* No default value
 
-|Sales representative ID
-|Numeric (internal ID)
-|ID of the sales representative
+*_Permitted import values:_* Numeric
 
-|Owner ID
-|Numeric (internal ID)
-|ID of the owner
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Delivery period
-|Numeric
-|Delivery time in days for the type *Supplier*
+'''
 
-|Minimum order value
-|Numeric
-|Minimum order value in the currency of the system for the type *Supplier*
+[#mapping-field-options-delivery-address-email]
+==== Email
 
-|====
+Enter the email address from the delivery address in your CSV file.
 
-[#950]
-=== Contact properties
+*_Default value:_* No default value
 
-<<#table-mapping-fields-contact-properties>> lists the fields available for importing contact property data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+*_Permitted import values:_* Alpha-numeric
 
-[[table-mapping-fields-contact-properties]]
-.Fields for importing contact property data
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-|Property ID
-|Numeric
-|ID of the property
+'''
 
-|Property type
-|Text
-|Type of the property, e.g. *Short text*, *Date*, *Multi-selection*
+[#mapping-field-options-delivery-address-postnumber]
+==== Post number
 
-|Property value
-|Alphanumeric
-|Value of the property
+The post number is the DHL customer number. Enter the post number in your CSV file.
 
-|Contact ID
-|Numeric
-|ID of the contact that is linked to the property
+*_Default value:_* No default value
 
-|Language
-|Text
-|Can be set as own value in the mapping if the properties should be imported in another language than the system language, e.g. *de* or *fr*.
+*_Permitted import values:_* Numeric
 
-|Delete (Yes/No)
-|0 +
-1
-a|Can be set as own value in the mapping. +
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
 
-* 0 = do not delete +
-* 1 = delete
+'''
 
-|====
+[#mapping-field-options-delivery-address-personal-number]
+==== Personal number
 
-[#1000]
+Enter the contact’s personal number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-options-delivery-address-age-rating]
+==== Age rating
+
+Enter a value for the age rating in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-options-delivery-address-date-of-birth]
+==== Birthday
+
+Enter the date of birth from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Date in the format yyyy-mm-dd
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-options-delivery-address-title]
+==== Title
+
+Enter the title from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-options-delivery-address-contact-person]
+==== Contact person
+
+Enter the contact person from the delivery address in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Address options>>.
+
+'''
+
+[#mapping-field-account]
+=== Account
+
+[#mapping-field-account-company-id]
+==== Company ID
+
+Enter the account’s ID in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-number]
+==== Number
+
+Additional number for the account. This number is not assigned automatically. Maximum number of characters: 128. Enter the account’s number in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-account-name]
+==== Company name
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the account name in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-vat-number]
+==== VAT number
+
+Enter the account’s VAT number in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+*_Example:_* For Germany: DE123456789
+
+'''
+
+[#mapping-field-account-valuta]
+==== Valuta
+
+Enter the account’s valuta in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-days-for-early-payment-discount]
+==== Early payment discount (days)
+
+Enter the account’s days for early payment discount in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-percentage-for-early-payment-discount]
+==== Percentage of discount
+
+Enter the account’s percentage for early payment discount in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-payment-due-date]
+==== Payment due date
+
+Enter the account’s payment due date in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-sales-representative-id]
+==== Sales representative ID
+
+Enter the account’s sales representative ID in the CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-owner-id]
+==== Owner ID
+
+Enter the owner ID in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-delivery-time]
+==== Delivery time
+
+Enter the delivery time in days for the type *Supplier* in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-minimum-order-value]
+==== Minimum order value
+
+Enter the minimum order value in the system currency for the type *Supplier* in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+'''
+
+[#mapping-field-account-supplier-currency]
+==== Supplier currency
+
+Enter the currency’s 3-digit ISO code for the type *Supplier* in your CSV file.
+
+[TIP]
+<<data/internal-IDs#36, This page of the manual>> lists the ISO codes used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Account>>.
+
+*_Examples:_* `EUR` for Euro, `AUD` for Australian Dollar.
+
+[#mapping-field-sales-representative]
 === Sales representative
 
-<<#table-mapping-fields-sales-representative>> lists the fields available for importing sales representative data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-sales-representative-region-id]
+==== Region ID
 
-[[table-mapping-fields-sales-representative]]
-.Fields for importing sales representative data
-[cols="1,1,2"]
-|====
-|Mapping field |Permitted import values |Explanation
+Enter the region ID in your CSV file.
 
-|Region ID
-|Numeric (internal ID)
-|ID of the region
+[TIP]
+<<data/internal-IDs#30, This page of the manual>> lists the internal IDs used in plentymarkets.
 
-|Postcode area
-|Numeric
-|Postcode area within which the sales representative is working
+*_Default value:_* No default value
 
-|Country ID
-|Numeric (internal ID)
-|ID of the country
+*_Permitted import values:_* Numeric (internal ID)
 
-|====
+'''
 
-[#1100]
+[#mapping-field-sales-representative-postcode-area]
+==== Postcode area
+
+Enter the postcode area within which the sales representative is working in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Sales representative>>.
+
+*_Example:_* `34117-34131` or `34-35`
+
+'''
+
+[#mapping-field-sales-representative-country-id]
+==== Country ID
+
+Enter the country ID in your CSV file.
+
+[TIP]
+<<data/internal-IDs#20, This page of the manual>> lists the internal country IDs used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric (internal ID)
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Sales representative>>.
+
+'''
+
+[#mapping-field-allowed-payment-methods]
 === Allowed payment methods
 
-<<#table-mapping-fields-allowed-methods-of-payment>> lists the fields available for importing methods of payment that are allowed for the contact. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+[#mapping-field-allowed-payment-methods-allow-debit]
+==== Allow debit
 
-[[table-mapping-fields-allowed-methods-of-payment]]
-.Fields for importing allowed payment methods
-[cols="1,1,2"]
+Do you want to allow the payment method "Debit" for the contact?
+
+[TIP]
+Go to *Setup » Orders » Payment » Payment methods* to activate the payment method.
+
+*_Default value_*: `0`
+
+[[table-mapping-allow-debit]]
+[cols="1,1"]
 |====
-|Mapping field |Permitted import values |Explanation
+|Permitted import values in CSV file |Result in the back end
 
-|Allow debit
-|0 +
-1
-a|Allow the payment method "Debit" for the contact. Go to *Setup » Orders » Payment » Payment methods* to activate the payment method. +
+|`0`
+|Payment method “Debit” is _not_ allowed.
 
-* 0 = do not allow +
-* 1 = allow
-
-|Allow invoice
-|0 +
-1
-a|Allow the payment method "Invoice" for the contact. Go to *Setup » Orders » Payment » Payment methods* to activate the payment method. +
-
-* 0 = do not allow +
-* 1 = allow
-
+|`1`
+|Payment method “Debit” is allowed.
 |====
 
-[#2000]
-== Mandatory values for sync procedures with contacts, companies and addresses
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Setting: Allow debit>>.
 
-<<#table-mandatory-values-sync-procedures-contacts>> lists the mandatory values for sync procedures with contacts, companies and addresses.
+'''
 
-[[table-mandatory-values-sync-procedures-contacts]]
-.Mandatory values for sync procedures with contacts, companies and addresses
-[cols="1,2"]
+[#mapping-field-allowed-payment-methods-allow-invoice]
+==== Allow invoice
+
+Do you want to allow the payment method "Invoice" for the contact?
+
+[TIP]
+Go to *Setup » Orders » Payment » Payment methods* to activate the payment method.
+
+*_Default value_*: `0`
+
+[[table-mapping-allow-invoice]]
+[cols="1,1"]
 |====
-|Procedure |Required values
+|Permitted import values in CSV file |Result in the back end
 
-2+| *Contacts*
+|`0`
+|Payment method “Invoice” is _not_ allowed.
 
-|Create contact
-a|
-* Referrer
-* Type
-
-2+| *Contact option*
-
-|Create contact option
-a|
-* Value
-
-|Update contact option
-a|
-* Contact ID
-* fields to be changed
-2+| *Company*
-
-|Create company
-a|
-* Company name
-
-|Update company
-a|
-* Company name
-
-2+| *Address*
-
-|Create address
-a|
-* Contact ID
-* at least one of the following options: Name1, Name2, Name3
-* at least one of the following options: Address1, Address2, Address3
-* at least one of the following options: Country ID or country ISO code
-* Town
-
-|Update address
-a|
-* at least one of the following options: Name1, Name2, Name3
-* Contact ID
-* fields to be changed
-
-2+| *Address option*
-
-|Create address option
-a|
-* Value
-
-|Update address option
-a|
-* Address ID
-* Contact ID
-* fields to be changed
-
-
-2+| *Sales representative*
-
-|Create country
-a|
-* Contact ID
-* Company ID
-
-|Create postcode range
-a|
-* Contact ID
-* Company ID
-
-|Update country
-a|
-* Contact ID
-* Company ID
-
-|Update postcode range
-a|
-* Contact ID
-* Company ID
-
-|Assign a contact to a sales representative
-a|
-* Contact ID
-
+|`1`
+|Payment method “Invoice” is allowed.
 |====
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Details » Setting: Allow invoice>>.
+
+'''
+
+[#mapping-field-properties]
+=== Properties
+
+[#mapping-field-properties-property-id]
+==== Property ID
+
+icon:warning[role="red"] [red]#Required field# if a certain property should be updated
+
+Enter the property ID that you want to edit in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Properties>>.
+
+'''
+
+[#mapping-field-properties-property-type]
+==== Property type
+
+Enter the property type in your CSV file.
+
+*_Default value:_* No default value
+
+[[table-mapping-contacts-property-type]]
+[cols="1,1"]
+|===
+|Permitted import values in CSV file |Result in the back end
+
+|none
+|None
+
+|int
+|Whole number
+
+|float
+|Decimal number
+
+|selection
+|Selection
+
+|multiSelection
+|Multi-selection
+
+|shortText
+|Short text
+
+|text
+|Text
+
+|date
+|Date
+
+|file
+|File
+
+|===
+
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Properties>>.
+
+'''
+
+[#mapping-field-properties-property-value]
+==== Property value
+
+Enter the property value in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Alpha-numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Properties>>.
+
+*_Example:_* If you selected the property type *date* and imported a corresponding date as value, this date will be shown in the contact data record.
+
+'''
+
+[#mapping-field-properties-contact-id]
+==== Contact ID
+
+icon:warning[role="red"] [red]#Required field# if you want to update a property that is assigned to a certain contact.
+
+Enter the contact ID that is linked with the property in your CSV file.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Numeric
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Properties>>.
+
+'''
+
+[#mapping-field-properties-language]
+==== Language
+
+Enter the language abbreviation, e.g. `de` or `fr` in your CSV file when the property should be added in other languages than the system language.
+
+[TIP]
+The language has to be activated in the *Setup » Settings » Properties » Configuration* menu.
+<<data/internal-IDs#10, This page of the manual>> lists the languages abbreviations used in plentymarkets.
+
+*_Default value:_* No default value
+
+*_Permitted import values:_* Text
+
+You can find the result of the import in the back end menu <<crm/managing-contacts#300, CRM » Contacts » Open contact » Area: Properties>>.
+
+'''
+
+[#mapping-field-properties-delete]
+==== Delete (yes/no)
+
+Do you want to delete the property?
+
+*_Default value_*: `0`
+
+[[table-mapping-contacts-delete-property]]
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Property is _not_ deleted.
+
+|`1`
+|Property is deleted.
+|====
+
+'''
