@@ -7,25 +7,42 @@ include::{includedir}/_header.adoc[]
 :id: IS31LNZ
 :author: team-stock
 
-Mit einem Sync des Typs *Lager* importierst du neue Lagerorte oder aktualisierst bestehende. Um Lagerorte per ElasticSync zu erstellen oder zu aktualisieren, musst du ein Lager angelegt haben. +
+:einleitung-daten: pass:quotes[Lagerorten]
+:einleitung-weitere-info: pass:quotes[]
+:abgleich-tabelle: <<tabelle-abgleichfelder-lagerorte>>
+:abgleich-daten: pass:quotes[Lagerorten]
+:zuordnung-daten: pass:quotes[Lagerorten]
+:zuordnung-standardwert: pass:quotes[dein Lagerort]
 
-Diese Seite dient lediglich als Referenz und setzt voraus, dass du bereits über Grundkenntnisse des <<daten/daten-importieren/ElasticSync#, ElasticSync-Tools>> verfügst.
+include::./_textblocks/einleitung.adoc[]
 
-[#2231]
-== Felder für den Lagerortabgleich
+[IMPORTANT]
+.Voraussetzungen
+====
+Um Lagerorte per Import zu erstellen oder zu aktualisieren, musst du bereits ein Lager angelegt haben. +
+====
 
-In <<tabelle-abgleichfelder-lagerorte>> werden Felder erläutert, die für den Abgleich von Lagerorten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+[TIP]
+.Praxisbeispiel: Lagerorte anpassen
+====
+Hin und wieder kommt es vor, dass Daten von Lagerorten angepasst werden müssen. Wie du Lagerdaten exportierst, diese wie gewünscht anpasst und schließlich wieder importierst, ist in <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-lagerorte#, diesem Praxisbeispiel>> Schritt für Schritt erläutert.
+====
+
+[#10]
+== Abgleichfelder
+
+include::./_textblocks/abgleich.adoc[]
 
 Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte findest du auf der Handbuchseite link:https://knowledge.plentymarkets.com/warenwirtschaft/lager-einrichten[Lager einrichten^]{nbsp}icon:external-link[].
 
 [[tabelle-abgleichfelder-lagerorte]]
 .Abgleichfelder für Lagerortimport
-[cols="2,2"]
+[cols="1,3"]
 |====
 |Abgleichfeld |Erläuterung
 
 |Level name
-|Name der Ebene, z.B. R01
+|Name der Ebene, z.B. R01 für Regal 01
 
 |Level ID
 |ID der Ebene
@@ -34,91 +51,252 @@ Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte
 |ID des Lagerorts
 
 |WarehouseLocationName
-|Name des Lagerorts ohne Pfad
+|Name des Lagerorts, z.B. SL1 für Storage location 1
 |====
 
-[#2232]
-== Felder für die Lagerortzuordnung
+[#20]
+== Zuordnungsfelder
 
-In <<tabelle-zuordnungsfelder-lagerorte>> werden Felder erläutert, die für die Zuordnung von Lagerortdaten zur Verfügung stehen. Anhand des gewählten Abgleichfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+include::./_textblocks/zuordnung.adoc[]
 
 Weitere Informationen zu den Begrifflichkeiten Dimensionen, Ebenen und Lagerorte findest du auf der Handbuchseite link:https://knowledge.plentymarkets.com/warenwirtschaft/lager-einrichten[Lager einrichten^]{nbsp}icon:external-link[].
 
+[#30]
+=== Lagerorte
 
-[[tabelle-zuordnungsfelder-lagerorte]]
-.Zuordnungsfelder für Lagerortimport
-[cols="1,1,2"]
+[#40]
+==== Lagerort-ID
+
+Gib die ID des Lagerorts in deine CSV-Datei ein. Dies gilt nur für bestehende Lagerorte.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Einrichtung » Waren » Lager » _Lager wählen_ » Lagerorte*.
+
+'''
+
+[#50]
+==== Ebenen-ID
+
+Gib die ID der Ebene in deine CSV-Datei ein. Eine Ebene ist eine konkrete Dimension, wie z.B. Regal 2 oder Fach 14.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+'''
+
+[#60]
+==== Lagerortname
+
+Gib den Namen des Lagerorts in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Einrichtung » Waren » Lager » _Lager wählen_ » Lagerorte*.
+
+'''
+
+[#70]
+==== Zweck
+
+Welchen Verwendungszweck hat der Lagerort?
+
+*_Standardwert_*: Entnahme
+
+[[tabelle-zuordnung-zweck-lagerorte]]
+[cols="1,1"]
 |====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+|Zulässige Importwerte in CSV-Datei |Optionen in der Dropdown-Liste im Backend
 
-3+^| *Lagerorte*
+|`Nachschub`
+|Nachschub
 
-|Lagerort-ID +
-(nur bei bestehenden Lagerorten)
-|Numerisch
-|ID des Lagerorts
+|`Entnahme`
+|Entnahme
 
-|Ebenen-ID
-|Numerisch
-|ID der Ebene
+|`Wareneingang`
+|Wareneingang
 
-|Lagerortname
-|Alphanumerisch
-|Name des Lagerorts ohne Pfad
+|`Retoure`
+|Retoure
 
-|Zweck
-|Nachschub +
- Entnahme +
- Wareneingang +
- Retoure +
- Ladenlokal +
- Umlagerung +
- Box
-|Verwedungszweck des Lagerorts
+|`Ladenlokal`
+|Ladenlokal
 
-|Status
-|Aktiv +
- Inaktiv +
- Für die Bestandsaufnahme gesperrt +
- Gesperrt +
- Reserviert
-|Status des Lagerorts
+|`Umlagerung`
+|Umlagerung
 
-|Position
-|Numerisch
-|Position des Lagerorts (Laufweg)
-
-|Notizen
-|Alphanumerisch
-|Notizen zum Lagerort
-
-|Lagerort löschen
-|Yes +
- No
-a|Löschfunktion für den Lagerort +
-
-* Yes = Lagerort löschen +
-* No = Lagerort nicht löschen
-
-3+^| *Ebenen der Lagerorte*
-
-|ID der Elternebene
-|Numerisch
-|ID der Elternebene
-
-|Dimension ID
-|Numerisch
-|ID der Dimension, z.B. Regal
-
-|Position der Ebene
-|Numerisch
-|Position der Ebene
-
-|Name der Ebene
-|Alphanumerisch
-|Name der Ebene, z.B. R01, R02 usw.
-
+|`Box`
+|Box (für die <<app/funktionen/lagerverwaltung/rollende-kommissionierung#, Rollende Kommissionierung>>)
 |====
+
+Das Ergebnis des Imports findest du im Backend im Menü <<warenwirtschaft/lager-einrichten#intable-zweck, Einrichtung » Waren » Lager » _Lager wählen_ » Lagerorte>>.
+
+'''
+
+[#80]
+==== Status
+
+Welchen Status hat der Lagerort?
+
+*_Standardwert_*: Aktiv
+
+[[tabelle-zuordnung-status-lagerorte]]
+[cols="1,1"]
+|====
+|Zulässige Importwerte in CSV-Datei |Optionen in der Dropdown-Liste im Backend
+
+|`Aktiv`
+|Aktiv
+
+|`Inaktiv`
+|Inaktiv
+
+|`Für die Bestandsaufnahme gesperrt`
+|Für die Bestandsaufnahme gesperrt
+
+|`Gesperrt`
+|Gesperrt
+
+|`Reserviert`
+|Reserviert
+|====
+
+Das Ergebnis des Imports findest du im Backend im Menü <<warenwirtschaft/lager-einrichten#intable-status, Einrichtung » Waren » Lager » _Lager wählen_ » Lagerorte>>.
+
+'''
+
+[#90]
+==== Position
+
+Gib die Position des Lagerorts in deine CSV-Datei ein. Die Position wird beispielsweise für den Laufweg beim Picken von Ware benötigt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Einrichtung » Waren » Lager » _Lager wählen_ » Lagerorte*.
+
+'''
+
+[#100]
+==== Lagerorttyp
+
+Gib den Lagerorttyp je nach Artikelgröße in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+[[tabelle-zuordnung-lagerorttyp-lagerorte]]
+[cols="1,1"]
+|====
+|Zulässige Importwerte in CSV-Datei |Optionen in der Dropdown-Liste im Backend
+
+|`none`
+|Kein Typ ausgewählt
+
+|`small`
+|Klein
+
+|`medium`
+|Mittel
+
+|`large`
+|Groß
+
+|`europallet`
+|Europalette
+|====
+
+Das Ergebnis des Imports findest du im Backend im Menü <<warenwirtschaft/wareneingaenge-verwalten#intable-lagerorttyp, Artikel » Artikel bearbeiten » Artikel öffnen » Tab: ID einer Variante » Tab: Lager » Spalte: Lagerorttyp>>.
+
+'''
+
+[#110]
+==== Notizen
+
+Gib Notizen zum Lagerort in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü <<warenwirtschaft/lager-einrichten#intable-notizen, Einrichtung » Waren » Lager » _Lager wählen_ » Lagerorte » _Lagerort wählen_>>.
+
+'''
+
+[#120]
+==== Lagerort löschen
+
+icon:warning[role="red"] [red]#Nur bei Lagerorten ohne Bestand möglich#
+
+Möchtest du den Lagerort löschen?
+
+*_Standardwert_*: `No`
+
+[[tabelle-zuordnung-lagerort-loeschen]]
+[cols="1,1"]
+|====
+|Zulässige Importwerte in CSV-Datei |Ergebnis im Backend
+
+|`No`
+|Lagerort wird _nicht_ gelöscht
+
+|`Yes`
+|Lagerort wird gelöscht
+|====
+'''
+
+[#130]
+=== Ebenen der Lagerorte
+
+[#140]
+==== ID der Elternebene
+
+Gib die übergeordnete Ebenen-ID in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+'''
+
+[#150]
+==== Dimension ID
+
+Gib die ID der Dimension, z.B. des Regals, in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+'''
+
+[#160]
+==== Position der Ebene
+
+Gib die Position der Ebene in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+'''
+
+[#170]
+==== Name der Ebene
+
+Gib den Namen der Ebene, z.B. RO1, RO2 usw., in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+'''
 
 [IMPORTANT]
 .Ebenen-ID der kleinsten Dimension verwenden
@@ -149,7 +327,7 @@ Wählt man hingegen die ID einer höheren Dimension, sind die Lagerorte nicht me
 [#2240]
 == Lagerort anpassen
 
-Du kannst mit ElasticSync Lagerorte anpassen und z.B. den Namen oder die Position des Lagerortes ändern.
+Du kannst mit ElasticSync Lagerorte anpassen und z.B. den Namen oder die Position des Lagerorts ändern.
 
 [.instruction]
 Lagerort anpassen:
