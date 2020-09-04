@@ -22,7 +22,7 @@ In {tabelle-preisportal} findest du spezifische Hinweise zu den Einstellungen, F
 .Formateinstellungen und empfohlene Artikelfilter für das Format *{exportformat}*
 [cols="1,3"]
 |====
-| *Einstellung* | *Erläuterung*
+| Einstellung | Erläuterung
 
 2+| *Einstellungen*
 
@@ -126,14 +126,29 @@ endif::[]
 | Zielland aus der Dropdown-Liste wählen.
 
 | *Barcode*
-| ASIN, ISBN oder eine GTIN aus der Dropdown-Liste wählen. +
+|
+ifdef::barcode[]
+Diese Option ist für dieses Format nicht relevant.
+endif::[]
+ifndef::barcode[]
+ASIN, ISBN oder eine GTIN aus der Dropdown-Liste wählen. +
 *_Hinweis:_* Der gewählte Barcode muss mit der oben gewählten Auftragsherkunft verknüpft sein. Sonst wird der Barcode nicht exportiert.
+endif::[]
 
 | *Bild*
-a| *Position 0* oder *Erstes Bild* wählen. +
+a|
+ifdef::first-image[]
+*Erstes Bild* wählen.
+endif::[]
+ifdef::select-image[]
+*Position 0* oder *Erstes Bild* wählen. +
 
 * *Position 0* = Ein Bild mit der Position 0 wird übertragen.
 * *Erstes Bild* = Das erste Bild wird übertragen.
+endif::[]
+ifndef::first-image,select-image[]
+Diese Option ist für dieses Format nicht relevant.
+endif::[]
 
 | *Bildposition des Energieetiketts*
 |
@@ -214,14 +229,24 @@ Diese Option ist für dieses Format nicht relevant.
 endif::[]
 
 | *Artikelverfügbarkeit*
-| Option *überschreiben* aktivieren und in die Felder *1* bis *10*, die die ID der Verfügbarkeit darstellen, Artikelverfügbarkeiten eingeben. So werden die Artikelverfügbarkeiten, die im Menü *Einrichtung » Artikel » Verfügbarkeit* eingestellt wurden, überschrieben.
+|
+ifdef::overwrite-activate[]
+Diese Einstellung muss aktiviert sein, da {preisportal} nur spezifische Werte akzeptiert, die hier eingegeben werden müssen. +
+Weitere Informationen dazu im Kapitel *Verfügbare Spalten der Exportdatei*.
+endif::[]
+ifdef::overwrite[]
+Option *überschreiben* aktivieren und in die Felder *1* bis *10*, die die ID der Verfügbarkeit darstellen, Artikelverfügbarkeiten eingeben. So werden die Artikelverfügbarkeiten, die im Menü *Einrichtung » Artikel » Verfügbarkeit* eingestellt wurden, überschrieben.
+endif::[]
+ifndef::overwrite-activate,overwrite[]
+Diese Option ist für dieses Format nicht relevant.
+endif::[]
 |====
 
 ////
 :exportformat: xxx-Plugin
 :preisportal: xxx
 :tabelle-preisportal: <<#export-format>>
-:fileformat: xxxx
+:fileformat: pass:quotes[*.csv* oder *.txt*]
 
 :preview:
 :description:
@@ -233,6 +258,8 @@ endif::[]
 :rrp:
 :shipping:
 :vat:
+:first-image: OR :select-image:
+:overwrite: OR :overwrite-activate:
 
 include::[]
 ////
