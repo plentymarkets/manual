@@ -13,23 +13,22 @@ This page provides information about OTTO market, OTTO's marketplace model.
 [#100]
 == OTTO Market
 
-OTTO market is OTTO's marketplace. You are shown as the seller of your products. You also manage the customer communication yourself. +
+OTTO market is OTTO's marketplace. You are shown as the seller of your products. However, communication with customers is managed by OTTO. +
 
 Connecting to this market allows for the following automatic processes to take place:
 
 * Order import every 15 minutes
-* Stock synchronisation every 15 minutes
-* Daily update of item data
-* Hourly import of return announcements by customers
-
+* Stock synchronisation every 15 minutes +
+*_Note:_* If stock for a variation drops to 0, this variation is deactivated automatically after 15 days. This is done to protect the product’s ranking on OTTO Market. If new stock is booked for such a variation, the variation is reactivated during the nightly item export.
+* Update of item data including price synchronisation once every night
+* Import of return announcements by customers once per hour
+* Update of category groups/catalogue templates twice a week
+* Update of the brands list every three hours
 
 [#200]
 == Setting up an account
 
-The basic settings for OTTO Market are carried out in the *Setup » Assistants » Omni-Channel* menu with the *OTTO Market basic settings* assistant. With this assistant, you set up your OTTO Market account in plentymarkets. You enter your API access data in this assistant, activate the data exchange with OTTO market and link shipping service providers. Additionally, you define whether return announcements by customers should be imported into plentymarkets. +
-
-In order to start the assistant, go to *Setup » Assistants » Omni-Channel* and click on the *OTTO Market Basic settings* assistant. The assistant opens and you can start setting up your account.
-
+include::../_textblocks/instructions/otto-market-basic-assistant.adoc[]
 
 [#275]
 == Activating the order referrer
@@ -46,9 +45,11 @@ include::../_textblocks/instructions/activate-referrer.adoc[]
 :market-availability: OTTO Market
 :option-availability: OTTO Market
 
-include::../_textblocks/instructions/variation-availability.adoc[tags=availability;!*]
+include::../_textblocks/instructions/variation-availability.adoc[]
 
 // Web API NOT required!
+
+If you deactivate the market availability for OTTO Market of a variation in the *Item » Edit item »* _Open item_ *» Tab: Variation ID» Tab: Availability*, the variation is deactivated on OTTO Market within 15 minutes. If you reactivate the availability of such a variation, the variation is only reactivated on OTTO Market during the nightly item export.
 
 [#350]
 == Setting the availability for images
@@ -78,51 +79,12 @@ include::../_textblocks/instructions/define-sales-price.adoc[]
 :paymentmethod: Otto Payment
 :folder: International
 
-include::../_textblocks/instructions/activate-payment-method.adoc[tags=!real-name;!real-client]
+include::../_textblocks/instructions/activate-payment-method.adoc[]
 
 [#450]
 == Setting up the item export
 
-Item data is exported to OTTO Market via catalogue templates. Catalogues are created with the *OTTO Market Creating catalogues* assistant in the *Setup » Assistants » Omni-Channel* menu. For further information about catalogues, refer to the <<data/exporting-data/managing-catalogues#, Managing catalogues>> page. +
-
-In catalogues, you link your item data saved in plentymarkets to OTTO Market data fields. The mandatory fields for each OTTO category group are already linked in the assistant. Afterwards, open the catalogue that you created with the assistant to link further optional OTTO Market data fields not marked with an asterisk with item data saved in plentymarkets. This way, you can describe your items in more detail. Your items are more likely to be sold with a detailed description. For more information about the plentymarkets data sources that can be linked, refer to the <<data/exporting-data/managing-catalogues#_mapping_data_sources, Mapping data sources>> chapter.
-
-[.instruction]
-Linking data fields in the catalogue:
-
-. Go to *Data » Catalogues*.
-. Click on the OTTO Market catalogue. +
-→ The catalogue opens. +
-→ The market's data fields are displayed on the left-hand side. +
-*_Tip:_* Mandatory fields are marked with an asterisk. Mandatory fields were already linked in the *OTTO Market Creating catalogues* assistant.
-. Select a plentymarkets data source for the market's data fields from the drop-down list.
-. Click on *Add source* to assign another plentymarkets data source to a data field. +
-→ A new line is displayed. +
-*_Note:_* Only one value is exported even if you assign more than one data source to a data field. The data is checked in the order in which you assigned it. This means that if the first data field does not provide a value, the second data field is exported etc.
-. Link the desired data fields.
-. *Save* (icon:save[role="green"]) the settings.
-
-An example of how to link the data field *Stock* to data saved in plentymarkets is provided below. The data field *Stock* defines the warehouse from which stock should be exported to OTTO Market.
-
-[.instruction]
-Linking the data field *Stock*:
-
-. Go to *Data » Catalogues*.
-. Click on the catalogue. +
-→ The catalogue opens.
-. Select a plentymarkets data source for the OTTO Market data field from the *Source* drop-down list. To do so, expand the plentymarkets data source *Stock*. +
-→ All warehouses saved in plentymarkets are displayed in the drop-down list.
-. Select the warehouse which should be used to export stock to OTTO Market and click on *Select* (icon:check-square[role="green"]). +
-*_Tip:_* If you would like to transfer stock from multiple warehouses to OTTO Market, click on *Add source* (icon:link[role="yellow"]) and add more warehouses.
-. *Save* (icon:save[role="green"]) the settings. +
-→ If you do not link the data field *Stock* to a warehouse, then the sum of the net stock of all distribution warehouses (data source *Virtual warehouse*) will be exported to OTTO Market.
-
-[IMPORTANT]
-====
-.Link all mandatory fields
-The mandatory fields for the templates are marked with an asterisk. To make sure that all necessary item data is provided, link at least the mandatory fields. For OTTO Market, mandatory fields are already linked in the *OTTO Market Creating catalogues* assistant.
-====
-
+include::../_textblocks/instructions/otto-market-catalog-assistant.adoc[]
 
 [#475]
 == Linking variations with OTTO category groups
@@ -251,7 +213,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 [#800]
 === Sending order cancellations to OTTO
 
-Set up an <<automation/event-procedures#, event procedure>> to inform OTTO Market about the cancellation of an order. It might be required to cancel orders because of different reasons. For example, if you as seller cancel an order, select *Status [8] Cancelled]*. If the customer cancels an order, select *Status [8.1] Cancelled by customer*.
+Set up an <<automation/event-procedures#, event procedure>> to inform OTTO Market about the cancellation of an order. It might be required to cancel orders because of different reasons. For example, if you cancel an order, select *Status [8] Cancelled]*. If the customer cancels an order, select *Status [8.1] Cancelled by customer*.
 
 :table-event-procedure: <<#order-cancellation-otto>>
 
@@ -283,7 +245,46 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 [#900]
 === Sending returns to OTTO
 
-Set up an <<automation/event-procedures#, event procedure>> to inform OTTO Market about a return.
+In order that OTTO Market accepts the return, you have to create an order of the type *Credit note*. Set up an <<automation/event-procedures#, event procedure>> for that.
+
+[[image-return-otto-credit-note]]
+.Event procedure to create an order of the type *Credit note*
+image::markets/otto/assets/otto-market-return-credit-note.png[width=640, height=360]
+
+
+:table-event-procedure: <<#return-otto-credit-note>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[return-otto-credit-note]]
+.Event procedure to create an order of the type *Credit note*
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select an event, for example *Order change: Status change* +
+*_Note:_* Select a status that suits your workflow. Select the status *[9.11] Send return to OTTO*, for example.
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Return*
+
+| *Filter 2*
+| *Order > Referrer*
+| *OTTO Market*
+
+| *Procedure*
+| *Order > Create credit note (order)*
+|
+|====
+
+Set up another <<automation/event-procedures#, event procedure>> to inform OTTO Market about a return.
+
+[[image-return-otto]]
+.Event procedure to send returns to OTTO Market
+image::markets/otto/assets/otto-market-accept-return.png[width=640, height=360]
 
 :table-event-procedure: <<#return-otto>>
 
@@ -296,12 +297,12 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| *Order generation: New return*
+| Select an event, for example *Order generation: New credit note*.
 |
 
 | *Filter 1*
 | *Order > Order type*
-| *Return*
+| *Credit note*
 
 | *Filter 2*
 | *Order > Referrer*
@@ -309,7 +310,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 
 | *Procedure*
 | *Plugins > Retoure an OTTO melden* (Send return to OTTO)
-|
+| *_Note:_* The procedure *Send return to OTTO* triggers a credit note and the buyer receives a refund. The credit note document created by OTTO is automatically attached to the order of the type *Credit note*.
 |====
 
 [#1000]
@@ -329,7 +330,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 
 | *Event*
 |Select an event, for example *Order change: Status change* +
-*_Note:_* Select a status that suits your workflow. For example, you can create the status *[8.2] Reject OTTO return*.
+*_Note:_* Select a status that suits your workflow. For example, you can create the status *[9.12] Reject OTTO return*.
 |
 
 | *Filter 1*
@@ -354,7 +355,7 @@ This chapter informs you how orders are processed at OTTO Market.
 [#1100]
 === Order import
 
-OTTO Market orders are imported into plentymarkets with status *[3] Waiting for payment*. After an order was confirmed by OTTO Market, it changes to status *[5] Shipment process started*. A payment is created for the order in plentymarkets and the order is marked as *paid*. If customers paid an OTTO Market order per bank transfer, it might take longer to confirm the order than for other payment methods. In plentymarkets, the payment method is always *OTTO Payment*. +
+OTTO Market orders are imported into plentymarkets with status *[3] Waiting for payment*. After an order was confirmed by OTTO Market, the order changes to status *[5] Shipment process started*. A payment is created for the order in plentymarkets and the order is marked as *paid*. If customers paid an OTTO Market order per bank transfer, it might take longer to confirm the order than for other payment methods. In plentymarkets, the payment method is always *OTTO Payment*. +
 
 If customers do not pay for an order, the order will be cancelled by OTTO Market after some time. A cancellation will be sent to plentymarkets. In plentymarkets, the unpaid order automatically changes to status *[8] Cancelled*.
 
@@ -388,9 +389,9 @@ You can find out why some of your items are not exported to OTTO Market and ther
 . In the *Level* drop-down list, enter both *warning* and *error* one after the other.
 . Open the logs containing the message *Variation invalid*. +
 → In the log, you will receive the variation ID and the reason for the rejection or the missing characteristic. +
-→ This example shows variation ID 30170 and the missing productDescription.brand. This means that the manufacturer or the brand is missing.
+*_Tip:_* This example shows variation ID 30170 and the missing productDescription.brand. This means that the manufacturer or the brand is missing.
 . Next, search for the variation listed in the *log* to make sure that you will find the correct item. +
-→ The manufacturer can be found in the *Global* tab of a variation.
+*_Tip:_* The manufacturer can be found in the *Global* tab of a variation.
 . In the *Audio » Radios* catalogue, the brand *AudioAffairs* is not mapped. This leads to the item being rejected and causes the error message.
 . Click on *Add brand* (icon:plus-square[role="green"]) to add the brand *AudioAffairs*.
 +
@@ -410,7 +411,7 @@ An example of a DHL return label is provided below. The label contains all neces
 .DHL return label
 image::markets/otto/assets/dhl-return-label.png[DHL return label]
 
-How do I find orders in my plentymarkets system?::
+How do I find OTTO Market orders in my plentymarkets system?::
 As this question frequently arises in the plentymarkets forum, a short explanation is provided below.
 +
 The *PositionID* (example: 715e9369-01e3-4d09-ae91-8688dfa139b2) and the *SalesOrderID* (example: 4245eac7-4647-4f76-8c48-261afb19aa96) are frequently mentioned in the plentymarkets forum. However, these IDs are not relevant for you as seller. You cannot see these IDs. They serve to identify an order and the order positions in the plentymarkets database.
@@ -493,7 +494,7 @@ Make sure that the source saved in the catalogue is linked to the item. For the 
 +
 * *productDescription.category*
 +
-This error indicates that the category link in the catalogue is missing. In the catalogue, check whether at least one category of the desired variation is linked to an OTTO Market category.
+This error indicates that the category mapping in the catalogue is missing. In the catalogue, check whether at least one category of the desired variation is linked to an OTTO Market category.
 +
 * Error messages concerning order processing: *Carrier ID (X) not mapped in OTTO market config.*
 +

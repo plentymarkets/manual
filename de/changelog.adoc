@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 04. Juni 2020
-:endWeekDate: 10. Juni 2020
-:nav-alias: Changelog 10. Juni 2020
+:startWeekDate: 10. September 2020
+:endWeekDate: 16. September 2020
+:nav-alias: Changelog 16. September 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
@@ -26,7 +26,10 @@ stable::
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
+[discrete]
+=== Aufträge
 
+* Die Texte der Statushistorie wurden um die Information erweitert, von wo bzw. wodurch eine Statusänderung verursacht wurde. So wäre die Information ersichtlich, ob die Änderung z.B. durch ein Plugin (Ereignisaktion) oder durch ElasticSync ausgelöst wurde.
 
 '''
 
@@ -36,91 +39,39 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
+=== Amazon VCS
+
+* Beim Generieren von internen Rechnungs- und Gutschriftsdokumenten beim Abgleich mit VCS wird das Datum des Dokuments nicht mehr aus dem VCS-Bericht übernommen. Stattdessen wird das aktuelle Datum verwendet. Dies macht den Prozess weniger anfällig bei Störungen aufgrund der Rückdatierung in eventuell schon abgeschlossene Monate und erlaubt eine insgesamt sauberere Finanzbuchhaltung.
+
+[discrete]
 === Aufträge
 
-* In einer Nachbestellung kann die Währung und der Wechselkurs auch nach dem Auslösen der Bestellung angepasst werden.
-
-[discrete]
-=== bol.com
-
-* Mit diesem Update wird jede Übertragung zu bol.com-Angeboten unter Daten » Log festgehalten.
-+
-Generell sind die Logs unter dem Identifikator bol.com zu finden. Zusätzlich stehen folgende Suchparameter zur Eingrenzung zur Verfügung:
-+
-[cols="1,3"]
-.Referenztyp: action
-|===
-
-|*Referenzwert*
-|*Prozess*
-
-|`CreateOffer`
-|Anlage von Angeboten
-
-|`CheckOfferStatus`
-|Überprüfung der erfolgreichen Anlage von Angeboten
-
-|`DeleteOffer`
-|Löschung von Angeboten
-
-|`UpdateOffer`
-|Aktualisierung der Lieferzeit, des Liefertyps (FBB, FBR), der SKU und des Aktivitätsstatus von Angeboten
-
-|`UpdateOfferPrices`
-|Aktualisierung von Preisen der Angebote
-
-|`UpdateOfferStock`
-|Aktualisierung von Beständen der Angebote
-
-|===
-+
-Alle Fehlermeldungen, die durch Fehler im Prozess oder fehlerhafte API-Anfragen verursacht werden, sind außerdem über die Referenztypen `variationId` und `sku` mit entsprechenden Werten zu finden.
-+
-Sollte wider Erwarten der Status, den wir von bol.com als Antwort auf unsere Anfrage erhalten, als fehlerhaft markiert sein, werden entsprechende Meldungen in 50er-Schritten gesammelt und zusammen geloggt. Die Nachricht lautet dann `Fehlermeldungen Seite _X_. Öffne für Liste fehlgeschlagener Varianten.`
-+
-Erfolgsmeldungen werden in 100er-Schritten gesammelt und sind unter der Nachricht `Erfolgsmeldungen Seite _X_. Öffne für Liste übertragener Varianten.` zu finden.
-+
-Beim Klick auf diese Meldungen erhält man die Liste der Einträge mit der jeweiligen Varianten-ID, der SKU und auch der ID des Prozess-Status von bol.com, um dies im Nachgang überprüfen zu können.
-Bei der Aktualisierung von Preisen und Beständen werden in diesen Einträgen zusätzlich die jeweils übertragenen Preise bzw. Bestände festgehalten.
-
-[discrete]
-=== eBay
-
-* Unter *Einrichtung » Listings » Kaufabwicklung* wurde die Option *Offene eBay-Aufträge automatisch zusammenfassen* umbenannt und ihr wurde ein eindeutigerer Name gegeben. Die Option heißt ab nun *Auch Aufträge ohne abgeschlossene Kaufabwicklung importieren*.
-+
-An der Funktionalität und an den Werten hat sich nichts verändert. Weitere Informationen zu dieser Funktionalität findest du auf der Handbuchseite <<maerkte/ebay/ebay-einrichten#2600, eBay einrichten>>.
+* Im Menü *Aufträge » Fulfillment » Rechnungen erzeugen* ist es möglich Rechnungen für Aufträge, die sich in einem bestimmten Status befinden, zu generieren. Sofern dort der Status `7` (*Warenausgang gebucht*) ausgewählt wird, wird im Hintergrund nach Aufträgen gesucht, für die der Warenausgang heute, am aktuellen Datum, ausgeführt wurde. Dies war bisher nicht ersichtlich. Deswegen wird jetzt der Hinweis *Warenausgang: HEUTE* angezeigt.
 
 [discrete]
 === OTTO
 
-:otto-master-date: 05.06.2020
-:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/rNiZG8J96qBYIIuIA2V3zwnMoES.xlsx
+:otto-master-date: 11.09.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/90HEFdIoawf1JJ960rRpA09thnh.xlsx
 
 include::changelog/_textblocks/otto-master-file.adoc[]
 
 [discrete]
-=== OTTO market
+=== Plugins
 
-* Wir haben den Prozess zum Abgleich der Marken von OTTO Market überarbeitet und die Performance verbessert. Zusätzlich wurde das Aktualisierungsintervall von 2-mal wöchentlich auf alle 3 Stunden erhöht.
+* Assistenten von Plugins werden jetzt auf einzelne Plugin-Sets bezogen ausgeführt. Das bedeutet du musst nicht mehr dein Backend-Plugin-Set ändern, um die richtige Version des Assistenten zu durchlaufen. Dadurch ist auch gewährleistet, dass Konfigurationen des Plugins in anderen Plugin-Sets nicht durch den Assistenten überschrieben werden.
++
+Im Zuge dieser Anpassung haben wir auch die Ladezeiten verbessert.
 
 [discrete]
-=== Service-Center
+=== Real.de
 
-* Das Service-Center wurde abgeschaltet. Die Funktionen aus dem Service-Center wurden in andere Bereiche umgezogen.
-+
-Du findest link:https://forum.plentymarkets.com/t/marketplace-neue-mein-konto-ansicht-new-my-account-view/561718[folgende Funktionalität^] im Mein Konto-Bereich:
+* Die Auswahl der Versanddienstleister unter *Einrichtung » Märkte » real.de » Einstellungen » Konto aufklappen » Bereich: Auftragseinstellungen » Option: Versanddienstleister verknüpfen* wurde aktualisiert.
 
-** Verträge verwalten
-** Kontaktdaten verwalten
-** Zugangsdaten verwalten
-** Zahlungsarten verwalten
-** Rechnungen einsehen
+[discrete]
+=== Zahlungen
 
-+
-Auch link:https://forum.plentymarkets.com/t/partnersysteme-in-mein-konto-bereich-buchbar-partner-systems-bookable-in-my-account-area/594338/2[Partnersysteme können ab jetzt im Mein Konto-Bereich gebucht^] werden. +
-Domains können ab jetzt im Backend konfiguriert werden. Weitere Informationen dazu findest du auf der Handbuch <<business-entscheidungen/systemadministration/domains#50, Domains>>. +
-SSL-Zertifikate können ab jetzt im Backend bestellt und verwaltet werden. Weitere Informationen dazu findest du ebenfalls auf der Handbuchseite <<business-entscheidungen/systemadministration/domains#ssl-zertifikat, Domains>> und dem Beitrag link:https://forum.plentymarkets.com/t/leitfaden-ssl-bestellung/214417[Leitfaden: SSL-Bestellung im Forum^]. +
-FTP-Zugänge können ab jetzt im Backend eingerichtet werden. Weitere Informationen dazu findest du auf der Handbuchseite <<daten/ftpz-zugang#_ftp_zugang_einrichten, FTP-Zugang einrichten>>.
+* Im Format `Zahlungsbelege` unter *Daten » Spezialexport* wurden nur die MwSt. ausgegeben, die im Standard Umsatzsteuersatz definiert sind. Dies wurde geändert, die MwSt. wird nun immer angezeigt.
 
 '''
 
@@ -130,34 +81,29 @@ FTP-Zugänge können ab jetzt im Backend eingerichtet werden. Weitere Informatio
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Amazon VCS
+
+* Bei VCS Lite bzw. VCS plentymarkets konnten FBA-Gutschriften nicht automatisch importiert werden.
+Dieses Verhalten wurde nun behoben. Gutschriften, für die noch nicht anderweitig Dokumente erstellt und zu Amazon hochgeladen wurden, werden automatisch importiert.
+
+[discrete]
 === Aufträge
 
-* Es kam in der Auftragssuche zu dem Fehler `Inf and NaN cannot be JSON encoded`, wenn eine Position einen Preis von 0 und einen Rabatt hatte. Das wurde behoben.
+* In der Vergangenheit wurden die Einstellungen nicht korrekt gespeichert, wenn Tabellenspalten in der neuen Auftrags-UI konfiguriert wurden. Dies wurde behoben. Jetzt wird die Spaltenkonfiguration korrekt gespeichert und übernommen.
+* In der Vergangenheit wurde keine Fehlermeldung angezeigt, wenn du das Eigner-Feld in der neuen Auftrags-UI leer gelassen hast. Dies wurde behoben. Da das Eigner-Feld eine Pflichteingabe ist, wird nun eine Fehlermeldung angezeigt, wenn du das Eigner-Feld leer lässt.
+* Die Infoboxen in Nachbestellungen werden jetzt nach dem Speichern nicht auf 0 gesetzt.
+* Es werden jetzt konkrete Fehlermeldungen ausgegeben, wenn eine Warenbewegung nicht gebucht werden kann.
+* Der Fehler `Unprocessable Entity` beim setzen des Bestelldatums wurde behoben.
 
 [discrete]
-=== bol.com
+=== Dokumente
 
-* Im Format *BolItemExport* des Elastischen Exports wurde bei Systemen mit mehreren Mandanten teilweise die Spalte *Product Classification* nicht gefüllt, obwohl die Kategorieverknüpfung unter *Einrichtung » Märkte » bol.com » Kategorieverknüpfung* korrekt gepflegt wurde. Dieses Verhalten wurde nun behoben.
-
-[discrete]
-=== ElasticSearch
-
-* Durch die Suchen & Ersetzen-Funktion geänderte Datenfelder wurden nicht im ElasticSearch-Index aktualisiert. Diesen Fehler haben wir behoben, so dass vorgenommene Änderungen nun auch wieder aktualisiert werden.
+* Auf dem Dokument wurde der Name des Bankeignern nichts ausgegeben. Dies wurde behoben.
 
 [discrete]
-=== Etiketten
+=== Ereignisaktionen
 
-* Es lassen sich nun auch Etiketten erstellen, ohne das ein Verkaufspreis für den Standardmandanten mit der Variante verknüpft ist.
-
-[discrete]
-=== Versand
-
-* Aufgrund einer Änderung funktionierte die Versandanmeldung für die Kanalinseln Guernsey und Jersey nicht mehr. Es kam zu einer Fehlermeldung, da die Daten für die Zolldokumente nicht mehr an den Versanddienstleister übertragen wurden. Dieses Fehlverhalten wurde korrigiert.
-
-[discrete]
-=== Warenwirtschaft
-
-* Die Ursache der Fehlermeldung `No criteria registered for filter with Content` im Log wurde behoben.
+* Bei der Anlage einer neuen Retouren über den Webshop, kam es zwischenzeitlich dazu, dass das Ereignis *Neue Retoure (durch Kunden)* nicht mehr ausgelöst wurde. Wodurch es zu dem Verhalten kam, dass die konfigurierten Ereignisaktionen nicht ausgeführt wurden. Dieses Verhalten wurde behoben, so dass die Ereignisaktionen wieder wie gewohnt laufen.
 
 --
 
@@ -171,65 +117,52 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-== Amazon
+=== Aufträge
 
-* Ab sofort kannst du Variantendaten auch per Katalog an Amazon übertragen. Pro Kombination aus Amazon-Plattform und Flatfile erstellst du einen Katalog.
-+
-Beim Erstellen der Kataloge hilft dir der Assistent *Kataloge erstellen - Amazon* im Menü *Einrichtung » Assistenten » Omni-Channel*. In diesem Assistenten nimmst du die Katalogeinstellungen vor und verknüpfst alle Pflichtfelder der gewählten Flatfile. Für diese Pflichtfelder kannst du außerdem bei Bedarf direkt im Assistenten ganz bequem neue Eigenschaften anlegen. Optionale Datenfelder einer Flatfile verknüpfst du im Menü Daten » Kataloge, nachdem du den Assistenten abgeschlossen hast.
-+
-Deine Amazon-Kataloge kannst du im Menü *Einrichtung » Märkte » Amazon » Datenaustausch » Datenexport* als CSV-Datei herunterladen. So kannst du zum Beispiel die Verknüpfungen prüfen, bevor du den Export aktivierst.
-+
-Beachte, dass Kataloge keine Merkmale und Freitextfelder unterstützen. Nur Eigenschaften können per Katalog an Amazon übertragen werden. Deshalb bleibt der alte Datenexport auch weiterhin verfügbar.
-+
-Weitere Informationen zum Erstellen von Katalogen und dem Übertragen der Daten zu Amazon findest du auf der Seite <<maerkte/amazon/variantendaten-exportieren#, Amazon-Variantenexport per Katalog einrichten>>. Wenn du noch keine Erfahrung mit Katalogen hast, kannst du dir auf der Seite <<daten/daten-exportieren/kataloge-verwalten#, Kataloge verwalten>> einen ersten Überblick verschaffen.
+* In der neuen Auftragsanlage musste die Zahlungsart bisher aus einer Dropdown-Liste ausgewählt werden. Dies wurde geändert. Jetzt kann die Zahlungsart direkt eingegeben werden, so dass man die passende Zahlungsart aus den Vorschlägen auswählen kann.
+* Bei der neuen Auftragsanlage wurden die Spalten *Aktiv/Inaktiv* und *Verfügbarkeit* zur Tabelle der Artikelsuche hinzugefügt.
+* In der neuen Auftragsanlage wurde die neue Checkbox *Wie Rechnungsadresse* neben der Lieferadresse hinzugefügt. Wenn du diese Option aktivierst, wird die Lieferadresse gesperrt und die Adresse unter Rechnungsadresse wird auch als Lieferadresse eingefügt. Wenn du die Option wieder deaktivierst kannst du die Lieferadresse wieder bearbeiten.
+* In der neuen Auftragsanlage waren die Varianten-ID und die Artikel-ID in einer Spalte kombiniert. Nun ist es möglich diese in separaten Tabellenspalten anzuzeigen.
 
 [discrete]
-=== Import
+=== DHL
 
-* Du kannst ab jetzt das Lademittel im Bereich *Versand* importieren.
-
-[discrete]
-=== OTTO market
-
-* Wir haben einen neuen Prozess für OTTO Market implementiert, der Gutschriftendokumente an den Aufträgen importiert.
+* Wir haben für die E-Mail-Vorlagen eine Template-Variable für den mobilen Retourencode der DHL Retoure Online entwickelt. Dieser lautet: `$DHLRetoureOnlineQRCodeURL`. Mit dieser Variable kannst du deinen Kunden direkt in der E-Mail einen QR-Code ausgeben. Der Kunde geht dann in die Postfiliale, zeigt den QR-Code einem der Mitarbeiter vor und dieser druckt das Label aus und bringt es am Paket an.
 +
-Weitere Informationen zu diesem Prozess findest du auf der Seite <<maerkte/otto/otto-market#1400, OTTO market>>.
+Somit muss dein Kunde den Retourenschein nicht mehr selbst drucken und du musst keine PDF-Anhänge mehr versenden.
+
+** In einer E-Mail-Vorlage vom Typ *Reiner Text* wird der Link zum QR-Code ausgegeben, den der Kunde anklicken kann.
+** In einer E-Mail-Vorlage vom Typ *HTML-formatierter Text* wird direkt der QR-Code als Bild ausgegeben.
+
 +
 [IMPORTANT]
+.To-Do
 ======
-Solltet ihr einen nachträglichen Import wünschen, könnt ihr diese Gutschriftendokumente von OTTO Market durch unsere Supporter importieren lassen. Meldet euch dafür bitte im Forum in der Kategorie link:https://forum.plentymarkets.com/c/multi-channel/Otto-Market[multi-channel:Otto-Market^] mit einer Liste aller plentymarkets Gutschriften-IDs, für die ihr einen nachträglichen Import wünscht.
+Im Zuge des Updates musst du folgende Schritte durchführen:
+
+. Damit du diese Variable auch verwenden kannst, musst du das Plugin _DHL Retoure Online_ auf die Version 1.1.0 updaten.
+. Wenn du eine E-Mail-Vorlage vom Typ *Reiner Text verwendest*, fügst du die neue Template-Variable direkt in den Text ein.
+. Wenn du eine E-Mail-Vorlage vom Typ *HTML-formatierter Text* verwendest, fügst du in der Vorlage ein Bild ein und fügst in den Bild-Eigenschaften in den Tabs Bild-Info und Link die neue Template-Variable als URL ein.
+
+image:changelog/assets/dhl-retoure-online-qr-code.png[width=640, alt=Retourenschein mit QR-Code.]
 ======
+
+[discrete]
+=== Kataloge
+
+* Ab sofort könnt ihr das Trennzeichen Leerzeichen separat auswählen. Somit muss es nicht mehr als eigener Wert hinterlegt werden.
+
+[discrete]
+=== Plugins
+
+* Ab jetzt werden beim Aktualisieren von Plugins die To-Do-Informationen aus dem Changelog gesondert angezeigt. Dabei werden nur die Informationen angezeigt, die zwischen der aktuell installierten und für das Update ausgewählten Version liegen.
++
+Um als Plugin-Entwickler sicherzustellen, dass deine To-Do-Listen ausgegeben werden, stelle sicher, dass dein Changelog link:https://developers.plentymarkets.com/marketplace/plugin-requirements#marketplace-changelog[wie auf unserer Entwicklerseite vorgegeben^] formatiert ist.
 
 [discrete]
 === Prozesse
 
-* In den Prozessen wurden die Möglichkeiten zum Filtern von Aufträgen mit Treueprogramm erweitert. Mit dieser Änderung kann nicht nur allgemein nach Amazon Prime Aufträgen gefiltert werden, sondern nun auch differenziert nach *Amazon SameDay*, *Amazon Prime SameDay*, *Amazon SecondDay* und *Amazon Prime SecondDay*. Die neuen Filtermöglichkeiten stehen in den Prozessbereichen *Auftragssuche*, *Auftragsabwicklung*, *Filter* und *Split* zur Verfügung.
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
-
-[discrete]
-=== bol.com
-
-* Im Menü *Einrichtung » Märkte » bol.com » Einstellungen* wurden folgende Optionen umbenannt:
-** *Client ID (v3)* zu *Client ID*
-** *Client Secret (v3)* zu *Client Secret*
-
-+
-In diesem Zuge wurden die Optionen *Public key (v2)* und *Private key (v2)* entfernt.
-
-[discrete]
-== Behoben
-
-Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
-
-[discrete]
-=== Aufträge
-
-* Es wurde beim Löschen eines Auftrags teilweise kein Eintrag in den `DeleteLog` geschrieben (REST-Route: `GET /rest/delete_log`). Das wurde behoben.
-* Es gab einen Anzeigefehler in der zweiten Option der Einstellung *Währung des Dokumentes*. Dort stand *Währung des Lieferscheines*. Das wurde geändert in *Währung des Auftrages*.
+* Für die Aktionen *SEPA Pain001* und *SEPA Pain008* wurde die neue Option *Auftrag nicht bezahlen* hinzugefügt.
 
 --
 
@@ -245,101 +178,34 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/elasticexportbilligerde_4901[billiger.de]
-|1.1.11
+|link:https://marketplace.plentymarkets.com/actionmixpluginmobilenavigation_6529[ActionMix | Plugin | Mobile Navigation^]
+|2.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/ceevo_6615[Ceevo^]
-|1.4.5
-|-
-
-|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
-|5.0.4
-|-
-
-|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
-|2.0.21
-|-
-
-|link:https://marketplace.plentymarkets.com/feed4ceres_6097[Feed4Ceres^]
-|3.0.4
-|-
-
-|link:https://marketplace.plentymarkets.com/elasticexportgeizhalsde_4743[Geizhals.de]
-|1.1.7
-|-
-
-|link:https://marketplace.plentymarkets.com/elasticexportgoogleshopping_4722[Google Shopping^]
-|1.2.11
-|-
-
-|link:https://marketplace.plentymarkets.com/elasticexportguenstigerde_4745[guenstiger.de]
-|1.0.16
-|-
-
-|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de^]
-|2.0.9
-|-
-
-|link:https://marketplace.plentymarkets.com/ingenicozvt_5140[IngenicoZVT^]
-|1.0.4
-|-
-
-|link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.4
-|-
-
-|link:https://marketplace.plentymarkets.com/elasticexportkelkoode_5041[Kelkoo.de]
-|1.0.8
-|-
-
-|link:https://marketplace.plentymarkets.com/manomano_6287[Manomano]
-|1.1.1
-|-
-
-|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie]
-|1.3.8
-|-
-
-|link:https://marketplace.plentymarkets.com/debit_6362[Lastschrift^]
-|1.1.0
-|-
-
-|link:https://marketplace.plentymarkets.com/paymentmethods_6828[Meine Zahlungsarten^]
+|link:https://marketplace.plentymarkets.com/dynamicrepricing_6904[emarketing Dynamic Repricing^]
 |1.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/paymentmethodspro_6829[Meine Zahlungsarten Professional^]
+|link:https://marketplace.plentymarkets.com/cfourmanufacturersliderwidget_6905[Hersteller Slider Widget 5^]
 |1.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/novalnet_5231[Novalnet^]
-|2.0.13
+|link:https://marketplace.plentymarkets.com/cfourowlsliderwidget5_6908[Owl Carousel Pro 5^]
+|2.0.1
 |-
 
-|link:https://marketplace.plentymarkets.com/plentybasecustomerdisplaypos_6359[plentyBase CustomerDisplayPOS^]
-|0.6.1
+|link:https://marketplace.plentymarkets.com/trustami_5496[Trustami Vertrauenssiegel^]
+|1.0.6
 |-
 
-|link:https://marketplace.plentymarkets.com/plentybaseitemcachepos_6313[plentyBase ItemCachePOS^]
-|1.0.4
-|-
-
-|link:https://marketplace.plentymarkets.com/plentybasepackbylight_6367[plentyBase PackByLight^]
-|1.0.2
-|-
-
-|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
-|2.1.0
-|-
-
-|link:https://marketplace.plentymarkets.com/verifonezvt_5504[VerifoneZVT^]
-|1.0.2
+|link:https://marketplace.plentymarkets.com/cytitemavailabilitynotification_6906[Verfügbarkeitsbenachrichtigung^]
+|1.0.0
 |-
 
 |===
 
 Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
 --
 
 ====
