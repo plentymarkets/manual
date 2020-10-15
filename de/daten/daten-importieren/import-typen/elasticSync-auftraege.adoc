@@ -20,7 +20,7 @@ include::./_textblocks/einleitung.adoc[]
 [TIP]
 .Praxisbeispiel: Auftragspositionen
 ====
-Auf der Best-Practice-Seite <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-auftragspositionen#, Auftragspositionen>> findest du weitere Informationen zum Import und der Aktualisierung von Auftragspositionen.
+Auf der Praxisbeispiel-Seite <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-auftragspositionen#, Auftragspositionen>> findest du weitere Informationen zum Import und der Aktualisierung von Auftragspositionen.
 ====
 
 [#2010]
@@ -35,26 +35,20 @@ In <<tabelle-abgleichfelder-auftrag>> werden Felder erläutert, die für den Abg
 |Einstellung |Erläuterung
 
 |*Aufträge*
-|In welcher Spalte deiner CSV-Datei werden die Auftrags-IDs aufgelistet? Wähle diese Spalte hier. Diese Option ist sinnvoll, wenn du _bestehende Aufträge aktualisieren_ möchtest.
-Auftrags-ID +
-Externe Auftrags-ID
+|In welcher Spalte deiner CSV-Datei werden die Auftrags-IDs aufgelistet? Wähle diese Spalte hier. Du kannst optional zusätzlich abstufen, ob es sich um eine plenty *Auftrags-ID* oder eine *Externe Auftrags-ID* handelt. +
+Auftrags-ID: Diese Option ist sinnvoll, wenn du _bestehende Aufträge aktualisieren_ möchtest. +
+Externe Auftrags-ID: Diese Option ist sinnvoll, wenn du _externe Aufträge importieren_ möchtest.
+
+_Hintergrund-Info_: Jeder neu angelegte Auftrag erhält automatisch eine ID, die nicht geändert werden kann. Die ID dient zur eindeutigen Kennzeichnung des Auftrags. Da die ID eindeutig ist, lässt sich damit gut prüfen, ob der importierte Auftrag bereits in plentymarkets vorhanden ist.
 
 |*Paket*
-| Paket-ID +
-Hier ist die ID des Versandpakets gemeint.
+|In welcher Spalte deiner CSV-Datei werden die IDs der Versandpakete aufgelistet? Wähle diese Spalte hier.
 
 |*Auftragsposition*
-| Auftragspositions-ID* +
-*Externe Artikel ID +
-Externe Token ID
+| In welcher Spalte deiner CSV-Datei werden die Auftragspositionen aufgelistet? Wähle diese Spalte hier. Du kannst optional zusätzlich abstufen, worum es sich genau handelt. Zur Verfügung stehen dir *Auftragspositions-ID*, *Externe Artikel ID* oder *Externe Token ID*.
 
 |*Variante*
-| Varianten-ID +
-Marktplatz SKU +
-Externe Varianten ID +
-Variantennummer +
-Hersteller-Variantennummer +
-Barcode: EAN*
+| In welcher Spalte deiner CSV-Datei werden die Varianten-IDs aufgelistet? Wähle diese Spalte hier. Du kannst optional zusätzlich abstufen, worum es sich genau handelt. Zur Verfügung stehen dir *Marktplatz SKU*, *Externe Varianten ID*, *Variantennummer*, *Hersteller-Variantennummer*, *Barcode: GTIN 13*, *Barcode: GTIN 128*, *Barcode: UPC* oder *Barcode: ISBN*.
 |====
 
 [#2020]
@@ -62,67 +56,340 @@ Barcode: EAN*
 
 include::./_textblocks/zuordnung.adoc[]
 
+[#2030]
+=== Auftrag
+
+[#2040]
+==== ID des Typs
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+Um was für einen Auftrag handelt es sich? Gib die entsprechende ID in deine CSV-Datei ein. +
+In plentymarkets gibt es verschiedene Auftragstypen, die im Import numerisch über eine ID abgebildet werden. Mit Eingabe der ID weiß das System, um welchen Auftragstyp es sich handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[[tabelle-zuordnung-auftragstyp]]
+[cols="1,1"]
+|===
+
+|*Zulässige Importwerte in CSV-Datei* |*Ergebnis im Backend*
+
+|`1`
+|Auftrag
+
+|`2`
+|Lieferauftrag
+
+|`3`
+|Retoure
+
+|`4`
+|Gutschrift
+
+|`5`
+|Garantie
+
+|`6`
+|Reparaturauftrag
+
+|`7`
+|Angebot
+
+|`8`
+|Vorbestellung
+
+|`9`
+|Sammelauftrag
+
+|`10`
+|Sammelgutschrift
+
+|`11`
+|Umbuchung
+
+|`12`
+|Nachbestellung
+
+|===
+
+[#2050]
+==== ID des Status
+
+Welchen Status möchtest du dem Auftrag zuweisen? Gib diesen in deine CSV-Datei ein. +
+28 Auftragsstatus sind im System vorangelegt, du kannst aber auch selbst Status definieren. Dafür stehen dir 19 Status mit je 4 Nachkommastellen zur Verfügung. Im Menü *Einrichtung » Aufträge » Status* kannst du deine Status bearbeiten. Beachte dazu den Handbuchabschnitt <<auftraege/auftraege-verwalten#1200, Auftragsstatus nutzen>>.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü: *Aufträge bearbeiten » Tab: Einstellungen » Feld: Status* sowie in der Auftragsübersicht.
+
+[#2060]
+==== ID des Eigners
+
+Welchem Eigner soll der Auftrag zugewiesen sein? Gib die ID des Eigners in deine CSV-Datei ein. +
+Die IDs von Eignern findest du im Backend im Menü *Einrichtung » Einstellungen » Benutzer » Konten*. Stelle sicher, dass der zugewiesene Eigner die benötigten Rechte für den Bereich *Aufträge* hat.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü: *Aufträge bearbeiten » Tab: Einstellungen » Feld: Eigner* sowie in der Auftragsübersicht.
+
+[#2070]
+==== Referrer-ID
+
+Welche Herkunft soll dem Auftrag zugeordnet werden? Gib die ID der Herkunft in deine CSV-Datei ein. +
+Herkünfte sind im System mit IDs hinterlegt. Einige Herkünfte sind nicht veränderbar. Du kannst manuell Herkünfte hinzufügen. Herkünfte findest du im Menü *Einrichtung » Aufträge » Auftragsherkunft*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2080]
+==== PlentyID
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+Welcher Mandant gilt für den Auftrag? Gib die plentyID des Mandanten in deine CSV-Datei ein. +
+Du findest die plentyID deines Mandanten im Menü *Einrichtung » Mandant » _Mandant wählen_ » Einstellungen*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2090]
+==== ID des Standorts
+
+Welcher Standort gilt für den Auftrag? Gib die ID des Standortes in deine CSV-Datei ein. +
+Du findest die Standort-IDs im Menü *Einrichtung » Mandant » _Mandant wählen_ »Standorte*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2100]
+==== Nur runde Summen
+
+[#2110]
+==== Anzahl der Dezimalstellen
+
+[#2120]
+==== ID des Elternauftrags
+
+Importierst oder aktualisierst du Aufträge, die einen übergeordneten Auftrag haben? Dann gib die ID dieses Elternauftrages in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2130]
+=== Auftragsposition
+
+[#2140]
+==== Typ
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+Welchem Typ entspricht die Auftragsposition? Gib die ID des Auftragspositionstyps in deine CSV-Datei ein. +
+Die Auftragspositionstypen bilden verschiedene Kostenposten eines Auftrags ab. Die mit den Posten verbundenen Kosten können sowohl negativ als auch positiv sein. Wenn deine Spalte nicht die IDs enthält, kannst du eine eigene Zuordnung vornehmen.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[[tabelle-zuordnung-auftragstyp]]
+[cols="1,1"]
+|===
+
+|*Zulässige Importwerte in CSV-Datei* |*Ergebnis im Backend*
+
+|`1`
+|Variante
+
+|`2`
+|Artikelpaket
+
+|`3`
+|Paketbestandteil
+
+|`4`
+|Aktionsgutschein
+
+|`5`
+|Geschenkgutschein
+
+|`6`
+|Versandkosten
+
+|`7`
+|Zahlungsaufschlag
+
+|`8`
+|Geschenkverpackung
+
+|`9`
+|Unzugeordnete Variante
+
+|`10`
+|Pfand
+
+|`11`
+|Auftrag +
+Dieser Auftragspositionstyp kommt zum Beispiel in Sammelaufträgen vor.
+
+|===
+
+[#2150]
+==== Herkunft
+
+[#2160]
+==== Name
+
+[#2170]
+==== Attributwert
+
+[#2180]
+==== Umsatzsteuersatz
+
+[#2190]
+==== Umsatzsteuerbetrag
+
+[#2200]
+==== Menge
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+[#2210]
+==== Varianten-ID
+
+[#2220]
+==== Position
+
+[#2230]
+==== Währung
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+[#2240]
+==== Wechselkurs
+
+[#2250]
+==== Einkaufspreis
+
+[#2260]
+==== Bruttopreis
+
+[#2260]
+==== Nettopreis
+
+[#2270]
+==== Preisaufschlag
+
+[#2280]
+==== Rabatt
+
+[#2290]
+==== Prozentualer Rabatt
+
+[#2300]
+=== Auftragspositionseigenschaften
+
+[#2310]
+==== Wert
+
+[#2320]
+=== Auftragsnotiz
+
+[#2330]
+==== Text
+
+[#2340]
+=== Addressrelation
+
+[#2350]
+==== ID der Adresse
+
+[#2360]
+=== Auftragseigenschaft
+
+[#2370]
+==== Wert
+
+[#2380]
+=== Auftragsdatum
+
+[#2390]
+==== Datum
+
+[#2400]
+=== Auftragsrelation
+
+[#2410]
+==== ID der Referenz
+
+[#2420]
+=== Adresse
+
+[#2430]
+==== Name 1 (Firma)
+
+[#2440]
+==== Name 2 (Vorname)
+
+[#2450]
+==== Name 3 (Nachname)
+
+[#2460]
+==== Name 4 (Zusatz)
+
+[#2470]
+==== Adresse 1 (Straße)
+
+[#2480]
+==== Adresse 2 (Hausnummer)
+
+[#2490]
+==== Adresse 3 (Zusatz)
+
+[#2500]
+==== Adresse 4 (Frei)
+
+[#2510]
+==== Postleitzahl
+
+[#2520]
+==== Stadt
+
+[#2530]
+==== ID des Landes
+
+[#2540]
+==== ID des Bundeslandes
+
+[#2550]
+==== Umsatzsteuernummer CHECKCHECKCHECKCHECK
+
+[#2560]
+==== Telefon
+
+[#2570]
+==== E-Mail
+
+[#2020]
+=== Versandpaket
+
 [[tabelle-zuordnungsfelder-auftrag]]
 .Zuordnungsfelder für Auftragsimport
 [cols="1,1,2"]
 |====
 |Zuordnungsfeld |Zulässige Importwerte |Erläuterung
 
-3+| *Auftrag*
-
-|ID des Typs +
-*Pflichtfeld*
-|Numerisch
-a|Auftragstypen bilden verschiedene Geschäftsvorfälle ab. Folgende Typen stehen zur Verfügung:
-
-* Auftrag = 1
-* Lieferauftrag = 2
-* Retoure = 3
-* Gutschrift = 4
-* Garantie = 5
-* Reparaturauftrag = 6
-* Angebot = 7
-* Vorbestellung = 8
-* Sammelauftrag = 9
-* Sammelgutschrift = 10
-
-|ID des Status
-|Numerisch
-|ID des Status. Die IDs vergeben Sie selbst im Bereich von 1,0000 bis 18,9999. Die Status finden Sie im Menü *Einrichtung » Aufträge » Status*.
-
-|ID des Eigners
-|Numerisch
-|ID des Eigners. Ein Eigner ist ein Benutzer, der als Eigner zugeordnet wurde. Die ID des Eigners entspricht also der ID des Benutzers. Die Benutzer-ID finden Sie im Menü *Einrichtung » Einstellungen » Benutzer » Konten*. Aufträge können einem Eigner zugeordnet werden, müssen aber nicht.
-
-|PlentyID +
-*Pflichtfeld*
-|Numerisch
-|ID des Mandanten. Die PlentyID finden Sie im Menü *Einrichtung » Mandant » Mandant wählen » Einstellungen*.
-
-|ID des Standortes
-|Numerisch
-|ID des Standorts. Standorte finden Sie im Menü *Einrichtung » Mandant » Mandant wählen » Standorte*.
 
 3+| *Auftragsposition*
-
-|Typ +
-*Pflichtfeld*
-|Numerisch
-a|Die Auftragspositionstypen bilden verschiedene Kostenposten eines Auftrags ab. Die mit den Posten verbundenen Kosten können sowohl negativ als auch positiv sein. Standardmäßig wird hier die ID des Auftragspositionstyps erwartet. Die Typen, die zur Verfügung stehen, sind hier mit Typ-ID aufgelistet. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
-
-* Variante = 1
-* Artikelpaket = 2
-* Paketbestandteil = 3
-* Aktionsgutschein = 4
-* Geschenkgutschein = 5
-* Versandkosten = 6
-* Zahlungsaufschlag = 7
-* Geschenkverpackung = 8
-* Unzugeordnete Variante = 9
-* Pfand = 10
-* Auftrag = 11
-
-Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
 
 |Herkunft
 |Numerisch
