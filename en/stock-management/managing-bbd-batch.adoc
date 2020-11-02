@@ -20,10 +20,28 @@ When working with <<pos#, plentyPOS>> you should not yet use these functions to 
 
 In order to use BBD and/or batches for variations, activate the options *BBD* and/or *Batch* on the variation of a warehouse. As soon as the warehouse contains stock, it is not possible anymore to activate or deactivate the option on the variation’s warehouse. You can only carry out changes if the stock in this warehouse equals zero. For further information see the chapter <<stock-management/new-incoming-items#200, Linking a variation to a storage location>>.
 
+[TIP]
+.Activating BBD in warehouse changes pick path priority
+====
+If BBD is activated in your warehouse, the storage location’s assignment in an order works according to the FIFO principle (First In First Out). Thus, the position of the storage location or dimension is no longer considered and the sorting is done by BBD instead. However, this is only the case if variations of an item have several BBDs and are stored on storage locations with different positions. Consequently, the position is only decisive if variations on different storage locations have the same BBD. +
+
+With the activation of BBD the pick path changes as follows: +
+
+_Example_: +
+Item 1 has a variation on the storage location that has the position 1, but no BBD. +
+Item 2 has a variation with the position 2 and the BBD 01.06.2021. +
+Item 3 has a variation with 3 BBDs on 3 storage locations: +
+1. Variation with position 3, BBD 01.02.2021 +
+2. Variation with position 4, BBD 30.12.2020 +
+3. Variation with position 5, BBD 15.03.2021 +
+
+In this example, the variation of item 1 is picked first, as there is no BBD and thus the position is considered. The variation of item 2 is picked afterwards, as there is only one BBD. Only at this point, the variation of item 3 with the lowest BBD is picked. Here, this is the variation with position 4 and the BBD 30.12.2020.
+====
+
 [discrete]
 === Assigning user rights for back end users
 
-Users of the type *Back end* can only access limited areas and menus in the plentymarkets back end. Thus, their access to the system is limited. If users of the type *Back end* should be able to see BBD and batches, a user of the type *Admin* has to assign the right listed in the following to those users.
+Users of the type *Back end* can only access limited areas and menus in the plentymarkets back end. Thus, their access to the system is limited. If users of the type *Back end* should be able to see BBD and batches, a user of the type *Admin* has to assign the right listed in the following to users of the type *Back end*.
 
 [.instruction]
 Assigning user rights for back end users:
@@ -36,7 +54,13 @@ Assigning user rights for back end users:
 [#200]
 == Incoming items
 
-Depending on the selected settings, you can book in variations with BBD, variations with batches or variations with BBD and batches. Per warehouse and variation, it is recommended to only book the same BBD and batches on a storage location. This setting is preset by default. If you book different BBD/batches on the same storage location, errors may occur in the picking process, since pickers have to search for a specific BBD and/or a specific batch. For further information see the chapter <<stock-management/new-incoming-items#810, Incoming items with a best before date and/or batch information>>.
+Depending on the selected settings, you can book in variations with BBD, variations with batches or variations with BBD and batches. Per warehouse and variation, it is recommended to only book the same BBD and batches on a storage location. This setting is preset by default. If you book different BBD/batches on the same storage location, errors may occur in the picking process, as pickers will have to search for a specific BBD and/or a specific batch. For further information see the chapter <<stock-management/new-incoming-items#810, Incoming items with a best before date and/or batch information>>.
+
+[WARNING]
+.Do not book stock with bbd/batch into standard storage location
+====
+To ensure that stock with BBD/batch is imported correctly, do not book it into the standard storage location. Use other storage locations instead.
+====
 
 [#300]
 == Redistributing
