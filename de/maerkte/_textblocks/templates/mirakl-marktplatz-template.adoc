@@ -6,10 +6,10 @@
 ====
 Die Schnittstelle zu {marketplace} wird über ein Plugin integriert. Um das {marketplace}-Plugin nutzen zu können, lade das Plugin im link:https://marketplace.plentymarkets.com/plugins/channels/marktplaetze/{marketplace}_{marketplace}[plentyMarketplace^]{nbsp}icon:external-link[] herunter.
 
-Um das {marketplace}-Plugin nutzen zu können, benötigst du das Plugin Mirakl. Du findest Mirakl ebenfalls auf plentyMarketplace.
+Um das {marketplace}-Plugin nutzen zu können, benötigst du das Plugin Mirakl Connector. Du findest Mirakl ebenfalls auf plentyMarketplace.
 ====
 
-:plugin: Mirakl
+:plugin: Mirakl Connector
 
 [.collapseBox]
 .{plugin} installieren
@@ -71,7 +71,7 @@ Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datena
 
 :market: {marketplace}
 :referrer: {marketplace}
-:referrer-option: pass:quotes[Option *{marketplace}*]
+:referrer-option: Option {marketplace}
 
 include::../../_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
 
@@ -82,15 +82,70 @@ include::../../_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
 
 include::../../_textblocks/instructions/verkaufspreis-festlegen.adoc[]
 
-[#700]
-== Variantenverfügbarkeit einstellen
+[#1200]
+== Eigenschaften erstellen
 
-:market-availability: {marketplace}
-:option-availability: {marketplace}
+Eigenschaften werden verwendet, um Felder an den Marktplatz zu übergeben, die in plentymarkets standardmäßig nicht definiert sind. Im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration* erstellst du die Eigenschaften, die {marketplace} vorgibt.
 
-include::../../_textblocks/instructions/variantenverfuegbarkeit.adoc[]
+Weitere Informationen zu Eigenschaften findest du auf der Seite <<artikel/einstellungen/eigenschaften#500, Merkmale und Eigenschaften>>.
 
-// Beachten: Bei manchen Marktplätzen muss zusätzlich zum Marktplatz auch die Web-API aktiviert werden. Dann :web-api: angeben, damit der Text ausgegeben wird.
+Du benötigst die folgenden Eigenschaften für {marketplace}:
+
+* Logistikklasse (<<#1210, so geht's>>)
+* Versandvorlaufzeit (<<#1220, so geht's>>)
+* Reversecharge (<<#1230, so geht's>>)
+
+[#1210]
+=== Eigenschaft Logistikklasse erstellen
+
+Für jede Variante muss ein Versandprofil-Code an {marketplace} exportiert werden. Versandprofile konfigurierst du im Mirakl-Backend. Die Liste der Versandprofile wird im Mirakl-Backend im Bereich *Informationen » Versandkosten* angezeigt. Der Code wird in der Spalte *Logistikklasse* in Klammern hinter dem Namen der Logistikklasse angezeigt.
+
+:property: Logistikklasse
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Logistikklasse
+:property-area: Artikel
+:property-type: Kurztext
+:property-name: {marketplace} Logistikklasse
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
+
+[#1220]
+=== Eigenschaft Versandvorlaufzeit erstellen
+
+Für jede Variante muss eine Versandvorlaufzeit in Tagen an {marketplace} exportiert werden. Damit informierst du {marketplace} darüber, wie viele Tage du benötigst, um die Variante zu versenden. {marketplace} akzeptiert die Werte 1-45.
+
+:property: Versandvorlaufzeit
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Versandvorlaufzeit
+:property-area: Artikel
+:property-type: Kurztext
+:property-name: {marketplace} Versandvorlaufzeit
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
+
+[#1230]
+=== Eigenschaft Reversecharge erstellen
+
+Für jede Variante muss angegeben werden, ob für diese Variante bei grenzüberschreitenden Geschäftsvorgängen das Reverse-Charge-Verfahren Anwendung findet. {marketplace} akzeptiert die Werte *true* und *false*.
+
+* false = Das Reverse-Charge-Verfahren wird nicht angewendet.
+* true = Das Reverse-Charge-Verfahren wird angewendet. Nicht du als leistende Unternehmer:in führst also die Umsatzsteuer an das Finanzamt ab, sondern dein:e Kund:in. +
+*_Hinweis:_* Beachte die gesetzlichen Vorgaben für das Reverse-Charge-Verfahren und kläre mit deinem Steuerbüro, was es zu beachten gibt.
+
+:property: Reversecharge
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Reversecharge
+:property-area: Artikel
+:property-type: Kurztext
+:property-name: {marketplace} Reversecharge
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
 
 [#1300]
 == API-Schlüssel erzeugen
@@ -111,7 +166,7 @@ API-Schlüssel erzeugen:
 
 Mit dem Assistenten *{marketplace} - Wizard* im Menü *Einrichtungen » Assistenten » Plugins » _Plugin-Set wählen_* richtest du dein {marketplace}-Konto in plentymarkets ein.
 
-:menu-path: {marketplace}
+:menu-path: pass:quotes[Einrichtungen » Assistenten » Plugins » _Plugin-Set wählen_]
 :assistant-name: {marketplace}
 :number-of-boxes: Info-Box
 
@@ -138,13 +193,22 @@ include::../../_textblocks/instructions/assistant-basic-instructions.adoc[]
 | Trage den Grund ein, der zu Mirakl übertragen wird, wenn eine Rückerstattung erfolgt. Du kannst für mehrere Status Gründe hinzufügen.
 
 | Zuordnung der Stornierung
-| Trage den Grund ein, der zu Mirakl übertragen wird, wenn eine Stornierung erfolgt. Du kannst für mehrere Status Gründe hinzufügen.
+a| Trage den Grund ein, der zu Mirakl übertragen wird, wenn eine Stornierung erfolgt. Du kannst für mehrere Status Gründe hinzufügen.
+ifeval::["{marketplace}" == "Voelkner"]
+ +
+*_Hinweis_*: Diese Einstellung hat bei Voelkner keine Auswirkungen.
+endif::[]
 
 | Lagerauswahl
 | Wähle das Lager, das für den Bestandsexport verwendet werden soll.
 
 | Zuordnung des Versandprofils
 | Trage für die Versandprofile in plentymarkets die entsprechenden Kürzel der Versanddienstleister ein. Die Kürzel findest du auf Mirakl im Menü *Informationen » Transportunternehmen*.
+
+| Zuordnung der Angebots-Eigenschaften
+| Wähle aus der Dropdown-Liste *Abzugsverfahren* die Eigenschaft *{marketplace} Reversecharge*. +
+Wähle aus der Dropdown-Liste *Versandvorlaufzeit* die Eigenschaft *{marketplace} Versandvorlaufzeit*. +
+Wähle aus der Dropdown-Liste *Logistikklasse* die Eigenschaft *{marketplace} Logistikklasse*.
 
 |======
 --
@@ -162,74 +226,10 @@ Für jede Produktkategorie von {marketplace}, in der du Produkte verkaufen möch
 Wenn es beim Export Probleme gibt, findest du die zugehörigen Log-Einträge auf Mirakl und nicht im Log von plentymarkets.
 ====
 
-[#1200]
-=== Eigenschaften erstellen
-
-Im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration* erstellst du nun die Eigenschaften, die {marketplace} vorgibt.
-
-Du benötigst die folgenden Eigenschaften für {marketplace}:
-
-* Logistikklasse (<<#1210, so geht's>>)
-* Versandvorlaufzeit (<<#1220, so geht's>>)
-* Reversecharge (<<#1230, so geht's>>)
-* Eigenschaften für Marktplatz-Datenfelder ohne Entsprechung in plentymarkets (<<#1240, so geht's>>)
-
-[#1210]
-==== Eigenschaft Logistikklasse erstellen
-
-Für jede Variante muss ein Versandprofil-Code an {marketplace} exportiert werden. Versandprofile konfigurierst du im Mirakl-Backend. Die Liste der Versandprofile wird im Mirakl-Backend im Bereich *Informationen » Versandkosten* angezeigt. Der Code wird in der Spalte *Logistikklasse* in Klammern hinter dem Namen der Logistikklasse angezeigt.
-
-:property: Logistikklasse
-
-include::../../_textblocks/instructions/properties-creation.adoc[]
-
-:property: Logistikklasse
-:property-area: Artikel
-:property-type: Kurztext
-:property-name: {marketplace} Logistikklasse
-
-include::../../_textblocks/instructions/properties-creation-table.adoc[]
-
-[#1220]
-==== Eigenschaft Versandvorlaufzeit erstellen
-
-Für jede Variante muss eine Versandvorlaufzeit in Tagen an {marketplace} exportiert werden. Damit informierst du {marketplace} darüber, wie viele Tage du benötigst, um die Variante zu versenden. {marketplace} akzeptiert die Werte 1-45.
-
-:property: Versandvorlaufzeit
-
-include::../../_textblocks/instructions/properties-creation.adoc[]
-
-:property: Versandvorlaufzeit
-:property-area: Artikel
-:property-type: Kurztext
-:property-name: {marketplace} Versandvorlaufzeit
-
-include::../../_textblocks/instructions/properties-creation-table.adoc[]
-
-[#1230]
-==== Eigenschaft Reversecharge erstellen
-
-Für jede Variante muss angegeben werden, ob für diese Variante bei grenzüberschreitenden Geschäftsvorgängen das Reverse-Charge-Verfahren Anwendung findet. {marketplace} akzeptiert die Werte *true* und *false*.
-
-* false = Das Reverse-Charge-Verfahren wird nicht angewendet.
-* true = Das Reverse-Charge-Verfahren wird angewendet. Nicht du als leistende Unternehmer:in führst also die Umsatzsteuer an das Finanzamt ab, sondern dein:e Kund:in. +
-*_Hinweis:_* Beachte die gesetzlichen Vorgaben für das Reverse-Charge-Verfahren und kläre mit deinem Steuerbüro, was es zu beachten gibt.
-
-:property: Reversecharge
-
-include::../../_textblocks/instructions/properties-creation.adoc[]
-
-:property: Reversecharge
-:property-area: Artikel
-:property-type: Kurztext
-:property-name: {marketplace} Reversecharge
-
-include::../../_textblocks/instructions/properties-creation-table.adoc[]
-
 [#1240]
-==== Weitere Eigenschaften erstellen
+=== Weitere Eigenschaften erstellen
 
-Zusätzlich zu den bereits beschriebenen Eigenschaften benötigst du Eigenschaften für alle Datenfelder des Marktplatzes, für die du Daten übergeben möchtest, die es standardmäßig in plentymarkets nicht gibt. Welche Eigenschaften du benötigst, erfährst du in der Dokumentation des Marktplatzes. Du arbeitest zum ersten Mal mit Eigenschaften? Weitere Informationen findest du auf der Handbuchseite zum Thema <<willkommen/allgemeine-funktionen/eigenschaften, Eigenschaften>>.
+Zusätzlich zu den <<#1200, zuvor beschriebenen Eigenschaften>> benötigst du Eigenschaften für alle Datenfelder des Marktplatzes, für die du Daten übergeben möchtest, die es standardmäßig in plentymarkets nicht gibt. Welche Eigenschaften du benötigst, erfährst du in der Dokumentation des Marktplatzes. Du arbeitest zum ersten Mal mit Eigenschaften? Weitere Informationen findest du auf der Handbuchseite zum Thema <<willkommen/allgemeine-funktionen/eigenschaften, Eigenschaften>>.
 
 [#902]
 === Katalog im Assistenten erstellen
@@ -276,6 +276,36 @@ include::../../_textblocks/instructions/katalog-datenfelder-zuordnen.adoc[]
 
 ifeval::["{marketplace}" == "Conrad"]
 include::../instructions/katalog-mirakl-conrad-zuordnungen.adoc[]
+
+In den folgenden CSV-Dateien kannst du die gültigen Werte für die jeweiligen Felder im Katalog einsehen:
+
+* link:https://docs.google.com/spreadsheets/d/1ZsjMj1mTnASqrgr5UCAhxXUzgqrNVy3vEEmpP32POX8/export?format=csv[Akkus_Batterien^]
+* link:https://docs.google.com/spreadsheets/d/17zwR35iT8Pi3xcEVDz6ue4hU0S-sp7X5gI90XedLoj8/export?format=csv[Energieeffizienzklassen^]
+* link:https://docs.google.com/spreadsheets/d/1lnV-EPF2bhjEOdEypiZOil5zbGe-1JTIgSQBnkc7JdA/export?format=csv[Gewicht Einheit^]
+* link:https://docs.google.com/spreadsheets/d/1arR-ugx3cZho51kI7D8b6h9jaLhf9MUVI4zNFI5xpPA/export?format=csv[Inhalt Mengeneinheit^]
+* link:https://docs.google.com/spreadsheets/d/1Ig8_cgVC4XHfJLAMUzfNoDzhReBCHgIJs3b2VS8BZt8/format=csv[Verkaufsmengeneinheit^]
+* link:https://docs.google.com/spreadsheets/d/1OxNdAbzGsIv7JY7Xep6lQVfvX8XWrBbpiwAnwK2mmV8/format=csv[Rückerstattung/Stornierung^]
+* link:https://docs.google.com/spreadsheets/d/1W5JXuzx110dEO6zTieGokvzaFXrQHMG-EK-lwBb94oI/format=csv[Umsatzsteuer^]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::../instructions/katalog-mirakl-conrad-zuordnungen.adoc[]
+
+In den folgenden CSV-Dateien kannst du die gültigen Werte für die jeweiligen Felder im Katalog einsehen:
+
+* link:https://docs.google.com/spreadsheets/d/1ZsjMj1mTnASqrgr5UCAhxXUzgqrNVy3vEEmpP32POX8/export?format=csv[Akkus_Batterien^]
+* link:https://docs.google.com/spreadsheets/d/17zwR35iT8Pi3xcEVDz6ue4hU0S-sp7X5gI90XedLoj8/export?format=csv[Energieeffizienzklassen^]
+* link:https://docs.google.com/spreadsheets/d/1lnV-EPF2bhjEOdEypiZOil5zbGe-1JTIgSQBnkc7JdA/export?format=csv[Gewicht Einheit^]
+* link:https://docs.google.com/spreadsheets/d/1arR-ugx3cZho51kI7D8b6h9jaLhf9MUVI4zNFI5xpPA/export?format=csv[Inhalt Mengeneinheit^]
+* link:https://docs.google.com/spreadsheets/d/1Ig8_cgVC4XHfJLAMUzfNoDzhReBCHgIJs3b2VS8BZt8/format=csv[Verkaufsmengeneinheit^]
+* link:https://docs.google.com/spreadsheets/d/1OxNdAbzGsIv7JY7Xep6lQVfvX8XWrBbpiwAnwK2mmV8/format=csv[Rückerstattung/Stornierung^]
+* link:https://docs.google.com/spreadsheets/d/1W5JXuzx110dEO6zTieGokvzaFXrQHMG-EK-lwBb94oI/format=csv[Umsatzsteuer^]
+
+[IMPORTANT]
+.Fehlende Marken
+====
+Wenn dir auffällt, dass eine Marke fehlt, wende dich an stefanie.schlosser@re-in.de.
+====
 endif::[]
 
 ////
@@ -320,6 +350,15 @@ include::../../_textblocks/instructions/properties-link.adoc[]
 
 include::../../_textblocks/instructions/catalogue-activation.adoc[]
 
+[#700]
+== Variantenverfügbarkeit einstellen
+
+:market-availability: {marketplace}
+:option-availability: {marketplace}
+
+include::../../_textblocks/instructions/variantenverfuegbarkeit.adoc[]
+
+// Beachten: Bei manchen Marktplätzen muss zusätzlich zum Marktplatz auch die Web-API aktiviert werden. Dann :web-api: angeben, damit der Text ausgegeben wird.
 
 [#480]
 == Ereignisaktionen einrichten
@@ -328,10 +367,13 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um den Au
 
 // Welche Ereignisaktionen es gibt hängt vom Marktplatz ab. Hier die gängigsten. Bei Bedarf anpassen!
 
-* Auftragsbestätigung an {marketplace} melden
-* Versandbestätigung an {marketplace} melden
-* Auftragsstornierung an {marketplace} melden
-* Rückerstattung an {marketplace} melden
+ifeval::["{marketplace}" == "Conrad"]
+include::../automation/mirakl-conrad.adoc[tag=summary]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::../automation/mirakl-voelkner.adoc[tag=summary]
+endif::[]
 
 In den folgenden Kapiteln wird beschrieben, wie du die Ereignisaktionen in plentymarkets einrichtest.
 
@@ -344,317 +386,11 @@ Wir empfehlen allerdings, nur die Aktionen zu verwenden, die hier im Detail besc
 ====
 
 ifeval::["{marketplace}" == "Conrad"]
-[#1000]
-=== Auftragsbestätigung an {marketplace} melden
-
-:table-event-procedure: <<#{marketplace}-ereignisaktion-auftragsbestaetigung>>
-
-include::../../../_includes/textblocks/instructions/EA.adoc[]
-
-[#{marketplace}-ereignisaktion-auftragsbestaetigung]
-.Ereignisaktion, um Auftragsbestätigungen an {marketplace} zu melden
-[cols="1,2,2"]
-|===
-| *Einstellung*
-| *Option*
-| *Auswahl*
-
-| *Ereignis*
-| *Statuswechsel*
-| Ereignis wählen, z.B. [3] *Warten auf Zahlung*.
-
-| *Filter*
-| *Auftrag > Herkunft*
-| *{marketplace}*
-
-| *Aktion*
-| *Plugins > {marketplace}: Auftrag annehmen*
-|
-|===
-endif::[]
-
-ifeval::["{marketplace}" == "Conrad"]
-[#1005]
-=== Auftragsablehnung an {marketplace} melden
-
-:table-event-procedure: <<#{marketplace}-ereignisaktion-auftragsablehnung>>
-
-include::../../../_includes/textblocks/instructions/EA.adoc[]
-
-[#{marketplace}-ereignisaktion-auftragsablehnung]
-.Ereignisaktion, um Auftragsablehnung an {marketplace} zu melden
-[cols="1,2,2"]
-|===
-| *Einstellung*
-| *Option*
-| *Auswahl*
-
-| *Ereignis*
-| *Statuswechsel*
-| Ereignis wählen, z.B. *[8] Storniert*.
-
-| *Filter*
-| *Auftrag > Herkunft*
-| *{marketplace}*
-
-| *Aktion*
-| *Plugins > {marketplace}: Auftrag ablehnen*
-|
-|===
+include::../automation/mirakl-conrad.adoc[tag=instructions]
 endif::[]
 
 ifeval::["{marketplace}" == "Voelkner"]
-[#1008]
-=== Auftragsablehnung an {marketplace} melden
-
-:table-event-procedure: <<#{marketplace}-ereignisaktion-auftragsablehnung>>
-
-include::../../../_includes/textblocks/instructions/EA.adoc[]
-
-[#{marketplace}-ereignisaktion-auftragsablehnung]
-.Ereignisaktion, um Auftragsablehnung an {marketplace} zu melden
-[cols="1,2,2"]
-|===
-| *Einstellung*
-| *Option*
-| *Auswahl*
-
-| *Ereignis*
-| *Statuswechsel*
-| Ereignis wählen, z.B. [7] *Warenausgang gebucht*.
-
-| *Filter*
-| *Auftrag > Herkunft*
-| *{marketplace}*
-
-| *Aktion*
-| *Plugins > {marketplace}: Rechnung hochladen*
-|
-|===
-endif::[]
-
-[#1010]
-=== Versandbestätigung an {marketplace} melden
-
-:table-event-procedure: <<#{marketplace}-ereignisaktion-versandbestaetigung>>
-
-include::../../../_includes/textblocks/instructions/EA.adoc[]
-
-[#{marketplace}-ereignisaktion-versandbestaetigung]
-.Ereignisaktion, um Versandbestätigungen an {marketplace} zu melden
-[cols="1,2,2"]
-|===
-| *Einstellung*
-| *Option*
-| *Auswahl*
-
-| *Ereignis*
-| *Statuswechsel*
-| Ereignis wählen, z.B. [7] *Warenausgang gebucht*.
-
-| *Filter*
-| *Auftrag > Herkunft*
-| *{marketplace}*
-
-| *Aktion 1*
-| *Plugins > {marketplace}: Aktualisieren der Carrier Tracking Informationen für eine bestimmte Bestellung*
-|
-
-| *Aktion 2*
-| *Plugins > {marketplace}: Versand eines Auftrags validieren*
-|
-|===
-
-[#1020]
-=== Auftragsstornierung an {marketplace} melden
-
-:table-event-procedure: <<#{marketplace}-ereignisaktion-auftragsstornierung>>
-
-include::../../../_includes/textblocks/instructions/EA.adoc[]
-
-[#{marketplace}-ereignisaktion-auftragsstornierung]
-.Ereignisaktion, um Stornierungen an {marketplace} zu melden
-[cols="1,2,2"]
-|===
-| *Einstellung*
-| *Option*
-| *Auswahl*
-
-| *Ereignis*
-| *Statuswechsel*
-| Ereignis wählen, z.B. *[8] Storniert*.
-
-| *Filter*
-| *Auftrag > Herkunft*
-| *{marketplace}*
-
-| *Aktion*
-| *Plugins > {marketplace}: Stornieren Sie die Auftragsposition*
-|
-|===
-
-[#1030]
-=== Rückerstattung an {marketplace} melden
-
-:table-event-procedure: <<#{marketplace}-ereignisaktion-rueckerstattung>>
-
-include::../../../_includes/textblocks/instructions/EA.adoc[]
-
-[#{marketplace}-ereignisaktion-rueckerstattung]
-.Ereignisaktion, um Rückerstattungen an {marketplace} zu melden
-[cols="1,2,2"]
-|===
-| *Einstellung*
-| *Option*
-| *Auswahl*
-
-| *Ereignis*
-| *Statuswechsel*
-| Ereignis wählen, z.B. *[11] Gutschrift*.
-
-| *Filter*
-| *Auftrag > Herkunft*
-| *{marketplace}*
-
-| *Aktion*
-| *Plugins > {marketplace}: Rückerstattungs-Bestellzeilen*
-|
-|===
-
-ifeval::["{marketplace}" == "Conrad"]
-[#1100]
-== Nicht bestätigte Aufträge archivieren
-
-Wenn ein Auftrag abgelehnt oder storniert wurde, oder für einen Auftrag eine Gutschrift ausgeschrieben wurde, solltest du den Auftrag archivieren. Dies kannst du automatisch über den Aktionsmanager machen.
-
-Du musst für jeden Status eine eigene Aktion einrichten.
-
-[#1110]
-=== Abgelehnte Aufträge archivieren
-
-[.collapseBox]
-.Aktion einrichten
---
-[.instruction]
-Aktion einrichten:
-
-. Öffne das Menü *Einrichtung » Aufträge » Aktionen*.
-. Öffne das Tab *Neue Aktion*.
- Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-abgelehnte-auftraege>> vor.
-. Öffne das Tab *Filter*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-abgelehnte-auftraege>> vor.
-. Öffne das Tab *Aktion*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-abgelehnte-auftraege>> vor.
-. *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Aktion wird erstellt.
-
---
-
-[[#{marketplace}-aktionsmanager-abgelehnte-auftraege]]
-.Einstellungen Aktionsmanager
-[cols="1,3"]
-|===
-|Tab |Einstellung
-
-| *Status*
-| Aktiviere die Option *Aktiv*. +
-Stelle ein, wann die Aktion jeden Tag ausgeführt werden soll. +
-Gib einen Namen ein.
-
-| *Auftragstyp*
-| Wähle aus der Dropdown-Liste *Status* die Option *[7] Warenausgang gebucht*. +
-Wähle aus der Dropdown-Liste *Letzter Statuswechsel* die Option *Tage eingeben*. Gib den Wert `2` in das neue Textfeld ein. +
-Wähle aus der Liste *Auftragsherkunft* die Option {marketplace}.
-
-| *Aktion*
-| Wähle aus der Dropdown-Liste *Ändere Auftragsstatus* einen endgültigen Status, z.B. 7.99.
-
-|===
-
-[#1120]
-=== Stornierte Aufträge archivieren
-
-[.collapseBox]
-.Aktion einrichten
---
-[.instruction]
-Aktion einrichten:
-
-. Öffne das Menü *Einrichtung » Aufträge » Aktionen*.
-. Öffne das Tab *Neue Aktion*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-stornierte-auftraege>> vor.
-. Öffne das Tab *Filter*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-stornierte-auftraege>> vor.
-. Öffne das Tab *Aktion*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-stornierte-auftraege>> vor.
-. *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Aktion wird erstellt.
-
---
-
-[[#{marketplace}-aktionsmanager-stornierte-auftraege]]
-.Einstellungen Aktionsmanager
-[cols="1,3"]
-|===
-|Tab |Einstellung
-
-| *Status*
-| Aktiviere die Option *Aktiv*. +
-Stelle ein, wann die Aktion jeden Tag ausgeführt werden soll. +
-Gib einen Namen ein.
-
-| *Auftragstyp*
-| Wähle aus der Dropdown-Liste *Status* die Option *[8] Storniert*. +
-Wähle aus der Dropdown-Liste *Letzter Statuswechsel* die Option *Tage eingeben*. Gib den Wert `2` in das neue Textfeld ein. +
-Wähle aus der Liste *Auftragsherkunft* die Option {marketplace}.
-
-| *Aktion*
-| Wähle aus der Dropdown-Liste *Ändere Auftragsstatus* einen endgültigen Status, z.B. 8.99.
-
-|===
-
-[#1130]
-=== Aufträge mit Gutschriften archivieren
-
-[.collapseBox]
-.Aktion einrichten
---
-[.instruction]
-Aktion einrichten:
-
-. Öffne das Menü *Einrichtung » Aufträge » Aktionen*.
-. Öffne das Tab *Neue Aktion*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-gutschriften>> vor.
-. Öffne das Tab *Filter*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-gutschriften>> vor.
-. Öffne das Tab *Aktion*.
-. Nimm die gewünschten Einstellungen anhand der Informationen in <<{marketplace}-aktionsmanager-gutschriften>> vor.
-. *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Aktion wird erstellt.
-
---
-
-[[#{marketplace}-aktionsmanager-gutschriften]]
-.Einstellungen Aktionsmanager
-[cols="1,3"]
-|===
-|Tab |Einstellung
-
-| *Status*
-| Aktiviere die Option *Aktiv*. +
-Stelle ein, wann die Aktion jeden Tag ausgeführt werden soll. +
-Gib einen Namen ein.
-
-| *Auftragstyp*
-| Wähle aus der Dropdown-Liste *Status* die Option *[11] Gutschrift*. +
-Wähle aus der Dropdown-Liste *Letzter Statuswechsel* die Option *Tage eingeben*. Gib den Wert `2` in das neue Textfeld ein. +
-Wähle aus der Liste *Auftragsherkunft* die Option {marketplace}.
-
-| *Aktion*
-| Wähle aus der Dropdown-Liste *Ändere Auftragsstatus* einen endgültigen Status, z.B. 11.99.
-
-|===
-
+include::../automation/mirakl-voelkner.adoc[tag=instructions]
 endif::[]
 
 ////
