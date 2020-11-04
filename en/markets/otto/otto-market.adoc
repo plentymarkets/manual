@@ -28,7 +28,80 @@ Connecting to this market allows for the following automatic processes to take p
 [#200]
 == Setting up an account
 
-include::../_textblocks/instructions/otto-market-basic-assistant.adoc[]
+Use the assistant *Base settings - OTTO Market* in the *Setup » Assistants » Omni-Channel* menu to quickly and conveniently set up OTTO Market in plentymarkets. Moreover, you set up the data transfer to OTTO Market. Keep the API access data at hand that you received from OTTO Market.
+
+:menu-path: Setup » Assistants » Omni-Channel
+:assistant-name: Base settings - OTTO Market
+:number-of-boxes: Info box
+
+include::../_textblocks/instructions/activate-referrer.adoc[]
+
+[.collapseBox]
+.Options in the assistant
+--
+[[table-otto-market-basic-settings-assistant]]
+[width="100%"]
+[cols="1,2"]
+|======
+|Setting |Explanation
+
+2+|Step *Settings*
+
+| *Select the client that should be used to sell your items.*
+a| From the drop-down list *Client*, select a client. This client is used to generate the item URL in the catalogue and OTTO Market orders are assigned to this client.
+
+| *Would you like to activate your OTTO market user account?*
+a| _Not activated_ = The settings are saved but the data exchange with OTTO Market is not started. +
+_Activated_ = Data exchange with OTTO Market is started once the assistant is completed. +
+*_Recommendation:_* Check all settings before activating the user account.
+
+2+|Step *API access data*
+
+| *Enter the API access data.*
+a| * *API user* (mandatory input) = Enter the user name for the API interface that you received from OTTO Market.
+* *Password* (mandatory input) = Enter the password for the API interface that you received from OTTO Market.
+
+2+|Step *Data exchange*
+
+| *Would you like to import OTTO market orders into plentymarkets?*
+| Activate to import orders every 15 minutes automatically. +
+*_Note:_* You need to activate this option to export item data and stock information.
+
+| *Which data would you like to transfer to OTTO market?* +
+(only shown if you activated *Import orders*)
+a| Select the data to be exported. +
+*_Note:_* You need to automatically import orders to export item data and stock information.
+
+* *Item data* = Item data is synchronised once a day during the night.
+* *Stock information* = Stock is synchronised every 15 minutes. +
+*_Note:_* If stock for a variation drops to 0, this variation is deactivated automatically after 15 days. This is done to protect the product’s ranking on OTTO Market. If new stock is booked for such a variation, the variation is reactivated during the nightly item export.
+
+| *Would you like to import return announcements from OTTO market into plentymarkets?*
+| Activate to import returns that customers create on OTTO Market once per hour. Each returned order item is shown as a separate return in the *Orders* tab of an order.
+
+| *Select the order status for newly imported return announcements.* +
+(only shown if you activated *Import return announcements*)
+| From the drop-down list, select the status to be assigned to return announcements during import. +
+*_Note:_* A return announcement does not guarantee that the customer actually sends the product back to you. As such, select a status that does not trigger any unwanted event procedures, e.g. event procedures for creating credit notes.
+
+| *Would you like to replace the stock amount for variations with no stock limitation?*
+a| Activate *Replace stock* to enter a stock amount.
+
+| *Stock amount* +
+(only shown if you activated *Limit stock*)
+| Enter the stock amount. This stock amount is sent if the setting *Limit* of a variation is set to *None* or *Do not administer stock for this variation* and stock is less than or equal to 0.
+
+2+|Step *Shipping service provider*
+
+| *Link plentymarkets shipping service provider DHL with:*
+| OTTO Market shipping service provider (drop-down list)
+
+2+|Step *Summary*
+
+| Summary
+| Shows a summary of your settings. Expand (icon:chevron-down[role="darkGrey"]) and check your settings.
+|======
+--
 
 [#275]
 == Activating the order referrer
@@ -84,12 +157,142 @@ include::../_textblocks/instructions/activate-payment-method.adoc[]
 [#450]
 == Setting up the item export
 
-include::../_textblocks/instructions/otto-market-catalog-assistant.adoc[]
+Item data is exported to OTTO Market via catalogues. Use the assistant *Create catalogues - OTTO Market* to create a marketplace format for every OTTO category group. Is this your first time working with catalogues? Then read up on the basic principle of <<en/data/exporting-data/managing-catalogues, catalogues first>>. For further information about the plentymarkets data sources that can be linked, refer to the <<data/exporting-data/managing-catalogues#_mapping_data_sources, Mapping data sources>> chapter.
+
+[IMPORTANT]
+.Items cannot be deleted at OTTO Market
+====
+An item cannot be deleted at OTTO Market, neither by plentymarkets nor by OTTO. It is only possible to mark the item as *not available* at OTTO Market. Therefore, make extra sure that the correct sources are mapped in the catalogue prior to transferring your items.
+====
+
+=== Creating a catalogue in the assistant
+
+:catalogue-assistant-name: Create catalogues - OTTO Market
+:number-of-boxes: info boxes
+:catalogue-path: pass:quotes[*Setup » Assistants » Omni-Channel*]
+:catalogue-note: You need a separate catalogue for each OTTO category group.
+:mapping-fields: more
+
+include::../_textblocks/instructions/catalogue-assistant-config.adoc[]
+
+[.collapseBox]
+.Step *Name and category group*
+--
+[[table-otto-market-catalogue-assistant]]
+[width="100%"]
+[cols="1,2"]
+|====
+| Setting | Explanation
+
+| *Enter a name for the catalogue.*
+a| Enter a name for the catalogue.
+
+| *Select the OTTO category group that should be added to the catalogue.*
+| Select an OTTO category group from the drop-down list. +
+*_Note:_* You need a separate catalogue for each OTTO category group.
+|====
+--
+
+[.collapseBox]
+.Step *Required fields*
+--
+In this step of the assistant, you decide which variation data saved in plentymarkets you want to send to the market. To do so, you are going to map each mandatory field of the market with the source in plentymarkets that contains the data that you want to export to the market. Each market specifies their own mandatory fields. Instead of mapping an existing data source, you can also create a new data source for some fields.
+
+'''
+*Parent SKU* = From the drop-down list, select the data field in plentymarkets that contains the parent SKU.
+
+'''
+*SKU* = From the drop-down list, select the data field in plentymarkets that contains the SKU.
+
+'''
+*Select data source* = A data source that already exists in plentymarkets will be exported to OTTO Market. Select the data source from the drop-down list *Data source*. +
+*_Note:_* The mappings you create will not be checked in terms of logic. As such, check your mappings carefully before starting the export.
+
+'''
+*Create property* = Creates a property and maps this property to the data field. This automatically created property will be saved in the <<welcome/general-functions/properties#table-create-property, Setup » Settings » Properties » Configuration>> menu.
+
+The property is created with the following settings:
+
+* Section = Item
+* Property type = _depending on the market’s requirements_
+* Language = German
+* Name = Field of the OTTO category group
+* Group = OTTO Market
+
+'''
+*Creating a sales price* = Creates a sales price and maps this sales price to the data field. You can check and edit this sales price in the <<en/item/settings/prices#400, Setup » Item » Sales prices>> menu.
+
+The sales price is created with the following settings:
+
+* Subscription interval = None
+* Internal name = OTTO Market
+* External name = OTTO Market
+* Minimum quantity = 1
+* Live conversion = No
+* Currency = Euro
+* Display = Always display for new items
+* Client = ALL
+* Class = ALL
+* Country = Germany
+
+'''
+*Create barcode* = Creates the barcode *OTTO Market* and maps this barcode with the data field. If a barcode with the name *OTTO Market* already exists in the system, that barcode is mapped instead. You can check and edit this barcode in the <<en/item/settings/barcodes#100, Setup » Item » Barcodes>> menu.
+--
+
+[.collapseBox]
+.Step *Summary*
+--
+[[table-otto-market-catalogue-assistant]]
+[width="100%"]
+[cols="1,2"]
+|====
+| Setting | Explanation
+
+| Summary
+| Shows a summary of the catalogue settings. Expand (icon:chevron-down[role="darkGrey"]) and check your settings.
+
+|====
+--
+
+[#600]
+=== Mapping additional data fields in the catalogue (not in assistant)
+
+You have already mapped important mandatory fields for the OTTO category group in the assistant. However, after you have completed the assistant, you need to map additional data fields to send more information regarding your products to OTTO Market.
+
+TIP: Map at least the data fields *Brand*, *Delivery type* and *Category* with a plentymarkets data source.
+
+include::../_textblocks/instructions/catalogue-assistant-mapping-data-fields.adoc[]
+
+[#602]
+=== _Example:_ Mapping the data field "Stock"
+
+An example of how to map the data field *Stock* to item data saved in plentymarkets is provided below. Use the data field *Stock* to select from which warehouse stock is to be exported to OTTO Market.
+
+[.instruction]
+Mapping the data field "Stock":
+
+. Go to *Data » Catalogues*.
+. Click on the catalogue. +
+→ The catalogue opens.
+. Select a plentymarkets data source for the OTTO Market data field from the *Source* drop-down list. To do so, expand the plentymarkets data source *Stock*. +
+→ All warehouses saved in plentymarkets are displayed in the drop-down list.
+. Select the warehouse from which you want to export the stock to OTTO Market.
+. Click on *Select* (icon:check-square[role="green"]). +
+*_Optional:_* To transfer stock from multiple warehouses to OTTO Market, click on *Add source* (icon:link[role="yellow"]) and add more warehouses.
+*_Note:_* If you do not map the data field *Stock* to a warehouse, then the sum of the net stock of all distribution warehouses (data source *Virtual warehouse*) will be exported to OTTO Market.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#701]
+== Linking sources created in the assistant with variations
+
+:property-group: OTTO Market
+
+include::../_textblocks/instructions/assistant-link-sources.adoc[]
 
 [#475]
 == Linking variations with OTTO category groups
 
-After you created a catalogue template for OTTO Market with the *OTTO Market Creating catalogues* assistant or manually, the property *OTTO category group* is created in your plentymarkets system. A new selection value is added to the *OTTO category group* property for each OTTO category group selected in the *Name and category group* step of the assistant. In order for your variations to be exported in the appropriate catalogue, they have to be linked to the *OTTO category group* property in the *Properties* tab of a variation.
+After you created a marketplace format for OTTO Market with the *OTTO Market Creating catalogues* assistant or manually, the property *OTTO category group* is created in your plentymarkets system. A new selection value is added to the *OTTO category group* property for each OTTO category group selected in the *Name and category group* step of the assistant. In order for your variations to be exported in the appropriate catalogue, they have to be linked to the *OTTO category group* property in the *Properties* tab of a variation.
 
 [.instruction]
 Linking a variation with an OTTO category group:
@@ -108,7 +311,7 @@ Linking a variation with an OTTO category group:
 [#2000]
 == Activating the catalogue export to OTTO Market
 
-:interval: einmal täglich nachts
+:interval: once a day during the night
 :market: OTTO Market
 
 include::../_textblocks/instructions/catalogue-activation.adoc[]
@@ -234,8 +437,8 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 
 | *Event*
 | *Order change: Status change*
-| Select an event, for example *[8.1] Cancelled by customer* +
-*_Note:_* Orders that are cancelled by OTTO Market are imported with the status *[8] Cancelled*. Select a different status to make sure that you do not notify OTTO Market of a cancellation they triggered.
+| Select an event, e.g. *[8.1] Cancelled by customer* +
+*_Note:_* Orders that are cancelled by OTTO Market are imported to plentymarkets with the status *[8] Cancelled*. As such, select a different status to make sure that you do not notify OTTO Market of a cancellation they triggered.
 
 | *Filter 1*
 | *Order > Order type*
@@ -442,6 +645,10 @@ image::markets/otto/assets/otto-market_search_external-order-number.png[Search e
 +
 The external order number can be found in the *Settings* tab of an order (*Ext. order number*).
 +
+[plentymarkets-external-order-number]]
+.Searching for the external order number
+image::maerkte/otto/assets/plentymarkets_externe-auftragsnummer.png[externe Auftragsnummer in plentymarkets]
++
 If customers have further questions concerning an order, you can find an order by searching for the external order number.
 +
 Additionally, you can use the *Referrer* filter to filter OTTO Market orders.
@@ -450,23 +657,23 @@ The log shows an error. How can I solve this error?::
 +
 * *Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.*
 +
-This error is also indicated as “SKU 1234 not generated” in the log.
+This error is also indicated as “SKU 1234 not generated” or “0:sku” in the log.
 +
 How SKUs should be generated is defined in the catalogue. There is a distinction between the *Parent SKU* and the *Variation SKU*. The source selected here should be a data record which exists only once. Hence, it is not possible to use the same SKU for different items. For example, you could use the *Item ID* and the *Variation ID*. Both IDs are generated when the item is created in plentymarkets and only exist once. However, it might happen that the item export is carried out with errors because of missing information in the catalogue. The SKU is created anyway and can now be found in the *Availability* tab of a variation. During the next export, your plentymarkets system will try again to create an SKU from the sources selected in the catalogue. However, as this SKU already exists, the error “Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique." / “SKU 1234 not generated.” occurs.
 +
-Therefore it is necessary to add a fallback solution in the catalogue. The solution looks like this:
+As such, you need to add a fallback data field to the catalogue. The solution looks like this:
 +
 [[add-source]]
 .Add source
-image::markets/otto/assets/otto-market_add_source.png[Add source]
+image::markets/otto/assets/otto-market-add-source.png[Add source]
 +
 [IMPORTANT]
 .Add source
 ====
-When adding another source, it is mandatory to use the *Add source* button (icon:link[role="yellow"]) on the right-hand side of the catalogue. Do _not_ use the *+ Additional source* button (icon:plus-square[role="green"]) because in this case, your SKUs would be created twice and the error could not be solved.
+When adding another source, it is mandatory to use the  *+ Add fallback data field* button (icon:link[role="yellow"]) on the right-hand side of the catalogue. Do _not_ use the option *Add data field* (icon:plus-square[role="green"]) because in this case, your SKUs would be created twice and the error cannot be resolved.
 ====
 +
-A second source is added. During the next export, the first source will be retrieved first. As the SKU is already included in this source, the second source will be ignored. If the first source does not contain an SKU, then a new SKU will be generated using the second source.
+This adds a *_second source_*. During the next export, the first source will be retrieved first. As the SKU is already included in this source, the second source will be ignored. If the first source does not contain an SKU, then a new SKU will be generated using the second source.
 +
 * *Code: 200009 - ATTRIBUTE_CHANGE_DENIED* or *title: Der Wert dieses Feldes kann nicht geändert werden.* (title: The value of this field cannot be changed.)
 +
