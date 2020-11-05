@@ -804,3 +804,48 @@ Updating the timestamp for market exports:
 . In the *Procedures* area, activate the option *Update timestamp for market exports*.
 . Click on *Apply* (icon:execute[set=plenty]). +
 → All items which are configured for idealo will be exported to idealo with the next item export.
+
+[#2300]
+=== Switching from interface MOA 1.0 to interface MOA 2.0
+
+We have updated the order import for idealo Checkout to the new interface version MOA 2.0. This update results in a new authentification method for the idealo API, which required the reconfiguration of some of the settings. The interface for the MOA 1.0 will be removed from the *Setup » Markets » idealo* menu on the XX.XX.XXXX and the order import will be deactivated for this old version.
+
+Check the changelog for the [idealo plugin on the plentyMarketplace](https://marketplace.plentymarkets.com/en/elasticexportidealode_4723) to find out about the changes. What you need to do to switch to the new interface is described below.
+
+[#2300a]
+==== I already sell products with idealo Checkout and use the item interface PWS 2.0. How do I set up the new order import?
+
+1. In the idealo Business Portal, generate your credentials for the new interface.
+2. Go to *Setup » Markets » idealo* and remove the checkmark for the option *Activate automatic data exchange* to deactivate the order interface MOA 1.0.
+3. Update your idealo plugin to plugin version 3.0.
+4. Update your event procedures. You now need event procedures with the following actions:
+    * *Send refund notification to idealo*
+    * *Send shipping confirmation to idealo*
+    * *Send seller cancellation to idealo*
+    * *Send buyer cancellation to idealo*
+    * *Send return notification to idealo* +
+*_Tip:_* The chapter <<#1600, Creating event procedures for idealo Checkout>> describes the necessary settings.
+5. Complete the *idealo assistant* in the *Setup » Assistants »* _Open client_ *» Plugins* menu. Note the following settings:
+   - In the *Automatic data transfer* step of the assistant, activate the option *Would you like to import your idealo Checkout orders into plentymarkets?* This activates the new interface.
+   - In the *Access data* step of the assistant, enter your new idealo credentials when you are prompted to *Enter the credentials for your Merchant Order API 2.0 API client.*
+
+[#2300b]
+==== I already sell products with idealo Checkout and use the Elastic Export. How do I set up the new order import?
+
+1. In the idealo Business Portal, generate your credentials for the new interface.
+2. Go to *Setup » Markets » idealo* and remove the checkmark for the option *Activate automatic data exchange* to deactivate the order interface MOA 1.0.
+3. Update your idealo plugin to plugin version 3.0.
+4. Update your event procedures. You now need event procedures with the following actions:
+    * *Send refund notification to idealo*
+    * *Send shipping confirmation to idealo*
+    * *Send seller cancellation to idealo*
+    * *Send buyer cancellation to idealo*
+    * *Send return notification to idealo* +
+*_Tip:_* The chapter <<#1600, Creating event procedures for idealo Checkout>> describes the necessary settings.
+5. Complete the *idealo assistant* in the *Setup » Assistants »* _Open client_ *» Plugins* menu. Note the following settings:
+
+   - In the *Automatic data transfer* step of the assistant, activate the option *Would you like to import your idealo Checkout orders into plentymarkets?* This activates the new interface.
+   - In the  *Access data* step of the assistant, enter your new idealo credentials when you are prompted to *Enter the credentials for your Merchant Order API 2.0 API client.*
+   - Map your active payment methods to the idealo payment methods.
+   - All existing SKU must be copied to the new interface. This is done in the step *Activate user account* of the assistant. Activate the option *Would you like to copy existing SKUs from the old idealo interface to your new user account?*. As a result, your variations will now have two identical SKU, one without a user account and one with the new user account that you set up in the assistant.
+6. Now, update your Elastic Exports to the new user account. To do so, go to *Data » Elastic Export*. Open your idealo exports and for the option *Marketplace account*, select the shop ID of your new user account from the drop-down list.
