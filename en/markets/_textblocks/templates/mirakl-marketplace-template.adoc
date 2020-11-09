@@ -183,28 +183,87 @@ include::../../_textblocks/instructions/assistant-basic-instructions.adoc[]
 |======
 |Setting |Explanation
 
-| Authentication
-| Select the API environment and enter the <<#1300, API key>>. You can determine the API environment from the URL of your Mirakl account.
+2+| Step *Authentication*
+
+| API Environment
+a| Select an API environment from the drop-down list. Get in touch with your contact person at {marketplace} to confirm which API environment you should select. +
+*_Note:_* If you switch to another API environment, e.g. from Productive to Test mode, you need to generate a new <<#1300, API key>>.
+
+| API key
+| Enter the <<#1300, API key>> that you generated. +
+*_Note:_* If you switch to another API environment, e.g. if you switch from Productive to Test mode, you need to generate a new <<#1300, API key>>.
+
+2+| Step *Data exchange*
 
 | Data exchange
 | Select processes for data exchange. This selection determines which data is exchanged between plentymarkets and Mirakl.
 
+2+| Step *Refund mapping*
+
 | Refund mapping
-| Enter what reason to transfer to Mirakl when there’s a refund. You can add reasons for multiple statuses.
+a| Map the refund reasons of {marketplace} to plentymarkets order statuses.
+
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets status.
+. From the drop-down list on the right, select a {marketplace} refund reason. +
+The following reasons can be sent to {marketplace}: +
+
+* 15 = Out of stock
+* 16 = Cancelled by client prior to shipping
+* 17 = Item returned
+* 18 = Item not received
+* 19 = Agreement found with the vendor
+
+// Gründe sind für Conrad, Voelkner und MediaMarkt gleich
+
+2+| Step *Cancellation mapping*
 
 | Cancellation mapping
-| Enter what reason to transfer to Mirakl when an order gets cancelled. You can add reasons for multiple statuses.
+a|
+ifeval::["{marketplace}" == "Conrad"]
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets status.
+. From the drop-down list on the right, select a {marketplace} cancellation reason. +
+The following reasons can be sent to {marketplace}: +
+
+* 34 = Cancellation: Wrong item ordered
+* 35 = Cancellation: Unwanted payment method
+* 37 = Cancellation: Delivery time too long
+* 39 = Agreement reached between vendor and buyer
+endif::[]
+
+ifeval::["{marketplace}" == "MediaMarkt"]
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets status.
+. From the drop-down list on the right, select a {marketplace} cancellation reason. +
+The following reasons can be sent to {marketplace}: +
+
+* 34 = Cancelled by client prior to shipping
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+This setting is not applicable to Voelkner.
+endif::[]
+
+2+| Step *Warehouse selection*
 
 | Warehouse selection
 | Select the warehouse you want to use for stock export.
 
+2+| Step *Shipping profile mapping*
+
 | Shipping profile mapping
 | For each shipping profile in plentymarkets, enter the corresponding abbreviation of the shipping service provider. To find the abbreviations, go to *Information » Shipping* in Mirakl.
 
+2+| Step *Offer properties mapping*
+
 | Offer properties mapping
-| Wähle aus der Dropdown-Liste *Reverse charge* die Eigenschaft *{marketplace} reverse charge*. +
-Wähle aus der Dropdown-Liste *Leadtime to ship* die Eigenschaft *{marketplace} leadtime to ship*. +
-Wähle aus der Dropdown-Liste *Logistics class* die Eigenschaft *{marketplace} logistics class*.
+| From the drop-down list *Reverse charge*, select the property *{marketplace} Reverse charge*. +
+From the drop-down list *Lead time to ship*, select the property *{marketplace} Leadtime to ship*. +
+From the drop-down list *Logistic class*, select the property *{marketplace} Logistic class*.
 
 |======
 --
@@ -223,9 +282,9 @@ If there’s a problem during export, you can find the related log entries on Mi
 ====
 
 [#1240]
-==== Creating additional properties
+=== Creating additional properties
 
-In addition to the properties <<#1200, described in the previous sections>>, you need properties for all data fields of the marketplace whose data you want to export, but that don’t exist in plentymarkets by default. For further information on the properties you need, check the documentation of the marketplace. Is this your first time working with properties? For further information, refer to the <<welcome/general-functions/properties#, Properties>> page of the manual.
+In addition to the properties described <<#1200, previously>>, you need properties for all data fields of the marketplace whose data you want to export, but that don’t exist in plentymarkets by default. For further information on the properties you need, check the documentation of the marketplace. Is this your first time working with properties? For further information, refer to the <<welcome/general-functions/properties#, Properties>> page of the manual.
 
 [#902]
 === Creating a catalogue in the assistant
@@ -261,7 +320,7 @@ include::../../_textblocks/instructions/catalogue-assistant-config.adoc[]
 
 include::../../_textblocks/instructions/catalogue-map-data-fields.adoc[]
 
-ifeval::[”{marketplace}” == "Conrad"]
+ifeval::["{marketplace}" == "Conrad"]
 include::../instructions/catalogue-mirakl-conrad-mapping.adoc[]
 
 The following CSV files contain the valid values for the respective catalogue fields:
@@ -275,7 +334,7 @@ The following CSV files contain the valid values for the respective catalogue fi
 * link:https://docs.google.com/spreadsheets/d/1W5JXuzx110dEO6zTieGokvzaFXrQHMG-EK-lwBb94oI/format=csv[Umsatzsteuer (VAT)^]
 endif::[]
 
-ifeval::[”{marketplace}” == "Voelkner"]
+ifeval::["{marketplace}" == "Voelkner"]
 include::../instructions/catalogue-mirakl-conrad-mapping.adoc[]
 
 The following CSV files contain the valid values for the respective catalogue fields:
@@ -342,11 +401,13 @@ include::../../_textblocks/instructions/variation-availability.adoc[]
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically update the order status on {marketplace} whenever specific events occur. You can set up the following event procedures:
 
-ifeval::[”{marketplace}” == "Conrad"]
+// Welche Ereignisaktionen es gibt hängt vom Marktplatz ab. Hier die gängigsten. Bei Bedarf anpassen!
+
+ifeval::["{marketplace}" == "Conrad"]
 include::../automation/mirakl-conrad.adoc[tag=summary]
 endif::[]
 
-ifeval::[”{marketplace}” == "Voelkner"]
+ifeval::["{marketplace}" == "Voelkner"]
 include::../automation/mirakl-voelkner.adoc[tag=summary]
 endif::[]
 
@@ -360,11 +421,11 @@ In addition to the event procedures listed above, the {marketplace} plugin provi
 However, we recommend that you only use the procedures described in detail.
 ====
 
-ifeval::[”{marketplace}” == "Conrad"]
+ifeval::["{marketplace}" == "Conrad"]
 include::../automation/mirakl-conrad.adoc[tag=instructions]
 endif::[]
 
-ifeval::[”{marketplace}” == "Voelkner"]
+ifeval::["{marketplace}" == "Voelkner"]
 include::../automation/mirakl-voelkner.adoc[tag=instructions]
 endif::[]
 
