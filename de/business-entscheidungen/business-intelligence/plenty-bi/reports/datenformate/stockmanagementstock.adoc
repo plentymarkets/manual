@@ -2,7 +2,7 @@
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: stockManagementStock, Report, Rohdaten
-:position: 170
+:position: 180
 :url: business-entscheidungen/business-intelligence/reports/datenformate/stockmanagementstock
 :id: YBRJGDK
 :author: team-stock
@@ -47,18 +47,18 @@ Dateiname: *stockManagementStock-xxx.csv.gz*
 
 |earliestPossibleDataDate
 |Frühester Zeitpunkt
-|2006-01-01
+|2020-01-01
 |Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
 
-|deleteRawDataAfterDaysMinimum
-|Minimale Anzahl an Tagen bis zur Löschung
-|20
-|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » Einstellungen » Report » Rohdaten* definiert werden.
+//|deleteRawDataAfterDaysMinimum
+//|Minimale Anzahl an Tagen bis zur Löschung
+//|20
+//|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » plentyBI » Rohdaten* definiert werden.
 
-|deleteRawDataAfterDaysMaximum
-|Maximale Anzahl an Tagen bis zur Löschung
-|80
-|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » Einstellungen » Report » Rohdaten* definiert werden.
+//|deleteRawDataAfterDaysMaximum
+//|Maximale Anzahl an Tagen bis zur Löschung
+//|80
+//|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » plentyBI » Rohdaten* definiert werden.
 
 |filterType
 |Filtertyp
@@ -73,15 +73,19 @@ Dateiname: *stockManagementStock-xxx.csv.gz*
 |defaultActive
 |Standardmäßig aktiv
 |nein
-|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Einrichtung » Einstellungen » Report » Rohdaten* aktiviert wurde.
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Einrichtung » plentyBI » Rohdaten* aktiviert wurde.
 
 |interval
 |Intervall
 |täglich
 |Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
 
+|storableFromPlan
+|Speicherung ab Tarif
+|plentyBI XS
+|Tarif, ab dem die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
 |====
-////
+
 == Datenspalten
 
 include::./_textblocks/datenspalten.adoc[]
@@ -97,20 +101,25 @@ include::./_textblocks/datenspalten.adoc[]
 |plenty id
 |ID des plentymarkets Systems
 
-|iv_id
-|
-|item variation ID
-|ID der Artikelvariante
-
-|smw_id
-|
-|stock management warehouse ID
-|ID des Lagers
-
 | *sms_id (Primary key)*
-|
+|VARCHAR NOT NULL
 |stock management stock ID
 |Enthält den Primärschlüssel der Datenzeile.
+
+|i_id
+|VARCHAR NOT NULL
+|item id
+|ID des Artikels
+
+|iv_id
+|VARCHAR NOT NULL
+|item variation id
+|ID der Variante
+
+|smw_id
+|VARCHAR NOT NULL
+|stock management warehouse ID
+|ID des Lagers
 
 |sms_physical
 |
@@ -138,10 +147,9 @@ include::./_textblocks/datenspalten.adoc[]
 |Durchschnittlicher Einkaufspreis des Artikels, abhängig von den zuvor getroffenen <<warenwirtschaft/wareneingaenge-verwalten#250, Einstellungen zum Einkaufspreis>>.
 
 | *sms_updated_at*
-|
+|TIMESTAMPTZ
 |stock management stock updated at
 |Zeitstempel der letzten Aktualisierung +
 Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====
-////

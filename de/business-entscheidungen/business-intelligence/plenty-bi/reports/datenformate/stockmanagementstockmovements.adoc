@@ -2,7 +2,7 @@
 :lang: de
 include::{includedir}/_header.adoc[]
 :keywords: stockManagementStockMovements, Report, Rohdaten
-:position: 180
+:position: 170
 :url: business-entscheidungen/business-intelligence/reports/datenformate/stockmanagementstockmovements
 :id: YXJKHWO
 :author: team-stock
@@ -47,18 +47,18 @@ Dateiname: *stockManagementStockMovements-xxx.csv.gz*
 
 |earliestPossibleDataDate
 |Frühester Zeitpunkt
-|2019-01-01
+|2020-01-01
 |Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
 
-|deleteRawDataAfterDaysMinimum
-|Minimale Anzahl an Tagen bis zur Löschung
-|20
-|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » Einstellungen » Report » Rohdaten* definiert werden.
+//|deleteRawDataAfterDaysMinimum
+//|Minimale Anzahl an Tagen bis zur Löschung
+//|20
+//|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » plentyBI » Rohdaten* definiert werden.
 
-|deleteRawDataAfterDaysMaximum
-|Maximale Anzahl an Tagen bis zur Löschung
-|80
-|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » Einstellungen » Report » Rohdaten* definiert werden.
+//|deleteRawDataAfterDaysMaximum
+//|Maximale Anzahl an Tagen bis zur Löschung
+//|80
+//|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » plentyBI » Rohdaten* definiert werden.
 
 |filterType
 |Filtertyp
@@ -73,15 +73,20 @@ Dateiname: *stockManagementStockMovements-xxx.csv.gz*
 |defaultActive
 |Standardmäßig aktiv
 |nein
-|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Einrichtung » Einstellungen » Report » Rohdaten* aktiviert wurde.
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Einrichtung » plentyBI » Rohdaten* aktiviert wurde.
 
 |interval
 |Intervall
 |täglich
 |Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
 
+|storableFromPlan
+|Speicherung ab Tarif
+|plentyBI XS
+|Tarif, ab dem die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
 |====
-////
+
+
 == Datenspalten
 
 include::./_textblocks/datenspalten.adoc[]
@@ -97,30 +102,25 @@ include::./_textblocks/datenspalten.adoc[]
 |plenty id
 |ID des plentymarkets Systems
 
+| *smsm_id (Primary key)*
+|VARCHAR NOT NULL
+|stock management stock movement ID
+|Enthält den Primärschlüssel der Datenzeile.
+
 |i_id
-|
-|item ID
+|VARCHAR NOT NULL
+|item id
 |ID des Artikels
 
 |iv_id
-|
-|item variation ID
-|ID der Artikelvariante
+|VARCHAR NOT NULL
+|item variation id
+|ID der Variante
 
 |smw_id
-|
+|VARCHAR NOT NULL
 |stock management warehouse ID
 |ID des Lagers
-
-|sl_name
-|
-|storage location ID
-|Name des Lagerorts
-
-| *smsm_id (Primary key)*
-|
-|stock management stock movement ID
-|Enthält den Primärschlüssel der Datenzeile.
 
 |smsm_quantity
 |
@@ -139,11 +139,15 @@ Mögliche Werte: +
 401 = Umbuchung +
 Weitere mögliche Werte sind in unserer link:https://developers.plentymarkets.com/rest-doc/item_variation_stock/details#intake-stock[Entwicklerdokumentation^]{nbsp}icon:external-link[] zu finden.
 
-| *smsm_created_at*
+|sl_name
 |
+|storage location name
+|Name des Lagerorts
+
+| *smsm_created_at*
+|TIMESTAMPTZ
 |stock management stock movement created at
 |Zeitstempel der Erstellung +
 Datumsformat: MM/DD/YYYY HH:MI:SS TZ
 
 |====
-////
