@@ -50,16 +50,6 @@ Dateiname: *orders-xxx.csv.gz*
 |2020-01-01
 |Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
 
-//|deleteRawDataAfterDaysMinimum
-//|Minimale Anzahl an Tagen bis zur Löschung
-//|1095
-//|Die minimale Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » plentyBI » Rohdaten* definiert werden.
-
-//|deleteRawDataAfterDaysMaximum
-//|Maximale Anzahl an Tagen bis zur Löschung
-//|1095
-//|Die maximal Anzahl an Tagen, bis die generierte Rohdaten-Datei wieder vom Cloud-Speicher entfernt wird. Eine Weiterverarbeitung muss somit vorher erfolgen. Die genaue Dauer kann im Menü *Einrichtung » plentyBI » Rohdaten* definiert werden.
-
 |filterType
 |Filtertyp
 |lastUpdate
@@ -122,12 +112,12 @@ include::./_textblocks/datenspalten.adoc[]
 |ID des übergeordneten Hauptauftrags. Diese ID wird nur bei Auftragstypen ausgegeben, die einem sogenannten Hauptauftrag untergeordnet ist (beispielsweise Gutschriften, Retouren und Lieferaufträge).
 
 |os_id
-|DECIMAL(6,4) NOT NULL
+|NUMERIC(6,4) NOT NULL
 |order status
 |Status des Auftrags im Dezimalformat. Je nach den im System eingerichteten Status werden Zahlen mit bis zu 4 Nachkommastellen ausgegeben. Die IDs der Standardstatus finden Sie auf der Handbuchseite <<daten/interne-IDs#120, Interne IDs in plentymarkets>>.
 
 |o_referrer
-|DECIMAL(5,2)
+|NUMERIC(5,2)
 |order referrer
 |Herkunft des Auftrags. +
 Mögliche Werte: +
@@ -144,7 +134,7 @@ Mögliche Werte: +
 Weitere mögliche Werte für Auftragsherkünfte finden Sie auf der Handbuchseite <<daten/interne-IDs#90, Interne IDs in plentymarkets>>.
 
 |o_global_referrer
-|DECIMAL(5,2)
+|NUMERIC(5,2)
 |order global referrer
 |Globale Herkunft des Auftrags
 
@@ -164,15 +154,36 @@ advance order = Vorbestellung +
 multi-order = Sammelauftrag +
 multi credit note = Sammelgutschrift
 
+|o_is_main_order
+|SMALLINT NOT NULL
+|order is main order
+|Gibt an, ob der Auftrag ein Hauptauftrag ist. +
+1 = Ja +
+0 = Nein
+
 |o_is_net
 |SMALLINT NOT NULL
 |order is net
-|Enthält *1*, wenn der Auftrag netto abgerechnet wurde, oder *0*, wenn der Auftrag brutto abgerechnet wurde.
+|Gibt an, ob der Auftrag netto oder brutto abgerechnet wurde. +
+1 = Netto +
+0 = Brutto
+
+|o_is_b2b
+|SMALLINT NOT NULL
+|order is b2b
+|Gibt an, ob es sich um einen B2B-Auftrag handelt. +
+1 = Ja +
+0 = Nein
 
 |ac_id
 |VARCHAR NOT NULL
 |account contact id
 |ID des Kontakts, der dem Auftrag zugeordnet ist
+
+|o_payment_status
+|SMALLINT NOT NULL
+|order payment status
+|Zahlungsstatus des Auftrags
 
 |o_invoice_postal_code
 |VARCHAR
@@ -192,7 +203,7 @@ multi credit note = Sammelgutschrift
 |o_delivery_postal_code
 |VARCHAR
 |order delivery postal code
-|Postleitzahl der Rechnungsanschrift
+|Postleitzahl der Lieferanschrift
 
 |o_delivery_town
 |VARCHAR
@@ -202,17 +213,27 @@ multi credit note = Sammelgutschrift
 |o_delivery_country
 |VARCHAR
 |order delivery country
-|Land der Rechnungsanschrift (ISO2 Code)
+|Land der Lieferanschrift (ISO2 Code)
 
 |o_shipping_profile
 |INTEGER NOT NULL
 |order shipping profile
 |ID des Versandprofil des Auftrags
 
+|o_parcel_service
+|INTEGER NOT NULL
+|order parcel service
+|Versanddienstleister des Auftrags
+
 |smw_id
 |VARCHAR
 |stock management warehouse id
 |ID des Lagers, das dem Auftrag zugeordnet ist
+
+|smw_country
+|VARCHAR
+|stock management warehouse country
+|Land des Lagers, das dem Auftrag zugeordnet ist
 
 |smw_postal_code
 |VARCHAR
@@ -220,12 +241,12 @@ multi credit note = Sammelgutschrift
 |Postleitzahl des Lagers, das dem Auftrag zugeordnet ist
 
 |o_entry_at
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |order entry at
 |Zeitstempel des Auftragseingangs. Dieses Datum ist über die Benutzeroberfläche im Backend editierbar. Sofern keine Änderung vorgenommen wurde, ist dieses Feld mit dem bereits bestehenden Feld *o_created_at* identisch (Zeitpunkt der Speicherung des Auftrags in der Datenbank).
 
 |o_created_at
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |order created at
 |Zeitstempel der Auftragsanlage +
 Datumsformat: MM/DD/YY HH:MI:SS TZ
@@ -243,7 +264,7 @@ Datumsformat: MM/DD/YY HH:MI:SS TZ
 Datumsformat: MM/DD/YY HH:MI:SS TZ
 
 | *o_updated_at*
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |order updated at
 |Zeitstempel der letzten Aktualisierung des Auftrags +
 Datumsformat: MM/DD/YY HH:MI:SS TZ
