@@ -11,51 +11,13 @@ include::{includedir}/_header.adoc[]
 
 include::../../../_textblocks/plentyBI-template/kennzahlen-einleitung.adoc[]
 
-plentymarkets berechnet die Umsatzsteuer gesamt, indem die Nettopreise von den jeweiligen Bruttopreisen abgezogen werden. Diese Ergebnisse werden summiert. Wähle zusätzlich <<business-entscheidungen/business-intelligence/plenty-bi/kennzahlen/umsatzsteuer-gesamt#400, Dimensionen>> und <<business-entscheidungen/business-intelligence/plenty-bi/kennzahlen/umssatzsteuer-gesamt#500, Filter>>, um zu konkretisieren nach welchen Kriterien die Umsatzsteuer gesamt berechnet werden soll.
+plentymarkets berechnet die Umsatzsteuer gesamt, indem die Nettopreise der Auftragspositionen von den jeweiligen Bruttopreisen der Auftragspositionen abgezogen werden.
+Die Ergebnisse daraus werden zusammengerechnet: +
+_(Bruttopreis - Nettopreis) = Steuersatz_ +
+_Steuersatz + Steuersatz + ... = Umsatzsteuer gesamt_ +
+Wähle zusätzlich <<business-entscheidungen/business-intelligence/plenty-bi/kennzahlen/umsatzsteuer-gesamt#400, Dimensionen>> und <<business-entscheidungen/business-intelligence/plenty-bi/kennzahlen/umssatzsteuer-gesamt#500, Filter>>, um zu konkretisieren, nach welchen Kriterien die Umsatzsteuer gesamt berechnet werden soll.
 
 [#100]
-== Voraussetzung: Rohdaten
-
-:kennzahl: Umsatzsteuer gesamt
-
-include::../../../_textblocks/plentyBI-template/kennzahlen-voraussetzungen-rohdaten.adoc[]
-
-[[table-key-figures-rawdata]]
-[cols="1,1"]
-|====
-| Datenname | Standardmäßig aktiviert (ja/nein)
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/itemvariations#, itemVariations>>
-|nein
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/orderitemamounts#, orderItemAmounts>>
-|ja
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/orderitems#, orderItems>>
-|ja
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/orderproperties#, orderProperties>>
-|ja
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/orders#, orders>>
-|ja
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/orderstatuses#, orderStatuses>>
-|nein
-
-|<<business-entscheidungen/business-intelligence/reports/datenformate/payments#, payments>>
-|nein
-
-|====
-
-include::../../../_textblocks/plentyBI-template/plentyBI-rohdaten-aktivieren.adoc[]
-
-[#200]
-== Voraussetzung: Tarif
-
-include::../../../_textblocks/plentyBI-template/kennzahlen-voraussetzungen-tarif.adoc[]
-
-[#400]
 == Dimension
 
 === Erstellungsdatum
@@ -184,7 +146,7 @@ include::../../../_textblocks/plentyBI-dimensions/lager-warenausgangsdatum.adoc[
 
 include::../../../_textblocks/plentyBI-dimensions/mandant-warenausgangsdatum.adoc[]
 
-[#500]
+[#200]
 == Filter
 
 include::../../../_textblocks/plentyBI-template/filter-einleitung.adoc[]
@@ -193,15 +155,19 @@ include::../../../_textblocks/plentyBI-template/filter-einleitung.adoc[]
 
 include::../../../_textblocks/plentyBI-filters/mandant.adoc[]
 
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
+
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
 :filter: aufgelisteten Mandanten (icon:check-square[role="blue"])
 :kommas:
 
 [[table-key-figures-operators-client]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -209,9 +175,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Auftragsherkunft
 
 include::../../../_textblocks/plentyBI-filters/auftragsherkunft.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :filter-endung: aufgelisteten Auftragsherkünften
 :unbestimmter-Artikel: einer
@@ -220,9 +192,9 @@ include::../../../_textblocks/plentyBI-filters/auftragsherkunft.adoc[]
 :kommas:
 
 [[table-key-figures-operators-order-referrer]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -243,6 +215,8 @@ include::../../../_textblocks/plentyBI-operators/groesser-als-oder-gleich.adoc[]
 include::../../../_textblocks/plentyBI-operators/liegt-zwischen.adoc[]
 
 |====
+
+--
 
 // Auftragstyp
 
@@ -250,14 +224,18 @@ include::../../../_textblocks/plentyBI-filters/auftragstyp.adoc[]
 
 _Beachte_, dass die Umsatzsteuerbeträge von Gutschriften und Retouren vom Gesamtumsatzsteuerbetrag abgezogen werden, wenn du diese Auftragstypen im Filter auswählst.
 
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
+
 :unbestimmter-Artikel: einem
 :filter: ausgewählten Auftragstypen (icon:check-square[role="blue"])
 :kommas:
 
 [[table-key-figures-operators-ordertype]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -267,9 +245,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.a
 
 |====
 
+--
+
 // Auftragsstatus
 
 include::../../../_textblocks/plentyBI-filters/auftragsstatus.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -277,9 +261,9 @@ include::../../../_textblocks/plentyBI-filters/auftragsstatus.adoc[]
 :kommas:
 
 [[table-key-figures-operators-orderstatus]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -301,9 +285,15 @@ include::../../../_textblocks/plentyBI-operators/liegt-zwischen.adoc[]
 
 |====
 
+--
+
 // Typ der Auftragseigenschaft
 
 include::../../../_textblocks/plentyBI-filters/typ-der-auftragseigenschaft.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -311,9 +301,9 @@ include::../../../_textblocks/plentyBI-filters/typ-der-auftragseigenschaft.adoc[
 :kommas:
 
 [[table-key-figures-operators-order-property-type]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -325,9 +315,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Wert der Auftragseigenschaft
 
 include::../../../_textblocks/plentyBI-filters/wert-der-auftragseigenschaft.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :filter-endung: eingegebenen Werte
 :unbestimmter-Artikel: einem
@@ -336,9 +332,9 @@ include::../../../_textblocks/plentyBI-filters/wert-der-auftragseigenschaft.adoc
 :kommas: Verwende Kommas, um mehrere Werte zu trennen.
 
 [[table-key-figures-operators-order-property-value]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -350,9 +346,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Artikel-ID
 
 include::../../../_textblocks/plentyBI-filters/artikel-id.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einer
 :keinem-keiner: keiner
@@ -360,9 +362,9 @@ include::../../../_textblocks/plentyBI-filters/artikel-id.adoc[]
 :kommas: Verwende Kommas, um mehrere Artikel-IDs zu trennen.
 
 [[table-key-figures-operators-itemid]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -373,9 +375,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.a
 include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.adoc[]
 |====
 
+--
+
 // Auftragspositionstyp
 
 include::../../../_textblocks/plentyBI-filters/auftragspositionstyp.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :keinem-keiner: keinem
 :unbestimmter-Artikel: einem
@@ -383,18 +391,24 @@ include::../../../_textblocks/plentyBI-filters/auftragspositionstyp.adoc[]
 :kommas:
 
 [[table-key-figures-operators-orderitemtype]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.adoc[]
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 |====
 
+--
+
 // Erlöskonto
 
 include::../../../_textblocks/plentyBI-filters/erloeskonto.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -402,9 +416,9 @@ include::../../../_textblocks/plentyBI-filters/erloeskonto.adoc[]
 :kommas: Verwende Kommas, um mehrere Konten zu trennen.
 
 [[table-key-figures-operators-revenue-account]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -415,9 +429,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.a
 include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.adoc[]
 |====
 
+--
+
 // Rechnungsland
 
 include::../../../_textblocks/plentyBI-filters/rechnungsland.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -425,9 +445,9 @@ include::../../../_textblocks/plentyBI-filters/rechnungsland.adoc[]
 :kommas:
 
 [[table-key-figures-operators-invoice-countries]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -439,9 +459,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Lieferland
 
 include::../../../_textblocks/plentyBI-filters/lieferland.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -449,9 +475,9 @@ include::../../../_textblocks/plentyBI-filters/lieferland.adoc[]
 :kommas:
 
 [[table-key-figures-operators-delivery-countries]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -463,41 +489,59 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Warenausgang gebucht
 
 include::../../../_textblocks/plentyBI-filters/warenausgang-gebucht.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :filter: ausgewählten Werten (icon:check-square[role="blue"])
 :kommas:
 
 [[table-key-figures-operators-outgoing-items-booked]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
 |====
+
+--
 
 // Zahlungsstatus
 
 include::../../../_textblocks/plentyBI-filters/zahlungsstatus.adoc[]
 
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
+
 :filter: ausgewählten Werten (icon:check-square[role="blue"])
 :kommas:
 
 [[table-key-figures-operators-payment-status]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
 |====
 
+--
+
 // Lager
 
 include::../../../_textblocks/plentyBI-filters/lager.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -505,9 +549,9 @@ include::../../../_textblocks/plentyBI-filters/lager.adoc[]
 :kommas:
 
 [[table-key-figures-operators-warehouse]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -515,9 +559,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Amazon-Konto
 
 include::../../../_textblocks/plentyBI-filters/amazon-konto.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -525,9 +575,9 @@ include::../../../_textblocks/plentyBI-filters/amazon-konto.adoc[]
 :kommas:
 
 [[table-key-figures-operators-amazon-account]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -535,9 +585,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // eBay-Konto
 
 include::../../../_textblocks/plentyBI-filters/ebay-konto.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -545,9 +601,9 @@ include::../../../_textblocks/plentyBI-filters/ebay-konto.adoc[]
 :kommas:
 
 [[table-key-figures-operators-ebay-account]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -555,9 +611,15 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Versandprofil
 
 include::../../../_textblocks/plentyBI-filters/versandprofil.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -565,9 +627,9 @@ include::../../../_textblocks/plentyBI-filters/versandprofil.adoc[]
 :kommas:
 
 [[table-key-figures-operators-shipping-profile]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -575,20 +637,26 @@ include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.
 
 |====
 
+--
+
 // Erstellt am
 
 :filtered-data: der Aufträge
 
 include::../../../_textblocks/plentyBI-filters/erstellt-am.adoc[]
 
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
+
 :filter-endung: gewählten Terminen (icon:calendar[])
 :filter: gewählten Termine (icon:calendar[])
 :kommas:
 
 [[table-key-figures-operators-created-at]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -604,18 +672,24 @@ include::../../../_textblocks/plentyBI-operators/kleiner-als.adoc[]
 
 |====
 
+--
+
 // Bezahlt am
 
 include::../../../_textblocks/plentyBI-filters/bezahlt-am.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :filter-endung: gewählten Terminen (icon:calendar[])
 :filter: gewählten Termine (icon:calendar[])
 :kommas:
 
 [[table-key-figures-operators-paid-at]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -631,18 +705,24 @@ include::../../../_textblocks/plentyBI-operators/kleiner-als.adoc[]
 
 |====
 
+--
+
 // Warenausgangsdatum
 
 include::../../../_textblocks/plentyBI-filters/warenausgangsdatum.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :filter-endung: gewählten Terminen (icon:calendar[])
 :filter: gewählten Termine (icon:calendar[])
 :kommas:
 
 [[table-key-figures-operators-items-booked-at]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -658,9 +738,15 @@ include::../../../_textblocks/plentyBI-operators/kleiner-als.adoc[]
 
 |====
 
+--
+
 // Zahlungsart
 
 include::../../../_textblocks/plentyBI-filters/zahlungsart.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einer
 :keinem-keiner: keiner
@@ -668,9 +754,9 @@ include::../../../_textblocks/plentyBI-filters/zahlungsart.adoc[]
 :kommas:
 
 [[table-key-figures-operators-payment-method]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -682,9 +768,15 @@ include::../../../_textblocks/plentyBI-operators/ist-nicht-gleich.adoc[]
 
 |====
 
+--
+
 // Hersteller
 
 include::../../../_textblocks/plentyBI-filters/hersteller.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -693,9 +785,9 @@ include::../../../_textblocks/plentyBI-filters/hersteller.adoc[]
 :kommas:
 
 [[table-key-figures-operators-producer]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -707,9 +799,15 @@ include::../../../_textblocks/plentyBI-operators/ist-nicht-gleich.adoc[]
 
 |====
 
+--
+
 // Retourengrund
 
 include::../../../_textblocks/plentyBI-filters/retourengrund.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einem
 :keinem-keiner: keinem
@@ -718,9 +816,9 @@ include::../../../_textblocks/plentyBI-filters/retourengrund.adoc[]
 :kommas:
 
 [[table-key-figures-operators-returnreason]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.adoc[]
 
@@ -732,9 +830,15 @@ include::../../../_textblocks/plentyBI-operators/ist-nicht-gleich.adoc[]
 
 |====
 
+--
+
 // Kontakt-ID
 
 include::../../../_textblocks/plentyBI-filters/kontakt-id.adoc[]
+
+[.collapseBox]
+.Vergleichsoperatoren für diesen Filter
+--
 
 :unbestimmter-Artikel: einer
 :keinem-keiner: keiner
@@ -742,9 +846,9 @@ include::../../../_textblocks/plentyBI-filters/kontakt-id.adoc[]
 :kommas: Verwende Kommas, um mehrere Kontakt-IDs zu trennen.
 
 [[table-key-figures-operators-contactid]]
-[cols="1,3"]
+[cols="1,1,3"]
 |====
-| Vergleichsoperator | Erklärung
+| Vergleichsoperator | Zeichen | Erklärung
 
 include::../../../_textblocks/plentyBI-operators/ist-gleich.adoc[]
 
@@ -754,3 +858,29 @@ include::../../../_textblocks/plentyBI-operators/entspricht-einem-dieser-werte.a
 
 include::../../../_textblocks/plentyBI-operators/entspricht-keinem-dieser-werte.adoc[]
 |====
+
+--
+
+[#400]
+== Benötigte Rohdaten
+
+:kennzahl: Umsatz
+
+include::../../../_textblocks/plentyBI-template/kennzahlen-voraussetzungen-rohdaten.adoc[]
+
+* <<business-entscheidungen/business-intelligence/reports/datenformate/orders#, orders>>
+
+* <<business-entscheidungen/business-intelligence/reports/datenformate/orderitems#, orderItems>>
+
+* <<business-entscheidungen/business-intelligence/reports/datenformate/orderitemamounts#, orderItemAmounts>>
+
+* <<business-entscheidungen/business-intelligence/reports/datenformate/orderproperties#, orderProperties>>
+
+* <<business-entscheidungen/business-intelligence/reports/datenformate/itemvariations#, itemVariations>>
+
+include::../../../_textblocks/plentyBI-template/plentyBI-rohdaten-aktivieren.adoc[]
+
+[#500]
+== Tarif
+
+include::../../../_textblocks/plentyBI-template/kennzahlen-voraussetzungen-tarif.adoc[]
