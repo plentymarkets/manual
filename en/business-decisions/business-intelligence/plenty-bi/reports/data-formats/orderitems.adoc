@@ -8,7 +8,7 @@ include::{includedir}/_header.adoc[]
 :author: team-order-payment
 
 :dataFormat: pass:quotes[*orderItems*]
-:data: properties of order items
+:data: order items
 :specifications: <<table-specifications-orderitems>>
 :dataColumns: <<table-data-columns-orderitems>>
 
@@ -42,23 +42,13 @@ File name: *orderItems-xxx.csv.gz*
 
 |limitDay
 |Lines per day
-|up to 280,000
+|up to 640,000
 |The maximum number of data rows that is written on one day in total.
 
 |earliestPossibleDataDate
 |Earliest point in time
-|2016-01-01
+|2020-01-01
 |Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
-
-|deleteRawDataAfterDaysMinimum
-|Minimum number of days until the data is deleted
-|1095
-|The minimum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Setup » Settings » Report » Raw data* menu.
-
-|deleteRawDataAfterDaysMaximum
-|Maximum number of days until the data is deleted
-|1095
-|The maximum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Setup » Settings » Report » Raw data* menu.
 
 |filterType
 |Filter type
@@ -80,6 +70,15 @@ File name: *orderItems-xxx.csv.gz*
 |daily
 |With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
 
+|storableFromPlan
+|Storage starting from tariff
+|plentyBI XS
+|Minimum fee plan required for saving the data in cloud storage and making it available via REST.
+
+|processableFromPlan
+|Usage starting from tariff
+|plentyBI L
+|Minimum fee plan required for making the data available in plentyBI Data Warehouse, i.e. for using, filtering and process key figures.
 |====
 
 == Data columns
@@ -100,7 +99,7 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 | *oi_id (Primary key)*
 |VARCHAR NOT NULL
 |order item ID
-|ID of the order item
+|Order item ID
 
 |o_id
 |VARCHAR NOT NULL
@@ -108,27 +107,27 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 |ID of the order
 
 |iv_id
-|VARCHAR NOT NULL
+|VARCHAR
 |item variation id
 |Variation ID of the order item
 
 |i_id
-|VARCHAR NOT NULL
+|VARCHAR
 |item id
 |Item ID of the order item
 
 |oi_quantity
-|DECIMAL(8,2) NOT NULL
+|NUMERIC(8,2) NOT NULL
 |order item quantity
 |Quantity of the order items contained in the order
 
 |oi_type_id
 |INTEGER NOT NULL
-|order item type id
-|ID of the order item type. +
+|order item type ID
+|Order item type ID. +
 Possible values: +
-1= Variation +
-2 = Bundle +
+1 = Variation +
+2 = Item bundle +
 3 = Bundle component +
 4 = Promotional coupon +
 5 = Gift card +
@@ -137,17 +136,23 @@ Possible values: +
 8 = Gift wrap +
 9 = Unassigned variation +
 10 = Deposit +
-11 = Order (e.g. with multi-orders)
+11 = Order (e.g. as part of multi-orders)
 
 |smw_id
 |VARCHAR NOT NULL
-|stock management warehouse id
+|stock management warehouse ID
 |ID of the warehouse that is assigned to the order item
 
 | *oi_updated_at*
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |order item updated at
 |Time stamp of the last update +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|o_created_at
+|TIMESTAMPZ
+|order created at
+|Time stamp of the creation +
 Date format: MM/DD/YY HH:MI:SS TZ
 
 |====

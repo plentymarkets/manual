@@ -42,23 +42,13 @@ File name: *orderItemProperties-xxx.csv.gz*
 
 |limitDay
 |Lines per day
-|up to 280,000
+|up to 640,000
 |The maximum number of data rows that is written on one day in total.
 
 |earliestPossibleDataDate
 |Earliest point in time
-|2016-01-01
+|2020-01-01
 |Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
-
-|deleteRawDataAfterDaysMinimum
-|Minimum number of days until the data is deleted
-|20
-|The minimum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Setup » Settings » Report » Raw data* menu.
-
-|deleteRawDataAfterDaysMaximum
-|Maximum number of days until the data is deleted
-|80
-|The maximum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Setup » Settings » Report » Raw data* menu.
 
 |filterType
 |Filter type
@@ -73,13 +63,22 @@ File name: *orderItemProperties-xxx.csv.gz*
 |defaultActive
 |Activated by default
 |no
-|The data is only exported automatically in the background after you have activated the creator in the *Setup » Settings » Report » Raw data* menu.
+|The data is only exported automatically in the background after you have activated the creator in the *Setup » plentyBI » Raw data* menu.
 
 |interval
 |Interval
 |daily
 |With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
 
+|storableFromPlan
+|Storage starting from tariff
+|plentyBI S
+|Minimum fee plan required for saving the data in cloud storage and making it available via REST.
+
+|processableFromPlan
+|Usage starting from tariff
+|plentyBI L
+|Minimum fee plan required for making the data available in plentyBI Data Warehouse, i.e. for using, filtering and process key figures.
 |====
 
 == Data columns
@@ -94,17 +93,17 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 
 |plenty_id
 |INTEGER NOT NULL
-|plenty id
+|plenty ID
 |ID of the plentymarkets system
 
 | *oip_id (Primary key)*
 |VARCHAR NOT NULL
 |order item property ID
-|ID of the property of the order item +
+|ID of the order item property +
 Possible values: +
 1 = Warehouse +
 2 = Shipping profile +
-3 = Payment method +
+3 = Method of payment +
 11 = Weight +
 12 = Width +
 13 = Length +
@@ -122,22 +121,10 @@ Further possible values are listed in our link:https://developers.plentymarkets.
 |order item ID
 |ID of the order item (item ID)
 
-|opt_id
-|VARCHAR NOT NULL
-|order item type id
-|ID of the type of the order item +
-Possible values: +
-1= Variation +
-2 = Bundle +
-3 = Bundle component +
-4 = Promotional coupon +
-5 = Gift card +
-6 = Shipping costs +
-7 = Surcharge (depending on the payment method) +
-8 = Gift wrap
-9 = Unassigned variation +
-10 = Deposit +
-11 = Order (e.g. with multi-orders)
+|op_type_id
+|INTEGER NOT NULL
+|order property type ID
+|ID of the order property type
 
 |oip_value
 |VARCHAR
@@ -145,9 +132,15 @@ Possible values: +
 |Value of the order item property
 
 | *oip_updated_at*
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |order item property updated at
 |Time stamp of the last update +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|o_created_at
+|TIMESTAMPZ
+|order created at
+|Time stamp of the creation +
 Date format: MM/DD/YY HH:MI:SS TZ
 
 |====

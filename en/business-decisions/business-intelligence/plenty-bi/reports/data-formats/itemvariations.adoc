@@ -2,13 +2,13 @@
 :lang: en
 include::{includedir}/_header.adoc[]
 :keywords: itemVariations, report, raw data
-:position: 70
+:position: 60
 :url: business-decisions/business-intelligence/reports/data-formats/itemvariations
 :id: OKSTZEM
-:author: none
+:author: team-item
 
 :dataFormat: pass:quotes[*itemVariations*]
-:data: item variations
+:data: variation data
 :specifications: <<table-specifications-itemvariations>>
 :dataColumns: <<table-data-columns-itemvariations>>
 
@@ -42,23 +42,13 @@ File name: *itemVariations-xxx.csv.gz*
 
 |limitDay
 |Lines per day
-|up to 200,000
+|up to 400,000
 |The maximum number of data rows that is written on one day in total.
 
 |earliestPossibleDataDate
 |Earliest point in time
-|2014-01-01
+|2020-01-01
 |Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
-
-|deleteRawDataAfterDaysMinimum
-|Minimum number of days until the data is deleted
-|20
-|The minimum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Setup » Settings » Report » Raw data* menu.
-
-|deleteRawDataAfterDaysMaximum
-|Maximum number of days until the data is deleted
-|80
-|The maximum number of days until the generated raw data file is deleted from the cloud storage. Therefore, the data must be processed before this date. The exact duration can be defined in the *Setup » Settings » Report » Raw data* menu.
 
 |filterType
 |Filter type
@@ -73,14 +63,23 @@ File name: *itemVariations-xxx.csv.gz*
 |defaultActive
 |Activated by default
 |no
-|The data is only exported automatically in the background after you have activated the creator in the *Setup » Settings » Report » Raw data* menu.
+|The data is only exported automatically in the background after you have activated the creator in the *Setup » plentyBI » Raw data* menu.
 
 |interval
 |Interval
 |daily
 |With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
-|====
 
+|storableFromPlan
+|Storage starting from tariff
+|plentyBI XS
+|Minimum fee plan required for saving the data in cloud storage and making it available via REST.
+
+|processableFromPlan
+|Usage starting from tariff
+|plentyBI L
+|Minimum fee plan required for making the data available in plentyBI Data Warehouse, i.e. for using, filtering and process key figures.
+|====
 
 == Data columns
 
@@ -100,7 +99,7 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 | *iv_id (Primary key)*
 |VARCHAR NOT NULL
 |item variation id
-|Variation ID
+|ID of the variation
 
 |i_id
 |VARCHAR NOT NULL
@@ -108,8 +107,8 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 |The item's ID
 
 |im_id
-|VARCHAR NOT NULL
-|item variation id
+|VARCHAR
+|item manufacturer id
 |Manufacturer ID
 
 |iv_attribute_value_set_id
@@ -120,12 +119,27 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 |c_id
 |VARCHAR
 |category id
-|ID of the category
+|Category ID
+
+|c_level_1_id
+|VARCHAR
+|category level 1 id
+|Category ID: level 1
+
+|c_level_2_id
+|VARCHAR
+|category level 2 id
+|Category ID: level 2
 
 |iv_number
 |VARCHAR
 |item variation number
-|Number of the variation
+|Variation number
+
+|i_revenue_account
+|INTEGER
+|item revenue account
+|The revenue account saved in the item data record.
 
 |i_name
 |VARCHAR
@@ -136,8 +150,8 @@ include::./_textblocks/datenspalten-en_gb.adoc[]
 |SMALLINT NOT NULL
 |item variation active
 |Possible values: +
-0 = Variation is inactive +
-1 = Variation is active
+0 = The variation is inactive. +
+1 = The variation is active.
 
 |iv_availability
 |SMALLINT NOT NULL
@@ -147,13 +161,13 @@ Possible values: +
 1 to 10
 
 |i_created_at
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |item created at
-|Time stamp of the item creation +
+|Time stamp of the creation +
 Date format: MM/DD/YYYY HH:MI:SS TZ
 
 | *iv_updated_at*
-|TIMESTAMPTZ
+|TIMESTAMPTZ NOT NULL
 |item variation updated at
 |Time stamp of the last update +
 Date format: MM/DD/YYYY HH:MI:SS TZ
