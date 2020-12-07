@@ -6,10 +6,10 @@
 ====
 You need a plugin to link plentymarkets to {marketplace}. Visit the link:https://marketplace.plentymarkets.com/en/plugins/sales/marktplaetze/{marketplace}_{marketplace}[plentyMarketplace^]{nbsp}icon:external-link[] to download the {marketplace} plugin.
 
-To use the {marketplace} plugin, you also need the Mirakl plugin. You can download Mirakl from plentyMarketplace as well.
+To use the {marketplace} plugin, you also need the Mirakl Connector plugin. You can download Mirakl from plentyMarketplace as well.
 ====
 
-:plugin: Mirakl
+:plugin: Mirakl Connector
 
 [.collapseBox]
 Installing {plugin}
@@ -41,8 +41,8 @@ include::../../../plugins/_textblocks/instructions/plugin-installieren-en_gb.ado
 After installing and setting up the plugin, the automatic processes described in <<#data-exchange-{marketplace}>> become available:
 
 [[data-exchange-{marketplace}]]
-.Frequency of data exchange
 [cols="1,3"]
+.Frequency of data exchange
 |====
 |Data |Interval
 
@@ -52,15 +52,15 @@ After installing and setting up the plugin, the automatic processes described in
 | daily
 
 | Stock synchronisation
-| daily
+| Every 15 minutes
 
 | Price synchronisation
-| daily
+| Every 15 minutes
 
 2+| Order data
 
 | Order import
-| daily
+| Every 15 minutes
 
 |====
 
@@ -71,26 +71,81 @@ After installing and setting up the plugin, the automatic processes described in
 
 :market: {marketplace}
 :referrer: {marketplace}
-:referrer-option: pass:quotes[option *{marketplace}*]
+:referrer-option: {marketplace}
 
-include::_textblocks/instructions/activate-referrer.adoc[]
+include::../../_textblocks/instructions/activate-referrer.adoc[]
 
 [#500]
 == Defining a sales price
 
 :referrer-price: {marketplace}
 
-include::../_textblocks/instructions/define-sales-price.adoc[]
+include::../../_textblocks/instructions/define-sales-price.adoc[]
 
-[#700]
-== Setting the variation availability
+[#1200]
+== Creating properties
 
-:market-availability: {marketplace}
-:option-availability: {marketplace}
+Using properties, you can export fields to the marketplace that aren't defined in plentymarkets by default. You can create the properties that are specified by {marketplace} in the *Setup » Settings » Properties » Configuration* menu.
 
-include::_textblocks/instructions/variation-availability.adoc[]
+For further information on properties, refer to the <<item/settings/properties#500, Characteristics and properties>> page.
 
-// Important: For some marketplaces, the web API needs to be activated in addition to the marketplace. Define the :web-api: attribute to include the related text.
+For {marketplace}, you need the following properties:
+
+* Logistics class (Logistikklasse, <<#1210, click for details>>)
+* Leadtime to ship (Versandvorlaufzeit, <<#1220, click for details>>)
+* Reverse charge (<<#1230, click for details>>)
+
+[#1210]
+=== Creating the logistics class property
+
+For each variation, you need to export a shipping profile code to {marketplace}. You can configure shipping profiles in the Mirakl back end. For a list of shipping profiles, refer to the *Informations » Carrier costs* menu in the Mirakl back end. You can find the code in the *Logistics class* column in brackets behind the name of the logistics class.
+
+:property: Logistics class (Logistikklasse)
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Logistics class (Logistikklasse)
+:property-area: Item
+:property-type: Short text
+:property-name: {marketplace} logistics class
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
+
+[#1220]
+=== Creating the leadtime to ship property
+
+For each variation, you need to export a leadtime to ship in days to {marketplace}. This way, you can tell {marketplace} how many days you need to ship a variation. {marketplace} accepts values between 1 and 45.
+
+:property: Leadtime to ship (Versandvorlaufzeit)
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Leadtime to ship (Versandvorlaufzeit)
+:property-area: Item
+:property-type: Short text
+:property-name: {marketplace} leadtime to ship (Versandvorlaufzeit)
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
+
+[#1230]
+=== Creating the reverse charge property
+
+For each variation, you need to specify if the reverse charge mechanism applies to this variation for cross-border business processes. {marketplace} accepts the values *true* and *false*.
+
+* false = The reverse charge mechanism isn’t applied.
+* true = The reverse charge mechanism is applied. This means that instead of you, your customers have to pay VAT to the tax authorities. +
+*_Note:_* Observe the legal requirements for the reverse charge mechanism and consult your tax adviser on the details.
+
+:property: Reverse charge
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Reverse charge
+:property-area: Item
+:property-type: Short text
+:property-name: {marketplace} reverse charge
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
 
 [#1300]
 == Generating the API key
@@ -111,7 +166,7 @@ Generating the API key:
 
 Use the *{marketplace} - Wizard* assistant in the *Setup » Assistants » Plugins » _Select plugin set_* to set up your {marketplace account in plentymarkets.
 
-:menu-path: {marketplace}
+:menu-path: pass:quotes[*Setup » Assistants » Plugins »* _Select plugin set_]
 :assistant-name: {marketplace}
 :number-of-boxes: Info box
 
@@ -128,23 +183,87 @@ include::../../_textblocks/instructions/assistant-basic-instructions.adoc[]
 |======
 |Setting |Explanation
 
-| Authentication
-| Select the API environment and enter the <<#1300, API key>>. You can determine the API environment from the URL of your Mirakl account.
+2+| Step *Authentication*
+
+| API Environment
+a| Select an API environment from the drop-down list. Get in touch with your contact person at {marketplace} to confirm which API environment you should select. +
+*_Note:_* If you switch to another API environment, e.g. from Productive to Test mode, you need to generate a new <<#1300, API key>>.
+
+| API key
+| Enter the <<#1300, API key>> that you generated. +
+*_Note:_* If you switch to another API environment, e.g. if you switch from Productive to Test mode, you need to generate a new <<#1300, API key>>.
+
+2+| Step *Data exchange*
 
 | Data exchange
 | Select processes for data exchange. This selection determines which data is exchanged between plentymarkets and Mirakl.
 
+2+| Step *Refund mapping*
+
 | Refund mapping
-| Enter what reason to transfer to Mirakl when there’s a refund. You can add reasons for multiple statuses.
+a| Map the refund reasons of {marketplace} to plentymarkets order statuses.
+
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets status.
+. From the drop-down list on the right, select a {marketplace} refund reason. +
+The following reasons can be sent to {marketplace}: +
+
+* 15 = Out of stock
+* 16 = Cancelled by client prior to shipping
+* 17 = Item returned
+* 18 = Item not received
+* 19 = Agreement found with the vendor
+
+// Gründe sind für Conrad, Voelkner und MediaMarkt gleich
+
+2+| Step *Cancellation mapping*
 
 | Cancellation mapping
-| Enter what reason to transfer to Mirakl when an order gets cancelled. You can add reasons for multiple statuses.
+a|
+ifeval::["{marketplace}" == "Conrad"]
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets status.
+. From the drop-down list on the right, select a {marketplace} cancellation reason. +
+The following reasons can be sent to {marketplace}: +
+
+* 34 = Cancellation: Wrong item ordered
+* 35 = Cancellation: Unwanted payment method
+* 37 = Cancellation: Delivery time too long
+* 39 = Agreement reached between vendor and buyer
+endif::[]
+
+ifeval::["{marketplace}" == "MediaMarkt"]
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets status.
+. From the drop-down list on the right, select a {marketplace} cancellation reason. +
+The following reasons can be sent to {marketplace}: +
+
+* 34 = Cancelled by client prior to shipping
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+This setting is not applicable to Voelkner.
+endif::[]
+
+2+| Step *Warehouse selection*
 
 | Warehouse selection
 | Select the warehouse you want to use for stock export.
 
+2+| Step *Shipping profile mapping*
+
 | Shipping profile mapping
 | For each shipping profile in plentymarkets, enter the corresponding abbreviation of the shipping service provider. To find the abbreviations, go to *Information » Shipping* in Mirakl.
+
+2+| Step *Offer properties mapping*
+
+| Offer properties mapping
+| From the drop-down list *Reverse charge*, select the property *{marketplace} Reverse charge*. +
+From the drop-down list *Lead time to ship*, select the property *{marketplace} Leadtime to ship*. +
+From the drop-down list *Logistic class*, select the property *{marketplace} Logistic class*.
 
 |======
 --
@@ -152,9 +271,9 @@ include::../../_textblocks/instructions/assistant-basic-instructions.adoc[]
 [#900]
 == Setting up the item export
 
-Item data is exported to {marketplace} via catalogue templates. Go to *Data » Catalogs* to create catalogues. Is this your first time working with catalogues? Then read up on the basic principle of <<en/data/exporting-data/managing-catalogues, catalogues first>>.
+Item data is exported to {marketplace} via marketplace catalogues. Go to *Data » Catalogs* to create catalogues. Is this your first time working with catalogues? Then read up on the basic principle of <<en/data/exporting-data/managing-catalogues, catalogues first>>.
 
-If you want to sell your products in multiple {marketplace} product categories, create a separate catalogue for each of them. Link the {marketplace} data fields with item data saved in plentymarkets in the catalogue template afterwards. Once you’ve activated a catalogue, plentymarkets automatically exports the catalogue templates to {marketplace} daily.
+If you want to sell your products in multiple {marketplace} product categories, create a separate catalogue for each of them. Link the {marketplace} data fields with the item data saved in plentymarkets in the marketplace format afterwards. Once you’ve activated a catalogue, plentymarkets automatically exports the catalogue templates to {marketplace} daily.
 
 [IMPORTANT]
 .Error log
@@ -162,12 +281,18 @@ If you want to sell your products in multiple {marketplace} product categories, 
 If there’s a problem during export, you can find the related log entries on Mirakl and not the plentymarkets log.
 ====
 
+[#1240]
+=== Creating additional properties
+
+In addition to the properties described <<#1200, previously>>, you need properties for all data fields of the marketplace whose data you want to export, but that don’t exist in plentymarkets by default. For further information on the properties you need, check the documentation of the marketplace. Is this your first time working with properties? For further information, refer to the <<welcome/general-functions/properties#, Properties>> page of the manual.
+
 [#902]
 === Creating a catalogue in the assistant
 
 :catalogue-assistant-name: {marketplace} Catalogue
 :number-of-boxes: Info box
-:anchor-additional-fields:
+:mapping-fields: the
+:catalogue-path: pass:quotes[*Setup » Assistants » Plugins »* _Select plugin set_.]
 :catalogue-note: pass:quotes[Only select bottom level categories. You can find a better overview of the category hierarchy on Miracle by going to *My account » My product data settings*.
 
 include::../../_textblocks/instructions/catalogue-assistant-config.adoc[]
@@ -195,6 +320,42 @@ include::../../_textblocks/instructions/catalogue-assistant-config.adoc[]
 
 include::../../_textblocks/instructions/catalogue-map-data-fields.adoc[]
 
+ifeval::["{marketplace}" == "Conrad"]
+include::../instructions/catalogue-mirakl-conrad-mapping.adoc[]
+
+The following CSV files contain the valid values for the respective catalogue fields:
+
+* link:https://docs.google.com/spreadsheets/d/1ZsjMj1mTnASqrgr5UCAhxXUzgqrNVy3vEEmpP32POX8/export?format=csv[Akkus_Batterien (battery)^]
+* link:https://docs.google.com/spreadsheets/d/17zwR35iT8Pi3xcEVDz6ue4hU0S-sp7X5gI90XedLoj8/export?format=csv[Energieeffizienzklassen (energy efficiency classes)^]
+* link:https://docs.google.com/spreadsheets/d/1lnV-EPF2bhjEOdEypiZOil5zbGe-1JTIgSQBnkc7JdA/export?format=csv[Gewicht Einheit (weight unit)^]
+* link:https://docs.google.com/spreadsheets/d/1arR-ugx3cZho51kI7D8b6h9jaLhf9MUVI4zNFI5xpPA/export?format=csv[Inhalt Mengeneinheit (content quantity unit)^]
+* link:https://docs.google.com/spreadsheets/d/1Ig8_cgVC4XHfJLAMUzfNoDzhReBCHgIJs3b2VS8BZt8/export?format=csv[Verkaufsmengeneinheit (sales quantity unit)^]
+* link:https://docs.google.com/spreadsheets/d/1OxNdAbzGsIv7JY7Xep6lQVfvX8XWrBbpiwAnwK2mmV8/export?format=csv[Rückerstattung/Stornierung (refund/cancellation)^]
+* link:https://docs.google.com/spreadsheets/d/1W5JXuzx110dEO6zTieGokvzaFXrQHMG-EK-lwBb94oI/format=csv[Umsatzsteuer (VAT)^]
+* link:https://docs.google.com/spreadsheets/d/1QIg61-6Rn4khvAIaW80ZUKGsnrmxRyUfC0BAcxU20bU/export?format=csv[Hersteller (Brands)^]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::../instructions/catalogue-mirakl-conrad-mapping.adoc[]
+
+The following CSV files contain the valid values for the respective catalogue fields:
+
+* link:https://docs.google.com/spreadsheets/d/1ZsjMj1mTnASqrgr5UCAhxXUzgqrNVy3vEEmpP32POX8/export?format=csv[Akkus_Batterien (battery)^]
+* link:https://docs.google.com/spreadsheets/d/17zwR35iT8Pi3xcEVDz6ue4hU0S-sp7X5gI90XedLoj8/export?format=csv[Energieeffizienzklassen (energy efficiency classes)^]
+* link:https://docs.google.com/spreadsheets/d/1lnV-EPF2bhjEOdEypiZOil5zbGe-1JTIgSQBnkc7JdA/export?format=csv[Gewicht Einheit (weight unit)^]
+* link:https://docs.google.com/spreadsheets/d/1arR-ugx3cZho51kI7D8b6h9jaLhf9MUVI4zNFI5xpPA/export?format=csv[Inhalt Mengeneinheit (content quantity unit)^]
+* link:https://docs.google.com/spreadsheets/d/1Ig8_cgVC4XHfJLAMUzfNoDzhReBCHgIJs3b2VS8BZt8/export?format=csv[Verkaufsmengeneinheit (sales quantity unit)^]
+* link:https://docs.google.com/spreadsheets/d/1OxNdAbzGsIv7JY7Xep6lQVfvX8XWrBbpiwAnwK2mmV8/export?format=csv[Rückerstattung/Stornierung (refund/cancellation)^]
+* link:https://docs.google.com/spreadsheets/d/1W5JXuzx110dEO6zTieGokvzaFXrQHMG-EK-lwBb94oI/format=csv[Umsatzsteuer (VAT)^]
+* link:https://docs.google.com/spreadsheets/d/1WWu-K7_UIs2Wf_Q83tT1ylDEdSf2yO0Oq-nui5A2j0k/export?format=csv[Hersteller (Brands)^]
+
+[IMPORTANT]
+.Missing brands
+====
+If you notice any missing brands, contact stefanie.schlosser@re-in.de.
+====
+endif::[]
+
 [#475]
 == Linking variations to a {marketplace} catalogue category
 
@@ -215,23 +376,42 @@ Linking a variation to a category:
 . Repeat steps 5 and 6 for all categories where you want to offer the variation.
 . *Save* (icon:save[role="green"]) the settings.
 
+=== Linking properties with variations and saving values
+
+include::../../_textblocks/instructions/properties-link.adoc[]
+
 [#{marketplace}]
 === Activating the catalogue export
 
 :interval: Daily
 :market: {marketplace}
 
-include::../_textblocks/instructions/catalogue-activation.adoc[]
+include::../../_textblocks/instructions/catalogue-activation.adoc[]
+
+[#700]
+== Setting the variation availability
+
+:market-availability: {marketplace}
+:option-availability: {marketplace}
+
+include::../../_textblocks/instructions/variation-availability.adoc[]
+
+// Important: For some marketplaces, the web API needs to be activated in addition to the marketplace. Define the :web-api: attribute to include the related text.
 
 [#480]
 == Setting up event procedures
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically update the order status on {marketplace} whenever specific events occur. You can set up the following event procedures:
 
-* Report order confirmation to {marketplace}
-* Report shipping confirmation to {marketplace}
-* Report order cancellation to {marketplace}
-* Report refund to {marketplace}
+// Welche Ereignisaktionen es gibt hängt vom Marktplatz ab. Hier die gängigsten. Bei Bedarf anpassen!
+
+ifeval::["{marketplace}" == "Conrad"]
+include::../automation/mirakl-conrad.adoc[tag=summary]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::../automation/mirakl-voelkner.adoc[tag=summary]
+endif::[]
 
 How to set up the event procedures in plentymarkets is described in the following chapters.
 
@@ -243,122 +423,13 @@ In addition to the event procedures listed above, the {marketplace} plugin provi
 However, we recommend that you only use the procedures described in detail.
 ====
 
-[#490]
-=== Report order confirmation to {marketplace}
+ifeval::["{marketplace}" == "Conrad"]
+include::../automation/mirakl-conrad.adoc[tag=instructions]
+endif::[]
 
-:table-event-procedure: <<#{marketplace}-event-procedure-order-confirmation>>
-
-include::../_includes/textblocks/instructions/EA.adoc[]
-
-[[table-{marketplace}-event-procedure-order-confirmation]]
-.Event procedure to send an order confirmation to {marketplace}
-[cols="1,2,2"]
-|===
-| *Setting*
-| *Option*
-| *Selection*
-
-| *Event*
-| *Status change*
-| Select *Waiting for payment*.
-
-| *Filter*
-| *Order > Referrer*
-| *{marketplace}*
-
-| *Procedure*
-| *Plugins > {marketplace}: Accept order*
-|
-|===
-
-[#500]
-=== Report shipping confirmation to {marketplace}
-
-:table-event-procedure: <<#{marketplace}-event-procedure-shipping-confirmation>>
-
-include::../_includes/textblocks/instructions/EA.adoc[]
-
-[[{marketplace}-event-procedure-shipping-confirmation]]
-.Event procedure to send a shipping confirmation to {marketplace}
-[cols="1,2,2"]
-|===
-| *Setting*
-| *Option*
-| *Selection*
-
-| *Event*
-| *Status change*
-| Select *Outgoing items booked*.
-
-| *Filter*
-| *Order > Referrer*
-| *{marketplace}*
-
-| *Procedure 1*
-| *Plugins: {marketplace}: Update the carrier tracking information for a payment*
-| 
-
-| *Procedure 2*
-| *Plugins > {marketplace}: Validate shipping*
-|
-|===
-
-[#510]
-=== Report order cancellation to {marketplace}
-
-:table-event-procedure: <<#{marketplace}-event-procedure-order-cancellation>>
-
-include::../_includes/textblocks/instructions/EA.adoc[]
-
-[[{marketplace}-event-procedure-order-cancellation]]
-.Event procedure to send an order cancellation to {marketplace}
-[cols="1,2,2"]
-|===
-| *Setting*
-| *Option*
-| *Selection*
-
-| *Event*
-| *Status change*
-| Select an event, e.g. *[8] Cancelled*.
-
-| *Filter*
-| *Order > Referrer*
-| *{marketplace}*
-
-| *Procedure*
-| *Plugins > {marketplace}: Cancel the order item*
-|
-|===
-
-[#520]
-=== Report refund to {marketplace}
-
-:table-event-procedure: <<#{marketplace}-event-procedure-refund>>
-
-include::../_includes/textblocks/instructions/EA.adoc[]
-
-[[{marketplace}-event-procedure-refund]]
-.Event procedure to send a refund to {marketplace}
-[cols="1,2,2"]
-|===
-| *Setting*
-| *Option*
-| *Selection*
-
-| *Event*
-| *Status change*
-| Select an event, e.g. *[11] Credit note*.
-
-| *Filter*
-| *Order > Referrer*
-| *{marketplace}*
-
-| *Procedure*
-| *Plugins > {marketplace}: Refund order lines*
-|
-|===
-
+ifeval::["{marketplace}" == "Voelkner"]
+include::../automation/mirakl-voelkner.adoc[tag=instructions]
+endif::[]
 
 ////
 TODO:

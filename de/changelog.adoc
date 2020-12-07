@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 22. Oktober 2020
-:endWeekDate: 28. Oktober 2020
-:nav-alias: Changelog 28. Oktober 2020
+:startWeekDate: 26. November 2020
+:endWeekDate: 02. Dezember 2020
+:nav-alias: Changelog 02. Dezember 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
 
@@ -20,38 +20,23 @@ Wähle, welchen Changelog du sehen möchtest.
 ====
 stable::
 +
+
 --
-[discrete]
-== Neu
-
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Kataloge
-
-* Ab sofort werden auch die Namen der gelöschten Kataloge angezeigt.
-* Ab sofort können auch die Otto-Kataloge in XML heruntergeladen werden.
-* Ab sofort können auch die Otto-Kataloge in CSV heruntergeladen werden.
-
-[discrete]
-=== Import
-
-* Ab sofort könnt ihr einen Wert im Feld *Quelle* direkt eingeben oder diesen weiterhin im Dropdown auswählen.
-
-[discrete]
-=== MyView
-
-* Für eine MyView könnt ihr ab sofort Benutzerrechte vergeben und verwalten. Das heißt, Admins können ihren Mitarbeitern über Rollen verschiedene Ansichten zuweisen. Nur Admins haben Zugriff auf den Bearbeitungsmodus der MyView und sind somit autorisiert, Ansichten zu erstellen oder zu löschen sowie neue Rollen anzulegen und Rechte zuzuweisen. Am Anfang ist immer die Standardansicht vorausgewählt. Existiert eine weitere Ansicht, kann die Standardansicht für eine Rolle deaktiviert und Rechte für eine andere Ansicht können zugewiesen werden. Beachte, dass immer mindestens eine Ansicht ausgewählt sein muss. Die Rechteverwaltung findest du im Menü unter *Einrichtung » Einstellungen » Benutzer » Rechte » Rollen » Rolle wählen » Tab: Ansichten*. Dort werden alle rollendefinierten Ansichten angezeigt.
-* Nachdem die MyView schon länger die Möglichkeit bietet, Aktionen rückgängig zu machen, haben wir für euch jetzt auch das passende Gegenstück dazu! Mit Klick auf *Wiederherstellen* werden die zuvor rückgängig gemachten Änderungen ab sofort wiederhergestellt. Dies ist allerdings nur möglich, solange die Änderungen nicht gespeichert wurden.
-
-'''
 
 [discrete]
 == Geändert
 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
+[discrete]
+=== Kataloge
 
+* Bis die neue Filterkomponente eingebaut werden kann, haben wir vorübergehend den alten Filter wieder eingebaut.
+
+[discrete]
+=== OTTO
+
+* Die Pflichtfelder der OTTO Market-Kataloge wurden angepasst. Dadurch sind nur noch die Felder Pflicht, die entweder in der OTTO-Dokumentation als Pflichtfeld markiert sind oder ein kategoriebezogenes Attribut mit dem Merkmal „LEGAL“ sind. Die Menge der Pflichtfelder hat sich dadurch reduziert.
 
 '''
 
@@ -63,25 +48,50 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 [discrete]
 === Aufträge
 
-* Wenn die neue Auftragsanlage zum ersten Mal genutzt wurde, wurden die Standard-Tabellenheader nicht angezeigt. Dies wurde nun behoben.
-* Wenn die Versandkosten im letzten Schritt der neuen Auftragsanlage geändert wurden, wurden die Gesamtsummen nicht neu berechnet. Dies wurde nun behoben.
-* Wenn die Versandkosten im letzten Schritt der neuen Auftragsanlage manuell auf `0` gesetzt wurden, konnte der Auftrag nicht angelegt werden. Dies wurde behoben, diese Aufträge können nun angelegt werden.
-* Wurde bei der Auftragsanlage ein Coupon eingelöst, dann wurden unter Umständen die Auftragssummen nicht korrekt berechnet. Der Fehler ist nur in Beta aufgetreten.
+* Der Zahlungsstatus von Gutschriften in Fremdwährung wurde bei der Zahlungszuordnung nicht korrekt ermittelt. Dies wurde nun entsprechend für alle neuen Zuordnungen angepasst.
++
+
+[IMPORTANT]
+.To-Do
+======
+Gutschriften mit bereits zugeordneten Zahlungen werden nicht korrigiert. Bei Bedarf kann die Zuordnung gelöst und die Zahlung neu zugeordnet werden.
+======
+
+* Es wurden die Auftragssummen teilweise nicht richtig berechnet. Der Fehler ist nur in Beta/Early aufgetreten.
+* Beim Erstellen von Adressetiketten bei Aufträgen mit Set-Artikeln kam es zur Fehlermeldung `missing warehouseId` (fehlende Lagerangabe). Das wurde behoben.
+* Es konnten die Adressdaten von gesperrten Aufträgen nicht mehr geändert werden. Der Fehler ist nur auf Beta/Early aufgetreten.
+
+* Im Zusammenhang mit einem link:https://forum.plentymarkets.com/t/elasticsync-auftraege-abgleich-von-variante-elasticsync-orders-matching-of-variation/613628[vorherigen Fix^] wurde ein anderes Problem im Import von Aufträgen entdeckt und wurde nun behoben.
+
+* Für Auftragsnotizen und Kundenhinweise die bei der Anlage des Auftrages direkt mitgespeichert wurden, fehlte ein zusätzlicher Hinweis, wodurch in der Übersicht der Auftragssuche nicht deutlich wurde, ob für neue Aufträge bereits Notizen vorhanden sind oder nicht. Dieses Verhalten wurde behoben, sodass für Auftragsnotizen und Kundenhinweise, die bei Anlage des Auftrages gespeichert werden anhand des Notizen-Buttons deutlich wird, ob bereits Notizen vorhanden sind oder nicht.
+
+* Bei der Aktualisierung der tatsächlich verkauften Menge eines Live-Shopping Angebotes konnte es zu dem Verhalten kommen, dass durch Verkäufe über Herkünfte wie u.a. Google-Shopping oder für Paket-Artikel, diese nicht korrekt aktualisiert wurde. Dieses Verhalten wurde behoben.
+
+* In Zusammenhang mit den neuen Zahlungsbedingungen konnte es bei bestimmten Konfigurationen in den Dokumenteinstellungen zu einem Anzeigefehler kommen. Dabei wurden sowohl die neuen als auch die bereits existierenden Zahlungsbedingungen angezeigt. Dies wurde behoben.
+
+* Beim Hinzufügen einer Variante über die Ereignisaktion „Variante hinzufügen“ wurde zur Preisermittlung nicht die Herkunft der Variante beachtet.
+Dies wurde behoben, sodass nun die „manuelle Herkunft“ beachtet wird.
+
+* Bei der Auftragssuche kann nun der Filter *contactData* korrekt genutzt werden, um nur Aufträge mit bestimmten Daten eines Kontaktes zu erhalten, wie z.B. einer eMail-Adresse. Ebenso wird der Filter nun korrekt in der Dokumentation dargestellt.
 
 [discrete]
-=== eBay
+=== Artikel
 
-* Bilder, die nur für eine spezifische eBay Plattform freigeschaltet waren, konnten bisher nicht im Listing-Layout ausgegeben werden. Das Verhalten wurde behoben.
-
-[discrete]
-=== Import
-
-* Beim Importieren von Aufträgen wo kein Name der Auftragsposition (`Artikelname`) gesetzt wurde, konnte es zu einen Fehler kommen. Wenn an dem Artikel selbst ebenfalls kein Name hinterlegt wurde. Dies wurde behoben.
+* Das Importieren des EKs stößt eine Neuberechnung der Preiskalkulation an. Dieses Verhalten wurde behoben.
 
 [discrete]
-=== Kataloge
+=== bol.com
 
-* Fügte man ein Spezialfeld hinzu, so war es nicht möglich, dieses zu löschen. Diesen Fehler haben wir behoben.
+* Beim Import der Retouren von bol.com kam es zu einem Fehler beim Speichern der sogenannten „rma-ID“ von bol.com für die Auftragspositionen. Durch das Fehlen dieser ID konnte die Ereignisaktion Retourenstatus an bol.com senden nicht ausgeführt werden.
+Dieses Problem wurde nun gelöst. Für alle Retouren, die heute spätestens nach 12:00 Uhr importiert werden, kann der Retourenstatus wieder mit der Ereignisaktion übermittelt werden.
++
+
+[IMPORTANT]
+.To-Do
+======
+Leider gibt es keinen zuverlässigen Weg, die fehlenden „rma-IDs“ nachträglich zu importieren.
+Alle Retouren, die bis heute, den 01.12.2020, importiert wurden, müssen manuell im Händlerbereich von bol.com bearbeitet werden.
+======
 
 --
 
@@ -95,31 +105,56 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== Kataloge
 
-* In der neuen Auftragserstellung (Beta) wurde die Möglichkeit hinzugefügt, eine neue Lieferadresse hinzuzufügen. Die neue Lieferadresse kann über der Option *Neue Lieferadresse hinzufügen* im Drop-down *Lieferadresse* hinzugefügt werden.
+* Ab sofort kannst du Platzhalter für Dateinamen verwenden.
+
+image:changelog/assets/kataloge-dateiname-platzhalter.png[width=640]
 
 [discrete]
-=== Webshop
+=== myView
 
-* Es ist jetzt möglich, den Webshop über ein iFrame einzubinden. Dafür muss man unter *Einrichtung » Mandant » _Name des Mandanten_ » SEO » iFrame Richtlinien* die Domain der Webseite, die den Shop einbinden soll, hinterlegen. Nicht hinterlegte Domains können den Webshop nicht über ein iFrame einbinden.
+* Nachdem Administratoren bereits die Möglichkeit haben, Rollen verschiedene Ansichten zuzuweisen, können sie dies nun auch für Benutzer tun.
+
+Nur Admins haben Zugriff auf den Bearbeitungsmodus der MyView und sind somit autorisiert, Ansichten zu erstellen oder zu löschen sowie neue Benutzer anzulegen und Rechte zuzuweisen.
+
+Am Anfang ist immer die Standardansicht vorausgewählt. Existiert eine weitere Ansicht, kann die Standardansicht für einen Benutzer deaktiviert und Rechte für eine andere Ansicht können zugewiesen werden.
+
+Beachte, dass immer mindestens eine Ansicht ausgewählt sein muss.
+
+Die Rechteverwaltung findest du im Menü unter *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer » Benutzer wählen » Tab: Ansichten*. Dort werden alle benutzerdefinierten Ansichten angezeigt.
+
+*_Tipp:_* Die Rechteverwaltung erreichst du auch direkt aus einer MyView:
+Klicke dazu unterhalb der Einstellungen auf Rechteverwaltung » Benutzerrechte.
+
+Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
 
 '''
 
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
 === Aufträge
 
-* Es konnte beim Speichern einer Nachbestellung der Fehler `422 Unprocessable Entity` im Zusammenhang mit dem Händlerzeichen auftreteten.
+* Bei entsperrten Abonnement war es nicht möglich die Adressen zu ändern.
+Dies ist nun behoben.
+
+* Die Währung in den neuen UIs für die Nachbestellung und Umbuchung wurde beim Speichern immer zurückgesetzt auf die Systemwährung. Dies wurde behoben.
+
+* Beim Erstellen von Kindsaufträgen (Gutschrift, Gewährleistung usw.) wurden die Set-Referenzen von Set-Komponenten nicht übernommen. Wird das ganze Set und nicht nur Teile davon im Kindsauftrag übernommen, so werden auch die Set-Referenzen an den Positionen erstellt.
 
 [discrete]
-=== OTTO Market
+=== CRM
 
-* Aufgrund eines Fehlers wurden Authentifizierungs-Anfragen an die API von OTTO Market zu oft vorgenommen. Dieses Verhalten wurde behoben.
+* Im englischen Backend sind selbst definierte Kundentypen bei manueller Kundenanlage im Dropdown nicht wählbar gewesen. Dieser Fehler wurde behoben.
+
+[discrete]
+=== Warenwirtschaft
+
+* Der Filterbereich im Menü *Einrichtung » Waren » Lager » Lager wählen » Lagerorte* hat bis jetzt nicht ganz richtig funktioniert. Der Fehler wurde behoben.
 
 --
 
@@ -135,8 +170,56 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/vatidcheck_6023[VAT ID Check^]
-|2.2.2
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.2.0
+|Zur Anlage der Auftragsnotizen wird nun ein Backend-Benutzer benötigt. Durchlaufe bitte erneut den Assistenten, um diesen zu konfigurieren.
+
+|link:https://marketplace.plentymarkets.com/gaxsys_5992[gaxsys Connector^]
+|2.2.7
+|-
+
+|link:https://marketplace.plentymarkets.com/cfourcontainerpopup5_7007[C4 Popup 5^]
+|2.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/ebayfiege_6018[eBay Fulfillment^]
+|1.1.26
+|-
+
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.16
+|-
+
+|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
+|5.0.16
+|Um bei Live-Shopping-Angeboten auf der Artikelansicht einen Text vor dem Streichpreis anzuzeigen, muss der Übersetzungsschlüssel *crossPriceSpecialOffer* in der Mehrsprachigkeitsoberfläche entsprechend ausgefüllt werden.
+
+|link:https://marketplace.plentymarkets.com/klarna_6731[Klarna^]
+|1.0.15
+|-
+
+|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
+|1.0.7
+|-
+
+|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
+|1.24.2
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.6
+|-
+
+|link:https://marketplace.plentymarkets.com/voelknerextension_6949[Voelkner^]
+|1.1.6
+|-
+
+|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad^]
+|1.1.4
+|-
+
+|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
+|1.0.30
 |-
 
 |===
