@@ -36,34 +36,6 @@ include::../../../plugins/_textblocks/instructions/plugin-installieren.adoc[]
 
 {marketplace-registration}
 
-== Informationen zum automatischen Datenaustausch
-
-Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datenaustausch-{marketplace}>> automatisierten Prozesse bereit:
-
-[#datenaustausch-{marketplace}]
-[cols="1,3"]
-.Häufigkeit des Datenaustauschs
-|====
-|Daten |Intervall
-
-2+| Artikeldaten
-
-| Artikelexport
-| Täglich
-
-| Bestandsabgleich
-| Alle 15 Minuten
-
-| Preisabgleich
-| Alle 15 Minuten
-
-2+| Auftragsdaten
-
-| Auftragsimport
-| Alle 15 Minuten
-
-|====
-
 [#600]
 == Auftragsherkunft aktivieren
 
@@ -92,8 +64,10 @@ Weitere Informationen zu Eigenschaften findest du auf der Seite <<artikel/einste
 Du benötigst die folgenden Eigenschaften für {marketplace}:
 
 * Logistikklasse (<<#1210, so geht's>>)
-* Versandvorlaufzeit (<<#1220, so geht's>>)
-* Reversecharge (<<#1230, so geht's>>)
+* Versandvorlaufzeit
+* Abzugsverfahren
+
+Die Eigenschaften Versandvorlaufzeit und Abzugsverfahren werden automatisch mit dem Typ *Auswahl* erstellt.
 
 [#1210]
 === Eigenschaft Logistikklasse erstellen
@@ -108,42 +82,6 @@ include::../../_textblocks/instructions/properties-creation.adoc[]
 :property-area: Artikel
 :property-type: Kurztext
 :property-name: {marketplace} Logistikklasse
-
-include::../../_textblocks/instructions/properties-creation-table.adoc[]
-
-[#1220]
-=== Eigenschaft Versandvorlaufzeit erstellen
-
-Für jede Variante muss eine Versandvorlaufzeit in Tagen an {marketplace} exportiert werden. Damit informierst du {marketplace} darüber, wie viele Tage du benötigst, um die Variante zu versenden. {marketplace} akzeptiert die Werte 1-45.
-
-:property: Versandvorlaufzeit
-
-include::../../_textblocks/instructions/properties-creation.adoc[]
-
-:property: Versandvorlaufzeit
-:property-area: Artikel
-:property-type: Kurztext
-:property-name: {marketplace} Versandvorlaufzeit
-
-include::../../_textblocks/instructions/properties-creation-table.adoc[]
-
-[#1230]
-=== Eigenschaft Reversecharge erstellen
-
-Für jede Variante muss angegeben werden, ob für diese Variante bei grenzüberschreitenden Geschäftsvorgängen das Reverse-Charge-Verfahren Anwendung findet. {marketplace} akzeptiert die Werte *true* und *false*.
-
-* false = Das Reverse-Charge-Verfahren wird nicht angewendet.
-* true = Das Reverse-Charge-Verfahren wird angewendet. Nicht du als leistende Unternehmer:in führst also die Umsatzsteuer an das Finanzamt ab, sondern dein:e Kund:in. +
-*_Hinweis:_* Beachte die gesetzlichen Vorgaben für das Reverse-Charge-Verfahren und kläre mit deinem Steuerbüro, was es zu beachten gibt.
-
-:property: Reversecharge
-
-include::../../_textblocks/instructions/properties-creation.adoc[]
-
-:property: Reversecharge
-:property-area: Artikel
-:property-type: Kurztext
-:property-name: {marketplace} Reversecharge
 
 include::../../_textblocks/instructions/properties-creation-table.adoc[]
 
@@ -164,9 +102,9 @@ API-Schlüssel erzeugen:
 [#1400]
 == Kontoeinstellungen im Assistenten vornehmen
 
-Mit dem Assistenten *{marketplace} - Wizard* im Menü *Einrichtungen » Assistenten » Plugins » _Plugin-Set wählen_* richtest du dein {marketplace}-Konto in plentymarkets ein.
+Mit dem Assistenten *{marketplace} - Wizard* im Menü *Einrichtung » Assistenten » Plugins » _Plugin-Set wählen_* richtest du dein {marketplace}-Konto in plentymarkets ein.
 
-:menu-path: pass:quotes[Einrichtungen » Assistenten » Plugins » _Plugin-Set wählen_]
+:menu-path: pass:quotes[Einrichtung » Assistenten » Plugins » _Plugin-Set wählen_]
 :assistant-name: {marketplace}
 :number-of-boxes: Info-Box
 
@@ -206,7 +144,7 @@ a| Hier ordnest du den Rückerstattungsgründen von {marketplace} plentymarkets 
 . Klicke auf *Neuen Eintrag hinzufügen*. +
 → Eine Zeile wird eingefügt.
 . Wähle aus der Dropdown-Liste links den plentymarkets Status.
-. Trage in das Textfeld rechts einen Grund für die Rückerstattung von {marketplace} ein. +
+. Wähle aus der Dropdown-Liste rechts einen der Gründe für die Rückerstattung von {marketplace} ein. +
 Die folgenden Gründe können an {marketplace} übertragen werden: +
 
 * `15` = Artikel nicht mehr lieferbar
@@ -226,13 +164,7 @@ include::./conrad-spezial.adoc[tag=zuordnung-stornierung]
 endif::[]
 
 ifeval::["{marketplace}" == "MediaMarkt"]
-. Klicke auf *Neuen Eintrag hinzufügen*. +
-→ Eine Zeile wird eingefügt.
-. Wähle aus der Dropdown-Liste links den plentymarkets Status.
-. Wähle aus der Dropdown-Liste rechts einen Grund für die Stornierung von {marketplace}. +
-Die folgenden Gründe können an {marketplace} übertragen werden: +
-
-* 34 = Vor Versand vom Kunden storniert
+include::./mediamarkt-spezial.adoc[tag=zuordnung-stornierung]
 endif::[]
 
 ifeval::["{marketplace}" == "Voelkner"]
@@ -252,12 +184,40 @@ endif::[]
 2+| Schritt *Zuordnung der Angebots-Eigenschaften*
 
 | Zuordnung der Angebots-Eigenschaften
-| Wähle aus der Dropdown-Liste *Abzugsverfahren* die Eigenschaft *{marketplace} Reversecharge*. +
-Wähle aus der Dropdown-Liste *Versandvorlaufzeit* die Eigenschaft *{marketplace} Versandvorlaufzeit*. +
-Wähle aus der Dropdown-Liste *Logistikklasse* die Eigenschaft *{marketplace} Logistikklasse*.
+| Wähle aus der Dropdown-Liste *Logistikklasse* die Eigenschaft *{marketplace} Logistikklasse*. +
+Die Eigenschaften für *Abzugsverfahren* und *Versandvorlaufzeit* sind bereits vorausgewählt.
 
 |======
 --
+
+[#800]
+== Informationen zum automatischen Datenaustausch
+
+Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datenaustausch-{marketplace}>> automatisierten Prozesse bereit:
+
+[#datenaustausch-{marketplace}]
+[cols="1,3"]
+.Häufigkeit des Datenaustauschs
+|====
+|Daten |Intervall
+
+2+| Artikeldaten
+
+| Artikelexport
+| Täglich
+
+| Bestandsabgleich
+| Alle 15 Minuten
+
+| Preisabgleich
+| Alle 15 Minuten
+
+2+| Auftragsdaten
+
+| Auftragsimport
+| Alle 15 Minuten
+
+|====
 
 [#900]
 == Artikelexport einrichten
@@ -277,7 +237,7 @@ Wenn es beim Export Probleme gibt, findest du die zugehörigen Log-Einträge auf
 
 Wenn du für eine oder alle deine Varianten mehrere <<artikel/einstellungen/attribute#, Attribute>> definiert hast, erstelle eine Eigenschaft, die diese Attribute vereint. Unterscheidest du bei einer Variante z.B. sowohl nach Farbe als auch nach Größe, legst du eine Eigenschaft mit der Benennung "Grau XL" an. <<artikel/einstellungen/eigenschaften#1400, Ordne diese Eigenschaften>> den entsprechenden Varianten zu.
 
-Zusätzlich zu den <<#1200, zuvor beschriebenen Eigenschaften>> benötigst du Eigenschaften für alle Datenfelder des Marktplatzes, für die du Daten übergeben möchtest, die es standardmäßig in plentymarkets nicht gibt. Welche Eigenschaften du benötigst, erfährst du in der Dokumentation des Marktplatzes. Du arbeitest zum ersten Mal mit Eigenschaften? Weitere Informationen findest du auf der Handbuchseite zum Thema <<willkommen/allgemeine-funktionen/eigenschaften, Eigenschaften>>.
+Zusätzlich zu den <<#1200, zuvor beschriebenen Eigenschaften>> benötigst du Eigenschaften für alle Datenfelder des Marktplatzes, für die du Daten übergeben möchtest, die es standardmäßig in plentymarkets nicht gibt. Welche Eigenschaften du benötigst, erfährst du in der Dokumentation des Marktplatzes. Du arbeitest zum ersten Mal mit Eigenschaften? Weitere Informationen findest du auf der Handbuchseite zum Thema <<willkommen/allgemeine-funktionen/eigenschaften#, Eigenschaften>>.
 
 [#902]
 === Katalog im Assistenten erstellen
@@ -285,7 +245,7 @@ Zusätzlich zu den <<#1200, zuvor beschriebenen Eigenschaften>> benötigst du Ei
 :catalogue-assistant-name: {marketplace}-Katalog
 :number-of-boxes: Info-Box
 :mapping-fields: die
-:catalogue-path: pass:quotes[*Einrichtung » Assistenten » Plugins »* _Plugin-Set wählen_.]
+:catalogue-path: pass:quotes[*Einrichtung » Assistenten » Plugins »* _Plugin-Set wählen_]
 :catalogue-note: pass:quotes[Achte darauf, eine Kategorie der untersten Ebene zu wählen. Eine bessere Übersicht findest du auf Mirakl im Menü *Mein Konto » Meine Produktdaten-Einstellungen*.]
 
 include::../../_textblocks/instructions/catalogue-assistant-config.adoc[]
@@ -317,12 +277,16 @@ ifeval::["{marketplace}" == "Conrad"]
 include::./conrad-spezial.adoc[tag=zuordnung-datenfelder]
 endif::[]
 
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=zuordnung-datenfelder]
+endif::[]
+
 ifeval::["{marketplace}" == "Voelkner"]
 include::./voelkner-spezial.adoc[tag=zuordnung-datenfelder]
 endif::[]
 
 [#475]
-== Varianten mit {marketplace} Catalog-Kategorie verknüpfen
+== Varianten mit {marketplace} Katalog-Kategorie verknüpfen
 
 Nachdem du mit dem Assistenten *{marketplace}* oder manuell ein Marktplatz-Format für {marketplace} erstellt hast, wird in deinem plentymarkets System die Eigenschaft *{marketplace}* erstellt. Für jede Kategorie, die du im ersten Schritt *Einstellungen* des Assistenten wählst, wird die gewählte Kategorie als neuer Auswahlwert zur Eigenschaft *{marketplace} Kategoriegruppe* hinzugefügt. Damit deine Varianten im gewünschten Katalog exportiert werden, müssen sie im *Tab: Eigenschaften* einer Variante mit der Eigenschaft *{marketplace} Kategoriegruppe* verknüpft werden.
 
@@ -374,6 +338,10 @@ ifeval::["{marketplace}" == "Conrad"]
 include::./conrad-spezial.adoc[tag=automatisierung-zusammenfassung]
 endif::[]
 
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=automatisierung-zusammenfassung]
+endif::[]
+
 ifeval::["{marketplace}" == "Voelkner"]
 include::./voelkner-spezial.adoc[tag=automatisierung-zusammenfassung]
 endif::[]
@@ -390,6 +358,10 @@ Wir empfehlen allerdings, nur die Aktionen zu verwenden, die hier im Detail besc
 
 ifeval::["{marketplace}" == "Conrad"]
 include::./conrad-spezial.adoc[tag=automatisierung-details]
+endif::[]
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=automatisierung-details]
 endif::[]
 
 ifeval::["{marketplace}" == "Voelkner"]
