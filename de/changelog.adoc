@@ -6,11 +6,11 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 19. Oktober 2020
-:endWeekDate: 25. November 2020
-:nav-alias: Changelog 25. November 2020
+:startWeekDate: 03. Dezember 2020
+:endWeekDate: 09. Dezember 2020
+:nav-alias: Changelog 09. Dezember 2020
 
-Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
 Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
 
@@ -20,18 +20,38 @@ Wähle, welchen Changelog du sehen möchtest.
 ====
 stable::
 +
+
 --
+
 [discrete]
 == Neu
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== Kataloge
 
-* Es wurden weitere Stellen der Auftrag Detailansicht und die Auftrags-Gruppenfunktionen auf die neue Auftragslogik umgeschaltet. Dies sollte keine Änderung im Verhalten verursachen.
-* Durch den Brexit wird Großbritannien voraussichtlich ab dem 01.01.2021 nicht mehr Teil des Wirtschaftsraumes der EU sein. Die interne Prüfung, ob ein Land Teil der EU ist, wurde mit einem Zeitstempel erweitert, sodass das kommende Ereignis korrekt im System abgebildet werden kann.
-* Die Umbuchungs-UI wurde beim Öffnen wegen einer fehlenden Spalte in der Auftragspositionstabelle nicht richtig dargestellt. Dies wurde behoben. Die Umbuchung-UI funktioniert wieder.
+* Ab sofort kannst du Platzhalter für Dateinamen verwenden.
+
+image:changelog/assets/kataloge-dateiname-platzhalter.png[width=640]
+
+[discrete]
+=== myView
+
+* Nachdem Administratoren bereits die Möglichkeit haben, Rollen verschiedene Ansichten zuzuweisen, können sie dies nun auch für Benutzer tun.
+
+Nur Admins haben Zugriff auf den Bearbeitungsmodus der MyView und sind somit autorisiert, Ansichten zu erstellen oder zu löschen sowie neue Benutzer anzulegen und Rechte zuzuweisen.
+
+Am Anfang ist immer die Standardansicht vorausgewählt. Existiert eine weitere Ansicht, kann die Standardansicht für einen Benutzer deaktiviert und Rechte für eine andere Ansicht können zugewiesen werden.
+
+Beachte, dass immer mindestens eine Ansicht ausgewählt sein muss.
+
+Die Rechteverwaltung findest du im Menü unter *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer » Benutzer wählen » Tab: Ansichten*. Dort werden alle benutzerdefinierten Ansichten angezeigt.
+
+*_Tipp:_* Die Rechteverwaltung erreichst du auch direkt aus einer MyView:
+Klicke dazu unterhalb der Einstellungen auf Rechteverwaltung » Benutzerrechte.
+
+Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
 
 '''
 
@@ -41,71 +61,63 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
+=== DHL Fulfillment
+
+* Nachbestellungen an DHL Fulfillment konnten als Inbound Auftrag auch dann übertragen werden, wenn nicht alle Varianten für DHL Fulfillment konfiguriert waren. Somit wurde an DHL Fulfillment ein unvollständiger Auftrag übermittelt. Dieses Verhalten haben wir geändert. Es werden nun nur noch Aufträge übermittelt, bei denen alle Varianten korrekt für DHL Fulfillment konfiguriert sind (und somit in der ItemMaster Datei enthalten sind). Ansonsten erscheint eine Fehlermeldung im Log, mit der Angabe der Varianten IDs, die nicht korrekt konfiguriert sind. Zusätzlich zeigen wir diese Fehlermeldung auch als Nachricht in der Nachbestellung im Bereich Messenger an.
+
+[discrete]
 === OTTO
 
-:otto-master-date: 20.11.2020
-:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/KtdTpRkdSxeuALjHZucrOMRY2T.xlsx
+* Die Editorial Nodes und die daraus resultierenden Merkmal- und Attributverknüpfungen wurden auf Basis der von OTTO am 04.12.2020 bereitgestellten Datei Merkmalstrukturen_Master aktualisiert. Die aktuelle Merkmalstrukturen_Master-Datei kann link:https://forum.plentymarkets.com/t/aktuelle-merkmalsstrukturen-master-datei/532293[hier^] heruntergeladen werden. Diese Änderung betrifft nicht OTTO Market.
 
-include::changelog/_textblocks/otto-master-file.adoc[]
-
-'''
 
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Aufträge
 
-* Wenn ein Auftrag über eBay ohne die Eigenschaft `E-Mail des Absenders` an der PayPal-Zahlung eingeht, wird die Eigenschaft nun mit der E-Mail aus der PayPal Transaktion aktualisiert. Diese Korrektur wird dazu beitragen die Übereinstimmungsraten für die automatische Zuordnung einer Zahlung zu einem eBay-Auftrag zu erhöhen.
-* Durch Anpassungen bzgl. des kommenden Brexit wurde innerhalb des Collmex-Spezialexports die Spalte *orderEntryDate* ausgegeben. Diese wurde nun ausgeblendet.
-* Verschiedene Änderungen an Sammelaufträgen und Sammengutschriften über die UI hatten nicht mehr funktioniert (z.B. Änderung des Status).
-* Das Bearbeiten des Rabatts von Gutschriften hatte über UI nicht korrekt funktioniert.
-* Es konnte vorkommen, dass die Lieferadresse eines Auftrags nicht mehr geändert werden konnte.
-* Wenn Artikel in einer Nachbestellung oder Umbuchung das erste Mal in den Warenkorb gelegt wurden, konnten diese Artikel nicht mehr gelöscht werden. Dies wurde behoben, Artikel sind wieder löschbar.
-* n der Nachbestellung und Umbuchung wurde die Tabellenspalte *Barcode* bei Auswahl nicht gespeichert. Dies ist nun behoben, die Spalte kann gespeichert werden.
-* In der Nachbestellung und Umbuchung hat die letze ausgewählte Tabellenspalte die vorhergehende überschrieben. Dies ist nun behoben, alle Tabellenspalten werden korrekt hinzugefügt.
+* Bei entsperrten Abonnement war es nicht möglich die Adressen zu ändern.
+Dies ist nun behoben.
+
+* Die Währung in den neuen UIs für die Nachbestellung und Umbuchung wurde beim Speichern immer zurückgesetzt auf die Systemwährung. Dies wurde behoben.
+
+* Beim Erstellen von Kindsaufträgen (Gutschrift, Gewährleistung usw.) wurden die Set-Referenzen von Set-Komponenten nicht übernommen. Wird das ganze Set und nicht nur Teile davon im Kindsauftrag übernommen, so werden auch die Set-Referenzen an den Positionen erstellt.
+
+* Es konnte vorkommen, dass es beim Bearbeiten von Positionen von Aufträgen, die unzugeordnete Varianten enthalten zu einem Fehler kam. Dieses Verhalten wurde behoben.
+
+* Bei Aufträgen in Fremdwährung, die keine Versandkostenposition hinterlegt haben, kann die Versandart nicht geändert werden, da diese nicht in der korrekten Währung geladen werden konnte.
+Dies wurde nun behoben, sodass die Aufträge entsprechend bearbeitet werden können. Dies funktioniert auch rückwirkend für alle bereits angelegten Aufträge.
+
+* Beim Gruppieren der Auftragssummen unter einem Steuersatz konnte es dazu kommen, dass der gleiche Steuersatz einmal mit der korrekten Summe und zusätzlich mit einer Summe von 0 ermittelt wurde. Dies führte zu einer doppelten Anzeige im Checkout.
 
 [discrete]
-=== Bestellwesen
+=== CRM
 
-* Die individuell angepassten Tabellenspalten wurden unter Umständen wieder auf den Ursprung zurückgesetzt. Das Verhalten wurde behoben, sodass die geänderten Tabellenspalten korrekt gespeichert werden.
-
-[discrete]
-=== Dokumente
-
-* Beim Transfer *Einstellungen aus Standard-Dokumentenvorlage übernehmen* wurde die aktuelle Zielsprache nicht korrekt erkannt, sodass die Einstellungen in die Sprache *de* übernommen wurden.
+* Im englischen Backend sind selbst definierte Kundentypen bei manueller Kundenanlage im Dropdown nicht wählbar gewesen. Dieser Fehler wurde behoben.
 
 [discrete]
 === Kataloge
 
-* Aufgrund eines Fehlers wurden die Datenfelder im Datenbaum falsch dargestellt. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers konnten teilweise die Kataloge nicht kopiert werden. Diesen Fehler haben wir behoben.
 
 [discrete]
-=== Prozesse
+=== OTTO
 
-* In Retouren-Prozessen wurde unter Umständen der Artikelwert nicht korrekt aktualisiert. Dieses Verhalten ist nun behoben.
-
-[discrete]
-=== Zalando
-
-* Wenn die regulären Preise für geplante Preise im Assistenten nicht gepflegt waren, konnte dies zu einer Exception beim Preis-Update führen, wodurch dieses nicht durchgeführt wurde. Dieses Problem wurde nun behoben.
-* Beim Preis-Update wurde nur danach gefiltert, ob eine Variante eine SKU für Zalando hat, aber nicht, ob die Variante auch noch für Zalando über die Marktplatzverfügbarkeit freigeschaltet ist.
-+
-Dies konnte nur zu Problemen führen, wenn man zwei oder mehr Varianten mit der gleichen EAN hatte, bei denen alle eine SKU für Zalando haben, aber nur eine für Zalando freigeschaltet war. In diesem Fall wurden alle übertragen und überschrieben sich gegenseitig den Preis da Zalando den Preis anhand der EAN zuordnet.
-+
-Dies kann nun nicht mehr vorkommen, wenn man korrekterweise pro EAN nur eine Variante für Zalando freigeschaltet hat.
+* Aufgrund eines Fehlers im Artikelexport wurden Varianten auf OTTO Market nicht reaktiviert. Durch den Fix haben sich die Voraussetzungen für den Artikelexport verändert. Ein positiver Nettowarenbestand ist nun erforderlich, damit eine Variante exportiert wird.
 
 [discrete]
-== Gelöscht
+=== real.de
 
-Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* gelöscht.
+* Im Zeitraum vom 11.11.2020 bis einschließlich dem 02.12.2020 wurde bei real.de-Aufträgen der Firmenname in der Lieferadresse nicht gespeichert. Dies betrifft ebenfalls Aufträge mit Packstationen, da die Postnummer im selben Feld von real.de 2 übertragen wird. Dieses Problem wurde nun behoben.
 
 [discrete]
-=== eBay
+=== Warenwirtschaft
 
-* Der Changelog bezieht sich auf den Forumsbeitrag link:https://forum.plentymarkets.com/t/ebay-auswahl-fuer-die-hinterlegung-der-externen-auftragsnummer-am-auftrag/552016[Auswahl für die Hinterlegung der externen Auftragsnummer am Auftrag^]. eBay hat mittlerweile alle Verkäufer auf das neue Dashboard umgezogen und somit kann jeder Verkäufer nun nach der eBay-Bestellnummer im eBay Backend suchen. Aus diesem Grund haben wir die Option wieder entfernt und hinterlegen nun immer die eBay-Bestellnummer anstatt der Verkaufsprotokollnummer am Auftrag als externe Auftragsnummer.
+* Der Filterbereich im Menü *Einrichtung » Waren » Lager » Lager wählen » Lagerorte* hat bis jetzt nicht ganz richtig funktioniert. Der Fehler wurde behoben.
+
 
 --
 
@@ -114,35 +126,33 @@ early::
 --
 
 [discrete]
-== Geändert
+== Neu
 
-Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
 === Kataloge
 
-* Bis die neue Filterkomponente eingebaut werden kann, haben wir vorübergehend den alten Filter wieder eingebaut.
+* Ab sofort können auch die Formateinstellungen für Marktplatzkataloge genutzt werden.
 
 '''
 
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
 === Aufträge
 
-* Der Zahlungsstatus von Gutschriften in Fremdwährung wurde bei der Zahlungszuordnung nicht korrekt ermittelt. Dies wurde nun entsprechend für alle neuen Zuordnungen angepasst.
-+
-[IMPORTANT]
-.To-Do
-======
-Gutschriften mit bereits zugeordneten Zahlungen werden nicht korrigiert. Bei Bedarf kann die Zuordnung gelöst und die Zahlung neu zugeordnet werden.
-======
-* Es wurden die Auftragssummen teilweise nicht richtig berechnet. Der Fehler ist nur in Beta/Early aufgetreten.
-* Beim Erstellen von Adressetiketten bei Aufträgen mit Set-Artikeln kam es zur Fehlermeldung `missing warehouseId` (fehlende Lagerangabe). Das wurde behoben.
-* Es konnten die Adressdaten von gesperrten Aufträgen nicht mehr geändert werden. Der Fehler ist nur auf Beta/Early aufgetreten.
+* Es war bisher möglich, Leerzeichen am Anfang und Ende von Paketnummern an Versandpaketen zu setzen. Diese werden nun beim Speichern entfernt.
+
+* Führende und nachfolgende Leerzeichen in der externen Auftrags-ID wurden mit gespeichert, sodass die Suche nach Aufträgen über die externe Auftrags-ID zu keinem Treffer führte. Nun werden alle Leerzeichen vor dem Speichern entfernt.
+
+[discrete]
+=== CRM
+
+* Eigenschaften vom Typ Kontakt wurden auf dem Adressetikett nicht korrekt ausgegeben. Dieser Fehler wurde behoben.
 
 --
 
@@ -158,25 +168,50 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad^]
-|1.1.2
+|link:https://marketplace.plentymarkets.com/ebayfiege_6018[eBay Fulfillment^]
+|1.1.27
 |-
 
-|link:https://marketplace.plentymarkets.com/feed4ceresaccountpacktwo_6992[Feed4CeresAccountPackTwo^]
-|1.0.0
+|link:https://marketplace.plentymarkets.com/itemvideoplugin_6915[Produkt Video Plugin^]
+|1.4.3
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourgoogletagmanager5_6984[Google Tag Manager 5^]
-|2.1.0
+|link:https://marketplace.plentymarkets.com/itemavailabilityinfo_6962[Artikelverfügbarkeit Info^]
+|1.6.1
 |-
 
-|link:https://marketplace.plentymarkets.com/groupon_4878[Groupon^]
-|1.1.5
+|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce^]
+|2.5.1
+|-
+
+|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
+|2.1.5
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.7
+|-
+
+|link:https://marketplace.plentymarkets.com/cfourproductwall5_6893[Produktwand Widget 5^]
+|2.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/myfactory_6987[MyFactory^]
+|1.0.16
+|-
+
+|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
+|1.24.4
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.0.1
 |-
 
 |===
 
 Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
 
 --
 
