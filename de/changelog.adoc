@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 03. Dezember 2020
-:endWeekDate: 09. Dezember 2020
-:nav-alias: Changelog 09. Dezember 2020
+:startWeekDate: 10. Dezember 2020
+:endWeekDate: 16. Dezember 2020
+:nav-alias: Changelog 16. Dezember 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,27 +31,7 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 [discrete]
 === Kataloge
 
-* Ab sofort kannst du Platzhalter für Dateinamen verwenden.
-
-image:changelog/assets/kataloge-dateiname-platzhalter.png[width=640]
-
-[discrete]
-=== myView
-
-* Nachdem Administratoren bereits die Möglichkeit haben, Rollen verschiedene Ansichten zuzuweisen, können sie dies nun auch für Benutzer tun.
-
-Nur Admins haben Zugriff auf den Bearbeitungsmodus der MyView und sind somit autorisiert, Ansichten zu erstellen oder zu löschen sowie neue Benutzer anzulegen und Rechte zuzuweisen.
-
-Am Anfang ist immer die Standardansicht vorausgewählt. Existiert eine weitere Ansicht, kann die Standardansicht für einen Benutzer deaktiviert und Rechte für eine andere Ansicht können zugewiesen werden.
-
-Beachte, dass immer mindestens eine Ansicht ausgewählt sein muss.
-
-Die Rechteverwaltung findest du im Menü unter *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer » Benutzer wählen » Tab: Ansichten*. Dort werden alle benutzerdefinierten Ansichten angezeigt.
-
-*_Tipp:_* Die Rechteverwaltung erreichst du auch direkt aus einer MyView:
-Klicke dazu unterhalb der Einstellungen auf Rechteverwaltung » Benutzerrechte.
-
-Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
+* Ab sofort können auch die Formateinstellungen für Marktplatzkataloge genutzt werden.
 
 '''
 
@@ -61,15 +41,38 @@ Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== DHL Fulfillment
+=== Amazon
 
-* Nachbestellungen an DHL Fulfillment konnten als Inbound Auftrag auch dann übertragen werden, wenn nicht alle Varianten für DHL Fulfillment konfiguriert waren. Somit wurde an DHL Fulfillment ein unvollständiger Auftrag übermittelt. Dieses Verhalten haben wir geändert. Es werden nun nur noch Aufträge übermittelt, bei denen alle Varianten korrekt für DHL Fulfillment konfiguriert sind (und somit in der ItemMaster Datei enthalten sind). Ansonsten erscheint eine Fehlermeldung im Log, mit der Angabe der Varianten IDs, die nicht korrekt konfiguriert sind. Zusätzlich zeigen wir diese Fehlermeldung auch als Nachricht in der Nachbestellung im Bereich Messenger an.
+* Beim Ausführen der Ereignisaktion *Rechnung bei Amazon hochladen* ändert sich Folgendes:
+. Bisher fügte die Ereignisaktion nur neue Einträge zur Warteschlange des Rechnungsuploads hinzu oder aktualisierte Einträge im Status Ausstehend. Ab jetzt werden damit auch fehlgeschlagene Einträge und Einträge, die laut Status seit über einer Stunde in Bearbeitung sind, wieder eingereiht. Letztere sind aufgrund eines Fehlverhaltens immer noch in diesem Status.
+. Einträge in der Warteschlange des Rechnungsuploads werden nur noch überschrieben, wenn es tatsächlich eine Änderung gab, da sich sonst der Rechnungsupload unnötigerweise um 3 Stunden verzögert.
+* Beim Import des VCS-Berichts für VCS Lite bzw. VCS plentymarkets ändern sich folgende Dinge:
+. Bisher wurden erst am Ende der Verarbeitung des Berichts alle Aufträge gesammelt zur Warteschleife des Rechnungsupload hinzugefügt. Ab sofort werden die Transaktionen einzeln während der Verarbeitung des Berichts zur Warteschleife hinzugefügt.
+. Wenn ein Auftrag auf Basis des Berichts korrigiert werden musste, wird immer ein Eintrag zur Warteschleife des Rechnungsuploads hinzugefügt.
+. Wenn ein Auftrag nicht auf Basis des Berichtes korrigiert werden musste, wird der Auftrag trotzdem neu zur Warteschleife hinzugefügt, wenn sich der Auftrag mehr als 3 Stunden im Status *Abgeschlossen* befindet, da dann davon auszugehen ist, dass es beim letzten Upload zu einem Fehler bei der Verarbeitung auf Amazon kam.
+. Einträge in der Warteschlange des Rechnungsuploads werden nur noch überschrieben, wenn es tatsächlich eine Änderung gab, da sich sonst der Rechnungsupload unnötigerweise um 3 Stunden verzögert.
+* Beim Cron-Prozess des Rechnungsuploads, der alle 15 Minuten ausgeführt wird, ändert sich Folgendes:
+. Anhand der Existenz der Auftragseigenschaft mit der Typ-ID 44 wird entschieden, ob ein Auftrag mit VCS berechnet wurde oder nicht. Der Wert der Eigenschaft spielt dabei keine Rolle. Existiert die Eigenschaft, dann wird ein Auftrag so behandelt, als wäre der Auftrag mit VCS berechnet worden und entsprechende Metainformationen beim Upload mitgeliefert. Dieses Verhalten wird nur ausgehebelt, wenn bei keinem der zugehörigen Konten des entsprechenden Verkäuferkontos die Einstellungen Rechnung erzeugen unter *Einrichtung » Märkte » Amazon » Einstellungen »* _Konto öffnen_ *» Tab: Einstellungen » Bereich: Basiseinstellungen* die Auswahl *VCS plentymarkets* getroffen wurde. Dann wird die Rechnung so hochgeladen, als läge keine VCS-Berechnung zugrunde.
+. Wenn ein Auftrag mit VCS berechnet wurde und es sich um einen FBA-Auftrag handelt, wird ab jetzt immer die ID der Lieferung beim Rechnungsupload in den Metainformationen mitgegeben. Vorher wurde diese ID nur mitgegeben, wenn es zum Zeitpunkt des Uploads mehrere Aufträge zu einer Amazon-Auftrags-ID gab.
+. Zwischen dem Upload von zwei Rechnungen muss seitens Amazon eine Pause von 3 Sekunden gemacht werden. Bisher wurde eine Pause von 5,5 Sekunden gemacht, da es vor allem in der Anfangsphase Probleme mit niedrigeren Intervallen gab. Das Intervall wurde nun testweise wieder auf 4 Sekunden reduziert.
+. Wie bisher auch, lädt der Prozess maximal 150 Rechnungen aus dem Status *Ausstehend* pro Lauf zu Amazon hoch. Zusätzlich versucht der Prozess automatisch, jeweils 25 Rechnungen erneut hochzuladen, die entweder im Status *Fehlgeschlagen* sind oder seit über einer Stunde im Status *In Bearbeitung* sind. Dabei werden aber nur Einträge berücksichtigt, die maximal drei Tage alt sind. Ältere Einträge können weiterhin unter *Einrichtung » Märkte » Amazon » Datenaustausch » Berichte » Tab: Rechnungen hochladen* manuell neu hinzugefügt werden.
+* Alle Log-Einträge zum Thema Rechnungsupload sind ab jetzt unter dem Identifikator *AmazonInvoiceUpload* zu finden. Jeder Versuch, einen Eintrag in der Warteschlange zu aktualisieren und jeder Versuch, eine Rechnung hochzuladen, wird dabei mit mindestens einem Log-Eintrag festgehalten. Abgesehen von besonders schweren Ausnahmefehlern, steht immer der Referenztyp *orderId* zum Filtern zur Verfügung und wo dies möglich war, ebenfalls der Referenztyp *amazonOrderId*.
+* Bisher wurde auch immer ein Log geschrieben, wenn ein Eintrag zur Warteschlange des Rechnungsuploads nicht geschrieben wurde, weil der aktuelle Eintrag dem neuen Eintrag entspricht. Dieses Verhalten produzierte jedoch deutlich mehr Log-Einträge als erwartet. Deshalb wurde dieses Log auf das Debug-Level umgestellt und wird nur noch geschrieben, wenn dieser aktiviert wurde.
+
+[discrete]
+=== Import
+
+* Der Abgleich der Variante wird nun in einem eigenen Bereich names *Daten ergänzen* angezeigt. Da bei diesem Abgleichfeld die im System hinterlegten Informationen der Varianten geladen und dem Auftrag hinzugefügt werden. Weitere Informationen findest du auf der Handbuchseite <<daten/daten-importieren/sync-typen/elasticSync-auftraege#, Import-Typen » Aufträge>>.
 
 [discrete]
 === OTTO
 
-* Die Editorial Nodes und die daraus resultierenden Merkmal- und Attributverknüpfungen wurden auf Basis der von OTTO am 04.12.2020 bereitgestellten Datei Merkmalstrukturen_Master aktualisiert. Die aktuelle Merkmalstrukturen_Master-Datei kann link:https://forum.plentymarkets.com/t/aktuelle-merkmalsstrukturen-master-datei/532293[hier^] heruntergeladen werden. Diese Änderung betrifft nicht OTTO Market.
+:otto-master-date: 11.12.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/6vjGLuGK2jHhWhi5UQWSUYX1e6j.xlsx
 
+include::changelog/_textblocks/otto-master-file.adoc[]
+
+'''
 
 [discrete]
 == Behoben
@@ -77,47 +80,56 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Amazon
+
+* Durch einen falschen Wert schlug die Aktualisierung der Einträge in der Warteschlange für den Rechnungsupload fehl. Dadurch wurden Aufträge nicht in die Warteschlange für den Rechnungsupload eingereiht.
++
+[IMPORTANT]
+.To-Do
+======
+Händler:innen, die VCS Lite bzw. VCS plentymarkets nutzen, müssen nichts unternehmen, da ihre Rechnungen automatisch durch den Import des VCS-Berichts erneut hochgeladen wurden.
+
+Händler:innen, die kein VCS nutzen, müssen Folgendes durchführen:
+
+. Unter Daten » Log mit den folgenden Suchparametern nach Einträgen suchen:
+* *Identifikator* = `AmazonInvoiceUpload`
+* *Level* = `critical`
+. Für jeden gefundenen Eintrag mit der Nachricht `Eintrag in Warteschlange für Rechnungsupload nicht aktualisiert. Kontaktiere den Support im Forum.` die Auftrags-ID aus den Referenzen herauskopieren.
+. Unter *Einrichtung » Märkte » Amazon » Datenaustausch » Berichte » Tab: Rechnungen hochladen* die gesammelten Auftrags-IDs kommagetrennt eintragen und ausführen. Dadurch werden die Aufträge der Warteschlange hinzugefügt.
+======
++
+* Die Logs zum tatsächlichen Rechnungsupload wurden wegen eines Fehlers in der Log-Nachricht nicht geschrieben.
+* Ein paar Logs hatten noch nicht den neuen Identifikator AmazonInvoiceUpload.
+* Bereits übertragene Rechnungen wurden bereits vor der erwarteten Pufferzeit von 3 Stunden nach dem letzten Upload wieder in die Warteschlange eingereiht, wenn diese noch im VCS-Bericht beinhaltet sind.
+
+[discrete]
 === Aufträge
 
-* Bei entsperrten Abonnement war es nicht möglich die Adressen zu ändern.
-Dies ist nun behoben.
-
-* Die Währung in den neuen UIs für die Nachbestellung und Umbuchung wurde beim Speichern immer zurückgesetzt auf die Systemwährung. Dies wurde behoben.
-
-* Beim Erstellen von Kindsaufträgen (Gutschrift, Gewährleistung usw.) wurden die Set-Referenzen von Set-Komponenten nicht übernommen. Wird das ganze Set und nicht nur Teile davon im Kindsauftrag übernommen, so werden auch die Set-Referenzen an den Positionen erstellt.
-
-* Es konnte vorkommen, dass es beim Bearbeiten von Positionen von Aufträgen, die unzugeordnete Varianten enthalten zu einem Fehler kam. Dieses Verhalten wurde behoben.
-
-* Bei Aufträgen in Fremdwährung, die keine Versandkostenposition hinterlegt haben, kann die Versandart nicht geändert werden, da diese nicht in der korrekten Währung geladen werden konnte.
-Dies wurde nun behoben, sodass die Aufträge entsprechend bearbeitet werden können. Dies funktioniert auch rückwirkend für alle bereits angelegten Aufträge.
-
-* Beim Gruppieren der Auftragssummen unter einem Steuersatz konnte es dazu kommen, dass der gleiche Steuersatz einmal mit der korrekten Summe und zusätzlich mit einer Summe von 0 ermittelt wurde. Dies führte zu einer doppelten Anzeige im Checkout.
+* Es war bisher möglich, Leerzeichen am Anfang und Ende von Paketnummern an Versandpaketen zu setzen. Diese werden nun beim Speichern entfernt.
+* Führende und nachfolgende Leerzeichen in der externen Auftrags-ID wurden mit gespeichert, sodass die Suche nach Aufträgen über die externe Auftrags-ID zu keinem Treffer führte. Nun werden alle Leerzeichen vor dem Speichern entfernt.
+* Bei der Aktualisierung von Versandkosten direkt über die Auftragssuche konnte es bei Aufträgen in Fremdwährung zu einem Fehler kommen, wodurch die Versandkosten nicht gespeichert wurden.
+Dies wurde behoben.
+* Wenn an einer Artikelposition im Auftrag ein Lager zugeordnet ist das gelöscht wurde, konnte das Lager nicht mehr aktualisiert werden. Dies wurde behoben.
 
 [discrete]
 === CRM
 
-* Im englischen Backend sind selbst definierte Kundentypen bei manueller Kundenanlage im Dropdown nicht wählbar gewesen. Dieser Fehler wurde behoben.
+* Eigenschaften vom Typ Kontakt wurden auf dem Adressetikett nicht korrekt ausgegeben. Dieser Fehler wurde behoben.
 
 [discrete]
-=== Kataloge
+=== Elastischer Export
 
-* Aufgrund eines Fehlers konnten teilweise die Kataloge nicht kopiert werden. Diesen Fehler haben wir behoben.
-
-[discrete]
-=== OTTO
-
-* Aufgrund eines Fehlers im Artikelexport wurden Varianten auf OTTO Market nicht reaktiviert. Durch den Fix haben sich die Voraussetzungen für den Artikelexport verändert. Ein positiver Nettowarenbestand ist nun erforderlich, damit eine Variante exportiert wird.
+* Beim Exportieren wurden nur die Lagerorte der ersten Zeile geliefert. Der Fehler wurde behoben.
 
 [discrete]
-=== real.de
+=== Import
 
-* Im Zeitraum vom 11.11.2020 bis einschließlich dem 02.12.2020 wurde bei real.de-Aufträgen der Firmenname in der Lieferadresse nicht gespeichert. Dies betrifft ebenfalls Aufträge mit Packstationen, da die Postnummer im selben Feld von real.de 2 übertragen wird. Dieses Problem wurde nun behoben.
+* Beim Import bereits bestätigter Newsletter-Empfänger kam es zu einem Fehler, welcher den Import nicht beenden ließ. Dieser Fehler wurde behoben.
 
 [discrete]
-=== Warenwirtschaft
+=== Netto
 
-* Der Filterbereich im Menü *Einrichtung » Waren » Lager » Lager wählen » Lagerorte* hat bis jetzt nicht ganz richtig funktioniert. Der Fehler wurde behoben.
-
+* Es wird nicht länger ein negativer Bestand für Varianten an Netto übermittelt. Ist der Bestand kleiner 0, wird stattdessen `0` übertragen.
 
 --
 
@@ -131,9 +143,10 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== Aufträge
 
-* Ab sofort können auch die Formateinstellungen für Marktplatzkataloge genutzt werden.
+* Im Menü *Waren » Bestellwesen » Bestellung* wurden zwei neue Spalten zur Übersichtstabelle hinzugefügt. Die neuen Spalten sind *Gesamtwert* (nur für Nachbestellungen verfügbar) und *Zahlungsziel*. Diese Spalten sind optional. Sie werden nicht standardmäßig in der Tabelle angezeigt. Klicke auf *Spalten konfigurieren*, um sie zur Tabelle hinzuzufügen.
+* Alle Tabellen im Abo-Modul wurden in Angular-Material-Komponenten umgewandelt. Benutzerdefinierte Spaltenüberschriften wurden ebenfalls hinzugefügt. Mit den neuen Tabellen ist es nun möglich, Spalten nach Wunsch zu konfigurieren.
 
 '''
 
@@ -145,14 +158,18 @@ Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 [discrete]
 === Aufträge
 
-* Es war bisher möglich, Leerzeichen am Anfang und Ende von Paketnummern an Versandpaketen zu setzen. Diese werden nun beim Speichern entfernt.
-
-* Führende und nachfolgende Leerzeichen in der externen Auftrags-ID wurden mit gespeichert, sodass die Suche nach Aufträgen über die externe Auftrags-ID zu keinem Treffer führte. Nun werden alle Leerzeichen vor dem Speichern entfernt.
+* Wir haben Optimierungen an der automatischen Zuordnung von Zahlungen vorgenommen und konnten so die Suche nach offenen Aufträgen unter gewissen Voraussetzungen enorm beschleunigen. Beachte hier bitte, dass der Effekt, je nach der Menge deiner Daten, mehr oder weniger zu spüren ist. Es ergibt sich aber auf keinen Fall ein Nachteil daraus.
 
 [discrete]
 === CRM
 
-* Eigenschaften vom Typ Kontakt wurden auf dem Adressetikett nicht korrekt ausgegeben. Dieser Fehler wurde behoben.
+* Die Liste der Feldnamen werden nicht mehr mehrfach angezeigt, wenn das Layout-Design ausgewählt wird. Die Namen in der Feldliste werden nach einem Neuladen nicht angezeigt.
+* Die Umlaute Ä,Ö,Ü & ß wurden nach dem Versenden einer Nachricht mit Messenger in der Übersicht als Entities dargestellt und auch als solche auf Nachbestellungs-Dokumenten ausgegeben. Dieser Fehler wurde behoben.
+
+[discrete]
+=== Versand
+
+* In einigen Fällen kam es vor, dass trotz der Einstellung *Versanddaten des Artikelpakets übermitteln* die Versanddaten des Basisartikel übermittelt wurden. Dieses Fehlverhalten wurde behoben.
 
 --
 
@@ -168,44 +185,20 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/ebayfiege_6018[eBay Fulfillment^]
-|1.1.27
+|link:https://marketplace.plentymarkets.com/clc_7017[CLC^]
+|1.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/itemvideoplugin_6915[Produkt Video Plugin^]
-|1.4.3
+|link:https://marketplace.plentymarkets.com/cookiebar_4809[Cookiebar^]
+|2.1.0
+|Konfiguriere die neuen Plugin-Einstellungen nach deinen Vorstellungen und speichere sie.
+
+|link:https://marketplace.plentymarkets.com/cytautomaticcrossselling_7016[Wird oft gekauft mit...^]
+|1.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/itemavailabilityinfo_6962[Artikelverfügbarkeit Info^]
-|1.6.1
-|-
-
-|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce^]
-|2.5.1
-|-
-
-|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
-|2.1.5
-|-
-
-|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
-|1.1.7
-|-
-
-|link:https://marketplace.plentymarkets.com/cfourproductwall5_6893[Produktwand Widget 5^]
-|2.0.3
-|-
-
-|link:https://marketplace.plentymarkets.com/myfactory_6987[MyFactory^]
-|1.0.16
-|-
-
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.24.4
-|-
-
-|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
-|2.0.1
+|link:https://marketplace.plentymarkets.com/tcontrolledcontent_7018[Zeitgesteuerter Content^]
+|1.0.2
 |-
 
 |===
