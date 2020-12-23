@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 10. Dezember 2020
-:endWeekDate: 16. Dezember 2020
-:nav-alias: Changelog 16. Dezember 2020
+:startWeekDate: 17. Dezember 2020
+:endWeekDate: 23. Dezember 2020
+:nav-alias: Changelog 23. Dezember 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -29,9 +29,10 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== Aufträge
 
-* Ab sofort können auch die Formateinstellungen für Marktplatzkataloge genutzt werden.
+* Im Menü *Waren » Bestellwesen » Bestellung* wurden zwei neue Spalten zur Übersichtstabelle hinzugefügt. Die neuen Spalten sind *Gesamtwert* (nur für Nachbestellungen verfügbar) und *Zahlungsziel*. Diese Spalten sind optional. Sie werden nicht standardmäßig in der Tabelle angezeigt. Klicke auf *Spalten konfigurieren*, um sie zur Tabelle hinzuzufügen.
+* Alle Tabellen im Abo-Modul wurden in Angular-Material-Komponenten umgewandelt. Benutzerdefinierte Spaltenüberschriften wurden ebenfalls hinzugefügt. Mit den neuen Tabellen ist es nun möglich, Spalten nach Wunsch zu konfigurieren.
 
 '''
 
@@ -43,34 +44,13 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 [discrete]
 === Amazon
 
-* Beim Ausführen der Ereignisaktion *Rechnung bei Amazon hochladen* ändert sich Folgendes:
-. Bisher fügte die Ereignisaktion nur neue Einträge zur Warteschlange des Rechnungsuploads hinzu oder aktualisierte Einträge im Status Ausstehend. Ab jetzt werden damit auch fehlgeschlagene Einträge und Einträge, die laut Status seit über einer Stunde in Bearbeitung sind, wieder eingereiht. Letztere sind aufgrund eines Fehlverhaltens immer noch in diesem Status.
-. Einträge in der Warteschlange des Rechnungsuploads werden nur noch überschrieben, wenn es tatsächlich eine Änderung gab, da sich sonst der Rechnungsupload unnötigerweise um 3 Stunden verzögert.
-* Beim Import des VCS-Berichts für VCS Lite bzw. VCS plentymarkets ändern sich folgende Dinge:
-. Bisher wurden erst am Ende der Verarbeitung des Berichts alle Aufträge gesammelt zur Warteschleife des Rechnungsupload hinzugefügt. Ab sofort werden die Transaktionen einzeln während der Verarbeitung des Berichts zur Warteschleife hinzugefügt.
-. Wenn ein Auftrag auf Basis des Berichts korrigiert werden musste, wird immer ein Eintrag zur Warteschleife des Rechnungsuploads hinzugefügt.
-. Wenn ein Auftrag nicht auf Basis des Berichtes korrigiert werden musste, wird der Auftrag trotzdem neu zur Warteschleife hinzugefügt, wenn sich der Auftrag mehr als 3 Stunden im Status *Abgeschlossen* befindet, da dann davon auszugehen ist, dass es beim letzten Upload zu einem Fehler bei der Verarbeitung auf Amazon kam.
-. Einträge in der Warteschlange des Rechnungsuploads werden nur noch überschrieben, wenn es tatsächlich eine Änderung gab, da sich sonst der Rechnungsupload unnötigerweise um 3 Stunden verzögert.
-* Beim Cron-Prozess des Rechnungsuploads, der alle 15 Minuten ausgeführt wird, ändert sich Folgendes:
-. Anhand der Existenz der Auftragseigenschaft mit der Typ-ID 44 wird entschieden, ob ein Auftrag mit VCS berechnet wurde oder nicht. Der Wert der Eigenschaft spielt dabei keine Rolle. Existiert die Eigenschaft, dann wird ein Auftrag so behandelt, als wäre der Auftrag mit VCS berechnet worden und entsprechende Metainformationen beim Upload mitgeliefert. Dieses Verhalten wird nur ausgehebelt, wenn bei keinem der zugehörigen Konten des entsprechenden Verkäuferkontos die Einstellungen Rechnung erzeugen unter *Einrichtung » Märkte » Amazon » Einstellungen »* _Konto öffnen_ *» Tab: Einstellungen » Bereich: Basiseinstellungen* die Auswahl *VCS plentymarkets* getroffen wurde. Dann wird die Rechnung so hochgeladen, als läge keine VCS-Berechnung zugrunde.
-. Wenn ein Auftrag mit VCS berechnet wurde und es sich um einen FBA-Auftrag handelt, wird ab jetzt immer die ID der Lieferung beim Rechnungsupload in den Metainformationen mitgegeben. Vorher wurde diese ID nur mitgegeben, wenn es zum Zeitpunkt des Uploads mehrere Aufträge zu einer Amazon-Auftrags-ID gab.
-. Zwischen dem Upload von zwei Rechnungen muss seitens Amazon eine Pause von 3 Sekunden gemacht werden. Bisher wurde eine Pause von 5,5 Sekunden gemacht, da es vor allem in der Anfangsphase Probleme mit niedrigeren Intervallen gab. Das Intervall wurde nun testweise wieder auf 4 Sekunden reduziert.
-. Wie bisher auch, lädt der Prozess maximal 150 Rechnungen aus dem Status *Ausstehend* pro Lauf zu Amazon hoch. Zusätzlich versucht der Prozess automatisch, jeweils 25 Rechnungen erneut hochzuladen, die entweder im Status *Fehlgeschlagen* sind oder seit über einer Stunde im Status *In Bearbeitung* sind. Dabei werden aber nur Einträge berücksichtigt, die maximal drei Tage alt sind. Ältere Einträge können weiterhin unter *Einrichtung » Märkte » Amazon » Datenaustausch » Berichte » Tab: Rechnungen hochladen* manuell neu hinzugefügt werden.
-* Alle Log-Einträge zum Thema Rechnungsupload sind ab jetzt unter dem Identifikator *AmazonInvoiceUpload* zu finden. Jeder Versuch, einen Eintrag in der Warteschlange zu aktualisieren und jeder Versuch, eine Rechnung hochzuladen, wird dabei mit mindestens einem Log-Eintrag festgehalten. Abgesehen von besonders schweren Ausnahmefehlern, steht immer der Referenztyp *orderId* zum Filtern zur Verfügung und wo dies möglich war, ebenfalls der Referenztyp *amazonOrderId*.
-* Bisher wurde auch immer ein Log geschrieben, wenn ein Eintrag zur Warteschlange des Rechnungsuploads nicht geschrieben wurde, weil der aktuelle Eintrag dem neuen Eintrag entspricht. Dieses Verhalten produzierte jedoch deutlich mehr Log-Einträge als erwartet. Deshalb wurde dieses Log auf das Debug-Level umgestellt und wird nur noch geschrieben, wenn dieser aktiviert wurde.
+* Die Wartezeit zwischen dem Hochladen der einzelnen Rechnungen wurde von 4 auf 3,5 Sekunden reduziert. Deswegen wurde nun auch die Anzahl der Rechnungen pro Prozesslauf von 150 auf 200 erhöht.
+* Bisher wurde eine feste Anzahl von Einträgen aus der Warteschlange pro Prozesslauf abgearbeitet. Ab jetzt werden für Einträge, bei denen es wegen fehlender oder fehlerhaften Daten gar nicht erst zum Hochladen kommt, neue Einträge zum Hochladen nachgeladen.
 
 [discrete]
-=== Import
+=== OTTO Market
 
-* Der Abgleich der Variante wird nun in einem eigenen Bereich names *Daten ergänzen* angezeigt. Da bei diesem Abgleichfeld die im System hinterlegten Informationen der Varianten geladen und dem Auftrag hinzugefügt werden. Weitere Informationen findest du auf der Handbuchseite <<daten/daten-importieren/sync-typen/elasticSync-auftraege#, Import-Typen » Aufträge>>.
-
-[discrete]
-=== OTTO
-
-:otto-master-date: 11.12.2020
-:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/6vjGLuGK2jHhWhi5UQWSUYX1e6j.xlsx
-
-include::changelog/_textblocks/otto-master-file.adoc[]
+* Solange die Option *Kaufbelege als externe Rechnungen importieren* nicht aktiviert ist, werden Aufträge die importiert werden, nicht mehr für die Erzeugung eigener Rechnungen gesperrt. Aufträge, die bereits für die Rechnungserzeugung gesperrt sind oder die importiert wurden, während die Option aktiv war, bleiben gesperrt, auch wenn die Option wieder deaktiviert wird.
 
 '''
 
@@ -80,56 +60,43 @@ include::changelog/_textblocks/otto-master-file.adoc[]
 Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
-=== Amazon
-
-* Durch einen falschen Wert schlug die Aktualisierung der Einträge in der Warteschlange für den Rechnungsupload fehl. Dadurch wurden Aufträge nicht in die Warteschlange für den Rechnungsupload eingereiht.
-+
-[IMPORTANT]
-.To-Do
-======
-Händler:innen, die VCS Lite bzw. VCS plentymarkets nutzen, müssen nichts unternehmen, da ihre Rechnungen automatisch durch den Import des VCS-Berichts erneut hochgeladen wurden.
-
-Händler:innen, die kein VCS nutzen, müssen Folgendes durchführen:
-
-. Unter Daten » Log mit den folgenden Suchparametern nach Einträgen suchen:
-* *Identifikator* = `AmazonInvoiceUpload`
-* *Level* = `critical`
-. Für jeden gefundenen Eintrag mit der Nachricht `Eintrag in Warteschlange für Rechnungsupload nicht aktualisiert. Kontaktiere den Support im Forum.` die Auftrags-ID aus den Referenzen herauskopieren.
-. Unter *Einrichtung » Märkte » Amazon » Datenaustausch » Berichte » Tab: Rechnungen hochladen* die gesammelten Auftrags-IDs kommagetrennt eintragen und ausführen. Dadurch werden die Aufträge der Warteschlange hinzugefügt.
-======
-+
-* Die Logs zum tatsächlichen Rechnungsupload wurden wegen eines Fehlers in der Log-Nachricht nicht geschrieben.
-* Ein paar Logs hatten noch nicht den neuen Identifikator AmazonInvoiceUpload.
-* Bereits übertragene Rechnungen wurden bereits vor der erwarteten Pufferzeit von 3 Stunden nach dem letzten Upload wieder in die Warteschlange eingereiht, wenn diese noch im VCS-Bericht beinhaltet sind.
-
-[discrete]
 === Aufträge
 
-* Es war bisher möglich, Leerzeichen am Anfang und Ende von Paketnummern an Versandpaketen zu setzen. Diese werden nun beim Speichern entfernt.
-* Führende und nachfolgende Leerzeichen in der externen Auftrags-ID wurden mit gespeichert, sodass die Suche nach Aufträgen über die externe Auftrags-ID zu keinem Treffer führte. Nun werden alle Leerzeichen vor dem Speichern entfernt.
-* Bei der Aktualisierung von Versandkosten direkt über die Auftragssuche konnte es bei Aufträgen in Fremdwährung zu einem Fehler kommen, wodurch die Versandkosten nicht gespeichert wurden.
-Dies wurde behoben.
-* Wenn an einer Artikelposition im Auftrag ein Lager zugeordnet ist das gelöscht wurde, konnte das Lager nicht mehr aktualisiert werden. Dies wurde behoben.
+* Wir haben Optimierungen an der automatischen Zuordnung von Zahlungen vorgenommen und konnten so die Suche nach offenen Aufträgen unter gewissen Voraussetzungen enorm beschleunigen. Beachte hier bitte, dass der Effekt, je nach der Menge deiner Daten, mehr oder weniger zu spüren ist. Es ergibt sich aber auf keinen Fall ein Nachteil daraus.
 
 [discrete]
 === CRM
 
-* Eigenschaften vom Typ Kontakt wurden auf dem Adressetikett nicht korrekt ausgegeben. Dieser Fehler wurde behoben.
-
-[discrete]
-=== Elastischer Export
-
-* Beim Exportieren wurden nur die Lagerorte der ersten Zeile geliefert. Der Fehler wurde behoben.
+* Die Liste der Feldnamen werden nicht mehr mehrfach angezeigt, wenn das Layout-Design ausgewählt wird. Die Namen in der Feldliste werden nach einem Neuladen nicht angezeigt.
+* Die Umlaute Ä,Ö,Ü & ß wurden nach dem Versenden einer Nachricht mit Messenger in der Übersicht als Entities dargestellt und auch als solche auf Nachbestellungs-Dokumenten ausgegeben. Dieser Fehler wurde behoben.
 
 [discrete]
 === Import
 
-* Beim Import bereits bestätigter Newsletter-Empfänger kam es zu einem Fehler, welcher den Import nicht beenden ließ. Dieser Fehler wurde behoben.
+* Bei einem Import neuer Aufträge ohne Angabe eines Status konnte es dazu kommen, dass der Auftrag in Status `1` verblieben ist und nicht in den definierten Standardstatus des jeweiligen Auftragstyp verschoben wurde. Ebenso wurden erwartete Ereignisse nicht ausgelöst.
+Dies wurde behoben.
 
 [discrete]
-=== Netto
+=== OTTO Market
 
-* Es wird nicht länger ein negativer Bestand für Varianten an Netto übermittelt. Ist der Bestand kleiner 0, wird stattdessen `0` übertragen.
+* Aufgrund eines Fehlers im Retouren-Import, wurde versucht der link für die nächste Seite abzurufen, auch wenn diese ggf. nicht verfügbar war. Dies wurde behoben und dadurch sollte die Fehlermeldung des ReurnImportCrons nichtmehr jede Stunde auftauchen.
+
+[discrete]
+=== Versand
+
+* In einigen Fällen kam es vor, dass trotz der Einstellung *Versanddaten des Artikelpakets übermitteln* die Versanddaten des Basisartikel übermittelt wurden. Dieses Fehlverhalten wurde behoben.
+
+'''
+
+[discrete]
+== Gelöscht
+
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* gelöscht.
+
+[discrete]
+=== Prozesse
+
+* Die Subaktion *Versanddienstleister ändern* wurde aus den Prozessen entfernt, da der Versanddienstleister nun automatisch mit dem Versandprofil geändert wird. Zudem führte das Ändern des Versanddienstleisters direkt am Auftrag zu Fehlern. In bereits eingerichteten Prozessen ist die Subaktion weiterhin vorhanden, jedoch deaktiviert und somit ohne Funktion.
 
 --
 
@@ -145,8 +112,25 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 [discrete]
 === Aufträge
 
-* Im Menü *Waren » Bestellwesen » Bestellung* wurden zwei neue Spalten zur Übersichtstabelle hinzugefügt. Die neuen Spalten sind *Gesamtwert* (nur für Nachbestellungen verfügbar) und *Zahlungsziel*. Diese Spalten sind optional. Sie werden nicht standardmäßig in der Tabelle angezeigt. Klicke auf *Spalten konfigurieren*, um sie zur Tabelle hinzuzufügen.
-* Alle Tabellen im Abo-Modul wurden in Angular-Material-Komponenten umgewandelt. Benutzerdefinierte Spaltenüberschriften wurden ebenfalls hinzugefügt. Mit den neuen Tabellen ist es nun möglich, Spalten nach Wunsch zu konfigurieren.
+* Für die neuen Zahlungsbedingungen wurde der Platzhalter `[DateOfPayment]` in den Dokumenteinstellungen hinzugefügt um das Zahlungsziel als Datum auf dem Dokument aufzudrucken zu können.
+* Im Menü *Waren » Bestellwesen » Bestellung* wurde eine neue Spalte zur Auftragspositionen-Tabelle, Auftragspositionen-Suchtabelle und Warenkorbtabelle hinzugefügt. Die neuen Spalte ist *Lieferanten-Artikel-Bez.* (nur für Nachbestellungen verfügbar). Diese Spalte ist optional. Sie wird nicht standardmäßig in der Tabelle angezeigt. Klicke auf *Spalten konfigurieren*, um sie zur Tabelle hinzuzufügen.
+
+[discrete]
+=== Kataloge
+
+* Wir haben eine Suche in die Datenfeldauswahlliste hinzugefügt. Gegenüber der Suche im alten Katalog, ist es nun möglich alle Werte zu durchsuchen.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Bei der Übernahme von einem Gutschein mit Festbetrag in Retouren oder Gutschriften wird der Gutschein nicht mehr Anteilig auf die Artikelpositionen aufgeteilt, sondern immer vollständig übernommen.
 
 '''
 
@@ -156,20 +140,38 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
+=== Amazon
+
+* Die Ereignisaktion *Rechnung bei Amazon hochladen* fügt nun keine Aufträge mehr zur Warteschlange hinzu, die keine Rechnung besitzen.
+* Sollte bei einem Auftrag in der Warteschlange die Rechnung fehlen, wird dieser Auftrag ab jetzt entsprechend markiert und innerhalb der Warteschlange zurückgestellt, bis eine Rechnung hinzugefügt wurde und eine Ereignisaktion oder ein Prozess sie wieder als fertig für das Hochladen markiert hat.
+
+[discrete]
+=== Amazon VCS
+
+* Beim stündlichen Import der VCS-Berichte von Amazon bei VCS Lite/VCS plentymarkets kann es aufgrund von vielen großen Berichten dazu kommen, dass der Prozess zu lange läuft und abbricht. Wenn dies passiert, wurde bisher keiner der bereits verarbeiten Berichte als gelesen markiert, weil dies erst am Ende des Prozesses passierte. Dadurch konnten diese großen Berichte dauerhaft den Prozess anhalten.
++
+Diesem Verhalten wird nun entgegengewirkt, indem vor der Verarbeitung eines Berichts die Größe geprüft wird. Wenn die Größe einen bestimmten Wert übersteigt, werden die bisher verarbeiteten Berichte als gelesen markiert, so dass sie zumindest nicht nochmal verarbeitet werden.
+
+[discrete]
 === Aufträge
 
-* Wir haben Optimierungen an der automatischen Zuordnung von Zahlungen vorgenommen und konnten so die Suche nach offenen Aufträgen unter gewissen Voraussetzungen enorm beschleunigen. Beachte hier bitte, dass der Effekt, je nach der Menge deiner Daten, mehr oder weniger zu spüren ist. Es ergibt sich aber auf keinen Fall ein Nachteil daraus.
+* Wenn bei der Einstellung *Zuordnung des Lagers* unter *Einrichtung » Aufträge » Einstellungen* die Einstellung auf *a) pro Auftrag kann ein Lager zugeordnet werden* gesetzt ist, wurde die Lageränderung über den Auftrag (Reiter *Einstellungen*) zwei mal ausgeführt, was zur Folge hatte, dass auch die Warenbestands-Berechnung sowie Ereignisaktionen doppelt ausgeführt wurden. Dies wurde behoben.
 
 [discrete]
-=== CRM
+=== Prozesse
 
-* Die Liste der Feldnamen werden nicht mehr mehrfach angezeigt, wenn das Layout-Design ausgewählt wird. Die Namen in der Feldliste werden nach einem Neuladen nicht angezeigt.
-* Die Umlaute Ä,Ö,Ü & ß wurden nach dem Versenden einer Nachricht mit Messenger in der Übersicht als Entities dargestellt und auch als solche auf Nachbestellungs-Dokumenten ausgegeben. Dieser Fehler wurde behoben.
+* Im Arbeitsschritt *Wareneingang* lassen sich nun keine Lagerorte mehr erfassen, die nicht im ausgewählten Lager angelegt sind.
+
+'''
 
 [discrete]
-=== Versand
+== Gelöscht
 
-* In einigen Fällen kam es vor, dass trotz der Einstellung *Versanddaten des Artikelpakets übermitteln* die Versanddaten des Basisartikel übermittelt wurden. Dieses Fehlverhalten wurde behoben.
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *early* gelöscht.
+
+* Du kannst nun nicht mehr den Versanddienstleister eines Auftrages direkt ändern. Der Versanddienstleister wird immer über das hinterlegte Versandprofil ermittelt und wird automatisch gesetzt.
++
+Das Setzen eines Versanddienstleister der nicht mit dem Dienstleister des Versandprofiles übereinstimmt konnte zu Problemen führen. Entfernt wurde die Funktionalität aus der Auftragsdetail-Ansicht, sowie aus der Gruppenfunktion der Auftragssuche.
 
 --
 
@@ -185,21 +187,9 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/clc_7017[CLC^]
-|1.0.0
-|-
-
-|link:https://marketplace.plentymarkets.com/cookiebar_4809[Cookiebar^]
-|2.1.0
-|Konfiguriere die neuen Plugin-Einstellungen nach deinen Vorstellungen und speichere sie.
-
-|link:https://marketplace.plentymarkets.com/cytautomaticcrossselling_7016[Wird oft gekauft mit...^]
-|1.0.0
-|-
-
-|link:https://marketplace.plentymarkets.com/tcontrolledcontent_7018[Zeitgesteuerter Content^]
-|1.0.2
-|-
+|N/A
+|N/A
+|N/A
 
 |===
 
