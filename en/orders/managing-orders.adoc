@@ -652,12 +652,12 @@ It is technically possible to delete order items that are already included in a 
 == Working with return orders
 
 The order type return depicts the business transaction of receiving returned goods. You and your staff can create return orders manually. In addition, you can allow customers in your online store to register returns in the *My account* area. Registering the return does not book the returned items back into your stock. First, you register the returned items and then you decide whether they should be booked back into the stock or if further steps, for example a repair, are necessary. Return orders are subordinated orders because they are always linked to a main order or a warranty.
-Before returns can be registered in your system, you have to set up reasons for returns and item statuses for returned items.
+Before returns can be registered in your system, you have to set up <<orders/managing-orders#410, reasons for returns>> and <<orders/managing-orders#420, item statuses>> for returned items.
 
 The default status for returns is status 9. Every registered return is automatically assigned this status. However, you can change the default status according to your requirements in the menu *Setup » Orders » Settings* by selecting another <<orders/basic-settings#, default status>> for returns.
 
 [#410]
-=== Old online store: Creating reasons for returns
+=== Creating reasons for returns
 
 In plentymarkets, you can create up to 20 reasons for returns. When registering returns, you can choose a reason for each returned item. Reasons for returns can help you later to determine whether an item was frequently returned for the same reason.
 
@@ -667,8 +667,6 @@ Creating reasons for returns:
 . Go to the menu *Setup » Orders » Order types » Return*.
 . Enter reasons for returns.
 . *Save* (icon:save[role=”green”] the settings.
-
-If you allow customers to <<online-store/setting-up-ceres/#160, register returns themselves>> in the My account area of the Callisto online store, the return reasons will be displayed as a list for the customers to choose from. If the customer does not select any of the return reasons, the first reason for return will be selected by default.
 
 [#420]
 === Creating statuses for returned items
@@ -1482,13 +1480,13 @@ The following 28 status entries are available by default in your plentymarkets s
 |Is assigned automatically to every unpaid regular order.
 
 | *[3.2]* In waiting position
-|Is automatically assigned in 3 cases: +
-- If a partial payment for an order is booked, but the items are in stock. +
-- If partial payment for an order is booked and the items are in stock. +
-- If an overpay for an order is booked and the items are in stock.
+|Is automatically assigned in the following cases: +
+- If a partial payment for an order is booked and items are not in stock. +
+- If a down payment for an order is booked and items are not in stock. +
+- If an order is overpaid, not matter whether items are in stock or not.
 
 | *[3.3]* Ready for shipping; waiting for payment
-|Is automatically assigned to a regular order if a partial payment or overpayment for an order is booked and the items are in stock.
+|Is automatically assigned to a regular order if a partial payment or a down payment for an order is booked and the items are in stock.
 
 | *[3.3]* Dunning letter sent
 |We recommend this status to indicate that a dunning letter was sent. Set up an automatic process for this by using an event procedure. However, the status is not set by an automatic process within the system.
@@ -2018,22 +2016,28 @@ An order’s basic parameters are saved in the *Settings* tab, e.g. the *Status*
 |Setting |Explanation
 
 | *Status+*
-*Order type* +
+|The status of the order. If required, the status can be adapted by using the dropdown list. +
+Note that the order status *[7] Outgoing items booked* cannot be changed to a lower status. This is because the items have already been shipped. However, if you still want to do this, then you first need to reset the outgoing items that were booked. It is possible to switch to a lower order status afterwards.
+
+|*Order type* +
 *Owner* +
 *Referrer* +
-*Client (store)*
-|These options are displayed depending on the existing conditions or circumstances. However, they can be changed.
+|The order type, the assigned owner as well as the referrer of the order are displayed. All three fields are editable.
+
+|*Location*
+|The location of the order is displayed.
+
+|*Language*
+|The language of the order is displayed. Order documents as well as emails are generated in the order language. The language is editable. +
+Note that for the generation of order documents and emails in different languages, the corresponding templates have to be created first.
 
 | *Warehouse*
 |The warehouse or main warehouse of the order item. If required, click on *Stock correction* to change the warehouse. +
-*_Important_*: The option *Stock correction* synchronises the data displayed in the *Settings* tab of the order with the warehouse saved for the order items included in the order. The option is only available when you selected *b) a warehouse can be assigned for each stock unit* in the menu <<orders/basic settings#, Setup » Orders » Settings>>. If you manually change the warehouse assigned to an order item and the changed warehouse is not automatically visible in the *Settings* tab of the order, click on *Stock correction* to update the display of the warehouse.
-
-| *Status*
-|The order status *[7] Outgoing items booked* cannot be changed to a lower status. This is because the items have already been shipped. However, if you still want to do this, then you first need to reset the outgoing items that were booked. It is possible to switch to a lower order status afterwards.
+_Important_: The option *Stock correction* synchronises the data displayed in the *Settings* tab of the order with the warehouse saved for the order items included in the order. The option is only available when you selected *b) a warehouse can be assigned for each stock unit* in the menu <<orders/basic settings#, Setup » Orders » Settings>>. If you manually change the warehouse assigned to an order item and the changed warehouse is not automatically visible in the *Settings* tab of the order, click on *Stock correction* to update the display of the warehouse.
 
 | *Outgoing items*
 |Indicates whether outgoing items were booked and displays the corresponding date. +
-* Click on *Outgoing items* to manually book the outgoing items, if required.
+Click on *Book outgoing items* (icon:order_sent[set=plenty]) to manually book the outgoing items, if required.
 
 | *Shipped on*
 |This is the *shipping date* that was saved in the item data record. As such, this option is relevant for <<orders/managing-orders#1100, advance orders>>. If the order includes several items that were all ordered in advance, then the date that is farthest in the future will be displayed here. The date can be changed manually.
@@ -2042,38 +2046,33 @@ An order’s basic parameters are saved in the *Settings* tab, e.g. the *Status*
 |Save the date of a return if an item was returned. Serves as information about a return, so that the return does not have to be opened separately.
 
 | *Currency*
-|The currency of the order.
+|The currency of the order. By clicking on *Edit* (icon:pencil[role="yellow-background"]) you can change the currency and enter an exchange rate if needed.
 
-| *Payment method* +
-*Shipping service provider* +
-*Shipping profile & shipping charges*
-|These options will be displayed depending on the existing conditions or circumstances. However, they can be changed. +
-* In order to carry out changes, select a *payment method* from the drop-down list and click on the *pencil icon* to edit the shipping options.
-
-| [#intable-payment-terms-order]*Payment terms*
-|Enter values for *Payment due date (days)*, *Value date (days)*, *Early payment discount (days)* and *Early payment discount (%)* to create your terms of payment. _Important_: If you want to use value date and early payment discount, you must enter a payment due. If there is nothing or the value 0 entered for payment due, the payment terms will not be transferred to documents. +
+| [#intable-payment-terms-order]*Terms of payment*
+|Enter values for *Payment due (days)*, *Value date (days)*, *Early payment discount (days)* and *Early payment discount (%)* to create your terms of payment. _Important_: If you want to use value date and early payment discount, you must enter a payment due. If there is nothing or the value 0 entered for payment due, the payment terms will not be transferred to documents. +
 If the values were already saved in the <<crm/managing-contacts#300, customer data>>, they will be taken from there and automatically be displayed here. The customer data have priority. If nothing is saved in the customer data, the customer classes are checked. If values are defined in a <<crm/managing-contacts#15, customer class>>, these are then transferred to the payment terms of the order. If no values are defined in either the customer data or the customer class, the payment terms fields of the order are left empty. +
 On the order, the payment terms can manually be entered or updated. This can be done regardless of where they are taken from or of whether there are values preselected at all. +
 The values entered on the corresponding order are transferred to the order documents. Note also the <<orders/order-documents#intable-display-payment-terms, document settings>> for this. _Important_: The payment terms will only be displayed on documents if the corresponding order was paid with the _payment method invoice_.
 
 | *Shipping service provider*
-|The shipping service provider that will ship the items for this order.
+|The shipping service provider that will ship the items for this order is displayed. The shipping service provider is determined via the shipping profile and entered automatically. Changes can be done by adapting the shipping profile.
 
 | *Shipping profile & shipping charges*
-|The shipping profile and shipping costs for the order.
+|The shipping profile and shipping costs for the order are displayed. To edit the shipping profile, click on *Edit and recalculate* (icon:cog[]). If required, the shipping charges can also be edited manually.
 
 | *Ext. order number*
 |Enter the external order number for orders that are imported from an external system.
 
 | *Customer reference*
 |If the *Your reference* field is visible to customers during the order process, then any text that a customer entered into this field will appear here.
+
 | *Packages*
 |Number of packages belonging to this order. +
-__**Important**__: This entry is not linked to the number of packages set in the Shipping center. If you want to edit the number of packages, do so in the Shipping centre.
+_Important_: This entry is not linked to the number of packages set in the Shipping centre. If you want to edit the number of packages, do so in the Shipping centre.
 
 | *Package number*
-|Package number of the shipping package. +
-If a package number was saved, then the *preview icon* can be used for tracking the package. However, this can only be done if a corresponding tracking code was saved under <<order-process/fulfillment/preparing-the-shipment#, Setup » Orders » Shipping » Shipping options » Tab: Shipping service provider>>. Otherwise the preview icon will not be visible.
+|Package number of the shipping package. By clicking on *Add* (icon:plus-square[role="green"]), you can enter a package number. +
+If a package number was saved, then the *preview* (icon:eye[role="blue"]) can be used for tracking the package. However, this can only be done if a corresponding tracking URL was saved in the <<order-process/fulfillment/preparing-the-shipment#, Setup » Orders » Shipping » Shipping options » Tab: Shipping service provider>> menu. Otherwise, the preview icon will not be visible.
 |====
 
 [#1550]
