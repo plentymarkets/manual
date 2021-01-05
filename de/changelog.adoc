@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 03. Dezember 2020
-:endWeekDate: 09. Dezember 2020
-:nav-alias: Changelog 09. Dezember 2020
+:startWeekDate: 24. Dezember 2020
+:endWeekDate: 30. Dezember 2020
+:nav-alias: Changelog 30. Dezember 2020
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -29,29 +29,22 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== Aufträge
 
-* Ab sofort kannst du Platzhalter für Dateinamen verwenden.
-
-image:changelog/assets/kataloge-dateiname-platzhalter.png[width=640]
+* Für die neuen Zahlungsbedingungen wurde der Platzhalter `[DateOfPayment]` in den Dokumenteinstellungen hinzugefügt um das Zahlungsziel als Datum auf dem Dokument aufzudrucken zu können.
+* Im Menü *Waren » Bestellwesen » Bestellung* wurde eine neue Spalte zur Auftragspositionen-Tabelle, Auftragspositionen-Suchtabelle und Warenkorbtabelle hinzugefügt. Die neuen Spalte ist *Lieferanten-Artikel-Bez.* (nur für Nachbestellungen verfügbar). Diese Spalte ist optional. Sie wird nicht standardmäßig in der Tabelle angezeigt. Klicke auf *Spalten konfigurieren*, um sie zur Tabelle hinzuzufügen.
 
 [discrete]
-=== myView
+=== Kataloge
 
-* Nachdem Administratoren bereits die Möglichkeit haben, Rollen verschiedene Ansichten zuzuweisen, können sie dies nun auch für Benutzer tun.
+* Wir haben eine Suche in die Datenfeldauswahlliste hinzugefügt. Gegenüber der Suche im alten Katalog, ist es nun möglich alle Werte zu durchsuchen.
 
-Nur Admins haben Zugriff auf den Bearbeitungsmodus der MyView und sind somit autorisiert, Ansichten zu erstellen oder zu löschen sowie neue Benutzer anzulegen und Rechte zuzuweisen.
+[discrete]
+=== Mein Konto
 
-Am Anfang ist immer die Standardansicht vorausgewählt. Existiert eine weitere Ansicht, kann die Standardansicht für einen Benutzer deaktiviert und Rechte für eine andere Ansicht können zugewiesen werden.
-
-Beachte, dass immer mindestens eine Ansicht ausgewählt sein muss.
-
-Die Rechteverwaltung findest du im Menü unter *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer » Benutzer wählen » Tab: Ansichten*. Dort werden alle benutzerdefinierten Ansichten angezeigt.
-
-*_Tipp:_* Die Rechteverwaltung erreichst du auch direkt aus einer MyView:
-Klicke dazu unterhalb der Einstellungen auf Rechteverwaltung » Benutzerrechte.
-
-Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
+* Ab sofort ist es im Mein Konto-Bereich möglich, die Messenger-Nachrichten für einen gewissen Zeitraum, zum Beispiel nach dem letzten Abrechnungszeitraum, zu filtern. Außerdem wird die Summe der kostenpflichtigen und kostenlosen Supportminuten ausgegeben.
++
+image:changelog/assets/mein-konto-messenger-filter.png[width=640]
 
 '''
 
@@ -61,15 +54,11 @@ Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== DHL Fulfillment
+=== Aufträge
 
-* Nachbestellungen an DHL Fulfillment konnten als Inbound Auftrag auch dann übertragen werden, wenn nicht alle Varianten für DHL Fulfillment konfiguriert waren. Somit wurde an DHL Fulfillment ein unvollständiger Auftrag übermittelt. Dieses Verhalten haben wir geändert. Es werden nun nur noch Aufträge übermittelt, bei denen alle Varianten korrekt für DHL Fulfillment konfiguriert sind (und somit in der ItemMaster Datei enthalten sind). Ansonsten erscheint eine Fehlermeldung im Log, mit der Angabe der Varianten IDs, die nicht korrekt konfiguriert sind. Zusätzlich zeigen wir diese Fehlermeldung auch als Nachricht in der Nachbestellung im Bereich Messenger an.
+* Bei der Übernahme von einem Gutschein mit Festbetrag in Retouren oder Gutschriften wird der Gutschein nicht mehr Anteilig auf die Artikelpositionen aufgeteilt, sondern immer vollständig übernommen.
 
-[discrete]
-=== OTTO
-
-* Die Editorial Nodes und die daraus resultierenden Merkmal- und Attributverknüpfungen wurden auf Basis der von OTTO am 04.12.2020 bereitgestellten Datei Merkmalstrukturen_Master aktualisiert. Die aktuelle Merkmalstrukturen_Master-Datei kann link:https://forum.plentymarkets.com/t/aktuelle-merkmalsstrukturen-master-datei/532293[hier^] heruntergeladen werden. Diese Änderung betrifft nicht OTTO Market.
-
+'''
 
 [discrete]
 == Behoben
@@ -77,47 +66,43 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Amazon
+
+* Die Ereignisaktion *Rechnung bei Amazon hochladen* fügt nun keine Aufträge mehr zur Warteschlange hinzu, die keine Rechnung besitzen.
+* Sollte bei einem Auftrag in der Warteschlange die Rechnung fehlen, wird dieser Auftrag ab jetzt entsprechend markiert und innerhalb der Warteschlange zurückgestellt, bis eine Rechnung hinzugefügt wurde und eine Ereignisaktion oder ein Prozess sie wieder als fertig für das Hochladen markiert hat.
+
+[discrete]
+=== Amazon VCS
+
+* Beim stündlichen Import der VCS-Berichte von Amazon bei VCS Lite/VCS plentymarkets kann es aufgrund von vielen großen Berichten dazu kommen, dass der Prozess zu lange läuft und abbricht. Wenn dies passiert, wurde bisher keiner der bereits verarbeiten Berichte als gelesen markiert, weil dies erst am Ende des Prozesses passierte. Dadurch konnten diese großen Berichte dauerhaft den Prozess anhalten.
++
+Diesem Verhalten wird nun entgegengewirkt, indem vor der Verarbeitung eines Berichts die Größe geprüft wird. Wenn die Größe einen bestimmten Wert übersteigt, werden die bisher verarbeiteten Berichte als gelesen markiert, so dass sie zumindest nicht nochmal verarbeitet werden.
+
+[discrete]
 === Aufträge
 
-* Bei entsperrten Abonnement war es nicht möglich die Adressen zu ändern.
-Dies ist nun behoben.
-
-* Die Währung in den neuen UIs für die Nachbestellung und Umbuchung wurde beim Speichern immer zurückgesetzt auf die Systemwährung. Dies wurde behoben.
-
-* Beim Erstellen von Kindsaufträgen (Gutschrift, Gewährleistung usw.) wurden die Set-Referenzen von Set-Komponenten nicht übernommen. Wird das ganze Set und nicht nur Teile davon im Kindsauftrag übernommen, so werden auch die Set-Referenzen an den Positionen erstellt.
-
-* Es konnte vorkommen, dass es beim Bearbeiten von Positionen von Aufträgen, die unzugeordnete Varianten enthalten zu einem Fehler kam. Dieses Verhalten wurde behoben.
-
-* Bei Aufträgen in Fremdwährung, die keine Versandkostenposition hinterlegt haben, kann die Versandart nicht geändert werden, da diese nicht in der korrekten Währung geladen werden konnte.
-Dies wurde nun behoben, sodass die Aufträge entsprechend bearbeitet werden können. Dies funktioniert auch rückwirkend für alle bereits angelegten Aufträge.
-
-* Beim Gruppieren der Auftragssummen unter einem Steuersatz konnte es dazu kommen, dass der gleiche Steuersatz einmal mit der korrekten Summe und zusätzlich mit einer Summe von 0 ermittelt wurde. Dies führte zu einer doppelten Anzeige im Checkout.
+* Wenn bei der Einstellung *Zuordnung des Lagers* unter *Einrichtung » Aufträge » Einstellungen* die Einstellung auf *a) pro Auftrag kann ein Lager zugeordnet werden* gesetzt ist, wurde die Lageränderung über den Auftrag (Reiter *Einstellungen*) zwei mal ausgeführt, was zur Folge hatte, dass auch die Warenbestands-Berechnung sowie Ereignisaktionen doppelt ausgeführt wurden. Dies wurde behoben.
+* Bei der automatischen Zahlungszuordnung konnte es zu einem Fehler kommen, wenn in den Einstellungen unter *Aufträge » Zahlung » Eingänge » Aufträge mit folgenden Zahlungsarten von der automatischen Zuordnung ausschließen* Zahlungsmethoden ausgeschlossen wurden. Dies wurde behoben.
+* Seit mit der neuen Auftrags-Logik unzugeordnete Auftragspositionen keine Lagerinformation mehr haben, wurden unzugeordnete Positionen nicht auf der Pickliste gelistet. Das wurde behoben, diese werden wie gewohnt auf der Pickliste ausgegeben.
 
 [discrete]
-=== CRM
+=== Prozesse
 
-* Im englischen Backend sind selbst definierte Kundentypen bei manueller Kundenanlage im Dropdown nicht wählbar gewesen. Dieser Fehler wurde behoben.
+* Im Arbeitsschritt *Wareneingang* lassen sich nun keine Lagerorte mehr erfassen, die nicht im ausgewählten Lager angelegt sind.
 
-[discrete]
-=== Kataloge
-
-* Aufgrund eines Fehlers konnten teilweise die Kataloge nicht kopiert werden. Diesen Fehler haben wir behoben.
+'''
 
 [discrete]
-=== OTTO
+== Gelöscht
 
-* Aufgrund eines Fehlers im Artikelexport wurden Varianten auf OTTO Market nicht reaktiviert. Durch den Fix haben sich die Voraussetzungen für den Artikelexport verändert. Ein positiver Nettowarenbestand ist nun erforderlich, damit eine Variante exportiert wird.
-
-[discrete]
-=== real.de
-
-* Im Zeitraum vom 11.11.2020 bis einschließlich dem 02.12.2020 wurde bei real.de-Aufträgen der Firmenname in der Lieferadresse nicht gespeichert. Dies betrifft ebenfalls Aufträge mit Packstationen, da die Postnummer im selben Feld von real.de 2 übertragen wird. Dieses Problem wurde nun behoben.
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* gelöscht.
 
 [discrete]
-=== Warenwirtschaft
+=== Aufträge
 
-* Der Filterbereich im Menü *Einrichtung » Waren » Lager » Lager wählen » Lagerorte* hat bis jetzt nicht ganz richtig funktioniert. Der Fehler wurde behoben.
-
+* Du kannst nun nicht mehr den Versanddienstleister eines Auftrages direkt ändern. Der Versanddienstleister wird immer über das hinterlegte Versandprofil ermittelt und wird automatisch gesetzt.
++
+Das Setzen eines Versanddienstleister der nicht mit dem Dienstleister des Versandprofiles übereinstimmt konnte zu Problemen führen. Entfernt wurde die Funktionalität aus der Auftragsdetail-Ansicht, sowie aus der Gruppenfunktion der Auftragssuche.
 
 --
 
@@ -126,14 +111,14 @@ early::
 --
 
 [discrete]
-== Neu
+== Geändert
 
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== Aufträge
 
-* Ab sofort können auch die Formateinstellungen für Marktplatzkataloge genutzt werden.
+* Aufträge die einen gebuchten Warenausgang haben können zukünftig nicht mehr gruppiert werden.
 
 '''
 
@@ -145,14 +130,18 @@ Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 [discrete]
 === Aufträge
 
-* Es war bisher möglich, Leerzeichen am Anfang und Ende von Paketnummern an Versandpaketen zu setzen. Diese werden nun beim Speichern entfernt.
-
-* Führende und nachfolgende Leerzeichen in der externen Auftrags-ID wurden mit gespeichert, sodass die Suche nach Aufträgen über die externe Auftrags-ID zu keinem Treffer führte. Nun werden alle Leerzeichen vor dem Speichern entfernt.
+* Die Artikelansicht bleibt jetzt geöffnet, wenn du zu einem anderen Bereich navigierst. Diese Anpassung gilt sowohl für Nachbestellungen als auch für Umbuchungen.
+* n der neuen Auftragsanlage werden bei der automatischen Vervollständigung der Zahlungsarten jetzt auch die alten Zahlungsarten angezeigt.
 
 [discrete]
-=== CRM
+=== Ereignisaktionen
 
-* Eigenschaften vom Typ Kontakt wurden auf dem Adressetikett nicht korrekt ausgegeben. Dieser Fehler wurde behoben.
+* Der Filter *Kundenklasse* hat bei Gastbestellungen ohne Kontakt nicht korrekt funktioniert. Nun wird in diesen Fällen die Standard-Kundenklasse des Mandanten genommen, in dem der Auftrag angelegt wurde.
+
+[discrete]
+=== plentyShop
+
+* Aufgrund eines Fehlers in der Eigenschaften-UI, wurden verknüpfte Eigenschaften im Ceres-Shop nicht auf Dänisch und Norwegisch angezeigt. Diesen Fehler haben wir behoben.
 
 --
 
@@ -168,45 +157,9 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/ebayfiege_6018[eBay Fulfillment^]
-|1.1.27
-|-
-
-|link:https://marketplace.plentymarkets.com/itemvideoplugin_6915[Produkt Video Plugin^]
-|1.4.3
-|-
-
-|link:https://marketplace.plentymarkets.com/itemavailabilityinfo_6962[Artikelverfügbarkeit Info^]
-|1.6.1
-|-
-
-|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce^]
-|2.5.1
-|-
-
-|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
-|2.1.5
-|-
-
-|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
-|1.1.7
-|-
-
-|link:https://marketplace.plentymarkets.com/cfourproductwall5_6893[Produktwand Widget 5^]
-|2.0.3
-|-
-
-|link:https://marketplace.plentymarkets.com/myfactory_6987[MyFactory^]
-|1.0.16
-|-
-
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.24.4
-|-
-
-|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
-|2.0.1
-|-
+|N/A
+|N/A
+|N/A
 
 |===
 
