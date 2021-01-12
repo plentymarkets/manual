@@ -1,0 +1,144 @@
+= Mollie
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Zahlungsarten, Zahlungen, mollie, Mollie
+:description: Integration des Plugins Mollie
+:position:
+:url: payment/payment-plugins/mollie
+:id: U2UV0PY
+:author: team-order-payment
+
+== Voraussetzung: Registrierung bei Mollie
+
+Für die Nutzung von Mollie benötigst du einen Account und die Zugangsdaten von Mollie. Liegen diese nicht vor, kannst du das Plugin nicht einrichten und somit nicht nutzen. Solltest du noch keinen Account bei Mollie haben, link:https://www.mollie.com/dashboard/signup/5543454?lang=de[registriere^]{nbsp}icon:external-link[] dich zunächst dort.
+
+== Zahlungsart einrichten: Ausführung des Assistenten
+
+Das Einrichten des Mollie Plugins wird mithilfe eines Assistenten durchgeführt. Der Assistent führt dich durch wichtige Einstellungen und enthält notwendige Informationen. Zu finden ist der Assistent in deinem plentymarkets Backend im Menü *Einrichtung » Assistenten » Plugins*. Wähle hier das entsprechende Plugin-Set, in dem das Plugin installiert ist und das du konfigurieren möchtest.
+
+[.instruction]
+Zahlungsart einrichten:
+
+. Öffne das Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*.
+. Wähle den Assistenten *Mollie*.
+. Schließe den Assistenten vollständig ab. +
+→ Die Zahlungsart Rechnung ist in deinem Webshop verfügbar.
+
+_Beachte_: Es kann vorkommen, dass du den Assistenten erneut durchlaufen musst. Wenn du eine Mollie-Zahlungsart, die in deinem plentymarkets System aktiviert ist, nach Abschluss des Assistenten über das Dashboard direkt in deinem Mollie-Account deaktivierst, muss der Assistent erneut abgeschlossen werden. Durchläufst du ihn erneut, stimmen die Einstellungen überein und können nicht zu einer Fehlkonfiguration führen.
+
+== Template Container verknüpfen
+
+[.instruction]
+Gehe wie folgt vor, um die Container-Verknüpfungen einzustellen:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne die Einstellungen des Mollie-Plugins.
+. Öffne die *Container-Verknüpfungen*.
+. Wähle einen oder mehrere Container, in denen der zuvor gewählte Content dargestellt werden soll. +
+→ Beachte dazu die Erläuterungen in <<tabelle-template-container-verknüpfen>>.
+. *Speichere* (icon:save[role=green]) die Einstellungen. +
+→ Die Contents sind mit den Containern verknüpft.
+
+[[tabelle-template-container-verknüpfen]]
+.Template-Container verknüpfen
+[cols="1,3"]
+|====
+|Content |Erläuterung
+
+| *Payment button (Mollie)*
+|Die Container *Order confirmation: Additional payment information* und *My account: Additional payment information* müssen verknüpft sein, um den Mollie Zahlen-Button im Checkout darzustellen.
+
+|====
+
+== Ereignisaktionen einrichten
+
+3 separate Ereignisaktionen sind notwendig, damit alle benötigten Daten direkt an Mollie gesendet werden. Die Ereignisse sind der Versand der Artikelpositionen eines Auftrags, Stornierung und Gutschrift. Mollie muss informiert werden, wenn etwas davon eingeleitet wird. Gehe wie im Folgenden beschrieben vor, um diese 3 Ereignisaktionen einzurichten.
+
+[.instruction]
+Einrichtung einer Ereignisaktion:
+
+. Öffne das Menü *Einrichtung » Aufträge » Ereignisse*.
+. Klicke auf *Ereignisaktion hinzufügen*. +
+→ Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
+. Gib einen Namen ein.
+. Wähle das Ereignis gemäß Tabellen 2-4.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+. Nimm die Einstellungen gemäß Tabellen 2-4 vor.
+. Aktiviere die Option *Aktiv*.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+[.discrete]
+=== Versand bei Mollie anmelden
+
+[[tabelle-ea-versand-anmelden-mollie]]
+.Ereignisaktion "Mollie | Versand anmelden"
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Das Ereignis wählen, nach dem der Versand angemeldet werden soll.
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Plugin: Mollie:*
+
+| *Aktion*
+| Plugin: Mollie | Versand anmelden
+|
+
+|====
+
+Diese Ereignisaktion kann auch für Lieferaufträge verwendet werden. Der Lieferauftrag wird dann bei Mollie als Teilsendung angemeldet.
+
+[.discrete]
+=== Storno bei Mollie anmelden
+
+[[tabelle-ea-storno-anmelden-mollie]]
+.Ereignisaktion "Mollie | Storno anmelden"
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Das Ereignis wählen, nach dem der Versand angemeldet werden soll.
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Plugin: Mollie:*
+
+| *Aktion*
+| Plugin: Mollie | Storno anmelden
+|
+
+|====
+
+_Beachte_, dass ein Auftrag nicht storniert werden kann, solange eine Zahlung noch im Status "pending" ist. Die Ablaufzeit für die jeweiligen Zahlungsarten werden von Mollie vorgegeben und sind link:https://docs.mollie.com/payments/status-changes#expiry-times-per-payment-method[auf dieser Seite^]{nbsp}icon:external-link[] aufgeführt.
+
+[.discrete]
+=== Gutschrift bei Mollie anmelden
+
+[[tabelle-ea-gutschrift-anmelden-mollie]]
+.Ereignisaktion "Mollie | Gutschrift anmelden"
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Das Ereignis wählen, nach dem der Versand angemeldet werden soll.
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Plugin: Mollie:*
+
+| *Aktion*
+| Plugin: Mollie | Gutschrift anmelden
+|
+
+|====
+
+Im Anschluss an die Aktion *Mollie | Gutschrift anmelden* stehen dir zwei weitere zusätzliche Ereignisse zur Verfügung, um den weiteren Verlauf des Auftrages abzubilden: *Mollie Rückzahlung gescheitert* und *Mollie Rückzahlung erfolgreich*. Richte optional Ereignisaktionen mit diesen Ereignissen wie oben beschrieben ein.
