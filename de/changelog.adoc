@@ -24,85 +24,9 @@ stable::
 --
 
 [discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Aufträge
-
-* Aufträge die einen gebuchten Warenausgang haben können zukünftig nicht mehr gruppiert werden.
-
-'''
-
-[discrete]
-== Behoben
-
-Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
-
-[discrete]
-=== Aufträge
-
-* Die Artikelansicht bleibt jetzt geöffnet, wenn du zu einem anderen Bereich navigierst. Diese Anpassung gilt sowohl für Nachbestellungen als auch für Umbuchungen.
-* n der neuen Auftragsanlage werden bei der automatischen Vervollständigung der Zahlungsarten jetzt auch die alten Zahlungsarten angezeigt.
-
-[discrete]
-=== eBay
-
-* Bei eBay Auftragsimporte mit eBay Plus durch die neue Auftragslogik, wurde das eBay Plus Flag nicht korrekt interpretiert, sodass Versandprofile ermittelt wurden, die das eBay Plus nicht aktiv haben. Dies wurde behoben.
-
-[discrete]
-=== Ereignisaktionen
-
-* Der Filter *Kundenklasse* hat bei Gastbestellungen ohne Kontakt nicht korrekt funktioniert. Nun wird in diesen Fällen die Standard-Kundenklasse des Mandanten genommen, in dem der Auftrag angelegt wurde.
-
-[discrete]
-=== Import
-
-* Aufgrund eines Fehlers konnte kein MHD beim Format Warenbestand importiert werden. Diesen Fehler haben wir behoben.
-
-[discrete]
-=== Kataloge
-
-* Aufgrund eines Fehlers konnten keine Datenquellen mehr in den Katalog-Assistenten ausgewählt werden. Diesen Fehler haben wir behoben.
-
-[discrete]
-=== OTTO Market
-
-* Artikel werden von OTTO Market nun nicht mehr deaktiviert, wenn die serverseitige Drosselung von OTTO erreicht ist.
-
-[discrete]
-=== plentyShop
-
-* Aufgrund eines Fehlers in der Eigenschaften-UI, wurden verknüpfte Eigenschaften im Ceres-Shop nicht auf Dänisch und Norwegisch angezeigt. Diesen Fehler haben wir behoben.
-
-[discrete]
-=== Prozesse
-
-* In der Aktion *Wareneingang einfach* werden beim Einbuchen von Artikeln nun wieder die korrekten Lagerorte verwendet.
-
-'''
-
-[discrete]
-== Gelöscht
-
-Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* gelöscht.
-
-[discrete]
-=== Zahlung
-
-* Die alte Umsetzung der Zahlungsbedingungen ist nun link:https://forum.plentymarkets.com/t/ankuendigung-zahlungsbedingungen-reloaded-announcement-payment-terms-reloaded/606607[wie angekündigt^] nicht mehr verfügbar. Weitere Informationen findest du auf der Handbuchseite <<auftraege/auftraege-verwalten#intable-zahlungsbedingungen-auftrag, Aufträge verwalten>>.
-
---
-
-early::
-+
---
-
-[discrete]
 == Neu
 
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
 === Auftragsdokumente
@@ -111,10 +35,21 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 ** `[OrderID]`: Gibt die ID des aktuellen Auftrages aus.
 ** `[ParentOrderID]`: Gibt die ID des Auftrages aus, aus dem der aktuelle Auftrag erzeugt wurde (z.B. bei Gutschriften, Lieferaufträge usw.). Wenn der Auftrag keine Referenz zu einem Elternauftrag hat, dann wird `[OrderID]` ausgegeben.
 
+'''
+
 [discrete]
 == Geändert
 
-Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Amazon VCS
+
+* Mit dem Brexit übernimmt Amazon seit dem 01.01.2021 die Steuerberechnung und Rechnungserstellung für UK-Aufträge unter einem Auftragswert von 135£. Dies passiert auch, wenn man VCS nicht nutzt oder nur VCS Lite (VCS plentymarkets) und regulär die Rechnung selbst erstellt.
++
+In einem ersten Schritt wurde nun der Import des entsprechenden VCS-Berichtes so angepasst, dass die betroffenen Aufträge auf Basis des VCS-Berichts korrigiert und die externe Rechnung importiert wird. Sollte bereits eine Rechnung am Auftrag vorliegen, wird ein Stornobeleg erzeugt.
++
+In einem zweiten Schritt werden wir prüfen, ob wir beim Auftragsimport sinnvoll Aufträge herausfiltern können, bei denen wir das Erstellen der Rechnung sperren können, um ein unnötiges Erzeugen der Rechnungen zu verhindern. Dies steht aber noch aus.
 
 [discrete]
 === Ereignisaktionen
@@ -132,17 +67,113 @@ Es muss nichts weiter unternommen werden, der Standardwert ist *vor genau* und h
 [discrete]
 == Behoben
 
-Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Aufträge
 
 * Bei der manuellen Anlage einer Retoure über einen Auftrag wurde in der neuen Auftragslogik der Retouren-Code nicht übernommen. Jetzt wird ein Versandpaket für die Retoure angelegt und der Retouren-Code als Paketnummer gespeichert (Modell `OrderShippingPackage`, Felder `packageNumber` und `returnPackageNumber`).
+* Es konnte vorkommen, dass die Artikelanzahl in Umbuchungen nicht korrekt gespeichert wurde.
+* Wenn eine Nachbestellung in einer Fremdwährung angelegt wurde, kann der Einkaufspreis in der Auftragspositionstabelle geändert werden.
+
+[discrete]
+=== Dokumente
+
+* In den Dokumenteinstellungen können nun auch für die Stornobelege (zu Rechnung, Gutschrift und Mahnung) die Bestellmerkmale an der Artikelbezeichnung ausgewählt werden und somit ausgegeben werden.
+
+[discrete]
+=== Import
+
+* Bis jetzt war es nicht möglich Mengen mit Dezimalzahlen zu importieren. Der Fehler wurde nun behoben.
+* Es war nicht möglich über den Kategorieimport Daten an Untermandanten zu importieren. Dieses Verhalten wurde nun korrigiert.
+
+[discrete]
+=== Kataloge
+
+* Aufgrund eines Fehlers wurden nicht notwendige Datenfelder im Data Picker angezeigt. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Plugins
+
+* Unter bestimmten Umständen wurden Container-Verknüpfungen nicht richtig gespeichert. Dies hatte zur Folge, dass sich Verknüpfungen nicht mehr ändern ließen. Dieses Problem besteht nicht mehr.
++
+[NOTE]
+.Kein To-Do
+======
+Im Zuge des Updates haben wir fehlerhafte Container-Verknüpfungen automatisch behoben. Es ist keine Aktion von deiner Seite notwendig.
+======
 
 [discrete]
 === Zahlung
 
 * Bei der Berechnung des offenen Betrages nach dem Teilen von Zahlungen wurden Gutscheine, Ermäßigungen und Coupons nicht berücksichtigt. Dies wurde nun behoben.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Es gibt bei Nachbestellungen jetzt einen neuen Filter für die Lieferanten-Artikel-Nummer.
+* Es wurde bei Bestellungen die Spalte „Modell“ der Variante hinzugefügt.
+
+[discrete]
+=== Dokumente
+
+* Auf dem Dokument für Nachbestellungen ist jetzt ein Feld für die Lieferanten-Artikel-Bezeichnung verfügbar.
+* Den Freitextfeldern 1 und 2 in den Dokumenteinstellungen für Auftragsdokumente steht ein neuer Platzhalter zur Verfügung: [ExternalOrderID], die die externe Auftrags-ID ausgibt.
+
+[discrete]
+=== Kataloge
+
+* Ab sofort kann man die verknüpften Datenfelder via Drag and Drop verschieben.
+* Das Design in der Kataloge-UI wurde aktualisiert.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Kataloge
+
+* Für die Standardformate haben wir den Eintrag *Zuordnung* in der Seitennavigation in *Datenfelder* umbenannt.
+* Fügt man ein Datenfeld hinzu, das eine Zuordnung besitzt, wird nun automatisch der erste Wert als Standard angezeigt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Es wird jetzt beim Gruppieren von Aufträgen validiert, dass die Währung und der Wechselkurs der Aufträge übereinstimmt.
+* Es konnte vorkommen, dass die Fremdwährung eines Lieferanten nicht korrekt in die Nachbestellung übernommen wurde.
+
+[discrete]
+=== Kataloge
+
+* Aufgrund eines Fehlers kam es vor, dass Feldnamen überlappt dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass der Editiermodus die ganze Zeit aktiv war, obwohl man sich nicht mehr in diesem befand. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass leere Portlets angezeigt wurden, wenn der Toggle für die Anzeige der Pflichtfelder aktiv war. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es bei einer Vielzahl von verknüpften Werten vor, dass die Einstellungsbuttons auf der rechten Seite nicht richtig dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass ein langer Katalogname fehlerhaft in der Seitennavigation dargestellt wurde. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass unten im Katalog eine nutzlose Scrollbar angezeigt wurde. Diese haben wir entfernt.
+* Aufgrund eines Fehlers waren die Datenfelder im Data Picker fehlerhaft sortiert. Diesen Fehler haben wir behoben.
+* Erstellte man einen Katalog, wurde dieser nicht direkt in der Übersicht angezeigt. Diesen Fehler haben wir nun behoben.
 
 --
 
@@ -158,48 +189,60 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/amazonvcsdashboard_6279[AmazonVCSDashboard^]
-|2.0.1
-|-
-
-|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
-|5.0.19
-|-
-
-|link:https://marketplace.plentymarkets.com/clc_7017[CLC]
-|1.0.1
-|-
-
-|link:https://marketplace.plentymarkets.com/dhlshipping_4871[DHL Shipping (Versenden)]
-|3.1.5
-|-
-
-|link:https://marketplace.plentymarkets.com/ebayoauth2_4787[eBay OAUTH2]
-|1.3.4
-|-
-
-|link:https://marketplace.plentymarkets.com/ebics_5098[EBICS^]
+|link:https://marketplace.plentymarkets.com/addresscheckdhl_6455[AddressCheckDHL^]
 |1.1.2
 |-
 
-|link:https://marketplace.plentymarkets.com/eafunassigneditems_7032[Filter für nicht zugeordnete Artikel^]
-|1.0.0
+|link:https://marketplace.plentymarkets.com/cfourarticlenotifications5_6976[Artikel Verfügbarkeitsbenachrichtigung 5^]
+|3.0.4
 |-
 
-|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
-|1.0.34
+|link:https://marketplace.plentymarkets.com/dhlshipping_4871[DHL Shipping (Versenden)^]
+|3.1.5
 |-
 
-|link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.19
+|link:https://marketplace.plentymarkets.com/dpdshippinguk_5121[DPD Shipping UK^]
+|2.0.3
 |-
 
-|link:https://marketplace.plentymarkets.com/invoice_4760[Kauf auf Rechnung^]
-|2.0.7
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.6.11
 |-
 
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.24.7
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic - Search & Navigation Platform^]
+|3.3.0
+|-
+
+|link:https://marketplace.plentymarkets.com/klarna_6731[Klarna^]
+|1.1.3
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.6
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent-Widget^]
+|4.4.13
+|-
+
+|link:https://marketplace.plentymarkets.com/scalerion_6926[Scalerion^]
+|1.0.6
+|-
+
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify^]
+|2.7.0
+|-
+
+|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
+|2.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/socialmedia_4702[SocialMedia^]
+|1.2.1
 |-
 
 |===
