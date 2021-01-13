@@ -6,11 +6,11 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 26. November 2020
-:endWeekDate: 02. Dezember 2020
-:nav-alias: Changelog 02. Dezember 2020
+:startWeekDate: 07. Januar 2020
+:endWeekDate: 13. Januar 2021
+:nav-alias: Changelog 13. Januar 2021
 
-Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
 Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
 
@@ -24,74 +24,89 @@ stable::
 --
 
 [discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Auftragsdokumente
+
+* Die Freitextfelder 1 und 2 in den Dokumenteinstellungen für Auftragsdokumente stehen zwei neue Platzhalter zur Verfügung:
+** `[OrderID]`: Gibt die ID des aktuellen Auftrages aus.
+** `[ParentOrderID]`: Gibt die ID des Auftrages aus, aus dem der aktuelle Auftrag erzeugt wurde (z.B. bei Gutschriften, Lieferaufträge usw.). Wenn der Auftrag keine Referenz zu einem Elternauftrag hat, dann wird `[OrderID]` ausgegeben.
+
+'''
+
+[discrete]
 == Geändert
 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== Amazon VCS
 
-* Bis die neue Filterkomponente eingebaut werden kann, haben wir vorübergehend den alten Filter wieder eingebaut.
+* Mit dem Brexit übernimmt Amazon seit dem 01.01.2021 die Steuerberechnung und Rechnungserstellung für UK-Aufträge unter einem Auftragswert von 135£. Dies passiert auch, wenn man VCS nicht nutzt oder nur VCS Lite (VCS plentymarkets) und regulär die Rechnung selbst erstellt.
++
+In einem ersten Schritt wurde nun der Import des entsprechenden VCS-Berichtes so angepasst, dass die betroffenen Aufträge auf Basis des VCS-Berichts korrigiert und die externe Rechnung importiert wird. Sollte bereits eine Rechnung am Auftrag vorliegen, wird ein Stornobeleg erzeugt.
++
+In einem zweiten Schritt werden wir prüfen, ob wir beim Auftragsimport sinnvoll Aufträge herausfiltern können, bei denen wir das Erstellen der Rechnung sperren können, um ein unnötiges Erzeugen der Rechnungen zu verhindern. Dies steht aber noch aus.
 
 [discrete]
-=== OTTO
+=== Ereignisaktionen
 
-* Die Pflichtfelder der OTTO Market-Kataloge wurden angepasst. Dadurch sind nur noch die Felder Pflicht, die entweder in der OTTO-Dokumentation als Pflichtfeld markiert sind oder ein kategoriebezogenes Attribut mit dem Merkmal „LEGAL“ sind. Die Menge der Pflichtfelder hat sich dadurch reduziert.
+* Der Filter *Letzter Statuswechsel* hat bei der Auswahl *Tage eingeben* neben der Anzahl Tage jetzt auch feinere Optionen, die sich auf die Tage beziehen: *vor genau*, *vor über*, *vor über oder genau*, *vor weniger als* und vor *weniger als oder genau*.
++
+[NOTE]
+.Kein To-do
+======
+Es muss nichts weiter unternommen werden, der Standardwert ist *vor genau* und hat damit dasselbe Verhalten wie bisher.
+======
 
 '''
 
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Aufträge
 
-* Der Zahlungsstatus von Gutschriften in Fremdwährung wurde bei der Zahlungszuordnung nicht korrekt ermittelt. Dies wurde nun entsprechend für alle neuen Zuordnungen angepasst.
-+
-
-[IMPORTANT]
-.To-Do
-======
-Gutschriften mit bereits zugeordneten Zahlungen werden nicht korrigiert. Bei Bedarf kann die Zuordnung gelöst und die Zahlung neu zugeordnet werden.
-======
-
-* Es wurden die Auftragssummen teilweise nicht richtig berechnet. Der Fehler ist nur in Beta/Early aufgetreten.
-* Beim Erstellen von Adressetiketten bei Aufträgen mit Set-Artikeln kam es zur Fehlermeldung `missing warehouseId` (fehlende Lagerangabe). Das wurde behoben.
-* Es konnten die Adressdaten von gesperrten Aufträgen nicht mehr geändert werden. Der Fehler ist nur auf Beta/Early aufgetreten.
-
-* Im Zusammenhang mit einem link:https://forum.plentymarkets.com/t/elasticsync-auftraege-abgleich-von-variante-elasticsync-orders-matching-of-variation/613628[vorherigen Fix^] wurde ein anderes Problem im Import von Aufträgen entdeckt und wurde nun behoben.
-
-* Für Auftragsnotizen und Kundenhinweise die bei der Anlage des Auftrages direkt mitgespeichert wurden, fehlte ein zusätzlicher Hinweis, wodurch in der Übersicht der Auftragssuche nicht deutlich wurde, ob für neue Aufträge bereits Notizen vorhanden sind oder nicht. Dieses Verhalten wurde behoben, sodass für Auftragsnotizen und Kundenhinweise, die bei Anlage des Auftrages gespeichert werden anhand des Notizen-Buttons deutlich wird, ob bereits Notizen vorhanden sind oder nicht.
-
-* Bei der Aktualisierung der tatsächlich verkauften Menge eines Live-Shopping Angebotes konnte es zu dem Verhalten kommen, dass durch Verkäufe über Herkünfte wie u.a. Google-Shopping oder für Paket-Artikel, diese nicht korrekt aktualisiert wurde. Dieses Verhalten wurde behoben.
-
-* In Zusammenhang mit den neuen Zahlungsbedingungen konnte es bei bestimmten Konfigurationen in den Dokumenteinstellungen zu einem Anzeigefehler kommen. Dabei wurden sowohl die neuen als auch die bereits existierenden Zahlungsbedingungen angezeigt. Dies wurde behoben.
-
-* Beim Hinzufügen einer Variante über die Ereignisaktion „Variante hinzufügen“ wurde zur Preisermittlung nicht die Herkunft der Variante beachtet.
-Dies wurde behoben, sodass nun die „manuelle Herkunft“ beachtet wird.
-
-* Bei der Auftragssuche kann nun der Filter *contactData* korrekt genutzt werden, um nur Aufträge mit bestimmten Daten eines Kontaktes zu erhalten, wie z.B. einer eMail-Adresse. Ebenso wird der Filter nun korrekt in der Dokumentation dargestellt.
+* Bei der manuellen Anlage einer Retoure über einen Auftrag wurde in der neuen Auftragslogik der Retouren-Code nicht übernommen. Jetzt wird ein Versandpaket für die Retoure angelegt und der Retouren-Code als Paketnummer gespeichert (Modell `OrderShippingPackage`, Felder `packageNumber` und `returnPackageNumber`).
+* Es konnte vorkommen, dass die Artikelanzahl in Umbuchungen nicht korrekt gespeichert wurde.
+* Wenn eine Nachbestellung in einer Fremdwährung angelegt wurde, kann der Einkaufspreis in der Auftragspositionstabelle geändert werden.
 
 [discrete]
-=== Artikel
+=== Dokumente
 
-* Das Importieren des EKs stößt eine Neuberechnung der Preiskalkulation an. Dieses Verhalten wurde behoben.
+* In den Dokumenteinstellungen können nun auch für die Stornobelege (zu Rechnung, Gutschrift und Mahnung) die Bestellmerkmale an der Artikelbezeichnung ausgewählt werden und somit ausgegeben werden.
 
 [discrete]
-=== bol.com
+=== Import
 
-* Beim Import der Retouren von bol.com kam es zu einem Fehler beim Speichern der sogenannten „rma-ID“ von bol.com für die Auftragspositionen. Durch das Fehlen dieser ID konnte die Ereignisaktion Retourenstatus an bol.com senden nicht ausgeführt werden.
-Dieses Problem wurde nun gelöst. Für alle Retouren, die heute spätestens nach 12:00 Uhr importiert werden, kann der Retourenstatus wieder mit der Ereignisaktion übermittelt werden.
+* Bis jetzt war es nicht möglich Mengen mit Dezimalzahlen zu importieren. Der Fehler wurde nun behoben.
+* Es war nicht möglich über den Kategorieimport Daten an Untermandanten zu importieren. Dieses Verhalten wurde nun korrigiert.
+
+[discrete]
+=== Kataloge
+
+* Aufgrund eines Fehlers wurden nicht notwendige Datenfelder im Data Picker angezeigt. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Plugins
+
+* Unter bestimmten Umständen wurden Container-Verknüpfungen nicht richtig gespeichert. Dies hatte zur Folge, dass sich Verknüpfungen nicht mehr ändern ließen. Dieses Problem besteht nicht mehr.
 +
+[NOTE]
+.Kein To-Do
+======
+Im Zuge des Updates haben wir fehlerhafte Container-Verknüpfungen automatisch behoben. Es ist keine Aktion von deiner Seite notwendig.
+======
 
-[IMPORTANT]
-.To-Do
-======
-Leider gibt es keinen zuverlässigen Weg, die fehlenden „rma-IDs“ nachträglich zu importieren.
-Alle Retouren, die bis heute, den 01.12.2020, importiert wurden, müssen manuell im Händlerbereich von bol.com bearbeitet werden.
-======
+[discrete]
+=== Zahlung
+
+* Bei der Berechnung des offenen Betrages nach dem Teilen von Zahlungen wurden Gutscheine, Ermäßigungen und Coupons nicht berücksichtigt. Dies wurde nun behoben.
 
 --
 
@@ -105,29 +120,35 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== Aufträge
 
-* Ab sofort kannst du Platzhalter für Dateinamen verwenden.
-
-image:changelog/assets/kataloge-dateiname-platzhalter.png[width=640]
+* Es gibt bei Nachbestellungen jetzt einen neuen Filter für die Lieferanten-Artikel-Nummer.
+* Es wurde bei Bestellungen die Spalte „Modell“ der Variante hinzugefügt.
 
 [discrete]
-=== myView
+=== Dokumente
 
-* Nachdem Administratoren bereits die Möglichkeit haben, Rollen verschiedene Ansichten zuzuweisen, können sie dies nun auch für Benutzer tun.
+* Auf dem Dokument für Nachbestellungen ist jetzt ein Feld für die Lieferanten-Artikel-Bezeichnung verfügbar.
+* Den Freitextfeldern 1 und 2 in den Dokumenteinstellungen für Auftragsdokumente steht ein neuer Platzhalter zur Verfügung: [ExternalOrderID], die die externe Auftrags-ID ausgibt.
 
-Nur Admins haben Zugriff auf den Bearbeitungsmodus der MyView und sind somit autorisiert, Ansichten zu erstellen oder zu löschen sowie neue Benutzer anzulegen und Rechte zuzuweisen.
+[discrete]
+=== Kataloge
 
-Am Anfang ist immer die Standardansicht vorausgewählt. Existiert eine weitere Ansicht, kann die Standardansicht für einen Benutzer deaktiviert und Rechte für eine andere Ansicht können zugewiesen werden.
+* Ab sofort kann man die verknüpften Datenfelder via Drag and Drop verschieben.
+* Das Design in der Kataloge-UI wurde aktualisiert.
 
-Beachte, dass immer mindestens eine Ansicht ausgewählt sein muss.
+'''
 
-Die Rechteverwaltung findest du im Menü unter *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer » Benutzer wählen » Tab: Ansichten*. Dort werden alle benutzerdefinierten Ansichten angezeigt.
+[discrete]
+== Geändert
 
-*_Tipp:_* Die Rechteverwaltung erreichst du auch direkt aus einer MyView:
-Klicke dazu unterhalb der Einstellungen auf Rechteverwaltung » Benutzerrechte.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
-Viel Spaß mit der neuen Rechteverwaltung und lasst uns gerne Feedback da!
+[discrete]
+=== Kataloge
+
+* Für die Standardformate haben wir den Eintrag *Zuordnung* in der Seitennavigation in *Datenfelder* umbenannt.
+* Fügt man ein Datenfeld hinzu, das eine Zuordnung besitzt, wird nun automatisch der erste Wert als Standard angezeigt.
 
 '''
 
@@ -139,22 +160,20 @@ Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 [discrete]
 === Aufträge
 
-* Bei entsperrten Abonnement war es nicht möglich die Adressen zu ändern.
-Dies ist nun behoben.
-
-* Die Währung in den neuen UIs für die Nachbestellung und Umbuchung wurde beim Speichern immer zurückgesetzt auf die Systemwährung. Dies wurde behoben.
-
-* Beim Erstellen von Kindsaufträgen (Gutschrift, Gewährleistung usw.) wurden die Set-Referenzen von Set-Komponenten nicht übernommen. Wird das ganze Set und nicht nur Teile davon im Kindsauftrag übernommen, so werden auch die Set-Referenzen an den Positionen erstellt.
+* Es wird jetzt beim Gruppieren von Aufträgen validiert, dass die Währung und der Wechselkurs der Aufträge übereinstimmt.
+* Es konnte vorkommen, dass die Fremdwährung eines Lieferanten nicht korrekt in die Nachbestellung übernommen wurde.
 
 [discrete]
-=== CRM
+=== Kataloge
 
-* Im englischen Backend sind selbst definierte Kundentypen bei manueller Kundenanlage im Dropdown nicht wählbar gewesen. Dieser Fehler wurde behoben.
-
-[discrete]
-=== Warenwirtschaft
-
-* Der Filterbereich im Menü *Einrichtung » Waren » Lager » Lager wählen » Lagerorte* hat bis jetzt nicht ganz richtig funktioniert. Der Fehler wurde behoben.
+* Aufgrund eines Fehlers kam es vor, dass Feldnamen überlappt dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass der Editiermodus die ganze Zeit aktiv war, obwohl man sich nicht mehr in diesem befand. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass leere Portlets angezeigt wurden, wenn der Toggle für die Anzeige der Pflichtfelder aktiv war. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es bei einer Vielzahl von verknüpften Werten vor, dass die Einstellungsbuttons auf der rechten Seite nicht richtig dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass ein langer Katalogname fehlerhaft in der Seitennavigation dargestellt wurde. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass unten im Katalog eine nutzlose Scrollbar angezeigt wurde. Diese haben wir entfernt.
+* Aufgrund eines Fehlers waren die Datenfelder im Data Picker fehlerhaft sortiert. Diesen Fehler haben wir behoben.
+* Erstellte man einen Katalog, wurde dieser nicht direkt in der Übersicht angezeigt. Diesen Fehler haben wir nun behoben.
 
 --
 
@@ -170,61 +189,66 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
-|2.2.0
-|Zur Anlage der Auftragsnotizen wird nun ein Backend-Benutzer benötigt. Durchlaufe bitte erneut den Assistenten, um diesen zu konfigurieren.
-
-|link:https://marketplace.plentymarkets.com/gaxsys_5992[gaxsys Connector^]
-|2.2.7
+|link:https://marketplace.plentymarkets.com/addresscheckdhl_6455[AddressCheckDHL^]
+|1.1.2
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourcontainerpopup5_7007[C4 Popup 5^]
-|2.0.1
+|link:https://marketplace.plentymarkets.com/cfourarticlenotifications5_6976[Artikel Verfügbarkeitsbenachrichtigung 5^]
+|3.0.4
 |-
 
-|link:https://marketplace.plentymarkets.com/ebayfiege_6018[eBay Fulfillment^]
-|1.1.26
+|link:https://marketplace.plentymarkets.com/dhlshipping_4871[DHL Shipping (Versenden)^]
+|3.1.5
 |-
 
-|link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.16
+|link:https://marketplace.plentymarkets.com/dpdshippinguk_5121[DPD Shipping UK^]
+|2.0.3
 |-
 
-|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
-|5.0.16
-|Um bei Live-Shopping-Angeboten auf der Artikelansicht einen Text vor dem Streichpreis anzuzeigen, muss der Übersetzungsschlüssel *crossPriceSpecialOffer* in der Mehrsprachigkeitsoberfläche entsprechend ausgefüllt werden.
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.6.11
+|-
+
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic - Search & Navigation Platform^]
+|3.3.0
+|-
 
 |link:https://marketplace.plentymarkets.com/klarna_6731[Klarna^]
-|1.0.15
-|-
-
-|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
-|1.0.7
-|-
-
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.24.2
+|1.1.3
 |-
 
 |link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
 |1.1.6
 |-
 
-|link:https://marketplace.plentymarkets.com/voelknerextension_6949[Voelkner^]
-|1.1.6
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.1.0
 |-
 
-|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad^]
-|1.1.4
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent-Widget^]
+|4.4.13
 |-
 
-|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
-|1.0.30
+|link:https://marketplace.plentymarkets.com/scalerion_6926[Scalerion^]
+|1.0.6
+|-
+
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify^]
+|2.7.0
+|-
+
+|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
+|2.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/socialmedia_4702[SocialMedia^]
+|1.2.1
 |-
 
 |===
 
 Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
 
 --
 
