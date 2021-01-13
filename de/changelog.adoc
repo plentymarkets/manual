@@ -6,11 +6,11 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 10. September 2020
-:endWeekDate: 16. September 2020
-:nav-alias: Changelog 16. September 2020
+:startWeekDate: 07. Januar 2020
+:endWeekDate: 13. Januar 2021
+:nav-alias: Changelog 13. Januar 2021
 
-Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
 Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
 
@@ -20,16 +20,20 @@ Wähle, welchen Changelog du sehen möchtest.
 ====
 stable::
 +
+
 --
+
 [discrete]
 == Neu
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== Auftragsdokumente
 
-* Die Texte der Statushistorie wurden um die Information erweitert, von wo bzw. wodurch eine Statusänderung verursacht wurde. So wäre die Information ersichtlich, ob die Änderung z.B. durch ein Plugin (Ereignisaktion) oder durch ElasticSync ausgelöst wurde.
+* Die Freitextfelder 1 und 2 in den Dokumenteinstellungen für Auftragsdokumente stehen zwei neue Platzhalter zur Verfügung:
+** `[OrderID]`: Gibt die ID des aktuellen Auftrages aus.
+** `[ParentOrderID]`: Gibt die ID des Auftrages aus, aus dem der aktuelle Auftrag erzeugt wurde (z.B. bei Gutschriften, Lieferaufträge usw.). Wenn der Auftrag keine Referenz zu einem Elternauftrag hat, dann wird `[OrderID]` ausgegeben.
 
 '''
 
@@ -41,69 +45,68 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 [discrete]
 === Amazon VCS
 
-* Beim Generieren von internen Rechnungs- und Gutschriftsdokumenten beim Abgleich mit VCS wird das Datum des Dokuments nicht mehr aus dem VCS-Bericht übernommen. Stattdessen wird das aktuelle Datum verwendet. Dies macht den Prozess weniger anfällig bei Störungen aufgrund der Rückdatierung in eventuell schon abgeschlossene Monate und erlaubt eine insgesamt sauberere Finanzbuchhaltung.
-
-[discrete]
-=== Aufträge
-
-* Im Menü *Aufträge » Fulfillment » Rechnungen erzeugen* ist es möglich Rechnungen für Aufträge, die sich in einem bestimmten Status befinden, zu generieren. Sofern dort der Status `7` (*Warenausgang gebucht*) ausgewählt wird, wird im Hintergrund nach Aufträgen gesucht, für die der Warenausgang heute, am aktuellen Datum, ausgeführt wurde. Dies war bisher nicht ersichtlich. Deswegen wird jetzt der Hinweis *Warenausgang: HEUTE* angezeigt.
-
-[discrete]
-=== OTTO
-
-:otto-master-date: 11.09.2020
-:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/90HEFdIoawf1JJ960rRpA09thnh.xlsx
-
-include::changelog/_textblocks/otto-master-file.adoc[]
-
-[discrete]
-=== Plugins
-
-* Assistenten von Plugins werden jetzt auf einzelne Plugin-Sets bezogen ausgeführt. Das bedeutet du musst nicht mehr dein Backend-Plugin-Set ändern, um die richtige Version des Assistenten zu durchlaufen. Dadurch ist auch gewährleistet, dass Konfigurationen des Plugins in anderen Plugin-Sets nicht durch den Assistenten überschrieben werden.
+* Mit dem Brexit übernimmt Amazon seit dem 01.01.2021 die Steuerberechnung und Rechnungserstellung für UK-Aufträge unter einem Auftragswert von 135£. Dies passiert auch, wenn man VCS nicht nutzt oder nur VCS Lite (VCS plentymarkets) und regulär die Rechnung selbst erstellt.
 +
-Im Zuge dieser Anpassung haben wir auch die Ladezeiten verbessert.
+In einem ersten Schritt wurde nun der Import des entsprechenden VCS-Berichtes so angepasst, dass die betroffenen Aufträge auf Basis des VCS-Berichts korrigiert und die externe Rechnung importiert wird. Sollte bereits eine Rechnung am Auftrag vorliegen, wird ein Stornobeleg erzeugt.
++
+In einem zweiten Schritt werden wir prüfen, ob wir beim Auftragsimport sinnvoll Aufträge herausfiltern können, bei denen wir das Erstellen der Rechnung sperren können, um ein unnötiges Erzeugen der Rechnungen zu verhindern. Dies steht aber noch aus.
 
 [discrete]
-=== Real.de
+=== Ereignisaktionen
 
-* Die Auswahl der Versanddienstleister unter *Einrichtung » Märkte » real.de » Einstellungen » Konto aufklappen » Bereich: Auftragseinstellungen » Option: Versanddienstleister verknüpfen* wurde aktualisiert.
-
-[discrete]
-=== Zahlungen
-
-* Im Format `Zahlungsbelege` unter *Daten » Spezialexport* wurden nur die MwSt. ausgegeben, die im Standard Umsatzsteuersatz definiert sind. Dies wurde geändert, die MwSt. wird nun immer angezeigt.
+* Der Filter *Letzter Statuswechsel* hat bei der Auswahl *Tage eingeben* neben der Anzahl Tage jetzt auch feinere Optionen, die sich auf die Tage beziehen: *vor genau*, *vor über*, *vor über oder genau*, *vor weniger als* und vor *weniger als oder genau*.
++
+[NOTE]
+.Kein To-do
+======
+Es muss nichts weiter unternommen werden, der Standardwert ist *vor genau* und hat damit dasselbe Verhalten wie bisher.
+======
 
 '''
 
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
-
-[discrete]
-=== Amazon VCS
-
-* Bei VCS Lite bzw. VCS plentymarkets konnten FBA-Gutschriften nicht automatisch importiert werden.
-Dieses Verhalten wurde nun behoben. Gutschriften, für die noch nicht anderweitig Dokumente erstellt und zu Amazon hochgeladen wurden, werden automatisch importiert.
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Aufträge
 
-* In der Vergangenheit wurden die Einstellungen nicht korrekt gespeichert, wenn Tabellenspalten in der neuen Auftrags-UI konfiguriert wurden. Dies wurde behoben. Jetzt wird die Spaltenkonfiguration korrekt gespeichert und übernommen.
-* In der Vergangenheit wurde keine Fehlermeldung angezeigt, wenn du das Eigner-Feld in der neuen Auftrags-UI leer gelassen hast. Dies wurde behoben. Da das Eigner-Feld eine Pflichteingabe ist, wird nun eine Fehlermeldung angezeigt, wenn du das Eigner-Feld leer lässt.
-* Die Infoboxen in Nachbestellungen werden jetzt nach dem Speichern nicht auf 0 gesetzt.
-* Es werden jetzt konkrete Fehlermeldungen ausgegeben, wenn eine Warenbewegung nicht gebucht werden kann.
-* Der Fehler `Unprocessable Entity` beim setzen des Bestelldatums wurde behoben.
+* Bei der manuellen Anlage einer Retoure über einen Auftrag wurde in der neuen Auftragslogik der Retouren-Code nicht übernommen. Jetzt wird ein Versandpaket für die Retoure angelegt und der Retouren-Code als Paketnummer gespeichert (Modell `OrderShippingPackage`, Felder `packageNumber` und `returnPackageNumber`).
+* Es konnte vorkommen, dass die Artikelanzahl in Umbuchungen nicht korrekt gespeichert wurde.
+* Wenn eine Nachbestellung in einer Fremdwährung angelegt wurde, kann der Einkaufspreis in der Auftragspositionstabelle geändert werden.
 
 [discrete]
 === Dokumente
 
-* Auf dem Dokument wurde der Name des Bankeignern nichts ausgegeben. Dies wurde behoben.
+* In den Dokumenteinstellungen können nun auch für die Stornobelege (zu Rechnung, Gutschrift und Mahnung) die Bestellmerkmale an der Artikelbezeichnung ausgewählt werden und somit ausgegeben werden.
 
 [discrete]
-=== Ereignisaktionen
+=== Import
 
-* Bei der Anlage einer neuen Retouren über den Webshop, kam es zwischenzeitlich dazu, dass das Ereignis *Neue Retoure (durch Kunden)* nicht mehr ausgelöst wurde. Wodurch es zu dem Verhalten kam, dass die konfigurierten Ereignisaktionen nicht ausgeführt wurden. Dieses Verhalten wurde behoben, so dass die Ereignisaktionen wieder wie gewohnt laufen.
+* Bis jetzt war es nicht möglich Mengen mit Dezimalzahlen zu importieren. Der Fehler wurde nun behoben.
+* Es war nicht möglich über den Kategorieimport Daten an Untermandanten zu importieren. Dieses Verhalten wurde nun korrigiert.
+
+[discrete]
+=== Kataloge
+
+* Aufgrund eines Fehlers wurden nicht notwendige Datenfelder im Data Picker angezeigt. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Plugins
+
+* Unter bestimmten Umständen wurden Container-Verknüpfungen nicht richtig gespeichert. Dies hatte zur Folge, dass sich Verknüpfungen nicht mehr ändern ließen. Dieses Problem besteht nicht mehr.
++
+[NOTE]
+.Kein To-Do
+======
+Im Zuge des Updates haben wir fehlerhafte Container-Verknüpfungen automatisch behoben. Es ist keine Aktion von deiner Seite notwendig.
+======
+
+[discrete]
+=== Zahlung
+
+* Bei der Berechnung des offenen Betrages nach dem Teilen von Zahlungen wurden Gutscheine, Ermäßigungen und Coupons nicht berücksichtigt. Dies wurde nun behoben.
 
 --
 
@@ -119,50 +122,58 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 [discrete]
 === Aufträge
 
-* In der neuen Auftragsanlage musste die Zahlungsart bisher aus einer Dropdown-Liste ausgewählt werden. Dies wurde geändert. Jetzt kann die Zahlungsart direkt eingegeben werden, so dass man die passende Zahlungsart aus den Vorschlägen auswählen kann.
-* Bei der neuen Auftragsanlage wurden die Spalten *Aktiv/Inaktiv* und *Verfügbarkeit* zur Tabelle der Artikelsuche hinzugefügt.
-* In der neuen Auftragsanlage wurde die neue Checkbox *Wie Rechnungsadresse* neben der Lieferadresse hinzugefügt. Wenn du diese Option aktivierst, wird die Lieferadresse gesperrt und die Adresse unter Rechnungsadresse wird auch als Lieferadresse eingefügt. Wenn du die Option wieder deaktivierst kannst du die Lieferadresse wieder bearbeiten.
-* In der neuen Auftragsanlage waren die Varianten-ID und die Artikel-ID in einer Spalte kombiniert. Nun ist es möglich diese in separaten Tabellenspalten anzuzeigen.
+* Es gibt bei Nachbestellungen jetzt einen neuen Filter für die Lieferanten-Artikel-Nummer.
+* Es wurde bei Bestellungen die Spalte „Modell“ der Variante hinzugefügt.
 
 [discrete]
-=== DHL
+=== Dokumente
 
-* Wir haben für die E-Mail-Vorlagen eine Template-Variable für den mobilen Retourencode der DHL Retoure Online entwickelt. Dieser lautet: `$DHLRetoureOnlineQRCodeURL`. Mit dieser Variable kannst du deinen Kunden direkt in der E-Mail einen QR-Code ausgeben. Der Kunde geht dann in die Postfiliale, zeigt den QR-Code einem der Mitarbeiter vor und dieser druckt das Label aus und bringt es am Paket an.
-+
-Somit muss dein Kunde den Retourenschein nicht mehr selbst drucken und du musst keine PDF-Anhänge mehr versenden.
-
-** In einer E-Mail-Vorlage vom Typ *Reiner Text* wird der Link zum QR-Code ausgegeben, den der Kunde anklicken kann.
-** In einer E-Mail-Vorlage vom Typ *HTML-formatierter Text* wird direkt der QR-Code als Bild ausgegeben.
-
-+
-[IMPORTANT]
-.To-Do
-======
-Im Zuge des Updates musst du folgende Schritte durchführen:
-
-. Damit du diese Variable auch verwenden kannst, musst du das Plugin _DHL Retoure Online_ auf die Version 1.1.0 updaten.
-. Wenn du eine E-Mail-Vorlage vom Typ *Reiner Text verwendest*, fügst du die neue Template-Variable direkt in den Text ein.
-. Wenn du eine E-Mail-Vorlage vom Typ *HTML-formatierter Text* verwendest, fügst du in der Vorlage ein Bild ein und fügst in den Bild-Eigenschaften in den Tabs Bild-Info und Link die neue Template-Variable als URL ein.
-
-image:changelog/assets/dhl-retoure-online-qr-code.png[width=640, alt=Retourenschein mit QR-Code.]
-======
+* Auf dem Dokument für Nachbestellungen ist jetzt ein Feld für die Lieferanten-Artikel-Bezeichnung verfügbar.
+* Den Freitextfeldern 1 und 2 in den Dokumenteinstellungen für Auftragsdokumente steht ein neuer Platzhalter zur Verfügung: [ExternalOrderID], die die externe Auftrags-ID ausgibt.
 
 [discrete]
 === Kataloge
 
-* Ab sofort könnt ihr das Trennzeichen Leerzeichen separat auswählen. Somit muss es nicht mehr als eigener Wert hinterlegt werden.
+* Ab sofort kann man die verknüpften Datenfelder via Drag and Drop verschieben.
+* Das Design in der Kataloge-UI wurde aktualisiert.
+
+'''
 
 [discrete]
-=== Plugins
+== Geändert
 
-* Ab jetzt werden beim Aktualisieren von Plugins die To-Do-Informationen aus dem Changelog gesondert angezeigt. Dabei werden nur die Informationen angezeigt, die zwischen der aktuell installierten und für das Update ausgewählten Version liegen.
-+
-Um als Plugin-Entwickler sicherzustellen, dass deine To-Do-Listen ausgegeben werden, stelle sicher, dass dein Changelog link:https://developers.plentymarkets.com/marketplace/plugin-requirements#marketplace-changelog[wie auf unserer Entwicklerseite vorgegeben^] formatiert ist.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Prozesse
+=== Kataloge
 
-* Für die Aktionen *SEPA Pain001* und *SEPA Pain008* wurde die neue Option *Auftrag nicht bezahlen* hinzugefügt.
+* Für die Standardformate haben wir den Eintrag *Zuordnung* in der Seitennavigation in *Datenfelder* umbenannt.
+* Fügt man ein Datenfeld hinzu, das eine Zuordnung besitzt, wird nun automatisch der erste Wert als Standard angezeigt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Es wird jetzt beim Gruppieren von Aufträgen validiert, dass die Währung und der Wechselkurs der Aufträge übereinstimmt.
+* Es konnte vorkommen, dass die Fremdwährung eines Lieferanten nicht korrekt in die Nachbestellung übernommen wurde.
+
+[discrete]
+=== Kataloge
+
+* Aufgrund eines Fehlers kam es vor, dass Feldnamen überlappt dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass der Editiermodus die ganze Zeit aktiv war, obwohl man sich nicht mehr in diesem befand. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass leere Portlets angezeigt wurden, wenn der Toggle für die Anzeige der Pflichtfelder aktiv war. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es bei einer Vielzahl von verknüpften Werten vor, dass die Einstellungsbuttons auf der rechten Seite nicht richtig dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass ein langer Katalogname fehlerhaft in der Seitennavigation dargestellt wurde. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass unten im Katalog eine nutzlose Scrollbar angezeigt wurde. Diese haben wir entfernt.
+* Aufgrund eines Fehlers waren die Datenfelder im Data Picker fehlerhaft sortiert. Diesen Fehler haben wir behoben.
+* Erstellte man einen Katalog, wurde dieser nicht direkt in der Übersicht angezeigt. Diesen Fehler haben wir nun behoben.
 
 --
 
@@ -178,33 +189,66 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|link:https://marketplace.plentymarkets.com/actionmixpluginmobilenavigation_6529[ActionMix | Plugin | Mobile Navigation^]
-|2.0.0
+|link:https://marketplace.plentymarkets.com/addresscheckdhl_6455[AddressCheckDHL^]
+|1.1.2
 |-
 
-|link:https://marketplace.plentymarkets.com/dynamicrepricing_6904[emarketing Dynamic Repricing^]
-|1.0.0
+|link:https://marketplace.plentymarkets.com/cfourarticlenotifications5_6976[Artikel Verfügbarkeitsbenachrichtigung 5^]
+|3.0.4
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourmanufacturersliderwidget_6905[Hersteller Slider Widget 5^]
-|1.0.0
+|link:https://marketplace.plentymarkets.com/dhlshipping_4871[DHL Shipping (Versenden)^]
+|3.1.5
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourowlsliderwidget5_6908[Owl Carousel Pro 5^]
-|2.0.1
+|link:https://marketplace.plentymarkets.com/dpdshippinguk_5121[DPD Shipping UK^]
+|2.0.3
 |-
 
-|link:https://marketplace.plentymarkets.com/trustami_5496[Trustami Vertrauenssiegel^]
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.6.11
+|-
+
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic - Search & Navigation Platform^]
+|3.3.0
+|-
+
+|link:https://marketplace.plentymarkets.com/klarna_6731[Klarna^]
+|1.1.3
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.6
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent-Widget^]
+|4.4.13
+|-
+
+|link:https://marketplace.plentymarkets.com/scalerion_6926[Scalerion^]
 |1.0.6
 |-
 
-|link:https://marketplace.plentymarkets.com/cytitemavailabilitynotification_6906[Verfügbarkeitsbenachrichtigung^]
-|1.0.0
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify^]
+|2.7.0
+|-
+
+|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
+|2.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/socialmedia_4702[SocialMedia^]
+|1.2.1
 |-
 
 |===
 
 Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
 
 --
 

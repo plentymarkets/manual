@@ -970,6 +970,21 @@ a|Do you want to delete some variations and update others? Enter one of the perm
 |Alphanumeric
 |
 |
+
+|Make available for client despite negative net stock
+|0 +
+1
+|0
+a|Corresponds to the lock symbol in <<item/managing-items#360, Tab: Availability » Area: Client (store)>>.
+
+*_Background info_*: plentymarkets can automatically remove variations from the online store if they are no longer in stock. This automatic process is controlled by the settings in <<item/managing-items#360, Tab: Settings » Area: Availability>>.
+
+Use this mapping field if you want to manually make the variation visible in the online store despite the fact that it’s not in stock.
+
+This setting remains valid until new stock is booked for the variation. Once net stock for the variation becomes positive, the availability and visibility settings if net stock is 0 or negative take effect again.
+
+* 0 = Variation will _not_ manually be made visible
+* 1 = Variation will manually be made visible
 |====
 
 [#2320]
@@ -1354,8 +1369,6 @@ Enter one of the permitted import values into your CSV file. Which value you cho
 
 In other words: If you open the variation once it’s been imported, then you’ll see that the item images were saved as follows.
 
-//Für den Import von Artikelbildern stehen die in <<table-mapping-fields-item-images>> aufgelisteten Felder zur Verfügung. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
-
 [[table-mapping-fields-item-images]]
 .Matching fields for importing item images
 [cols="2,1,4"]
@@ -1363,9 +1376,9 @@ In other words: If you open the variation once it’s been imported, then you’
 |Mapping field |Permitted import values |Explanation
 
 |Image ID
-//woher weiß man die ID? Wo findet man diese Info?
 |Numeric (internal ID)
-|
+|The image's internal ID.
+You can look up image IDs, e.g. by <<data/exporting-data/FormatDesigner/format-types/item-images#, exporting your item images>>.
 
 |Position
 |Numeric
@@ -1398,9 +1411,13 @@ Enter the URL into the CSV file.
 |Corresponds to the information under: +
 <<item/managing-items#300, Tab: Images » URL>>
 
-Enter multiple image URLs into the CSV file. Use the following format. +
+Enter multiple image URLs and position numbers into the CSV file. Use the following format. +
 `image1url;positionImage1,image2url;positionImage2` +
 If no position is transferred, the position corresponds to the order of the URLs.
+
+*_Note_*: If you use this mapping field, then you will not be able to individually control the availabilities.
+In other words, the images will automatically be available for all clients, referrers and listings.
+If you want to control which clients, referrers and listings the image is available for, then use the mapping field *URL* instead.
 
 |Delete images
 |0 +
@@ -1410,7 +1427,18 @@ a|Do you want to delete all of the item’s images? Enter one of the permitted i
 * 0 = No
 * 1 = Yes
 
-*_Note_*: Images that should not be deleted must be entered as URL in the sync.
+|Delete images (IDs, comma-separated)
+|Numeric (internal ID)
+|Do you want to delete some of the item's images?
+Enter the IDs of whichever images should be deleted into your CSV file.
+Use commas to separate the IDs.
+You can look up image IDs, e.g. by <<data/exporting-data/FormatDesigner/format-types/item-images#, exporting your item images>>.
+
+|Delete images (Urls, comma-separated)
+|Alphanumeric
+|Do you want to delete some of the item's images?
+Enter the URLs of whichever images should be deleted into your CSV file.
+Use commas to separate the URLs.
 
 |Link to variation
 |0 +
@@ -1422,33 +1450,61 @@ a|Do you want to link the image to the variation? Enter one of the permitted imp
 
 |Availability client (store)
 |Numeric (internal ID)
-|Corresponds to the drop-down list under: +
+a|Corresponds to the drop-down list under: +
 <<item/managing-items#300, Tab: Images » Option: Availability>>
 
-Enter the IDs of all the clients that should be activated. Separate the IDs with commas.
-You can find the client IDs in the menu *Setup » Client » Select client » Settings*
+*_Making the image available for clients_*:
 
-*-1* activates all clients
+* Enter the plenty-IDs of all the clients that should be activated.
+Separate the IDs with commas.
+You can find the plenty-IDs in the menu *Setup » Client » Select client » Settings » Option: Plenty ID*
+* Alternatively, enter *-1* to activate all clients.
+
+*_Making the image unavailable for clients_*:
+
+* Enter *0* into your CSV file.
+* Alternatively, leave the line empty in the CSV file.
+
+*_Note_*: This mapping field _cannot_ be combined with the mapping field *Multi URL (separated by commas)*.
+Use the field *URL* instead.
 
 |Availability referrers
 |Numeric (internal ID)
-|Corresponds to the drop-down list under: +
+a|Corresponds to the drop-down list under: +
 <<item/managing-items#300, Tab: Images » Option: Availability>>
 
-Enter the IDs of all the referrers that should be activated. Separate the IDs with commas.
-You can find the <<data/internal-IDs#90, referrer IDs>> in the menu *Setup » Orders » Order referrer*
+*_Making the image available for referrers_*:
 
-*-1* activates all referrers
+* Enter the IDs of all the referrers that should be activated. Separate the IDs with commas.
+You can find the <<data/internal-IDs#90, referrer IDs>> in the menu *Setup » Orders » Order referrer*
+* Alternatively, enter *-1* to activate all referrers.
+
+*_Making the image unavailable for referrers_*:
+
+* Enter *0* into your CSV file.
+* Alternatively, leave the line empty in the CSV file.
+
+*_Note_*: This mapping field _cannot_ be combined with the mapping field *Multi URL (separated by commas)*.
+Use the field *URL* instead.
 
 |Availability listings
 |Numeric (internal ID)
-|Corresponds to the drop-down list under: +
+a|Corresponds to the drop-down list under: +
 <<item/managing-items#300, Tab: Images » Option: Availability>>
 
-Enter the IDs of all the listings referrers that should be activated. Separate the IDs with commas.
-You can find the <<data/internal-IDs#90, listing referrer IDs>> in the menu *Setup » Orders » Order referrer*
+*_Making the image available for listings_*:
 
-*-1* activates all listings
+* Enter the IDs of all the listings referrers that should be activated. Separate the IDs with commas.
+You can find the <<data/internal-IDs#90, listing referrer IDs>> in the menu *Setup » Orders » Order referrer*
+* Alternatively, enter *-1* to activate all listings.
+
+*_Making the image unavailable for listings_*:
+
+* Enter *0* into your CSV file.
+* Alternatively, leave the line empty in the CSV file.
+
+*_Note_*: This mapping field _cannot_ be combined with the mapping field *Multi URL (separated by commas)*.
+Use the field *URL* instead.
 
 |Name
 |Alphanumeric
