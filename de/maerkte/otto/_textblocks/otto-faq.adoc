@@ -1,6 +1,3 @@
-[#1300]
-== FAQ
-
 In diesem Kapitel findest du Antworten auf häufig gestellte Fragen.
 (Stand: 21.12.2020)
 
@@ -17,13 +14,30 @@ In diesem Kapitel findest du Antworten auf häufig gestellte Fragen.
   ** <<#13011, productDescription.category>>
   ** <<#13012, Fehlermeldungen zum Auftragsablauf: Carrier ID (X) not mapped in OTTO market config.>>
 
+[#13013]
+=== FAQ: Allgemeine Fragen und Antworten
+
 [#1301]
-=== Wie setzt sich der Produkttitel bei OTTO Market zusammen?
+==== Wie setzt sich der Produkttitel bei OTTO Market zusammen?
 
 Der Titel, der bei OTTO Market an deinem Artikel angezeigt wird, setzt sich aus den folgenden Feldern zusammen, die du im Katalog verknüpfst: *Marke* + *Modell* + *Besondere Merkmale* + alle Felder, bei denen in Klammern *Namenbildend* steht.
 
+[#13014]
+==== Wo hinterlege ich die Versandkosten im OTTO-Partnerportal?
+
+Die Versandkosten für deine OTTO Market-Artikel konfigurierst du im OTTO-Partnerportal. Du kannst dort zwei Versandarten anlegen:
+
+* Paketartikel +
+Für versandkostenfreie Paketlieferung hinterlegst du den Wert *0,00*.
+* Speditionsartikel +
+Für Speditionsversand speicherst du einen Speditionszuschlag, der auf die Standardversandkosten addiert wird.
+
+Ob ein Artikel ein Paketartikel oder ein Speditionsartikel ist, legst du am Artikel fest.
+
 [#1302]
-=== Artikeldatenexport: Warum werden meine Artikel nicht zu OTTO Market exportiert?
+=== FAQ: Artikeldatenexport
+
+==== Warum werden meine Artikel nicht zu OTTO Market exportiert?
 
 Gehe zunächst die <<#2200, _Checkliste:_ Voraussetzungen für den Variantenexport>> durch.
 
@@ -43,9 +57,32 @@ Logs durchsuchen:
   .. *Integration*: Plenty\Modules\Otto\Item\Templates\Mutators\DefaultSkuMutator
   .. *Identifikator*: OTTO Market
 
+[#13016]
+==== Artikelexport: Fehlermeldungen im Log
 
-missing requirements
+[#13023]
+[.collapseBox]
+.missing requirements: delivery.deliveryTime
+--
+* Überprüfe die im Katalog verknüpfte Lieferzeit im Feld *Lieferzeit in Tagen (*)* mit deiner Variante. In der Regel kannst du die Verknüpfung für die Verfügbarkeit deiner Variante vornehmen:
 
+Eine Übersetzung der einzelnen Verfügbarkeitsstufen zur jeweiligen ID findest du im Menü *Einrichtung » Artikel » Verfügbarkeit*.
+--
+
+[#13010]
+[.collapseBox]
+.missing requirements: delivery.type
+--
+Dieser Fehler zeigt an, dass die Versandart nicht verknüpft ist. Die Versandart kann über zwei verschiedene Datenfelder festgelegt werden:
+
+* über ein Versandprofil
+* über eine Eigenschaft
+
+Stelle sicher, dass das im Katalog gespeicherte Datenfeld mit dem Artikel verknüpft ist. Bei dem Versandprofil ist dies das aktivierte Versandprofil im *Tab: Global* des Artikels. Bei der Eigenschaft ist dies die aktivierte und gefüllte Eigenschaft an der jeweiligen Variante.
+--
+
+
+[#13017]
 [.collapseBox]
 .missing requirements: ean
 --
@@ -54,81 +91,97 @@ missing requirements
 * Überprüfe im Menü *Einrichtung » Artikel » Barcode*, ob dein Barcode-Typ für den Marktplatz "OTTO Market" freigegeben ist.
 --
 
+[#1309]
+[.collapseBox]
+.missing requirements: mediaAssets.IMAGE _oder_ mediaAssets
+--
+Beide Fehler haben in der Regel die gleiche Ursache. Dieser Fehler zeigt an, dass du im Katalog entweder kein Datenfeld gewählt hast, oder keines deiner Artikelbilder für die Herkunft *OTTO Market* freigegeben ist. Öffne dazu das *Tab: Bilder* des Artikels aktiviere die Herkunft *OTTO Market*, wie im Kapitel <<Verfügbarkeit am Bild einstellen, Verfügbarkeit am Bild einstellen>> beschrieben.
+--
+
+[#13024]
+[.collapseBox]
+.missing requirements: pricing.standardPrice.amount _oder_ pricing.standardPrice.currency
+--
+* Beide Fehler haben in der Regel die gleiche Ursache. Überprüfe, ob im Feld *Verkaufspreis (*)* des Katalogs eine Verknüpfung zum Verkaufspreis der Variante hinterlegt wurde. Öffne außerdem das Menü *Einrichtung » Artikel » Verkaufspreise* und überprüfe, ob der im Katalog verknüpfte Verkaufspreis für die Herkunft *OTTO Market* aktiviert ist.
+--
+
+[#1308]
+[.collapseBox]
+.missing requirements: productDescription.brand
+--
+Dieser Fehler zeigt an, dass die Marke der Variante, die übertragen werden soll, nicht im Katalog verknüpft ist. Stelle sicher, dass im Katalog ein Datenfeld für die Marke gespeichert wurde und dass dieses Datenfeld mit deinem Artikel verknüpft und ausgefüllt ist.
+
+Die Marke kannst du auf zwei verschiedene Arten mit der Variante verknüpfen:
+
+* Über den Hersteller des Artikels im *Tab: Global* des Artikels
+  . Wenn du die Verknüpfung über den Hersteller vornehmen möchtest, wähle im Katalog *Datenfeld hinzufügen » Hersteller » [Hersteller wählen]*.
+* Über eine Eigenschaft
+
+*_Wichtig:_* Wähle die verknüpfte OTTO-Marke aus der Dropdown-Liste. Eine händische Eingabe der Marke solltest du nicht vorgenommen.
+
+*_Tipp:_* Wenn deine Marke im OTTO-Markenfeld (links) nicht existiert, kannst du die Marke bei OTTO Market registrieren lassen. Genaueres dazu findest du im Helpdesk bei OTTO Market. Marken, die in OTTO Market durch Händler:innen erstellt wurden, sind erst nach der nächsten Aktualisierung in plentymarkets verfügbar. Es kann also bis zu 2 Stunden dauern, bis die neu erstellte Marke wählbar ist.
+--
+
+[#13011]
+[.collapseBox]
+.missing requirements: productDescription.category
+--
+Dieser Fehler zeigt an, dass die Kategorieverknüpfung im Katalog fehlt. Prüfe im Katalog, ob mindestens eine Kategorie der gewünschten Variante mit einer OTTO Market-Kategorie verknüpft ist.
+
+* Überprüfe im Katalog, welche Datenfelder mit dem Marktplatz-Datenfeld *Kategorie (*)* verknüpft sind. Wir empfehlen, bereits bestehende Kategorien (Tab: *Kategorien*) deiner Varianten oder Eigenschaften (Tab: *Eigenschaften*) zu verknüpfen.
+--
+
+[#13018]
 [.collapseBox]
 .missing requirements: sku
 --
 * Überprüfe die Verknüpfungen zu den Feldern *Parent-SKU (*)* und *SKU (*)* im Katalog. Stelle sicher, dass du beide Felder mit mindestens 2 Datenfeldern verknüpft hast, also jeweils ein Feld und ein Ausweichdatenfeld. Eine Empfehlung für die mögliche Verknüpfung findest du  [hier](#sku-validation-error).
 --
 
+[#13019]
 [.collapseBox]
 .missing requirements: stock
 --
 * Die Variante hat keinen positiven Netto-Warenbestand in dem Lager, das im Katalog verknüpft ist. Wenn im Katalog *kein* Lager verknüpft ist, wird die Summe aller Vertriebslager exportiert.
 --
 
-[.collapseBox]
-.missing requirements: productDescription.category
---
-* Überprüfe im Katalog, welche Datenfelder mit dem Marktplatz-Datenfeld *Kategorie (*)* verknüpft sind. Kategorien lassen sich am ehesten über bereits bestehende Kategorien (Tab: *Kategorien*) deiner Varianten oder über Eigenschaften (Tab: *Eigenschaften*) verknüpfen. Prüfe daher, dass jeweils eine Verknüpfung zur Variante besteht.
---
-
-[.collapseBox]
-.missing requirements: productDescription.brand
---
-* überprüfe deine Verknüpften Datenfelder zum Feld "Marke*" des Katalogs. Marken lassen sich am ehesten über bereits bestehende Hersteller (Tab: Global) des Artikels, oder über Eigenschaften (Tab: Eigenschaften) der Varianten verknüpfen. Schaue daher, dass jeweils eine Verknüpfung zur Variante besteht. Solltest du die Verknüpfung über den Hersteller vornehmen wollen, wähle **Datenfeld hinzufügen* > Hersteller > und deinen gewünschten Hersteller* aus.
-
-Es ist außerdem anzumerken, dass die verknüpfte OTTO-Marke im Dropdown ausgewählt werden sollte. Eine händische Eingabe der Marke sollte nicht vorgenommen werden.
-
-Sollte deine Marke im OTTO-Markenfeld (links) nicht existieren, so kannst du die Marke bei OTTO Market registrieren lassen. Genaueres dazu findest du im Helpdesk bei OTTO Market. Beachte außerdem folgendes: [Marken-Aktualisierung](#marken-aktualisierung).
---
-
-[.collapseBox]
-.missing requirements: mediaAssets.IMAGE _oder_ mediaAssets
---
-* Beide Fehler haben in der Regel die gleiche Ursache. Öffne deinen Artikel im *Tab: Bilder*. Überprüfe deine Artikelbilder und stelle sicher, dass die Verfügbarkeit "OTTO Market" jeweils gesetzt wurde:
---
-
-[.collapseBox]
-.missing requirements: delivery.deliveryTime
---
-* überprüfe die im Katalog verknüpfte Lieferzeit im Feld "Lieferzeit in Tagen*" mit deiner Variante. In der Regel kannst du die Verknüpfung für die Verfügbarkeit deiner Variante vornehmen:
-
-Eine Übersetzung der einzelnen Verfügbarkeitsstufen zur jeweiligen ID findest du unter *Einrichtung > Artikel > Verfügbarkeit*.
---
-
-[.collapseBox]
-.missing requirements: pricing.standardPrice.amount _oder_ pricing.standardPrice.currency
---
-* Beide Fehler haben in der Regel die gleiche Ursache. Überprüfe ob im Feld "Verkaufspreis*" des Katalogs eine Verknüpfung zum Verkaufspreis der jeweiligen Variante hinterlegt wurde. Öffne zusätzlich das Menü unter *Einrichtung > Artikel > Verkaufspreise* und überprüfe ob der im Katalog hinterlegte Verkaufspreis für die *Herkunft* "OTTO Market" freigegeben wurde.
---
-
+[#13025]
 [.collapseBox]
 .missing requirements: sku-validation-error, validation error found _oder_ Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.
 --
-Der Fehler wird im Log z.B. auch unter "SKU 1234 nicht generiert", oder "0:"sku" angezeigt
+Der Fehler wird im Log z.B. auch unter *SKU 1234 nicht generiert* oder *0:sku* angezeigt
 
-Im Katalog wird an erster Stelle definiert, aus welcher Quelle die SKU generiert werden soll. Wir unterscheiden dort zwischen einer "Parent-SKU" und einer "Variation-SKU". Die dort gewählte Quelle sollte sich auf eine Datenzeile beziehen, welche einmalig existiert. Es ist also nicht möglich für unterschiedliche Artikel die selbe SKU nochmals zu vergeben.
+Im Katalog wird an erster Stelle definiert, aus welcher Quelle die SKU generiert werden soll. Wir unterscheiden dort zwischen einer *Parent-SKU* und einer *Variation-SKU*. Die dort gewählte Quelle sollte sich auf eine Datenzeile beziehen, die einmalig existiert. Es ist also nicht möglich, für unterschiedliche Artikel dieselbe SKU zu vergeben.
 
-Als Beispiel könnte man also die "Artikel-ID" sowie die "Variation-ID" verwenden. Beide ID´s werden vom System bei der Anlage des Artikels vergeben und existieren nur einmal.
+Als Beispiel könnte man also die "Artikel-ID" sowie die "Variation-ID" verwenden. Beide IDs werden vom System beim Erstellen des Artikels vergeben und existieren nur einmal.
 
-Nun könnte jedoch der Fall eintreten, dass der Artikelexport stattgefunden hat und der Export aufgrund einer fehlenden Information im Katalog in einen Fehler gelaufen ist. Die SKU wurde aber trotzdem geschrieben und ist nun in der Variante im Tab "Verfügbarkeit" sichtbar. Beim nächsten Export würde das System wieder versuchen eine SKU aus denen im Katalog gewählten Quellen zu erstellen. Da diese SKU jedoch bereits existiert kommt es zum Fehler:
+Nun könnte jedoch der Fall eintreten, dass der Artikelexport stattgefunden hat und der Export aufgrund einer fehlenden Information im Katalog in einen Fehler gelaufen ist. Die SKU wurde aber trotzdem geschrieben und ist nun in der Variante im Tab *Verfügbarkeit* sichtbar. Beim nächsten Export würde das System wieder versuchen, eine SKU aus den im Katalog gewählten Quellen zu erstellen. Da diese SKU jedoch bereits existiert kommt es zum Fehler:
 
 > Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique
 
 > SKU 1234 nicht generiert
 
-Aus diesem Grund ist es notwendig ein Ausweich-Datenfeld in den Katalog hinzuzufügen. Das würde dann wie folgt aussehen:
-  ![Bildschirmfoto 2020-10-21 um 10.06.28|690x354](upload://1F55Rvrxp1JGA0eIsysmJE8rgXR.png)
+Deshalb ist es notwendig, im Katalog ein Ausweich-Datenfeld hinzuzufügen. Die Lösung würde dann wie folgt aussehen:
 
-**Achtung: es ist zwingend notwendig, dass beim Hinzufügen der weiteren Quelle der (+)Button "Ausweich-Datenfeld hinzufügen" verwendet wird. Bitte nutze NICHT die Option "Datenfeld hinzufügen", da mit dieser deine SKU´s doppelt erstellt werden und nicht zur gewünschten Lösung beitragen!**
+[[weitere-quelle]]
+.Datenfeld hinzufügen
+image::maerkte/otto/assets/otto-market-weitere-quelle.png[Datenfeld hinzufügen]
 
-Es wird hiermit also eine **2. Quelle** hinzugefügt. Beim nächsten Export wird erstmals auf die 1. Quelle zugegriffen. Da in dieser Quelle bereits eine SKU existiert, wird die 2. Quelle ignoriert. Sollte in der 1. Quelle keine SKU existieren, dann wird mittels der 2. Quelle eine neue erstellt.
+[IMPORTANT]
+.Datenfeld hinzufügen
+====
+Wenn du ein weiteres Datenfeld hinzufügst, ist es zwingend notwendig, dafür die Schaltfläche *Ausweich-Datenfeld hinzufügen* (icon:link[role="yellow"]) auf der rechten Seite des Katalogs zu verwenden. Benutze _nicht_ die Option *Datenfeld hinzufügen* (icon:plus-square[role="green"]), da ansonsten deine SKUs doppelt erstellt werden und der Fehler auf diese Weise nicht behoben werden kann.
+====
+
+Es wird hiermit also ein *_zweites Datenfeld_* hinzugefügt. Beim nächsten Export wird zuerst auf das erste Datenfeld geschaut. Da in diesem Datenfeld bereits eine SKU existiert, wird das zweite Datenfeld ignoriert. Sollte im ersten Datenfeld keine SKU existieren, dann wird mittels des zweiten Datenfeld eine neue SKU erstellt.
 --
 
+[#13026]
 === FAQ: Auftragsbearbeitung
 
-In einigen Fällen kann es unter Umständen zu Fehlermeldungen bei der Verarbeitung der Aufträge kommen. Mögliche Ursachen und häufige Fehler werden hier beschrieben.
-___
+In einigen Fällen kann es zu Fehlern bei der Verarbeitung der Aufträge kommen. Mögliche Ursachen und häufige Fehler werden hier beschrieben.
+
+[#13027]
 ==== Eine Versandbestätigung wurde nicht an OTTO Market gemeldet. Was kann ich tun?
 
 Sollte eine Versandbestätigung nicht an OTTO Market gemeldet worden sein, öffne das Menü unter ***Daten > Log***:
@@ -143,19 +196,19 @@ Bei Bedarf kann zusätzlich nach der Order-ID gefiltert werden:
 **Referenztyp:** orderId
 **Referenzwert:** deine Order-ID
 
-
-==== Mögliche Fehlermeldungen im Log
+[#13028]
+==== Auftragsbearbeitung: Mögliche Fehlermeldungen im Log
 
 [.collapseBox]
 .The return package nor shipping package contain a valid return tracking number.
 --
-* Dieser Fehler tritt in der Regel auf, wenn für den Auftrag zwar eine Paketnummer, aber keine Retouren-Tracking-Number (Retourenlabel) gefunden wurde. Überprüfe dies im Menü unter *Aufträge » Versand-Center*. Retourenlabels werden nach der Suche des jeweiligen Auftrags im Tab "Retourenetiketten" angezeigt. Sollte kein Etikett vorliegen, müsste dieses nachträglich erstellt werden und der Versand erneut gemeldet werden
+* Dieser Fehler tritt in der Regel auf, wenn für den Auftrag zwar eine Paketnummer, aber keine Retouren-Tracking-Number (Retourenlabel) gefunden wurde. Überprüfe dies im Menü *Aufträge » Versand-Center*. Retourenlabels werden nach der Suche des jeweiligen Auftrags im Tab *Retourenetiketten* angezeigt. Wenn kein Etikett vorliegt, muss dieses Etikett nachträglich erstellt werden und der Versand erneut gemeldet werden.
 
-Um den Versand erneut zu melden, muss erneut die Ereignis-Aktion mit der Aktion *Versandinformationen an OTTO melden* ausgelöst werden. Je nach Ereignis muss dieses unter Umständen zuvor rückgängig gemacht werden.
+Um den Versand erneut zu melden, muss die Ereignis-Aktion mit der Aktion *Versandinformationen an OTTO melden* noch einmal ausgelöst werden. Je nach Ereignis muss das Ereignis unter Umständen zuvor rückgängig gemacht werden.
 --
 
 [#1303]
-=== Wie ordne ich ein Retourenpaket dem richtigen Auftrag in plentymarkets zu?
+==== Wie ordne ich ein Retourenpaket dem richtigen Auftrag in plentymarkets zu?
 
 Nachfolgend findest du ein exemplarisches DHL-Retourenetikett. Auf dem Etikett ist ersichtlich, welche Informationen dir zur Verfügung stehen.
 
@@ -164,7 +217,7 @@ Nachfolgend findest du ein exemplarisches DHL-Retourenetikett. Auf dem Etikett i
 image::maerkte/otto/assets/dhl-retourenetikett.png[DHL-Retourenetikett]
 
 [#1304]
-=== Wie finde ich bei Anfragen von Kund:innen einen Auftrag von OTTO Market in plentymarkets?
+==== Wie finde ich bei Anfragen von Kund:innen einen Auftrag von OTTO Market in plentymarkets?
 
 Im plentymarkets Forum wird öfters von *PositionID* (Beispiel: 715e9369-01e3-4d09-ae91-8688dfa139b2) und *SalesOrderID* (Beispiel: 4245eac7-4647-4f76-8c48-261afb19aa96) gesprochen, diese sind für dich als Händler:in jedoch nicht relevant. Diese IDs sind für dich nicht sichtbar - es handelt sich um die Bezeichnung des Auftrags und der enthaltenen Positionen in der plentymarkets Datenbank.
 
@@ -195,34 +248,12 @@ Wenn Kund:innen eine Rückfrage zum Auftrag haben, findest du den Auftrag anhand
 Natürlich kannst du mit dem Filter *Herkunft* natürlich immer alle OTTO Market-Aufträge filtern.
 
 [#1305]
-=== Mir wird ein Fehler im Log angezeigt. Wie behebe ich den Fehler?
-
-Die folgenden Kapitel zeigen die häufigsten Fehlermeldungen im Log und bieten Lösungsansätze.
-
-[#1306]
-==== Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.
-
-Dieser Fehler wird im Log z.B. auch unter "SKU 1234 nicht generiert" oder "0:sku" angezeigt.
-
-Im Katalog wird an erster Stelle definiert, aus welchem Datenfeld die SKU generiert werden soll. Wir unterscheiden dort zwischen einer *Parent-SKU* und einer *Variation-SKU*. Das dort gewählte Datenfeld sollte sich auf eine Datenzeile beziehen, die einmalig existiert. Es ist also nicht möglich, für verschiedene Artikel dieselbe SKU nochmals zu vergeben. Als Beispiel könntest du also die *Artikel-ID* sowie die *Variation-ID* verwenden. Beide IDs werden vom plentymarkets System bei der Anlage des Artikels vergeben und existieren jeweils nur einmal. Nun könnte jedoch der Fall eintreten, dass der Artikelexport stattgefunden hat und der Export aufgrund einer fehlenden Information im Katalog in einen Fehler gelaufen ist. Die SKU wurde aber trotzdem geschrieben und ist nun in der Variante im Tab *Verfügbarkeit* sichtbar. Beim nächsten Export würde das plentymarkets System wieder versuchen, eine SKU aus den im Katalog gewählten Datenfeld zu erstellen. Da diese SKU jedoch bereits existiert, kommt es zum Fehler "Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique." / "SKU 1234 nicht generiert.".
-
-Deshalb ist es notwendig, im Katalog ein Ausweich-Datenfeld hinzuzufügen. Die Lösung würde dann wie folgt aussehen:
-
-[[weitere-quelle]]
-.Datenfeld hinzufügen
-image::maerkte/otto/assets/otto-market-weitere-quelle.png[Datenfeld hinzufügen]
-
-[IMPORTANT]
-.Datenfeld hinzufügen
-====
-Wenn du ein weiteres Datenfeld hinzufügst, ist es zwingend notwendig, dafür die Schaltfläche *Ausweich-Datenfeld hinzufügen* (icon:link[role="yellow"]) auf der rechten Seite des Katalogs zu verwenden. Benutze _nicht_ die Option *Datenfeld hinzufügen* (icon:plus-square[role="green"]), da ansonsten deine SKUs doppelt erstellt werden und der Fehler auf diese Weise nicht behoben werden kann.
-====
-
-Es wird hiermit also ein *_zweites Datenfeld_* hinzugefügt. Beim nächsten Export wird zuerst auf das erste Datenfeld geschaut. Da in diesem Datenfeld bereits eine SKU existiert, wird das zweite Datenfeld ignoriert. Sollte im ersten Datenfeld keine SKU existieren, dann wird mittels des zweiten Datenfeld eine neue SKU erstellt.
+==== Auftragsbearbeitung: Fehlermeldungen im Log
 
 [#1307]
-==== *Code: 200009 - ATTRIBUTE_CHANGE_DENIED* oder *title: Der Wert dieses Feldes kann nicht geändert werden.*
-
+[.collapseBox]
+.*Code: 200009 - ATTRIBUTE_CHANGE_DENIED* _oder_ *title: Der Wert dieses Feldes kann nicht geändert werden.*
+--
 Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vorgenommen hast. Diese Änderung wird von OTTO jedoch nicht akzeptiert und es ist nicht möglich, das Attribut für diesen Artikel zu ändern. Das dort bemängelte Attribut kann sich zum Beispiel auf ein variantenbildendes Attribut oder auch auf ein titelbildendes Attribut beziehen. Auch weitere OTTO-Attribute spielen hierbei eine Rolle.
 
 [TIP]
@@ -230,38 +261,11 @@ Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vor
 ====
 Ein Artikel kann bei OTTO Market _nicht_ gelöscht werden, weder durch plentymarkets noch durch OTTO selbst. Es ist lediglich möglich, den Artikel auf OTTO Market als *nicht verfügbar* zu kennzeichnen. Deshalb solltest du vor der Artikelübertragung immer sicherstellen, dass im Katalog die korrekten Datenfelder verknüpft wurden.
 ====
-
-[#1308]
-==== productDescription.brand
-
-Dieser Fehler zeigt an, dass die Marke der Variante, die übertragen werden soll, nicht im Katalog verknüpft ist. Die Marke kannst du auf zwei verschiedene Arten mit der Variante verknüpfen:
-
-* über den Hersteller des Artikels im *Tab: Global* des Artikels
-* über eine Eigenschaft
-
-Stelle sicher, dass im Katalog ein Datenfeld für die Marke gespeichert wurde und dass dieses Datenfeld mit deinem Artikel verknüpft und ausgefüllt ist.
-
-[#1309]
-==== mediaAssets.IMAGE
-
-Dieser Fehler zeigt an, dass du im Katalog entweder kein Datenfeld gewählt hast, oder keines deiner Artikelbilder für die Herkunft *OTTO Market* freigegeben ist. Öffne dazu das *Tab: Bilder* des Artikels aktiviere die Herkunft *OTTO Market*, wie im Kapitel <<Verfügbarkeit am Bild einstellen, Verfügbarkeit am Bild einstellen>> beschrieben.
-
-[#13010]
-==== delivery.type
-
-Dieser Fehler zeigt an, dass die Versandart nicht verknüpft ist. Die Versandart kann über zwei verschiedene Datenfelder festgelegt werden:
-
-* über ein Versandprofil
-* über eine Eigenschaft
-
-Stelle sicher, dass das im Katalog gespeicherte Datenfeld mit dem Artikel verknüpft ist. Bei dem Versandprofil ist dies das aktivierte Versandprofil im *Tab: Global* des Artikels. Bei der Eigenschaft ist dies die aktivierte und gefüllte Eigenschaft an der jeweiligen Variante.
-
-[#13011]
-==== productDescription.category
-
-Dieser Fehler zeigt an, dass die Kategorieverknüpfung im Katalog fehlt. Prüfe im Katalog, ob mindestens eine Kategorie der gewünschten Variante mit einer OTTO Market-Kategorie verknüpft ist.
+--
 
 [#13012]
-==== Fehlermeldungen zum Auftragsablauf: Carrier ID (X) not mapped in OTTO market config.
-
+[.collapseBox]
+.*Carrier ID (X) not mapped in OTTO market config.*
+--
 Prüfe, ob im Assistenten *OTTO Market Grundeinstellungen* im Menü *Einrichtung » Assistenten » Omni-Channel* im Schritt *Versanddienstleister* Versanddienstleister mit OTTO Market verknüpft wurden.
+--
