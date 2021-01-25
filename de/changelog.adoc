@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 24. Dezember 2020
-:endWeekDate: 30. Dezember 2020
-:nav-alias: Changelog 30. Dezember 2020
+:startWeekDate: 14. Januar 2021
+:endWeekDate: 20. Januar 2021
+:nav-alias: Changelog 20. Januar 2021
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,20 +31,25 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 [discrete]
 === Aufträge
 
-* Für die neuen Zahlungsbedingungen wurde der Platzhalter `[DateOfPayment]` in den Dokumenteinstellungen hinzugefügt um das Zahlungsziel als Datum auf dem Dokument aufzudrucken zu können.
-* Im Menü *Waren » Bestellwesen » Bestellung* wurde eine neue Spalte zur Auftragspositionen-Tabelle, Auftragspositionen-Suchtabelle und Warenkorbtabelle hinzugefügt. Die neuen Spalte ist *Lieferanten-Artikel-Bez.* (nur für Nachbestellungen verfügbar). Diese Spalte ist optional. Sie wird nicht standardmäßig in der Tabelle angezeigt. Klicke auf *Spalten konfigurieren*, um sie zur Tabelle hinzuzufügen.
+* Es gibt bei Nachbestellungen jetzt einen neuen Filter für die Lieferanten-Artikel-Nummer.
+* Es wurde bei Bestellungen die Spalte „Modell“ der Variante hinzugefügt.
+
+[discrete]
+=== Dokumente
+
+* Auf dem Dokument für Nachbestellungen ist jetzt ein Feld für die Lieferanten-Artikel-Bezeichnung verfügbar.
+* Den Freitextfeldern 1 und 2 in den Dokumenteinstellungen für Auftragsdokumente steht ein neuer Platzhalter zur Verfügung: [ExternalOrderID], die die externe Auftrags-ID ausgibt.
 
 [discrete]
 === Kataloge
 
-* Wir haben eine Suche in die Datenfeldauswahlliste hinzugefügt. Gegenüber der Suche im alten Katalog, ist es nun möglich alle Werte zu durchsuchen.
+* Ab sofort kann man die verknüpften Datenfelder via Drag and Drop verschieben.
+* Das Design in der Kataloge-UI wurde aktualisiert.
 
 [discrete]
-=== Mein Konto
+=== ShopBuilder
 
-* Ab sofort ist es im Mein Konto-Bereich möglich, die Messenger-Nachrichten für einen gewissen Zeitraum, zum Beispiel nach dem letzten Abrechnungszeitraum, zu filtern. Außerdem wird die Summe der kostenpflichtigen und kostenlosen Supportminuten ausgegeben.
-+
-image:changelog/assets/mein-konto-messenger-filter.png[width=640]
+* Im ShopBuilder 2.0 wurde die Vorschaufunktion hinzugefügt.
 
 '''
 
@@ -54,9 +59,10 @@ image:changelog/assets/mein-konto-messenger-filter.png[width=640]
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== Kataloge
 
-* Bei der Übernahme von einem Gutschein mit Festbetrag in Retouren oder Gutschriften wird der Gutschein nicht mehr Anteilig auf die Artikelpositionen aufgeteilt, sondern immer vollständig übernommen.
+* Für die Standardformate haben wir den Eintrag *Zuordnung* in der Seitennavigation in *Datenfelder* umbenannt.
+* Fügt man ein Datenfeld hinzu, das eine Zuordnung besitzt, wird nun automatisch der erste Wert als Standard angezeigt.
 
 '''
 
@@ -66,43 +72,27 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
-=== Amazon
-
-* Die Ereignisaktion *Rechnung bei Amazon hochladen* fügt nun keine Aufträge mehr zur Warteschlange hinzu, die keine Rechnung besitzen.
-* Sollte bei einem Auftrag in der Warteschlange die Rechnung fehlen, wird dieser Auftrag ab jetzt entsprechend markiert und innerhalb der Warteschlange zurückgestellt, bis eine Rechnung hinzugefügt wurde und eine Ereignisaktion oder ein Prozess sie wieder als fertig für das Hochladen markiert hat.
-
-[discrete]
-=== Amazon VCS
-
-* Beim stündlichen Import der VCS-Berichte von Amazon bei VCS Lite/VCS plentymarkets kann es aufgrund von vielen großen Berichten dazu kommen, dass der Prozess zu lange läuft und abbricht. Wenn dies passiert, wurde bisher keiner der bereits verarbeiten Berichte als gelesen markiert, weil dies erst am Ende des Prozesses passierte. Dadurch konnten diese großen Berichte dauerhaft den Prozess anhalten.
-+
-Diesem Verhalten wird nun entgegengewirkt, indem vor der Verarbeitung eines Berichts die Größe geprüft wird. Wenn die Größe einen bestimmten Wert übersteigt, werden die bisher verarbeiteten Berichte als gelesen markiert, so dass sie zumindest nicht nochmal verarbeitet werden.
-
-[discrete]
 === Aufträge
 
-* Wenn bei der Einstellung *Zuordnung des Lagers* unter *Einrichtung » Aufträge » Einstellungen* die Einstellung auf *a) pro Auftrag kann ein Lager zugeordnet werden* gesetzt ist, wurde die Lageränderung über den Auftrag (Reiter *Einstellungen*) zwei mal ausgeführt, was zur Folge hatte, dass auch die Warenbestands-Berechnung sowie Ereignisaktionen doppelt ausgeführt wurden. Dies wurde behoben.
-* Bei der automatischen Zahlungszuordnung konnte es zu einem Fehler kommen, wenn in den Einstellungen unter *Aufträge » Zahlung » Eingänge » Aufträge mit folgenden Zahlungsarten von der automatischen Zuordnung ausschließen* Zahlungsmethoden ausgeschlossen wurden. Dies wurde behoben.
-* Seit mit der neuen Auftrags-Logik unzugeordnete Auftragspositionen keine Lagerinformation mehr haben, wurden unzugeordnete Positionen nicht auf der Pickliste gelistet. Das wurde behoben, diese werden wie gewohnt auf der Pickliste ausgegeben.
+* Es wird jetzt beim Gruppieren von Aufträgen validiert, dass die Währung und der Wechselkurs der Aufträge übereinstimmt.
+* Es konnte vorkommen, dass die Fremdwährung eines Lieferanten nicht korrekt in die Nachbestellung übernommen wurde.
 
 [discrete]
-=== Prozesse
+=== Dokumente
 
-* Im Arbeitsschritt *Wareneingang* lassen sich nun keine Lagerorte mehr erfassen, die nicht im ausgewählten Lager angelegt sind.
-
-'''
+* Der Platzhalter für Rechnungsdatum hatte auf Auftragsdokumenten in manchen Fällen nicht funktioniert.
 
 [discrete]
-== Gelöscht
+=== Kataloge
 
-Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* gelöscht.
-
-[discrete]
-=== Aufträge
-
-* Du kannst nun nicht mehr den Versanddienstleister eines Auftrages direkt ändern. Der Versanddienstleister wird immer über das hinterlegte Versandprofil ermittelt und wird automatisch gesetzt.
-+
-Das Setzen eines Versanddienstleister der nicht mit dem Dienstleister des Versandprofiles übereinstimmt konnte zu Problemen führen. Entfernt wurde die Funktionalität aus der Auftragsdetail-Ansicht, sowie aus der Gruppenfunktion der Auftragssuche.
+* Aufgrund eines Fehlers kam es vor, dass Feldnamen überlappt dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass der Editiermodus die ganze Zeit aktiv war, obwohl man sich nicht mehr in diesem befand. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass leere Portlets angezeigt wurden, wenn der Toggle für die Anzeige der Pflichtfelder aktiv war. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es bei einer Vielzahl von verknüpften Werten vor, dass die Einstellungsbuttons auf der rechten Seite nicht richtig dargestellt wurden. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass ein langer Katalogname fehlerhaft in der Seitennavigation dargestellt wurde. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers kam es vor, dass unten im Katalog eine nutzlose Scrollbar angezeigt wurde. Diese haben wir entfernt.
+* Aufgrund eines Fehlers waren die Datenfelder im Data Picker fehlerhaft sortiert. Diesen Fehler haben wir behoben.
+* Erstellte man einen Katalog, wurde dieser nicht direkt in der Übersicht angezeigt. Diesen Fehler haben wir nun behoben.
 
 --
 
@@ -111,14 +101,48 @@ early::
 --
 
 [discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Unter *Einrichtung » Aufträge » Status* kann mittels eines Toggles die Status-ID dem Namen vorangestellt werden. Die ID und der Name werden dabei durch eine Pipe (|) getrennt. Der Status wird dann an allen Stellen im System entsprechend mit ID und Name ausgegeben.
++
+image:changelog/assets/toggle-status-id.png[width=640, alt=Der Toggle für die Status-ID und Auswirkungen auf die Tabelle.]
++
+Weitere Informationen findest du auf der Handbuchseite <<auftraege/auftraege-verwalten#1200, Aufträge verwalten>>.
+* Wenn nun eine Gutschrift (PDF) erstellt wird, wird eine Referenz zur aktuell gültigen Rechnung des Auftrages erstellt.
+* Die Spalte mit dem Burger Icon in der Dokumententabelle der Nachbestellung und der Umbuchung wurde geändert. Statt des Burger Icons gibt es nun zwei Spalten. Eine mit einer Schaltfläche für Download und die andere mit einer Schaltfläche für Löschen.
+* Die Spalten Varianten-ID und Variantennr. wurden in den Tabellen der Nachbestellung und Umbuchung hinzugefügt. Die Anzeige dieser Spalten ist optional, sie sind nicht standardmäßig ausgewählt. Nutze zur Auswahl Spalten konfigurieren.
+
+[discrete]
+=== Kataloge
+
+* Ab sofort können Feldgruppen aus dem Data Picker hinzugefügt werden.
+
+[discrete]
+=== OTTO Market
+
+* Wir haben den Assistenten der OTTO Market-Grundeinstellungen um Einstellungen für Retouren-Versanddienstleister erweitert. Mit dieser Einstellung können die Retouren-Versanddienstleister aus plentymarkets mit denen von OTTO Market verknüpft werden. Außerdem ist es möglich, über diese Einstellung das Verhalten einer alternativen Ermittlung des Retouren-Versanddienstleisters zu konfigurieren.
+
+'''
+
+[discrete]
 == Geändert
 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== OTTO
 
-* Aufträge die einen gebuchten Warenausgang haben können zukünftig nicht mehr gruppiert werden.
+* In einem OTTO Katalog wird nun immer das virtuelle Gesamtlager genommen, wenn kein Warenhaus bei Bestand verknüpft ist.
+
+[discrete]
+=== OTTO Market
+
+* Der Rückerstattungs-Import in OTTO Market kann nun damit umgehen, wenn wir die serverseitige Drosselung von OTTO erreichen.
 
 '''
 
@@ -130,18 +154,9 @@ Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
 [discrete]
 === Aufträge
 
-* Die Artikelansicht bleibt jetzt geöffnet, wenn du zu einem anderen Bereich navigierst. Diese Anpassung gilt sowohl für Nachbestellungen als auch für Umbuchungen.
-* n der neuen Auftragsanlage werden bei der automatischen Vervollständigung der Zahlungsarten jetzt auch die alten Zahlungsarten angezeigt.
-
-[discrete]
-=== Ereignisaktionen
-
-* Der Filter *Kundenklasse* hat bei Gastbestellungen ohne Kontakt nicht korrekt funktioniert. Nun wird in diesen Fällen die Standard-Kundenklasse des Mandanten genommen, in dem der Auftrag angelegt wurde.
-
-[discrete]
-=== plentyShop
-
-* Aufgrund eines Fehlers in der Eigenschaften-UI, wurden verknüpfte Eigenschaften im Ceres-Shop nicht auf Dänisch und Norwegisch angezeigt. Diesen Fehler haben wir behoben.
+* Mit der neuen Auftragslogik wurden bei der Erstellung von Retouren und Gutschriften aus Aufträgen mit verkauften Gutscheinen auch Codes für die Gutscheine generiert, die aber nirgends zu sehen waren. Dies wurde behoben, es werden nur noch Codes generiert für Aufträge, Vorbestellungen, Gewährleistungen und Reparaturen generiert.
+* Bei Abonnements wurden die Artikelnamen in der Artikelliste konnten nicht geändert werden. Dies wurde nun behoben, Artikelnamen können dort wieder angepasst werden.
+* Bei einem Wechsel der Zahlungsart wurde der Rabatt der Kundenklasse nicht korrekt neu bestimmt.
 
 --
 
@@ -157,9 +172,77 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |Version
 |To-do
 
-|N/A
-|N/A
-|N/A
+|link:https://marketplace.plentymarkets.com/amazonvcsdashboard_6279[AmazonVCSDashboard^]
+|2.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/payuponpickup_4757[Barzahlung^]
+|2.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
+|5.0.20
+|-
+
+|link:https://marketplace.plentymarkets.com/clearvat_6925[ClearVAT^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexport_4763[Elastischer Export^]
+|1.6.6
+|-
+
+|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
+|1.0.36
+|-
+
+|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
+|1.0.8
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de^]
+|3.0.0
+|
+
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.20
+|-
+
+|link:https://marketplace.plentymarkets.com/invoice_4760[Kauf auf Rechnung^]
+|2.0.8
+|-
+
+|link:https://marketplace.plentymarkets.com/debit_6362[Lastschrift^]
+|1.0.12
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.19
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.1.1
+|-
+
+|link:https://marketplace.plentymarkets.com/paypal_4690[PayPal^]
+|5.5.0
+|-
+
+|link:https://marketplace.plentymarkets.com/sendcloudplugin_6985[SendCloud^]
+|0.9.5
+|-
+
+|link:https://marketplace.plentymarkets.com/prepayment_4758[Vorkasse^]
+|3.0.5
+|-
+
+|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce^]
+|2.6.0
+|-
+
+|link:https://marketplace.plentymarkets.com/d2gpmpluginpaymenticons_7033[Zahlungs Icons Widget^]
+|1.0.4
+|-
 
 |===
 
