@@ -194,13 +194,86 @@ TIP: You can create only one catalogue for limango. Multiple catalogues are curr
 :catalogue-template-name: limango
 :catalogue-plugin:
 
-
 include::_textblocks/instructions/creating-catalogues.adoc[]
 
 [#903]
 === Mapping data fields in the catalogue
 
 include::_textblocks/instructions/catalogue-map-data-fields.adoc[]
+
+[#905]
+=== Notes on mapping data fields
+
+Every market structures item data differently. As such, there are some particularities for each market when mapping data fields. <<#catalogue-limango-mappings>> contains mapping information for important data fields for limango.
+
+[[catalogue-limango-mappings]]
+.Notes on catalogue mappings
+[cols="1,3"]
+|====
+| Marketplace data field | plentymarkets data field
+
+| *Description*
+a| If you want to sell shoes on the market, all information regarding the material of your products must be exported to limango using the data field *Description*. To do this, you combine two plentymarkets data fields and export them as one filed to limango.
+
+First, decide how you want to manage material information for your items. There are two ways to manage material information for limango:
+
+* Enter the material information in the data field *Technical data* of the item.
+
+_or_
+
+* Create a property of the type *Text*. Link this property to the main variation of the item and manage the material information in this property.
+
+Now, map the plentymarkets data field that you want in the catalogue:
+
+. Map the plentymarkets data field that contains the item description to the marketplace data field *Description*.
+. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
+. Map the plentymarkets data field that contains the material information. +
+*_Tip:_* This is either the field *Technical data* or the property that you created for the material information.
+. To the right of the column, click on *Settings* (icon:cog[]).
+. From the drop-down list *Separator*, select the option *Space*.
+
+| Measurements with corresponding data fields in plentymarkets +
+(*Length*; +
+*Width*; +
+*Height*; +
+etc.)
+a| Measurements must be exported to limango with the format *[numeric value];[unit]*. In plentymarkets, the numerical value and the unit are saved in separate data fields. As such, for mapping you combine two plentymarkets data fields and use a semicolon as the separator.
+
+[.collapseBox]
+.*_Example:_* Exporting the length to limango
+--
+. Map the marketplace data field *Length* to the plentymarkets data field *Length mm*.
+. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
+. Map a field *Own value*.
+. Enter *mm* in this field.
+. To the right of the column, click on *Settings* (icon:cog[]).
+. From the drop-down list *Separator*, select the option *Semicolon*.
+--
+
+| Measurements without corresponding data fields in plentymarkets +
+(e.g. *Diameter*; +
+*Leg height*; +
+*Heel height*; +
+etc.)
+a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Create two properties for measurements for which no data field exists in plentymarkets:
+
+* One property of the type *Decimal number* for the numerical value.
+* One property of the type *Selection* for the unit.
+
+[.collapseBox]
+.*_Example:_* Exporting the diameter to limango
+--
+. Create a property of the type *Decimal number* with the name *Diameter*.
+. Create a property of the type *Selection* with the name *Diameter unit*.
+. Add the units you need to the property *Diameter unit* as property values. +
+*_Tip:_* If you are sure that you only need one unit for all your items, you can also export the unit by entering it as an own value (as in the example for *Length* above).
+. Map the marketplace data field *Diameter* to the plentymarkets data field *Diameter*.
+. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
+. Map the property *Diameter unit*.
+. To the right of the column, click on *Settings* (icon:cog[]).
+. From the drop-down list *Separator*, select the option *Semicolon*.
+--
+|====
 
 [#800]
 === Linking variations with the property limangoTemplate
@@ -210,6 +283,7 @@ Items that you want to sell on limango have to be linked with the *limangoTempla
 :property-link: limangoTemplate
 
 include::_textblocks/instructions/properties-link-to-variation.adoc[]
+
 
 [#904]
 === Activating the catalogue
@@ -251,14 +325,14 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 [#1300]
 == Setting up automatic shipping confirmations
 
-Set up an <<automation/event-procedures#, event procedure>> to automatically send a shipping confirmation to notify limango when outgoing items have been booked for an order.
+Set up an <<automation/event-procedures#, event procedure>> to automatically send a shipping confirmation to limango when outgoing items have been booked for an order.
 
 :table-event-procedure: <<#event-procedure-shipping-confirmation-limango>>
 
 include::../_includes/textblocks/instructions/EA.adoc[]
 
 [[event-procedure-shipping-confirmation-limango]]
-.Event procedure for notifying limango of complete shipments
+.Event procedure to notify limango of shipments
 [cols="1,2,2"]
 |===
 |Setting |Option |Selection
@@ -277,7 +351,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 
 | *Procedure*
 | *Plugin*
-| *Notify limango of complete shipments*
+| *Send shipping confirmation to limango*
 |===
 
 [#1000]
@@ -387,7 +461,4 @@ Entering return information for limango delivery notes:
 .Text: return instructions for limango delivery notes
 --
 include::_textblocks/explanations/limango-delivery-note-text.adoc[]
-
-
-
 --
