@@ -132,231 +132,9 @@ Bankdaten migrieren:
 *500* = 500 Datensätze werden migriert. Wenn sehr viele Bankdaten migriert werden müssen, *500* wählen, damit die Migration unterteilt wird.
 |====
 
-[#70]
-== EBICS einrichten
+include::./_textblocks/ebics.adoc[]
 
-[WARNING]
-.Integration per Plugin
-====
-Die EBICS-Integration in plentymarkets erfolgt über das EBICS-Plugin, das im link:https://marketplace.plentymarkets.com/plugins/payment/Ebics_5098[plentyMarketplace^]{nbsp}icon:external-link[] verfügbar ist.
-====
-
-EBICS (Electronic Banking Internet Communication Standard) bezeichnet einen in Deutschland multibankfähigen Standard für die Übertragung von Zahlungsverkehrsdaten über das Internet. Durch die Umstellung auf das standardisierte EBICS-Verfahren wird der Abruf von Zahlungen vereinfacht und einheitlich. Das Plugin integriert EBICS vollständig in plentymarkets. Somit ist der Umweg über Drittanbieter nicht nötig.
-Für die Kommunikation per EBICS werden deine Umsätze in einer Datei ähnlich einem Kontoauszug bei deiner Bank gespeichert. Die Datei wird von plentymarkets importiert und die Umsätze werden in deinem plentymarkets System gebucht. Das verknüpfte EBICS-Konto stellt eine Art Verbundkonto dar, das mehrere Bankkonten umfassen kann. Täglich wird eine Datei mit allen Umsätzen des EBICS-Kontos erzeugt. Diese Datei kann dann nachts abgerufen werden und am nächsten Morgen stehen alle Eingänge des Tages zur Verfügung. Außerdem werden täglich mehrere Dateien mit Vormerkposten erzeugt, die ebenfalls abgerufen werden können, um die Vormerkposten in dein plentymarkets System einzubuchen.
-
-[#80]
-=== EBICS bei deiner Bank beantragen
-
-Zuerst beantragst du bei deiner Bank einen EBICS-Zugang. Du erhältst daraufhin Unterlagen von deiner Bank, die du ausfüllst und an die Bank zurückschickst. Die nachfolgenden Angaben in den Unterlagen sind für EBICS Pflicht.
-
-[IMPORTANT]
-.Bestehende EBICS-Konten
-====
-Bereits bestehende und verwendete EBICS-Konten dürfen nicht in plentymarkets eingerichtet werden. Ein EBICS-Konto kann mehrere Benutzer, Teilnehmer genannt, haben. Beantrage also ggf. einen neuen Teilnehmer (auch techn. Teilnehmer möglich), den du ausschließlich für plentymarkets verwendest.
-====
-
-[#90]
-==== Kontonummern
-
-Gib die Kontonummern der Konten ein, für die der Abruf der Umsätze in plentymarkets eingebucht werden soll. Die Angabe von Kontonummern ist optional, da der Abruf technisch über die Benutzerdaten erfolgt. Weitere Informationen zur Angabe bzw. Nichtangabe von Kontonummern findest du in <<tabelle-bankdaten-auszugsbereitstellung>>.
-
-[IMPORTANT]
-.Nur Geschäftskonten hinterlegen
-====
-Es besteht in plentymarkets derzeit keine Möglichkeit, einzelne Konten individuell für den EBICS-Abruf einzurichten. Das heißt, dass die Zahlungsvorgänge deiner Bank nur global für alle angegebenen Konten des plentymarkets Systems abgerufen werden können. Dazu zählen z.B. auch Zahlungsvorgänge deines Privatkontos, falls dieses hinterlegt wurde. Um dies zu vermeiden, hinterlege nur die Kontonummern der Geschäftskonten.
-====
-
-[WARNING]
-.Gleiches Konto für mehrere Benutzer:innen
-====
-Verweisen mehrere Benutzer:innen auch aus verschiedenen plentymarkets Systemen auf dasselbe Konto (bei vielen Banken werden mehrere Konten auch in einem Verbundskonto geführt), kann dies zu Problemen beim Abruf führen, wenn die Aufrufe parallel laufen. Dies lässt sich derzeit nicht abfangen.
-====
-
-[#100]
-==== Auszugsbereitstellung
-
-Die Auszugsbereitstellung kann entweder buchungstagsorientiert oder auszugsorientiert erfolgen.
-
-[[tabelle-bankdaten-auszugsbereitstellung]]
-.Auszugsbereitstellung
-[cols="1,3"]
-|====
-|Einstellung |Erläuterung
-
-| *Buchungstagsorientiert*
-|Eine fiktive fortlaufende Auszugsnummer wird mitgeliefert. Diese Einstellung ist standardmäßig voreingestellt.
-
-| *Auszugsorientiert*
-|Die effektive Auszugsnummer wird mitgeliefert. Voraussetzung hierfür ist eine tägliche automatische Auszugserstellung.
-|====
-
-[#110]
-==== Teilnehmer
-
-Bei der Umstellung deiner Konten auf EBICS erstellst du für deine Konten einen oder mehrere <<business-entscheidungen/benutzerkonten-zugaenge#10, Benutzer>>. Benutzer werden unter EBICS als Teilnehmer bezeichnet. Du kannst Teilnehmer mit unterschiedlichen Auftragstypen anlegen. Von diesen Teilnehmern muss ein Teilnehmer mittels der von der Bank erhaltenen *Teilnehmer-ID* im plentymarkets System gespeichert werden.
-
-plentymarkets benötigt nur einen Teilnehmer, z.B. einen technischen Teilnehmer mit den niedrigsten Berechtigungen, um den EBICS-Zahlungsabruf durchzuführen. Pro EBICS-Konto darf nur ein Teilnehmer eingerichtet werden.
-
-[#120]
-==== Auftragstyp
-
-In der folgenden <<tabelle-auftrag-unterschrift-typen>> werden die Auftragstypen erläutert, die plentymarkets für einen erfolgreichen Abruf der Buchungen deines EBICS-Kontos benötigt. Beachte zudem die Erläuterungen zu den Auftrags- und Unterschriftstypen im Formular deiner Bank.
-
-[[tabelle-auftrag-unterschrift-typen]]
-.Auftrags- und Unterschriftstypen
-[cols="1,3"]
-|====
-|Typ |Erläuterung
-
-| *STA*
-|Tagesumsätze *MT940* bzw. *CAMT053*. Der <<payment/bankdaten-verwalten#180, Abruf der Transaktionen>> erfolgt am Ende des Tages.
-
-| *VMK*
-|Vormerkposten *MT942* bzw. *CAMT052*. Vormerkposten der Transaktionen, die von Bank zu Bank unterschiedlich mehrmals am Tag erzeugt und zum Download bereitgestellt werden. Diese <<payment/bankdaten-verwalten#190, Angabe>> ist für plentymarkets optional.
-
-| *EU Typ „T“*
-|Unterschriftstyp, der ausschließlich zum Abruf der Transaktionsdaten berechtigt.
-|====
-
-[#140]
-=== EBICS-Konto in plentymarkets anlegen
-
-Nachdem deine Konten für EBICS eingerichtet worden sind, erhältst du von der Bank ein Schreiben mit den Daten, die du in plentymarkets speichern musst, um EBICS einzurichten.
-
-.Neues EBICS-Konto hinzufügen
-
-Nachdem du das EBICS-Plugin in deinem plentymarkets System bereitgestellt hast, kannst du dein EBICS-Konto einrichten.
-
-[.instruction]
-Neues EBICS-Konto hinzufügen:
-
-. Öffne das Menü *Einrichtung » Aufträge » Zahlung » Plugins » EBICS*.
-. Klicke auf *Neues Konto erstellen*. +
-→ Das Fenster *Neues Konto* wird geöffnet.
-. Gib die Daten ein, die dir von deiner Bank zugesendet wurden. Beachte hierzu die Informationen in Tabelle <<tabelle-kontoeinstellungen-ebics>>. +
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
-
-[[tabelle-kontoeinstellungen-ebics]]
-.Kontoeinstellungen für EBICS
-[cols="1,3"]
-|====
-|Einstellung |Erläuterung
-| *Aktiv*
-|Klicke auf die Umschaltfläche, um das Konto als aktiv zu markieren.
-| *Kontoname*
-|Gib einen internen Namen ein, unter dem das Konto in der Übersicht erscheinen soll.
-| *Vorname*
-|Gib den Vornamen der Kontoinhaber:in ein.
-| *Nachname*
-|Gib den Nachnamen der Kontoinhaber:in ein.
-| *Bank-Teilnehmer-ID*
-|Gib die Bank-Teilnehmer-ID wie von der Bank mitgeteilt ein.
-| *Bank-Kunden-ID*
-|Gib die Bank-Kunden-ID wie von der Bank mitgeteilt ein.
-| *Bank*
-|Wähle eine Bank aus der Liste.
-| *Bank erstellen*
-|Auswählen, um eine Bank hinzuzufügen, die nicht in der Liste aufgeführt ist. +
-*Bank*: Namen der Bank eingeben +
-*URL*: Host-URL wie von der Bank mitgeteilt eingeben. +
-| *Vormerkposten*
-|Aus dem Dropdown-Menü wählen, mit welchem Verfahren die Tagesumsätze abgerufen werden. Details sind bei deiner Bank verfügbar.
-| *Accountversion*
-|Aus dem Dropdown-Menü wählen, welche Accountversion verwendet werden soll. Details sind bei deiner Bank verfügbar.
-| *Tagesumsätze*
-|Aus dem Dropdown-Menü wählen, mit welchem Verfahren die Tagesumsätze abgerufen werden sollen. Details sind bei deiner Bank verfügbar.
-| *IBAN*
-|IBANs der verknüpften Konten kommasepariert eingeben. Das CAMT-Format benötigt die Eingabe der IBAN, das MT-Format benötigt die Eingabe der Kontonummer.
-|====
-
-[#150]
-=== Einstellungen am EBICS-Konto vornehmen
-
-[IMPORTANT]
-.Domainwechsel
-====
-Speichere nach einem <<business-entscheidungen/systemadministration/domains#, Domainwechsel>> die Grundeinstellungen des Kontos erneut, um die EBICS-Daten zu aktualisieren.
-====
-
-[.instruction]
-Einstellungen am EBICS-Konto vornehmen:
-
-. Öffne das Menü *Einrichtung » Aufträge » Zahlung » Plugins » EBICS*. +
-. Klicke auf *Bearbeiten*, um das Konto zu öffnen. +
-→ Das Tab *Kontoeinstellungen* wird geöffnet.
-. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<tabelle-grundeinstellungen-ebics>>.
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
-
-[[tabelle-grundeinstellungen-ebics]]
-.Grundeinstellungen für EBICS
-[cols="1,3"]
-|====
-|Einstellung |Erläuterung
-
-| *Kontoeinstellungen*
-|Die Einstellungen des gewählten Kontos.
-| *Geschäftsvorfälle*
-|Verwaltet die automatisch abgerufenen Geschäftsfälle. Wähle im Dropdown-Menü *Anzeigen* die Option *Alle* und klicke auf *Suchen*. Wähle aus der Liste die Geschäftsvorfälle aus, die du verwenden möchtest und *Speichere* deine Auswahl.
-| *Manueller Zahlungsabruf*
-|Ermöglicht im Falle eines technischen Fehlers den manuellen Abruf aller Aufträge zu einem bestimmten Datum. Der manuelle Zahlungsabruf steht erst nach erfolgreicher Aktivierung deines EBICS-Kontos zur Verfügung. +
- _Hinweis_: Es werden lediglich die in plentymarkets vorhandenen Daten erneut abgerufen. Somit findet kein Abgleich mit der Bank statt.
-| *Status abrufen*
-|Ruft den aktuellen Initialisierungsstatus des Kontos ab.
-| *Konto initialisieren*
-|Die Schlüssel werden generiert und mittels INI zum Abgleich an die Bank übermittelt. HIA wird ausgeführt.
-| *INI-Brief*
-|Erstellt aus den generierten Schlüsseln einen INI-Brief als PDF und lädt das Dokument herunter. Der INI-Brief muss ausgedruckt und an die Bank geschickt werden. Die Schaltfläche ist inaktiv, bis die Schlüssel erfolgreich erstellt wurden. +
-_Hinweis_: Für den fehlerfreien Download des INI-Briefs muss der Pop-up-Blocker deines Browsers deaktiviert sein.
-| *Initialisierung abschließen (HPB)*
-|Schließt den Initialisierungsvorgang mit der Bank ab.
-| *Experten-Modus*
-|Alle nachfolgend beschriebenen Schaltflächen sind ausschließlich für den Fall vorgesehen, dass die Bank eine erneute Ausführung anfordert und stehen erst nach Aktivierung der Umschaltfläche zur Verfügung. +
-| *Schlüssel erstellen*
-|Erstellt die Schlüssel für die Initialisierung.
-| *INI*
-|Initialisiert das EBICS-Konto.
-| *HIA*
-|Führt HIA aus.
-|====
-
-
-[IMPORTANT]
-.Änderungen nur nach Rücksprache mit der Bank
-====
-Nimm Änderungen nur nach Rücksprache mit deiner Bank vor. Wenn du z.B. die neuen CAMT-Formate nutzen möchtest, kläre mit deiner Bank, ob das Format unterstützt wird und lasse das Format aktivieren. Passe dann die *Grundeinstellungen* und ggf. die Vormerkposten wie hier beschrieben an.
-
-Wenn ein Konto zurückgesetzt wurde und deine Bank neue Schlüssel benötigt, empfehlen wir, den betreffenden EBICS-Account in plentymarkets neu einzurichten, da nur dann neue Schlüssel erzeugt werden.
-====
-
-[#170]
-=== Freischaltung durch deine Bank
-
-Nachdem du die Zugangsdaten in plentymarkets eingegeben hast, meldet sich plentymarkets auf elektronischem Weg bei deiner Bank an. Für einen EBICS-Abruf sind geheime Schlüsselwerte nötig, die programmintern generiert werden. Nachdem die Schlüssel erzeugt wurden und die elektronische Erstanmeldung abgeschlossen ist, müssen die Schlüssel unterschrieben und in ausgedruckter Form an die Bank geliefert werden. Nur der in plentymarkets hinterlegte Teilnehmer ist zu dieser Unterschrift berechtigt. Die Bank wird keine Freigabe der EBICS-Schnittstelle erteilen, wenn die Unterschrift nicht von genau diesem hinterlegten Teilnehmer stammt.
-
-[.instruction]
-INI-Brief-Datei abrufen und an deine Bank geben:
-
-. Öffne das Menü *Einrichtung » Aufträge » Zahlung » Plugins » EBICS*.
-. Klicke auf das EBICS-Konto. +
-→ Das Tab *Kontoeinstellungen* wird geöffnet.
-. Klicke auf *INI-Brief*, um die Datei abzurufen.  +
-→ Die erstellte INI-Brief-Datei wird als PDF heruntergeladen.
-. Drucke die PDF-Datei aus und unterschreibe das Dokument.
-. Übermittle das Dokument an deine Bank.
-
-Sind alle Werte bei der Bank eingegangen, werden die ausgedruckten Werte mit den elektronisch gesendeten Werten verglichen und die EBICS-Schnittstelle wird freigegeben. Ab diesem Moment werden die Transaktionen in den unten beschriebenen Intervallen abgerufen.
-
-[#180]
-=== Abrufintervalle für Transaktionen
-
-Deine Bank stellt maximal zweimal täglich die Transaktionen des jeweiligen Tages in Datenform zur Abholung bereit. plentymarkets ruft die Daten aktuell um 6:00 Uhr, um 13:00 Uhr und um 23:00 Uhr ab. Die Transaktionsdaten sind etwa eine Stunde nach Abruf in den Systemen verfügbar. Zudem stellt die Bank mehrmals am Tag Vormerkposten mit den Transaktionen des aktuellen Tages in Datenform zur Abholung bereit.
-
-[#190]
-=== Abrufintervalle Vormerkposten
-
-Da die Zeiten, in denen die Vormerkposten bereitgestellt werden, von Kreditinstitut zu Kreditinstitut unterschiedlich sind, ruft plentymarkets die Daten, falls verfügbar, zwischen 8:00 und 18:00 stündlich von den Kreditinstituten ab. Bei EBICS-Buchungen mit unbestätigtem Vormerkposten wird die Angabe *Vormerkposten* in roter Schrift dargestellt. Wird der Vormerkposten bestätigt, wechselt der Schriftzug von rot auf grün. Zusätzlich wird die bestätigte Buchung dem entsprechenden Auftrag zugeordnet, ohne die Zahlung nochmals zu buchen. Damit Vormerkposten bestätigt werden, ist die Aktivierung der Tagesumsätze erforderlich. Beachte dazu die Erläuterungen in <<tabelle-grundeinstellungen-ebics>>.
-
-[#200]
+[#220]
 == SEPA-Lastschriftmandat einrichten
 
 Im Rahmen der SEPA-Initiative (Single Euro Payments Area) ist der Euro-Zahlungsverkehr in Deutschland und 35 weiteren europäischen Staaten seit dem 1. Februar 2014 vereinheitlicht. Seit diesem Stichtag sind Überweisungen und Lastschriften nur noch mit IBAN und BIC möglich. Die Bankdaten deiner Kunden kannst du in deinem plentymarkets System automatisch <<payment/bankdaten-verwalten#67, migrieren>>. Lastschriften werden unterteilt in:
@@ -366,7 +144,7 @@ Im Rahmen der SEPA-Initiative (Single Euro Payments Area) ist der Euro-Zahlungsv
 
 Firmenlastschriften sind nur zwischen Unternehmen zulässig (B2B) und benötigen gesonderte Mandate. Von deinen Kunden benötigst du ein SEPA-Lastschriftmandat, das die bisherige Einzugsermächtigung ersetzt. Das Mandat bildet die rechtliche Grundlage zum Einzug von SEPA-Lastschriften.
 
-[#210]
+[#230]
 === Dokumentenvorlage erstellen
 
 Im Menü *Einrichtung » Aufträge » Dokumente* gibt es im Untermenü *SEPA-Lastschriftmandat* eine Vorlage für das SEPA-Lastschriftmandat. Weitere Informationen zu Dokumenten findest du auf der Handbuchseite zum Thema <<auftraege/auftragsdokumente#, Dokumentenvorlagen>>.
@@ -429,7 +207,7 @@ Y-Achse*
 | *ISO-8859-1* oder *Unicode* wählen. Die Erzeugung von PDF-Dokumenten in Unicode kann länger dauern.
 |====
 
-[#215]
+[#240]
 === PDF-Vorlage hochladen
 
 Im Tab *PDF-Vorlage* lädst du eine PDF-Vorlage hoch, die das Layout deines Briefpapiers mit Firmendaten und Logo deines Unternehmens beinhaltet. Füge bei der Gestaltung der PDF-Vorlage die nötigen Feldnamen für die Werte der Vorlage und im unteren Bereich ein Unterschriftenfeld mit einer Linie für die Unterschrift des Kunden ein.
@@ -453,7 +231,7 @@ PDF-Vorlage hochladen:
 . Öffne die PDF-Datei.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-[#220]
+[#250]
 === E-Mail-Vorlage erstellen
 
 Um deinen Kunden direkt nach dem Einkauf im Shop das SEPA-Lastschriftmandat zur Verfügung zu stellen, erstelle eine E-Mail-Vorlage mit dem SEPA-Lastschriftmandat als Anhang. Richte zum Versand der E-Mail eine <<payment/bankdaten-verwalten#230, Ereignisaktion>> ein.
@@ -466,7 +244,7 @@ E-Mail-Vorlage erstellen:
 . Gib einen *Namen* ein und wähle unter *PDF-Anhang* die Option *SEPA-Lastschriftmandat*.
 . Gib im Tab *E-Mail-Nachricht* einen Text ein, der den Kunden darüber informiert, dass das angehängte SEPA-Lastschriftmandat mit Unterschrift zurückgeschickt werden muss.
 
-[#230]
+[#260]
 === E-Mail-Vorlage per Ereignisaktion versenden
 
 Die E-Mail-Vorlage versendest du z.B. durch eine <<automatisierung/ereignisaktionen#, Ereignisaktion>>, die durch einen neuen Auftrag ausgelöst wird.
@@ -507,7 +285,7 @@ Die E-Mail-Vorlage versendest du z.B. durch eine <<automatisierung/ereignisaktio
 Kunde*
 |====
 
-[#240]
+[#270]
 === E-Mail-Vorlage per  Gruppenfunktion versenden
 
 Die E-Mail-Vorlage kannst du alternativ auch in der *Kontaktübersicht* über die *Gruppenfunktion* versenden.
@@ -525,7 +303,7 @@ E-Mail-Vorlage versenden:
 
 Weitere Details dazu findest du im Kapitel *Gruppenfunktion nutzen* der Handbuchseite <<crm/kontakte-verwalten#510, Kontake verwalten>>.
 
-[#250]
+[#280]
 === SEPA-Zahlungsverkehr in den Bankdaten aktivieren
 
 Wenn du das unterschriebene SEPA-Lastschriftmandat eines Kunden erhalten hast, ist die nachfolgend beschriebene Einstellung nötig, um den SEPA-Zahlungsverkehr zu aktivieren und die pain008-Formate abzurufen.
@@ -544,7 +322,7 @@ SEPA-Lastschriftmandat in den Bankdaten aktivieren:
 
 Weitere Informationen zu Bankdaten findest du im Kapitel <<payment/bankdaten-verwalten#63, Bankdaten von Kunden speichern>>.
 
-[#270]
+[#290]
 === SEPA-Zahlungsverkehr automatisieren
 
 Du hast die Möglichkeit, Prozesse einzurichten, um deine SEPA-Zahlungsprozesse zu automatisieren. Dazu findest du im Menü *Einrichtung » Prozesse* die entsprechenden Aktionen <<automatisierung/prozesse/aktionen#400, SEPA Pain001>> und <<automatisierung/prozesse/aktionen#410, SEPA Pain008>>.
