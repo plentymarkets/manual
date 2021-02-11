@@ -1,12 +1,13 @@
 = Sales prices and price calculation
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Price, Prices, Sales price, Sales prices, Price calculation, Price calculations, Calculation, Calculations, Assistant, Assistants, Sales price assistant, RRP, Special offer, Set price, Customer classes, Customer class, Quantity-based dependency, Currency, Currencies, Subscription int., Minimum quantity, Live conversion, Standard currency, Conversion factor, Price type, Monetary price, Monetary prices, Profit margin, Purchase price, Price source, Transportation costs, Storage costs, Operating costs, Operator, Operand, Manufacturer commission, Manufacturer commissions, Price range, Price ranges, Price scale, Price scales, Scale of prices, Sliding scale, Graduated prices, Staggered prices
+:keywords: Price, Prices, Sales price, Sales prices, Price calculation, Price calculations, Calculation, Calculations, Assistant, Assistants, Sales price assistant, RRP, Special offer, Set price, Customer classes, Customer class, Quantity-based dependency, Currency, Currencies, Subscription int., Minimum quantity, Live conversion, Standard currency, Conversion factor, Price type, Monetary price, Monetary prices, Profit margin, Purchase price, Price source, Transportation costs, Storage costs, Operating costs, Operator, Operand, Manufacturer commission, Manufacturer commissions, Price range, Price ranges, Price scale, Price scales, Scale of prices, Sliding scale, Graduated prices, Staggered prices, Formula
 :description: Learn about sales prices, price calculations, their settings and your opportunities.
 :url: item/settings/prices
 :position: 40
 :id: GBG1FJX
 :author: team-item
+//zuletzt bearbeitet 20.01.2021
 
 Prices are an important topic for any business.
 Thanks to plentymarkets, you can be very flexible with your prices.
@@ -66,7 +67,7 @@ Creating a sales price:
 
 . Go to *Setup » Assistants » Basic setup*.
 . Click on the sales prices assistant.
-. Click on New configuration (icon:plus[role="green"]).
+. Click on *New configuration* (icon:plus[role="green"]).
 . Follow the instructions on the screen. Expand the info box below (icon:chevron-down[role="darkGrey"]) if you need additional information about one of the options.
 . Check the summary for any possible errors and click on icon:check[role="green"] *Finalise*. +
 → The assistant is finished. Repeat these steps until you’ve created all of the sales prices that your company needs.
@@ -134,7 +135,7 @@ Select them from the list (icon:check-square[role="blue"]).
 
 *_Background info_*: While configuring your online store, you’ll decide which <<online-store/setting-up-ceres#220, languages>> and <<online-store/setting-up-ceres#201, currencies>> your store should be available in.
 For example, let’s assume that customers can choose the currencies EUR, PLN, CHF and GBP from the header.
-In this case, it would make sense to have plentymarkets automatically convert your prices from the <<payment/currencies#30, standard currency>>,e.g. EUR, into the other currencies, e.g. PLN, CHF and GBP.
+In this case, it would make sense to have plentymarkets automatically convert your prices from the <<payment/currencies#30, standard currency>>, e.g. EUR, into the other currencies, e.g. PLN, CHF and GBP.
 
 Make sure you’re happy with the <<payment/currencies#20, conversion factors>> saved in the menu *Setup » Orders » Payment » Currencies*.
 
@@ -279,7 +280,7 @@ This setting is greyed out until you select an eBay platform from the list above
 |====
 
 [#500]
-=== Editing existing sales prices
+=== Working with existing sales prices
 
 As soon as you <<item/settings/prices#200, create a new sales price>>, it is automatically added to the overview in the menu *Setup » Item » Sales prices*.
 
@@ -387,7 +388,7 @@ If this setting is deactivated, then you will still be able to <<item/settings/p
 |====
 
 [#900]
-=== Linking a sales price with a variation
+=== Applying the sales price to products
 
 Sales prices are linked to <<item/introduction/structure#, individual variations>>, rather than to the item as a whole.
 For example, if you sell a t-shirt in S, M, L and XL, then you can decide whether the XL variation should be a bit more expensive than the rest.
@@ -400,20 +401,585 @@ Alternatively, you could also import this data with an <<welcome/assistants#, as
 * Rather than manually entering the monetary amounts, you might want plentymarkets to <<item/settings/prices#1000, automatically calculate them for you>>.
 
 [#1000]
-== Price calculations
+== New price calculation (Closed Beta)
+//denk auch an die Verfahrensdoku!
+//Erklärvideo am Anfang der Seite müsste auch angepasst werden.
+//mindestens muss ein Hinweis hin ab Preiskalk, dass es die alte UI beschreibt - oder mindestens das Video ab dann abschneiden
+//Falls ein neues Video erstellt werden soll, dann folgende Themen:
+//Allgemeine Angaben, Formel, Verkaufspreise (Nachkommastellen, Runden), weitere Kalkulation, Fehlerbericht, manuelle Verknüpfung mit einer Variante
 
-You can have plentymarkets automatically calculate your monetary prices for you.
-For example, you could start out with the item’s purchase price and then add transportation costs, storage costs and taxes. Finally, you could add a 20% profit margin on top.
+Let plentymarkets calculate your prices for you.
+For example, start with the purchase price and then add transportation costs, storage costs and taxes.
+Finally, add a 7% profit margin on top.
+With plentymarkets, you decide how your prices should be calculated.
 
-This is done with the help of so-called _price calculations_.
-First, you’ll <<item/settings/prices#1100, create>> the individual price calculations.
-Then you’ll <<item/settings/prices#1200, link>> the price calculations with variations.
+[TIP]
+.What does "Closed Beta" mean?
+====
+This chapter describes the new price calculation, which was launched at the start of 2021.
+This tool is currently in the "closed beta" phase.
+This means that a small group of sellers are currently testing the tool.
+Once we're sure it's performing correctly, we'll make the tool available on all beta systems and then on all stable systems.
+
+There is also an old price calculation, which is no longer being developed and will be phased out in the future.
+The old tool is <<item/settings/prices#2300, described here>>.
+====
+
+[discrete]
+=== Procedure
+
+This function is configured in several different steps:
+
+* <<item/settings/prices#1100, Create the necessary price calculations>>
+* <<item/settings/prices#2100, Apply the calculation to your products>>
 
 [#1100]
-=== Creating price calculations
+=== Creating a new price calculation
+
+. Go to *Item » Price calculation*.
+. Click on icon:plus[role="darkGrey"] *Price calculation*.
+. Customise the settings to meet your needs:
+.. Enter a distinct name for the calculation.
+.. Create your own formulas.
+.. Select decimal places and rounding behaviour for each target price.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+[#1200]
+==== Settings
+
+[[table-pricecalculation-settings]]
+[cols="1,4"]
+|====
+|Setting |Explanation
+
+| *Name*
+|Enter a distinct name for the calculation.
+The name is only used internally and is _not_ visible to customers.
+You’ll select the price calculation by its name, e.g. when you apply it to specific variations.
+
+| icon:toggle-on[role="blue"] *Active*
+a|The price calculation will only be applied to products if it is active.
+In other words, you can try out new formulas and rounding behaviours, without causing the item prices to be recalculated.
+Activate the price calculation when it should go into effect.
+
+* icon:toggle-off[role="darkGrey"] = Saving does not trigger a recalculation.
+* icon:toggle-on[role="blue"] = Saving opens a pop-up window.
+You will be asked to confirm your decision because saving triggers a recalculation.
+You will see how many variations are affected.
+
+*_Note_*: Prices are not recalculated immediately.
+Rather, the recalculation starts after a short delay (about 3 minutes).
+|====
+
+[#1300]
+==== Formula
+
+How should the price be calculated?
+For example, you could start with the purchase price and then add transportation costs, storage costs and taxes.
+Finally, you could add a 7% profit margin on top.
+In this case, the formula might look something like this: +
+`Purchase + Transport + Storage + VAT) * 1.07`
+
+image::item/settings/assets/formula.gif[]
 
 [.instruction]
-Creating a price calculation:
+Writing the formula:
+
+. Click on the entry field. +
+→ A calculator opens.
+. Enter the formula:
+.. Enter numbers and mathematical symbols with the calculator or the keyboard.
+.. Search for available variables and add them to your calculation (icon:plus[role="darkGrey"]).
+. Click on *Apply*.
+
+[#1350]
+[discrete]
+===== Available variables
+
+[.collapseBox]
+.*Variation*
+--
+
+[cols="1,4"]
+|====
+|Setting |Explanation
+
+| *Purchase price*
+|Corresponds to the net purchase price under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: Net purchase price>>
+
+The purchase price is either calculated automatically or managed manually depending on how the settings were saved in the menu *Setup » Stock » Stock » Incoming items*.
+
+| *Mov. avg. purchase price*
+|Corresponds to the moving average purchase price under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: Moving average purchase price (net)>>
+
+It is recalculated every time stock is booked in. It is calculated from the purchase prices of all stocks that are available for the variation in the warehouse.
+
+*_Note_*: Go to *Setup » Stock » Stock » Incoming items* and see which warehouses were activated with the setting *Warehouse for moving average price*. The moving average purchase price only takes items into account that were booked into one of these warehouses. If no warehouse is active, then no moving average purchase price is calculated.
+
+| *Transportation costs*
+|Corresponds to the net transportation costs under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: Net transportation costs>>
+
+| *VAT +
+(standard client)*
+|Corresponds to the percentage of VAT under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: VAT>>
+
+*_Note_*:
+In the variation, the VAT is saved as a percentage.
+In the formula, you'll need to convert the percentage into a decimal number.
+Example: You can turn `7%` into `1.07` by entering `(1 + VAT / 100)`.
+
+| *Customs*
+|Corresponds to the percentage of customs under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: Customs>>
+
+*_Note_*:
+In the variation, the customs surcharge is saved as a percentage.
+In the formula, you'll need to convert the percentage into a decimal number.
+Example: You can turn `11,2%` into `1.112` by entering `(1 + Customs / 100)`.
+
+| *Operating costs*
+|Corresponds to the percentage of operating costs under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: Operating costs>>
+
+*_Note_*:
+In the variation, the operating costs are saved as a percentage.
+In the formula, you'll need to convert the percentage into a decimal number.
+Example: You can turn `7%` into `1.07` by entering `(1 + Operating costs / 100)`.
+
+| *Storage costs*
+|Corresponds to the net storage costs under: +
+<<item/managing-items#280, Tab: Settings » Area: Costs » Option: Net storage costs>>
+
+| *Extra shipping charge 1*; +
+*Extra shipping charge 2*
+a|Corresponds to the extra shipping charge under: +
+<<item/managing-items#290, Tab: Settings » Area: Shipping » Option: Extra shipping charge 1 and 2>>
+
+This is a fee that should be charged _in addition_ to the normal shipping costs. Such extra shipping charges are useful for large or bulky items that are particularly expensive to ship.
+
+* Extra shipping charge 1 applies to the first item.
+* Extra shipping charge 2 applies to each additional item.
+
+*_Additional settings_*: In each of your <<fulfilment/preparing-the-shipment#1000, shipping profiles>>, specify whether these extra charges should be added to the basic shipping costs.
+
+The manual also includes several <<fulfilment/preparing-the-shipment#1100, example calculations for extra shipping charges>>.
+
+|====
+
+--
+
+[.collapseBox]
+.*Sales prices*
+--
+
+Add sales prices to your formula.
+This list only includes the sales prices that you’ve <<item/settings/prices#200, already created in your system>>.
+
+*_Example of use_* +
+Imagine you sell items in the online shop and on Amazon.
+You want the Amazon price to always be 10% more than in the online shop.
+In this case, you could calculate the Amazon price like this: +
+`Amazon = Shop * 1.10`
+
+*_Why can’t I select some of the sales prices?_* +
+To avoid errors, some sales prices are not available for selection.
+It is not possible to use a sales price as a variable if it has already been chosen as a target price.
+
+--
+
+[.collapseBox]
+.*Properties*
+--
+
+Add properties of the type "Int" or "Float" to your formula.
+This list only includes the properties that you’ve <<item/settings/properties#500, already created in your system>> and that have a check mark next to the option <<item/settings/properties##intable-pricecalc, Price calculation property>>.
+
+//*_Example of use_* +
+
+*_Have you also saved a value for the property?_* +
+Make sure that you’ve <<item/settings/properties#1400, linked>> the property to the corresponding variations and that you’ve saved a whole number or a decimal number as the value.
+
+--
+
+[.collapseBox]
+.*Formulas*
+--
+
+It is possible to build new formulas on top of existing ones.
+For example, you could start by creating a base formula.
+Then you could <<item/settings/prices#1500, add other calculations>> to further modify the formula.
+Previously created formulas will turn into variables, which you can select here.
+
+*_Why don’t I see this area?_* +
+This area is only displayed if your price calculation includes more than one calculation building block.
+
+--
+
+[#1400]
+==== Target price
+
+Which sales prices should the formula calculate?
+For example, you might want to calculate the prices for your online shop with this formula and the prices on Amazon with a different formula.
+How many decimal places should the sales price have?
+Should it be rounded up or down?
+Choose your preferences from the drop-down lists.
+
+image::item/settings/assets/target-price.gif[]
+
+[.instruction]
+Choosing sales prices:
+
+. Click on icon:plus[role="darkGrey"] *Target price*. +
+→ A new line is added.
+. Choose the appropriate sales price, rounding behaviour and number of decimal places. Note <<table-pricecalculation-targetprices>>.
+. Repeat the procedure to add further target prices as needed.
+
+[[table-pricecalculation-targetprices]]
+.Target prices, rounding behaviour and decimal places
+[cols="1,4"]
+|====
+|Setting |Explanation
+
+| *Target price*
+a|Select the appropriate sales price from the drop-down list.
+
+*_Why can’t I select some of the sales prices?_* +
+
+* To avoid duplicate target prices.
+For example, if you selected the online shop as the target price in the first line, then you cannot select the online shop as the target price again in the second line.
+* To avoid errors.
+It is not possible to set a sales price as the target price if it is currently being used as a variable.
+
+2+a|
+[.collapseBox]
+.*Rounding behaviour*
+--
+
+[cols="1,4a,1"]
+!===
+!Behaviour !Explanation !Examples
+
+! *Do not round, but rather limit decimal places*
+!Prices will not be rounded.
+Instead, enter a number of decimal places.
+Any further decimal places will be cut off at this point.
+!4.3275 +
+4.327 +
+4.32
+
+! *To full euro*
+!Prices will always be rounded to the next full euro, pound, franc, etc.
+!10.00 +
+11.00 +
+12.00
+
+! *To full cent*
+!Prices will always be rounded to the next cent, penny, centime, etc.
+This means prices will be rounded to a maximum of two decimal places.
+!4.32 +
+4.33 +
+4.34
+
+! *To x.99*
+!Prices will always be rounded to one cent before the full euro (one penny before the full pound, etc.).
+!10.99 +
+11.99 +
+12.99
+
+! *To x.95*
+!Prices will always be rounded to five cents before the full euro (five pence before the full pound, etc.).
+!10.95 +
+11.95 +
+12.95
+
+! *To x.45 or x.95*
+!Prices will always be rounded to five cents before the full or half euro (five pence before the full or half pound, etc.).
+!10.45 +
+10.95 +
+11.45
+
+! *In 50 cent increments*
+!Prices will always be rounded in increments of 50 cents, pence, centimes, etc.
+!10.50 +
+11.00 +
+11.50
+
+! *In 25 cent increments*
+!Prices will always be rounded in increments of 25 cents, pence, centimes, etc.
+!10.25 +
+10.50 +
+10.75
+
+! *In 10 cent increments*
+!Prices will always be rounded in increments of 10 cents, pence, centimes, etc.
+!10.10 +
+10.20 +
+10.30
+
+! *To x.x9*
+!Prices always have a 9 as the second decimal place.
+!10.19 +
+10.29 +
+10.39
+
+! *In 5 cent increments*
+!Prices will always be rounded in increments of 5 cents, pence, centimes, etc.
+!10.05 +
+10.10 +
+10.15
+!===
+
+--
+
+| *Rounding direction*
+a|Which direction should the prices be rounded in?
+
+* *Mathematical* = The calculated prices will either be rounded up or down.
+The direction depends on whether the price is above or below a certain threshold.
+For example, the rounding behaviour *To x.99* has a threshold of 49 cents.
+If a calculated price ends with x.48, then the price is rounded down.
+If a calculated price ends with x.49, then the price is rounded up.
+* *Round up* = The calculated price will always be rounded up.
+* *Round down* = The calculated price will always be rounded down.
+
+| *Decimal places*
+a|Enter the appropriate number of decimal places.
+The calculated price is cut off at this point.
+
+*_Examples_*:
+
+* Calculated price: 199.123456
+* 4 decimal places: 199.1234
+* 2 decimal places: 199.12
+
+*_Why can’t I enter decimal places?_* +
+Most rounding behaviours are inherently limited to 2 decimal places.
+If you select one of these rounding behaviours, then you will not be able to enter decimal places.
+|====
+
+[#1500]
+==== Adding further calculations
+
+Each price calculation is made up of one or more _calculation building blocks_.
+Within each building block, you’ll:
+
+* <<item/settings/prices#1300, create a formula>>
+* <<item/settings/prices#1400, select target prices and rounding behaviour>>
+
+image::item/settings/assets/further-calculation.gif[]
+
+The first building block automatically appears when you create the price calculation.
+Click on icon:plus[role="darkGrey"] *Calculation* to add further building blocks and thus build your formulas on each other.
+For example, you could use the first calculation to create a base formula.
+And you could use additional calculations to modify this formula even further.
+
+[TIP]
+.Previous formulas turn into variables
+====
+The neat thing about this building block format is that you can re-use previously created formulas.
+They turn into <<item/settings/prices#1350, variables>>, which you can select in the calculator.
+====
+
+[#1600]
+=== Working with existing calculations
+
+Once you’ve created a new price calculation, it’s automatically added to the overview in the menu *Item » Price calculation*.
+Click on a price calculation to open it and edit it further.
+
+[#1700]
+==== Toolbar in the overview
+
+[[table-pricecalculation-overview-symbols]]
+[cols="1,4"]
+|====
+|Icon |Explanation
+
+|icon:undo[role="darkGrey"]
+|Reloads the menu.
+
+|icon:plus[role="darkGrey"]
+|Opens the screen for creating a <<item/settings/prices#1100, new price calculation>>.
+
+|icon:pencil[role="darkGrey"]
+|It’s possible to open several price calculations at the same time.
+Select the desired calculations (icon:check-square[role="blue"]) and click on icon:pencil[role="darkGrey"].
+The price calculations will be displayed one below the other on the left side of the screen.
+
+|icon:trash[role="darkGrey"]
+|It’s possible to delete several price calculations at the same time.
+Select the desired calculations (icon:check-square[role="blue"]) and click on icon:trash[role="darkGrey"].
+
+*_Note_*: A price calculation can only be deleted if it is _not_ linked to a variation.
+|====
+
+[#1800]
+==== Columns in the table
+
+[[table-pricecalculation-overview-columns]]
+[cols="1,4"]
+|====
+|Header |Explanation
+
+|icon:square-o[role="darkGrey"]
+|It’s possible to open or delete several price calculations at the same time.
+Select the desired calculations (icon:check-square[role="blue"]) and click on one of the symbols in the toolbar.
+
+| *Active*
+|<<item/settings/prices#1200, Active price calculations>> are marked with a blue dot (icon:circle[role="blue"]).
+This helps you recognise the active and inactive calculations at a glance.
+
+| *ID*
+|The price calculation’s UUID.
+The ID is automatically generated when the calculation is created.
+This ID cannot be changed.
+
+| *Name*
+|The <<item/settings/prices#1200, name>> that was entered while creating the price calculation.
+
+| *Calculated sales prices*
+|The <<item/settings/prices#1400, target prices>> that were chosen while creating the price calculation.
+
+| *Linked variations*
+|The number of variations that are linked with the price calculation.
+This number tells you how many variations will be affected when prices are recalculated.
+
+| *Number of variations with errors*
+|The number of variations that are linked to the price calculation, but whose prices cannot be calculated correctly.
+<<item/settings/prices#2000, Open the error log>> to see what’s causing the problem.
+|====
+
+[#1900]
+==== Meta data
+
+Once you’ve opened a price calculation, you’ll see meta information displayed in the lower left corner.
+The following data is displayed here:
+
+* Name
+* UUID
+* Creation date
+* Date when changes were last made
+
+[#2000]
+==== Error logs
+
+Every price calculation includes an error log.
+The log tells you which variations cannot have their prices calculated and why.
+
+[.instruction]
+Viewing and fixing errors:
+
+. Go to *Item » Price calculation*.
+. Open the price calculation and click on icon:exclamation-circle[role="darkGrey"] *Error log* on the left.
+. Expand a line (icon:chevron-right[role="darkGrey"]) to see further information about the errors.
+. Click on a variation ID to open the variation and fix the errors.
+
+image::item/settings/assets/error-log.gif[]
+
+[[table-pricecalculation-errors]]
+.Error logs
+[cols="1,4"]
+|====
+|Header |Explanation
+
+| *Variation ID*
+|The number of variations that are linked to the price calculation, but whose prices cannot be calculated correctly.
+Click on a variation ID to open the variation and fix the errors.
+
+| *Error*
+|The number of errors that occurred for the variation.
+|====
+
+
+[#2100]
+=== Applying the calculation to products
+//use includes to display the actual content here rather than just link to other info
+
+There are a few different ways to link price calculations to variations and thus have the monetary prices calculated:
+
+* If you only want to save price calculations _for a few items_, then it makes sense to <<item/managing-items#240, manually link price calculations>>.
+* If you want to save prices _for lots of items_, then we would recommend <<data/importing-data/sync-types/elasticSync-item#2300, importing the price calculations>>.
+Alternatively, you could use the <<item/import-export-create/create/mass-processing#300, variation group function>> to set up price calculations for multiple item variations at once.
+
+[#2200]
+=== FAQ
+
+[.collapseBox]
+.*Which actions cause prices to be recalculated?*
+--
+
+* *_Modifying a price calculation_*: Saving changes to an active calculation (icon:toggle-on[role="blue"]) will cause prices to be recalculated.
+More specifically, prices will be recalculated if you change a value within a calculation building block (formula, target price, rounding behaviour).
+Simply saving without changes or modifying the name will not cause prices to be recalculated.
+Saving opens a pop-up window.
+You will be asked to confirm your decision.
+You will see how many variations are affected.
+* *_Modifying the value for a variable_*: Imagine your prices are calculated with the following formula:
+`Purchase + Transport + Storage + VAT) * 1.07`.
+If you change a product’s purchase price, transportation costs, storage costs or VAT, then new data will flow into the formula and the price will be recalculated.
+<<item/settings/prices#1350, The variables>> that can be added to a formula are constantly being monitored for changes.
+
+*_Note_*: Prices are not recalculated immediately.
+Rather, the recalculation starts after a short delay (about 3 minutes).
+
+//klären - gibt es so eine Warn-Meldung, z.B. bei Transportkosten, der aussagt, "achtung, diese Änderung hat zur Folge, dass der Preis für X Varianten neu berechnet wird"?
+
+--
+
+[.collapseBox]
+.*When will my prices be recalculated?*
+--
+
+Prices are not recalculated immediately.
+Rather, the recalculation starts after a short delay (about 3 minutes after it is triggered).
+For example, if you change a product’s purchase price, then the recalculation will begin approximately 3 minutes later.
+
+Why not immediately?
+Often, more than just one change is made to a product.
+For example, you might need to change a product’s purchase price and its transportation costs.
+If the prices were recalculated immediately, then the first recalculation might not even be finished before the second one starts.
+
+//klären - gibt es so etwas wie ein Action-Button, damit man die Berechnung sofort ausführen kann?
+
+--
+
+[.collapseBox]
+.*What happens if a value is missing from the formula?*
+--
+
+The price will not be calculated.
+Imagine your prices are calculated with the following formula:
+`Purchase + Transport + Storage + VAT) * 1.07`.
+In this example, if you forgot to save a purchase price for an item, then its price will not be calculated.
+<<item/settings/prices#2000, Open the error log>> to see if any values are missing for your products.
+The error log tells you which variations cannot be calculated and why.
+
+--
+
+[.collapseBox]
+.*What happens if the calculated price is 0?*
+--
+
+plentymarkets prevents prices from accidentally being saved with the value 0.00.
+Both before and after rounding, the system checks whether the calculated price is 0.
+If this is the case, then the price will not be saved and the <<item/settings/prices#2000, error log>> will include information about the problem.
+
+--
+
+[.collapseBox]
+.*What happens if I choose a target price that isn’t yet linked to the variation?*
+--
+
+No problem.
+When the price calculation is triggered, the sales price will be linked to the variation and the monetary price will be calculated.
+
+--
+
+[#2300]
+== Old price calculation (will be discontinued in the future)
 
 . Go to *Setup » Item » Calculation*.
 . Click on icon:plus[role="green"] *New price calculation*. +
@@ -473,12 +1039,3 @@ Creating a price calculation:
 | *Referrer*
 |This option _only_ relates to <<item/settings/manufacturers#300, manufacturer commissions>>. Select a referrer to be linked with the price calculation.
 |====
-
-[#1200]
-=== Linking price calculations
-
-There are a few different ways to link price calculations to variations and thus have the monetary prices calculated:
-
-* If you only want to save price calculations _for a few items_, then it makes sense to <<item/managing-items#240, manually link price calculations>>.
-* If you want to save prices _for lots of items_, then we would recommend <<data/importing-data/sync-types/elasticSync-item#2300, importing the price calculations>>.
-Alternatively, you could use the <<item/import-export-create/create/mass-processing#300, variation group function>> to set up price calculations for multiple item variations at once.
