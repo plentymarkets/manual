@@ -79,7 +79,7 @@ include::../../plugins/_textblocks/instructions/plugin-installieren-en_gb.adoc[]
 
 [#175]
 [.collapseBox]
-.Installing the plugin *Elastic Export*
+.Installing the *Elastic Export* plugin
 --
 include::../../plugins/_textblocks/instructions/plugin-installieren-en_gb.adoc[]
 --
@@ -120,6 +120,7 @@ include::../_textblocks/instructions/assistant-basic-instructions.adoc[]
 a| From the drop-down list *Client*, select a client.
 |======
 --
+
 [.collapseBox]
 .Step *Automatic data transfer*
 --
@@ -138,6 +139,11 @@ a| From the drop-down list *Client*, select a client.
 | *Would you like to import your idealo Checkout orders into plentymarkets?*
 |Activate to import orders every 15 minutes automatically. +
 *_Note:_* You need to activate this option to export item data and stock information.
+
+| *What order status do you want to assign to idealo Checkout orders cancelled before the import?*
+| Some idealo Checkout orders are cancelled before they are first imported to your plentymarkets system. Select the order status that is to be assigned to such cancelled orders during the import. +
+*_Note:_* The import of these cancelled idealo Checkout orders triggers the event procedures set up for the selected status. As such, select a status that does not trigger any event procedures (such as cancellation confirmations being sent to customers).
+
 |======
 --
 
@@ -254,7 +260,7 @@ _Activated_ = Data exchange with idealo is started once the assistant is complet
 --
 
 [#300]
-== idealo price comparison and idealo Checkout
+== Using idealo price comparison and idealo Checkout
 
 Depending on whether you only want to use the idealo price comparison or whether you want to enable your customers to buy items directly at idealo without having to enter your online store, different settings must be carried out. The overview below lists the settings required for idealo Checkout.
 
@@ -371,7 +377,7 @@ If you export items via the elastic export, you have to carry out a few settings
 How to set up the elastic export to export your items to idealo is described in the following chapters <<#950, Setting up the data format IdealoDE plugin in plentymarkets>> and <<#1000, Available columns for the export file>>.
 
 [#950]
-==== Setting up the data format IdealoDE plugin in plentymarkets
+==== Setting up the data format idealo-Plugin in plentymarkets
 
 [TIP]
 .Settings only for elastic export
@@ -560,13 +566,13 @@ According to the format setting *Item name*.
 According to the format setting *Description*.
 
 | *article_no*
-|The variation number within *Item » Edit item » [Open item] » [Open variation] » Settings » Basic settings.*
+|The variation number as per *Item » Edit item » [Open item] » [Open variation] » Settings » Basic settings*.
 
 | *producer*
 |The name of the manufacturer of the item. The external name saved in the *Setup » Item » Manufacturers* menu is preferred if existing.
 
 | *model*
-|The model within *Item » Edit item » [Open item] » [Open variation] » Settings » Basic settings*.
+|The model as per *Item » Edit item » [Open item] » [Open variation] » Settings » Basic settings*.
 
 | *availability*
 | *Required* +
@@ -580,7 +586,7 @@ For idealo, the delivery time must be indicated in days.
 |According to the format setting *Barcode*.
 
 | *fedas*
-|The Amazon product type within *Items » Edit item » [Open item] » Multi-Channel » Amazon*.
+|The Amazon product type as per *Items » Edit item » [Open item] » Multi-Channel » Amazon*.
 
 | *warranty*
 |Currently not configured.
@@ -593,7 +599,7 @@ The sales price of the variation.
 |The sales price of type RRP of the variation, if activated in the format settings.
 
 | *weight*
-|The gross weight in gram within *Items » Edit item » [Open item] » [Open variation] » Settings » Measurements*.
+|The gross weight in gram as per *Items » Edit item » [Open item] » [Open variation] » Settings » Measurements*.
 
 | *category1-6*
 |The name of the category level of the category path of the default category for the client which is configured in the format settings.
@@ -613,14 +619,14 @@ URL of the image according to the format setting *Image*.
 *_Example:_* 10.00 EUR / kilogram
 
 | *free_text_field*
-|The value of a characteristic of type *Text* or *Selection* with a link to idealo.
+|The value of a characteristic of the type *Text* or *Selection* with a link to idealo.
 
 | *checkoutApproved*
-|Is true if the order referrer idealo Checkout within *Items » Edit item » [Open item] » [Open variation] » Availability » Markets* is set or a characteristic of type *No* and the link to the idealo Checkout characteristic *CheckoutApproved* is configured.
+|Is true if the order referrer idealo Checkout is activated in the *Items » Edit item » [Open item] » [Open variation] » Availability » Markets* menu or if a characteristic of the type *No* and the link to the idealo Checkout characteristic CheckoutApproved is configured.
 
 | *itemsInStock*
 | *Requirement*: checkoutApproved is true. +
-The net stock of the variation. For items which are not limited to the net stock, *999* will be exported.
+The net stock of the variation. For items which are not limited to the net stock, 999 will be exported.
 
 | *fulfillmentType*
 | *Requirement*: checkoutApproved is true. +
@@ -640,12 +646,12 @@ All payment methods will be exported, according to the format setting *Shipping 
 |====
 
 [#1100]
-== Activating the idealo payment method
+== Activating the payment method idealo Checkout
 
 Activate the payment method *idealo Checkout*. This allows payments to be made for orders on idealo and to be displayed in your plentymarkets system.
 
 [TIP]
-.Payment method for idealo Checkout
+.Payment method for idealo Checkout only
 ====
 You only have to activate the payment method *idealo Checkout* if you use idealo Checkout.
 ====
@@ -658,7 +664,7 @@ include::../_textblocks/instructions/activate-payment-method.adoc[]
 [IMPORTANT]
 .PayPal payment method
 ====
-If you offer the PayPal payment method, it is mandatory to create and configure this payment method in your plentymarkets system.
+If you offer the PayPal payment method, it is mandatory to create and configure this payment method in your plentymarkets system. This is to ensure that the payment is imported and assigned to the order correctly.
 ====
 
 [#1200]
@@ -813,45 +819,13 @@ Next, you have to link the characteristic to the item in the *Item » Edit item 
 [#1600]
 == Creating event procedures for idealo Checkout
 
-Do you use idealo Checkout? Then set up event procedures to automatically inform idealo about changes in the order status. You can use event procedures to automatically send order confirmations, shipping confirmations, returns, and cancellations to idealo Checkout.
+Do you use idealo Checkout? Then set up event procedures to automatically inform idealo about changes in the order status. You can use event procedures to automatically send shipping confirmations, returns, and cancellations to idealo Checkout.
 
 [TIP]
-.Event procedures for idealo Checkout
+.Event procedures for idealo Checkout only
 ====
 You only have to set up event procedures if you use idealo Checkout.
 ====
-
-[#1650]
-=== Automatically sending order confirmations
-
-Set up an <<automation/event-procedures#, event procedure>> to automatically send an order confirmation to idealo.
-
-:table-event-procedure: <<#order-confirmation-idealo>>
-
-include::../../_includes/textblocks/instructions/EA.adoc[]
-
-[[order-confirmation-idealo]]
-.Event procedure for automatically sending order confirmations to idealo
-[cols="1,3,3"]
-|====
-|Setting |Option |Selection
-
-| *Event*
-| *Order generation: New order*
-|
-
-| *Filter 1*
-| *Order > Order type*
-| *Order*
-
-| *Filter 2*
-| *Order > Referrer*
-| *idealo Checkout*
-
-| *Procedure*
-| *Order > Send order confirmation to idealo*
-|
-|====
 
 [#1700]
 === Automatically sending shipping confirmations
@@ -869,7 +843,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| *Order change: Outgoing items booked*
+| Select an event, for example *Order change: Outgoing items booked*
 |
 
 | *Filter 1*
@@ -881,7 +855,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *idealo Checkout*
 
 | *Procedure*
-| *Shipping > Send shipping confirmation to idealo*
+| *Plugins > Send shipping confirmation to idealo*
 |
 |====
 
@@ -895,13 +869,13 @@ Set up an <<automation/event-procedures#, event procedure>> to automatically inf
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
 [[returns-idealo]]
-.Event procedure for automatically sending returns to idealo
+.Event procedure for automatically notifying idealo of returns
 [cols="1,3,3"]
 |====
 |Setting |Option |Selection
 
 | *Event*
-| *Order generation: New return*
+| Select an event, for example *Order generation: New return*
 |
 
 | *Filter 1*
@@ -913,27 +887,33 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *idealo Checkout*
 
 | *Procedure*
-| *Return > Send return to idealo*
+| *Plugins > Send return notification to idealo*
 |
 |====
 
 [#1800]
 === Automatically sending cancellations
 
-Set up an <<automation/event-procedures#, event procedure>> to automatically inform idealo of cancellations.
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform idealo of cancellations. The following actions are available for cancellations:
 
-:table-event-procedure: <<#cancellations-idealo>>
+* Send seller cancellation to idealo
+* Send buyer cancellation to idealo
+
+[#1801]
+==== Automatically sending seller cancellations
+
+:table-event-procedure: <<#cancellations-seller-idealo>>
 
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
-[[cancellations-idealo]]
-.Event procedure for automatically sending cancellations to idealo
+[[cancellation-seller-idealo]]
+.Event procedure for automatically notifying idealo of cancellations by seller
 [cols="1,3,3"]
 |====
 |Setting |Option |Selection
 
 | *Event*
-| *Status change: [8] Cancelled*
+| Select an event, e.g. *Status change: [8] Cancelled*
 |
 
 | *Filter 1*
@@ -945,10 +925,77 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *idealo Checkout*
 
 | *Procedure*
-| *Order > Send cancellation to idealo*
+| *Plugins > Send seller cancellation to idealo*
 |
 |====
 
+[#1802]
+==== Automatically sending buyer cancellations
+
+:table-event-procedure: <<#cancellations-buyer-idealo>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[cancellation-buyer-idealo]]
+.Event procedure for automatically notifying idealo of cancellations by buyer
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select an event, e.g. *Status change: [8.1] Cancelled by buyer*
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Filter 2*
+| *Order > Referrer*
+| *idealo Checkout*
+
+| *Procedure*
+| *Plugins > Send buyer cancellation to idealo*
+|
+|====
+
+[#1755]
+=== Automatically sending refund notifications
+
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform idealo of refunds.
+
+[IMPORTANT]
+.Payment method *idealo Checkout Payments* only
+====
+The event procedure *Send refund notification to idealo* only is triggered for orders that were paid using the payment method *idealo Checkout Payments*. The event procedure cannot be used for orders that were paid for using PayPal.
+====
+
+:table-event-procedure: <<#refund-idealo>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[refund-idealo]]
+.Event procedure for automatically notifying idealo of credit notes
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select an event, for example *Order generation: New credit note*.
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Credit note*
+
+| *Filter 2*
+| *Order > Referrer*
+| *idealo Checkout*
+
+| *Procedure*
+| *Plugins > Send refund notification to idealo*
+|
+|====
 
 [#1900]
 == Viewing the log
