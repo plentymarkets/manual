@@ -5,7 +5,7 @@ include::{includedir}/_header.adoc[]
 :position: 30
 :url: payment/managing-bank-details
 :id: 69AQ724
-:keywords: Bank, Bank details, EBICS, SEPA, SEPA direct debit mandate, account, account number, account no., sort code, account holder, SWIFT, cash in advance, invoice, payment method, payment, country-specific, country of delivery, ID, bank code, debit, bank data, IBAN, BIC, mandate, payment frequency, total, bank statement, transaction, bookkeeping, participants, participant ID, order type, STA, VMK, EU Type, EU, EU type T, transaction report, payment retrieval, INI, initilisation letter, HIA, CAMT, commercial transactions, bank transfer, direct debit, activation, interim transaction, document, document template, pdf
+:keywords: Bank, Bank details, EBICS, SEPA, SEPA direct debit mandate, account, account number, account no., sort code, account holder, SWIFT, cash in advance, invoice, payment method, payment, country-specific, country of delivery, ID, bank code, debit, bank data, IBAN, BIC, mandate, payment frequency, total, bank statement, transaction, bookkeeping, participants, participant ID, order type, STA, VMK, EU Type, EU, EU type T, transaction report, payment retrieval, INI, initilisation letter, HIA, CAMT, commercial transactions, bank transfer, direct debit, activation, interim transaction, document, document template, pdf, ebics, electronic banking, Electronic Banking, ebics-plugin, banking information, retrieving payment, receiving payment, ebics-account, ebics-tool, ebics-module, transaction, EBICS-module, EBICS plugin, EBICS-plugin, EBICS-account, EBICS account, EBICS settings, EBICS-settings, setting up EBICS, setup EBICS, setting up ebics, setup ebics, account-initilisation, interim transaction report, EBICS transactions, ebics transaction, ebics transactions, EBICS transactions
 :author: team-order-payment
 
 On this page of the manual, you learn how to save your <<payment/managing-bank-details#10, own bank details>> and your <<payment/managing-bank-details#63, customers' bank details>> as well as how to set up <<payment/managing-bank-details#70, EBICS>> and <<payment/managing-bank-details#200, SEPA>>.
@@ -135,241 +135,9 @@ Migrating bank details:
 *500* = 500 data records will be migrated. Select *500* if a large number of bank data records needs to be migrated. This will split the migration.
 |====
 
-[#70]
-== Setting up EBICS
+include::./_textblocks/ebics.adoc[]
 
-[WARNING]
-.New plugin integration
-====
-In plentymarkets, EBICS is integrated via the link:https://marketplace.plentymarkets.com/plugins/payment/Ebics_5098[plugin in the plentyMarketplace^]{nbsp}icon:external-link[].
-====
-
-EBICS (Electronic Banking Internet Communication Standard) is a transmission protocol for banking information for usage by banking clients. With the help of the standardised EBICS procedure, retrieving payments has become even easier. EBICS is completely integrated in plentymarkets via the EBICS plugin. No third party providers are required.
-
-For communication via EBICS, your sales figures are saved on the bank server in a file, comparable to bank statements. This file is imported in your plentymarkets system and the sales figures are booked in plentymarkets. The linked EBICS account can be seen as a combined account of several bank accounts. A file with the sales figures of an EBICS account is generated daily. This file can be retrieved at night and all incoming payments are available the next morning. Besides, multiple interim transaction report files are generated daily which can be retrieved to book interim transaction reports in your plentymarkets system.
-
-[#80]
-=== Applying for an EBICS account at your bank
-
-First, apply for an EBICS account at your bank. You will receive documents from your bank which you have to fill in and send back afterwards. The following details for EBICS have to be entered in the form.
-
-[IMPORTANT]
-.Existing EBICS accounts
-====
-Do not set up already existing EBICS accounts in plentymarkets. Multiple users (participants) can be listed in an EBICS account. If you already hold an account, then apply for a new one (techn. user is also possible). Only use this account for plentymarkets.
-====
-
-[#90]
-==== Account numbers
-
-Enter the account numbers for the accounts that you would like sales figures to be retrieved and booked into plentymarkets from. Entering account numbers is optional. This is because the retrieval is technically based on the user data. For further information about entering or not entering of account numbers refer to <<table-provision-bank-statements>>.
-
-[IMPORTANT]
-.Only save business accounts
-====
-There is currently no option in plentymarkets for setting up accounts individually for EBICS retrieval. This means that payment transactions can only be retrieved globally by the plentymarkets system for all accounts saved. This includes e.g. payment transactions on your private account as well, if this account was saved. For this reason, only save the account numbers of your business accounts.
-====
-
-[WARNING]
-.One account for several users
-====
-If several different users all refer to the same account (some banks manage multiple accounts together), then problems may occur if retrieval is carried out simultaneously. This is true even if the users work with different plentymarkets systems. There is currently no solution to prevent this.
-====
-
-[#100]
-==== Provision of bank statements
-
-Provisioning of bank statements can either be done based on the date of the bookkeeping entry or based on bank statements.
-
-[[table-provision-bank-statements]]
-.provision of bank statements
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-| *Based on date of bookkeeping entry*
-|A fictitious, consecutive number is included. This setting is selected by default.
-
-| *Based on bank statements*
-|An effective bank statement number is included. Provided that automatic bank statement retrieval is carried out on a daily basis.
-|====
-
-[#110]
-==== Participants
-
-When setting up your accounts for EBICS, you create one or more <<business-decisions/user-accounts-access#10, users>> for your accounts. EBICS users are called participants (German: Teilnehmer). You can create participants including different order types. One of these participants has to be saved in the plentymarkets system with the *participant ID* that you received from your bank.
-
-plentymarkets only requires one participant, e.g. a user account with the lowest rights, in order to carry out the EBICS payment retrieval. Only one participant may be set up per EBICS account.
-
-[#120]
-==== Order type
-
-Plentymarkets needs the following order types (explanation in the following table) in order to successfully retrieve the transactions on your EBICS account. Pay attention to the notes about order and signature types given in your bank's forms.
-
-.order and signature types
-[cols="1,3"]
-|====
-|Type |Explanation
-
-| *STA*
-|Statement of account *MT940* or *CAMT053*. <<payment/managing-bank-details#180, Retrieval of the transactions>> at the end of the day.
-
-| *VMK*
-|Interim transaction report *MT942* or *CAMT052*. Depending on the respective bank, interim transaction reports are created and made ready for retrieval several times a day. This <<payment/managing-bank-details#190, information>> is optional for plentymarkets.
-
-| *EU Type "T"*
-|Signature type that provides authorisation exclusively for the retrieval of transaction data.
-|====
-
-[#130]
-=== Creating an EBICS account in plentymarkets
-
-After your bank accounts have been set up for EBICS, you will receive a letter from your bank. This letter will include the data that you will have to save in plentymarkets in order to set up EBICS there.
-
-[.instruction]
-Adding a new EBICS account:
-
-. Go to *Setup » Orders » Payment » Plugins » EBICS*.
-. Click on *Create new account*. +
-→ The window *Create new account* opens.
-. Enter the data that have been sent to you by your bank. Pay attention to the settings provided in <<table-ebics-account-settings>>.
-. *Save* (icon:save[role="green"]) the settings. +
-
-[[table-ebics-account-settings]]
-.Account settings for EBICS
-[cols="1,3"]
-|====
-|Setting
-|Explanation
-| *Active*
-|Toggle to mark the account as active.
-| *Account name*
-|Enter the internal name under which the account appears in the overview.
-| *First name*
-|Enter the first name of the account holder.
-| *Surname*
-|Enter the surname of the account holder.
-| *Bank subscriber ID*
-|Enter the bank subscriber ID as submitted by the bank.
-| *Bank customer ID*
-|Enter the bank customer ID as submitted by the bank.
-| *Bank*
-|Enter the name of the bank.
-| *Account version*
-|Select from the dropdown menu which account version should be used. Details are available at the bank.
-| *Create new bank*
-|Activate to add a bank not listed in the dropdown menu. +
-*Bank*: Enter the name of the bank. +
-*URL*: Enter the host URL as submitted by the bank. +
-This option is only available when creating a new account.
-| *Interim transaction report*
-|Select from the dropdown menu with which method the interim transaction reports are accessed. Details are available at the bank.
-| *Daily account statements*
-|Select from the dropdown menu with which method the daily account statements are accessed. Details are available at the bank.
-| *IBAN*
-|Enter the IBAN or account number of linked accounts separated by commas. The CAMT format requires the IBAN, the MT format requires the account number.
-|====
-
-[#150]
-=== Carrying out the EBICS account settings
-
-[IMPORTANT]
-.Domain transfer
-====
-Save the basic settings again after carrying out a <<business-decisions/system-administration/domains#, domain transfer>>. This will update the EBICS data.
-====
-
-[.instruction]
-Carrying out the EBICS account settings:
-
-. Go to *Setup » Orders » Payment » Plugins » EBICS*. +
-. Click on *Edit* to open the account. +
-→ The *Account settings* tab opens.
-. Carry out the settings as desired. Pay attention to the information provided in <<table-ebics-basic-settings>>.
-. *Save* (icon:save[role="green"]) the settings.
-
-[[table-ebics-basic-settings]]
-.basic settings for EBICS
-[cols="1,3"]
-|====
-|Setting |Explanation
-| *Account settings*
-|The settings for the selected account.
-| *Transactions*
-|Manages the business transactions to be retrieved. Select the option *All* in the *Display* menu and click on *Search* +
-Select the transactions you want to use from the list and *Save* your selection.
-| *Manual payment retrieval*
-|Retrieves all orders of a certain date in case of a technical error. +
-_Note:_ This function only retrieves the data already saved in the system; the bank is not contacted again.
-| *Get status*
-|Retrieves the current initialisation status from the EBICS tool.
-| *Initialise account*
-|The keys are generated and sent to the bank via INI. HIA is activated.
-| *Initialisation letter*
-|Creates a PDF initialisation letter from the generated keys and downloads the document. It has to be signed and sent to the bank for initialisation.+
-_Note:_ For the download of the initialisation letter to work properly, the pop-up blocker of your browser has to be deactivated.
-| *Finish initialisation (HPB)*
-|Finishes the initialisation with the bank.
-| *Expert mode*
-|All options described in the following are only available if the bank requires an additional activation of the account. They will only be activated if the *Expert mode* is activated.
-| *Create keys*
-|Creates keys for initialisation.
-| *INI*
-|Initialises the EBICS account.
-| *HIA*
-|Activates HIA.
-|====
-
-[IMPORTANT]
-.Contact your bank before making changes
-====
-Get in contact with your bank before making changes. For example, if you want to use the new CAMT formats, then ask your bank whether or not this format is supported and have the format activated. Then make any necessary changes to the *basic settings* and interim transaction report as described here.
-
-If an account was reset and your bank needs new keys, then we recommend that you set up the EBICS account again in plentymarkets. This way new keys will be generated.
-====
-
-[#160]
-=== Defining commercial transactions
-
-For importing and assigning commercial transactions automatically, activate the required commercial transactions under *Domestic payments*, *SEPA payments* and *Foreign business allocation*. The following standard commercial transactions will be imported even if you did not select any of the options:
-
-* 020 - *Bank transfer*
-* 051 - *Transfer credit note*
-* 104 - *SEPA Direct Debit* (single booking - debit, B2B)
-* 105 - *SEPA Direct Debit* (single booking - debit, Core)
-* 166 - *SEPA Credit Transfer* (single booking - credit)
-
-You need to activate the standard commercial transactions if you select other commercial transactions as well. Only those that were previously selected will be imported.
-
-[#170]
-=== Activation by your bank
-
-After you have entered your access data into plentymarkets, the system electronically registers at your bank. Secret key values are necessary for retrieval via EBICS. They are generated by the system. After these key values were created and the initial electronic registration was carried out, the values have to be printed out, signed and handed in at your bank. Only the participant saved in plentymarkets is authorised to sign this document. The bank will not activate the EBICS interface if the signature was not given by the participant saved in the system.
-
-[.instruction]
-Retrieving the INI letter file and handing it in at your bank:
-
-. Go to *Setup » Orders » Payment » Plugins » EBICS*.
-. Click on the EBICS account. +
-→ The *Account settings* tab opens.
-. Click on *Initialisation letter* to retrieve the file.  +
-. The INI letter is created and automatically downloaded in PDF format. +
-. Print the PDF file. +
-. Sign the document and hand it in at your bank.
-
-The electronically submitted values will be compared with the values on the printed document. Then, the EBICS interface will be activated. From this moment on, the transactions will be retrieved at the retrieval times listed below.
-
-[#180]
-=== Retrieval times of transactions
-
-Maximum twice a day, your bank provides the day's transactions in a data format. Currently, plentymarkets retrieves this data at 6am, 1pm and 11pm. Transaction data is available in the system approximately one hour after the retrieval. In addition, the bank provides interim transaction reports in data format several times a day. These can be retrieved and include the transactions of the current day.
-
-[#190]
-=== Retrieval times of interim transaction reports
-
-Since the times when interim transaction reports are made available differ from bank to bank, plentymarkets retrieves them from the banks, if they are available, every hour between 8am and 6pm. For EBICS postings that have unconfirmed interim transactions, the words *interim transaction* will be written in red. If the interim transaction has been confirmed, then the lettering will change from red to green. Additionally, the confirmed posting will be assigned to the corresponding order without having to book the payment again. You have to activate the statement of account in order for interim transaction reports to be confirmed. Pay attention to the information given in <<table-provision-bank-statements>>.
-
-[#200]
+[#220]
 == Setting up SEPA direct debit mandate
 
 As part of the SEPA initiative (Single Euro Payments Area), euro payments were standardized in Germany and 35 other European countries on February 1st, 2014. Bank transfers and direct debits can now only be carried out with IBAN and BIC. You can <<payment/managing-bank-details#67, migrate>> your customers' bank details automatically in the plentymarkets system. There are different types of direct debits:
@@ -379,7 +147,7 @@ As part of the SEPA initiative (Single Euro Payments Area), euro payments were s
 
 Business to business direct debits are only permitted between companies (B2B) and they require a separate mandate. You need to receive a SEPA direct debit mandate from your customers. This replaces the previous direct debit authorisation. This mandate is the new legal authorisation for using SEPA direct debit to withdraw funds from another account.
 
-[#210]
+[#230]
 === Creating a document template
 
 Go to *Setup » Orders » Documents* and click on the *SEPA direct debit mandate* submenu. There is a template for configuring the SEPA direct debit mandate. For further information about documents, refer to the <<orders/order-documents#, Document templates>> page of the manual.
@@ -442,7 +210,7 @@ Y-axis*
 |Select *ISO-8859-1* or *Unicode*. Generating PDF documents in Unicode may take longer.
 |====
 
-[#215]
+[#240]
 === Uploading a PDF template
 
 Upload a PDF template in the *PDF template* tab. Generally, the PDF template is given the same layout as your "business stationary". It includes your company data and logo. When creating the PDF template, add field names for the elements on the template as needed. Add an area for the customer's signature in the lower portion of the template.
@@ -466,7 +234,7 @@ Uploading a PDF template:
 . Open the PDF file.
 . *Save* (icon:save[role="green"]) the settings.
 
-[#220]
+[#250]
 === Creating an email template
 
 It is a good idea to send your customers the SEPA direct debit mandate directly after they made a purchase in your online store. This is done by creating an email template that has the SEPA direct debit mandate as an attachment. Create an <<payment/managing-bank-details#230, event procedure>> for sending the email.
@@ -481,7 +249,7 @@ Creating an email template:
 . Enter a *name* and select *SEPA direct debit mandate* under *PDF attachment*.
 . Enter a text in the *email message* tab. This text urges the customer to sign and return the attached SEPA direct debit mandate.
 
-[#230]
+[#260]
 === Sending an email template with an event procedure
 
 The email template is sent with an <<automation/event-procedures#, event procedure>>. The event procedure is triggered, e.g. whenever a new order is received.
@@ -522,7 +290,7 @@ The email template is sent with an <<automation/event-procedures#, event procedu
 Customer*
 |====
 
-[#240]
+[#270]
 === Sending an email template with the group function
 
 The email template is sent by clicking on the *Group function* button under *CRM » Contacts*.
@@ -541,7 +309,7 @@ Sending an email template:
 
 For further information, refer to the <<crm/managing-contacts#, Managing contacts >> page of the manual. Specifically, refer to the chapter <<crm/managing-contacts#510, Carrying out the group function>>.
 
-[#250]
+[#280]
 === Activating SEPA payments in the bank details
 
 Carry out the following setting once a customer has signed and returned the SEPA direct debit mandate to activate SEPA payments and retrieve pain008 formats.
@@ -558,7 +326,7 @@ Activating SEPA direct debit mandate in the bank details:
 . Activate *SEPA direct debit mandate*.
 . *Save* (icon:save[role="green"]) the settings.
 
-[#270]
+[#290]
 === Automating SEPA payments
 
 Set up processes to automate your SEPA payments. Go to *Setup » Processes* and use the procedures <<automation/processes/procedures#400, SEPA Pain001>> and <<automation/processes/procedures#410, SEPA Pain008>>.
