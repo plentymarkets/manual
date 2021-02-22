@@ -1,0 +1,343 @@
+= Payone
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Zahlungsarten, Zahlungen, Payone, Payone-Plugin, Payoneplugin, Payone-Zahlungsart, Payonezahlungsart, Payonezahlung, Payone-Zahlung, Payone-Account, Payoneaccount, Payone-Merchant-Interface, Merchant-Interface, Payone Merchant Interface, Merchant-ID, Portal-ID, Payone-Konfiguration, Payonekonfiguration, Payone-Einstellung, gesicherter Rechnungskauf, Payone-Kreditkarte, Kreditkarte, Payone im Checkout, Payone-Template, Payone-Zahlungsart, Payonezahlungsart, Payone-Ereignisaktion, Payone-Versand, Payone-Versandbestätigung, Payone-Rückzahlung, Payonerückzahlung, Payone-Rückerstattung, Payonerückerstattung, Payone-Schnittstelle, Payoneschnittstelle, Zahlungsplugin, Zahlungs-Plugin, Payment-Plugin, Paymentplugin, Payment-Integration, Paymentintegration, Paymentschnittstelle, Payment-Schnittstelle
+:description: Integration des Payone-Plugins.
+:position: 80
+:url: payment/payment-plugins/payone
+:id: SKISHNV
+:author: team-order-payment
+
+Mit dem Payone-Plugin bindest du die *Payone-Zahlungsarten* in deinen Webshop ein und stellst sie so deinen Kund:innen zur Auswahl. Lade dafür das Payone-Plugin im link:https://marketplace.plentymarkets.com/payone_5434[plentyMarketplace^]{nbsp}icon:external-link[] herunter. Für die Einrichtung der Zahlungsarten musst du einige grundlegende Einstellungen in deinem plentymarkets System ausführen, damit sie auch in deinem System aktiviert sind. +
+Die Erklärungen auf dieser Seite finden nach dem Hinzufügen des Plugins Anwendung. Allgemeine Informationen zum Hinzufügen und Installieren von Plugins findest du im Abschnitt <<plugins#, Plugins>> des Handbuchs.
+
+[IMPORTANT]
+.Voraussetzung
+====
+Das Payone-Plugin ist für die Nutzung mit dem Webshop Ceres entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins. Zur Nutzung des Payone-Plugins müssen die Plugins IO und Ceres aktiviert sein.
+====
+
+[#10]
+== Voraussetzung: Eröffnung eines Payone Accounts
+
+Für die Nutzung von Payone benötigst du einen Payone-Account. Durch die Eröffnung des Accounts erhältst du Informationen sowie Zugangsdaten. Liegen diese nicht vor, kannst du das Plugin nicht einrichten und somit nicht nutzen. Solltest du noch keinen Account haben, nutze dieses link:https://www.psg-projektmanagement.de/payone-plentymarkets/[Anmeldeforumlar^]{nbsp}icon:external-link[] oder wende dich an: +
+PSG Projektmanagement GmbH +
+Meergässle 4 +
+89180 Berghülen +
+Telefon: 07344-9592588 +
+E-Mail: plenty@psg-projektmanagement.de +
+Internet: http://www.psg-projektmanagement.de
+
+Nach Erhalt der Zugangsdaten loggst du dich im Payone Merchant Interface ein und nimmst die folgenden Einstellungen vor.
+
+[.instruction]
+Einstellungen im Payone Merchant Interface vornehmen:
+
+. Öffne das Menü *Konfiguration » Zahlungsportale*.
+. Öffne das Tab *Erweitert* des Zahlungsportals deines Shops.
+. Trage im Feld *TransactionStatusURL* eine URL nach dem Schema *DOMAIN/payment/payone/status* ein. Den Platzhalter *DOMAIN* durch die URL zu deinem Webshop ersetzen.
+. Wähle als Verfahren *Hashwert-Prüfung* die Option *md5 oder sha2-384 (für Migration)*.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+[#20]
+== Konfiguration des Plugins
+
+Die folgenden Einrichtungsschritte für das Payone-Plugin erfolgen direkt in der Plugin-Set-Übersicht deines plentymarkets Systems. Gehe dazu wie im Folgenden beschrieben vor.
+
+[.instruction]
+Grundeinstellungen vornehmen:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne das Plugin *Payone*. +
+→ Die Detailansicht des Plugins öffnet sich.
+. Öffne den Menüpunkt *Konfiguration*.
+. Klicke auf *Grundeinstellungen*.
+. Nimm die Einstellungen anhand der Informationen in <<tabelle-payone-grundeinstellungen>> vor.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+[[tabelle-payone-grundeinstellungen]]
+.Grundeinstellungen vornehmen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+| *Merchant ID*
+|Gib die Merchant-ID ein, die du durch die Eröffnung deines Payone-Accounts erhalten hast.
+
+| *Portal ID*
+|Gib die Portal-ID ein, die du durch die Eröffnung deines Payone-Accounts erhalten hast.
+
+| *Account ID*
+|Gib die Account-ID ein, die du durch die Eröffnung deines Payone-Accounts erhalten hast.
+
+| *Schlüssel*
+|Gib den Schlüssel ein, die du durch die Eröffnung deines Payone-Accounts erhalten hast.
+
+| *Modus*
+|Wähle einen Modus aus. Zur Auswahl stehen *Test* und *Live*. +
+Wir empfehlen während der Einrichtung des Plugins den Testmodus zu wählen. Währenddessen ist die Zahlungsart noch nicht in deinem Webshop verfügbar. Nach erfolgter Einrichtung wechsele in den Livemodus und mach somit die Zahlungsart in deinem Webshop sichtbar.
+
+| *Art der Autorisierung*
+|Vorautorisierung: Wähle diese Option, wenn der Zahlungseinzug beim Käufer nur vorgemerkt werden soll. Der Zahlungseinzug erfolgt dann durch eine Ereignisaktion, die beim Warenausgang ausgelöst werden muss (siehe Tabelle 5).
+Autorisierung:: Wähle diese Option, wenn der Zahlungseinzug beim Käufer sofort stattfinden soll. Der Zahlungseingang wird somit direkt nach dem Kaufabschluss im Webshop in deinem plentymarkets-System gebucht.
+
+|*Benutzer ID für Notizen*
+|Gib die ID des Benutzers ein, der für Auftragsnotizen als Eigner gelten soll.
+
+|====
+
+Nach den Grundeinstellungen musst du Einstellungen für die Payone-Zahlungsarten vornehmen, die du aktivieren möchtest. Gehe dafür wie folgt.
+
+[.instruction]
+Einstellungen für Zahlungsarten vornehmen:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne das Plugin *Payone*. +
+→ Die Detailansicht des Plugins öffnet sich.
+. Öffne den Menüpunkt *Konfiguration*.
+. Klicke auf die gewünschte Zahlungsart.
+. Nimm die Einstellungen anhand der Informationen in <<tabelle-payone-zahlungsarteneinstellung>> vor.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+Wiederhole dies ggf. für weitere Payone-Zahlungsarten, die du aktivieren möchtest.
+
+[[tabelle-payone-zahlungsarteneinstellung]]
+.Einstellungen für Zahlungsarten vornehmen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+| *Aktiv*
+|Wähle die Option *Ja*, um die Zahlungsart zu aktivieren und somit im Webshop anzubieten. +
+Wähle die Option *Nein*, wenn die Zahlungsart deaktiviert werden und damit nicht zur Verfügung stehen soll.
+
+| *Name*
+|Gib einen Namen für die Zahlungsart ein. Dieser Name ist für deine Kund:innen im Webshop sichtbar.
+
+| *Beschreibung*
+|Gib einen Beschreibungstext für die Zahlungsart ein. Dieser Text ist für deine Kund:innen im Webshop sichtbar.
+
+| *Minimaler Bestellwert*
+|Gib einen minimalen Bestellwert ein, ab dem die Zahlungsart im Webshop verfügbar sein soll. Wird dieser Wert unterschritten, ist die Payone-Zahlungsart für diese Bestellung nicht mehr verfügbar.
+
+| *Maximaler Bestellwert*
+|Gib einen maximalen Bestellwert ein, bis zu dem die Zahlungsart im Webshop verfügbar sein soll. Wird dieser Wert überschritten, ist die Payone-Zahlungsart für diese Bestellung nicht mehr verfügbar.
+
+| *Erlaubte Lieferländer*
+|Aktiviere (icon:check-square[role="blue"]) die Lieferländer, für die die Payone-Zahlungsart erlaubt sein soll.
+
+|====
+
+[#30]
+=== Gesicherte Rechnung
+
+Für die Zahlungsart *Gesicherter Rechnungskauf* sind eine eigene *Portal-ID* sowie ein eigener *Schlüssel* notwendig. Diese Portal-ID und dieser Schlüssel müssen im Plugin unter *Gesicherte Rechnung* bei der Konfiguration separat hinterlegt werden. Die Portal-ID und den Schlüssel erhältst du über das das Menü *Konfiguration » Zahlungsportale* im Payone Merchant Interface.
+
+[#40]
+=== Kreditkarte
+
+Die Zahlungsart *Kreditkarte* stellt einen Sonderfall dar. Für diese Zahlungsart sind zusätzliche Einstellungen notwendig. Diese zusätzlichen Einstellungen werden in <<tabelle-kreditkarte-einrichten>> beschrieben.
+
+[[tabelle-kreditkarte-einrichten]]
+.Zahlungsart Kreditkarte einrichten
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+| *Minimale Kartengültigkeit in Tagen*
+|Gib die erforderliche minimale Kartengültigkeit an, über die eine Kreditkarte verfügen muss, um für die Zahlungsart akzeptiert zu werden.
+
+| *Kreditkartenfelder Default Style*
+|Standardmäßig ist hier voreingestellt, in welcher Farbe, Schriftgröße und Schriftart die Eingabefelder für die Kreditkartendaten für Kund:innen im Webshop angezeigt werden. Die Werte sind anpassbar.
+
+| *Kreditkartenfelder Höhe in px*
+|Standardmäßig ist hier die Höhe der Eingabefelder in px voreingestellt. Der Wert ist editierbar.
+
+| *Kreditkartenfelder Breite in px*
+|Standardmäßig ist hier die Breite der Eingabefelder in px voreingestellt. Der Wert ist editierbar.
+
+| *Erlaubte Kartentypen*
+|Aktiviere die Kartentypen, die für die Zahlungsart akzeptiert werden sollen.
+
+|====
+
+[#50]
+=== Amazon Pay
+
+Um die Zahlungsart *Amazon Pay* nutzen zu können, musst du dein Amazon-Konto mit Payone verknüpfen. Wende dich dafür an den link:https://www.payone.com/DE-de/kundenservice/kontakt/[Payone Support^]{nbsp}icon:external-link[]. +
+Bei der Einrichtung der Zahlungsart Amazon Pay kannst du zusätzlich zu den Grundeinstellungen noch die Einstellung *Testumgebung* aktivieren. Diese ermöglicht es dir die Zahlungsart zunächst auszutesten und Testkäufe zu tätigen. Mit diesen lassen sich keine Aufträge und kein Umsatz generieren. Deaktiviere die Einstellung *Testumgebung*, um Amazon Pay aktiv zu schalten. Beachte, dass Amazon Pay nicht genutzt werden kann, wenn du bereits PayPal in *Mode 1* integriert hast. In diesem Mode überschreibt PayPal den gesamten Checkout mit der PayPal-Wall, daher stehen die für Amazon Pay benötigten Widgets nicht zur Verfügung.
+
+[#60]
+== Ceres-Checkout anpassen
+
+Als Nächstes ist eine Anpassung im Ceres Checkout notwendig, damit deine Kund:innen bei Bezahlvorgängen mit Payone ihr Geburtsdatum (nur für den gesicherten Rechnungskauf) korrekt eingeben können. Dafür gibt es zwei Möglichkeiten. Du kannst entweder den ShopBuilder nutzen oder das Ceres-Plugin entsprechend konfigurieren. Beides wird im Folgenden beschrieben.
+
+[.tabs]
+====
+ShopBuilder::
++
+--
+
+[.instruction]
+Anpassen der ShopBuilder-Seite für Checkout:
+
+. Wähle auf deiner ShopBuilder-Seite für den Checkout die Widget-Kategorie *Kundendaten*.
+. Wähle das Widget *Adressauswahl* aus.
+. Klicke auf *Einstellungen* (con:cog[]) dieses Widgets.
+. Wähle unter *Rechnungs- und Lieferadresse anzeigen* neben den anderen benötigten Adressfeldern auch *Geburtsdatum* aus.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+Im Bereich Webshop des Handbuchs findest du weitere Erklärungen zum Umgang mit dem <<webshop/shop-builder, ShopBuilder>> allgemein und der Widget-Kategorie <<webshop/shop-builder#85, Kundendaten>>.
+
+--
+
+Ceres-Plugin::
++
+--
+
+[.instruction]
+Ceres-Checkout anpassen für den gesicherten Rechnungskauf:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne das Plugin *Ceres*. +
+→ Die Detailansicht des Plugins öffnet sich.
+. Wähle unter *Konfiguration* den Punkt *Kaufabwicklung und Mein Konto* aus.
+. Stelle den Toggle *Veraltete Einträge zeigen/verstecken* auf zeigen (grün).
+. Klappe den Bereich *Rechnungsadressfelder im Adressformular anzeigen (DE)* auf.
+. Aktiviere über die Checkbox die Option *Geburtsdatum*.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+Im Checkout wird deinen Kund:innen nun ein Feld zur Eingabe des Geburtsdatums angezeigt.
+
+[TIP]
+.Fehler bei der Eingabe
+======
+Nimm diese Einstellung unbedingt sorgfältig vor, da deine Kund:innen andernfalls den Bezahlvorgang mit Payone nicht abschließen können.
+======
+--
+====
+
+[#70]
+== Template-Container verknüpfen
+
+Für die Zahlungsart Payone stehen dir verschiedene Möglichkeiten zur Verfügung, um sie in deinem Webshop einzubinden. Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container hinterlegt, mit denen zur Individualisierung Contents verknüpft werden.
+
+[.instruction]
+Container verknüpfen:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne das Plugin *Payone*. +
+→ Die Detailansicht des Plugins öffnet sich.
+. Klicke auf *Container-Verknüpfungen*.
+. Wähle aus der Dropdown-Liste den Datenanbieter aus, den du verknüpfen möchtest.
+. Wähle den Container aus, mit dem du den Datenanbieter verknüpfen möchtest. Beachte dazu die Erläuterungen in <<tabelle-container-verknüpfen>>.
+. Wiederhole Schritte 5 und 6 für alle Datenanbieter, die du verknüpfen möchtest.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+[[tabelle-container-verknüpfen]]
+.Container verknüpfen
+[cols="1,3"]
+|====
+|Content |Erläuterung
+
+| *Payone Order Confirmation Page Payment Data*
+|Verknüpfe diesen Content mit dem Container Order confirmation: Additional payment information, um die Payone-Zahlungsarten auf der Bestellbestätigungsseite im Webshop anzuzeigen.
+
+| *Payone Checkout JS*
+|Verknüpfe diesen Content mit dem Container Script loader: After script loaded, um die Payone-Zahlungsarten während der Kaufabwicklung im Webshop anzuzeigen.
+
+|====
+
+[#80]
+== Zahlungsart einmalig aktivieren
+
+include::../_textblocks/zahlungsart-aktivieren.adoc[]
+
+[#90]
+== Kundenklassen und Versandprofile
+
+include::../_textblocks/kundenklassen-und-versandprofile.adoc[]
+
+[#100]
+== Ereignisaktionen einrichten
+
+Richte Ereignisaktionen ein, damit alle benötigten Daten automatisch an Payone versendet werden. Dafür empfehlen wir 2 Ereignisaktionen.
+
+[.collapseBox]
+.*Ereignisaktion einrichten*
+--
+
+[.instruction]
+Einrichtung einer Ereignisaktion:
+
+. Öffne das Menü *Einrichtung » Aufträge » Ereignisse*.
+. Klicke auf *Ereignisaktion hinzufügen*. +
+→ Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
+. Gib einen Namen ein.
+. Wähle das Ereignis gemäß Tabellen 5 und 6.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+. Nimm die Einstellungen gemäß Tabellen 5 und 6 vor.
+. Aktiviere die Option *Aktiv*.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+--
+
+[#110]
+=== Automatische Versandbestätigung an Payone senden
+
+Richte eine Ereignisaktion ein, um eine automatische Versandbestätigung an Payone zu senden, sobald du den Auftrag versendet hast.
+
+[IMPORTANT]
+.Ereignisaktion und Art der Autorisierung
+====
+Die Einrichtung dieser Ereignisaktion ist zwingend notwendig, wenn in der Grundeinstellung als *Art der Autorisierung* die Option *Vorautorisierung* gewählt wurde. Hast du die Option *Autorisierung* gewählt, ist diese Ereignisaktion nicht nutzbar und nicht notwendig.
+====
+
+[[tabelle-ea-versandbestätigung-payone]]
+.Ereignisaktion zum Senden einer automatischen Versandbestätigung an Payone
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Das Ereignis wählen, nach dem die Versandbestätigung automatisch versendet werden soll, z.B. *Auftragsänderung > Warenausgang gebucht*.
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Plugin: PAYONE
+
+| *Aktion*
+| Plugin > PAYONE | Versandbestätigung senden
+|
+
+|====
+
+[#120]
+=== Payone-Zahlung automatisch zurückzahlen
+
+Richte eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über Payone zu automatisieren.
+
+[[tabelle-ea-rückzahlung-payone]]
+.Ereignisaktion zur automatischen Rückzahlung einer Payone-Zahlung
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Das Ereignis wählen, nach dem eine Rückzahlung erfolgen soll.
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Plugin: PAYONE
+
+| *Aktion*
+| Plugin > PAYONE | Rückerstattung senden
+|
+
+|====
