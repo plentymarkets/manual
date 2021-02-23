@@ -57,8 +57,6 @@ Einleitungstext
 [#600]
 === Auftragsherkunft aktivieren
 
-// Auftragsherkunft aktivieren
-
 :market: {marketplace}
 :referrer: {marketplace}
 :referrer-option: Option {marketplace}
@@ -81,11 +79,11 @@ Weitere Informationen zu Eigenschaften findest du auf der Seite <<artikel/einste
 
 Du benötigst die folgenden Eigenschaften für {marketplace}:
 
-* Logistikklasse (<<#1210, so geht's>>)
+* Logistikklasse
 * Versandvorlaufzeit
 * Abzugsverfahren
 
-Die Eigenschaften Versandvorlaufzeit und Abzugsverfahren werden automatisch mit dem Typ *Auswahl* erstellt.
+*_Hinweis_*: Die Eigenschaften Versandvorlaufzeit und Abzugsverfahren werden automatisch mit dem Typ *Auswahl* erstellt. Du musst also nur die Eigenschaft <<#1210, Logistikklasse>> erstellen.
 
 [#1210]
 ==== Eigenschaft Logistikklasse erstellen
@@ -102,6 +100,10 @@ include::../../_textblocks/instructions/properties-creation.adoc[]
 :property-name: {marketplace} Logistikklasse
 
 include::../../_textblocks/instructions/properties-creation-table.adoc[]
+
+// weitere Eigenschaften ergänzen (für alle drei Marktplätze)
+// Mediamarkt: 4 Eigenschaften; Conrad und Voelkner: 5 Eigenschaften
+// Frage: wird die Eigenschaft update-delete automatisch erstellt?
 
 [#1300]
 === API-Schlüssel erzeugen
@@ -238,6 +240,39 @@ Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datena
 
 |====
 ////
+
+=== Markplatzspezifische Werte übertragen
+
+Der Marktplatz verlangt für die Übertragung von Produktdaten bei den meisten Attributen/Eigenschaften spezifische Werte. Diese sind derzeit allerdings noch nicht in dieser Form an der Variante hinterlegt. +
+*_Beispiel:_* Für das Attribut *Brand* ist beispielsweise *test* nicht erlaubt. Hier muss der entsprechende Code übergeben werden - in diesem Beispiel *BRAND_12345678*.
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=mediamarkt-support]
+endif::[]
+
+//Bei Conrad & Voelkner wird ab hier das “Attribut-Hilfetool” erklärt und die URL genannt:
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=attributsuche-tool]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=attributsuche-tool]
+endif::[]
+
+=== Gültige Attributwerte zuordnen und übertragen
+
+Hast du - je nach Variante, die übertragen werden soll - unterschiedliche Attributwerte, die gültig sein könnten, stellt sich zunächst die Frage, über welche Vorgehensweise du deine Artikeldaten aktuell hältst.
+Verwaltest du deine Artikeldaten manuell, ist eine Eigenschaft vom Typ *Auswahl* empfehlenswert. Hier kannst du für die Auswahl eine Beschreibung hinterlegen. Diese wird dann in der Übersicht der Eigenschaften an der Variante angezeigt.
+Wenn der Code der Eigenschaft zugeordnet wurde, kannst du den realen Namen der Variante im Feld *Beschreibung* verwenden. Das bedeutet, über den Katalog wird dann der Code übertragen und dahinter in Klammern der reale Name angezeigt. +
+
+*_Tipp:_* Wenn du für ein Attribut immer nur einen einzigen Wert übertragen möchtest, z.B. als Marke immer *BRAND_12345678*, kannst du die Option *Eigener Wert* im Katalog verwenden.
+//Wenn die Eigenschaftswerte per Import oder REST-API verwaltet werden ist zwar eine Eigenschaftstyp von Auswahl möglich, aber eventuell vom Typ Kurztext etwas einfacher zu verwalten.
+// warum?
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=vorhandene-angebote-nicht-ueberschreiben]
+endif::[]
 
 [#900]
 === Katalog erstellen
@@ -411,14 +446,28 @@ TODO:
 
 == Produktdaten übertragen
 
-=== Voraussetzungen
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=voraussetzungen-produktdaten-uebertragen]
+endif::[]
 
-* Die Plugins {*name + link to marketplace*} sowie *Mirakl Connector* wurden im Marktplatz gekauft, heruntergeladen und in einem Plugin-Set installiert und bereitgestellt.
-* Im Menü *Einrichtung » Aufträge » Auftragsherkunft* wurden die Auftragsherkünfte {marketplace} und Mirakl aktiviert.
-* Im Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen] » {marketplace/extension}* wurde die Grundeinrichtung vorgenommen. Für die Produktübertragung muss die Option *Produkte exportieren* im Schritt Datenaustausch aktiv sein.
-* Im Menü *Einrichtung » Artikel » Verkaufspreise* wurden die Mirakl sowie {marketplace/extension} Auftragsherkünfte an einem bestehenden Preis aktiviert *oder* es wurde ein neuer Verkaufspreis erstellt, bei dem Mirakl und {marketplace/extension} Auftragsherkünfte aktiviert wurden.
-* Du hast bereits einen Katalog für die Übertragung der Daten erstellt. - LINK zum Kapitel Kataloge
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=voraussetzungen-produktdaten-uebertragen]
+endif::[]
 
-
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=voraussetzungen-produktdaten-uebertragen]
+endif::[]
 
 == Angebotsdaten übertragen
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=voraussetzungen-angebotsdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=voraussetzungen-angebotsdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=voraussetzungen-angebotsdaten-uebertragen]
+endif::[]
