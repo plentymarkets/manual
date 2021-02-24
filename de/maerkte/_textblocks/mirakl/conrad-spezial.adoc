@@ -358,3 +358,43 @@ Das Attribut-Hilfetool verwenden:
 // Tabelle einfügen
 Die Tabelle der gültigen Attributwerte wird jeweils über Nacht aktualisiert.
 // end::attributsuche-tool[]
+
+// tag::box-angebotsfelder-produktexportfeld[]
+[IMPORTANT]
+.Wie hängen die Angebotsfelder, das Produktexportfeld und die Marktplatz-SKU an der Variante zusammen?
+====
+Die Angebotsfelder *sku* und *product-id* werden grundsätzlich immer mit dem Wert gefüllt, der an der Variante im Feld *Marktplatz-SKU* für den Marktplatz definiert wurde.
+Das Angebotsfeld *product-id-type* wird standardmäßig mit dem Wert *SHOP_SKU* übertragen, kann aber mit einem anderen Wert überschrieben werden, z.B. *SKU*.
+Wenn *SKU* gewählt wird, muss die SKU vom Marktplatz als Marktplatz-SKU an der Variante definiert werden.
+// Wenn *EAN* gewählt wird, muss die EAN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+// Wenn *ISBN* gewählt wird, muss die ISBN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+Das Produktexportfeld *Produkt-ID (Artikelnr. des Verkäufers)* wird je nach Einstellung im Katalog gefüllt.
+Bei der ersten Übertragung, die über Nacht stattfindet, wird die Marktplatz-SKU an der Variante in plentymarkets automatisch aus der Varianten-ID gebildet. Die Marktplatz-SKU kann alternativ per Import oder manuell definiert werden.
+====
+// end::box-angebotsfelder-produktexportfeld[]
+
+// tag::angebote-deaktivieren[]
+=== Angebote auf dem Marktplatz deaktivieren
+// Frage: Wozu genau muss ich Angebote zunächst deaktivieren?
+Wenn du auf dem Marktplatz bereits Artikel verkaufst, navigiere in das Marktplatz-Backend zu *Mein Inventar > Angebotsliste*.
+Klicke auf der rechten Seite über der Tabelle auf Inventurdatei „Bereit für den Import“ herunterladen.
+Verwende den Inhalt, um die Werte aus den Spalten *product-id* und *product-id-type* an den entsprechenden Varianten zu hinterlegen.
+Zunächst musst du alle Angebote auf dem Marktplatz deaktivieren. Verwende dafür die heruntergeladene Inventurdatei. Definiere in der Spalte *update-delete* den Wert *delete*, speichere die Datei und importiere die Datei anschließend über *Mein Inventar > Aus Datei importieren > Eine Datei importieren*:
+
+Sollte ein Fehler auftreten, können somit schnell alle vorher aktiven Angebote reaktiviert werden. Befülle die Spalte *update-delete* mit *update*, speichere die Einstellung und importiere die Datei dann wie oben beschrieben.
+Im Katalog wird das Feld *Produkt-ID (Artikelnr. des Verkäufers)* der Marktplatz-SKU zugeordnet. Wähle als Ausweich-Datenfeld die Varianten-ID.
+Wenn du auf dem Marktplatz noch nicht verkaufst, musst du im Katalog lediglich das Datenfeld *Produkt-ID (Artikelnr. des Verkäufers)* mit der Varianten-ID verknüpfen.
+*_Hinweis_*: Falls ein anderes Feld als Varianten-ID für das Feld *Produkt-ID (Artikelnr. des Verkäufers)* im Katalog definiert wird, muss vor der erstmaligen nächtlichen Übertragung des Produkts der korrekte Wert als Marktplatz-SKU an der Variante definiert werden.
+// end::angebote-deaktivieren[]
+
+// tag::werte-uebertragen[]
+Werte für die Übertragung an den Marktplatz definieren
+Die Werte product-id und SKU werden wie folgt übertragen:
+Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, muss mit dem Wert der *product-id* in der Angebotsübertragung übereinstimmen.
+Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, wird im Katalog definiert.
+Der Wert, der als Marktplatz-SKU an der Variante hinterlegt wird, wird für die Felder *sku* und *product-id* bei der Angebotsübertragung verwendet.
+Wenn du keinen Wert für die Marktplatz-SKU an einer Variante definiert hast, aber die Marktplatzverfügbarkeiten aktiviert wurden, wird die Variante in der Angebotsübertragung ohne *sku* und *product-id* übertragen.
+Daraus ergeben sich die folgenden Zuordnungen für die Produktübertragung:
+Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* nur die Varianten-ID zugeordnet. Bei der ersten Produktübertragung von dieser Variante wird automatisch (wenn sonst kein Wert vorher definiert wurde) die Varianten-ID als Marktplatz-SKU an der entsprechenden Variante gespeichert.
+Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die SKU zugeordnet und die Varianten-ID als Ausweich-Datenfeld definiert. Vor der ersten Produktübertragung der Variante wird die Marktplatz-SKU an der Variante definiert. Nimmst du diese Einstellung nicht vor,  wird die Varianten-ID nach der ersten Produktübertragung automatisch als Marktplatz-SKU an der Variante hinterlegt.
+// end::werte-uebertragen[]
