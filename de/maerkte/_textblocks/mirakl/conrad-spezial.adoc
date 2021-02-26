@@ -388,13 +388,94 @@ Wenn du auf dem Marktplatz noch nicht verkaufst, musst du im Katalog lediglich d
 // end::angebote-deaktivieren[]
 
 // tag::werte-uebertragen[]
-Werte für die Übertragung an den Marktplatz definieren
-Die Werte product-id und SKU werden wie folgt übertragen:
-Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, muss mit dem Wert der *product-id* in der Angebotsübertragung übereinstimmen.
-Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, wird im Katalog definiert.
-Der Wert, der als Marktplatz-SKU an der Variante hinterlegt wird, wird für die Felder *sku* und *product-id* bei der Angebotsübertragung verwendet.
-Wenn du keinen Wert für die Marktplatz-SKU an einer Variante definiert hast, aber die Marktplatzverfügbarkeiten aktiviert wurden, wird die Variante in der Angebotsübertragung ohne *sku* und *product-id* übertragen.
+=== Werte für die Übertragung an den Marktplatz definieren
+
+Die Werte *product-id* und *SKU* werden wie folgt übertragen:
+
+* Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, muss mit dem Wert der *product-id* in der Angebotsübertragung übereinstimmen.
+* Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, wird im Katalog definiert.
+* Der Wert, der als Marktplatz-SKU an der Variante hinterlegt wird, wird für die Felder *sku* und *product-id* bei der Angebotsübertragung verwendet.
+* Wenn du keinen Wert für die Marktplatz-SKU an einer Variante definiert hast, aber die Marktplatzverfügbarkeiten aktiviert wurden, wird die Variante in der Angebotsübertragung ohne *sku* und *product-id* übertragen.
+
 Daraus ergeben sich die folgenden Zuordnungen für die Produktübertragung:
-Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* nur die Varianten-ID zugeordnet. Bei der ersten Produktübertragung von dieser Variante wird automatisch (wenn sonst kein Wert vorher definiert wurde) die Varianten-ID als Marktplatz-SKU an der entsprechenden Variante gespeichert.
-Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die SKU zugeordnet und die Varianten-ID als Ausweich-Datenfeld definiert. Vor der ersten Produktübertragung der Variante wird die Marktplatz-SKU an der Variante definiert. Nimmst du diese Einstellung nicht vor,  wird die Varianten-ID nach der ersten Produktübertragung automatisch als Marktplatz-SKU an der Variante hinterlegt.
+* Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* nur die Varianten-ID zugeordnet. Bei der ersten Produktübertragung von dieser Variante wird automatisch (wenn sonst kein Wert vorher definiert wurde) die Varianten-ID als Marktplatz-SKU an der entsprechenden Variante gespeichert.
+* Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die SKU zugeordnet und die Varianten-ID als Ausweich-Datenfeld definiert. Vor der ersten Produktübertragung der Variante wird die Marktplatz-SKU an der Variante definiert. Nimmst du diese Einstellung nicht vor,  wird die Varianten-ID nach der ersten Produktübertragung automatisch als Marktplatz-SKU an der Variante hinterlegt.
 // end::werte-uebertragen[]
+
+// tag::datenfelder-grundpreisangabe[]
+[TIP]
+.Datenfelder zur Grundpreisangabe pflegen
+====
+Die beiden Datenfelder *Brutto-Inhaltsmenge für Grundpreisangabe* und *Einheit der Grundpreisangabe* werden zwar nicht als Pflichtfelder markiert, müssen aber hinsichtlich der rechtlichen Situation zur Angabe der Grundpreise gepflegt und übertragen werden.
+Für beide Datenfelder gibt es keine Liste von gültigen Werten. Wir empfehlen jedoch dem Attribut *Brutto-Inhaltsmenge für Grundpreisangabe* das plentymarkets Datenfeld *Inhalt Menge* zuzuordnen und für das Attribut *Einheit der Grundpreisangabe* eine Eigenschaft zu erstellen und die Werte an den Varianten zu speichern, z.B. „g“ für *Gramm*.
+====
+// end::datenfelder-grundpreisangabe[]
+
+// tag::produktdaten-aktualisieren[]
+=== Produktdaten aktualisieren
+
+Du kannst zu jeder Zeit eine Aktualisierung der Produktdaten vornehmen. Ausgeschlossen davon sind jedoch die folgenden Produktdaten:
+* Verpackungseinheiten
+* Hersteller-Teilenummer
+* Artikelnummer des Verkäufers
+
+Wenn du eines oder mehrere der o.g. Felder ändern möchtest, musst du das Produkt zuerst löschen und dann neu übertragen. Gehe dazu vor wie folgt:
+
+[.instruction]
+Produktdaten aktualisieren:
+
+. Öffne das Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration*.
+. Erstelle eine Eigenschaft vom Typ *Kurztext*.
+. Gib einen Namen ein, z.B. *Marktplatz-Produkt löschen*.
+. Öffne das Menü *Daten » Kataloge*.
+. Öffne den entsprechenden Katalog.
+. Ordne dem Datenfeld *Product Invalidierungs Markierung* bzw. *InvalidationFlag* die Eigenschaft zum Löschen des Produkts, die du gerade erstellt hast, zu.
+. Öffne den Assistenten.
+. Gehe in den Schritt „Zuordnung der Angebots- Eigenschaften“.
+. Ordne der Eigenschaft *{marketplace} Update-Delete* das Datenfeld *update-delete* zu.
+. Wähle an der zu löschenden Variante den Auswahlwert *delete*. +
+*_Hinweis:_* Eine Bestands- oder Preisänderung der Variante kann einige Zeit dauern. Alternativ kannst du diese Änderung manuell vornehmen.
+. Warte bis zur nächsten Angebotsübertragung. +
+→ Dies kann bis zu 15 Minuten dauern.
+. Deaktivere die Marktplatzverfügbarkeit für den Marktplatz und Mirakl an der Variante.
+. Entferne die Eigenschaft für die Katalogverknüpfung an der Variante.
+. Lösche das Angebot zu dem Produkt manuell im Backend des Marktplatzes.
+. Aktiviere an der entsprechenden Variante die Eigenschaft, die du für das Löschen des Produkts erstellt hast, und hinterlege den Wert *kill*.
+. Aktiviere die Eigenschaft für die Katalogverknüpfung an der Variante.
+. Warte bis zur nächsten Übertragung der Produkte. +
+→  Diese findet über Nacht statt.
+. Nachdem du das Produkt gelöscht hast, musst du 24-48h warten, bis du die gleiche Product-ID wieder verwenden darfst.
+. Entferne nach der Wartezeit die Eigenschaft, die du für das Löschen des Produkts erstellt hast von der Variante.
+. Aktiviere an der Variante die Marktplatzverfügbarkeit für den Marktplatz und Mirakl erneut.
+// end::produktdaten-aktualisieren[]
+
+// tag::box-angebotsfelder-conrad[]
+[IMPORTANT]
+.Wie hängen die Angebotsfelder, das Produktexportfeld und die Marktplatz-SKU an der Variante zusammen?
+====
+Die Angebotsfelder *sku* und *product-id* werden grundsätzlich immer mit dem Wert gefüllt, der an der Variante im Feld *Marktplatz-SKU* für den Marktplatz definiert wurde.
+Das Angebotsfeld *product-id-type* wird standardmäßig mit dem Wert *SHOP_SKU* übertragen, kann aber mit einem anderen Wert überschrieben werden, z.B. *SKU*.
+Wenn *SKU* gewählt wird, muss die SKU vom Marktplatz als Marktplatz-SKU an der Variante definiert werden.
+// Wenn *EAN* gewählt wird, muss die EAN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+// Wenn *ISBN* gewählt wird, muss die ISBN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+
+Das Produktexportfeld *Produkt-ID (Artikelnr. des Verkäufers)* wird je nach Zuordnung im Katalog gefüllt.
+Bei der ersten Übertragung, die über Nacht stattfindet, wird die Marktplatz-SKU an der Variante in plentymarkets automatisch aus der Varianten-ID gebildet. Die Marktplatz-SKU kann alternativ per Import oder manuell definiert werden.
+====
+// end::box-angebotsfelder-conrad[]
+
+// tag::weitere-datenfelder-angebotsuebertragung[]
+[discrete]
+=== Weitere Datenfelder, die bei der Angebotsübertragung übermittelt werden
+
+* *sku* und *product-id*: Diese Felder werden automatisch mit dem Wert befüllt, der als Marktplatz-SKU an der Variante hinterlegt wurde.
+* *product-id-type*: Dieses Feld wird standardmäßig mit dem Wert *SHOP_SKU* befüllt. Im Assistentenschritt *Zuordnung der Angebots- Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen der folgenden Werte zu übertragen: *ISBN*, *SKU* oder *EAN*. Dieses Feature wird weiter unten tiefer erklärt.
+* *price*: Dieses Feld wird automatisch mit dem Wert befüllt, der an der Variante für den am Marktplatz aktivierten Preis definiert wurde. Wurden mehrere Verkaufspreise an der Variante definiert, die ebenfalls für den Marktplatz freigegeben sind, wird der Preis mit der niedrigsten ID exportiert.
+* *quantity*: Dieses Feld wird automatisch befüllt mit dem Nettobestand oder den summierten Nettobeständen aus den Lagern, die im Assistent *{marketplace}* im Schritt *Lagerauswahl* gewählt wurden.
+* *min-quantity-alert*: Dieses Feld wird automatisch mit dem Wert *1* übertragen.
+* *state*: Dieses Feld wird automatisch mit dem Wert *11* übertragen.
+* *available-start-date*: Dieses Feld wird automatisch mit einem Zeitstempel übertragen.
+* *discount-ranges*: In diesem Feld werden ein oder mehrere Staffelpreise übertragen.
+// Link zu Verkaufspreise-Kapitel einfügen
+* *allow-quote-requests*: Dieses Feld wird automatisch mit dem Wert *false* übertragen.
+// end::weitere-datenfelder-angebotsuebertragung[]

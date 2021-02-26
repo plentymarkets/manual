@@ -150,6 +150,7 @@ Die gültigen Werte für die verschiedenen Attribute können vom Mediamarkt Supp
 // tag::vorhandene-angebote-nicht-ueberschreiben[]
 [discrete]
 === Vorhandene Angebote auf Mediamarkt nicht überschreiben
+
 Wenn du bereits Artikel bei Mediamarkt verkaufst, musst du die Varianten in plentymarkets mit ProductIDs versehen. Dies stellt sicher, dass die vorhandenen Produktdaten nicht überschrieben und nur neue Angebote zu den Produkten erstellt werden. Beim Übertragen von Produktdaten wird also eine ProductID an Mediamarkt übermittelt. Die ProductID ist wichtig, um bei der Übertragung von Angebotsdaten eine Verbindung zwischen Angebot und Produkt herzustellen.
 
 Standardmäßig wird bei der Übertragung eines Produktes, für das noch keine Marktplatz-SKU hinterlegt wurde, automatisch die Varianten-ID als Marktplatz-SKU gespeichert. Später bei der Angebotsübertragung wird der Wert, der als Marktplatz-SKU hinterlegt ist, für sku und product-id verwendet.
@@ -176,3 +177,33 @@ Neue Angebote erstellen:
 Existieren hingegen noch keine Produkte auf dem Marktplatz, verknüpfe im Katalog nur die Varianten-ID als *SHOP_SKU* und *Seller Product ID*. Dadurch stellst du sicher, dass auch der richtige Wert als Marktplatz-SKU an der Variante hinterlegt wird.
 Gib im Katalog eine gültige EAN an und übertrage diese an Mediamarkt.
 // end::vorhandene-angebote-nicht-ueberschreiben[]
+
+// tag::werte-uebertragen[]
+=== Werte für die Übertragung an den Marktplatz definieren
+
+Die Werte *product-id* und *SKU* werden wie folgt übertragen:
+
+* Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, muss mit dem Wert der *product-id* in der Angebotsübertragung übereinstimmen.
+* Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, wird im Katalog definiert.
+* Der Wert, der als Marktplatz-SKU an der Variante hinterlegt wird, wird für die Felder *sku* und *product-id* bei der Angebotsübertragung verwendet.
+* Wenn du keinen Wert für die Marktplatz-SKU an einer Variante definiert hast, aber die Marktplatzverfügbarkeiten aktiviert wurden, wird die Variante in der Angebotsübertragung ohne *sku* und *product-id* übertragen.
+
+Daraus ergeben sich die folgenden Zuordnungen für die Produktübertragung:
+* Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* nur die Varianten-ID zugeordnet. Bei der ersten Produktübertragung von dieser Variante wird automatisch (wenn sonst kein Wert vorher definiert wurde) die Varianten-ID als Marktplatz-SKU an der entsprechenden Variante gespeichert.
+* Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die SKU zugeordnet und die Varianten-ID als Ausweich-Datenfeld definiert. Vor der ersten Produktübertragung der Variante wird die Marktplatz-SKU an der Variante definiert. Nimmst du diese Einstellung nicht vor,  wird die Varianten-ID nach der ersten Produktübertragung automatisch als Marktplatz-SKU an der Variante hinterlegt.
+// end::werte-uebertragen[]
+
+// tag::weitere-datenfelder-angebotsuebertragung[]
+[discrete]
+=== Weitere Datenfelder, die bei der Angebotsübertragung übermittelt werden
+
+* *sku* und *product-id*: Diese Felder werden automatisch mit dem Wert befüllt, der als Marktplatz-SKU an der Variante hinterlegt wurde.
+* *price*: Dieses Feld wird automatisch mit dem Wert befüllt, der an der Variante für den am Marktplatz aktivierten Preis definiert wurde. Wurden mehrere Verkaufspreise an der Variante definiert, die ebenfalls für den Marktplatz freigegeben sind, wird der Preis mit der niedrigsten ID exportiert.
+* *quantity*: Dieses Feld wird automatisch befüllt mit dem Nettobestand oder den summierten Nettobeständen aus den Lagern, die im Assistent *{marketplace}* im Schritt *Lagerauswahl* gewählt wurden.
+* *min-quantity-alert*: Dieses Feld wird automatisch mit dem Wert *1* übertragen.
+* *state*: Dieses Feld wird automatisch mit dem Wert *11* übertragen.
+* *available-start-date*: Dieses Feld wird automatisch mit einem Zeitstempel übertragen.
+* *discount-ranges*: In diesem Feld werden ein oder mehrere Staffelpreise übertragen.
+// Link zu Verkaufspreise-Kapitel einfügen
+* *allow-quote-requests*: Dieses Feld wird automatisch mit dem Wert *false* übertragen.
+// end::weitere-datenfelder-angebotsuebertragung[]
