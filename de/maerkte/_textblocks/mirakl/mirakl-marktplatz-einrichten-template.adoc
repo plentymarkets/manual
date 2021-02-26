@@ -1,0 +1,155 @@
+[#600]
+== Auftragsherkunft aktivieren
+
+:market: {marketplace}
+:referrer: {marketplace}
+:referrer-option: Option {marketplace}
+
+include::../../_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#500]
+== Verkaufspreis festlegen
+
+:referrer-price: {marketplace}
+
+include::../../_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#1200]
+== Eigenschaften erstellen
+
+Eigenschaften werden verwendet, um Felder an den Marktplatz zu übergeben, die in plentymarkets standardmäßig nicht definiert sind. Im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration* erstellst du die Eigenschaften, die {marketplace} vorgibt.
+
+Weitere Informationen zu Eigenschaften findest du auf der Seite <<artikel/einstellungen/eigenschaften#500, Merkmale und Eigenschaften>>.
+
+Du benötigst die folgenden Eigenschaften für {marketplace}:
+
+* Logistikklasse
+* Versandvorlaufzeit
+* Abzugsverfahren
+
+*_Hinweis_*: Die Eigenschaften Versandvorlaufzeit und Abzugsverfahren werden automatisch mit dem Typ *Auswahl* erstellt. Du musst also nur die Eigenschaft <<#1210, Logistikklasse>> erstellen.
+
+[#1210]
+=== Eigenschaft Logistikklasse erstellen
+
+Für jede Variante muss ein Versandprofil-Code an {marketplace} exportiert werden. Versandprofile konfigurierst du im Mirakl-Backend. Die Liste der Versandprofile wird im Mirakl-Backend im Bereich *Informationen » Versandkosten* angezeigt. Der Code wird in der Spalte *Logistikklasse* in Klammern hinter dem Namen der Logistikklasse angezeigt.
+
+:property: Logistikklasse
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Logistikklasse
+:property-area: Artikel
+:property-type: Kurztext
+:property-name: {marketplace} Logistikklasse
+
+include::../../_textblocks/instructions/properties-creation-table.adoc[]
+
+// weitere Eigenschaften ergänzen (für alle drei Marktplätze)
+// Mediamarkt: 4 Eigenschaften; Conrad und Voelkner: 5 Eigenschaften
+// Frage: wird die Eigenschaft update-delete automatisch erstellt?
+
+[#1300]
+== API-Schlüssel erzeugen
+
+Um die Verbindung für {marketplace} zwischen plentymarkets und Mirakl herzustellen, benötigst du einen API-Schlüssel. Um den API-Schlüssel zu erzeugen, gehe wie folgt vor:
+
+[.instruction]
+API-Schlüssel erzeugen:
+
+. Öffne das Backend von Mirakl.
+. Klicke auf das Benutzersymbol (icon:user-circle[]).
+. Öffne das Tab *API-Schlüssel*.
+. Generiere einen neuen API-Schlüssel für {marketplace}.
+. Kopiere den API-Schlüssel in die Zwischenablage. Du benötigst den Schlüssel, um dein {marketplace}-Konto in plentymarkets einzurichten.
+
+[#1400]
+== Kontoeinstellungen im Assistenten vornehmen
+
+Mit dem Assistenten *{marketplace} - Wizard* im Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]* richtest du dein {marketplace}-Konto in plentymarkets ein.
+
+:menu-path: pass:quotes[Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*]
+:assistant-name: {marketplace}
+:number-of-boxes: Info-Box
+
+include::../../_textblocks/instructions/assistant-basic-instructions.adoc[]
+
+// Je nach Umfang des Assistenten entweder eine einzige ausklappbare Box oder eine ausklappbare Box pro Schritt im Assistenten.
+
+[.collapseBox]
+.Erläuterungen zu den Optionen des Assistenten
+--
+[[table-{marketplace}-basic-settings-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+2+| Schritt *Authentifizierung*
+
+| API Environment
+a| Wähle eine API-Umgebung aus der Dropdown-Liste. Welche API-Umgebung du wählen solltest, erfährst du von deinen Ansprechpartner:innen bei {marketplace}. +
+*_Hinweis:_* Wenn du die API-Umgebung wechselst, also z.B. vom Test-Modus in den Produktiv-Modus, musst du einen neuen <<#1300, API-Schlüssel>> erzeugen.
+
+| API Key
+| Trage den <<#1300, API-Schlüssel>> ein, den du erzeugt hast. +
+*_Hinweis:_* Wenn du die API-Umgebung wechselst, also z.B. vom Test-Modus in den Produktiv-Modus wechselst, musst du einen neuen <<#1300, API-Schlüssel>> erzeugen.
+
+2+| Schritt *Datenaustausch*
+
+| Datenaustausch
+| Wähle die Prozesse, für die du den Datenaustausch zwischen plentymarkets und Mirakl einrichten möchtest.
+
+2+| Schritt *Zuordnung der Rückerstattung*
+
+| Zuordnung der Rückerstattung
+a| Hier ordnest du den Rückerstattungsgründen von {marketplace} plentymarkets Auftragsstatus zu.
+
+. Klicke auf *Neuen Eintrag hinzufügen*. +
+→ Eine Zeile wird eingefügt.
+. Wähle aus der Dropdown-Liste links den plentymarkets Status.
+. Wähle aus der Dropdown-Liste rechts einen der Gründe für die Rückerstattung von {marketplace} ein. +
+Die folgenden Gründe können an {marketplace} übertragen werden: +
+
+* `15` = Artikel nicht mehr lieferbar
+* `16` = Artikel vom Kunden storniert
+* `17` = Artikel wurde zurückgeschickt
+* `18` = Kunde hat Artikel nicht erhalten
+* `19` = Sonstige Vereinbarung getroffen
+
+// Gründe sind für Conrad, Voelkner und MediaMarkt gleich
+
+2+| Schritt *Zuordnung der Stornierung*
+
+| Zuordnung der Stornierung
+a|
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=zuordnung-stornierung]
+endif::[]
+
+ifeval::["{marketplace}" == "MediaMarkt"]
+include::./mediamarkt-spezial.adoc[tag=zuordnung-stornierung]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=zuordnung-stornierung]
+endif::[]
+
+2+| Schritt *Lagerauswahl*
+
+| Lagerauswahl
+| Wähle das Lager, das für den Bestandsexport verwendet werden soll.
+
+2+| Schritt *Zuordnung des Versandprofils*
+
+| Zuordnung des Versandprofils
+| Trage für die Versandprofile in plentymarkets die entsprechenden Kürzel der Versanddienstleister ein. Die Kürzel findest du auf Mirakl im Menü *Informationen » Transportunternehmen*.
+
+2+| Schritt *Zuordnung der Angebots-Eigenschaften*
+
+| Zuordnung der Angebots-Eigenschaften
+| Wähle aus der Dropdown-Liste *Logistikklasse* die Eigenschaft *{marketplace} Logistikklasse*. +
+Die Eigenschaften für *Abzugsverfahren* und *Versandvorlaufzeit* sind bereits vorausgewählt.
+
+|======
+--

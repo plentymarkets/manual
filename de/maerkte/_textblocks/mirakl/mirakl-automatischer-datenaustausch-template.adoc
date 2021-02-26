@@ -1,0 +1,227 @@
+[#800]
+== Informationen zum automatischen Datenaustausch
+
+Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datenaustausch-{marketplace}>> automatisierten Prozesse bereit:
+
+[#datenaustausch-{marketplace}]
+[cols="1,3a"]
+.Häufigkeit des Datenaustauschs
+|====
+|Daten |Intervall
+
+2+| Artikeldaten
+
+| Artikelexport
+| Täglich
+
+| Bestandsabgleich
+| Alle 15 Minuten
+
+| Preisabgleich
+| Alle 15 Minuten
+
+2+| Auftragsdaten
+
+| Auftragsimport
+| Alle 15 Minuten
+
+|====
+
+=== Markplatzspezifische Werte übertragen
+
+Der Marktplatz verlangt für die Übertragung von Produktdaten bei den meisten Attributen/Eigenschaften spezifische Werte. Diese sind derzeit allerdings noch nicht in dieser Form an der Variante hinterlegt. +
+*_Beispiel:_* Für das Attribut *Brand* ist beispielsweise *test* nicht erlaubt. Hier muss der entsprechende Code übergeben werden - in diesem Beispiel *BRAND_12345678*.
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=mediamarkt-support]
+endif::[]
+
+//Bei Conrad & Voelkner wird ab hier das “Attribut-Hilfetool” erklärt und die URL genannt:
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=attributsuche-tool]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=attributsuche-tool]
+endif::[]
+
+=== Gültige Attributwerte zuordnen und übertragen
+
+Hast du - je nach Variante, die übertragen werden soll - unterschiedliche Attributwerte, die gültig sein könnten, stellt sich zunächst die Frage, über welche Vorgehensweise du deine Artikeldaten aktuell hältst.
+Verwaltest du deine Artikeldaten manuell, ist eine Eigenschaft vom Typ *Auswahl* empfehlenswert. Hier kannst du für die Auswahl eine Beschreibung hinterlegen. Diese wird dann in der Übersicht der Eigenschaften an der Variante angezeigt.
+Wenn der Code der Eigenschaft zugeordnet wurde, kannst du den realen Namen der Variante im Feld *Beschreibung* verwenden. Das bedeutet, über den Katalog wird dann der Code übertragen und dahinter in Klammern der reale Name angezeigt. +
+
+*_Tipp:_* Wenn du für ein Attribut immer nur einen einzigen Wert übertragen möchtest, z.B. als Marke immer *BRAND_12345678*, kannst du die Option *Eigener Wert* im Katalog verwenden.
+//Wenn die Eigenschaftswerte per Import oder REST-API verwaltet werden ist zwar eine Eigenschaftstyp von Auswahl möglich, aber eventuell vom Typ Kurztext etwas einfacher zu verwalten.
+// warum?
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=vorhandene-angebote-nicht-ueberschreiben]
+endif::[]
+
+[#900]
+=== Katalog erstellen
+
+Artikeldaten werden über Marktplatz-Formate zu {marketplace} übertragen. Kataloge erstellst du im Menü *Daten » Kataloge*. Du arbeitest zum ersten Mal mit den Katalogen? Dann solltest du dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut machen>>.
+
+Für jede Produktkategorie von {marketplace}, in der du Produkte verkaufen möchtest, erstellst du einen eigenen Katalog. Verknüpfe anschließend im Marktplatz-Format die von {marketplace} vorgegebenen Felder mit den in plentymarkets gespeicherten Artikeldaten. Die Katalog-Vorlagen werden automatisch täglich zu {marketplace} exportiert, wenn du den Katalog aktivierst.
+
+[IMPORTANT]
+.Fehler-Log
+====
+Wenn es beim Export Probleme gibt, findest du die zugehörigen Log-Einträge auf Mirakl und nicht im Log von plentymarkets.
+====
+
+[#1240]
+==== Weitere Eigenschaften erstellen
+
+Wenn du für eine oder alle deine Varianten mehrere <<artikel/einstellungen/attribute#, Attribute>> definiert hast, erstelle eine Eigenschaft, die diese Attribute vereint. Unterscheidest du bei einer Variante z.B. sowohl nach Farbe als auch nach Größe, legst du eine Eigenschaft mit der Benennung "Grau XL" an. <<artikel/einstellungen/eigenschaften#1400, Ordne diese Eigenschaften>> den entsprechenden Varianten zu.
+
+Zusätzlich zu den <<#1200, zuvor beschriebenen Eigenschaften>> benötigst du Eigenschaften für alle Datenfelder des Marktplatzes, für die du Daten übergeben möchtest, die es standardmäßig in plentymarkets nicht gibt. Welche Eigenschaften du benötigst, erfährst du in der Dokumentation des Marktplatzes. Du arbeitest zum ersten Mal mit Eigenschaften? Weitere Informationen findest du auf der Handbuchseite zum Thema <<willkommen/allgemeine-funktionen/eigenschaften#, Eigenschaften>>.
+
+[#902]
+==== Katalog im Assistenten erstellen
+
+:catalogue-assistant-name: {marketplace}-Katalog
+:number-of-boxes: Info-Box
+:mapping-fields: die
+:catalogue-path: pass:quotes[*Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*]
+:catalogue-note: pass:quotes[Achte darauf, eine Kategorie der untersten Ebene zu wählen. Eine bessere Übersicht findest du auf Mirakl im Menü *Mein Konto » Meine Produktdaten-Einstellungen*.]
+
+include::../../_textblocks/instructions/catalogue-assistant-config.adoc[]
+
+// Je nach Umfang des Assistenten entweder eine einzige ausklappbare Box oder eine ausklappbare Box pro Schritt im Assistenten.
+
+[.collapseBox]
+.Erläuterungen zu den Optionen des Assistenten
+--
+[[table-{marketplace}-catalogue-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| Einstellungen
+| Wähle die Kategorie, in der du deine Artikel auf {marketplace} verkaufen möchtest. Gib dann einen Namen für die zugehörige Kategorie in plentymarkets ein. +
+{catalogue-note}
+
+|======
+--
+
+[#datenfelder-zuordnen]
+==== Datenfelder im Katalog zuordnen
+
+Nachdem du einen Katalog erstellt hast, ordnest du die Datenfelder des Marktplatzes den in plentymarkets gespeicherten Artikeldaten zu. Informationen dazu, welche Daten für welches Datenfeld des Marktplatzes übertragen werden müssen, findest du in der Dokumentation des Marktplatzes.
+
+[TIP]
+.Eigenschaften verwenden
+====
+Verwende <<artikel/artikel-verwalten#4800, Eigenschaften>>, um Werte für Marktplatz-Datenfelder zu übergeben, für die es keine Entsprechung in plentymarkets gibt.
+====
+
+include::../../_textblocks/instructions/katalog-datenfelder-zuordnen.adoc[]
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=zuordnung-datenfelder]
+endif::[]
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=zuordnung-datenfelder]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=zuordnung-datenfelder]
+endif::[]
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=datenfelder-grundpreisangabe]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=datenfelder-grundpreisangabe]
+endif::[]
+
+[#480]
+=== Ereignisaktionen einrichten
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um den Auftragsstatus bei {marketplace} automatisch zu aktualisieren, wenn bestimmte Ereignisse eintreten. Folgende Ereignisaktionen können eingerichtet werden:
+
+// Welche Ereignisaktionen es gibt hängt vom Marktplatz ab. Hier die gängigsten. Bei Bedarf anpassen!
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=automatisierung-zusammenfassung]
+endif::[]
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=automatisierung-zusammenfassung]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=automatisierung-zusammenfassung]
+endif::[]
+
+In den folgenden Kapiteln wird beschrieben, wie du die Ereignisaktionen in plentymarkets einrichtest.
+
+[IMPORTANT]
+.Weitere Aktionen vorhanden
+====
+Zusätzlich zu den oben genannten Ereignisaktionen werden durch das {marketplace}-Plugin noch weitere Ereignisaktionen zu Verfügung gestellt. Es gibt diese Aktionen, da sich die Auftragsverarbeitung in plentymarkets und Mirakl voneinander unterscheiden.
+
+Wir empfehlen allerdings, nur die Aktionen zu verwenden, die hier im Detail beschrieben sind.
+====
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=automatisierung-details]
+endif::[]
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=automatisierung-details]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=automatisierung-details]
+endif::[]
+
+////
+TODO:
+
+* Gibt es Besonderheiten im Katalog. Ggf. Include-Dateien anpassen.
+
+////
+
+== Produktdaten übertragen
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=voraussetzungen-produktdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=voraussetzungen-produktdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=voraussetzungen-produktdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=produktdaten-aktualisieren]
+endif::[]
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=produktdaten-aktualisieren]
+endif::[]
+
+== Angebotsdaten übertragen
+
+ifeval::["{marketplace}" == "Mediamarkt"]
+include::./mediamarkt-spezial.adoc[tag=voraussetzungen-angebotsdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Voelkner"]
+include::./voelkner-spezial.adoc[tag=voraussetzungen-angebotsdaten-uebertragen]
+endif::[]
+
+ifeval::["{marketplace}" == "Conrad"]
+include::./conrad-spezial.adoc[tag=voraussetzungen-angebotsdaten-uebertragen]
+endif::[]
