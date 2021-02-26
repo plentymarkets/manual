@@ -33,7 +33,7 @@ After installing and setting up the plugin, the automatic processes described in
 
 [[data-exchange-limango]]
 .Frequency of data exchange
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Data |Interval
 
@@ -100,7 +100,7 @@ Setting up limango:
 
 [[limango-setup]]
 .Setting up limango
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Setting |Explanation
 
@@ -215,7 +215,7 @@ Every market structures item data differently. As such, there are some particula
 
 [[catalogue-limango-mappings]]
 .Notes on mapping data fields
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Marketplace data field | plentymarkets data field
 
@@ -239,30 +239,15 @@ Now, map the plentymarkets data field that you want in the catalogue:
 . To the right of the column, click on *Settings* (icon:cog[]).
 . From the drop-down list *Separator*, select the option *Space*.
 
-| Measurements with corresponding data fields in plentymarkets +
+| Measurements
 (*Length*; +
 *Width*; +
 *Height*; +
+*Volume*; +
+*Diameter*; +
+*Weight*
 etc.)
-a| Measurements must be exported to limango with the format *[numeric value];[unit]*. In plentymarkets, the numerical value and the unit are saved in separate data fields. As such, for mapping you combine two plentymarkets data fields and use a semicolon as the separator.
-
-[.collapseBox]
-.*_Example:_* Exporting the length to limango
---
-. Map the marketplace data field *Length* to the plentymarkets data field *Length mm*.
-. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
-. Map a field *Own value*.
-. Enter *mm* in this field.
-. To the right of the column, click on *Settings* (icon:cog[]).
-. From the drop-down list *Separator*, select the option *Semicolon*.
---
-
-| Measurements without corresponding data fields in plentymarkets +
-(e.g. *Diameter*; +
-*Leg height*; +
-*Heel height*; +
-etc.)
-a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Create two properties for measurements for which no data field exists in plentymarkets:
+a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Due to the limango product structure, the normal plentymarkets data fields for measurements cannot be mapped. Instead, create two properties:
 
 * One property of the type *Decimal number* for the numerical value.
 * One property of the type *Selection* for the unit.
@@ -270,15 +255,32 @@ a| Measurements must be exported to limango with the format *[numeric value];[un
 Combine these two properties, separated by a semicolon.
 
 [.collapseBox]
-.*_Example:_* Exporting the diameter to limango
+.*_Example:_* Exporting the length to limango
 --
-. Create a property of the type *Decimal number* with the name *Diameter*.
-. Create a property of the type *Selection* with the name *Diameter unit*.
-. Add the units you need to the property *Diameter unit* as property values. +
-*_Tip:_* If you are sure that you only need one unit for all your items, you can also export the unit by entering it as an own value (as in the example for *Length* above).
-. Map the marketplace data field *Diameter* to the plentymarkets data field *Diameter*.
+. Create a property of the type *Decimal number* with the name *Length*.
+. Create a property of the type *Selection* with the name *Length unit*.
+. Add the units you need to the property *Length unit* as property values.
+. Open the limango catalogue.
+. Map the marketplace data field *Length* to the plentymarkets property *Length*.
 . To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
-. Map the property *Diameter unit*.
+. Map the property *Length unit*. +
+*_Tip:_* If you are sure that you only need one unit for all your variations, you can also export the unit by entering it as an own value. To do so, instead of mapping the property *Length unit*, map the field *Own value* and enter the unit in the field that opens.
+. To the right of the column, click on *Settings* (icon:cog[]).
+. From the drop-down list *Separator*, select the option *Semicolon*.
+--
+
+[.collapseBox]
+.*_Example:_* Exporting the volume to limango
+--
+. Create a property of the type *Decimal number* with the name *Volume*.
+. Create a property of the type *Selection* with the name *Volume unit*.
+. Add the units you need to the property *Volume unit* as property values. +
+*_Note:_* Only the units l (for litres) and ml (for millilitres) can be exported.
+. Open the limango catalogue.
+. Map the marketplace data field *Volume* to the plentymarkets property *Volume*.
+. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
+. Map the property *Volume unit*. +
+*_Tip:_* If you are sure that you only need one unit for all your variations, you can also export the unit by entering it as an own value. To do so, instead of mapping the property *Volume unit*, map the field *Own value* and enter the unit in the field that opens.
 . To the right of the column, click on *Settings* (icon:cog[]).
 . From the drop-down list *Separator*, select the option *Semicolon*.
 --
@@ -297,15 +299,21 @@ Specify the individual materials in descending order based on the percentage val
 --
 The following example shows you how to save material information for a blazer for the limango export.
 
+[.instruction]
+Mapping outer fabric and saving material mix for a variation:
+
 . Create a property of the type *Short text* with the name *Material 1*.
-. Map the marketplace data field *Material 1* to the plentymarkets data field *Material 1*.
+. Map the marketplace data field *Material 1* to the plentymarkets property *Material 1*.
 . Link the property *Material 1* to the main variation of the item.
 . Our blazer is made of 65% polyester, 32% rayon and 3% elastane. Enter the following into the text field of the property:
   * {"polyester": "65","viskose": "32","elastan": "3"}
 . Save the settings.
 
+[.instruction]
+Mapping lining and saving material mix for a variation:
+
 . Create a property of the type *Short text* with the name *Lining 1*.
-. Map the marketplace data field *Lining 1* to the plentymarkets data field *Lining 1*.
+. Map the marketplace data field *Lining 1* to the plentymarkets property *Lining 1*.
 . Link the property *Lining 1* to the main variation of the item.
 . The lining of the blazer is made of 100% rayon. Enter the following into the text field of the property:
   *
@@ -313,7 +321,7 @@ The following example shows you how to save material information for a blazer fo
 --
 |====
 
-[#910]
+[#906]
 ==== Recommendations for limango data field mapping
 
 To help you with mapping your data fields for the limango catalogue, we have created a list of recommended data field mappings for limango. Note that these mappings are recommendations only. Depending on how you manage your item data, other mappings may be more appropriate than the recommendation given here.
