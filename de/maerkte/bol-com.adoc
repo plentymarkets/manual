@@ -33,7 +33,6 @@ Aufträge:
 * stündlicher Import von auf bol.com angemeldeten Retouren +
 *_Hinweis:_* Retouren werden automatisch mit dem Status [9.00] importiert.
 
-
 [#200]
 == bol.com in plentymarkets einrichten
 
@@ -145,9 +144,6 @@ a|Bestandsmenge für den Angebotsexport wählen. Eine der folgenden Optionen wä
 *_Wichtig:_* Die Option *Lagerauswahl* beeinflusst den Artikelexport. Wenn ein Artikel nicht mit den hier gewählten Lagern verknüpft ist, wird dieser Artikel nicht exportiert.
 |====
 
-
-
-
 [#250]
 == Auftragsherkunft aktivieren
 
@@ -191,12 +187,29 @@ Kategorien verknüpfen:
 
 
 [#450]
-== Merkmale erstellen
+== Merkmale erstellen und verknüpfen
 
-Als nächstes erstellst du <<artikel/einstellungen/eigenschaften#100, Merkmale>> und verknüpfst diese Merkmale mit den bol.com-Merkmalen. Die passenden Merkmale zu einer bol.com-Kategorie entnimmst du der bol.com-Datei Datamodel. Die bol.com Datamodel-Datei kannst du link:https://developers.bol.com/datamodel/[hier^]{nbsp}icon:external-link[] herunterladen.
+Nun erstellst du <<artikel/einstellungen/eigenschaften#100, Merkmale>> und verknüpfst diese Merkmale mit den bol.com-Merkmalen. Je nach bol.com-Kategorie benötigst du unterschiedliche Merkmale. Die passenden Merkmale zu einer bol.com-Kategorie entnimmst du der bol.com-Datei Datamodel. Die bol.com Datamodel-Datei kannst du link:https://developers.bol.com/datamodel/[hier^]{nbsp}icon:external-link[] herunterladen.
 
-[.instruction]
-Merkmal erstellen:
+[[table-bol-characs]]
+.Hinweise zu wichtigen bol.com-Merkmalen
+[cols="1,3a"]
+|====
+|Merkmal |Erläuterung
+
+| *bol_used*
+| Wenn du gebrauchte Artikel über bol.com verkaufen möchtest, gibst du den gebrauchten Zustand der Artikel über das Merkmal *bol_used* an.
+
+* _Merkmal ist nicht mit Artikel verknüpft_ = Varianten des Artikels sind neu.
+* _Merkmal ist mit Artikel verknüpft_ = Varianten des Artikels sind gebraucht.
+
+Gib beim Erstellen des Merkmals in der Zeile *bol.com-Merkmal* das bol.com-Merkmal *bol_used* ein.
+
+|====
+
+[.collapseBox]
+.Merkmal erstellen
+--
 
 . Öffne das Menü *Einrichtung » Artikel » Merkmale*.
 . Öffne das Tab *Neues Merkmal*.
@@ -204,13 +217,24 @@ Merkmal erstellen:
 . Wähle aus der Dropdown-Liste *Sprache* für Niederländisch *nl*.
 . Gib in das Feld *Name* den niederländischen Namen des Merkmals ein.
 . Wähle aus der Dropdown-Liste im Feld *Merkmaltyp* die Option *Text*.
-. Gib in der Zeile *bol.com-Merkmal* das bol.com-Merkmal ein, wie aus der Datamodel-Datei in der Spalte *Attribute name* entnommen.
+. Gib in der Zeile *bol.com-Merkmal* das bol.com-Merkmal aus der Spalte *Attribute name* der Datamodel-Datei ein.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
+--
 
-*bol_fulfillment* ist ein Pflichtfeld für den Angebotsexport. Dabei gibst du an, ob der Artikel direkt von dir oder von bol.com versendet wird. Gib dazu in der Zeile *bol.com-Merkmal* das bol.com-Merkmal *bol_filfillment* ein.
+[.collapseBox]
+.Merkmal mit Artikel verknüpfen
+--
+Verknüpfe nun die bol.com-Merkmale mit den Artikeln, die du auf bol.com verkaufen möchtest.
 
-Wenn du gebrauchte Artikel über bol.com verkaufen möchtest, musst du den gebrauchten Zustand der Artikel über das Merkmal *bol_used* angeben. Gib dazu in der Zeile *bol.com-Merkmal* das bol.com-Merkmal *bol_used* ein.
-
+. Öffne das Menü *Artikel » Artikel bearbeiten*.
+. Öffne den Artikel.
+. Wechsele in das Tab *Merkmale*.
+. Aktiviere im Bereich *Weitere Merkmale aktivieren* das Merkmal.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Das Merkmal wird im Bereich *Merkmale* angezeigt.
+. *_Optional:_* Nimm weitere Einstellungen vor. Beachte dazu die Erläuterungen zu den <<artikel/artikel-verwalten#80, Merkmalen>>.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+--
 
 [#500]
 == Verkaufspreis festlegen
@@ -282,6 +306,77 @@ Artikelexport einrichten:
 | *Täglich* wählen, da bol.com nur maximal 4 Exporte pro Tag zulässt.
 |====
 
+[#211]
+== Fulfillment by bol.com (FBB/LVB) einrichten
+
+Das Fulfillment kann für Bestellungen auf bol.com auf zwei Arten abgewickelt werden:
+
+* Fullfilment by Retailer (FBR) = Du versendest deine Ware selbst.
+* Fullfilment by bol.com (FBB/LVB) = Der Versand erfolgt durch bol.com.
+
+Beachte, dass plentymarkets Fullfilment by bol.com nur eingeschränkt unterstützt. Du kannst deine Varianten zwar für Fullfilment by bol.com zu bol.com exportieren. Allerdings werden FBB-Aufträge und -Retouren nicht in plentymarkets importiert. Auch ein Bestandsableich zwischen dem bol.com-Fulfillment-Lager und plentymarkets ist nicht möglich.
+
+Um eine Variante über Fullfilment by bol.com (FBB oder LVB) zu verkaufen, ist die in <<#table-bol-fbb>> beschriebenen Einstellung erforderlich:
+
+[[table-bol-fbb]]
+.Einstellungen für bol.com FBB
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+| Verfügbarkeit
+a|
+[.collapseBox]
+.Marktplatzverfügbarkeit *bol.com FBB* an der Variante aktivieren.
+--
+
+[.instruction]
+Marktplatzverfügbarkeit bol.com FBB aktivieren:
+
+. Öffne das Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » Tab: Varianten-ID » Tab: Einstellungen*.
+. Öffne die Variante, die du auf OTTO Market verkaufen möchtest.
+. Wechsele in das Tab *Verfügbarkeit*.
+. Klicke im Bereich *Märkte* in das Auswahlfeld. +
+→ Eine Liste mit allen verfügbaren Märkten wird angezeigt.
+. Aktiviere die Option *bol.com FBB*.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+--
+
+|====
+
+[#1100]
+[#1200]
+== _Checkliste:_ Voraussetzungen für das Einstellen von Angeboten auf bol.com
+
+Damit deine Varianten als Angebote auf bol.com gelistet werden können, musst du die folgenden Einstellungen an der Varianten pflegen:
+
+[[table-bol-variation-checklist]]
+.Pflichtfelder an der Variante
+[cols="1,3a"]
+|====
+|Pflichtdaten |Erläuterung
+
+| EAN oder ISBN
+a| Für die Variante muss eine EAN oder eine ISBN gespeichert sein.
+
+* Im Menü *Einrichtung » Artikel » Barcode* muss eine EAN oder ISBN eingerichtet und mit der Herkunft bol.com verknüpft sein.
+* Die EAN muss im Tab *Einstellungen* der Variante im Bereich *Barcode* hinzugefügt und ein Barcode-Code eingegeben werden.
+
+| Preis
+a| Für die Variante muss ein Preis gespeichert sein.
+
+* Der Verkaufspreis muss im Menü *Einrichtung » Artikel » Verkaufspreise* für Herkunft die Herkunft bol.com aktiviert sein.
+* Der Verkaufspreis muss im Tab *Einstellungen* einer Variante im Bereich *Verkaufspreise* hinzugefügt werden.
+* Für den Verkaufspreis muss ein Preis gespeichert sein.
+
+| Verfügbarkeit
+a| Die Variante muss für den Marktplatz verfügbar sein.
+
+* Im Tab *Verfügbarkeit* der Variante muss im Bereich *Märkte* die Marktplatzverfügbarkeiten *bol.com* oder *bol.com FBB* aktiviert werden. +
+  ** Herkunft *bol.com* = Du versendest deine Artikel selbst. +
+  ** Herkunft *bol.com FBB* = Versand erfolgt durch bol.com.
+
+|====
 
 [#650]
 == Zahlungsart aktivieren
@@ -490,43 +585,4 @@ a| Wähle einen Referenzwert, um nach bestimmten Ereignissen zu suchen. +
 | *externalOrderItemId*
 | Filtert nach der ID der Auftragsposition bei bol.com.
 |
-|====
-
-[#1100]
-== FAQ
-
-[#1200]
-=== Voraussetzungen für das Einstellen von Angeboten auf bol.com
-
-===== Welche Einstellungen muss ich an einer Variante vornehmen, um sie als Angebot auf bol.com einzustellen?
-
-[.indented]
-Damit deine Varianten als Angebote auf bol.com gelistet werden können, musst du die folgenden Einstellungen an der Varianten pflegen:
-
-[[bol-varianten-pflicht]]
-.Pflichtfelder an der Variante
-[cols="1,3a"]
-|====
-|Pflichtdaten |Erläuterung
-
-| EAN oder ISBN
-a| Für die Variante muss eine EAN oder eine ISBN gespeichert sein.
-
-* Im Menü *Einrichtung » Artikel » Barcode* muss eine EAN oder ISBN eingerichtet und mit der Herkunft bol.com verknüpft sein.
-* Die EAN muss im Tab *Einstellungen* der Variante im Bereich *Barcode* hinzugefügt und ein Barcode-Code eingegeben werden.
-
-| Preis
-a| Für die Variante muss ein Preis gespeichert sein.
-
-* Der Verkaufspreis muss im Menü *Einrichtung » Artikel » Verkaufspreise* für Herkunft die Herkunft bol.com aktiviert sein.
-* Der Verkaufspreis muss im Tab *Einstellungen* einer Variante im Bereich *Verkaufspreise* hinzugefügt werden.
-* Für den Verkaufspreis muss ein Preis gespeichert sein.
-
-| Verfügbarkeit
-a| Die Variante muss für den Marktplatz verfügbar sein.
-
-* Im Tab *Verfügbarkeit* der Variante müssen im Bereich *Märkte* die Marktplatzverfügbarkeiten *bol.com* oder *bol.com FBB* hinzugefügt werden. +
-  ** Herkunft *bol.com* = Du versendest deine Artikel selbst. +
-  ** Herkunft *bol.com FBB* = Versand erfolgt durch bol.com.
-
 |====
