@@ -162,12 +162,11 @@ a| Wählen, ob echte Daten oder Testdaten exportiert werden sollen.
 * *Productive* = Echte Preisdaten werden an Zalando exportiert.
 
 | *Sollen Warnungen zu Preisaktualisierungen von Zalando ignoriert werden?*
-a| Diese Option ist zurzeit ohne Funktion.
-// Bei Preisaktualisierungen prüft Zalando die Plausibilität deiner Preise anhand von bestimmten Kriterien. Zalando vergleicht zum Beispiel die Preise der Varianten auf den verschiedenen Plattformen miteinander und gleicht den normalen Preis mit dem reduzierten Preise ab. Bei Auffälligkeiten gibt Zalando eine Warnung aus. Wähle, ob solche Warnungen bei Preisaktualisierungen ignoriert werden sollen.
+a| Bei Preisaktualisierungen prüft Zalando die Plausibilität deiner Preise anhand von bestimmten Kriterien. Zalando vergleicht zum Beispiel die Preise der Varianten auf den verschiedenen Plattformen miteinander und gleicht den normalen Preis mit dem reduzierten Preis ab. Bei Auffälligkeiten gibt Zalando eine Warnung aus. Wähle, ob solche Warnungen bei Preisaktualisierungen ignoriert werden sollen.
 
-// * icon:toggle-on[role="green"] = Die neuen Preise gehen trotz Warnung live.
-// * icon:toggle-off[role="darkGrey"] (Standardeinstellung) = Zalando lehnt neue Preise ab, wenn sie die Plausibilitätsprüfung nicht bestehen. +
-// *_Tipp:_* Warnungen findest du im Menü *Daten » Log*.
+* icon:toggle-on[role="green"] = Die neuen Preise gehen trotz Warnung live.
+* icon:toggle-off[role="darkGrey"] (Standardeinstellung) = Zalando lehnt neue Preise ab, wenn sie die Plausibilitätsprüfung nicht bestehen. +
+*_Tipp:_* Warnungen findest du im Menü *Daten » Log* und in den Preis-Berichten.
 
 | *Welcher Verkaufspreis soll als normaler Preis zu Zalando exportiert werden?*
 | Verkaufspreis aus der Dropdown-Liste wählen, der als *Normaler Preis* zu Zalando exportiert werden soll. Es stehen nur Verkaufspreise des Typs *Standard* oder *UVP* zur Auswahl, für die die Herkunft Zalando, das Land und die Währung des Landes aktiviert sind. +
@@ -598,7 +597,7 @@ a| Das Export-Log enthält Log-Einträge für Varianten, die nicht zu Zalando ex
 2+| *Berichte*
 
 | *Artikelstatusberichte*
-a| Die Artikelstatusberichte werden von Zalando generiert. Diese Berichte enthalten deshalb nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden.
+a| Die Artikelstatusberichte werden einmal täglich über Nacht von Zalando generiert. Die Berichte enthalten nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden.
 
 [cols="1,3"]
 !===
@@ -612,12 +611,114 @@ a| Die Artikelstatusberichte werden von Zalando generiert. Diese Berichte enthal
 <<#910, So rufst du Produkt-Status-Berichte ab>>
 
 | *Preis-Berichte*
-a| Die Preis-Berichte werden von Zalando generiert. Zalando generiert einen Preis-Bericht pro aktiven Channel. Die Berichte enthalten einen Eintrag für jede Preisaktualisierung, die in den letzten 7 Tagen an Zalando gesendet wurde. Berichte können also mehrere Einträge für dieselbe EAN enthalten.
+a| Zalando generiert einmal täglich über Nacht einen Preis-Bericht pro aktiven Channel. Diese Berichte enthalten Informationen zum Verarbeitungsstatus aller Preis-Updates, die in den letzten sieben Tagen bei Zalando eingegangen sind. Die Berichte können also mehrere Einträge für dieselbe EAN enthalten.
 
+[.instruction]
+Preis-Berichte abrufen:
 
+. Öffne das Menü *Einrichtung » Märkte » Zalando » Einstellungen*.
+. Wechsele in das Tab *Verarbeitungsberichte*. +
+→ Im Bereich *Preis-Berichte* sind Dateien für alle aktiven Channels verfügbar.
+. *_Optional:_* Standardmäßig wird die Datei einmal pro Nacht aktualisiert. Klicke in der Spalte *Aktionen* auf *Datei aktualisieren* (icon:cog[]), um vor dem Herunterladen aktuelle Daten bei Zalando abzurufen.
+. Klicke im Bereich *Preis-Berichte* in der Zeile eines Verarbeitungsberichts auf *Datei herunterladen* (icon:eye[role="blue"]). +
+→ Die CSV-Datei wird generiert.
+. Speichere die CSV-Datei auf deinem Rechner.
 
+[.collapseBox]
+.Welche Informationen sind in Preis-Berichten enthalten?
+--
+[cols="1,3"]
+!=====
+! Timestamp
+! Entspricht dem aktuellsten Zeitstempel aus den Spalten *Status History* und *Scheduled Price (1-3)*.
 
-<<#910, So rufst du Preis-Berichte ab>>
+! EAN
+! Die EAN der Variante, deren Preis aktualisiert wurde.
+
+! Ignore Warnings?
+! Entspricht der Einstellung *Ignoriere Warnungen* unter *Einrichtung » Assistenten » Omni-Channel » Zalando Kontoeinstellungen » [Konto öffnen] » Schritt: Preise für [Zielland]* zum Zeitpunkt der Übertragung des Updates.
+
+! Regular Price
+! Übertragener Wert des normalen Preises.
+
+! Regular Price Currency
+! Übertragene Währung des normalen Preises.
+
+! Promotional Price
+! Übertragener Wert des reduzierten Preises.
+
+! Promotional Price Currency
+! Übertragene Währung des reduzierten Preises.
+
+! Status
+a! Status der Verarbeitung. Mögliche Status:
+
+* RECEIVED = Der Preis ist eingegangen. +
+* ACCEPTED = Der Preis wurde akzeptiert und zur weiteren Validierung weitergeleitet. +
+* REJECTED = Der Preis hat die Validierung nicht bestanden. Siehe die Statusmeldungen in *Status History* für weitere Informationen. +
+* FAILED = Bei der Preisaktualisierung ist ein unerwarteter Fehler aufgetreten. Siehe die Statusmeldungen in *Status History* für weitere Informationen. +
+* SCHEDULED = Der Preis wurde erfolgreich validiert und wartet auf die Übermittlung. +
+* SUBMITTED = Der Preis wurde eingereicht und wird in Kürze im Shop angezeigt. +
+* AWAITING_ONBOARDING = Der Preis wurde akzeptiert, aber der Artikel wurde noch nicht aktiviert. Der Preis wird angewendet, wenn das Onboarding abgeschlossen ist. +
+
+! Status History
+a! Verlauf der Statusänderung. Je Änderung gibt es einen Absatz in der Zelle mit dem folgenden Schema (Platzhalter in eckigen Klammern):
+
+* [Zeitstempel]: FROM [Ursprungsstatus] TO [Neuer Status] - Code: [Code] [Schweregrad] [Nachricht]
+
+! Scheduled Price (1-3) - Start
+! Startdatum des geplanten Preises.
+
+! Scheduled Price (1-3) - End
+! Enddatum des geplanten Preises.
+
+! Scheduled Price (1-3) - Regular Price
+! Übertragener Wert des normalen Preises für den geplanten Preis.
+
+! Scheduled Price (1-3) - Regular Price Currency
+! Übertragene Währung des normalen Preises.
+
+! Scheduled Price (1-3) - Promotional Price
+! Übertragener Wert des reduzierten Preises.
+
+! Scheduled Price (1-3) - Promotional Price Currency
+! Übertragene Währung des reduzierten Preises.
+
+! Scheduled Price (1-3) - Status
+a! Status der Verarbeitung des geplanten Preises. Mögliche Status:
+
+* RECEIVED = Der Preis ist eingegangen. +
+* ACCEPTED = Der Preis wurde akzeptiert und zur weiteren Validierung weitergeleitet. +
+* REJECTED = Der Preis hat die Validierung nicht bestanden. Siehe die Statusmeldungen in *Status History* für weitere Informationen. +
+* FAILED = Bei der Preisaktualisierung ist ein unerwarteter Fehler aufgetreten. Siehe die Statusmeldungen in *Status History* für weitere Informationen. +
+* SCHEDULED = Der Preis wurde erfolgreich validiert und wartet auf die Übermittlung. +
+* OVERRIDDEN = Der Preis wurde geplant, aber durch eine neue Preisaktualisierung überschrieben, bevor er übermittelt werden konnte. +
+* SUBMITTED = Der Preis wurde eingereicht und wird in Kürze im Shop angezeigt. +
+* AWAITING_ONBOARDING = Der Preis wurde akzeptiert, aber der Artikel wurde noch nicht aktiviert. Der Preis wird angewendet, wenn das Onboarding abgeschlossen ist.
+
+! Scheduled Price (1-3) - Status History
+a! Verlauf der Statusänderung des geplanten Preises. Je Änderung gibt es einen Absatz in der Zelle mit dem folgenden Schema (Platzhalter in eckigen Klammern):
+
+* [Zeitstempel] from [Ursprungsstatus] to [Neuer Status] - Code: [Code] Severity: [Schweregrad] Message: [Nachricht]
+!=====
+--
+
+Beim Generieren der Datei wird für alle Einträge, die seit dem letzten Generieren der Datei (minus einer Stunde als Puffer) in den Status REJECTED, FAILED oder OVERRIDDEN geschoben wurden, ein Fehlerlog geschrieben. Die Log-Einträge sind unter *Daten » Log* mit den folgenden Suchparametern durchsuchbar:
+
+* Identifikator » Zalando
+* Level: Error
+* Referenzen:
+    ** Referenztyp » action +
+    Referenzwert » PriceUpdate
+    ** Referenztyp » ean +
+    Referenzwert » EAN der Variante
+
+Fehler beim Generieren der Datei sind unter *Daten » Log* mit den folgenden Suchparametern zu finden:
+
+* Identifikator » Zalando
+* Referenztyp » action
+* Referenzwert » PriceReporting
+
 |====
 
 [#905]
