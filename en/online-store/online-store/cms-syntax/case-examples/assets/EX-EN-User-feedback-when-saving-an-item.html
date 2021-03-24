@@ -1,0 +1,129 @@
+{#
+	In this example, a click event is added to a button element. It
+	- places a selected item in the shopping cart on the server,
+	- retrieves the new content of the shopping cart,
+	- calculates the number of items in the shopping cart,
+	- requests a current list of items in the shopping cart as an HTML fragment
+	  from the server,
+	- replaces the old shopping cart list with the new list and
+	- displays the shopping cart preview for 3 seconds.
+#}
+<button type="button" class="btn btn-primary add_To_Basket">
+	<span class="glyphicon glyphicon-shopping-cart"></span> add to shopping cart
+</button>
+<script type="text/javascript">
+	(function($)
+	{
+		{# Minimal example of an item object. #}
+		var article = JSON.stringify(
+					[{
+						BasketItemItemID: $ID, 			{# ID of the item to be placed in the shopping cart. #}
+						BasketItemPriceID: $PriceID, 	{# ID of the price set for the item. #}
+						BasketItemQuantity: 1 			{# The number of items in the shopping cart. #}
+					}]);
+		
+		{# Adds a click event to buttons with the CSS class "add_To_Basket". #}
+		$(".add_To_Basket").click(function()
+		{
+			{# Sends the items to the server via the REST method. #}
+			$.ajax(
+				"/rest/checkout/basketitemslist/",
+				{
+					type: 'POST',
+					dataType: 'json',
+					data: article,
+					success: function ()
+					{
+						{# 
+							This function is carried out if the items
+							are successfully saved on the server.
+						#}
+
+						{# Retrieves the new/current status of the shopping cart. #}
+						$.ajax(
+							"/rest/checkout/basketitemslist/",
+							{ 
+								type: 'GET',
+								dataType: 'json',
+								success: function(response)
+								{
+									{#
+										This function is carried out if 
+										the current status of the shopping
+										cart was successfully retrieved.
+									#}
+									
+									var count = 0;
+									$.each(response.data, function(i, el)
+									{
+										count += el.BasketItemQuantity;
+									});
+									
+									{#
+										Replaces the number of items in the
+										shopping cart in the header menu.
+									#}
+									$('#basket_quantity').text(count);
+
+									{#
+										Unlocks the shopping cart menu if the
+										shopping cart was previously empty.
+									#}
+									$("[data-plenty-basket-empty]").removeClass("disabled");
+								},
+								error: function()
+								{
+									{# Troubleshooting #}
+								}
+							}
+						);
+						
+						{# 
+							Updates the shopping cart list in the shopping cart preview.
+						   
+							The REST URI returns an HTML fragment with a list of the
+							items located in the shopping cart.
+						#}
+						$.ajax(
+							"/rest/itemview/container_itemviewbasketpreviewlist/",
+							{
+								type: "GET",
+								dataType: "json",
+								success: function(response)
+								{
+									{#
+										This function is carried out if the 
+										current list of shopping cart content 
+										was successfully retrieved.
+									#}
+
+									{#
+										The function "empty()" removes the "old" 
+										shopping cart list. Then the container 
+										with the new list is inserted.
+									#}
+									$('[data-plenty-remotetabs-id="aside"]').empty().append($(response.data[0]));
+									
+									{# Displays the shopping cart. #}
+									$(".isBasketPreview > .dropdown-menu").fadeIn();
+									setTimeout(function()
+									{
+										{# Hides the shopping cart after 3 seconds. #}
+										$(".isBasketPreview > .dropdown-menu").removeAttr("style");
+									}, 3000);
+								},
+								error: function()
+								{
+									{# Troubleshooting	#}
+								}
+							});
+					},
+					error: function ()
+					{
+						{# Troubleshooting #}
+					}
+				}
+			);
+		});
+	})(jQuery);
+</script>
