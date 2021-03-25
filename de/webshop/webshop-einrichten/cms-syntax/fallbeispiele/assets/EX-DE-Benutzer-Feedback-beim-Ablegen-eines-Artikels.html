@@ -1,0 +1,130 @@
+{#
+	In diesem Beispiel wird einem Button-Element ein Click-Event angehangen, das
+	- einen ausgewählten Artikel serverseitig in den Warenkorb legt,
+	- den neuen Warenkorbbestand abruft,
+	- aus dem Warenkorbbestand die Anzahl der Artikel im Warenkorb berechnet,
+	- eine aktuelle Liste der im Warenkorb befindlichen Arikeln als HTML-Fragment
+	  vom Server anfordert,
+	- die Warenkorblist der Warenkorbvorschau mit dieser Liste ersetzt und
+	- die Warenkorbvorschau für 3 Sekunden einblendet.
+#}
+<button type="button" class="btn btn-primary add_To_Basket">
+	<span class="glyphicon glyphicon-shopping-cart"></span> in den Warenkorb
+</button>
+<script type="text/javascript">
+	(function($)
+	{
+		{# Minimalbeispiel für ein Artikel-Objekt. #}
+		var article = JSON.stringify(
+					[{
+						BasketItemItemID: $ID, 			{# ID des Artikels, den du in den Warenkorb legen willst. #}
+						BasketItemPriceID: $PriceID, 	{# Die ID des Preissets des Artikels. #}
+						BasketItemQuantity: 1 			{# Die Stückzahl der Artikel die du in den Warenkorb legen willst. #}
+					}]);
+
+		{# Hinzufügen eines Click-Events an Button mit der CSS-Klasse "add_To_Basket". #}
+		$(".add_To_Basket").click(function()
+		{
+			{# Senden der Artikel an den Server per REST-Methode. #}
+			$.ajax(
+				"/rest/checkout/basketitemslist/",
+				{
+					type: 'POST',
+					dataType: 'json',
+					data: article,
+					success: function ()
+					{
+						{#
+							Sofern das Ablegen der Artikel auf dem Server positiv
+							verlaufen ist, wird diese Funktion ausgeführt.
+						#}
+
+						{# Abrufen des neuen/aktuellen Stand des Warenkorbs. #}
+						$.ajax(
+							"/rest/checkout/basketitemslist/",
+							{
+								type: 'GET',
+								dataType: 'json',
+								success: function(response)
+								{
+									{#
+										Sofern das Abrufen des aktuellen Stand des
+										Warenkorbs positiv verlief, wird diese
+										Funktion aufgerufen.
+									#}
+
+									var count = 0;
+									$.each(response.data, function(i, el)
+									{
+										count += el.BasketItemQuantity;
+									});
+
+									{#
+										Ersetzen der Anzahl der Artikel im
+										Warenkorb im Header-Menü.
+									#}
+									$('#basket_quantity').text(count);
+
+									{#
+										Entsperren des Warenkorbmenüs, wenn der
+										Warenkorb vorher leer war.
+									#}
+									$("[data-plenty-basket-empty]").removeClass("disabled");
+								},
+								error: function()
+								{
+									{# Fehlerbehandlung #}
+								}
+							}
+						);
+
+						{#
+							Aktualisieren der Warenkorbliste in der Warenkorbvorschau.
+
+							Der REST-URI gibt ein HTML-Fragment mit einer Liste der
+							im Warenkorb befindlichen Artikeln zurück.
+						#}
+						$.ajax(
+							"/rest/itemview/container_itemviewbasketpreviewlist/",
+							{
+								type: "GET",
+								dataType: "json",
+								success: function(response)
+								{
+									{#
+										Sofern das Abrufen der aktuellen Liste des
+										Warenkorbbestands positiv verlief, wird diese
+										Funktion aufgerufen.
+									#}
+
+									{#
+										Vor dem Einfügen des Containers mit der
+										Warenkorbliste, wird erst der Container mit
+										der "alten" Liste durch die Funktion empty()
+										entfernt.
+									#}
+									$('[data-plenty-remotetabs-id="aside"]').empty().append($(response.data[0]));
+
+									{# Einblenden des Warenkorbs. #}
+									$(".isBasketPreview > .dropdown-menu").fadeIn();
+									setTimeout(function()
+									{
+										{# Ausblenden des Warenkorbs nach 3 Sekunden. #}
+										$(".isBasketPreview > .dropdown-menu").removeAttr("style");
+									}, 3000);
+								},
+								error: function()
+								{
+									{# Fehlerbehandlung	#}
+								}
+							});
+					},
+					error: function ()
+					{
+						{# Fehlerbehandlung #}
+					}
+				}
+			);
+		});
+	})(jQuery);
+</script>

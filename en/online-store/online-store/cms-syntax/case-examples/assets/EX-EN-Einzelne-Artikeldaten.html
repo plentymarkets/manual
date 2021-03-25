@@ -1,0 +1,34 @@
+{#
+	Code example for registering individual items with Google Analytics.
+#}
+<script type="text/javascript">
+	$.ajax(
+		{# REST call to retrieve a transaction's item list. #}
+		"/rest/checkout/orderconfirmationitemslist/",
+		{
+			dataType: "json",
+			type: "GET",
+			success: function(response) 
+			{
+				var articleList = response.data;
+				for(var i = 0; i < articleList.length; i++) 
+				{
+					{# Adds an item to the transaction. #}
+					ga('ecommerce:addItem', 
+					{
+						'id': $OrderID,												{# associated transaction ID #}
+						'name': articleList[i].OrderConfirmationItemShortName,		{# Item name #}
+						'sku': articleList[i].OrderConfirmationItemItemID,			{# Optional: additional item data (e.g. item number) #}
+						'price': articleList[i].OrderConfirmationItemPrice,			{# Optional: item price #}
+						'quantity': articleList[i].OrderConfirmationItemQuantity,	{# Optional: number of items #}
+						'currency': 'GBP'											{# Optional: currency #}
+					});
+					{# Sends the item data. #}
+					ga('ecommerce:send');
+				}
+				{# Clears the shopping cart. #}
+				ga('ecommerce:clear');
+			}
+		}
+	);
+</script>
