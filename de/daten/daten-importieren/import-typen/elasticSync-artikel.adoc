@@ -1,23 +1,23 @@
 = Artikel
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, Import, Artikel, Artikelanlage
+:keywords: ElasticSync, Import, Artikel, Artikelanlage, Variantenanlage
 :position: 10
 :url: daten/daten-importieren/sync-typen/elasticSync-artikel
 :id: QUGDW1A
 :author: team-item
 
-Diese Seite erläutert die Abgleich- und Zuordnungsfelder, die dir beim Importieren von Artikel- und Variantendaten zur Verfügung stehen. Diese Seite dient lediglich als Referenz und setzt voraus, dass du bereits Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, ElasticSync-Tool>> hast.
+Diese Seite erläutert die Abgleich- und Zuordnungsfelder, die dir beim Importieren von Artikel- und Variantendaten zur Verfügung stehen. Diese Seite dient lediglich als Referenz und setzt voraus, dass du bereits Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, Import-Tool>> hast.
 
 [IMPORTANT]
 .Voraussetzungen
 ====
-Um Artikeldaten per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
+Um Artikeldaten per Import-Tool zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
 * Kategorien (Menü *Artikel » Kategorien*)
 * Verkaufspreise (Menü *Einrichtung » Artikel » Verkaufspreise*)
 
-Um Variantendaten mit Attributen per ElasticSync zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
+Um Variantendaten mit Attributen per Import-Tool zu importieren, müssen die folgenden Datensätze in plentymarkets vorhanden sein:
 
 * Attribute und Attributwerte (Menü *Einrichtung » Artikel » Attribute*)
 ====
@@ -70,7 +70,7 @@ Aus der zweiten Dropdown-Liste das Format wählen, in dem die Daten in der Datei
 //since there are many different fields, the explainations have been divided into sub-chapters.
 In diesem Kapitel werden Felder erläutert, die für die Zuordnung von Artikel- und Variantendaten zur Verfügung stehen.
 
-Da für den Sync-Typ *Artikel* viele verschiedene Zuordnungsfelder zur Verfügung stehen, wurden die nachfolgenden Erläuterungen in Unterkapitel unterteilt.
+Da für den Import-Typ *Artikel* viele verschiedene Zuordnungsfelder zur Verfügung stehen, wurden die nachfolgenden Erläuterungen in Unterkapitel unterteilt.
 
 [TIP]
 .Kein Zuordnungsfeld? Standardwert greift!
@@ -689,10 +689,28 @@ a|Entspricht der Checkbox unter: +
 |Preiskalkulation
 |Numerisch (interne ID)
 |- k.A. -
-|Wendet eine Preiskalkulation auf die für die Variante gespeicherten Preise an. Entspricht also der _dritten_ Dropdown-Liste unter: +
+|icon:warning[role="red"] [red]#Alte Preiskalkulation#
+
+Wendet eine Preiskalkulation auf die für die Variante gespeicherten Preise an. Entspricht also der _dritten_ Dropdown-Liste unter: +
 <<artikel/artikel-verwalten#240, Tab: ID einer Variante » Tab: Einstellungen » Bereich: Verkaufspreise>>
 
 Die Zuordnung erfolgt anhand der Preiskalkulation-ID im Menü *Einrichtung » Artikel » Preiskalkulation » Preiskalkulation öffnen*.
+
+|Preiskalkulation UUID
+|Alphanumerisch
+|- k.A. -
+|icon:warning[role="red"] [red]#Neue Preiskalkulation#
+
+Gib die UUID einer Preiskalkulation in die CSV-Datei ein.
+Dadurch wird die Preiskalkulation auf die für die Variante gespeicherten Preise angewendet.
+
+*_Tipp_*:
+Die Preiskalkulation-UUID kannst du kopieren.
+Öffne dazu das Menü *Artikel » Preiskalkulation » [Preiskalkulation öffnen]*.
+Klicke auf die UUID unten links.
+Die UUID wird in die Zwischenablage kopiert.
+
+Das Ergebnis des Imports findest du im Backend im Menü: <<artikel/artikel-verwalten#240, Artikel » Artikel bearbeiten » [Variante öffnen] » Tab: Einstellungen » Bereich: Verkaufspreise>>
 
 |WB-Beschränkung
 |0 +
@@ -1108,6 +1126,9 @@ a|Ist der Geldbetrag als Nettopreis zu verstehen? Gib einen der zulässigen Impo
 * 1 = Ja (es handelt sich um einen Nettopreis)
 
 Wähle den <<artikel/einstellungen/preise#, Verkaufspreis>> aus der zweiten Dropdown-Liste im Bereich *Zuordnung*.
+
+*_Hinweis_*: plentymarkets arbeitet mit Brutto-Preisen.
+Beim Import werden Nettopreise also intern in Brutto umgerechnet und als solche gespeichert.
 |====
 
 [#2340]
@@ -1462,6 +1483,8 @@ Wenn keine Position übergeben wird, entspricht die Position der Reihenfolge der
 Das heißt, die Bilder werden automatisch für alle Mandanten, Herkünfte und Listings verfügbar sein.
 Willst du selbst steuern, für welche Mandanten, Herkünfte und Listings das Bild verfügbar ist, dann verwende stattdessen das Zuordnungsfeld *URL*.
 
+*_Hinweis_*: Es ist _nicht möglich_, dieses Feld in Zusammenhang mit dem Zuordnungsfeld *Artikelbilder / Namen* zu verwenden.
+
 |Bilder löschen
 |0 +
 1
@@ -1551,19 +1574,37 @@ Verwende stattdessen das Feld *URL*.
 
 |Namen
 |Alphanumerisch
-|Entspricht dem Eingabefeld unter: +
+a|Entspricht dem Eingabefeld unter: +
 <<artikel/artikel-verwalten#300, Tab: Bilder » Option: Name>>
 
 Gib den Namen des Artikelbildes im folgenden Format in die CSV-Datei ein. +
 `Name1:Sprache1:Alternativtext1,Name2:Sprache2:Alternativtext2`
 
+*_Hinweis_*:
+Diese Namen brauchen eine Zuordnung zum Bild.
+Das heißt, du musst zusätzlich angeben, für welches Bild die Namen gelten.
+Dies geschieht:
+
+* entweder durch Angabe der Bild-ID (Zuordnungsfeld *Artikelbilder / ID des Bildes*).
+* Oder beim Initialimport mit Hilfe des Zuordnungsfeldes *Artikelbilder / URL*.
+Es ist _nicht möglich_, dieses Feld in Zusammenhang mit dem Zuordnungsfeld *Artikelbilder / Multi-URL (kommasepariert)* zu verwenden.
+
 |Alternative Namen
 |Alphanumerisch
-|Entspricht dem Eingabefeld unter: +
+a|Entspricht dem Eingabefeld unter: +
 <<artikel/artikel-verwalten#300, Tab: Bilder » Option: Alternativtext>>
 
 Gib den Alternativtext des Artikelbildes im folgenden Format in die CSV-Datei ein. +
 `Alternativtext1:Sprache1,Alternativtext2:Sprache2`
+
+*_Hinweis_*:
+Diese Namen brauchen eine Zuordnung zum Bild.
+Das heißt, du musst zusätzlich angeben, für welches Bild die Namen gelten.
+Dies geschieht:
+
+* entweder durch Angabe der Bild-ID (Zuordnungsfeld *Artikelbilder / ID des Bildes*).
+* Oder beim Initialimport mit Hilfe des Zuordnungsfeldes *Artikelbilder / URL*.
+Es ist _nicht möglich_, dieses Feld in Zusammenhang mit dem Zuordnungsfeld *Artikelbilder / Multi-URL (kommasepariert)* zu verwenden.
 
 |Marktplatzattributverknüpfung (Attibutwert-ID)
 |Numerisch (interne ID)
@@ -2577,12 +2618,12 @@ a|Möchtest du die Seriennummer von einer Variante entfernen? Gib einen der zul�
 
 
 [#1930]
-== Pflichtwerte für Artikel-Sync-Aktionen
+== Pflichtwerte für Artikelimport-Aktionen
 
-<<table-procedures-item-sync>> listet mögliche Aktionen für Syncs des Typs Artikel und erläutert die Werte, die zum Ausführen dieser Aktionen unbedingt angegeben werden müssen.
+<<table-procedures-item-sync>> listet mögliche Aktionen für Importe des Typs Artikel und erläutert die Werte, die zum Ausführen dieser Aktionen unbedingt angegeben werden müssen.
 
 [[table-procedures-item-sync]]
-.Aktionen für Artikel-Sync
+.Aktionen für Artikelimport
 |====
 |Aktion |Erforderliche Werte
 
