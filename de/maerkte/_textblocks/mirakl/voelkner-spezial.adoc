@@ -8,12 +8,11 @@
 :market-webinar-id: wPiXwdETXEo
 :market-registration: pass:quotes[Du benötigst die Voelkner-Zugangsdaten bestehend aus Nutzername und Passwort. Diese Daten erhältst du von Voelkner. Hierzu musst du zunächst bei link:https://www.voelkner.de/marktplatz-seller.html[Voelkner^] ein Mitgliedskonto erstellen.]
 :category-example: VHS Kassetten
-:do-not-map-fields: Produktgruppe + \
-Produktbild 1 + \
-Produktbild 2 + \
-Produktbild 3 + \
-Produktbild 4 + \
-Produktbild 5
+:do-not-map-fields: Produktbild 1 URL + \
+Produktbild 2 URL + \
+Produktbild 3 URL + \
+Produktbild 4 URL + \
+Produktbild 5 URL
 :valid-values-zip: https://drive.google.com/file/d/1zs0Cy_08E-qYFbNkCMUX-Zp15QghLvih/view?usp=sharing
 
 // end::marktplatz-daten[]
@@ -169,7 +168,15 @@ Die Angebotsübertragung findet alle 15 Minuten statt. Es werden nur Artikel üb
 Das sogenannte Attribut-Hilfetool ermöglicht es dir, nach den verschiedenen Attributen zu suchen und gibt die aktuell dafür gültigen Werte an. Um das Tool nutzen zu können, muss der Assistent *{assistant-name}* bereits eingerichtet sein.
 Das Tool findest du unter der folgenden URL: `domain/marketplace_extension/attribute_values`.
 Trage anstelle von `domain` deine plenty Domain ein. Würde deine plenty Domain beispielsweise `https://www.meine-plenty-domain.de` lauten, wäre die URL wie folgt aufgebaut: `https://www.meine-plenty-domain.de/marketplace_extension/attribute_values`. +
-Die Tabelle der gültigen Attributwerte wird jeweils über Nacht aktualisiert.
+
+Gib `SAP.TaxIndicator` in die Suche des Attribut-Hilfetools ein, um die gültigen Werte für *Umsatzsteuerklasse* und `SAP.BaseUnits`, um die gültigen Werte für *Verkaufsmengeneinheit* zu finden.
+
+[IMPORTANT]
+.Ausgabe der Attributwerte am Folgetag
+====
+Die Tabelle der gültigen Attributwerte wird jeweils über Nacht aktualisiert. Nach dem erstmaligen Installieren des Plugins werden die gültigen Werte erst am Folgetag ausgegeben. +
+Wenn du im Assistenten die falsche API-Umgebung und/oder den falschen API-Schlüssel eingetragen hast, können die gültigen Werte nicht geladen werden.
+====
 
 Im Katalog findest du die Benennungen der Marktplatzattribute, wie z.B. *Marke*. Um die für ein Attribut gültigen Werte herauszufinden, gehe vor wie folgt.
 
@@ -254,10 +261,11 @@ Produktdaten aktualisieren:
 
 
 // tag::ean-abgleich[]
+[#eans-abgleichen]
 === EANs abgleichen
 
 Voelkner bietet einen EAN-Abgleich an. Bitte dein:e Ansprechpartner:in vom Marktplatz, eine Liste deiner EANs zur Verfügung zu stellen. Falls deine EANs bereits auf Voelkner gelistet werden, bekommst du anschließend eine Tabelle mit den EANs und den dazugehörigen SKUs.
-Für diese Werte ist es nicht notwendig die Produktdaten zu übertragen. Über die zur Verfügung gestellten SKUs kannst du direkt ein Angebot erstellen. Die SKU muss als Marktplatz-SKU an der Variante importiert werden und als *product-id-type* muss an der Variante *sku* gewählt werden.
+Für diese Werte ist es nicht notwendig, die Produktdaten zu übertragen. Über die zur Verfügung gestellten SKUs kannst du direkt ein Angebot erstellen. Die SKU muss als Marktplatz-SKU an der Variante importiert werden und als *product-id-type* muss an der Variante *sku* gewählt werden. Achte darauf, dass du keinen Eigenschaftswert für die Eigenschaft *Voelkner Kategoriegruppe* an diesen Varianten definierst.
 // end::ean-abgleich[]
 
 // tag::weitere-datenfelder-angebotsuebertragung[]
@@ -265,14 +273,17 @@ Für diese Werte ist es nicht notwendig die Produktdaten zu übertragen. Über d
 === Weitere Datenfelder, die bei der Angebotsübertragung übermittelt werden
 
 * *sku* und *product-id*: Diese Felder werden automatisch mit dem Wert befüllt, der als Marktplatz-SKU an der Variante hinterlegt wurde.
-* *product-id-type*: Dieses Feld wird standardmäßig mit dem Wert *SHOP_SKU* befüllt. Im Assistentenschritt *Zuordnung der Angebots- Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen der folgenden Werte zu übertragen: *ISBN*, *SKU* oder *EAN*. Dieses Feature wird weiter unten detaillierter erklärt.
+* *product-id-type*: Dieses Feld wird standardmäßig mit dem Wert *SHOP_SKU* befüllt. Im Assistentenschritt *Zuordnung der Angebots- Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante den folgenden Wert zu übertragen: *SKU*. Der EAN-Abgleich wird <<eans-abgleichen#, weiter unten>> detaillierter erklärt.
 * *price*: Dieses Feld wird automatisch mit dem Wert befüllt, der an der Variante für den am Marktplatz aktivierten Preis definiert wurde. Wurden mehrere Verkaufspreise an der Variante definiert, die ebenfalls für den Marktplatz freigegeben sind, wird der Preis mit der niedrigsten ID exportiert.
 * *quantity*: Dieses Feld wird automatisch mit dem Nettobestand oder den summierten Nettobeständen aus den Lagern befüllt, die im Assistent *{assistant-name}* im Schritt *Lagerauswahl* gewählt wurden.
 * *min-quantity-alert*: Dieses Feld wird automatisch mit dem Wert *1* übertragen.
 * *state*: Dieses Feld wird automatisch mit dem Wert *11* übertragen.
 * *available-start-date*: Dieses Feld wird automatisch mit einem Zeitstempel übertragen.
-* *discount-ranges*: In diesem Feld werden ein oder mehrere <<artikel/einstellungen/preise#100, Verkaufspreise>> übertragen.
+* *price-ranges*: In diesem Feld werden ein oder mehrere <<artikel/einstellungen/preise#100, Verkaufspreise>> übertragen.
 * *allow-quote-requests*: Dieses Feld wird automatisch mit dem Wert *false* übertragen.
+* *logistic-class*: Dieses Feld wird standardmäßig nicht befüllt. Wenn kein Wert übertragen wird, wird die Variante mit dem kostenlosen Versandprofil *Free Shipping (FS)* verknüpft. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen anderen Wert zu übertragen. Die gültigen Versandprofilcodes findest du im Voelkner-Backend unter *Plattformeinstellungen > Versand*. Diese Codes werden in Klammern dargestellt.
+* *leadtime-to-ship*: Dieses Feld ist ein Pflichtfeld und wird standardmäßig nicht befüllt. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen anderen Wert zu übertragen. Hier sind nur ganze Zahlen zwischen 1 und 45 gültig.
+* *reversecharge*: Dieses Feld ist ein Pflichtfeld und ist standardmäßig nicht befüllt. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante entweder `true` oder `false` zu übertragen.
 // end::weitere-datenfelder-angebotsuebertragung[]
 
 // tag::box-angebotsfelder-produktexportfeld[]
