@@ -361,17 +361,76 @@ Retourengründe, die eBay ändert oder neu veröffentlicht, importierst du im Me
 ====
 
 [#900]
-=== Kaufabbruchstatus verknüpfen
+=== Kaufabbruchstatus festlegen und verknüpfen
 
-Bei der Bearbeitung von Kaufabbrüchen im eBay-Backend werden Kaufabbruchstatus verwendet. Um eBay-Kaufabbrüche in plentymarkets zu importieren und zu bearbeiten, erstellst du neue <<auftraege/auftraege-verwalten#1200, Auftragsstatus>> und verknüpfst die erstellten Auftragsstatus mit den Kaufabbruchstatus von eBay. Der passende Status wird im Auftrag automatisch eingestellt, wenn eine Kaufabbruchanfrage importiert wird.
+Prinzipieller Ablauf:
 
-[.instruction]
-Kaufabbruchstatus verknüpfen:
+* <<#900-1, Du legst Auftragsstatus fest.>>
+* <<#900-2, Du prüfst den Statusbereich für stornierte Aufträge und passt den Bereich bei Bedarf an.>>
+* <<#900-3, Du verknüpfst die Kaufabbruchstatus mit den Status von eBay.>>
+
+[#900-1]
+[discrete]
+===== Auftragsstatus festlegen
+
+Bei der Bearbeitung von Kaufabbrüchen im eBay-Backend werden Kaufabbruchstatus verwendet. Du kannst entweder vorhandene Auftragsstatus verwenden oder neue <<auftraege/auftraege-verwalten#1200, Auftragsstatus erstellen>>. Um Anfragen für eBay-Kaufabbrüche in plentymarkets zu importieren und zu bearbeiten, benötigst du die folgenden Auftragsstatus:
+
+* eBay-Kaufabbruch angefragt
+* eBay-Kaufabbruch akzeptiert
+* eBay-Kaufabbruch abgelehnt
+* eBay-Kaufabbruch-Anfrage geschlossen
+
+Die Nummern für diese Status hängen davon ab, welchen Status du für Stornierungen nutzt. Wenn du den Standardstatus *[8] Storniert* für Stornierungen nutzt, solltest du Nummern im Bereich [8.xx] zuordnen.
+
+[.collapseBox]
+.Auftragsstatus erstellen
+--
+. Öffne das Menü *Einrichtung » Aufträge » Status*.
+. Klicke auf *Neuen Status erstellen* (icon:plus-square[role="green"]).
+. Trage eine Statusnummer ein. +
+→ Die höchstmögliche Nummer ist 19.9999.
+. Gib einen Namen ein. +
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Eingabefelder für weitere Einstellungen werden sichtbar. +
+. Füge bei Bedarf weitere Sprachen für den Auftragsstatus hinzu.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+--
+
+[#900-2]
+[discrete]
+===== Statusbereich für stornierte Aufträge prüfen und ggf. anpassen
+
+Bei Kaufabbrüchen sollte der reservierte Bestand wieder freigegeben werden. Prüfe deshalb den Statusbereich für stornierte Aufträge deines Systems und passe diesen Statusbereich bei Bedarf an.
+
+. Öffne das Menü *Einrichtung » Aufträge » Einstellungen*.
+. Navigiere zu der Einstellung *Status stornierter Aufträge (Keine Reservierung von Beständen)*.
+. Prüfe, ob der eingestellte Statusbereich die Status abdeckt, die du für das Bearbeiten von eBay-Kaufabbrüchen festgelegt hast. +
+*_Tipp:_* Standardmäßig ist hier ein Statusbereich von *[8] Storniert* bis *[8.1] Storniert durch Kunden* eingestellt.
+. Wenn der eingestellte Statusbereich die Kaufabbruchstatus nicht abdeckt, wähle aus der Dropdown-Liste *bis* den höchsten Status, den du für die Kaufabbruchstatus nutzt.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[#900-3]
+[discrete]
+===== Kaufabbruchstatus verknüpfen
+
+Die Auftragsstatus verknüpfst du mit den Kaufabbruchstatus von eBay. Wenn eine Kaufabbruchanfrage importiert wird, wird so der passende Status im Auftrag automatisch eingestellt.
 
 . Öffne das Menü *Einrichtung » Märkte » eBay » Einstellungen » Tab: Kaufabbruch*.
-. Wähle für jeden *eBay-Kaufabbruchstatus* einen passenden Kaufabbruchstatus aus den Dropdown-Listen. +
-→ Du kannst einen bereits vorhandenen Status wählen oder einen eigenen Status <<auftraege/auftraege-verwalten#1220, erstellen>>, der am besten zu deinem Arbeitsablauf passt.
+. Wähle in der Spalte *Eigener Status* für jeden *eBay-Kaufabbruchstatus* den passenden plentymarkets Status. Beachte die Erläuterungen in <<#table-ebay-status>>.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[[table-ebay-status]]
+.Status für eBay-Kaufabbrüche
+[cols="1,3a"]
+|====
+|eBay-Kaufabbruch-Status |Erläuterung
+
+| *Kaufabbruch angefragt*
+| Dieser Status wird Aufträgen zugewiesen, wenn Kund:innen bei eBay einen Kaufabbruch anfordern.
+
+| *Kaufabbruch-Anfrage geschlossen*
+| Der Status wird eBay-Aufträgen zugewiesen, wenn der Kaufabbruch komplett abgewickelt ist und keine weiteren Aktionen mehr erforderlich und/oder möglich sind.
+|====
 
 Wie du Kaufabbrüche weiter bearbeitest, wird im Kapitel <<Kaufabbrüche abwickeln, Kaufabbrüche abwickeln>> beschrieben.
 
@@ -3582,12 +3641,20 @@ Lehnen Käufer:innen eine Teilrückerstattung ab, leite wie oben beschrieben ent
 [#8900]
 == Kaufabbrüche abwickeln
 
+Bei eBay gibt es zwei Arten von Kaufabbrüchen:
+
+* <<#8900-1, Kaufabbrüche durch Kund:innen>>
+* <<#9950, Kaufabbrüche durch Händler:in>>
+
+[#8900-1]
+=== Kaufabbrüche durch Kund:innen abwickeln
+
 Die link:https://verkaeuferportal.ebay.de/kauf-abbrechen#19872anchor2[Kaufabbruchfunktion^]{nbsp}icon:external-link[] von eBay ermöglicht es Käufer:innen, innerhalb von einer Stunde nach Kauf um den Abbruch des Kaufs zu bitten, wenn der Artikel noch nicht verschickt wurde. Du hast drei Tage Zeit, die Anfrage zu akzeptieren oder abzulehnen. Reagierst du innerhalb der drei Tage nicht auf den Kaufabbruch, wird die Anfrage automatisch akzeptiert, wenn Käufer:innen den Artikel noch nicht bezahlt haben. Wurde der Artikel bereits bezahlt, wird der Kaufabbruch automatisch abgelehnt.
 
 [#9000]
-=== Anfragen importieren
+==== Kaufabbruch: Anfragen importieren
 
-Nimm die folgende Einstellung vor, um eBay-Kaufabbruchanfragen zu importieren. Nach dem Import wird im Menü *Aufträge » Aufträge bearbeiten* der Kaufabbruchstatus angezeigt, der im Menü *Einrichtung » Märkte » eBay » Einstellungen » Tab: Kaufabbruch* mit dem eBay-Kaufabbruchstatus verknüpft wurde. Nimm daher zuerst die Verknüpfungen vor.
+Nimm die folgende Einstellung vor, um eBay-Kaufabbruchanfragen zu importieren. Nach dem Import wird im Menü *Aufträge » Aufträge bearbeiten* der Kaufabbruchstatus angezeigt, der im Menü *Einrichtung » Märkte » eBay » Einstellungen » Tab: Kaufabbruch* mit dem eBay-Kaufabbruchstatus verknüpft wurde. Nimm daher zuerst <<#900, die Verknüpfungen vor>>.
 
 [.instruction]
 Kaufabbruchanfragen automatisch importieren:
@@ -3596,136 +3663,26 @@ Kaufabbruchanfragen automatisch importieren:
 . Wechsele in das Tab *Kontoeinstellungen*.
 . Wähle für die Einstellung *eBay-Kaufabbrüche abrufen* die Option *Ja*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Anfragen werden automatisch importiert und der Auftragsstatus wird anhand der erstellten Statusverknüpfungen eingestellt.
+→ Die Anfragen werden automatisch importiert. +
+→ Die Anfragen erhalten den Status, den du für eBay-Kaufabbruchanfragen festgelegt hast.
 
 Wie und in welchen Menüs du die Anfragen bearbeitest, wird in den folgenden Kapiteln beschrieben. Prinzipiell kannst du Anfragen akzeptieren oder ablehnen.
 
-[#9100]
-=== Anfragen akzeptieren
-
-Du hast 2 Möglichkeiten, Anfragen zu akzeptieren, zum einen, indem du den Auftragsstatus änderst und zum anderen, indem du ausstehende Aufträge löschst.
-
-[#9200]
-==== Auftragsstatus ändern, um Anfragen zu akzeptieren
-
-Wenn du die eBay-Kaufabbruchstatus wie oben beschrieben mit eigenen Status verknüpft hast, dann werden Kaufabbruchanfragen im Status *8.6 Kaufabbruch angefragt* importiert. Indem du den Auftragsstatus änderst, bearbeitest du die Anfragen ganz individuell.
-
-[TIP]
-.Status stornierter Aufträge
-====
-Beachte bei der Einrichtung von Kaufabbrüchen deine Einstellung für die Option *Status stornierter Aufträge* im Menü *Einrichtung » Aufträge » Einstellungen*. Der *Status stornierter Aufträge* muss zu den unten gewählten Status passen, da es ansonsten passieren kann, dass die Bestände weiterhin reserviert werden. +
-Der Status im Beispiel unten wurde beispielhaft gewählt. Wähle den Status, der am besten zu deinem Arbeitsablauf passt. Dazu kannst du einen vorhandenen Status wählen oder einen eigenen Status <<auftraege/auftraege-verwalten#1220, erstellen>>.
-====
-
-[.instruction]
-Auftragsstatus ändern:
-
-. Öffne das Menü *Aufträge » Aufträge bearbeiten*.
-. Suche nach Aufträgen im Status *[8.6] eBay: Kaufabbruch angefragt*.
-. Wähle einen Auftrag aus.
-. Ändere den Status des Auftrags auf *[8.5] eBay: Kaufabbruch akzeptiert*.
-. *Speichere* (icon:save[role="green"]) die Einstellungen. +
-. Damit deine Entscheidung eBay automatisch mitgeteilt wird, richte wie unten beschrieben eine Ereignisaktion ein.
-
-Um mehrere Aufträge gleichzeitig zu ändern, nutze die Gruppenfunktion. Wenn du bei noch unbezahlten Aufträgen die Anfrage akzeptieren willst, suche alle unbezahlten Aufträge im Status 8.6 und ändere den Status der Aufträge per <<auftraege/auftraege-verwalten#1700, Gruppenfunktion>>.
-
-Vielleicht kannst du anhand deiner spezifischen Arbeitsabläufe auch eine <<automatisierung/ereignisaktionen#, Ereignisaktion>>, die Anfragen durch Filter automatisch akzeptiert, einrichten.
-
-[#9300]
-==== Kaufabbruch von ausstehenden Aufträgen akzeptieren
-
-Ausstehende Aufträge sind Aufträge, bei denen die Kaufabwicklung auf eBay noch nicht abgeschlossen ist. Ausstehende Aufträge werden in plentymarkets nur angezeigt, wenn du im Menü *Einrichtung » Listings » Kaufabwicklung* für *Versandkosten neuer eBay-Aufträge* die Einstellung *von eBay übernehmen* gewählt hast. Du findest ausstehende Aufträge im Menü *Einrichtung » Märkte » eBay » Datenaustausch*. +
-Um eine Kaufabbruchanfrage für einen ausstehenden Auftrag zu akzeptieren, lösche den ausstehenden Auftrag.
-
-[.instruction]
-Ausstehende Aufträge löschen:
-
-. Öffne das Menü *Einrichtung » Märkte » eBay » Datenaustausch*.
-. Suche nach Aufträgen mit der Fehlermeldung *Ein Kaufabbruch wurde für diesen Auftrag angefragt*.
-. Wähle einen Auftrag.
-. Lösche den Auftrag. +
-→ Die Entscheidung wird eBay automatisch, auch ohne Ereignisaktion, mitgeteilt.
-
-[#9400]
-=== Anfragen ablehnen
-
-Du hast 2 Möglichkeiten Anfragen abzulehnen, zum einen, indem du den Auftragsstatus änderst und zum anderen, indem du eine Ereignisaktion einrichtest.
-
-[#9500]
-==== Auftragsstatus ändern, um Anfragen abzulehnen
-
-Wenn du die eBay-Kaufabbruchstatus wie oben beschrieben mit eigenen Status verknüpft hast, dann werden Kaufabbruchanfragen im Status *8.6 Kaufabbruch angefragt* importiert. Indem du den Auftragsstatus änderst, bearbeitest du die Anfragen ganz individuell.
-
-[.instruction]
-Auftragsstatus ändern:
-
-. Öffne das Menü *Aufträge » Aufträge bearbeiten*.
-. Suche nach Aufträgen im Status *[8.6] eBay: Kaufabbruch angefragt*.
-. Wähle einen Auftrag aus.
-. Ändere den Status des Auftrags auf *[8.7] eBay: Kaufabbruch abgelehnt*.
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
-. Damit deine Entscheidung eBay automatisch mitgeteilt wird, richte wie unten beschrieben eine Ereignisaktion ein.
-
-[#9600]
-==== Anfragen für bezahlte Aufträge automatisch ablehnen
-
-Richte zwei <<automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um bei bereits bezahlten Aufträgen Kaufabbruchanfragen automatisch abzulehnen.
-
-:table-event-procedure: <<#bezahlte-aufträge-markieren>>
-
-include::../../_includes/textblocks/instructions/EA.adoc[]
-
-[[bezahlte-aufträge-markieren]]
-.Ereignisaktion zum automatischen Markieren von bezahlten Aufträgen
-[cols="1,3,3"]
-|====
-|Einstellung |Option |Auswahl
-
-| *Ereignis*
-| *Zahlung: Vollständig*
-|
-
-| *Aktion*
-| *Auftrag &gt; Markierung*
-| *Markierung*
-|====
-
-:table-event-procedure: <<#kaufabbruch-automatisch-ablehnen>>
-
-include::../../_includes/textblocks/instructions/EA.adoc[]
-
-[[kaufabbruch-automatisch-ablehnen]]
-.Ereignisaktion zum automatischen Ablehnen von Kaufabbrüchen
-[cols="1,3,3"]
-|====
-|Einstellung |Option |Auswahl
-
-| *Ereignis*
-| *Auftragsänderung: Statuswechsel &gt; eBay: Kaufabbruch angefragt*
-|
-
-| *Filter 1*
-| *Auftrag &gt; Markierung*
-| *Markierung*
-
-| *Filter 2*
-| *Auftrag &gt; Herkunft*
-| *eBay Deutschland*
-
-| *Aktion*
-| *Auftrag &gt; Status ändern*
-| *eBay: Kaufabbruch abgelehnt*
-|====
-
 [#9700]
-=== Entscheidungen eBay automatisch mitteilen
+==== Ereignisaktionen erstellen, um eBay Entscheidungen automatisch mitzuteilen
 
-Erstelle die folgenden Ereignisaktionen, um eBay automatisch über deine Entscheidung zum Kaufabbruch zu informieren. Diese Ereignisaktionen werden ausgelöst, wenn sich der Status eines Auftrags, für den es eine Anfrage gibt, ändert.
+Erstelle die folgenden Ereignisaktionen, um eBay automatisch über Entscheidungen zu Kaufabbruchanfragen zu informieren. Diese Ereignisaktionen werden ausgelöst, wenn sich der Status eines Auftrags ändert, für den es eine Anfrage gibt.
 
 [#9800]
-==== Kaufabbruch akzeptiert mitteilen
+===== Kaufabbruch akzeptiert mitteilen
 
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um eBay darüber zu informieren, dass du einen Kaufabbruch akzeptierst.
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein. Mit dieser Ereignisaktion informierst du eBay automatisch darüber, dass du einen Kaufabbruch akzeptierst, wenn ein Auftrag in den gewählten Status verschoben wird.
+
+[IMPORTANT]
+.Rückerstattung
+====
+Falls der Artikel bereits bezahlt wurde und du dem Kaufabbruch zugestimmt hast, hast du 10 Tage Zeit, das Geld zurückzuzahlen.
+====
 
 :table-event-procedure: <<#mitteilung-akzeptierter-kaufabbruch>>
 
@@ -3738,8 +3695,8 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| *Auftragsänderung: Statuswechsel &gt; eBay: Kaufabbruch akzeptiert*
-|
+| *Auftragsänderung: Statuswechsel*
+| Status für *eBay: Kaufabbruch akzeptiert* wählen.
 
 | *Filter 1*
 | *Auftrag &gt; Auftragstyp*
@@ -3755,9 +3712,9 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#9900]
-==== Kaufabbruch abgelehnt mitteilen
+===== Kaufabbruch abgelehnt mitteilen
 
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um eBay darüber zu informieren, dass du einen Kaufabbruch ablehnst.
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein. Mit dieser Ereignisaktion informierst du eBay automatisch darüber, dass du einen Kaufabbruch ablehnst, wenn ein Auftrag in den gewählten Status verschoben wird.
 
 :table-event-procedure: <<#mitteilung-abgelehnter-kaufabbruch>>
 
@@ -3770,8 +3727,8 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| *Auftragsänderung: Statuswechsel &gt; eBay: Kaufabbruch abgelehnt*
-|
+| *Auftragsänderung: Statuswechsel*
+| Status für *eBay: Kaufabbruch abgelehnt* wählen.
 
 | *Filter 1*
 | *Auftrag &gt; Auftragstyp*
@@ -3786,18 +3743,179 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |
 |====
 
+[#9100]
+[#9300]
+==== Kaufabbruch: Anfragen akzeptieren
+
+Du hast zwei Möglichkeiten, Anfragen für Kaufabbrüche zu akzeptieren: Du kannst entweder den Auftragsstatus ändern oder ausstehende Aufträge löschen.
+
 [IMPORTANT]
 .Rückerstattung
 ====
 Falls der Artikel bereits bezahlt wurde und du dem Kaufabbruch zugestimmt hast, hast du 10 Tage Zeit, das Geld zurückzuzahlen.
 ====
 
+[#9200]
+[.tabs]
+====
+Kaufabbruch akzeptieren: Auftragsstatus ändern::
++
+--
+Wenn du die eBay-Kaufabbruchstatus <<#900, wie oben beschrieben>> mit plentymarkets Status verknüpft hast, werden Kaufabbruchanfragen mit dem Status importiert, den du für "eBay Kaufabbruch angefragt" festgelegt hast. Indem du den Auftragsstatus änderst, bearbeitest du die Anfragen ganz individuell.
+
+[.instruction]
+Auftragsstatus ändern, um Kaufabbruch zu akzeptieren:
+
+. Öffne das Menü *Aufträge » Aufträge bearbeiten*.
+. Suche nach Aufträgen in dem Status für *eBay-Kaufabbruch angefragt*
+. Wähle einen Auftrag aus.
+. Ändere den Status des Auftrags in den Status für *Bay-Kaufabbruch akzeptiert*.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Deine Entscheidung wird eBay automatisch mitgeteilt, wenn du die Ereignisaktion <<#9800, Kaufabbruch akzeptiert mitteilen>> eingerichtet hast.
+
+Um mehrere Aufträge gleichzeitig zu ändern, nutze die Gruppenfunktion. Wenn du bei noch unbezahlten Aufträgen die Anfrage akzeptieren willst, suche alle unbezahlten Aufträge im richtigen Status und ändere den Status der Aufträge per <<auftraege/auftraege-verwalten#1700, Gruppenfunktion>>.
+
+Vielleicht kannst du anhand deiner spezifischen Arbeitsabläufe auch eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> einrichten, die Anfragen durch Filter automatisch akzeptiert.
+--
+
+Kaufabbruch akzeptieren: Ausstehende Aufträge löschen::
++
+--
+Ausstehende Aufträge sind Aufträge, bei denen die Kaufabwicklung auf eBay noch nicht abgeschlossen ist. Ausstehende Aufträge werden in plentymarkets nur angezeigt, wenn du im Menü *Einrichtung » Listings » Kaufabwicklung* für *Versandkosten neuer eBay-Aufträge* die Einstellung *von eBay übernehmen* gewählt hast. Um eine Kaufabbruchanfrage für einen ausstehenden Auftrag zu akzeptieren, lösche den ausstehenden Auftrag.
+
+[.instruction]
+Ausstehende Aufträge löschen, um Kaufabbruch zu akzeptieren:
+
+. Öffne das Menü *Einrichtung » Märkte » eBay » Datenaustausch*.
+. Suche nach Aufträgen mit der Fehlermeldung *Ein Kaufabbruch wurde für diesen Auftrag angefragt*.
+. Wähle einen Auftrag.
+. Lösche den Auftrag. +
+→ Die Entscheidung wird eBay automatisch, auch ohne Ereignisaktion, mitgeteilt.
+--
+====
+
+[#9400]
+==== Kaufabbruch: Anfragen ablehnen
+
+Du hast zwei Möglichkeiten, Anfragen abzulehnen: Du kannst entweder den Auftragsstatus ändern oder eine Ereignisaktion erstellen, um Anfragen zu bezahlten Aufträgen automatisch abzulehnen.
+
+[#9500]
+[#9600]
+[.tabs]
+====
+Kaufabbruch ablehnen: Auftragsstatus ändern::
++
+--
+Wenn du die eBay-Kaufabbruchstatus <<#900, wie oben beschrieben>> mit plentymarkets Status verknüpft hast, werden Kaufabbruchanfragen mit dem Status importiert, den du für "eBay Kaufabbruch angefragt" festgelegt hast. Indem du den Auftragsstatus änderst, bearbeitest du die Anfragen ganz individuell.
+
+[.instruction]
+Auftragsstatus ändern, um Anfragen abzulehnen:
+
+. Öffne das Menü *Aufträge » Aufträge bearbeiten*.
+. Suche nach Aufträgen in dem Status für *eBay-Kaufabbruch angefragt*
+. Wähle einen Auftrag.
+. Ändere den Status des Auftrags in den Status für *eBay-Kaufabbruch abgelehnt*.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+→ Deine Entscheidung wird eBay automatisch mitgeteilt, wenn du die Ereignisaktion <<#9900, Kaufabbruch abgelehnt mitteilen>> eingerichtet hast.
+--
+
+Kaufabbruch für bezahlte Aufträge ablehnen: Ereignisaktionen::
++
+--
+Richte zwei <<automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um bei bereits bezahlten Aufträgen Kaufabbruchanfragen automatisch abzulehnen.
+
+:table-event-procedure: <<#bezahlte-aufträge-markieren>>
+
+include::../../_includes/textblocks/instructions/EA-tabbed.adoc[]
+
+[[bezahlte-aufträge-markieren]]
+.Ereignisaktion zum automatischen Markieren von bezahlten Aufträgen
+[cols="1,3,3"]
+|======
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Zahlung: Vollständig*
+|
+
+| *Aktion*
+| *Auftrag &gt; Markierung*
+| *Markierung*
+|======
+
+:table-event-procedure: <<#kaufabbruch-automatisch-ablehnen>>
+
+include::../../_includes/textblocks/instructions/EA-tabbed.adoc[]
+
+[[kaufabbruch-automatisch-ablehnen]]
+.Ereignisaktion zum automatischen Ablehnen von Kaufabbrüchen
+[cols="1,3,3"]
+|======
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Auftragsänderung: Statuswechsel*
+| Status für *eBay: Kaufabbruch angefragt* wählen.
+
+| *Filter 1*
+| *Auftrag &gt; Markierung*
+| *Markierung*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *eBay Deutschland*
+
+| *Aktion*
+| *Auftrag &gt; Status ändern*
+| *eBay: Kaufabbruch abgelehnt*
+|======
+--
+====
+
 [#9950]
-=== Kaufabbruch auf eBay automatisch starten
+=== Kaufabbrüche durch Händler:in automatisieren
 
-Als Händler:in hast du die Möglichkeit, einen Kaufabbruch auf eBay zu starten. Dazu must du eine Begründung angeben. Zur Auswahl stehen die Gründe *Lieferadresse des Käufers war nicht korrekt*, *Käufer hat um Abbruch des Kaufs gebeten* und *Ich kann den Artikel nicht wie vereinbart liefern*. +
+Als Händler:in hast du die Möglichkeit, selbst Kaufabbrüche auf eBay zu starten.
 
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um automatisch einen Kaufabbruch auf eBay zu starten. Im Folgenden wird beispielhaft eine Ereignisaktion beschrieben, in der ein Kauf abgebrochen wird, weil die Lieferadresse nicht korrekt war. Richte weitere Ereignisaktionen zum Kaufabbruch auf eBay auf die gleiche Weise ein.
+Prinzipieller Ablauf:
+
+* <<9950-1, Du legst Auftragsstatus für die zulässigen Gründe fest.>>
+* <<9950-2, Du erstellst eine Ereignisaktion, um Kaufabbrüche automatisch zu starten>>
+* <<9950-3, Bei Aufträgen, für die du einen Kaufabbruch einleiten möchtest, änderst du dann nur noch den Auftragsstatus.>>
+
+[#9950-1]
+[discrete]
+===== Auftragsstatus für Gründe festlegen
+
+Um Kaufabbrüche auf eBay zu starten, must du einen Grund angeben. Lege für jeden der folgenden Gründe einen eigenen Auftragsstatus fest:
+
+* Lieferadresse des Käufers war nicht korrekt
+* Käufer hat um Abbruch des Kaufs gebeten
+* Ich kann den Artikel nicht wie vereinbart liefern
+
+Du kannst entweder vorhandene Auftragsstatus verwenden oder <<auftraege/auftraege-verwalten#1200, neue Auftragsstatus erstellen>>.
+
+[.collapseBox]
+.Auftragsstatus erstellen
+--
+. Öffne das Menü *Einrichtung » Aufträge » Status*.
+. Klicke auf *Neuen Status erstellen* (icon:plus-square[role="green"]).
+. Trage eine Statusnummer ein. +
+→ Die höchstmögliche Nummer ist 19.9999.
+. Gib einen Namen ein. +
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Eingabefelder für weitere Einstellungen werden sichtbar. +
+. Füge bei Bedarf weitere Sprachen für den Auftragsstatus hinzu.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+--
+
+[#9950-2]
+[discrete]
+===== Ereignisaktion erstellen, um Kaufabbrüche automatisch zu starten
+
+Richte nun für jeden Grund eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um automatisch Kaufabbrüche auf eBay zu starten.
+
+Im Folgenden wird beispielhaft eine Ereignisaktion beschrieben, in der ein Kauf abgebrochen wird, weil die Lieferadresse nicht korrekt war. Richte für die Gründe *Käufer hat um Abbruch des Kaufs gebeten* und *Ich kann den Artikel nicht wie vereinbart liefern* weitere Ereignisaktionen auf die gleiche Weise ein.
 
 :table-event-procedure: <<#tabelle-kaufabbrüche-starten>>
 
@@ -3811,8 +3929,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 
 |Ereignis
 | *Auftragsänderung: Statuswechsel*
-|Status wählen. +
-Der Status hängt davon ab, welche Begründung du für den Kaufabbruch angibst. Wir empfehlen, für die Ereignisaktionen zum automatischen Starten von Kaufabbrüchen auf eBay neue Status zu erstellen. Erstelle z.B. für die Begründung *Käufer hat um Abbruch des Kaufes gebeten* den Auftragsstatus *Kauf abbrechen, weil Käufer um Kaufabbruch gebeten hat*. Erstelle weitere Status für die unterschiedlichen Gründe.
+| Status wählen, den du für den Grund *Lieferadresse des Käufers war nicht korrekt* festgelegt hast.
 
 |Filter 1
 | *Auftrag > Auftragstyp*
@@ -3826,6 +3943,16 @@ Der Status hängt davon ab, welche Begründung du für den Kaufabbruch angibst. 
 | *Market-Listings > Kaufabbruch auf eBay starten*
 | *Lieferadresse des Käufers war nicht korrekt*
 |====
+
+[#9950-3]
+[discrete]
+===== Auftragsstatus ändern, um einen Kaufabbruch zu starten
+
+. Öffne das Menü *Aufträge » Aufträge bearbeiten*.
+. Wähle einen Auftrag.
+. Ändere den Status des Auftrags in den Status für den Grund, den du an eBay senden möchtest.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Die Ereignisaktion wird ausgelöst und eBay so über den Kaufabbruch informiert.
 
 [#10000]
 == API-Log abrufen
