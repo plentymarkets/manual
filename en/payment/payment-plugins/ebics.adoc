@@ -36,7 +36,7 @@ It is not allowed to set up existing EBICS accounts which are already in use in 
 [#80]
 === Account numbers
 
-Enter the account numbers for the accounts that you would like revenue to be retrieved and booked into plentymarkets from. Entering account numbers is optional because the retrieval is technically based on the user data. For further information about entering or not entering of account numbers refer to <<table-provision-bank-statements>>.
+Enter the account numbers for the accounts that you would like revenue to be retrieved and booked into plentymarkets from. Entering account numbers is optional because the retrieval is technically based on the user data.
 
 [IMPORTANT]
 .Only save business accounts
@@ -107,7 +107,7 @@ Creating an account:
 . Go to *Setup » Orders » Payment » Plugin » EBICS*.
 . Click on *Create new account* (icon:plus-square[role="green"]). +
 → The *Create new account* window opens.
-. Carry out the settings according to <<tabelle-ebics-kontoeinstellungen>>.
+. Carry out the settings according to <<table-ebics-account-settings>>.
 . *Save* (icon:save[role="green"]) the settings. +
 → The account is created.
 
@@ -234,7 +234,7 @@ _Important:_ Using the expert mode can damage your account in a way it has to be
 [IMPORTANT]
 .Contact your bank before making changes
 ====
-Carry out changes only after consultation with your bank. For example, if you want to use the new CAMT formats, then ask your bank whether or not this format is supported and have the format activated. Then make any necessary changes to the basic settings and interim transaction report as described here.
+Carry out changes only after consultation with your bank. For example, if you want to use the new CAMT formats, then ask your bank whether or not this format is supported and have the format activated. Then make any necessary changes to the account settings and interim transaction report as described here.
 
 If an account was reset and your bank needs new keys, then we recommend that you set up the EBICS account again in plentymarkets. This way new keys will be generated.
 ====
@@ -386,3 +386,111 @@ Migrating data:
 → All accounts are activated in the plugin. +
 . Deactivate the accounts in the old integration.
 . Activate the transactions in the accounts in the plugin as described above.
+
+
+[#210]
+== FAQ about the EBICS plugin
+
+In this section, FAQ about configuring the EBICS plugin are compiled.
+
+For general information about the development of the plugin, you can also read this German link:https://www.plentymarkets.eu/blog/plentyCommunity-Projekt-EBICS-Komplett-auf-den-Anwender-ausgerichtet/b-1941/[Blog entry^]{nbsp}icon:external-link[].
+
+[#220]
+=== How do I use the EBICS plugin?
+
+To use the EBICS plugin, you first have download it from the link:https://marketplace.plentymarkets.com/en/ebics_5098[plentyMarketplace^]{nbsp}icon:external-link[]. To set up EBICS you have to carry out a few basic settings in your plentymarkets system. These are explained <<#70, at the top of this manual page>>.
+
+You can find more information on adding and installing plugins in the <<plugins#, Plugins>> section of the manual.
+
+[#230]
+=== How do I open a new account?
+
+First, a new account is created with the data from the bank’s letter.
+When you select a bank, verify that the URL as well as the host parameter are identical with the ones on the bank letter.
+
+Keys are generated and the INI- as well as the HIA-Call are performed via the *initialise account* button on the *Setup » Orders » Payment » Plugins » EBICS* menu. After this, the INI-letter can be issued. This takes place in your browser via a direct pdf download. Make sure that pop-ups are not deactivated while doing this. +
+The INI-letter has to be signed and send to the bank as fast as possible.
+he initialisation is discarded after *2 weeks* if the INI-letter has failed to arrive.
+The bank activates the account when everything is set up correctly.
+Only click on the button *conclude account-initialisation (HPB)* in the account settings after clearance from the bank. After this, the account is successfully initialised.Find more information about initialisation in the section <<#140, Initialising the account>>.
+
+In order to have the payments imported, make sure that the *business transactions* are activated for the payment retrieval in the *Setup » Orders » Payment » Plugins » EBICS* menu. Find more information about transactions in the section <<#170, Managing transactions>>.
+
+[WARNING]
+====
+The button *initialise account* should only be clicked once.
+If you click several times, problems and consequential errors can occur.
+You can track the individual steps in the log.
+====
+
+[#240]
+=== I am already using EBICS. Why should I switch to the plugin?
+
+The EBICS-tool for payment retrieval is more stable than in the old EBICS integration.
+Moreover, the tool and the plugin are constantly developed further.
+The old EBICS interface is no longer supported and thus not failure resistant.
+Already existing accounts can be easily <<#200, migrated>> to the plugin.
+
+[#250]
+=== Payments are not retrieved. What can I do?
+
+Check whether the interim transaction report and the daily account statements are using the correct formatting. Formatting can be adjusted in the <<#130, account settings>>. +
+The bank is providing the transaction file in the format CAMT or MT.
+
+.Activating transactions
+image::_best-practices/auftragsabwicklung/Payment/assets/EBICS-geschaeftsvorfall.png[]
+
+[.instruction]
+Activating transactions:
+
+. Select the active account the the *Setup » Orders » Payment » Plugin » EBICS* menu.
+. Select the menu entry *business transactions* in the account settings.
+. Activate the inactive business transactions.
+. *After the first payment retrieval*: load inactive business transactions.
+. Choose the inactive business transaction via the drop-down list *Show* and activate as required.
+
+[#260]
+=== The bank provides the transaction file at X o’clock. Why does plentymarkets retrieve the file later?
+
+The retrieval takes place once a day via a cron. The cron inquires hourly whether there is a transaction file. The payment retrieval mostly takes place in the evening or at night. This is connected to the provision of the transaction files by the bank. +
+The daily account statement can also be provided several times a day. The transaction file for the daily account statement and the interim transaction report are provided at different times.
+
+[#270]
+=== What do the fields daily account statement and interim transaction report mean?
+
+* Daily account statement = Confirmed booking which is mostly only provided once a day. +
+* Interim transaction report = Authorised booking which is provided several times a day and reserves the incoming payments.
+
+The interim transaction report is overridden by the confirmed booking.
+
+[WARNING]
+====
+The daily account statement and the interim transaction report should always have the same formatting. Otherwise, errors in the allocation of payments might occur.
+====
+
+[#280]
+=== What is the difference between CAMT and MT?
+
+CAMT and MT are data transaction formats that are used in the transaction files. Only one format is used in the transaction file itself.
+
+[[table-comparison-camt-mt]]
+.The formats CAMT and MT in comparison
+[cols="3*"]
+|===
+||CAMT|MT
+
+| *Description*
+|Cash management
+|Message type
+
+| *IBAN field in account settings*
+|IBAN
+|Account number
+
+| *Transaction files*
+|Uniform format of SEPA, supersedes the SWIFT-format
+|SWIFT standard format
+
+|===
+
+You can get more information about these formats in the following German link:https://forum.plentymarkets.com/t/vormerkposten-camt052-oder-mt942-bei-postbank-taeglich-abruf-um-13-uhr-und-17-uhr-moeglich/120442/2[forum’s entry^]{nbsp}icon:external-link[].

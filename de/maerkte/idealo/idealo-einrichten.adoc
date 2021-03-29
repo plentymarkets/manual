@@ -27,7 +27,7 @@ Um idealo in plentymarkets einrichten zu können, registriere dich zunächst bei
 [#3000]
 == Art des Artikeldatenexports wählen
 
-Kläre vor dem Einrichten in plentymarkets mit idealo, wie Artikeldaten übertragen werden sollen (Erstellung, Aktualisierung und Löschen von Artikeln auf idealo). Artikel können entweder mit dem automatischen Artikelexport über eine API (PWS 2.0-Schnittstelle) oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen werden. <<#artikelexport-idealo-1>> zeigt die wichtigsten Unterschiede zwischen den beiden Arten des Artikeldatenexports. Wie du die verschiedenen Arten der Datenübertragung in plentymarkets einrichtest, ist im Kapitel <<#800, Artikelexport einrichten>> beschrieben.
+Kläre vor dem Einrichten in plentymarkets mit idealo, wie Artikeldaten übertragen werden sollen (Erstellen, Aktualisieren und Löschen von Artikeln auf idealo). Artikel können entweder mit dem automatischen Artikelexport über eine API (PWS 2.0-Schnittstelle) oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen werden. <<#artikelexport-idealo-1>> zeigt die wichtigsten Unterschiede zwischen den beiden Arten des Artikeldatenexports. Wie du die verschiedenen Arten der Datenübertragung in plentymarkets einrichtest, ist im Kapitel <<#800, Artikelexport einrichten>> beschrieben.
 
 [IMPORTANT]
 .Bei Artikeldatenexport per API vorab idealo kontaktieren
@@ -134,7 +134,7 @@ a| Aus der Dropdown-Liste *Mandant* den Mandanten wählen.
 |Du kannst deine Artikel entweder per Schnittstelle oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen. Kläre vor der Einrichtung in plentymarkets mit idealo, wie Artikeldaten übertragen werden sollen. Preise und Bestände werden bei Datenübertragung per Schnittstelle alle 15 Minuten übertragen. Beim CSV-Export bestimmt idealo das Übertragungsintervall.
 
 | *Möchtest du deine Bestände und Preise zu idealo übertragen?*
-| *Bestände und Preise übertragen* = Preise und Bestände werden alle 15 Minuten importiert.
+| *Bestände und Preise übertragen* aktiviert = Preise und Bestände werden alle 15 Minuten importiert.
 
 | *Möchtest du deine idealo Direktkauf-Aufträge in plentymarkets importieren?*
 |Aktivieren, um Aufträge automatisch alle 15 Minuten zu importieren. +
@@ -143,6 +143,9 @@ a| Aus der Dropdown-Liste *Mandant* den Mandanten wählen.
 | *Welcher Auftragsstatus soll vor dem Import stornierten idealo Direktkauf-Aufträgen zugewiesen werden?*
 | Manche idealo Direktkauf-Aufträge werden schon vor dem ersten Import in dein plentymarkets System storniert. Auftragsstatus wählen, der diesen stornierten Aufträgen beim Import zugewiesen werden soll. +
 *_Hinweis:_* Der Import dieser stornierten idealo Direktkauf-Aufträge löst die für den gewählten Status eingerichteten Ereignisaktionen aus. Wähle deshalb einen Status, bei dem keine Ereignisaktionen (z.B. Stornierungsbestätigung an Kunden) ausgelöst werden.
+
+| *Möchtest du offene MOA-1.0-Aufträge weiterhin über dieses Konto abwickeln?*
+| Die Merchant Order API von idealo ist eine Rest-API, die das Abholung und Bearbeiten von Direktkauf-Bestellungen ermöglicht. Im Januar 2021 hat idealo diese Rest-API von Version 1.0 auf Version 2.0 umgestellt. Aktiviere diese Einstellung, wenn du mit diesem Konto schon über die alte MOA-1.0-Schnittstelle Aufträge importiert hast. Offene Aufträge werden dann weiter über dieses Konto automatisch bearbeitet. Wenn du ein neues idealo-Konto einrichtest, kannst du diese Einstellung ignorieren.
 
 |======
 --
@@ -156,8 +159,8 @@ a| Aus der Dropdown-Liste *Mandant* den Mandanten wählen.
 |======
 |Einstellung |Erläuterung
 
-| *Wie lautet der Bestelldaten-API-Schlüssel?*
-|Gib für den API-Schlüssel den Token für Merchant Order API v1 ein. Du erstellst den API-Schlüssel im idealo Business Portal unter *Mein idealo » Einstellungen » API Clients » Bestelldaten API*. Der API-Schlüssel erlaubt plentymarkets Zugriff auf idealo, damit idealo Direktkauf-Aufträge in plentymarkets importiert werden können.
+| *Wie lauten die Zugangsdaten deines Merchant Order API 2.0 API-Clients?*
+a| Gib für den API-Schlüssel den Token für die Merchant Order API v2 ein. Du erstellst den API-Schlüssel im idealo Business Portal unter *Mein idealo » Einstellungen » API Clients » Bestelldaten API*. Der API-Schlüssel erlaubt plentymarkets Zugriff auf idealo, damit idealo Direktkauf-Aufträge in plentymarkets importiert werden können.
 
 | *Wie lauten die Zugangsdaten deines Partner Web Service 2.0 API-Clients?*
 a| Du benötigst die API-Client-Zugangsdaten, damit plentymarkets auf dein idealo-Konto zugreifen kann. Dadurch kann der Artikeldatenaustausch aktiviert werden. Die Zugangsdaten forderst du bei idealo unter tam@idealo.de an.
@@ -316,9 +319,11 @@ Außerdem muss die Preisspanne bei idealo aktiviert sein.
 ====
 
 [#700]
-== SKU manuell festlegen
+== SKU speichern
 
 :referrer-sku: idealo
+:referrer-id: 121
+:sku-others:
 
 include::../_textblocks/instructions/sku-manuell.adoc[]
 
@@ -364,7 +369,7 @@ Informationen zu den verschiedenen Arten der Datenübertragung findest du in <<#
 [#850]
 === Artikelexport per API (PWS 2.0-Schnittstelle)
 
-Wenn du deine Artikel per Schnittstelle automatisch zu idealo übertragen möchtest, durchlaufe den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Omni-Channel* und aktiviere den automatischen Artikeldatenexport. Für den automatischen Artikelexport sind außerhalb des idealo-Assistenten keine weiteren Einstellungen in plentymarkets nötig. +
+Wenn du deine Artikel per Schnittstelle automatisch zu idealo übertragen möchtest, durchlaufe den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Plugins » [Mandant öffnen]* und aktiviere den automatischen Artikeldatenexport. Für den automatischen Artikelexport sind außerhalb des idealo-Assistenten keine weiteren Einstellungen in plentymarkets nötig. +
 
 Mit dieser Art der Datenübertragung werden Artikel einmal täglich auf idealo erstellt. Preise und Bestände werden alle 15 Minuten aktualisiert. Artikel können zudem alle 15 Minuten gelöscht werden.
 
@@ -1011,9 +1016,9 @@ include::../_textblocks/instructions/logs_abrufen.adoc[]
 [#2100]
 === Artikelexport per API (PWS 2.0-Schnittstelle)
 
-===== Nicht alle meine Artikel werden zu idealo exportiert. Was kann ich tun?
-
-[.indented]
+[.collapseBox]
+.Nicht alle meine Artikel werden zu idealo exportiert. Was kann ich tun?
+--
 Falls du deine Artikel per Schnittstelle (PWS 2.0) zu idealo überträgst, aber nicht alle Artikel exportiert wurden, kann der Zeitstempel für Marktplatzexporte aktualisiert werden. Dies kann helfen, da normalerweise nur Varianten zu idealo exportiert werden, die in den letzten zwei Tagen aktualisiert wurden.
 
 [.instruction]
@@ -1023,3 +1028,4 @@ Zeitstempel für Marktplatzexporte aktualisieren:
 . Aktiviere im Bereich *Aktionen* die Option *Zeitstempel für Marktplatzexporte aktualisieren*.
 . Klicke auf *Anwenden* (icon:execute[set=plenty]). +
 → Alle Artikel, die für idealo verfügbar sind, werden mit dem nächsten Artikelexport zu idealo übertragen.
+--
