@@ -85,7 +85,7 @@ Creating a warehouse:
 . Click on *New warehouse*.
 . Enter a name for the warehouse.
 . Select a *Warehouse type*. +
-*_Note:_* If you only want to use this warehouse for FBA stock, i.e. if you only want to offer the stock of this warehouse for Amazon FBA and not in your online store or on other markets, then select the warehouse type *Repair*.
+*_Note:_* If you only want to use this warehouse for FBA stock, i.e. if you only want to offer the stock of this warehouse for Amazon FBA and not in your plentyShop or on other markets, then select the warehouse type *Repair*.
 . Select *Amazon* as *Logistics type*.
 . *Save* (icon:save[role="green"]) the settings. +
 → The warehouse is listed in the overview in alphabetical order and opened.
@@ -98,6 +98,7 @@ Creating a warehouse:
 
 To allow Amazon to ship your items, you need to make sure that there is sufficient stock in one or more FBA fulfilment centers. Start with general settings for shipments to FBA fulfilment centers.
 
+[#92]
 ==== Selecting the label type for FBA inbound shipments
 
 Select the label type that you want to use for parcel shipments sent with an Amazon Partnered Carrier. You can download and print the label later in the size that you selected here after you have registered the order successfully.
@@ -124,7 +125,7 @@ Saving contact details for FBA Inbound shipments:
 
 [[fba-contact]]
 .Contact details for FBA Inbound shipments
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Filter |Explanation
 
@@ -152,7 +153,7 @@ Setting up FBA outbound orders:
 
 [[fba-order-settings]]
 .Settings in the *Order settings* tab
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Setting | Explanation
 
@@ -169,6 +170,10 @@ Setting up FBA outbound orders:
 
 | *Warehouse*
 | Select which <<Creating a warehouse for Amazon FBA, Amazon FBA warehouse>> should be used for stock synchronisation with the account. This warehouse is also used to assign the FBA order to the account if no FBA order could be assigned to the country the order originates in because no warehouse is set up for the order country.
+
+| *Warehouse for unsellable stock*
+| Select which <<#60, Amazon FBA warehouse>> should be used for unsellable stock for this account. If you do not select a warehouse, the unsellable stock will not be imported. +
+Unsellable stock is defined as the number of units you have for a SKU in Amazon fulfillment centers in unsellable condition. In Amazon's "Manage FBA Inventory" report, this stock is equivalent to the quantity in the column *afn-unsellable-quantity*.
 
 | *Outgoing items*
 | Select whether outgoing items should be marked as booked or not. The option *Mark as booked* does not trigger an item movement. In order to trigger an item movement, select the option *Do not mark as booked* and set up an event procedure.
@@ -187,19 +192,131 @@ Setting up FBA outbound orders:
 |*Status for transmitted orders*
 | Select the <<orders/managing-orders#1200, order status>> for orders that were successfully transferred to FBA.
 
-| *Item bundles Multichannel*
-a| Select which positions should be transferred to Amazon.
+| *Ignore item discounts from campaigns during import*
+| Amazon order reports do not specify if any item discounts were granted by the seller or by Amazon. In both cases, the discounted amount is deducted from the order value during the order import. However, if Amazon granted the discount, the order value differs from the amount that Amazon pays you for the order. In such cases, you need to manually adjust the order. Otherwise, you do not pay enough VAT on the order.
 
-* *Transmit all order positions* = Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon.
-* *Transmit package position only* = Only the package position is transferred to Amazon.
-* *Transmit without package position* = Only the contents of the package are transferred to Amazon.
+Select how to deal with item discounts when orders are imported.
+
+[cols="1,3a"]
+!===
+! *No* (default setting)
+! The discount amount is imported. If Amazon granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP.
+* Amazon grants the customer a discount of 1.00 GBP.
+* The order is imported with an order value of 9.00 GBP.
+* Amazon pays you 10.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP.
+* You grant the customer a discount of 1.00 GBP.
+* The order is imported with an order value of 9.00 GBP.
+* Amazon pays you 9.00 GBP. +
+→ All amounts are correct.
+
+! *Yes*
+! The discounted amount is deducted from the order value during the import. This setting is recommended for sellers that do not offer their own discount campaigns on Amazon platforms. If the seller granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP.
+* Amazon grants the customer a discount of 1.00 GBP.
+* Amazon pays you 10.00 GBP.
+* The order is imported with an order value of 10.00 GBP. +
+→ All amounts are correct.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP.
+* You grant the customer a discount of 1.00 GBP.
+* The order is imported with an order value of 10.00 GBP.
+* Amazon pays you 9.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+*_Note:_* To simplify the examples, the fees that you need to pay Amazon for the order are ignored.
+!===
+
+| *Ignore shipping discounts from campaigns during import*
+| Amazon order reports do not specify of any shipping discounts were granted by the seller or by Amazon. In both cases, the discounted amount is deducted from the order value during the order import. However, if Amazon granted the discount, the order value differs from the amount that Amazon pays you for the order. In such cases, you need to manually adjust the order. Otherwise, you do not pay enough VAT on the order.
+
+Select how to deal with shipping discounts when orders are imported.
+
+[cols="1,3a"]
+!===
+! *No* (default setting)
+! The discount amount is imported. If Amazon granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* Amazon waives the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* You waive the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ All amounts are correct.
+
+! *Yes*
+! The discounted amount is deducted from the order value during the import. This setting is recommended for sellers that do not offer their own discount campaigns on Amazon platforms. If the seller granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* Amazon waives the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ All amounts are correct.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* You waive the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+*_Note:_* To simplify the examples, the fees that you need to pay Amazon for the order are ignored.
+!===
+
+| *Item bundles Multichannel*
+| Select which positions should be transferred to Amazon.
+
+[cols="1,3a"]
+!===
+! *Transmit all order positions*
+! Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon.
+
+! *Transmit package position only*
+! Only the package position is transferred to Amazon.
+
+! *Transmit without package position*
+! Only the contents of the package are transferred to Amazon.
+!===
 
 | *Shipping category*
-a| Select the shipping priority.
+| Select the shipping priority.
 
-* *Standard* = normal shipping +
-* *Expedited* = Express shipping +
-* *Priority* = fastest shipping service
+[cols="1,3a"]
+!===
+! *Standard*
+! Normal shipping
+
+! *Expedited*
+! Express shipping
+
+! *Priority*
+! Fastest shipping service
+!===
 |====
 
 [#80]
@@ -276,7 +393,7 @@ Setting up Amazon Multi-Channel:
 
 [[amazon-multi-channel]]
 .Setting up Amazon Multi-Channel
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Setting | Explanation
 
@@ -304,20 +421,40 @@ Setting up Amazon Multi-Channel:
 
 | *Stock import*
 | Select the option *Hourly* to import stock on an hourly basis. +
-Only changes in the stock data are taken into consideration. For further information about stock import options, refer to the <<Synchronising stock, Synchronising stock>> chapter.
+Only changes in the stock data are taken into consideration. For further information about stock import options, refer to the <<#2400, Synchronising stock>> chapter.
 
 | *Status for transmitted orders*
 | Determines which order status should be used for multi-channel FBA orders that were transferred to FBA.
 
 | *Item bundles Multichannel*
-a| Select which positions should be transferred to Amazon.
+| Select which positions should be transferred to Amazon.
 
-* *Transmit all order positions* = Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon.
-* *Transmit package position only* = Only the package position is transferred to Amazon.
-* *Transmit without package position* = Only the contents of the package are transferred to Amazon.
+[cols="1,3a"]
+!===
+! *Transmit all order positions*
+! Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon.
+
+! *Transmit package position only*
+! Only the package position is transferred to Amazon.
+
+! *Transmit without package position*
+! Only the contents of the package are transferred to Amazon.
+!===
 
 | *Shipping category*
-a| Select a shipping category.
+| Select a shipping category.
+
+[cols="1,3a"]
+!===
+! *Standard*
+! Normal shipping
+
+! *Expedited*
+! Express shipping
+
+! *Priority*
+! Fastest shipping service
+!===
 
 * *Standard* = Normal shipping
 * *Expedited* = Express shipping
@@ -475,7 +612,7 @@ Viewing FBA Inbound shipments in plentymarkets:
 
 [[fba-inbound-shipments]]
 .Viewing FBA Inbound shipments in plentymarkets
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Column |Explanation
 
@@ -541,7 +678,7 @@ Creating a redistribution for the shipment:
 
 [[fba-inbound-redistribution]]
 .Creating a redistribution for the shipment
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Setting | Explanation
 
@@ -589,7 +726,7 @@ Viewing FBA Inbound orders:
 
 [[fba-inbound-orders]]
 .Viewing FBA Inbound orders
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Column | Explanation
 
@@ -604,6 +741,11 @@ Viewing FBA Inbound orders:
 
 | *Order ID*
 | Enter the ID of an FBA Inbound order to search for the order with this ID.
+
+| *Status*
+| Select a status to search for orders in this status. +
+The statuses *Open*, *Done* and *All* are available. +
+*_Note:_* If your parcels are shipped with an Amazon partnered carrier and you select the status *Done*, all orders that were confirmed are displayed. If you send your parcels with your own shipping service provider and you select the status *Done*, all orders that have a tracking number are displayed.
 
 2+| Information listed
 
@@ -735,6 +877,7 @@ Registering the FBA Inbound order with Amazon (Amazon Partnered Carrier):
 . Select a *Shipping method* from the drop-down list. +
 *_Note:_* When you use an Amazon Partnered Carrier, only the shipping method *SP - Small parcel* is available.
 . Select the option *Amazon-partnered carrier*.
+. Select an option for the shipment with an Amazon-partnered carrier from the drop-down list.
 . Click on *Yes*. +
 → A new view opens.
 . Click on *Request shipping fee* to send a request about the estimated shipping costs to Amazon. +
@@ -781,13 +924,12 @@ Cancelling a FBA Inbound order with Amazon:
 
 NOTE: If you want to delete a shipment, you have to delete it in the Amazon Seller Central. Shipments cannot be deleted in plentymarkets.
 
-
-
 [#20]
 == Managing FBA Outbound orders
 
 This chapter provides information on processing FBA orders. A quick reminder: Outbound means that Amazon sells and ships for you.
 
+[#22]
 === Workflow of Outbound orders
 
 Outbound orders have the following workflow:
@@ -797,7 +939,17 @@ Outbound orders have the following workflow:
 *  The plentymarkets system requests a report.
 *  Amazon creates the report.
 *  The next day, plentymarkets automatically checks whether any Amazon reports exist. If yes, then these reports are imported.
-*  Orders are generated in plentymarkets from the information contained in these reports.
+*  From the information contained in these reports, orders and contacts are generated in plentymarkets.
+* 30 days after the order is created, the contacts are anonymised. The customer data in the contact is anonymized and the link between the order and the contact is deleted. The customer details in the order remain unchanged. +
+  ** First name and last name of the contact is anonymized.
+  ** The following data is deleted:
+      *** Addresses and address relations
+      *** Address options
+      *** Order relations
+      *** Contact options
+      *** Any relation to a company
+      *** Bank details
+
 
 Amazon FBA outbound orders are imported with the parameters *Status* and *Referrer*. Select the *Status* that is most appropriate for your process. For example, this could be status *[7] Outgoing items booked*. The referrer is automatically set to Amazon FBA or an Amazon FBA sub-referrer, e.g. Amazon FBA USA. The date when items are shipped is saved directly in plentymarkets. Therefore, stock is not reserved for items that are included in the order.
 
