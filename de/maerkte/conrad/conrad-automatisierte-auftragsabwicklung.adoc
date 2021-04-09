@@ -1,0 +1,314 @@
+= Automatisierte Auftragsabwicklung einrichten
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: team-multi-channel
+:position: 40
+:id: CF75HMG
+:url: maerkte/conrad/automatisierte-auftragsabwicklung
+:keywords: {market}, Marktplatz, {market}.de, {market} einrichten, {market} Marktplatz, Multi-Channel, Multichannel, Multi-Channel {market}, Multichannel {market}, Multi Channel {market}
+:description: Multi-Channel in plentymarkets: Richte die Schnittstelle zum Marktplatz {market} in deinem plentymarkets System ein.
+:marketplace-url: https://marketplace.plentymarkets.com/conradextension_6948
+:assistant-name: ConradExtension
+:market: Conrad
+:valid-values-zip: https://drive.google.com/file/d/1VUBBNaTuOfiuWtpKl2TrAV54gm-bR2aW/view?usp=sharing
+
+Die Aufträge werden alle 15 Minuten in dein plentymarkets System importiert. Der Auftrag wird vom Händler über eine Ereignisaktion akzeptiert. Die Zahlung wird von Conrad eingezogen. Mit der Zahlungszusicherung werden die Rechnungs- und Lieferadresse am Auftrag in deinem plentymarkets System aktualisiert. Über eine Ereignisaktion wird der Versanddienstleister sowie die Paketnummer am Auftrag in Mirakl aktualisiert. Im nächsten Schritt wird über eine weitere Ereignisaktion die Versandbenachrichtigung an Conrad gemeldet. Die von Conrad erstellte Rechnung wird zum Auftrag in dein plentymarkets System importiert. Du kannst dir ebenfalls Ereignisaktionen für Rückerstattungen und Stornierung von Aufträgen einrichten.
+
+[#ereignisaktionen]
+== Ereignisaktionen einrichten
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um den Auftragsstatus bei {market} automatisch zu aktualisieren, wenn bestimmte Ereignisse eintreten. Folgende Ereignisaktionen können eingerichtet werden:
+
+* Auftragsbestätigung an {market} melden
+* Auftragsablehnung an {market} melden
+* Versandbestätigung an {market} melden
+* Auftragsstornierung an {market} melden
+* Rückerstattung an {market} melden
+
+In den folgenden Kapiteln wird beschrieben, wie du die Ereignisaktionen in plentymarkets einrichtest.
+
+[IMPORTANT]
+.Weitere Aktionen vorhanden
+====
+Zusätzlich zu den oben genannten Ereignisaktionen werden durch das {market}-Plugin noch weitere Ereignisaktionen zu Verfügung gestellt. Es gibt diese Aktionen, da sich die Auftragsverarbeitung in plentymarkets und Mirakl voneinander unterscheiden.
+
+Wir empfehlen allerdings, nur die Aktionen zu verwenden, die hier im Detail beschrieben sind.
+====
+
+[#1000]
+=== Auftragsbestätigung an {market} melden
+
+:table-event-procedure: <<#{market}-ereignisaktion-auftragsbestaetigung>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{market}-ereignisaktion-auftragsbestaetigung]
+.Ereignisaktion, um Auftragsbestätigungen an {market} zu melden
+[cols="1,2,2"]
+|===
+| *Einstellung*
+| *Option*
+| *Auswahl*
+
+| *Ereignis*
+| *Statuswechsel*
+| Ereignis wählen, zum Beispiel [3] *Warten auf Zahlung*.
+
+| *Filter*
+| *Auftrag > Herkunft*
+| *{market}*
+
+| *Aktion*
+| *Plugins > {market}: Auftrag annehmen*
+|
+|===
+
+[#1005]
+=== Auftragsablehnung an {market} melden
+
+:table-event-procedure: <<#{market}-ereignisaktion-auftragsablehnung>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{market}-ereignisaktion-auftragsablehnung]
+.Ereignisaktion, um Auftragsablehnung an {market} zu melden
+[cols="1,2,2"]
+|===
+| *Einstellung*
+| *Option*
+| *Auswahl*
+
+| *Ereignis*
+| *Statuswechsel*
+| Ereignis wählen, zum Beispiel *[8] Storniert*.
+
+| *Filter*
+| *Auftrag > Herkunft*
+| *{market}*
+
+| *Aktion*
+| *Plugins > {market}: Auftrag ablehnen*
+|
+|===
+
+[#1010]
+=== Versandbestätigung an {market} melden
+
+:table-event-procedure: <<#{market}-ereignisaktion-versandbestaetigung>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{market}-ereignisaktion-versandbestaetigung]
+.Ereignisaktion, um Versandbestätigungen an {market} zu melden
+[cols="1,2,2"]
+|===
+| *Einstellung*
+| *Option*
+| *Auswahl*
+
+| *Ereignis*
+| *Statuswechsel*
+| Ereignis wählen, zum Beispiel [7] *Warenausgang gebucht*.
+
+| *Filter*
+| *Auftrag > Herkunft*
+| *{market}*
+
+| *Aktion 1*
+| *Plugins > {market}: Aktualisieren der Carrier Tracking Informationen für eine bestimmte Bestellung*
+|
+
+| *Aktion 2*
+| *Plugins > {market}: Versand eines Auftrags validieren*
+|
+|===
+
+[#1020]
+=== Auftragsstornierung an {market} melden
+
+:table-event-procedure: <<#{market}-ereignisaktion-auftragsstornierung>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{market}-ereignisaktion-auftragsstornierung]
+.Ereignisaktion, um Stornierungen an {market} zu melden
+[cols="1,2,2"]
+|===
+| *Einstellung*
+| *Option*
+| *Auswahl*
+
+| *Ereignis*
+| *Statuswechsel*
+| Ereignis wählen, zum Beispiel *[8] Storniert*.
+
+| *Filter*
+| *Auftrag > Herkunft*
+| *{market}*
+
+| *Aktion*
+| *Plugins > {market}: Stornieren Sie die Auftragsposition*
+|
+|===
+
+[#1030]
+=== Rückerstattung an {market} melden
+
+:table-event-procedure: <<#{market}-ereignisaktion-rueckerstattung>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{market}-ereignisaktion-rueckerstattung]
+.Ereignisaktion, um Rückerstattungen an {market} zu melden
+[cols="1,2,2"]
+|===
+| *Einstellung*
+| *Option*
+| *Auswahl*
+
+| *Ereignis*
+| *Statuswechsel*
+| Ereignis wählen, zum Beispiel *[11] Gutschrift*.
+
+| *Filter*
+| *Auftrag > Herkunft*
+| *{market}*
+
+| *Aktion*
+| *Plugins > {market}: Rückerstattungs-Bestellzeilen*
+|
+|===
+
+
+[#auftraege-archivieren]
+== Nicht bestätigte Aufträge archivieren
+
+Wenn ein Auftrag abgelehnt oder storniert wurde, oder für einen Auftrag eine Gutschrift ausgeschrieben wurde, solltest du den Auftrag archivieren. Dies kannst du automatisch über den Aktionsmanager machen.
+
+Du musst für jeden Status eine eigene Aktion einrichten.
+
+[#1110]
+=== Abgelehnte Aufträge archivieren
+
+[.collapseBox]
+.Aktion einrichten
+--
+[.instruction]
+Aktion einrichten:
+
+. Öffne das Menü *Einrichtung » Aufträge » Aktionen*.
+. Öffne das Tab *Neue Aktion*.
+ Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-abgelehnte-auftraege>> vor.
+. Öffne das Tab *Filter*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-abgelehnte-auftraege>> vor.
+. Öffne das Tab *Aktion*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-abgelehnte-auftraege>> vor.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Die Aktion wird erstellt.
+
+--
+
+[#{market}-aktionsmanager-abgelehnte-auftraege]
+.Einstellungen Aktionsmanager
+[cols="1,3a"]
+|===
+|Tab |Einstellung
+
+| *Status*
+| Aktiviere die Option *Aktiv*. +
+Stelle ein, wann die Aktion jeden Tag ausgeführt werden soll. +
+Gib einen Namen ein.
+
+| *Auftragstyp*
+| Wähle aus der Dropdown-Liste *Status* die Option *[7] Warenausgang gebucht*. +
+Wähle aus der Dropdown-Liste *Letzter Statuswechsel* die Option *Tage eingeben*. Gib den Wert `2` in das neue Textfeld ein. +
+Wähle aus der Liste *Auftragsherkunft* die Option {market}.
+
+| *Aktion*
+| Wähle aus der Dropdown-Liste *Ändere Auftragsstatus* einen endgültigen Status, zum Beispiel *[7.99]*.
+
+|===
+
+[#1120]
+=== Stornierte Aufträge archivieren
+
+[.collapseBox]
+.Aktion einrichten
+--
+[.instruction]
+Aktion einrichten:
+
+. Öffne das Menü *Einrichtung » Aufträge » Aktionen*.
+. Öffne das Tab *Neue Aktion*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-stornierte-auftraege>> vor.
+. Öffne das Tab *Filter*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-stornierte-auftraege>> vor.
+. Öffne das Tab *Aktion*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-stornierte-auftraege>> vor.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Die Aktion wird erstellt.
+
+--
+
+[#{market}-aktionsmanager-stornierte-auftraege]
+.Einstellungen Aktionsmanager
+[cols="1,3a"]
+|===
+|Tab |Einstellung
+
+| *Status*
+| Aktiviere die Option *Aktiv*. +
+Stelle ein, wann die Aktion jeden Tag ausgeführt werden soll. +
+Gib einen Namen ein.
+
+| *Auftragstyp*
+| Wähle aus der Dropdown-Liste *Status* die Option *[8] Storniert*. +
+Wähle aus der Dropdown-Liste *Letzter Statuswechsel* die Option *Tage eingeben*. Gib den Wert `2` in das neue Textfeld ein. +
+Wähle aus der Liste *Auftragsherkunft* die Option {market}.
+
+| *Aktion*
+| Wähle aus der Dropdown-Liste *Ändere Auftragsstatus* einen endgültigen Status, zum Beispiel 8.99.
+
+|===
+
+[#1130]
+=== Aufträge mit Gutschriften archivieren
+
+[.collapseBox]
+.Aktion einrichten
+--
+[.instruction]
+Aktion einrichten:
+
+. Öffne das Menü *Einrichtung » Aufträge » Aktionen*.
+. Öffne das Tab *Neue Aktion*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-gutschriften>> vor.
+. Öffne das Tab *Filter*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-gutschriften>> vor.
+. Öffne das Tab *Aktion*.
+. Nimm die gewünschten Einstellungen anhand der Informationen in <<#{market}-aktionsmanager-gutschriften>> vor.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Die Aktion wird erstellt.
+
+--
+
+[#{market}-aktionsmanager-gutschriften]
+.Einstellungen Aktionsmanager
+[cols="1,3a"]
+|===
+|Tab |Einstellung
+
+| *Status*
+| Aktiviere die Option *Aktiv*. +
+Stelle ein, wann die Aktion jeden Tag ausgeführt werden soll. +
+Gib einen Namen ein.
+
+| *Auftragstyp*
+| Wähle aus der Dropdown-Liste *Status* die Option *[11] Gutschrift*. +
+Wähle aus der Dropdown-Liste *Letzter Statuswechsel* die Option *Tage eingeben*. Gib den Wert `2` in das neue Textfeld ein. +
+Wähle aus der Liste *Auftragsherkunft* die Option {market}.
+
+| *Aktion*
+| Wähle aus der Dropdown-Liste *Ändere Auftragsstatus* einen endgültigen Status, zum Beispiel 11.99.
+
+|===
