@@ -9,7 +9,7 @@ include::{includedir}/_header.adoc[]
 :author: team-item
 
 ////
-zuletzt bearbeitet 12.04.2021
+zuletzt bearbeitet 14.04.2021
 ////
 
 Prices are an important topic for any business.
@@ -389,29 +389,12 @@ Alternatively, you could also import this data with an <<welcome/assistants#, as
 * Rather than manually entering the monetary amounts, you might want plentymarkets to <<item/settings/prices#1000, automatically calculate them for you>>.
 
 [#1000]
-== New price calculation (Beta)
+== New price calculation
 
 Let plentymarkets calculate your prices for you.
 For example, start with the purchase price and then add transportation costs, storage costs and taxes.
 Finally, add a 7% profit margin on top.
 With plentymarkets, you decide how your prices should be calculated.
-
-////
-info-box am 14.4.21 raus löschen
-////
-[TIP]
-.When will the function be available?
-====
-This chapter describes the new price calculation, which was launched at the start of 2021.
-When the function will become available depends on whether you have a Beta, Early or Stable system.
-
-* *Beta* = March 31st, 2021
-* *Early* = April 7th, 2021
-* *Stable* = April 14th, 2021
-
-There is also an old price calculation, which is no longer being developed and will be phased out in the future.
-The old tool is <<item/settings/prices#2300, described here>>.
-====
 
 [discrete]
 === Procedure
@@ -893,6 +876,7 @@ Viewing and fixing errors:
 ////
 GIF neu machen
 ////
+
 image::item/settings/assets/error-log.gif[]
 
 [[table-pricecalculation-errors]]
@@ -926,17 +910,25 @@ include::../import-export-create/create/directory.adoc[tag=apply-price-calculati
 Import::
 +
 --
-If you want to save the price calculation _for lots of items_, then we would recommend linking the price calculation via import.
+If you want to save the price calculation _for lots of items_, then we would recommend linking the price calculation <<data/importing-data/ElasticSync#, via import>>.
 Use the mapping field *Item variations / Price calculation UUID* to do so.
 
-[discrete]
-===== Further information
-////
-the link will change once there's new formatting for the sync type item - at that point, fix the link
-////
+Enter the price calculation's UUID into the CSV file.
+This applies the calculation to the variation's prices.
 
-* <<data/importing-data/ElasticSync#, Using the import tool>>
-* <<data/importing-data/sync-types/elasticSync-item#2300, Information about the mapping field>>
+*_Tip_*: You can copy the price calculation UUID.
+Open the menu *Item » Price calculation » [Open price calculation]*.
+Click on the UUID in the lower left corner.
+The UUID is copied to the clipboard.
+
+*_Import the price calculation UUID last_*:
+Imagine your prices are calculated with the following formula: `(PurchasePrice + TransportCosts) * 1.07`.
+In this case, import the purchase price and transportation costs first and then the price caluclation second.
+Otherwise plentymarkets won't have all of the information it needs to correctly calculate the price.
+
+. <<data/importing-data/ElasticSync#1500, Create a mapping>>, which imports the purchase price and transportation costs.
+. <<data/importing-data/ElasticSync#1500, Create another mapping>> in the same import. Use this one to import the price calculation UUID. +
+→ The mappings are processed one after the other.
 
 --
 Group function or batch processing::
@@ -984,9 +976,6 @@ If you change a product’s purchase price, transportation costs, storage costs 
 *_Note_*: Prices are not recalculated immediately.
 Rather, the recalculation starts after a short delay (about 3 minutes).
 
-////
-klären - gibt es so eine Warn-Meldung, z.B. bei Transportkosten, der aussagt, "achtung, diese Änderung hat zur Folge, dass der Preis für X Varianten neu berechnet wird"?
-////
 --
 
 [.collapseBox]
@@ -1002,9 +991,6 @@ Often, more than just one change is made to a product.
 For example, you might need to change a product’s purchase price and its transportation costs.
 If the prices were recalculated immediately, then the first recalculation might not even be finished before the second one starts.
 
-////
-klären - gibt es so etwas wie ein Action-Button, damit man die Berechnung sofort ausführen kann?
-////
 --
 
 [.collapseBox]
