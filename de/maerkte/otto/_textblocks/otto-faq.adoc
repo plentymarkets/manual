@@ -29,6 +29,7 @@ Ob ein Artikel ein Paketartikel oder ein Speditionsartikel ist, legst du am Arti
 [#1302]
 === FAQ: Artikeldatenexport
 
+
 [#1302]
 [.collapseBox]
 .Warum werden meine Artikeldaten nicht zu OTTO Market exportiert?
@@ -53,6 +54,61 @@ Logs durchsuchen:
 . Wenn die Variante in keinem dieser Logs angezeigt wird, öffne zusätzlich das Log mit dem folgenden Filter:
   .. *Integration*: Plenty\Modules\Otto\Item\Templates\Mutators\DefaultSkuMutator
   .. *Identifikator*: OTTO Market
+--
+
+[#13015]
+[.collapseBox]
+.Ich möchte den Grundpreis meiner Varianten an OTTO übermitteln. Wie gehe ich vor?
+--
+*Voraussetzung*: Um den Grundpreis an OTTO zu übermitteln, benötigst du Angaben zu Inhalt und Einheit der Variante. Diese Angaben speicherst du an der Variante im Tab *Einstellungen* und dort im Bereich *Maße*:
+
+Die Option *Inhalt* setzt sich aus *Inhalt Menge* und *Inhalt Einheit* zusammen.
+
+Im Katalog sind die folgenden OTTO Market-Datenfelder notwendig, um den Grundpreis zu übermitteln:
+
+* Verkaufspreismenge
+* Grundpreismenge
+* Grundpreiseinheit
+* Verkaufspreiseinheit
+
+OTTO berechnet den Grundpreis der Variante anhand dieser Daten. Die Tabelle unten zeigt Details zu den Datenfeldern.
+
+[cols="1,3a,3a"]
+|====
+|OTTO Market-Datenfeld |Zuordnung in plentymarkets |Erläuterung
+
+| Verkaufspreismenge
+| * Ordner *Variante*, Option *Inhalt Menge*
+| Die Verkaufspreismenge bezieht sich auf die reguläre Menge des Inhalts aus der Variante. Dazu benötigst du also den Inhalt der Variante in deinen Maßangaben.
+
+| Grundpreismenge
+| * Eigenschaft mit den von OTTO erlaubten Werten.
+| Die Grundpreismenge dient als Grundlage für das Berechnen des Grundpreises. OTTO erlaubt die Werte *1*, *100* oder *1000*. Ordne dieses Feld einer Eigenschaft zu, die den Wert *1*, *100* oder *1000* beinhaltet. +
+*_Tipp:_* Wenn alle Varianten des Katalogs eine Grundpreismenge von *1* erhalten, kannst du das Feld *Grundpreismenge* unzugeordnet lassen. Wir übergeben dann den Standardwert *1*.
+
+| Grundpreiseinheit
+| * Ordner *Variante*, Option *Inhalt Einheit* +
+In das Feld den ISO-Code der Einheit eingeben. +
+Die ISO-Codes findest du im Menü *Einrichtung » Artikel » Einheiten* in der Spalte *ISO*. +
+*_Beispiel:_* Für die Angabe *Stück* wird der Wert "C62" erwartet.
+
+_oder_
+
+* Eigenschaft mit den von OTTO erlaubten Werten (ISO-Codes)
+
+| Die Grundpreiseinheit bezieht sich auf den Inhalt der Einheit der Maßangaben der Variante.
+
+| Verkaufspreiseinheit
+| * Ordner *Variante*, Option *Inhalt Einheit* +
+In das Feld den ISO-Code der Einheit eingeben. +
+Die ISO-Codes findest du im Menü *Einrichtung » Artikel » Einheiten* in der Spalte *ISO*. +
+*_Beispiel:_* Für die Angabe *Stück* wird der Wert "C62" erwartet.
+
+_oder_
+
+* Eigenschaft mit den von OTTO erlaubten Werten (ISO-Codes)
+| Die Verkaufspreiseinheit bezieht sich auf den Inhalt der Einheit deiner Maßangaben der Varianten.
+|====
 --
 
 [#13016]
@@ -273,7 +329,6 @@ Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vor
 Ein Artikel kann bei OTTO Market _nicht_ gelöscht werden, weder durch plentymarkets noch durch OTTO selbst. Es ist lediglich möglich, den Artikel auf OTTO Market als *nicht verfügbar* zu kennzeichnen. Deshalb solltest du vor der Artikelübertragung immer sicherstellen, dass im Katalog die korrekten Datenfelder verknüpft wurden.
 ======
 --
-
 [#13012]
 [.collapseBox]
 .*Carrier ID (X) not mapped in OTTO market config.*
