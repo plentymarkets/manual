@@ -9,7 +9,7 @@ include::{includedir}/_header.adoc[]
 :author: team-item
 
 ////
-zuletzt bearbeitet 12.04.2021
+zuletzt bearbeitet 14.04.2021
 ////
 
 Preise sind ein wichtiges Thema für jedes Geschäft.
@@ -111,7 +111,7 @@ Vergewissere dich, dass du mit den im Menü *Einrichtung » Aufträge » Zahlung
 Aber in manchen Situationen willst du vielleicht stattdessen ein "UVP", "Setpreis" oder "Aktionspreis" erstellen.
 Falls ja, dann wähle den entsprechenden Preistyp (icon:check-square[role="blue"]).
 
-*UVP* = Eine unverbindliche Preisempfehlung, die nur dazu dient, den Preisvergleich zwischen dem UVP und einem Standard-Verkaufspreis darzustellen. Der UVP wird im plentyShop in rot und durchgestrichen neben dem Verkaufspreis dargestellt. Produkte können nicht zu dem UVP-Preis verkauft werden.
+*UVP* = Eine unverbindliche Preisempfehlung, die nur dazu dient, den Preisvergleich zwischen dem UVP und einem Standard-Verkaufspreis darzustellen. Der UVP wird im plentyShop durchgestrichen neben dem Verkaufspreis dargestellt. Produkte können nicht zu dem UVP-Preis verkauft werden.
 
 *Aktionspreis* = Ein Angebotspreis, der z.B. bei Amazon nur für eine begrenzte Zeit gilt.
 
@@ -389,29 +389,12 @@ Alternativ könntest du diese Daten mit Hilfe eines <<willkommen/assistenten#, A
 * Anstatt die Geldbeträge manuell einzugeben, willst du vielleicht, dass plentymarkets sie <<artikel/einstellungen/preise#1000, automatisch für dich berechnet>>.
 
 [#1000]
-== Neue Preiskalkulation (Beta)
+== Neue Preiskalkulation
 
 Lass plentymarkets deine Preise für dich berechnen.
 Starte zum Beispiel mit dem Einkaufspreis und füge dann die Transportkosten, Lagerkosten und Steuern hinzu.
 Lege schließlich noch einen Aufschlag von 7% oben drauf.
 Mit plentymarkets entscheidest du, wie deine Preise berechnet werden sollen.
-
-////
-info-box am 14.4.21 raus löschen
-////
-[TIP]
-.Wann wird die Funktion verfügbar sein?
-====
-Dieses Kapitel beschreibt die neue Preiskalkulation, die Anfang 2021 eingeführt wurde.
-Wann die Funktion verfügbar sein wird, hängt davon ab, ob du ein Beta-, Early- oder Stable-System hast.
-
-* *Beta* = 31.3.2021
-* *Early* = 7.4.2021
-* *Stable* = 14.4.2021
-
-Es gibt auch eine alte Preiskalkulation, die nicht weiter entwickelt wird und in Zukunft ausläuft.
-Das alte Tool ist <<artikel/einstellungen/preise#2300, hier beschrieben>>.
-====
 
 [discrete]
 === Ablauf
@@ -892,6 +875,7 @@ Fehler einsehen und beheben:
 ////
 GIF neu machen
 ////
+
 image::artikel/einstellungen/assets/fehlerbericht.gif[]
 
 [[table-pricecalculation-errors]]
@@ -925,17 +909,26 @@ include::../import-export-anlage/anlage/verzeichnis.adoc[tag=preiskalkulation-an
 Import::
 +
 --
-Wenn du die Preiskalkulation für _viele Artikel_ speichern möchtest, dann empfiehlt es sich, die Preiskalkulation per Import zu verknüpfen.
+Wenn du die Preiskalkulation für _viele Artikel_ speichern möchtest, dann empfiehlt es sich, die Preiskalkulation <<daten/daten-importieren/ElasticSync#, per Import>> zu verknüpfen.
 Verwende dazu das Zuordnungsfeld *Varianten / Preiskalkulation UUID*.
 
-[discrete]
-===== Weiterführende Informationen
-////
-the link will change once there's new formatting for the sync type item - at that point, fix the link
-////
+Gib die UUID der Preiskalkulation in die CSV-Datei ein.
+Dadurch wird die Preiskalkulation auf die für die Variante gespeicherten Preise angewendet.
 
-* <<daten/daten-importieren/ElasticSync#, Import-Tool nutzen>>
-* <<daten/daten-importieren/sync-typen/elasticSync-artikel#2300, Informationen zum Zuordnungsfeld>>
+*_Tipp_*:
+Die Preiskalkulation-UUID kannst du kopieren.
+Öffne dazu das Menü *Artikel » Preiskalkulation » [Preiskalkulation öffnen]*.
+Klicke auf die UUID unten links.
+Die UUID wird in die Zwischenablage kopiert.
+
+*_Importiere die Preiskalkulation-UUID zum Schluss_*:
+Stell dir vor, deine Preise werden nach der folgenden Formel berechnet: `(EK + Transport) * 1.07`.
+In diesem Fall musst du zuerst den Einkaufspreis und die Transportkosten importieren und danach die Preiskalkulation.
+Sonst verfügt plentymarkets nicht über alle nötigen Informationen, um den Preis korrekt zu berechnen.
+
+. <<daten/daten-importieren/ElasticSync#1500, Erstelle eine Zuordnung>>, die die Preisbestandteile Einkaufspreis und Transportkosten importiert.
+. <<daten/daten-importieren/ElasticSync#1500, Erstelle eine weitere Zuordnung>> im selben Import, die die Preiskalkulation-UUID importiert. +
+→ Die Zuordnungen werden nacheinander abgearbeitet.
 
 --
 Gruppenfunktion oder Stapelverarbeitung::
@@ -983,9 +976,6 @@ Du siehst, wie viele Varianten betroffen werden.
 *_Hinweis_*: Preise werden nicht sofort neu berechnet.
 Stattdessen beginnt die Neuberechnung nach einer kurzen Verzögerung (ca. 3 Minuten).
 
-////
-klären - gibt es so eine Warn-Meldung, z.B. bei Transportkosten, der aussagt, "achtung, diese Änderung hat zur Folge, dass der Preis für X Varianten neu berechnet wird"?
-////
 --
 
 [.collapseBox]
@@ -1001,9 +991,6 @@ Oftmals wird mehr als nur eine Änderung am Produkt vorgenommen.
 Vielleicht musst du zum Beispiel den Einkaufspreis und die Transportkosten eines Produkts ändern.
 Würden die Preise sofort neu berechnet, wäre die erste Neuberechnung vielleicht noch nicht abgeschlossen, bevor die zweite beginnt.
 
-////
-klären - gibt es so etwas wie ein Action-Button, damit man die Berechnung sofort ausführen kann?
-////
 --
 
 [.collapseBox]
