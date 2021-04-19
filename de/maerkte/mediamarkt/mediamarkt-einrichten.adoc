@@ -5,6 +5,183 @@ include::{includedir}/_header.adoc[]
 :position: 20
 :id: QNTJGVE
 :url: maerkte/mediamarkt/mediamarkt-einrichten
-include::../_textblocks/mirakl/mediamarkt-spezial.adoc[tag=marktplatz-daten]
+:keywords: {market}, Marktplatz, {market}.de, {market} einrichten, {market} Marktplatz, Multi-Channel, Multichannel, Multi-Channel {market}, Multichannel {market}, Multi Channel {market}
+:description: Multi-Channel in plentymarkets: Richte die Schnittstelle zum Marktplatz {market} in deinem plentymarkets System ein.
+:marketplace-url: https://marketplace.plentymarkets.com/mediamarkt_6918
+:assistant-name: Mediamarkt
+:market: Mediamarkt
+:valid-values-zip: https://drive.google.com/file/d/1a_QY4VOIuC2-A-9jerGDAOmYP72907Xt/view?usp=sharing
 
-include::../_textblocks/mirakl/mirakl-marktplatz-einrichten-template.adoc[]
+[.previous-next-navigation]
+<<maerkte/mediamarkt/erste-schritte#, icon:long-arrow-left[] Erste Schritte>>
+<<maerkte/mediamarkt/automatischer-datenaustausch#, Automatischer Austausch von Produkt- und Angebotsdaten icon:long-arrow-right[]>>
+
+'''
+
+Auf dieser Seite erfährst du, wie du die Schnittstelle zu {market} einrichtest. Vorab musst du einige vorbereitende Einstellungen in deinem plentymarkets System vornehmen.
+
+[#auftragsherkunft]
+== Auftragsherkunft aktivieren
+
+:market: {market}
+:referrer: {market}
+:referrer-option: Herkunft *{market}*
+:mirakl-auftragsherkunft:
+
+include::../_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#verkaufspreis]
+== Verkaufspreis festlegen
+
+:referrer-price: {market}
+:mirakl-verkaufspreis:
+
+include::../_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#eigenschaften-erstellen]
+== Eigenschaften erstellen
+
+Eigenschaften werden verwendet, um Felder an den Marktplatz zu übergeben, die in plentymarkets standardmäßig nicht definiert sind. Im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration* erstellst du die Eigenschaften, die Mediamarkt vorgibt.
+
+Weitere Informationen zu Eigenschaften findest du auf der Seite <<artikel/einstellungen/eigenschaften#500, Merkmale und Eigenschaften>>.
+
+Du benötigst die folgenden Eigenschaften für Mediamarkt:
+
+* Logistikklasse
+** Es handelt sich hier um das Verknüpfen einer Variante mit einem bestimmten Marktplatz-Versandprofil. Die Marktplatz-Versandprofile können im Marktplatz-Backend unter *Platform Settings » Shipping* eingesehen werden. Der Wert in Klammern ist der Wert, der übertragen werden muss.
+* Versandvorlaufzeit
+** Es handelt sich hier um das sogenannte _leadtime-to-ship_, also die Zeit, die ein:e Händler:in von der Auftragsanlage bis zur Versandmeldung benötigt. Hier muss eine ganze Zahl übergeben werden, die zwischen 1 und 45 liegt.
+* update-delete
+** Die Option, ein Angebot löschen zu können. Wenn an der Variante nichts gewählt wird, wird standardmäßig `update` vom Marktplatz verwendet.
+
+[discrete]
+=== Eigenschaft Logistikklasse erstellen
+
+Für jede Variante muss ein Versandprofil-Code an {market} exportiert werden. Versandprofile konfigurierst du im Mirakl-Backend. Die Liste der Versandprofile wird im Mirakl-Backend im Bereich *Plattformeinstellungen > Versand* angezeigt. Der Code wird in der Spalte *Logistikklasse* in Klammern hinter dem Namen der Logistikklasse angezeigt.
+
+:property: Logistikklasse
+
+include::../../_textblocks/instructions/properties-creation.adoc[]
+
+:property: Logistikklasse
+:property-area: Artikel
+:property-type: Kurztext
+:property-name: {market} Logistikklasse
+
+include::../_textblocks/instructions/properties-creation-table.adoc[]
+
+[#api-schluessel]
+== API-Schlüssel erzeugen
+
+Um die Verbindung für {market} zwischen plentymarkets und Mirakl herzustellen, benötigst du einen API-Schlüssel. Um den API-Schlüssel zu erzeugen, gehe wie folgt vor:
+
+[.instruction]
+API-Schlüssel erzeugen:
+
+. Öffne das Backend von Mirakl.
+. Klicke auf das Benutzersymbol (icon:user-circle[]).
+. Öffne das Tab *API-Schlüssel*.
+. Generiere einen neuen API-Schlüssel für {market}.
+. Kopiere den API-Schlüssel in die Zwischenablage. Du benötigst den Schlüssel, um dein {market}-Konto in plentymarkets einzurichten.
+
+[#marktplatz-assistent-durchlaufen]
+== {market} Assistent durchlaufen
+
+Mit dem Assistenten *{assistant-name}* im Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]* richtest du dein {market}-Konto in plentymarkets ein.
+
+:menu-path: pass:quotes[*Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*]
+:number-of-boxes: Info-Box
+include::../_textblocks/instructions/assistant-basic-instructions.adoc[]
+
+
+// Je nach Umfang des Assistenten entweder eine einzige ausklappbare Box oder eine ausklappbare Box pro Schritt im Assistenten.
+
+[.collapseBox]
+.Erläuterungen zu den Optionen des Assistenten
+--
+[[table-{market}-basic-settings-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+2+| Schritt *Authentifizierung*
+
+| API Environment
+a| Wähle eine API-Umgebung aus der Dropdown-Liste. Welche API-Umgebung du wählen solltest, erfährst du von deinen Ansprechpartner:innen bei {market}. +
+*_Hinweis:_* Wenn du die API-Umgebung wechselst, also z.B. vom Test-Modus in den Produktiv-Modus, musst du einen neuen <<#api-schluessel, API-Schlüssel>> erzeugen.
+
+| API Key
+| Trage den <<#api-schluessel, API-Schlüssel>> ein, den du erzeugt hast. +
+*_Hinweis:_* Wenn du die API-Umgebung wechselst, also z.B. vom Test-Modus in den Produktiv-Modus wechselst, musst du einen neuen <<#api-schluessel, API-Schlüssel>> erzeugen.
+
+2+| Schritt *Datenaustausch*
+
+| Datenaustausch
+| Wähle die Prozesse, für die du den Datenaustausch zwischen plentymarkets und Mirakl einrichten möchtest. +
+*_Wichtig:_* Der Import und der Export für Auftragsrechnungen darf _nicht_ aktiviert werden.
+
+
+2+| Schritt *Zuordnung der Rückerstattung*
+
+| Zuordnung der Rückerstattung
+a| Hier ordnest du den Rückerstattungsgründen von {market} plentymarkets Auftragsstatus zu.
+
+. Klicke auf *Neuen Eintrag hinzufügen*. +
+→ Eine Zeile wird eingefügt.
+. Wähle aus der Dropdown-Liste links den plentymarkets Status.
+. Wähle aus der Dropdown-Liste rechts einen der Gründe für die Rückerstattung von {market} ein. +
+Die folgenden Gründe können an {market} übertragen werden: +
+
+* `15` = Artikel nicht mehr lieferbar
+* `16` = Artikel vom Kunden storniert
+* `17` = Artikel wurde zurückgeschickt
+* `18` = Kunde hat Artikel nicht erhalten
+* `19` = Sonstige Vereinbarung getroffen
+
+// Gründe sind für Conrad, Voelkner und Mediamarkt gleich
+
+2+| Schritt *Zuordnung der Stornierung*
+
+| Zuordnung der Stornierung
+a|
+
+. Klicke auf *Neuen Eintrag hinzufügen*. +
+→ Eine Zeile wird eingefügt.
+. Wähle aus der Dropdown-Liste links den plentymarkets Status.
+. Wähle aus der Dropdown-Liste rechts einen Grund für die Stornierung von {market}. +
+Die folgenden Gründe können an {market} übertragen werden: +
+
+* `34` = Vor Versand vom Kunden storniert
+
+
+2+| Schritt *Lagerauswahl*
+
+| Lagerauswahl
+| Wähle das Lager, das für den Bestandsexport verwendet werden soll.
+
+2+| Schritt *Zuordnung des Versandprofils*
+
+| Zuordnung des Versandprofils
+| Trage für die Versandprofile in plentymarkets die entsprechenden Kürzel der Versanddienstleister ein. Die Kürzel findest du auf Mirakl im Menü *Platform Settings » Shipping*.
+
+
+2+| Schritt *Zuordnung der Angebots-Eigenschaften*
+
+| Zuordnung der Angebots-Eigenschaften
+a| Wähle aus der Dropdown-Liste *Logistikklasse* die Eigenschaft *{market} Logistikklasse*. +
+
+* *Versandvorlaufzeit*: Es handelt sich hier um das sogenannte _leadtime-to-ship_, also die Zeit, die ein:e Händler:in von der Auftragsanlage bis zur Versandmeldung benötigt. Hier muss eine ganze Zahl übergeben werden, die zwischen 1 und 45 liegt.
+
+* *Logistikklasse*: Hier handelt es sich um das Verbinden einer Variante mit einem bestimmten Marktplatz-Versandprofil. Die Versandprofile des Marktplatzes sind im Backend unter *Platform Settings » Shipping* aufgeführt. Der Wert in Klammern ist der zu übertragende Wert.
+
+* *update-delete*: Hier handelt es sich um die Option, ein Angebot löschen zu können. Ist dieses Feld nicht befüllt, wird automatisch *update* verwendet.
+
+|======
+--
+
+'''
+
+[.previous-next-navigation]
+<<maerkte/mediamarkt/erste-schritte#, icon:long-arrow-left[] Erste Schritte>>
+<<maerkte/mediamarkt/automatischer-datenaustausch#, Automatischer Austausch von Produkt- und Angebotsdaten icon:long-arrow-right[]>>
