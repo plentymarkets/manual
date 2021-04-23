@@ -134,8 +134,16 @@ Gehe folgendermaßen vor, um die Standardeinstellungen vorzunehmen:
 |[#intable-standard-herkunft]*Standard-Herkunft*
 |Die hier ausgewählte Standard-Herkunft ist beim Anlegen des neuen Auftrags oder Angebots vorausgewählt, wenn in den Kontaktdaten keine Herkunft hinterlegt ist. Ist in den Kontaktdaten eine Herkunft hinterlegt, hat dieser Priorität.
 
-|*Vorausgewählter Filter für die Artikelsuche*
-|Nachdem die Auftragsdetails (z.B. Rechnungsadresse oder Zahlungsart) für den neuen Auftrag aufgenommen wurden, werden im nächsten Schritt Artikelpositionen hinzugefügt. Dafür wird eine Artikelsuche genutzt, für die man zwischen verschiedenen Filtern wählen kann. Entscheide dich für einen Filter, der in dieser Suche vorausgewählt sein soll. Aus einer Dropdown-Liste kannst du auswählen zwischen *Kein Filter vorausgewählt*, *Artikel-ID*, *Variantennummer*, *Varianten-ID* oder *Artikelname*. Es ist dennoch weiterhin möglich, bei der Auftragsanlage den Suchfilter zu wechseln.
+|[#intable-endpoint-after-completion]*Endpunkt nach Abschluss eines Auftrags*
+|Wähle aus, wohin im System du nach Abschließen eines Auftrages geleitet werden möchtest. Du kannst wählen zwischen: +
+*Auftragsübersicht des Kontaktes* = Leitet dich zur Auftragsübersicht im Kontaktdatensatz des Kontakts des gerade erstellten Auftrags. Dies ist die Standardeinstellung. +
+*Auftragsübersicht* = Leitet dich zur allgemeinen Auftragsübersicht weiter. +
+*Detailansicht des neuen Auftrags* = Leitet dich zur Detailansicht des gerade erstellten Auftrags.
+
+|[#intable-shopping-cart-type]*Verwendeter Warenkorbtyp in der Auftragserstellung*
+|Wähle aus, welchen Typ von Warenkorb du in der Auftragserstellung nutzen möchtest. Standardmäßig ist der Side cart ausgewählt. Die Funktionen im Warenkorb sind bei beiden Typen gleich. +
+*Warenkorb als Side cart* = Der Warenkorb wird seitlich als Overlay dargestellt, wenn man ihn öffnet. +
+*Warenkorb als Tabelle (unterhalb der Suchergebnisse)* = Der Warenkorb wird als Tabelle unterhalb der Artikeltabelle (generiert durch die Artikelsuche) dargestellt.
 
 |*Filteroption ‚Nur vorrätige Artikel anzeigen‘ in der Artikelsuche vorausgewählt*
 |Aktiviere diese Option, damit sie für die Artikelsuche vorausgewählt ist. Angezeigt werden in den Suchergebnissen dann nur Artikel, die einen physischen Warenbestand haben.
@@ -154,17 +162,6 @@ Der Toggle ist standardmäßig deaktiviert. Lass ihn deaktiviert, wenn du die Me
 |Wähle aus, wie die Artikel zum Warenkorb hinzugefügt werden sollen. Die Standardeinstellung ist *Als eine Auftragsposition, Mengen werden erhöht*. +
 *Als separate Auftragspositionen.* = Auch gleiche Artikel werden einzeln hinzugefügt, d.h. jeder Artikel wird in einer eigene Zeile dargestellt. +
 *Als eine Auftragsposition, Mengen werden erhöht.* = Gleiche Artikel werden in einer Auftragsposition zusammengefasst und die Menge wird entsprechend angepasst.
-
-|*Endpunkt nach Abschluss eines Auftrags*
-|Wähle aus, wohin im System du nach Abschließen eines Auftrages geleitet werden möchtest. Du kannst wählen zwischen: +
-*Auftragsübersicht des Kontaktes* = Leitet dich zur Auftragsübersicht im Kontaktdatensatz des Kontakts des gerade erstellten Auftrags. Dies ist die Standardeinstellung. +
-*Auftragsübersicht* = Leitet dich zur allgemeinen Auftragsübersicht weiter. +
-*Detailansicht des neuen Auftrags* = Leitet dich zur Detailansicht des gerade erstellten Auftrags.
-
-|[#intable-shopping-cart-type]*Verwendeter Warenkorbtyp in der Auftragserstellung*
-|Wähle aus, welchen Typ von Warenkorb du in der Auftragserstellung nutzen möchtest. Standardmäßig ist der Side cart ausgewählt. Die Funktionen im Warenkorb sind bei beiden Typen gleich. +
-*Warenkorb als Side cart* = Der Warenkorb wird seitlich als Overlay dargestellt, wenn man ihn öffnet. +
-*Warenkorb als Tabelle (unterhalb der Suchergebnisse)* = Der Warenkorb wird als Tabelle unterhalb der Artikeltabelle (generiert durch die Artikelsuche) dargestellt.
 
 |====
 
@@ -2126,10 +2123,13 @@ Das Löschen-Symbol (icon:minus-square[role="red"]) wird in folgenden Fällen ni
 Generell sollten Aufträge nicht gelöscht werden. Durch die Verknüpfung mit Artikeln, Versandeinstellungen und weiteren Funktionen, wie Stornierungen und Retouren, kann es nach dem Löschen zu Fehlern an den Verknüpfungspunkten kommen. Neu angelegte Aufträge können jedoch gelöscht werden.
 
 | *Teilen*
-|Teilt den Auftrag. Es erfolgt eine Abfrage, welche Artikel in den Teilauftrag übernommen werden sollen. Ein Auftrag kann geteilt werden, wenn: +
-- Noch kein Zahlungseingang erfolgt ist, +
-- noch kein Warenausgang gebucht wurde und +
-- Noch keine Rechnung erzeugt wurde.
+|Teilt den Auftrag. Beim Teilen eines Auftrages werden 2 neue Aufträge erstellt. Der ursprüngliche Auftrag wird gelöscht. Für die neuen Aufträge werden jeweils die Versandkosten neu ermittelt. Bevor der Auftrag geteilt wird erfolgt eine Abfrage zur Verteilung der Auftragspositionen. +
+Ein Auftrag kann geteilt werden, wenn: +
+- Er nicht gesperrt ist, +
+- noch kein Warenausgang gebucht wurde, +
+- keine Kindaufträge erzeugt wurden (z.B. eine Retoure oder Lieferaufträge), +
+- keine steuerrelevenaten Dokumente am Auftrag hängen und +
+- dem Auftrag noch keine Zahlung zugeordnet wurde.
 
 | *Retoure; Gutschrift; Gewährleistung*
 |Auf die Dropdown-Liste klicken, um das Auftragsdokument anzulegen oder zu suchen.
@@ -2497,10 +2497,28 @@ Rechnung korrigieren:
 
 Mit der *Gruppenfunktion* ist es möglich, Prozesse für eine größere Menge an Aufträgen gleichzeitig auszuführen. Damit werden Vorgänge, z.B. eine Statusänderung oder ein E-Mail-Service, auf alle markierten Aufträge angewendet. Die Gruppenfunktion ist besonders zu empfehlen, wenn viele Aufträge bearbeitet werden müssen und die individuelle Bearbeitung sehr zeitaufwändig wäre.
 
+[.discrete]
+==== Aufträge gruppieren
+
+Mit der Gruppenfunktion *Aufträge gruppieren* können bestimmte Aufträge gruppiert werden. Das bedeutet, dass die ausgewählten Aufträge in einem neuen Auftrag zusammengefasst werden. Die ursprünglichen Aufträge werden dabei gelöscht. Die Versandkosten werden dann für den neuen Auftrag neu berechnet. Damit Aufträge gruppiert werden können, müssen sie folgende Kriterien erfüllen: +
+- Die Aufträge dürfen nicht gesperrt sein. +
+- Der Warenausgang darf nicht gebucht sein. +
+- Den Aufträgen dürfen noch keine Zahlungen zugeordnet sein. +
+- Die Aufträge müssen die gleiche plentyID haben. +
+- Die Aufträge müssen vom gleichen Auftragstyp sein. +
+- Die Aufträge müssen die gleiche Herkunft haben. +
+- Die Aufträge müssen den gleichen Eigner haben. +
+- Die Aufträge müssen den gleichen Kontakt haben. +
+- Die Aufträge müssen die gleiche Adresse haben. +
+- Die Aufträge müssen die gleiche Währung und den gleichen Wechselkurs haben.
+
+[.discrete]
+==== Beispiele
+
 Nachfolgend findest du zwei Beispiele für die Verwendung der Gruppenfunktion. In Beispiel A soll der Warenausgang für mehrere Aufträge gleichzeitig gebucht werden, in Beispiel B sollen Kunden per Mail über eine Artikelverfügbarkeit informiert werden.
 
 [.instruction]
-*Beispiel A*: Warenausgang per Gruppenfunktion buchen:
+*Beispiel A*: Warenausgang per Gruppenfunktion buchen
 
 . Öffne das Menü *Aufträge » Aufträge bearbeiten*.
 . Markiere die *Aufträge*, für die Warenausgang per Gruppenfunktion gebucht werden soll.
@@ -2508,9 +2526,9 @@ Nachfolgend findest du zwei Beispiele für die Verwendung der Gruppenfunktion. I
 . Markiere die Option *Warenausgang buchen*.
 . Wähle das *Datum* und die *Uhrzeit*. +
 → Für das Datum und die Uhrzeit wird automatisch das aktuelle Datum und die derzeitige Uhrzeit gewählt, dies ist jedoch änderbar. Die Wahl des Datums und der Uhrzeit ist bei dieser Gruppenfunktion Pflicht.
-. Klicke auf *Anwenden* (icon:cog[]), um die Aktion auszuführen.
+. Klicke auf *Anwenden* (icon:execute[set=plenty]), um die Aktion auszuführen.
 
-[IMPORTANT]
+[TIP]
 .Grundeinstellungen zur Auftragsbearbeitung durch variable Benutzer:innen
 ====
 Damit variable Benutzer:innen Aufträge öffnen können, müssen im Menü *Einrichtung » Aufträge » Einstellungen* die <<auftraege/grundeinstellungen#200, Standard-Status>> für *Retouren* und *Gutschriften* gespeichert worden sein. In der Grundeinstellung ist dort kein Status voreingestellt.
@@ -2518,7 +2536,7 @@ Außerdem müssen diese Benutzer:innen für die Erstellung und Bearbeitung von A
 ====
 
 [.instruction]
-*Beispiel B*: Kund:innen informieren durch E-Mail mit Gruppenfunktion.
+*Beispiel B*: Kund:innen informieren durch E-Mail mit Gruppenfunktion
 
 *Ausgangssituation*: Ein begehrter Artikel in deinem Shop ist vorübergehend nicht lieferbar, es liegen aber bereits eine ganze Reihe von Bestellungen dafür vor. Gegen solche Lieferverzögerungen sind Händler in aller Regel machtlos, müssen aber die betroffenen Kund:innen schnellstmöglich über einen solchen Umstand informieren.
 
@@ -2530,7 +2548,7 @@ Außerdem müssen diese Benutzer:innen für die Erstellung und Bearbeitung von A
 . Markiere die Option *E-Mail-Service*.
 . Wähle einen *Empfänger*, eine *Vorlage* und optional eine *Markierung*. +
 → Achte darauf, dass du vorher eine <<crm/e-mails-versenden#1200, E-Mail-Vorlage>> erstellt hast, damit sie dir hier als Auswahl zur Verfügung steht.
-. Klicke auf *Anwenden* (icon:cog[]), um die Aktion auszuführen. +
+. Klicke auf *Anwenden* (icon:execute[set=plenty]), um die Aktion auszuführen. +
 → Die E-Mail wird an die Kund:innen versendet.
 
 [TIP]
