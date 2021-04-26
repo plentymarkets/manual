@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 150
 :url: changelog
 :id:
-:startWeekDate: 01. April 2021
-:endWeekDate: 07. April 2021
-:nav-alias: Changelog 07. April 2021
+:startWeekDate: 15. April 2021
+:endWeekDate: 21. April 2021
+:nav-alias: Changelog 21. April 2021
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,85 +31,124 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 [discrete]
 === Aufträge
 
-* Die Artikelbeschreibung in der Artikeltabelle im letzten Schritt der Auftragsanlage (Beta) ist nun anpassbar. Durch Klicken in das Eingabefeld können Änderungen an der Artikelbeschreibung für diesen Auftrag vorgenommen werden.
-* In der Artikelsuche der neuen Auftragsanlage (Beta) wurde die alte Filterkomponente durch eine neue ersetzt. Zusätzlich zu den bereits bestehenden Filtern wurden zwei neue hinzugefügt: *Hersteller* und *Tag Artikel*. Die neue Komponente ermöglicht es, verschiedene Filter zu kombinieren.
+* Das Lieferdatum einer Nachbestellung kann nun auch direkt per Klick in das Eingabefeld und anschließende Eingabe eines Datums über die Tastatur gesetzt werden.
+* Der Artikelname ist in der Warenkorbtabelle nun änderbar. Du kannst den Artikelnamen für die Umbuchung/Nachbestellung ändern, indem du in das Eingabefeld klickst.
+* In der Warenkorb- und der Artikeltabelle wurde ein Icon für bearbeitbare Felder hinzugefügt.
+* Die Spalten *Auftrags-ID* und *Erstellt am* in der Übersichtstabelle *Bestellung* sind nun sortierbar. Preise mit Währung werden nun basierend auf der Sprache angezeigt: Währungszeichen und Preis in Englisch, Preis und Währungszeichen in Deutsch.
+
+'''
 
 [discrete]
-=== Kataloge
+== Geändert
 
-* Ab sofort sind in der UI Exportfilter verfügbar (je nach Verfügbarkeit).
-* Wir haben den asynchronen Download technisch verbessert.
-* Das Standardformat *Hersteller* wurde im Katalog hinzugefügt.
-Dieses Format wurde aus dem Elastischen Export migriert.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Prozesse
+=== Aufträge
 
-* In der Aktion *Retoure anlegen/bearbeiten* wurde eine neue Option namens *Größere Artikelbildvorschau anzeigen* hinzugefügt. Bei Aktivierung dieser Option wird beim Durchlaufen der Aktion ein größeres Artikelvorschaubild angezeigt.
+* In Nachbestellungen wurden die Icons für die Buttons Lieferdatum ermitteln und Zahlungsziel ermitteln ausgetauscht.
+
+[discrete]
+=== BI
+
+* Neue angelegte Kennzahlen können direkt in der Konfiguration des Dashboard ausgewählt werden. Bisher musste immer das komplette Backend aktualisiert werden.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 16.04.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/5dN3adGyHGBTHg94LJUeGZ6O8Nq.xlsx
+
+include::changelog/_textblocks/otto-master-file.adoc[]
 
 '''
 
 [discrete]
 == Behoben
 
-Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Amazon
 
-* Die Auftragskorrektur ist jetzt in der Lage am Auftrag Versandkosten hinzuzufügen, sollten diese fehlen.
-Des Weiteren wurde ein Fehler behoben, durch den es zur Anzeige der Umsatzsteuernummer des falschen Landes kommen konnte. Dies geschah, wenn das Land und die zugehörigen Steuersätze am Auftrag korrigiert wurde. Dabei wurde bisher an den Auftragspositionen die sogenannten CountryVatID nicht angepasst, was zu diesem Verhalten führte.
+* Die in der Portotabelle ausgewählten Werte wurden bei der Versandmeldung an Amazon falsch übertragen. Dies wurde behoben, nun werden die korrekten Werte übertragen.
++
+[IMPORTANT]
+.To-Do
+======
+Wenn du diese neuen Einstellungen bereits im Einsatz hast, dann kann es sein, dass seit Freitag (16.04.2021) falsche Werte übertragen wurden. Wenn du diese noch nicht manuell im Seller Central korrigiert hast, musst du die Versandmeldungen erneut manuell anstossen. Dies kannst du hier erledigen (bitte achte darauf, für jeden Tag seit Freitag (16.04.2021), an dem ihr Versand an Amazon gemeldet habt, das Datum einmal zu setzen und die Aktion auszuführen):
+
+image:changelog/assets/amazon-versandanmeldungen-anstoßen.png[width=640, alt=Einrichtung » Märkte » Versandbestätigung]
+======
+
+[discrete]
+=== Amazon VCS
+
+* Bei Aufträgen mit Paketartikeln, bei denen es sich bei mehreren Auftragspositionen um den gleichen Paketartikel handelte, kam es beim Abgleich des VCS-Berichts zu Problemen und nur ein Teil der Auftragspositionen wurde korrigiert. Dieses Verhalten wurde behoben.
++
+[IMPORTANT]
+.To-Do
+======
+Händler:innen, die VCS Lite bzw. VCS plentymarkets nutzen, müssen nichts weiter tun. Die Aufträge werden automatisch auf Basis der aktuellen VCS-Berichte korrigiert, die alle Aufträge beinhalten, zu denen Amazon noch eine Rechnung vermisst.
+
+Händler:innen, die VCS bzw. VCS Amazon nutzen, müssen für den betroffenen Zeitraum einen neuen Bericht zu den USt.-Berechnungen anfordern. Diese Berichte findet ihr in der Seller Central unter *Berichte » Steuerdokumente*:
+
+image:changelog/assets/amazon-vcs-steuerdokumente.png[width=640, alt=Berichte » Steuerdokumente]
+
+Dort könnt ihr den Bericht für den entsprechenden Zeitraum anfordern. Der Bericht wird automatisch vom System eingelesen.
+
+image:changelog/assets/amazon-vcs-steuerdokumente-umsatzsteuerberechnung.png[width=640, alt=Umsatzsteuerberechnung]
+======
+* Bei Aufträgen, bei denen die Rechnungsadresse eine Umsatzsteuernummer hat, aber Amazon trotzdem einen Steuersatz größer 0 % zugeordnet hat, konnte es vorkommen, dass die Rechnungssumme trotzdem dem Nettowert des Auftrags statt dem Bruttowert entsprach.
++
+[IMPORTANT]
+.To-Do
+======
+Händler:innen, die VCS Lite bzw. VCS plentymarkets nutzen, müssen nichts weiter tun. Die Aufträge werden automatisch auf Basis der aktuellen VCS-Berichte korrigiert, die alle Aufträge beinhalten, zu denen Amazon noch eine Rechnung vermisst.
+
+Händler:innen, die VCS bzw. VCS Amazon nutzen, müssen für den betroffenen Zeitraum einen neuen Bericht zu den USt.-Berechnungen anfordern. Diese Berichte findet ihr in der Seller Central unter *Berichte » Steuerdokumente*:
+
+Dort könnt ihr den Bericht für den entsprechenden Zeitraum anfordern. Der Bericht wird automatisch vom System eingelesen.
+======
+* Bei Aufträgen, die eine B2B-Herkunft haben, konnten bei der Benutzung von VCS Lite für einen gewissen Zeitraum keine Dokumente zu Amazon hochgeladen werden. Dieses Verhalten wird heute behoben.
++
+[NOTE]
+.Kein To-Do
+======
+Sobald der Fix verteilt wurde, wird das System den Rückstand automatisch nachholen. Es sind hier keine weiteren Schritte notwendig.
+======
 
 [discrete]
 === Aufträge
 
-* Es wurde beim Kopieren eines Auftrags der Status übertragen, statt wie vorher den Standard-Status für den neuen Auftrag zu verwenden.
-* Zahlungsbedingungen können nun auch auf Dokumenten ausgegeben werden, wenn es sich bei der Zahlungsart des Auftrags um *Vorkasse* handelt. <<auftraege/auftraege-verwalten#intable-zahlungsbedingungen-auftrag, Weitere Informationen>>.
-* Während der Auftragsanlage konnten Artikel nicht aus der Warenkorbtabelle gelöscht werden. Dies ist nun behoben. Artikel können wieder gelöscht werden.
-* Wenn ein neuer Auftragsstatus erstellt wurde, wurde die Seite nicht neu geladen und auch nicht zum neu erstellen Auftragsstatus weitergeleitet. Dies ist nun behoben.
-* Wenn versucht wurde einen Auftragsstatus zu erstellen, dieser aber bereits existiert, wurde ein Fehler angezeigt und nicht zum bereits existierenden Status weitergeleitet. Dies ist nun behoben.
-* Wenn in einer Auftragspositionstabelle mit mehr als einer Seite mit der Material Navigation zu einer bestimmten Tabellenseite navigiert wurde, änderte die Seite sich nicht sondern wurde immer wieder auf die zuletzt gewählte Seite gesetzt. Dies ist nun behoben.
+* Bei Änderung der Auftragswährung wurde der offene Betrag im letzten Schritt der Auftragsanlage (Beta) weiterhin in der Systemwährung angezeigt. Dieses Verhalten wurde behoben.
+* Bei Änderung der Auftragswährung in der Auftrangsanlage (Beta) wurden die Preise in der Artikelübersicht, dem Warenkorb und dem seitlich angezeigten Warenkorb nicht in der neuen Währung neu berechnet. Dieses Verhalten wurde behoben.
+* Das Feld *Position* wurde bei der Sortierung von Attributwerten an Aufträgen in manchen Fällen nicht beachtet.
+* Mit der neuen Auftragslogik wurde ein Gutschein bei netto Aufträgen brutto statt netto eingelöst, sodass Aufträge unter Umständen negativen Rechnungsbetrag hatten. Dies wurde behoben.
+* Beim Erstellen von Kindaufträgen wurde ein Aktionsgutschein nicht in den Preis von Artikelpaketen verrechnet.
+* Es konnte zu einem Fehler kommen, wenn Lieferaufträge gelöscht und erneut angelegt wurde.
+* Das Löschen von Status war nicht möglich. Dies wurde behoben.
 
 [discrete]
-=== Git
+=== Ereignisaktionen
 
-* Es ist wieder möglich, die Zugangsdaten von Git-Repositorys zu aktualisieren.
-
-[discrete]
-=== Lagerverwaltung
-
-* Wenn man etwas in der Struktur des Lagers änderte (Beispiel: Position Nr. eines Lagerorts), wurde die Lagerstruktur nach Speichern zusammengebrochen. Das Verhalten wurde nun behoben.
+* In der Aktion *Lieferaufträge generieren* von Ereignisaktionen konnten Lieferaufträge zu einem bestehendem Lieferauftrag erzeugt werden, sodass der ursprüngliche Lieferauftrag kein valides Lager mehr hatte und man nicht weiter mit ihm arbeiten konnte. Dies wurde behoben, die Aktion bleibt für Lieferaufträge wirkungslos.
 
 [discrete]
-=== Neckermann.at
+=== plentyShop
 
-* In der Datenbanktabelle für die bereits übertragenen Bilder kam es zu einem Fehler beim Abspeichern der SKU. Die SKU wurde als Integer statt als String gespeichert und dadurch abgeschnitten. Das hatte zur Folge, dass statt nur neuer oder geänderter Bilder immer alle Bilder zu Neckermann übertragen wurden. Dies hat dort zu erhöhten Traffic geführt. Dieses Verhalten wurde behoben.
-
-[discrete]
-=== Netto
-
-* Beim Artikelexport wurde im Menü *Daten » Log* nach der Fehlermeldung `SKU nicht gespeichert.` immer direkt danach die Fehlermeldung `Kein Produktname` ausgegeben, unabhängig davon, ob der Produktname vorhanden ist oder nicht. Dieses Verhalten wurde nun korrigiert.
+* Beim Anlegen eines B2B-Auftrags oder eines Auftrags mit Ausfuhrlieferung konnte es in Kombination mit dem Zahlungsanbieter PayPal zu einem Rundungsfehler kommen. Dieser führte dazu, dass die Bezahlung an PayPal nicht ausgeführt werden konnte und der Kunde die Zahlung ein zweites Mal veranlassen musste. Dieser Fehler wurde für Ceres-Versionen 5.0.0 und höher behoben. Um zusätzliche Fälle zu vermeiden, muss außerdem das PayPal-Plugin auf die anstehende Version 5.6 aktualisiert werden.
 
 [discrete]
-=== OTTO Market
+=== Prozesse
 
-* Beim Kürzen der Bulletpoints auf die vorgegebene Maximallänge von 180 Zeichen konnte es dazu kommen, dass dabei die Zeichenkette eines HTML-codierten Sonderzeichens abgeschnitten wurde. Dies führte dann zu einem invaliden UTF-8-Zeichen, was wiederum dazu führte, dass keine JSON-Datei zur Übermittlung an OTTO Market erstellt werden konnte.
-+
-Dieses Verhalten wurde nun behoben, indem das letzte Leerzeichen vor der Grenze von 180 Zeichen gesucht wird und die Bulletpoints dann an dieser Stelle abgeschnitten werden.
-* Beim Versuch den Zeitstempel des letzten Bestandsupdates an der SKU zu aktualisieren, kommt es nun nicht mehr zum Fehler `Bestandsaktualisierung abgebrochen`. Der zugehörige Logeintrag konnte mit folgenden Angaben gefunden werden:
-** *Integration*: `Plenty\Modules\Otto\Cron\StockExportCron`
-** *Identifikator*: `OTTO market`
+* In der Aktion *Artikelerfassung* gab es unter Umständen einen Fehler beim Teilen der Aufträge. Dieser wurde behoben.
+* In der Aktion *Artikelerfassung* konnte man einen leeren Scan absenden. Dadurch wurde ein zufälliger und damit nicht korrekter Artikel erfasst. Dieser Fehler wurde behoben.
 
 [discrete]
-=== Plugins
+=== Warenwirtschaft
 
-* In der Plugin-Konfiguration ist es wieder möglich, Dropdown-Listen zu scrollen.
-* In der Plugin-Konfiguration werden Untermenüs jetzt als eigene Abschnitte angezeigt. Diese Einträge wurden vorübergehend nicht geladen.
-
-[discrete]
-=== Webshop
-
-* Wenn für einen Webshop ShopBooster aktiv war und die plentyShop-Vorschau mit einem nicht verknüpften Plugin-Set genutzt wurde, wurden nach einiger Zeit falsche Inhalte im Live-Webshop angezeigt. Dieses Problem wurde behoben.
+* Nachdem man den Artikel zum Neuen Wareneingang hinzugefügt hatte, wurde der Lagerortsname nicht vollkommen angezeigt. Der Fehler wurde jetzt behoben.
 
 --
 
@@ -125,13 +164,9 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 [discrete]
 === Aufträge
 
-* In der neuen Auftragsanlage (Beta) wurden folgende Neuerungen veröffentlicht:
-** Zwei neue Infoboxen wurden im letzten Schritt der Auftragsanlage hinzugefügt: *Rabatt* und *Offener Betrag*.
-** Die einzelnen Spalten *Artikel-ID* und *Varianten-ID* wurden im zweiten Schritt der Auftragsanlage hinzugefügt.
-** In der Warenkorbtabelle sind die Spalten *Artikel-ID/Varianten-ID*, *Artikel-ID*, *Varianten-ID*, *Variantennummer* und *Artikelname* nun sortierbar.
-** Spalten mit der Benennung *Artikelbeschreibung* wurden in *Artikelname* umbenannt.
-** In den Standardeinstellungen wurden die Einstellung *Warenkorb als Tabelle* in *Warenkorb als Tabelle (unterhalb der Suchergebnisse)* umbenannt.
-* In der Nachbestellung und der Umbuchung können Lieferdaten nun auch für einzelne Artikel der Bestellung manuell hinterlegt werden. Das Setzen eines Lieferdatums für den gesamten Auftrag in den Auftragsdetails bleibt bestehen. Beim Setzen dieses Lieferdatums in den Auftragsdetails kannst du nun wählen, ob das gleiche Lieferdatum für Artikelpositionen ohne Lieferdatum gesetzt werden soll. Lieferdaten können angepasst werden, solange der Auftrag nicht abgeschlossen wurde.
+* Die Navigation ohne Maus funktioniert nun in der gesamten Benutzeroberfläche der Auftragsanlage (beta) nach den Aktualisierungen der Angular Material Tabellen.
+* Die Standardeinstellung für vorausgewählte Filter in der Artikelsuche eines neuen Auftrags in der Auftragsanlage (beta) wurde entfernt, da die Einstellung aufgrund der neuen Filterkomponente obsolet ist.
+* In allen Tabellen der Auftragsanlage (beta) wird der Textinhalt eines editierbaren Elements beim Anklicken des Textplatzhalters ausgewählt.
 
 '''
 
@@ -141,9 +176,24 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Warenwirtschaft
+=== Aufträge
 
-* Der Zulauf für Nachbestellungen wurde bis jetzt für 1 Jahr gerechnet. Wenn man eine Nachbestellung mit älterem Erstellungsdatum als 1 Jahr hatte, wurde die noch nicht belieferte Ware im Zulauf in der Bestandsübersicht nicht angezeigt. Der Zulauf wird von jetzt an für 2 Jahre berechnet.
+* Es wurde das Verhalten beim Gruppieren und Teilen von Aufträgen geändert. Zudem wurde die Validierung, ob gruppiert oder geteilt werden darf, überarbeitet.
+
+** Gruppieren: Es werden die urspünglichen Aufträge gelöscht und ein neuer Auftrag angelegt. Die Versandkosten werden neu ermittelt.
+** Teilen: Der ursprüngliche Auftrag wird gelöscht und es werden zwei neue Aufträge angelegt. Die Versandkosten der zwei neuen Aufträge werden neu ermittelt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Der Filter für Variantennummern in der Artikelsuche der Auftragsanlage (Beta) hat bisher nur die Eingabe von numerischen Werten erlaubt. Dies wurde behoben, es können nun sowohl numerische als auch Textwerte eingegeben werden.
 
 --
 
@@ -157,61 +207,87 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/eaporderitemchangewarehouse_54549[Aktion für das Ändern des Lagers von Aufträgen^]
-|1.0.0
-|-
-
 |link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
-|5.0.26
-a|Im Zuge des Releases von Ceres 5.0.26 gab es Änderungen an den im Folgenden aufgelisteten Template-Dateien, die für Theme-Entwickler relevant sind. Die Verlinkungen führen direkt zu den umgesetzten Änderungen in den entsprechenden Dateien.
+|5.0.28
+a|Im Zuge des Releases von Ceres 5.0.28 gab es Änderungen an den im Folgenden aufgelisteten Template-Dateien, die für Theme-Entwickler relevant sind. Die Verlinkungen führen direkt zu den umgesetzten Änderungen in den entsprechenden Dateien.
 
-* link:https://github.com/plentymarkets/plugin-ceres/pull/2753/files#diff-eab69464064e5200e309de7a80e4fa43773919c60a5f31d5997058b8f7e2f478[resources/js/src/app/components/itemList/filter/ItemFilter.vue^]
-* link:https://github.com/plentymarkets/plugin-ceres/pull/2697/files#diff-33a10158d672d50c9bc1c0e8a46fbd8edb701925dcb3f619c6ff6f8ca11e45ee[resources/views/PageDesign/Partials/Head.twig^]
-* link:https://github.com/plentymarkets/plugin-ceres/pull/2754/files#diff-2e0729c79085beac37d2ad03e5d1a25ddec4020ecf8e3551d50e64a6cf5f91d3[resources/js/src/app/components/basket/list/BasketListItem.vue^]
-* link:https://github.com/plentymarkets/plugin-ceres/pull/2754/files#diff-be8788b59e5887730f9bb4aa5a12d093908265ff19c26bb5ddca99485e7d7621[resources/js/src/app/components/wishList/WishListItem.vue^]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2779/files#diff-c428531b614621aa7ec1fe56507582fcd923aeae8342bfb3c0d2bbbe650c69be[https://github.com/plentymarkets/plugin-ceres/pull/2779/files#diff-c428531b614621aa7ec1fe56507582fcd923aeae8342bfb3c0d2bbbe650c69be^]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2765/files#diff-57df8453013ee1dd0821c871b25d89e42eb2ff2ed7d491f2141aacb299ada6b9[https://github.com/plentymarkets/plugin-ceres/pull/2765/files#diff-57df8453013ee1dd0821c871b25d89e42eb2ff2ed7d491f2141aacb299ada6b9^]
 
-|link:https://marketplace.plentymarkets.com/clearvat_6925[eClear – Umsatzsteuer-Automatisierung für E-Commerce in der EU^]
-|1.0.4
+|link:https://marketplace.plentymarkets.com/dpdshippinguk_5121[DPD Shipping UK^]
+|2.0.5
 |-
 
-|link:https://marketplace.plentymarkets.com/infinityscroller_6660[Endlos-Scrollen in Artikellisten^]
-|1.3.2
+|link:https://marketplace.plentymarkets.com/facebookpixelwi_7004[Facebook Pixel^]
+|1.0.6
 |-
 
-|link:https://marketplace.plentymarkets.com/edon_6618[FairGeben^]
-|1.2.0
+|link:https://marketplace.plentymarkets.com/cfourfacebookpixelv5_6937[Facebook Pixel v.5 mit Tracking Events^]
+|2.1.14
 |-
 
-|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com^]
-|1.2.1
+|link:https://marketplace.plentymarkets.com/feed4ceres_6097[Feed4Ceres^]
+|4.0.2
 |-
 
-|link:https://marketplace.plentymarkets.com/reviewconverter_6843[Google Shopping Produktbewertungen (Sterne)^]
-|1.0.7
+|link:https://marketplace.plentymarkets.com/feed4ceresaccountpackone_6921[Feed4CeresAccountPackOne^]
+|2.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/feed4ceresaccountpacktwo_6992[Feed4CeresAccountPackTwo^]
+|2.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic - Search & Navigation Platform^]
+|3.5.3
+|-
+
+|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
+|1.0.42
 |-
 
 |link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.26
+|5.0.28
+|-
+
+|link:https://marketplace.plentymarkets.com/manomano_6287[ManoMano^]
+|1.1.15
+|-
+
+|link:https://marketplace.plentymarkets.com/metro_6600[Metro^]
+|1.9.5
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.31
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.4.1
+|-
+
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent-Widget^]
+|4.5.4
 |-
 
 |link:https://marketplace.plentymarkets.com/paypal_4690[PayPal^]
-|5.5.2
+|5.6.1
+|-
+
+|link:https://marketplace.plentymarkets.com/plentybase_5053[plentyBase^]
+|1.7.4
 |-
 
 |link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.24.11
+|1.24.17
 |-
 
-|link:https://marketplace.plentymarkets.com/smsnotification_7105[SMS Notifications^]
-|1.0.1
+|link:https://marketplace.plentymarkets.com/schufa_6360[Schufa Bonitätsprüfung^]
+|2.0.4
 |-
 
-|link:https://marketplace.plentymarkets.com/cytautomaticcrossselling_7016[Wird oft gekauft mit...^]
-|1.1.0
-|-
-
-|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce.com^]
-|2.7.0
+|link:https://marketplace.plentymarkets.com/sofort_5050[Sofort.^]
+|1.3.1
 |-
 
 |===
