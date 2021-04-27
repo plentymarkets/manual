@@ -41,20 +41,27 @@ Wenn du deine Artikeldaten per API (PWS 2.0-Schnittstelle) zu idealo exportieren
 |====
 | Artikelexport per API (PWS 2.0) | Artikelexport mit elastischem Export
 
+//tag::table-comparison[]
 |Artikeldatenübertragung per Schnittstelle
 |Artikeldatenübertragung per CSV-Datei
 
-|tägliche Erstellung von Artikeln
+| Unbegrenzte Anzahl an Artikeln kann übertragen werden
+| Um mehr als 9999 Artikel an idealo zu übertragen, muss in den Einstellungen des Elastischen Export die Option *Cache-Datei generieren* aktiviert sein. Wenn die Option *Cache-Datei generieren* aktiviert ist, wird die Ausgabedatei nur alle 24 Stunden neu generiert, um Ressourcen zu sparen. +
+*_Hinweis:_* Um eine optimale Performance des elastischen Exports zu gewährleisten, darf die Option *Cache-Datei generieren* bei maximal 20 Exportformaten aktiv sein.
+
+|Tägliche Erstellung von Artikeln
 |Abruf von Artikeldaten per URL, die bei idealo gespeichert wird
 
 |Aktualisierung von Preisen alle 15 Minuten
 |Intervall, in dem Artikeldaten abgerufen werden, wird von idealo festgelegt
 
 |Aktualisierung von Beständen alle 15 Minuten
-|
+|Intervall, in dem Artikeldaten abgerufen werden, wird von idealo festgelegt
 
 |Aufträge werden über den gewählten Mandanten importiert
 |Aufträge werden immer über den Standardmandanten importiert
+
+//end::table-comparison[]
 |====
 
 [#2400]
@@ -67,22 +74,10 @@ Um idealo in plentymarkets nutzen zu können, benötigst du die folgenden Plugin
 *_Hinweis:_* Du benötigst das Plugin Elastischer Export auch, wenn du deine Artikeldaten per Schnittstelle PWS 2.0 zu idealo exportierst.
 
 :plugin: idealo
-
-[#150]
-[.collapseBox]
-.Plugin *idealo* installieren
---
-include::../../plugins/_textblocks/instructions/plugin-installieren.adoc[]
---
+include::../_textblocks/instructions/plugin-installation.adoc[]
 
 :plugin: Elastischer Export
-
-[#175]
-[.collapseBox]
-.Plugin *Elastischer Export* installieren
---
-include::../../plugins/_textblocks/instructions/plugin-installieren.adoc[]
---
+include::../_textblocks/instructions/plugin-installation.adoc[]
 
 [#200]
 == idealo-Assistent durchlaufen
@@ -142,7 +137,7 @@ a| Aus der Dropdown-Liste *Mandant* den Mandanten wählen.
 
 | *Welcher Auftragsstatus soll vor dem Import stornierten idealo Direktkauf-Aufträgen zugewiesen werden?*
 | Manche idealo Direktkauf-Aufträge werden schon vor dem ersten Import in dein plentymarkets System storniert. Auftragsstatus wählen, der diesen stornierten Aufträgen beim Import zugewiesen werden soll. +
-*_Hinweis:_* Der Import dieser stornierten idealo Direktkauf-Aufträge löst die für den gewählten Status eingerichteten Ereignisaktionen aus. Wähle deshalb einen Status, bei dem keine Ereignisaktionen (z.B. Stornierungsbestätigung an Kunden) ausgelöst werden.
+*_Hinweis:_* Der Import dieser stornierten idealo Direktkauf-Aufträge löst die für den gewählten Status eingerichteten Ereignisaktionen aus. Wähle deshalb einen Status, bei dem keine Ereignisaktionen (zum Beispiel Stornierungsbestätigung an Kunden) ausgelöst werden.
 
 | *Möchtest du offene MOA-1.0-Aufträge weiterhin über dieses Konto abwickeln?*
 | Die Merchant Order API von idealo ist eine Rest-API, die das Abholung und Bearbeiten von Direktkauf-Bestellungen ermöglicht. Im Januar 2021 hat idealo diese Rest-API von Version 1.0 auf Version 2.0 umgestellt. Aktiviere diese Einstellung, wenn du mit diesem Konto schon über die alte MOA-1.0-Schnittstelle Aufträge importiert hast. Offene Aufträge werden dann weiter über dieses Konto automatisch bearbeitet. Wenn du ein neues idealo-Konto einrichtest, kannst du diese Einstellung ignorieren.
@@ -159,8 +154,8 @@ a| Aus der Dropdown-Liste *Mandant* den Mandanten wählen.
 |======
 |Einstellung |Erläuterung
 
-| *Wie lautet der Bestelldaten-API-Schlüssel?*
-|Gib für den API-Schlüssel den Token für Merchant Order API v1 ein. Du erstellst den API-Schlüssel im idealo Business Portal unter *Mein idealo » Einstellungen » API Clients » Bestelldaten API*. Der API-Schlüssel erlaubt plentymarkets Zugriff auf idealo, damit idealo Direktkauf-Aufträge in plentymarkets importiert werden können.
+| *Wie lauten die Zugangsdaten deines Merchant Order API 2.0 API-Clients?*
+a| Gib für den API-Schlüssel den Token für die Merchant Order API v2 ein. Du erstellst den API-Schlüssel im idealo Business Portal unter *Mein idealo » Einstellungen » API Clients » Bestelldaten API*. Der API-Schlüssel erlaubt plentymarkets Zugriff auf idealo, damit idealo Direktkauf-Aufträge in plentymarkets importiert werden können.
 
 | *Wie lauten die Zugangsdaten deines Partner Web Service 2.0 API-Clients?*
 a| Du benötigst die API-Client-Zugangsdaten, damit plentymarkets auf dein idealo-Konto zugreifen kann. Dadurch kann der Artikeldatenaustausch aktiviert werden. Die Zugangsdaten forderst du bei idealo unter tam@idealo.de an.
@@ -319,7 +314,7 @@ Außerdem muss die Preisspanne bei idealo aktiviert sein.
 ====
 
 [#700]
-== SKU speichern
+== _Optional:_ SKU speichern
 
 :referrer-sku: idealo
 :referrer-id: 121
@@ -350,26 +345,14 @@ Informationen zu den verschiedenen Arten der Datenübertragung findest du in <<#
 |====
 | Artikelexport per API (PWS 2.0) | Artikelexport mit elastischem Export
 
-|Artikeldatenübertragung per Schnittstelle
-|Artikeldatenübertragung per CSV-Datei
+include::idealo-einrichten.adoc[tag=table-comparison]
 
-|tägliche Erstellung von Artikeln
-|Abruf von Artikeldaten per URL, die bei idealo gespeichert wird
-
-|Aktualisierung von Preisen alle 15 Minuten
-|Intervall, in dem Artikeldaten abgerufen werden, wird von idealo festgelegt
-
-|Aktualisierung von Beständen alle 15 Minuten
-|
-
-|Aufträge werden über den gewählten Mandanten importiert
-|Aufträge werden immer über den Standardmandanten importiert
 |====
 
 [#850]
 === Artikelexport per API (PWS 2.0-Schnittstelle)
 
-Wenn du deine Artikel per Schnittstelle automatisch zu idealo übertragen möchtest, durchlaufe den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Omni-Channel* und aktiviere den automatischen Artikeldatenexport. Für den automatischen Artikelexport sind außerhalb des idealo-Assistenten keine weiteren Einstellungen in plentymarkets nötig. +
+Wenn du deine Artikel per Schnittstelle automatisch zu idealo übertragen möchtest, durchlaufe den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Plugins » [Mandant öffnen]* und aktiviere den automatischen Artikeldatenexport. Für den automatischen Artikelexport sind außerhalb des idealo-Assistenten keine weiteren Einstellungen in plentymarkets nötig. +
 
 Mit dieser Art der Datenübertragung werden Artikel einmal täglich auf idealo erstellt. Preise und Bestände werden alle 15 Minuten aktualisiert. Artikel können zudem alle 15 Minuten gelöscht werden.
 
@@ -428,11 +411,18 @@ In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellunge
 | *IdealoDE-Plugin* wählen.
 
 | *Limit*
-|Zahl eingeben. Wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen, wird die Ausgabedatei für 24 Stunden nicht noch einmal neu generiert, um Ressourcen zu sparen. Wenn mehr als 9999 Datensätze benötigt werden, muss die Option *Cache-Datei generieren* aktiv sein. +
-*_Oder:_*  Wenn du mehr als 9999 Datensätze an idealo übertragen möchtest, kannst du als Alternative auch Version 2.0 des idealo-Plugins installieren.
+| Zahl eingeben. Diese Zahl bestimmt, wie viele Artikel maximal exportiert werden.
+
+*_Hinweis:_* Willst du mehr als 9999 Artikel zu idealo übertragen?
+
+* Dann wird die Ausgabedatei nur einmal alle 24 Stunden neu generiert, um Ressourcen zu sparen.
+* Dann wähle auch die Option *Cache-Datei generieren* weiter unten.
+
+*_Tipp:_*  Wenn du mehr als 9999 Artikel an idealo übertragen möchtest, kannst du als Alternative auch Version 2.0 des idealo-Plugins installieren.
 
 | *Cache-Datei generieren*
-|Aktivieren, wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen. Um eine optimale Performance des elastischen Exports zu gewährleisten, darf diese Option bei maximal 20 Exportformaten aktiv sein.
+| Aktivieren, wenn mehr als 9999 Artikel an idealo übertragen werden sollen. Wenn die Option aktiviert ist, wird die Ausgabedatei nur alle 24 Stunden neu generiert, um Ressourcen zu sparen. +
+*_Hinweis:_* Um eine optimale Performance des elastischen Exports zu gewährleisten, darf diese Option bei maximal 20 Exportformaten aktiv sein.
 
 | *Bereitstellung*
 | *URL* wählen.
@@ -848,7 +838,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Ereignis wählen, z.B. *Auftragsänderung: Warenausgang gebucht*
+| Ereignis wählen, zum Beispiel *Auftragsänderung: Warenausgang gebucht*
 |
 
 | *Filter 1*
@@ -880,7 +870,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Ereignis wählen, z.B. *Auftragsanlage: Neue Retoure*
+| Ereignis wählen, zum Beispiel *Auftragsanlage: Neue Retoure*
 |
 
 | *Filter 1*
@@ -918,7 +908,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Ereignis wählen, z.B. *Statuswechsel: [8] Storniert*
+| Ereignis wählen, zum Beispiel *Statuswechsel: [8] Storniert*
 |
 
 | *Filter 1*
@@ -948,7 +938,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Ereignis wählen, z.B. *Statuswechsel: [8.1] Storniert durch Kunden*
+| Ereignis wählen, zum Beispiel *Statuswechsel: [8.1] Storniert durch Kunden*
 |
 
 | *Filter 1*
@@ -986,7 +976,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Ereignis wählen, z.B. *Auftragsanlage: Neue Gutschrift*
+| Ereignis wählen, zum Beispiel *Auftragsanlage: Neue Gutschrift*
 |
 
 | *Filter 1*
@@ -1006,9 +996,11 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 == Log abrufen
 
 :market: idealo
-:identifier: ElasticExportIdealoDE
+include::../_textblocks/instructions/logs_abrufen.adoc[tag=data-log-intro]
 
-include::../_textblocks/instructions/logs_abrufen.adoc[]
+* *Identifikator* » *ElasticExportIdealoDE*
+
+include::../_textblocks/instructions/logs_abrufen.adoc[tag=data-log-config]
 
 [#2000]
 == FAQ
@@ -1016,9 +1008,9 @@ include::../_textblocks/instructions/logs_abrufen.adoc[]
 [#2100]
 === Artikelexport per API (PWS 2.0-Schnittstelle)
 
-===== Nicht alle meine Artikel werden zu idealo exportiert. Was kann ich tun?
-
-[.indented]
+[.collapseBox]
+.Nicht alle meine Artikel werden zu idealo exportiert. Was kann ich tun?
+--
 Falls du deine Artikel per Schnittstelle (PWS 2.0) zu idealo überträgst, aber nicht alle Artikel exportiert wurden, kann der Zeitstempel für Marktplatzexporte aktualisiert werden. Dies kann helfen, da normalerweise nur Varianten zu idealo exportiert werden, die in den letzten zwei Tagen aktualisiert wurden.
 
 [.instruction]
@@ -1028,3 +1020,4 @@ Zeitstempel für Marktplatzexporte aktualisieren:
 . Aktiviere im Bereich *Aktionen* die Option *Zeitstempel für Marktplatzexporte aktualisieren*.
 . Klicke auf *Anwenden* (icon:execute[set=plenty]). +
 → Alle Artikel, die für idealo verfügbar sind, werden mit dem nächsten Artikelexport zu idealo übertragen.
+--

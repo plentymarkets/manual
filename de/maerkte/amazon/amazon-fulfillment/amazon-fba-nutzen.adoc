@@ -10,6 +10,12 @@ include::{includedir}/_header.adoc[]
 
 Das Kürzel FBA steht für Fulfillment by Amazon. Statt die Aufträge selbst zu bearbeiten, die Ware zu verpacken und zu versenden, überlässt du beim FBA-Programm Amazon diese Aufgabe. Natürlich musst du zumindest einen Teil deiner Waren dann auch bei Amazon einlagern.
 
+[.collapseBox]
+.Ablauf von FBA-Aufträgen
+--
+include::amazon-fulfillment.adoc[tag=amazon-fba-workflow]
+--
+
 Weitere Informationen zu Amazon FBA und zur Einrichtung des Services in plentymarkets findest du in diesem Video-Tutorial:
 
 .Amazon FBA
@@ -169,7 +175,11 @@ Einstellungen für FBA-Outbound-Aufträge vornehmen:
 | <<auftraege/auftraege-verwalten#1200, Status>> wählen, der Aufträgen zugewiesen werden soll, die von Amazon importiert werden.
 
 | *Lager*
-| Wählen, welches <<Lager für Amazon FBA erstellen, Amazon FBA-Lager>> für den Bestandsabgleich des Kontos verwendet werden soll. Dieses Lager wird auch für die FBA-Auftragszuordnung des Kontos verwendet, falls kein FBA-Auftrag zugeordnet werden kann, weil für das Auftragsland kein Lager eingerichtet wurde.
+| Wählen, welches <<#60, Amazon FBA-Lager>> für den Bestandsabgleich des Kontos verwendet werden soll. Dieses Lager wird auch für die FBA-Auftragszuordnung des Kontos verwendet, falls kein FBA-Auftrag zugeordnet werden kann, weil für das Auftragsland kein Lager eingerichtet wurde.
+
+| *Lager für unverkäuflichen Bestand*
+| Wählen, in welches <<#60, Amazon FBA-Lager>> unverkäuflicher Bestand des Kontos gebucht werden soll. Wenn du kein Lager wählst, wird der unverkäufliche Bestand nicht importiert. +
+Der unverkäufliche Bestand ist die Anzahl der Einheiten einer SKU, die sich in Amazon-Logistikzentren befinden und den Zustand "nicht verkaufbar" haben. Im Bericht "Lagerbestand mit Versand durch Amazon" entspricht das der Menge in der Spalte *afn-unsellable-quantity*.
 
 | *Warenausgang*
 | Wählen, ob der Warenausgang als gebucht markiert werden soll oder nicht. Die Option *Als gebucht markieren* erzeugt keine Warenbewegung. Um eine Warenbewegung zu erzeugen, muss die Option *Nicht als gebucht markieren* eingestellt sein und eine Ereignisaktion eingerichtet werden.
@@ -338,7 +348,7 @@ Automatischen Gutschriftenimport aktivieren:
 [#3700]
 == Amazon Multi-Channel einrichten
 
-Amazon Multi-Channel bedeutet, dass "Lieferungen im Auftrag des Verkäufers durch Amazon verschickt werden, für Bestellungen, die nicht bei Amazon.de aufgegeben wurden, sondern z.B. auf eBay oder auf der persönlichen Website eines Verkäufers." (Quelle: Amazon)
+Amazon Multi-Channel bedeutet, dass "Lieferungen im Auftrag des Verkäufers durch Amazon verschickt werden, für Bestellungen, die nicht bei Amazon.de aufgegeben wurden, sondern zum Beispiel auf eBay oder auf der persönlichen Website eines Verkäufers." (Quelle: Amazon)
 
 Die Multi-Channel-Funktion ermöglicht dir also, Artikel bei Amazon zu lagern und von Amazon verschicken zu lassen, die du nicht bei Amazon, sondern auf anderen externen Marktplätzen verkaufst. Du erfährst in diesem Kapitel, welche Einstellungen du in deinem plentymarkets System vornehmen musst, damit diese Aufträge über Amazon abgewickelt werden können.
 
@@ -357,7 +367,7 @@ Lege ein Lager an, falls du noch kein Lager wie im Kapitel <<FBA-Service von Ama
 [IMPORTANT]
 .Beispiel für die Übereinstimmung von Amazon-Plattform und Lagerstandort
 ====
-Beim Multi-Channel-Versand über amazon.co.uk muss ein eigenes Lager Amazon UK mit dem Logistiktyp *Amazon* und dem Standort Großbritannien erstellt werden. Die Ware muss also auch tatsächlich vor Ort bei Amazon z.B. in Großbritannien gelagert sein, da sonst keine Versandabwicklung über amazon.co.uk stattfinden kann.
+Beim Multi-Channel-Versand über amazon.co.uk muss ein eigenes Lager Amazon UK mit dem Logistiktyp *Amazon* und dem Standort Großbritannien erstellt werden. Die Ware muss also auch tatsächlich vor Ort bei Amazon zum Beispiel in Großbritannien gelagert sein, da sonst keine Versandabwicklung über amazon.co.uk stattfinden kann.
 ====
 
 [#3900]
@@ -404,7 +414,7 @@ Amazon Multi-Channel einrichten:
 |<<auftraege/auftraege-verwalten#1200, Status>> der Aufträge wählen, die von Amazon importiert wurden.
 
 | *Lager*
-| Wählen, welches <<Lager für Amazon FBA erstellen, Lager>> für den Versand durch Amazon verwendet werden soll.
+| Wählen, welches <<#60, Lager>> für den Versand durch Amazon verwendet werden soll.
 
 | *Warenausgang*
 | Wählen, ob der Warenausgang als gebucht markiert werden soll oder nicht. Die Option *Als gebucht markieren* erzeugt keine Warenbewegung. Um eine Warenbewegung zu erzeugen, muss die Option *Nicht als gebucht markieren* eingestellt sein und eine Ereignisaktion eingerichtet werden.
@@ -417,7 +427,7 @@ Amazon Multi-Channel einrichten:
 
 | *Bestandsimport*
 | Option *Stündlich* wählen, damit der Bestand importiert wird. +
-Dabei werden nur Änderungen der Bestandsdaten berücksichtigt. Weitere Möglichkeiten zum Bestandsimport sind in Kapitel <<Bestand abgleichen, Bestand abgleichen>> beschrieben.
+Dabei werden nur Änderungen der Bestandsdaten berücksichtigt. Weitere Möglichkeiten zum Bestandsimport sind in Kapitel <<#2400, Bestand abgleichen>> beschrieben.
 
 | *Status für übertragene Aufträge*
 | Bestimmt den Auftragsstatus für Multi-Channel FBA Aufträge, die erfolgreich an FBA übertragen wurden.
@@ -584,7 +594,7 @@ Aktuell können über FBA Inbound keine Artikelpakete (Bundles) verarbeitet werd
 
 Zunächst erstellst du eine FBA-Inbound-Sendung im Amazon Seller Central. Logge dich dafür im Amazon Seller Central ein und öffne den Bereich *Artikel an Amazon senden/ergänzen*. Nachdem du die Sendung im Amazon Seller Central erstellt hast, wird die Sendung mit der Sendungs-ID und dem Ziel-Logistikzentrum in plentymarkets importiert und kann im Menü *Waren » Amazon: Shipments* weiter bearbeitet werden.
 
-// Amazon-Hilfe z.B. hier: https://images-eu.ssl-images-amazon.com/images/G/03/images/FBAQuickLaunchGuide_2015_DE.pdf?ld=NSGoogle_null
+// Amazon-Hilfe zum Beispiel hier: https://images-eu.ssl-images-amazon.com/images/G/03/images/FBAQuickLaunchGuide_2015_DE.pdf?ld=NSGoogle_null
 
 [#125]
 === FBA-Inbound-Sendungen in plentymarkets anzeigen
@@ -947,7 +957,7 @@ Die Auftragsbearbeitung von Outbound-Aufträgen hat folgenden Ablauf:
       *** Bankdaten
 
 
-Amazon FBA-Outbound-Aufträge werden mit den Parametern *Status* und *Herkunft* importiert. Für die Option *Status* legst du den für deinen Prozess passenden Status fest, also zum Beispiel *[7] Warenausgang gebucht*. Die Herkunft wird automatisch auf Amazon FBA oder eine Amazon FBA-Unterherkunft, wie z.B. Amazon FBA USA, gesetzt. Der Warenausgang wird hier in plentymarkets direkt gebucht, so dass keine Reservierung des Bestands der enthaltenen Artikelpositionen stattfindet.
+Amazon FBA-Outbound-Aufträge werden mit den Parametern *Status* und *Herkunft* importiert. Für die Option *Status* legst du den für deinen Prozess passenden Status fest, also zum Beispiel *[7] Warenausgang gebucht*. Die Herkunft wird automatisch auf Amazon FBA oder eine Amazon FBA-Unterherkunft, wie zum Beispiel Amazon FBA USA, gesetzt. Der Warenausgang wird hier in plentymarkets direkt gebucht, so dass keine Reservierung des Bestands der enthaltenen Artikelpositionen stattfindet.
 
 [TIP]
 .Ereignisaktionen für Fulfillment
