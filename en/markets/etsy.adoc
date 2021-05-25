@@ -8,6 +8,7 @@ include::{includedir}/_header.adoc[]
 :url: markets/etsy
 :id: J8WLEBE
 :market: Etsy
+:etsy:
 
 link:https://www.etsy.com/[Etsy^] is an American online market focused on handmade and vintage items.
 
@@ -26,7 +27,8 @@ After you have set up Etsy in plentymarkets, data is exchanged with the market i
 | once a day
 
 | Stock synchronisation
-| Hourly
+| Hourly +
+A maximum stock of 999 is exported.
 
 | Price synchronisation
 | once a day
@@ -65,9 +67,8 @@ Then deactivate your pop-up blocker or try a different browser.
 . Click on *Allow access*. +
 → plentymarkets can access your Etsy account. +
 → You can continue the setup. +
-*_Troubleshooting:_* Are you redirected to the start page of your plentyShop?
-Then go to *Setup » Client » Standard » Online store » Lock store*. Unlock the store. Once the authentication is completed, go back to lock the store.
-
+*_Troubleshooting:_* Are you redirected to the start page of your plentyShop? Then your plentyShop is probably locked. +
+Go to *Setup » Client » Standard » Online store » Lock store* to unlock your plentyShop. Unlock the store. Once the authentication is completed, go back to lock the store.
 
 [#300]
 == Setting up Etsy in plentymarkets
@@ -117,8 +118,9 @@ include::_textblocks/instructions/activate-referrer.adoc[]
 
 :market-availability: Etsy
 :option-availability: Etsy
-
 include::_textblocks/instructions/variation-availability.adoc[]
+
+
 
 // Web API NOT required!
 
@@ -130,7 +132,7 @@ If you already sell a variation on Etsy, save the Etsy listing ID as an SKU for 
 [.instruction]
 Saving an Etsy listing-ID:
 
-. Go to *Item » Edit item » [Open item] » Tab: Variation ID » Tab: Settings*.
+. Go to *Item » Edit item » [Open item] » [Open variation] » Tab: Settings*.
 . Click on the *Availability* tab.
 . In the *SKU* area, click on *Add* (icon:plus-square[role="green"]). +
 → The *New SKU* window opens.
@@ -181,8 +183,17 @@ TIP: You can create only one catalogue for Etsy. Multiple catalogues are current
 
 include::_textblocks/instructions/creating-catalogues.adoc[]
 
+[#903]
+=== Mapping catalogue fields
+
+After you have created a catalogue, map the market's data fields to item data saved in plentymarkets. This chapter describes how you map data fields and what particularities apply for item exports to Etsy. In addition, we provide recommendations for suitable mappings. This information is structured as follows:
+
+* <<#907, Mapping data fields in the catalogue>>
+* <<#905, Notes on mapping data fields>>
+* <<#906, Recommendations for Etsy data field mapping>>
+
 [#map-data-fields]
-=== Mapping data fields in the catalogue
+==== Mapping data fields in the catalogue
 
 After you have created a catalogue, map the market's data fields to item data saved in plentymarkets. Check the documentation of the sales channel to find out what data the market expects for the individual data fields.
 
@@ -207,7 +218,34 @@ Every market structures item data differently. As such, there are some particula
 
 | *Shop sections*
 | For this marketplace data field, all shop sections that you created on Etsy are available.
+
+| *Occasion*; +
+*Recipient*
+| If you only use the export language "German", export the values in German. If you use other export languages, either in addition to or instead of German, export the values in English.
+
+| *Who made it?* (who_made); +
+*When was it made?* (when_made); +
+*A supply or tool to make things?* (is_supply)
+| The combination of these three marketplace data fields determines if a product can be sold on Etsy:
+
+* Products must be either made by you, vintage (older than 20 years) or they must be supply/tools.
+
+This results in the following rules for the export:
+
+* If *who_made* is "someone_else" and *is_supply* is "false", then *when_made* must be at least 20 years ago.
+* If *who_made* is "someone_else" and *when_made* is less than 20 years ago, then *is_supply* must be "true".
 |====
+
+[#906]
+==== Recommendations for data field mappings
+
+To help you with mapping your data fields for the Etsy catalogue, we have created a list of recommended data field mappings for Etsy. Note that these mappings are recommendations only. Depending on how you manage your item data, other mappings may be more appropriate than the recommendation given here.
+
+[.collapseBox]
+.List of recommended data field mappings for Etsy
+--
+include::_textblocks/explanations/etsy-recommended-mappings.adoc[]
+--
 
 [#904]
 === Activating the catalogue
@@ -223,6 +261,8 @@ include::_textblocks/instructions/catalogue-activation.adoc[]
 include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-intro]
 
 include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-availability-active]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-availability-active-etsy]
 
 include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-variation-active]
 
@@ -251,7 +291,7 @@ The following event procedures are available for automating order processing:
 * Automatically send shipping confirmations (<<#1100, How?>>)
 
 [#1000]
-== Automatically sending payment confirmations
+=== Automatically sending payment confirmations
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically send payment confirmations to Etsy when incoming payment is booked.
 
@@ -283,7 +323,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#1100]
-== Automatically sending shipping confirmations
+=== Automatically sending shipping confirmations
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically send shipping confirmations to Etsy when the outgoing items are booked.
 
@@ -327,6 +367,37 @@ Assigning user rights for back end users:
 . Expand the *Authorisation: Markets* menu.
 . Select the option *Credentials*.
 . *Save* (icon:save[role="green"]) the settings.
+
+[#faq]
+== Error messages
+
+[.collapseBox]
+.Cannot set is_customizable flag for shops that do not accept custom orders
+--
+*_Reason for the error message:_*
+
+You have not activated the option *Accept custom orders* in the Etsy back end. However, in the catalogue you mapped a plentymarkets data field to the marketplace data field *Customizable*.
+
+*_Solution:_*
+
+* Activated the option *Accept custom orders* in the Etsy back end.
+
+_or_
+
+* In the catalogue, delete the mapping for the marketplace data field *Customizable*.
+--
+
+[.collapseBox]
+.shipping template does not exist
+--
+*_Reason for the error message:_*
+
+In the catalogue, shipping profiles are not mapped or mapped incorrectly.
+
+*_Solution:_*
+
+Map the shipping profiles correctly.
+--
 
 [#1300]
 == Brand and licensing information
