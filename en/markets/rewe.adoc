@@ -14,8 +14,12 @@ include::{includedir}/_header.adoc[]
 You need a plugin to link plentymarkets to REWE. Visit the link:https://marketplace.plentymarkets.com/en/plugins/sales/marktplaetze/rewe_5901[plentyMarketplace^]{nbsp}icon:external-link[] to download the REWE plugin.
 ====
 
-:plugin: REWE
-include::_textblocks/instructions/plugin-installation.adoc[]
+[#50]
+== About REWE
+
+REWE.de was the first German food retailer to offer groceries online. Now customers can buy their groceries online via their mobile phone in 75 German cities.  
+
+REWE Marktplatz is a German marketplace for groceries and kitchen and household items. In order to ensure REWE's high quality standards, only selected partners are allowed to offer their products on the REWE marketplace. The one-stop-shopping concept invites customers to do their daily shopping on the REWE marketplace, thus facilitating millions of people's everyday lives.     The REWE Marktplatz is based on the e-commerce platform commercetools.
 
 [#100]
 == Registering with REWE
@@ -38,12 +42,37 @@ After you have registered as a seller, you will receive access data from REWE.
 When creating the API client credentials at REWE, make sure to assign enough rights. Select the *Admin client* template or create a new client and assign all rights that are available.
 ====
 
-After installing the REWE plugin, the following automatic processes are available:
+[#70]
+== Overview of automatic data exchange with limango
 
-* daily item export
-* stock synchronisation every 15 minutes
-* hourly price synchronisation
-* order import every 15 minutes
+After installing and setting up the plugin, the automatic processes described in <<#data-exchange-rewe>> are available:
+
+[[data-exchange-rewe]]
+.Frequency of data exchange
+[cols="1,3a"]
+|====
+|Data |Interval
+
+| Item export
+| once a day
+
+| Stock synchronisation
+| Every 15 minutes
+
+| Price synchronisation
+| Hourly
+
+| Order import
+| Every 15 minutes
+|====
+
+[#170]
+== Installing the REWE plugin
+
+To connect to REWE in plentymarkets, install the link:https://marketplace.plentymarkets.com/plugins/channels/marktplaetze/rewe_5901[limango plugin^] in your plentymarkets system. You can download the plugin in the link:https://marketplace.plentymarkets.com/en[plentyMarketplace^]{nbsp}icon:external-link[].
+
+:plugin: REWE
+include::_textblocks/instructions/plugin-installation.adoc[]
 
 [#200]
 == Installing REWE in plentymarkets
@@ -77,7 +106,7 @@ Activating the automatic data exchange:
 [#450]
 == Defining stock export
 
-By default, the stock information for each variation is exported based on the option you selected for the *Limitation* setting. However, you can also ignore this setting and instead export the actual net stock for all variations to REWE.
+By default, the stock information for each variation is exported based on the option you selected for the *Limitation* setting. You can also ignore this setting and instead export the actual net stock for all variations to REWE.
 
 [.instruction]
 Defining stock export:
@@ -93,12 +122,11 @@ Defining stock export:
 |Setting |Explanation
 
 | *Export stock*
-a| * *Consider variation setting 'Limitation'* (default setting) = Stock is exported as specified for each variation. Stock limitation is managed in the *Item » Edit item » [Open item] » Tab: Variation ID » Tab: Settings » Area: Availability* menu using the option *Limitation*. +
+a| * *Consider variation setting 'Limitation'* (default setting) = Stock is exported as specified for each variation. Stock limitation is managed in the *Item » Edit item » [Open item] » [Open variation] » Tab: Settings » Area: Availability* menu using the option *Limitation*. +
 *_Note:_* For variations for which the *Limitation* setting is set to *Do not administer stock for this variation*, a stock of 1000 is exported to REWE. +
-* *Export actual net stock* = The stock *Limit* setting is ignored for all variations during export to REWE. Instead, the actual net stock is exported to REWE for each variation. You can check the actual net stock in the *Item » Edit item » [Open item] » Tab: Variation ID » Tab: Stock » Tab: Stock* menu in the column *Net*. +
+* *Export actual net stock* = The stock *Limit* setting is ignored for all variations during export to REWE. Instead, the actual net stock is exported to REWE for each variation. You can check the actual net stock in the *Item » Edit item » [Open item] » [Open variation] » Tab: Stock » Tab: Stock* menu in the column *Net*. +
 *_Note:_* For variations for which the *Limitation* setting is set to *Do not administer stock for this variation*, a stock of 0 is exported to REWE. As such, the variation cannot be bought on REWE. +
 *_Tip:_* The net stock is the quantity of a variation that is available for sale. The net stock is a subset of the physical stock. Substract all reserved quantities from the physical stock and you will get the net stock.
-
 |====
 
 [#500]
@@ -166,7 +194,11 @@ include::_textblocks/instructions/variation-availability.adoc[]
 [#800]
 == Linking variations with the property REWE product type
 
-Variations that you want to sell on REWE have to be linked with the *REWE product type* variation property. This variation property is created in your plentymarkets system as soon as you have installed the REWE plugin.
+Variations that you want to sell on REWE have to be linked with the *REWE product type* variation property. This variation property is created in your plentymarkets system as soon as you have installed the REWE plugin. Examples for REWE product types are:
+
+* Household
+* Garden
+* Fashion
 
 :property-link: REWE product type
 :property-selection:
@@ -179,6 +211,12 @@ include::_textblocks/instructions/properties-link-to-variation.adoc[]
 
 Item data is exported to REWE via catalogues. The assistant *Creating REWE catalogues* helps you to create a catalogue for a specific product category. Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, principle of catalogues first>>. For further information about the plentymarkets data fields that can be linked, refer to the <<data/exporting-data/managing-catalogues#_mapping_data_sources, Mapping data fields>> chapter.
 
+[IMPORTANT]
+.Items cannot be deleted on commercetools
+====
+Items cannot be deleted on commercetools, neither by plentymarkets nor by REWE or commercetools. Therefore, make extra sure that the correct data fields are mapped in the catalogue prior to transferring your items.
+====
+
 At present, the REWE plugin allows you to create catalogues for the following REWE product categories:
 
 * *Household*
@@ -189,13 +227,89 @@ At present, the REWE plugin allows you to create catalogues for the following RE
 * *Stationary*
 * *Toys*
 * *Garden*
-* *Food*
+* *Baby Supplies*
+* *Contact Lenses*
+* *New Media (DVD etc.)*
+* *Books and Magazines*
+* *AFG* (Soft Drinks)
+* *Alcoholic beverages*
+* *Food* +
+*_Information for the food product category:_* +
+  ** Food specifications must always be made for 100g.
+  ** Energy information must be provided in kcal.
+  ** If the *Nutrition information for prepared and non-prepared foods* field is not mapped, the value *non-prepared* is transferred to REWE by default.
 
-*_Information for the food product category:_*
+[#1001]
+=== Notes on the REWE item data structure: product groups and variations
 
-* Food specifications must always be made for 100g.
-* Energy information must be provided in kcal.
-* If the *Nutrition information for prepared and non-prepared foods* field is not mapped, the value *non-prepared* is transferred to REWE by default.
+REWE differentiates between *product groups* and *variation groups*.
+
+[cols="1,5a"]
+|====
+| Product group
+|
+* The variations look different.
+* As a result, every plentymarkets variation has its own images.
+* Product group attributes are attributes that influence how the product looks
+
+*_Examples:_*
+
+* An item is sold in different colours and/or with different prints.
+* An item is sold in different sizes and the packaging for each size is different.
+
+*_In plentymarkets:_*
+
+In plentymarkets, product groups are items with variations with at least one REWE group attribute, depending on the product type.
+
+*_Example for attribute:_*
+
+For the product type Food, the following *Attributes for product group* are available (as of 05/2021):
+
+* Flavour
+* Package size
+* Variety
+
+*_Notes on mapping data fields:_*
+
+Items in plentymarkets can have more than one REWE group attribute. However, only one REWE group attribute can be used to form product groups. Therefore, the *Attribute for product group* field has to be matched so that the first attribute will always be the attribute that you want to use to form a product group. If an item differs in colour and print and the print should be used as the REWE group attribute, you first have to map the print in the marketplace data field *Attribute for product group* and only then map the colour.
+
+*_Tip:_*
+
+The REWE group attributes for each product type are available in the catalogue templates. To do so, open the drop-down list *Attribute for product group* in the marketplace format.
+
+| Variations
+|
+* The variations look the same.
+* As a result, the images for all variations are identical.
+* Variation attributes are attributes that do not influence how the product looks.
+
+*_Examples:_*
+
+* An item is available in different sizes. All sizes look the same.
+* An item is available in different package sizes. However, the images are identical for all variations.
+
+*_In plentymarkets:_*
+
+In plentymarkets, *variations* are variations of an item no more than one REWE variation attribute, depending on the product type.
+
+*_Example for attribute:_*
+
+For the product type Food, the following *Attributes for variation group* are available (as of 05/2021):
+
+* Diameter
+* Dimensions
+* General size
+
+*_Notes on mapping data fields:_*
+
+* For REWE variation attributes, only one variation attribute can be set, for example only size or only volume.
+* An item should not be linked to more than one attribute which was assigned as REWE variation attribute in the catalogue.
+
+*_Tip:_*
+
+The REWE variation attributes for each product type are available in the catalogue templates. To do so, open the drop-down list *Attribute for variation group* in the marketplace format.
+
+|====
 
 === Creating a catalogue in the assistant
 
@@ -228,33 +342,34 @@ a| Enter a name for the catalogue. The catalogue will be listed under this name 
 [.collapseBox]
 .Step *Mapping basic data fields*
 --
-In this step of the assistant, you decide which variation data saved in plentymarkets you want to send to the market. To do so, you are going to map each field of the market with the data field in plentymarkets that contains the data that you want to export to the market. Instead of mapping an existing data field, you can also instead create a new data field for some fields.
+In this step of the assistant, you decide which variation data saved in plentymarkets you want to send to the market. To do so, you are going to map each data field of the market with the plentymarkets data field that contains the data that you want to export to the market. Instead of mapping an existing data field, you can also instead create a new data field for some fields.
 
 '''
 *SKU* = From the drop-down list, select the data field in plentymarkets that contains the SKU. +
-*_Tip:_* We recommend to link the data field *SKU* with the plentymarkets data field *Variation ID* because the variation ID is clearly assigned to the variation.
+*_Recommendation:_* The variation ID is unique for each variation. Map the marketplace data field *SKU* to the plentymarkets data field *Variation ID*.
+*_Note:_* Do not change the SKU and Parent SKU of a variation once the variation has been created on commercetools.
 
 '''
-*Select data field* = A data field that already exists in plentymarkets will be exported to REWE. Select the data field from the drop-down list *Data field*. +
+*Select data field* = A data field that already exists in plentymarkets will be exported to REWE. Select a data field from the drop-down list *Data field*. +
 *_Note:_* The mappings you create will not be checked in terms of logic. As such, check your mappings carefully before starting the export.
 
 '''
-*Create property* = Creates a <<item/settings/properties#500, property>> and maps this property to the data field. Properties make it possible to export values for data fields that have no corresponding item data saved in plentymarkets, such as *Durchmesser* (diameter).
+*Create property* = Creates a <<item/settings/properties#500, property>> and maps this property to the data field. Properties can be used to export values for data fields that have no corresponding item data saved in plentymarkets, such as *Diameter*.
 
-The automatically created property will be saved in the <<item/settings/properties#500, Setup » Settings » Properties » Configuration>> menu.
+Automatically created property will be saved in the <<item/settings/properties#500, Setup » Settings » Properties » Configuration>> menu.
 
-The property is created with the following settings:
+Automatically created properties are created with the following settings:
 
 * Section = Item
-* Property type = _depending on the market’s requirements_
+* Property type = _depending on the market data field_
 * Language = German
-* Name = Name of the product category
+* Name = _Name of the product category_
 * Group = REWE
 
 '''
-*Creating a sales price* = Creates a sales price and maps this sales price to the data field. You can check and edit this sales price in the <<en/item/settings/prices#400, Setup » Item » Sales prices>> menu.
+*Creating a sales price* = Creates a sales price and maps this sales price to the data field. You can check and edit automatically created sales prices in the <<en/item/settings/prices#400, Setup » Item » Sales prices>> menu.
 
-The sales price is created with the following settings:
+Automatically created sales prices are created with the following settings:
 
 * Subscription interval = None
 * Internal name = REWE
@@ -268,7 +383,7 @@ The sales price is created with the following settings:
 * Country = Germany
 
 '''
-*Create barcode* = Creates a barcode *REWE* and maps this barcode to the data field. If a barcode with the name *REWE* already exists in the system, that barcode is mapped instead. You can check and edit this barcode in the <<en/item/settings/barcodes#100, Setup » Item » Barcodes>> menu.
+*Create barcode* = Creates a barcode *REWE* and maps this barcode to the data field. If a barcode with the name *REWE* already exists in the system, that barcode is mapped instead. You can check and edit automatically created barcodes in the <<en/item/settings/barcodes#100, Setup » Item » Barcodes>> menu.
 --
 
 [#600]
@@ -280,6 +395,188 @@ You have already mapped important mandatory fields for the REWE product category
 
 include::_textblocks/instructions/catalogue-map-data-fields.adoc[]
 
+[#905]
+=== Particularities for mapping data fields
+
+Every market structures item data differently. As such, there are some particularities for each market when mapping data fields. <<#catalogue-rewe-mappings>> contains mapping information for important data fields for REWE.
+
+[[catalogue-rewe-mappings]]
+.Notes on mapping data fields
+[cols="1,3a"]
+|====
+| Marketplace data field | plentymarkets data field
+
+| *SKU*
+| We recommend to link the data field *SKU* with the plentymarkets data field *Variation ID* because the variation ID is clearly assigned to the variation. +
+*_Note:_* Do not change the SKU and Parent SKU of a variation once the variation has been created on commercetools. If you change the SKU or the Parent SKU later, the variation will no longer be updated on commercetools.
+
+| *Attribute for product group*
+| As <<#1001, described above>>, REWE distinguishes between product bgroups and variation groups.
+
+*_Reminder:_* You need a REWE product group if the variations of an item have different images because they look different. Product group attributes are attributes that influence how the product looks.
+
+As such, you would pap the following plentymarkets data field to the marketplace data field *Attribute for product group*:
+
+* *_Alternative 1:_* An attribute that changes the look of the variations
+* *_Alternative 2:_* A property that changes the look of the variations
+
+Of course you can also map fallback data fields. This might be necessary if you use both attributes and properties in plentymarkets for the data that you want to export for the marketplace data field *Attribute for product group*.
+
+[.collapseBox]
+.*_Example 1:_* Mapping colour information for product type "Fashion"
+--
+The following example describes how you can map colour information in a catalogue for the product type "Fashion".
+
+* The colour changes how the variations look. Because of this, you specify the colours using the marketplace data field *Attribute for product group*.
+* In addition, the same plentymarkets data field must be mapped to the marketplace data filed *Colour*.
+
+*_Summary for catalogue experts:_*
+
+[.instruction]
+Mapping colour information for product type "Fashion":
+
+. Map the following plentymarkets data field to this marketplace data field:
+  * *_Alternative 1:_* Field *Value name* of the attribute for colour, language *German*
+  * *_Alternative 2:_* Property for colour, language *German*
+. Navigate to the area *Attribute for product group*.
+. Map the following plentymarkets data field to the marketplace data field *Attribute for product group*:
+  * *_Alternative 1:_* The same attribute for colour
+  * *_Alternative 2:_* The same property for colour
+
+*_Detailed description for first-time catalogue users:_*
+
+The following two descriptions illustrate the settings in detail:
+
+* How to map an attribute for colour
+* How to map a property for colour
+
+[.instruction]
+Mapping colour information in attributes for product type "Fashion":
+
+. Open the REWE catalogue with the format *Fashion*.
+. Navigate to the market data field *Colour*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Attribute*.
+. Click on the attribute. +
+→ Additional options are shown.
+. Click on *Value name*.
+. From the drop-down list underneath *Value name*, select the language *German*.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+. Navigate to the marketplace data field *Attribute for product group*.
+. Click on the data field *Attribute for product group*. +
+→ The marketplace attributes are shown.
+. Click on the marketplace attribute *Colour*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Attribute*.
+. Click on the plus sign to the right of the same attribute.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+
+[.instruction]
+Mapping colour information in properties for product type "Fashion":
+
+. Open the REWE catalogue with the format *Fashion*.
+. Navigate to the market data field *Colour*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Property*.
+. Click on the group with the property. +
+→ The properties of the group are shown.
+. Click on the property.
+. From the drop-down list underneath the name of the property, select the language *German*.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+. Navigate to the marketplace data field *Attribute for product group*.
+. Click on the data field *Attribute for product group*. +
+→ The marketplace attributes are shown.
+. Click on the marketplace attribute *Colour*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Property*.
+. Click on the group with the property.
+. Click on the plus sign to the right of the same property.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+--
+
+[.collapseBox]
+.*_Example 2:_* Mapping package sizes for product type "Household"
+--
+The following example describes how you can map package size information in a catalogue for the product type "Household".
+
+* The packaging is different for the variations. Because of this, you specify the package size using the marketplace data field *Attribute for product group*.
+* In addition, the same plentymarkets data field must be mapped to the marketplace data filed *General size*.
+
+*_Summary for catalogue experts:_*
+
+[.instruction]
+Mapping package sizes for product type "Household":
+
+. Open the REWE catalogue with the format *Household*.
+. Navigate to the market data field *General size*.
+. Map the following plentymarkets data field to this marketplace data field:
+  * *_Alternative 1:_* Field *Value name* of the attribute for size, language *German*
+  * *_Alternative 2:_* Property for size, language *German*
+. Navigate to the area *Attribute for product group*.
+. Map the following plentymarkets data field to the marketplace data field *Attribute for product group*:
+  * *_Alternative 1:_* The same attribute for size
+  * *_Alternative 2:_* The same property for size
+
+*_Detailed description for first-time catalogue users:_*
+
+The following two descriptions illustrate the settings in detail:
+
+* How to map an attribute for package size
+* How to map a property for package size
+
+[.instruction]
+Mapping package sizes in attributes for product type "Household":
+
+. Open the REWE catalogue with the format *Household*.
+. Navigate to the market data field *General size*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Attribute*.
+. Click on the attribute. +
+→ Additional options are shown.
+. Click on *Value name*.
+. From the drop-down list underneath *Value name*, select the language *German*.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+. Navigate to the marketplace data field *Attribute for product group*.
+. Click on the data field *Attribute for product group*. +
+→ The marketplace attributes are shown.
+. Click on the marketplace attribute *Package size*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Attribute*.
+. Click on the plus sign to the right of the same attribute.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+
+[.instruction]
+Mapping package sizes in properties for product type "Household":
+
+. Open the REWE catalogue with the format *Household*.
+. Navigate to the market data field *General size*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Property*.
+. Click on the group with the property. +
+→ The properties of the group are shown.
+. Click on the property.
+. From the drop-down list underneath the name of the property, select the language *German*.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+. Navigate to the marketplace data field *Attribute for product group*.
+. Click on the data field *Attribute for product group*. +
+→ The marketplace attributes are shown.
+. Click on the marketplace attribute *Package size*.
+. Click on *+ Add data field*.
+. In the list of the data fields, click on the group *Property*.
+. Click on the group with the property.
+. Click on the plus sign to the right of the same property.
+. Click on *Confirm*. +
+→ The plentymarkets data field is mapped.
+--
+|====
+
 [#602]
 === _Example:_ Mapping the data field "Product description"
 
@@ -288,9 +585,12 @@ An example of how you can link the mandatory field *Produktbeschreibung* (produc
 . Go to *Data » Catalogues*.
 . Click on the catalogue. +
 → The catalogue opens.
-. Select a plentymarkets data field for the REWE catalogue field *Produktbeschreibung* (product description) from the drop-down list, for example *Item text > Name 1, Name 2, Name 3* that should be displayed on REWE as the product description.
-. Link the other data fields in the same way. Link at least all mandatory fields.
-. *Save* (icon:save[role="green"]) the settings.
+. For the REWE data field *Product description*, select a plentymarkets data field from the drop-down list.
+*_Example:_* *Item text > Name 1*, *Name 2* or *Name 3*
+. Link the other data fields in the same way. Link at least all mandatory fields. +
+*_Tip:_* Mandatory fields are flagged with an asterisk (*).
+. *Save* (icon:save[role="green"]) the settings. +
+→ The content of the selected plentymarkets data field is shown as the product description on REWE.
 
 [#701]
 == Linking data fields created in the assistant with variations
@@ -307,22 +607,6 @@ include::_textblocks/instructions/assistant-link-sources.adoc[]
 :if-active: pass:quotes[if the option *Item export* is activated in the *Setup » Markets » REWE » Basic settings* menu]
 
 include::_textblocks/instructions/catalogue-activation.adoc[]
-
-[#1000]
-== REWE product groups and variants
-
-REWE differentiates between *product groups* and *variants*:
-
-* *Product groups* in plentymarkets are items with variations with at least one REWE group attribute, depending on the product type.
-* *Variants* in plentymarkets are variations of an item which do not have more than one REWE variant attribute, depending on the product type.
-
-For REWE group attributes, more than one different attributes can be set, for example colour and motive. For REWE variant attributes, only one variant attribute can be set, for example only size or only volume.
-
-The REWE group attributes and REWE variant attributes for each product type are available in the catalogue templates. Open the drop-down lists *Attribute for variant group* and *Attribute for product group* in the marketplace format to view the available attributes.
-
-Items in plentymarkets can have more than one REWE group attribute. However, only one REWE group attribute can be used to form product groups. Therefore, the *Attribute for product group* field has to be matched so that the first attribute will always be the attribute that you want to use to form a product group. If an item, for example a t-shirt, differs in colour and print and the print should be used as the REWE group attribute, you first have to link the print in the *Attribute for product group* field and the colour only afterwards.
-
-An item should not be linked to more than one attribute which was assigned as REWE variant attribute in the catalogue.
 
 [#1100]
 == Matching shipping service providers
@@ -382,7 +666,7 @@ Manually synchronising brands:
 *_Tip:_* *Last update* indicates the last time the brands were synchronised with REWE.
 
 [#1700]
-== Deactivating the creation of contacts
+== Deactivating the creation of a contact
 
 By default, REWE orders are always assigned to the contact and the invoice address of REWE. Activate the option *Deactivate contact creation* if you do not want to create a contact. Instead, only addresses are saved. <<#rewe-deactivate-contact-creation>> describes the differences between the two options.
 
