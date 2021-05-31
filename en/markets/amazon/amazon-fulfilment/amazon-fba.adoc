@@ -8,21 +8,75 @@ include::{includedir}/_header.adoc[]
 :id: VKWEAOP
 :author: team-multi-channel
 
-
-The abbreviation FBA stands for Fulfilment by Amazon. Instead of dealing with the orders yourself, packaging the items and sending them, you let Amazon take care of this task for you with the FBA programme. Of course, you then have to store at least some of your items with Amazon. +
+The abbreviation FBA stands for Fulfilment by Amazon. Instead of dealing with the orders yourself, packaging the items and sending them, you let Amazon take care of this task for you with the FBA programme. Of course, you then have to store at least some of your items with Amazon.
 
 For further information about setting up Amazon FBA in plentymarkets, watch this video tutorial:
 
 .Amazon FBA
 video::314713940[vimeo]
 
-[#3300]
-== Setting up the FBA service by Amazon
+== The most important Amazon FBA terms and definitions
 
-[#3400]
+Amazon and this manual page use some specific terms in relation to Amazon FBA. These are explained here to help you get started.
+
+[.collapseBox]
+.Inbound
+--
+
+Inbound means that you supply Amazon with items that Amazon then delivers to your customers.
+
+* Inbound shipments are your shipments to an Amazon FBA Fulfillment Center.
+* Inbound orders are the orders that are created in plentymarkets for your inbound shipments.
+
+--
+
+[.collapseBox]
+.Outbound
+--
+
+Outbound describes the sales and distribution process that Amazon takes over for you:
+
+* Amazon stores the items.
+* When a customer places an order, Amazon packs and ships the items.
+
+--
+
+[.collapseBox]
+.Amazon Multi-Channel
+--
+
+Amazon Multi-Channel allows you to store your items with Amazon and have Amazon ship your items even when you sell these items on external markets.
+
+* Amazon stores the items.
+* When a customer places an order on another market, Amazon packs and ships the items.
+
+
+--
+
+[#50]
+== Setting up Amazon FBA
+
+Proceed as described below to set up Amazon FBA in your plentymarkets system.
+
+[#40]
+=== Saving VAT rates for European Fulfilment Network (EFN)
+
+Amazon is continuously expanding its European Fulfilment Network for sellers who use shipment by Amazon. In order to use this network, you need to be fiscally registered in all countries in which you use FBA logistics centres. In order for your invoices to be generated correctly for these new logistics centres from the fiscal point of view, you can - in addition to your company location - select the warehouse location as basis for the default VAT rate. You can carry out these settings for each client in the *Setup » Client » [Select client] » Locations » [Select location] » Accounting* menu. In the *VAT rates* tab, you save the necessary tax rates for the countries.
+
+* <<orders/accounting#_creating_a_new_location, How to set up a new location>>
+* <<orders/accounting#550, How to enter VAT rates>>
+
+[.collapseBox]
+.*_Example:_* Logistics centre is located in Poland and items are shipped to Germany
+--
+To avoid that the Polish tax rate is used for orders that are shipped to Germany from a logistics centre in Poland, you also have to enter the country Germany with the German tax rate for the location Poland. To do so, go to *Setup » Client » [Select client] » Locations » Poland » Accounting » Tab: VAT rates* and select the country *Germany*. Enter the German tax rate as well as the valid VAT number. +
+<<orders/accounting#550, How to enter VAT rates>>
+--
+
+[#60]
 === Creating a warehouse for Amazon FBA
 
-Go to *Setup » Markets » Amazon » Settings » Tab: Order settings* and use the *Warehouse* option to select which warehouse you would like to use for Amazon fulfilment orders. This way, you can be sure that the complete range of stock management functions remain intact with the FBA programme and that you can keep track of the stock at Amazon in your plentymarkets system.
+Start by creating warehouses for Amazon fulfilment orders. You need to create a warehouse in plentymarkets for every Amazon logistic warehouse that you send items to. This ensures that the complete range of stock management functions remain intact with the FBA programme and that you can keep track of the stock at Amazon in your plentymarkets system.
 
 [.instruction]
 Creating a warehouse:
@@ -31,93 +85,242 @@ Creating a warehouse:
 . Click on *New warehouse*.
 . Enter a name for the warehouse.
 . Select a *Warehouse type*. +
-*_Note:_* If you only want to use this warehouse for FBA stock, i.e. if you only want to offer the stock of this warehouse for Amazon FBA and not in your online store or on other markets, then select the warehouse type *Repair*.
+*_Note:_* If you only want to use this warehouse for FBA stock, i.e. if you only want to offer the stock of this warehouse for Amazon FBA and not in your plentyShop or on other markets, then select the warehouse type *Repair*.
 . Select *Amazon* as *Logistics type*.
-. *Save* (icon:save[role="green"]) the settings to create the warehouse. +
+. *Save* (icon:save[role="green"]) the settings. +
 → The warehouse is listed in the overview in alphabetical order and opened.
 . Carry out further settings according to the explanations on the <<stock-management/setting-up-a-warehouse#, Setting up a warehouse>> page of the manual.
-. *Save* (icon:save[role="green"]) the settings.
+. *Save* (icon:save[role="green"]) the settings. +
+→ The warehouse is created.
 
-[#3500]
-=== FBA order import
+[#90]
+=== Setting up FBA Inbound shipments
 
-Proceed as follows to define that your FBA orders are automatically imported in your plentymarkets system once a day.
+To allow Amazon to ship your items, you need to make sure that there is sufficient stock in one or more FBA fulfilment centers. Start with general settings for shipments to FBA fulfilment centers.
 
-[.instruction]
-Automatically importing FBA orders:
+[#92]
+==== Selecting the label type for FBA inbound shipments
 
-. Go to *Setup » Markets » Amazon » Settings*.
-. Select the account.
-. Click on the *Order settings* tab.
-. In the *Amazon FBA* area, activate the option *Active*.
-. *Save* (icon:save[role="green"]) the settings.
-
-Order processing has the following steps:
-
-*  The customer makes a purchase on Amazon.
-*  Amazon sends the items.
-*  The plentymarkets system requests a report.
-*  Amazon creates the report.
-*  The next day, plentymarkets automatically checks whether any Amazon reports exist. If yes, then these reports are imported.
-*  Orders are generated in plentymarkets from the information contained in these reports.
-
-[IMPORTANT]
-.Note regarding the order import
-====
-Amazon only generates the list of orders once per day. Because it can take up to 2 days before an item is ready for shipping, FBA orders are available in your system with a time delay. Generally, the order confirmation that was generated by Amazon is available in your system two days after the item was shipped or a total of up to 4 days after it was ordered. The punctuality of the deliveries, however, is not affected. They will be carried out with the quickness that is customary for Amazon.
-====
-
-Amazon FBA orders are imported with the parameters *Status* and *Referrer*. Select the *Status* that is most appropriate for your process. For example, this could be status *[7] Outgoing items booked*. The referrer is automatically set to Amazon FBA or an Amazon FBA sub-referrer, e.g. Amazon FBA USA. The date when items are shipped is saved directly in plentymarkets. Therefore, stock is not reserved for items that are included in the order.
-
-[TIP]
-.Event procedures for fulfilment
-====
-Configure the event procedures that are necessary for the fulfilment process. Such event procedures are having invoices generated and sent to your customers with the help of automatic emails, and having the order then switch to another status. +
-For further information, refer to the <<automation/event-procedures#, Event procedures>> and <<fulfilment#, Fulfilment>> pages of the manual.
-====
-
-[discrete]
-===== FBA partial deliveries
-
-Amazon will send FBA partial deliveries if the items ordered by the customer are stored in separate warehouses.
-Hence, the customer receives multiple packages for one order. +
-In plentymarkets, each FBA partial delivery is saved as a separate order, depending on the FBA warehouse which sends the item. You can import one tracking number from Amazon for each partial delivery and then assign it to the according partial delivery. You can generate a separate invoice for each partial delivery. This is necessary if the Amazon warehouses are located in different countries due to differing taxes.
-
-[discrete]
-===== European Fulfilment Network (EFN)
-
-Amazon is continuously expanding its European Fulfilment Network for sellers who use shipment by Amazon. In order to use this network, it is required that you are fiscally registered in all countries in which you use FBA logistics centres. In order for your invoices to be generated correctly for these new logistics centres from the fiscal point of view, you can - in addition to your company location - select the warehouse location as basis for the default VAT rate. You can carry out these settings for each client (store) in the *Setup » Client » Select client » Locations » Select location » Accounting* menu. In the *VAT rates* tab, you save the necessary tax rates for the countries.
-
-[TIP]
-.Example: Logistics centre is located in Poland and items are shipped to Germany
-====
-To avoid that the Polish tax rate is used for orders that are shipped to Germany from a logistics centre in Poland, you also have to enter the country Germany with the German tax rate for the location Poland. To do so, go to *Setup » Client » Select client » Locations » Poland » Accounting » Tab: VAT rates*, select the country *Germany* and enter the German tax rate as well as the valid VAT number.
-====
-
-[#3600]
-=== Automatically importing FBA returns
-
-In case of a return, the customer sends the items back to Amazon. The return is imported into your plentymarkets system and listed in the order menu. It is given the return status that you selected in the *Setup » Orders » Settings* menu.
-
-[IMPORTANT]
-.Do not change the order
-====
-Returns will only be imported if the order exists in plentymarkets and its external order number was not changed.
-====
-
-Activate the import function as described below in order to automatically import FBA returns in your plentymarkets system.
+Select the label type that you want to use for parcel shipments sent with an Amazon Partnered Carrier. You can download and print the label later in the size that you selected here after you have registered the order successfully.
 
 [.instruction]
-Activating the import function for FBA returns:
+Selecting the label type for FBA inbound shipments:
+
+. Go to *Setup » Stock » Amazon FBA » Basic settings*.
+. Select a *Printer profile for labels* from the drop-down list.
+. Save (icon:save[set=plenty]) the setting.
+
+[#110]
+==== Saving contact details for FBA Inbound shipments
+
+Enter the contact details of the person in your company that Amazon can contact in case of any queries regarding the shipment.
+
+[.instruction]
+Saving contact details for FBA Inbound shipments:
+
+. Go to *Setup » Stock » Amazon FBA » Contact*.
+. Carry out the settings. Note <<#fba-contact>>.
+. Save (icon:save[set=plenty]) the settings. +
+→ The contact details are saved.
+
+[[fba-contact]]
+.Contact details for FBA Inbound shipments
+[cols="1,3a"]
+|====
+|Filter |Explanation
+
+| *Name*; +
+*Email address*; +
+*Telephone number*; +
+*Fax number*
+|Enter the contact details of the person that Amazon can contact in case of questions.
+
+|====
+
+[#70]
+=== Setting up FBA outbound orders
+
+Now specify how FBA orders from Amazon are to be processed.
+
+[.instruction]
+Setting up FBA outbound orders:
 
 . Go to *Setup » Markets » Amazon » Settings*.
-. Select the Amazon account.
+. Select the Amazon account for which you want to activate FBA.
 . Click on the *Order settings* tab.
-. Select the setting *Daily* from the *Returns import* drop-down list in the *Shipment by Amazon (FBA)* area.
+. Carry out the settings. Note <<#fba-order-settings>>.
 . *Save* (icon:save[role="green"]) the settings.
 
-[#3650]
-=== Automatically importing FBA credit notes
+[[fba-order-settings]]
+.Settings in the *Order settings* tab
+[cols="1,3a"]
+|====
+| Setting | Explanation
+
+2+| Shipment by Amazon (FBA)
+
+| *Active*
+| Place a check mark to activate Amazon FBA. Your FBA orders automatically are imported into your plentymarkets system daily.
+
+| *Referrers*
+| Select whether only orders from Amazon should be processed with FBA or whether orders from other <<orders/order-referrer#, referrers>> should be processed with FBA as well.
+
+| *Status*
+| Select the <<orders/managing-orders#1200, status>> that is to be assigned to orders that are imported from Amazon.
+
+| *Warehouse*
+| Select which <<Creating a warehouse for Amazon FBA, Amazon FBA warehouse>> should be used for stock synchronisation with the account. This warehouse is also used to assign the FBA order to the account if no FBA order could be assigned to the country the order originates in because no warehouse is set up for the order country.
+
+| *Warehouse for unsellable stock*
+| Select which <<#60, Amazon FBA warehouse>> should be used for unsellable stock for this account. If you do not select a warehouse, the unsellable stock will not be imported. +
+Unsellable stock is defined as the number of units you have for a SKU in Amazon fulfillment centers in unsellable condition. In Amazon's "Manage FBA Inventory" report, this stock is equivalent to the quantity in the column *afn-unsellable-quantity*.
+
+| *Outgoing items*
+| Select whether outgoing items should be marked as booked or not. The option *Mark as booked* does not trigger an item movement. In order to trigger an item movement, select the option *Do not mark as booked* and set up an event procedure.
+
+| *Returns import*
+| Select the option *daily* so FBA returns are automatically imported into your plentymarkets system once a day. +
+*_Tip:_* In the case of a return, purchasers send the items back to Amazon. The return is imported into your plentymarkets system and listed in the order menu. It is given the return status that you selected in the *Setup » Orders » Settings* menu. +
+*_Important:_* Returns will only be imported if the order exists in plentymarkets and its external order number was not changed.
+
+| *Include coupons to returns*
+| Select whether coupons can be used for returns or not. If the FBA order was paid fully or partly with a coupon, the coupon is added to the return. A minimum order quantity for the coupon is not taken into consideration.
+
+| *Stock import*
+| Select whether the stock should be imported *hourly* or never.
+
+|*Status for transmitted orders*
+| Select the <<orders/managing-orders#1200, order status>> for orders that were successfully transferred to FBA.
+
+| *Ignore item discounts from campaigns during import*
+| Amazon order reports do not specify if any item discounts were granted by the seller or by Amazon. In both cases, the discounted amount is deducted from the order value during the order import. However, if Amazon granted the discount, the order value differs from the amount that Amazon pays you for the order. In such cases, you need to manually adjust the order. Otherwise, you do not pay enough VAT on the order.
+
+Select how to deal with item discounts when orders are imported.
+
+[cols="1,3a"]
+!===
+! *No* (default setting)
+! The discount amount is imported. If Amazon granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP.
+* Amazon grants the customer a discount of 1.00 GBP.
+* The order is imported with an order value of 9.00 GBP.
+* Amazon pays you 10.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP.
+* You grant the customer a discount of 1.00 GBP.
+* The order is imported with an order value of 9.00 GBP.
+* Amazon pays you 9.00 GBP. +
+→ All amounts are correct.
+
+! *Yes*
+! The discounted amount is deducted from the order value during the import. This setting is recommended for sellers that do not offer their own discount campaigns on Amazon platforms. If the seller granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP.
+* Amazon grants the customer a discount of 1.00 GBP.
+* Amazon pays you 10.00 GBP.
+* The order is imported with an order value of 10.00 GBP. +
+→ All amounts are correct.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP.
+* You grant the customer a discount of 1.00 GBP.
+* The order is imported with an order value of 10.00 GBP.
+* Amazon pays you 9.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+*_Note:_* To simplify the examples, the fees that you need to pay Amazon for the order are ignored.
+!===
+
+| *Ignore shipping discounts from campaigns during import*
+| Amazon order reports do not specify of any shipping discounts were granted by the seller or by Amazon. In both cases, the discounted amount is deducted from the order value during the order import. However, if Amazon granted the discount, the order value differs from the amount that Amazon pays you for the order. In such cases, you need to manually adjust the order. Otherwise, you do not pay enough VAT on the order.
+
+Select how to deal with shipping discounts when orders are imported.
+
+[cols="1,3a"]
+!===
+! *No* (default setting)
+! The discount amount is imported. If Amazon granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* Amazon waives the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* You waive the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ All amounts are correct.
+
+! *Yes*
+! The discounted amount is deducted from the order value during the import. This setting is recommended for sellers that do not offer their own discount campaigns on Amazon platforms. If the seller granted the discount, the order must be adjusted manually.
+
+Discount granted by Amazon:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* Amazon waives the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ All amounts are correct.
+
+Discount granted by the seller:
+
+* A customer buys one of your items for 10.00 GBP plus 3.00 GBP shipping.
+* You waive the shipping costs.
+* The order is imported with an order value of 10.00 GBP plus 3.00 GBP shipping.
+* Amazon pays you 13.00 GBP. +
+→ The order value and the amount that Amazon pays you do not match. The order must be adjusted manually.
+
+*_Note:_* To simplify the examples, the fees that you need to pay Amazon for the order are ignored.
+!===
+
+| *Item bundles Multichannel*
+| Select which positions should be transferred to Amazon.
+
+[cols="1,3a"]
+!===
+! *Transmit all order positions*
+! Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon.
+
+! *Transmit package position only*
+! Only the package position is transferred to Amazon.
+
+! *Transmit without package position*
+! Only the contents of the package are transferred to Amazon.
+!===
+
+| *Shipping category*
+| Select the shipping priority.
+
+[cols="1,3a"]
+!===
+! *Standard*
+! Normal shipping
+
+! *Expedited*
+! Express shipping
+
+! *Priority*
+! Fastest shipping service
+!===
+|====
+
+[#80]
+==== Automatically importing FBA credit notes
 
 Use the credit note import in order to automatically import FBA credit notes into your plentymarkets system. The credit notes are imported with the status which you have selected for the *Standard status for credit note* setting in the *Setup » Orders » Settings* menu. If you activate the credit note import, then FBA credit notes are imported into your plentymarkets system every 4 hours.
 
@@ -133,13 +336,13 @@ Activating the automatic credit note import:
 . Go to *Setup » Markets » Amazon » Settings*.
 . Select the Amazon account.
 . Click on the *Order settings* tab.
-. Select *Yes* for the *Credit note import* option.
+. For the setting *Credit note import*, select the option *Yes*.
 . *Save* (icon:save[role="green"]) the settings.
 
 [#3700]
 == Setting up Amazon Multi-Channel
 
-Amazon Multi-Channel Fulfilment is Amazon's service that enables you to fulfil orders from sales channels other than Amazon.co.uk using the stock that you have stored in the Amazon fulfilment centre. (source: Amazon)
+Amazon Multi-Channel Fulfillment is a service that enables you to fulfill orders from sales channels other than Amazon.com using the inventory that you have stored in the Amazon fulfillment center (source: Amazon).
 
 In other words, the Multi-Channel function allows you to store your items with Amazon and have Amazon ship your items even though you sell these items on external markets. This chapter describes which settings you have to carry out in your plentymarkets system so that these orders can be processed by Amazon.
 
@@ -172,7 +375,7 @@ Activating the variation availability for Amazon Multi-Channel:
 . Go to *Item » Edit item*.
 . Open the item.
 . Click on the *Multi-Channel* tab.
-. Carry out the settings in the *Amazon* area. Pay attention to the explanations given in <<#item-availability-amazon>> in the <<#700, Setting the variation availability>> chapter.
+. Carry out the settings in the *Amazon* area. Pay attention to the explanations given in <<item-availability-amazon>> in the <<#700, Setting the variation availability>> chapter.
 . *Save* (icon:save[role="green"]) the settings.
 
 [#4000]
@@ -190,16 +393,16 @@ Setting up Amazon Multi-Channel:
 
 [[amazon-multi-channel]]
 .Setting up Amazon Multi-Channel
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Setting | Explanation
 
 | *Active*
 | Place a check mark to activate the daily order import.
 
-| *Referrer*
-a| * *Only use for Amazon orders* = Only process Amazon orders with FBA. +
-* *Can be used for all orders* = Process all orders with FBA.
+| *Referrers*
+| *Only use for Amazon orders* = Only process Amazon orders with FBA. +
+*Can be used for all orders* = Process all orders with FBA.
 
 | *Status*
 |Select the <<orders/managing-orders#1200, order status>> for orders that were imported from Amazon.
@@ -218,23 +421,43 @@ a| * *Only use for Amazon orders* = Only process Amazon orders with FBA. +
 
 | *Stock import*
 | Select the option *Hourly* to import stock on an hourly basis. +
-Only changes in the stock data are taken into consideration. For further information about stock import options, refer to the <<Synchronising stock, Synchronising stock>> chapter.
+Only changes in the stock data are taken into consideration. For further information about stock import options, refer to the <<#2400, Synchronising stock>> chapter.
 
 | *Status for transmitted orders*
 | Determines which order status should be used for multi-channel FBA orders that were transferred to FBA.
 
 | *Item bundles Multichannel*
-a| Select which positions should be transferred to Amazon. +
+| Select which positions should be transferred to Amazon.
 
-* *Transmit all order positions* = Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon. +
-* *Transmit package position only* = Only the package position is transferred to Amazon. +
-* *Transmit without package position* = Only the contents of the package are transferred to Amazon.
+[cols="1,3a"]
+!===
+! *Transmit all order positions*
+! Transmit all positions included in the order to Amazon. If you select this option, then both the package position and the contents of the package are transmitted to Amazon.
+
+! *Transmit package position only*
+! Only the package position is transferred to Amazon.
+
+! *Transmit without package position*
+! Only the contents of the package are transferred to Amazon.
+!===
 
 | *Shipping category*
-a| Select a shipping category. +
+| Select a shipping category.
 
-* *Standard* = Normal shipping +
-* *Expedited* = Express shipping +
+[cols="1,3a"]
+!===
+! *Standard*
+! Normal shipping
+
+! *Expedited*
+! Express shipping
+
+! *Priority*
+! Fastest shipping service
+!===
+
+* *Standard* = Normal shipping
+* *Expedited* = Express shipping
 * *Priority* = Fastest shipping service
 |====
 
@@ -338,3 +561,414 @@ Manually synchronising stock:
 . *Save* (icon:save[role="green"]) the settings to carry out the synchronisation.
 --
 ====
+
+[#120]
+== Managing FBA Inbound orders
+
+Find out how to create, manage and ship FBA Inbound orders.
+
+=== FBA Inbound workflow
+
+FBA Inbound shipments have the following workflow:
+
+. You create an FBA Inbound shipment in Amazon Seller Central. +
+→ The shipment is imported to plentymarkets. +
+→ The shipment is listed in the *Stock » Amazon: Shipments* menu.
+. You create a redistribution for the shipment. +
+→ An FBA Inbound order is created in the *Stock » Amazon FBA Inbound* menu.
+. The order can be processed in the warehouse.
+
+[IMPORTANT]
+======
+Currently, item bundles cannot be processed using FBA Inbound.
+======
+
+[#130]
+=== Creating an FBA shipment in Amazon Seller Central
+
+To start a shipment, create an FBA Inbound shipment in Amazon Seller Central. To do so, log into Amazon Seller Central and go to the area *Send/Replenish Inventory*. After you have create the shipment in Amazon Seller Central, the shipment is imported into plentymarkets and can be processed from the *Stock » Amazon: Shipments* menu.
+
+// Amazon-Hilfe z.B. hier: https://m.media-amazon.com/images/G/01/AmazonServices/Site/UK/psp/PCPStepbyStepGuide_UK-1._CB1552319451_.pdf?ref=as_de_fba_pcp_guide&ld=NSGoogle_null
+
+[#125]
+=== Viewing FBA Inbound shipments in plentymarkets
+
+The *Stock » Amazon: Shipments* menu provides an overview of the FBA Inbound shipments that were created in Amazon Seller Central.
+
+[IMPORTANT]
+.SKU must be available
+====
+This menu only shows shipments where all items contained in the shipment can be synchronized with a variation in plentymarkets based on the SKU.
+====
+
+[.instruction]
+Viewing FBA Inbound shipments in plentymarkets:
+
+. Go to *Stock » Amazon: Shipments*.
+. *_Optional:_* Choose filters in the left column. Note <<#fba-inbound-shipments>>.
+. Click on *Search* (icon:search[role="blue"]). +
+→ The filtered shipments are shown in the overview to the right. <<#fba-inbound-shipments>> describes the information shown.
+
+
+[[fba-inbound-shipments]]
+.Viewing FBA Inbound shipments in plentymarkets
+[cols="1,3a"]
+|====
+|Column |Explanation
+
+2+| Available filters
+
+| *Shipment IDs*
+| Enter shipment IDs to search for a shipment with this ID.
+
+| *Amazon account*
+| From the drop-down list, select an Amazon account to search for shipments for this account.
+
+| *Last update from*
+| Select a date in the calendar to search for shipments that were changed after this date.
+
+| *Last update to*
+| Select a date in the calendar to search for shipments that were changed up to this date.
+
+2+| Information listed
+
+| *Shipment ID*
+|The ID that Amazon gave the shipment when you created it in Amazon Seller Central.
+
+| *Status*
+|The status that Amazon gave the shipment. +
+*_Note:_* Only those shipments are shown here that have the status “Created” and were created in the Amazon Seller Central.
+
+| *Name*
+|The name that Amazon gave the shipment.
+
+| *Target fulfilment center*
+|The Amazon FBA fulfilment center the shipment is sent to.
+
+| *Order*
+|Click on *Create redistribution* to create a redistribution for this shipment. If a redistribution already exists, the date on which is was created is shown.
+
+|====
+
+[IMPORTANT]
+.Do not create stock movements in advance
+====
+The Amazon FBA warehouse does _not_ have different storage locations, but always uses the standard storage location. As such, _do not create stock movements in the redistribution_ before creating the pick list and using the package content list. Otherwise, the storage locations are incorrectly shown on the pick list.
+====
+
+[#140]
+=== Creating a redistribution for the shipment
+
+Now, create a redistribution for the shipment. An FBA Inbound order is then created in the *Stock » Amazon FBA Inbound* menu.
+
+[.instruction]
+Creating a redistribution for the shipment:
+
+. Go to *Stock » Amazon: Shipments*.
+. *_Optional:_* Select filters from the right column to limit the FBA Inbound shipments shown. Note <<#fba-inbound-redistribution>>.
+. Click on *Search* (icon:search[role="blue"]). +
+→ The shipments are shown on the right.
+. In the column *Purchase order*, click on *Create redistribution* (icon:stock[set=plenty]). +
+→ The *Create redistribution* menu opens.
+. Pay attention to the explanations given in <<#fba-inbound-redistribution>>.
+. *Save* (icon:save[set=plenty]) the settings. +
+→ A redistribution for this shipment is created that contains all variations of the shipment. +
+→ An FBA Inbound order is created in the *Stock » Amazon FBA Inbound* menu. +
+→ The FBA Inbound order can be processed.
+
+[[fba-inbound-redistribution]]
+.Creating a redistribution for the shipment
+[cols="1,3a"]
+|====
+| Setting | Explanation
+
+2+| Available filters
+
+| *Shipment IDs*
+| Enter shipment IDs to search for a shipment with this ID.
+
+| *Amazon account*
+| From the drop-down list, select an Amazon account to search for shipments for this account.
+
+| *Last update from*
+| Select a date in the calendar to search for shipments that were changed after this date.
+
+| *Last update to*
+| Select a date in the calendar to search for shipments that were changed up to this date.
+
+2+| Menu *Create redistribution*
+
+| *Source warehouse*
+|Select the warehouse from which the variations are to be sent to the Amazon FBA fulfilment center.
+
+| *Status*
+|From the drop-down list, select the status to be assigned to the FBA Inbound order.
+
+| *ID of a reference order* +
+(optional)
+| If you want to create the redistribution as a child order of an existing order, enter the ID of that order.
+
+|====
+
+[#150]
+=== Viewing FBA Inbound orders
+
+FBA Inbound orders are listed in the *Stock » Amazon FBA Inbound* menu. Note that an FBA Inbound order only is created after you created a redistribution for the shipment.
+
+[.instruction]
+Viewing FBA Inbound orders:
+
+. Go to *Stock » Amazon FBA Inbound*.
+. *_Optional:_* Choose filters in the left column. Note <<#fba-inbound-orders>>.
+. Click on *Search* (icon:search[role="blue"]). +
+→ The filtered FBA Inbound orders are shown in the right column. +
+*_Tip:_* Click on the FBA Inbound order to access options for processing the order.
+
+[[fba-inbound-orders]]
+.Viewing FBA Inbound orders
+[cols="1,3a"]
+|====
+| Column | Explanation
+
+2+| Available filters
+
+| *Owner*
+| From the drop-down list, select an owner to search for FBA Inbound orders created by this person.
+// Eigentümer in Eigner ändern
+
+| *Warehouse*
+| Select a warehouse from the drop-down list to search for FBA Inbound orders that were redistributed to this warehouse.
+
+| *Order ID*
+| Enter the ID of an FBA Inbound order to search for the order with this ID.
+
+| *Status*
+| Select a status to search for orders in this status. +
+The statuses *Open*, *Done* and *All* are available. +
+*_Note:_* If your parcels are shipped with an Amazon partnered carrier and you select the status *Done*, all orders that were confirmed are displayed. If you send your parcels with your own shipping service provider and you select the status *Done*, all orders that have a tracking number are displayed.
+
+2+| Information listed
+
+| *Owner*
+|The person who created the redistribution
+
+| *Sender warehouse*
+|The plentymarkets FBA warehouse
+
+| *Order ID*
+|plentymarkets ID of the FBA Inbound order
+
+| *Shipment ID*
+|The ID that Amazon assigned to the shipment when you created it in Amazon Seller Central
+|====
+
+[#160]
+=== Processing FBA Inbound orders in the warehouse
+
+FBA Inbound orders are then processed in the warehouse. The order is packed and registered with Amazon in the warehouse. How your warehouse staff processes the order depends on your fulfilment processes. This describes how to print a pick list, access the package content list and register the package with Amazon for an FBA Inbound order.
+
+[#200]
+==== Printing a pick list
+
+In the menu *Stock » Amazon FBA Inbound* you can print a <<orders/order-documents/pick-list#, pick list>> for the FBA Inbound order.
+
+[.instruction]
+Printing a pick list:
+
+. Go to *Stock » Amazon FBA Inbound*.
+. *_Optional:_* Choose filters in the left column. Note <<#fba-inbound-orders>>.
+. Click on *Search* (icon:search[role="blue"]). +
+→ The filtered FBA Inbound orders are shown in the right column.
+. Click on the order. +
+→ The options for editing the order are shown.
+. Click on *Print FBA Inbound pick list*. +
+→ The pick list is downloaded as PDF file and you can print it.
+
+[#170]
+==== Opening the package content list
+
+A <<orders/package-content-list#, packet content list>> lists the content of pallets, packages and items. The package content list informs Amazon about what items are in the packages that it stores and ships for you.
+
+The package content list prepares the packages based on the settings in the variation. You can change these settings. To do so, go to *Item » Edit item » [Open item] » Tab: Settings » Area: Shipping* and change the option in the drop-down list *Packages*.
+
+[TIP]
+.Menu *Orders » Package content list*
+====
+You can also open and work on the package content list in the *Orders » Package content list*. The Register button is only shown when you open the package content list from the Stock » Amazon FBA Inbound menu and closed all packages and pallets. You need the *Register* button to register the finished packages with Amazon.
+====
+
+[.instruction]
+Opening the package content list:
+
+. Go to *Stock » Amazon FBA Inbound*.
+. *_Optional:_* Choose filters in the left column. Note <<#fba-inbound-orders>>.
+. Click on *Search* (icon:search[role="blue"]). +
+→ The filtered FBA Inbound orders are shown in the right column.
+. Click on the order. +
+→ The options for editing the order are shown.
+. Click on *Package content list*. +
+→ The order is shown in the *Orders » Packet content list*.
+. Pick and pack the order based on the <<orders/package-content-list#, package content list>>.
+
+[#180]
+==== Registering the FBA Inbound order with Amazon
+
+Once the FBA Inbound order has been packed based on the package content list, you register the order with Amazon. When you register, a package content list is sent to Amazon at the same time. If you use your own shipping service provider, you need the tracking number to register the FBA Inbound order with Amazon.
+
+[IMPORTANT]
+.Always pack before registering
+====
+Once you have registered the order with Amazon, you can no longer change the content of the packages and pallets. As such, only register the order with Amazon once picking and packing is complete.
+====
+
+[.tabs]
+====
+Shipping with your own shipping service provider::
++
+--
+[.instruction]
+Registering the FBA Inbound order with Amazon (own shipping service provider):
+
+. Go to *Stock » Amazon FBA Inbound*.
+. Click on the order. +
+→ The options for editing the order are shown.
+. Click on *Package content list*. +
+→ The order is shown in the *Orders » Packet content list*.
+. Click on *Register*. +
+*_Note:_* The *Register* button is only shown when you open the package content list from the *Stock » Amazon FBA Inbound* menu. +
+→ The window *Register order* opens.
+. Select a *Shipment type for non Amazon-partnered carriers* from the drop-down list. +
+*_Note:_* The shipping types *SP - Small parcel* and *LTL - Less Than Truckload/Full Truckload* are available.
+. Enter the tracking number for all packages. +
+*_Note:_* If you select the shipping type *LTL - Less Than Truckload/Full Truckload*, you have to enter the PRO number. The shipping service provider assigns the PRO number to the shipment.
+. Click on *Yes*. +
+→ The order is registered with Amazon.
+. Send the package to the Amazon FBA warehouse.
+
+[TIP]
+.Disabled fields when you ship the parcels without an Amazon Partnered Carrier
+======
+When you send the parcels without an Amazon Partnered Carrier, the buttons *Request shipping fee*, *Accept shipping fee*, *Void confirmation* and *Print labels* are not available.
+======
+
+--
+
+Shipping with an Amazon Partnered Carrier::
++
+--
+[IMPORTANT]
+.Amazon decides which shipping service provider is used
+======
+If you send the shipment with an Amazon Partnered Carrier, Amazon decides which shipping service provider is used. +
+In Amazon Seller Central, you therefore have to accept the terms and conditions for the Amazon Partnered Carrier Program as well as the terms and conditions for all shipping service providers that are available. Otherwise, errors could occur if Amazon selects a shipping service provider that you usually do not use.
+======
+
+[.instruction]
+Registering the FBA Inbound order with Amazon (Amazon Partnered Carrier):
+
+. Go to *Stock » Amazon FBA Inbound*.
+. Click on the order. +
+→ The options for editing the order are shown.
+. Click on *Package content list*. +
+→ The order is shown in the *Orders » Packet content list*.
+. Click on *Register*. +
+*_Note:_* The *Register* button is only shown when you open the package content list from the *Stock » Amazon FBA Inbound* menu and closed all packages and pallets. +
+→ The window *Register order* opens.
+. Select a *Shipping method* from the drop-down list. +
+*_Note:_* When you use an Amazon Partnered Carrier, only the shipping method *SP - Small parcel* is available.
+. Select the option *Amazon-partnered carrier*.
+. Select an option for the shipment with an Amazon-partnered carrier from the drop-down list.
+. Click on *Yes*. +
+→ A new view opens.
+. Click on *Request shipping fee* to send a request about the estimated shipping costs to Amazon. +
+→ The estimated shipping costs are imported to plentymarkets.
+. To accept the shipping costs, click on *Accept fee*. +
+→ The order is registered with Amazon. +
+→ The status changes to _Confirmed_. +
+→ The shipping labels are generated.
+. Click on *Print labels*. +
+→ The shipping label is downloaded and you can print it.
+. Attach the shipping label to the package.
+. Send the package to the Amazon FBA warehouse.
+
+--
+====
+
+[#185]
+==== Cancelling the FBA Inbound order with Amazon
+
+If you have registered the FBA Inbound order with Amazon by mistake, you can undo the registration by cancelling the shipment.
+
+To do so, click on the *Void confirmation* button. Once the shipment has been cancelled successfully, the order steps back to the status _Working_.
+
+[IMPORTANT]
+.Observe time limits for cancelling shipments
+====
+Observe the following time limits that Amazon sets for cancelling shipments:
+
+* You can cancel small parcels within 24 hours.
+* Full truck loads and less than truckloads can be cancelled within 1 hour.
+
+====
+
+[.instruction]
+Cancelling a FBA Inbound order with Amazon:
+
+. Go to *Stock » Amazon FBA Inbound*.
+. Click on the order. +
+→ The options for editing the order are shown.
+. Click on *Void confirmation*. +
+→ The cancellation is sent to Amazon. +
+→ The status changes to _Working_. +
+*_Tip:_* You can register the shipment again at any time by requesting and accepting the shipping costs.
+
+NOTE: If you want to delete a shipment, you have to delete it in the Amazon Seller Central. Shipments cannot be deleted in plentymarkets.
+
+[#20]
+== Managing FBA Outbound orders
+
+This chapter provides information on processing FBA orders. A quick reminder: Outbound means that Amazon sells and ships for you.
+
+[#22]
+=== Workflow of Outbound orders
+
+Outbound orders have the following workflow:
+
+*  Customers order on Amazon.
+*  Amazon sends the items.
+*  The plentymarkets system requests a report.
+*  Amazon creates the report.
+*  The next day, plentymarkets automatically checks whether any Amazon reports exist. If yes, then these reports are imported.
+*  From the information contained in these reports, orders and contacts are generated in plentymarkets.
+* 30 days after the order is created, the contacts are anonymised. The customer data in the contact is anonymized and the link between the order and the contact is deleted. The customer details in the order remain unchanged. +
+  ** First name and last name of the contact is anonymized.
+  ** The following data is deleted:
+      *** Addresses and address relations
+      *** Address options
+      *** Order relations
+      *** Contact options
+      *** Any relation to a company
+      *** Bank details
+
+
+Amazon FBA outbound orders are imported with the parameters *Status* and *Referrer*. Select the *Status* that is most appropriate for your process. For example, this could be status *[7] Outgoing items booked*. The referrer is automatically set to Amazon FBA or an Amazon FBA sub-referrer, e.g. Amazon FBA USA. The date when items are shipped is saved directly in plentymarkets. Therefore, stock is not reserved for items that are included in the order.
+
+[TIP]
+.Event procedures for fulfilment
+====
+Configure the event procedures that are necessary for the fulfilment process. Such event procedures are having invoices generated and sent to your customers with the help of automatic emails, and having the order then switch to another status. +
+For further information, refer to the <<automation/event-procedures#, Event procedures>> and <<fulfilment#, Fulfilment>> pages of the manual.
+====
+
+
+[IMPORTANT]
+.Note regarding the order import
+====
+Amazon only generates a list of orders once per day. Because it can take up to 2 days before an item is ready for shipping, FBA orders are available in your system with a time delay. Generally, the order confirmation that was generated by Amazon is available in your system two days after the item was shipped or a total of up to 4 days after it was ordered. The punctuality of the deliveries, however, is not affected. They will be carried out with the quickness that is customary for Amazon.
+====
+
+[#30]
+=== FBA Outbound partial deliveries
+
+Amazon will send Amazon FBA partial deliveries if the items ordered by the customer are stored in separate warehouses. Hence, the customer receives multiple packages for one order.
+In plentymarkets, each FBA Outbound partial delivery is saved as a separate order, depending on the FBA warehouse which sends the item. You can import one tracking number from Amazon for each partial delivery and then assign it to the according partial delivery. You can generate a separate invoice for each partial delivery. This is necessary if the Amazon warehouses are located in different countries due to differing taxes.

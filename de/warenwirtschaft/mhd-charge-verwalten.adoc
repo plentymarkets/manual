@@ -7,7 +7,7 @@ include::{includedir}/_header.adoc[]
 :url: warenwirtschaft/mhd-charge-verwalten
 :author: team-stock
 
-Du kannst in plentymarkets Varianten mit Mindesthalbarkeitsdatum (MHD) und/oder Chargen verwalten. Aktuell sind diese Funktionen jedoch nur im plentymarkets Backend produktiv nutzbar.
+Du kannst in plentymarkets Varianten mit Mindesthaltbarkeitsdatum (MHD) und/oder Chargen verwalten. Aktuell sind diese Funktionen jedoch nur im plentymarkets Backend produktiv nutzbar.
 
 [IMPORTANT]
 .MHD/Chargen mit plentyPOS nutzen
@@ -20,23 +20,47 @@ Wenn du mit <<pos#, plentyPOS>> arbeitest, solltest du die Funktionen zur Verwal
 
 Um MHD und/oder Chargen für Varianten zu pflegen, aktivierst du die Optionen *MHD* und/oder *Charge* am Lager einer Variante. Sobald das Lager Bestand hat, ist es nicht mehr möglich, die Option am Lager der Variante zu aktivieren bzw. zu deaktivieren. Ist in diesem Lager der Lagerbestand gleich null, ist eine Änderung möglich. Weitere Informationen findest du im Abschnitt <<warenwirtschaft/wareneingaenge-verwalten#200, Variante mit Lagerort verknüpfen>>.
 
-[discrete]
-=== Benutzerrechte für Backend-Benutzer vergeben
+[TIP]
+.Aktivierung von MHD im Lager ändert Priorität für Laufweg
+====
+Wenn du MHD in deinem Lager aktiviert hast, läuft die Lagerortzuweisung im Auftrag über das FIFO-Prinzip (First In First Out). Somit wird die Position des Lagerortes oder der Dimension nicht mehr berücksichtigt und es wird nach MHD sortiert. Dies gilt allerdings nur, wenn Varianten eines Artikels verschiedene MHDs haben und auf Lagerorten mit verschiedenen Positionen liegen. Die Position ist also nur noch ausschlaggebend, wenn Varianten auf unterschiedlichen Lagerorten das gleiche MHD haben. +
 
-Nutzer vom Typ *Backend* sehen nur bestimmte Bereiche und Menüs im plentymarkets Backend. Somit können sie nur eingeschränkt im System arbeiten. Sollen Mitarbeiter mit dem Zugang *Backend* MHD/Chargen sehen können, muss ein Nutzer vom Typ *Admin* das im folgenden beschriebene Recht für Benutzer mit dem Zugang *Backend* vergeben.
+Der Laufweg ändert sich mit der Aktivierung von MHD wie folgt: +
+
+_Beispiel_: +
+Artikel 1 hat eine Variante auf dem Lagerort mit der Position 1, aber kein MHD. +
+Artikel 2 hat eine Variante mit der Position 2 und das MHD 01.06.2021. +
+Artikel 3 hat eine Variante mit 3 MHDs auf 3 Lagerorten: +
+1. Variante mit Position 3, MHD 01.02.2021 +
+2. Variante mit Position 4, MHD 30.12.2020 +
+3. Variante mit Position 5, MHD 15.03.2021 +
+
+In diesem Fall wird die Variante von Artikel 1 zuerst gepickt, da dort kein MHD vorhanden ist und somit die Position berücksichtigt wird. Anschließend wird die Variante von Artikel 2 gepickt, da dort nur ein MHD vorhanden ist. Erst danach wird die Variante von Artikel 3 mit dem niedrigsten MHD gepickt - hier die Variante auf Position 4 mit dem MHD 30.12.2020.
+====
+
+[discrete]
+=== Benutzerrechte für Backend-Benutzer:innen vergeben
+
+Benutzer:innen vom Typ *Backend* sehen nur bestimmte Bereiche und Menüs im plentymarkets Backend. Somit können sie nur eingeschränkt im System arbeiten. Sollen Mitarbeiter:innen mit dem Zugang *Backend* MHD/Chargen sehen können, muss eine Person mit *Admin*-Zugang das im folgenden beschriebene Recht für Benutzer:innen mit dem Zugang *Backend* vergeben.
 
 [.instruction]
-Benutzerrechte für Backend-Benutzer vergeben:
+Benutzerrechte für Backend-Benutzer:innen vergeben:
 
 . Öffne das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer*.
-. Nutze die Suchfunktion (icon:search[role="blue"]) und öffne den zu bearbeitenden Benutzer.
+. Nutze die Suchfunktion (icon:search[role="blue"]) und öffne das zu bearbeitende Konto.
 . Aktiviere im Bereich *Berechtigungen* die Option *Warenbestände > Lagerort-Verwaltung > Anzeigen*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 [#200]
 == Wareneingang
 
-Abhängig davon, welche Einstellung du wählst, kannst du Varianten mit MHD, Varianten mit Charge oder Varianten mit MHD und Charge einbuchen. Es wird empfohlen, pro Lager und Variante nur gleiche MHD und Chargen auf einen Lagerort zu buchen. Diese Einstellung ist bereits standardmäßig getroffen. Wenn du unterschiedliche MHD/Chargen auf den gleichen Lagerort buchst, kann dies zu Problemen beim Picken führen, da Picker dann ein spezifisches MHD und/oder eine spezifische Charge suchen müssen. Weitere Informationen findest du im Kapitel <<warenwirtschaft/wareneingaenge-verwalten#810, Wareneingang mit MHD/Charge>>.
+Abhängig davon, welche Einstellung du wählst, kannst du Varianten mit MHD, Varianten mit Charge oder Varianten mit MHD und Charge einbuchen. Es wird empfohlen, pro Lager und Variante nur gleiche MHD und Chargen auf einen Lagerort zu buchen. Diese Einstellung ist bereits standardmäßig getroffen. Wenn du unterschiedliche MHD/Chargen auf den gleichen Lagerort buchst, kann dies zu Problemen beim Picken führen, da die Personen dann ein spezifisches MHD und/oder eine spezifische Charge suchen müssen. Weitere Informationen findest du im Kapitel <<warenwirtschaft/wareneingaenge-verwalten#810, Wareneingang mit MHD/Charge>>.
+
+[WARNING]
+.Ware mit MHD/Charge nicht auf Standard-Lagerort buchen
+====
+Um sicherzustellen, dass Ware mit MHD/Charge korrekt importiert wird, buche diese nicht auf den Standard-Lagerort. Verwende in diesem Fall andere Lagerorte.
+====
 
 [#300]
 == Umbuchen

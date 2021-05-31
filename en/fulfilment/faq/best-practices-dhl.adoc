@@ -9,17 +9,15 @@ include::{includedir}/_header.adoc[]
 
 This page lists error messages that are sent back from DHL to plentymarkets via the interface, as well as possible solutions. For reasons of clarity, the error messages are classified in six categories.
 
-== Information about the API log
+== Information about the log
 
-You can retrieve the registration data and the response with possible error messages for a duration of two weeks in the **Data » API Log » Tab: Shipping centre API log** menu. Click on **Open request log** in the right column to open a window that displays the registration data. Click on *Open response log* to open a window with the response message from DHL.
+For troubleshooting pay also attention to the *Data » Log* menu. The entries available there are saved for 4 weeks. For further information, refer to the <<data/datalog#, Data log>> page of the manual.
 
-.Shipping centre API-Log
-image::fulfillment/assets/DHL_Versand_Center_API_Log.png[width=640, height=360]
 
 [#100]
-== Access data, password, productive mode, registration
+== Login details, password, productive mode, registration
 
-In this chapter, you will find error messages related to access data, password, productive mode and login, as well as possible solutions.
+In this chapter, you will find error messages related to login details, password, productive mode and login, as well as possible solutions.
 
 [#200]
 === Fehler bei der Anmeldung: (1001) login failed
@@ -43,25 +41,16 @@ Password validity has expired at DHL
 The password validity for the user for the DHL back end is 90 days for admin users of the business customer portal. If the password is no longer valid, DHL will not display a separate error message in the plentymarkets back end that tells the user to change the password. Only the above mentioned error message will be displayed. This is different if you try to log into the DHL business customer portal. A message will be displayed that you have to change the password.
 
 It might be useful to create a system user in the DHL back end. The password validity for system users is 365 days.
-
-The new password must also be saved in the plentymarkets back end:
-
-* in the plugin in the *Setup » Orders » Shipping » DHL Shipping » Basic settings* menu
-
-* in the interface configuration in the *Setup » Orders » Shipping » Shipping service provider » DHL Intraship/Versenden* menu
+The new password has to be saved also in the *DHL Shipping (Versenden): Basic settings* assistant.
 
 [#300]
 === Code 1001: Der Nutzer des Webservice konnte nicht authentifiziert werden.
 
 `Code 1001 : Der Nutzer des Webservice konnte nicht authentifiziert werden.`
 
-In the past, sellers who received this error message had to change their password in the DHL business customer portal since the password was no longer valid. If the password is no longer valid, DHL will not display a separate error message in the plentymarkets back end that tells the user to change the password. Only the above mentioned error message will be displayed. This is different if you try to log into the DHL business customer portal. A message will be displayed that you have to change the password.
+In the past, sellers who received this error message had to change their password in the DHL business customer portal because the password was no longer valid. If the password is no longer valid, DHL will not display a separate error message in the plentymarkets back end that tells the user to change the password. Only the above mentioned error message will be displayed. This is different if you try to log into the DHL business customer portal. A message will be displayed that you have to change the password.
 
-The new password must also be saved in the plentymarkets back end:
-
-* in the plugin in the *Setup » Orders » Shipping » DHL Shipping » Basic settings* menu
-
-* in the interface configuration in the *Setup » Orders » Shipping » Shipping service provider » DHL Intraship/Versenden* menu
+The new password has to be saved also in the *DHL Shipping (Versenden): Basic settings* assistant.
 
 The password for the DHL back end is valid for 90 days (for admin users). DHL requires a new password after the duration of 90 days. The password for system users created in the DHL back end is valid for a duration of 365 days.
 
@@ -74,9 +63,9 @@ or
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXX: Unauthorized.`
 
-Make sure that the DHL Shipping (Versenden) plugin is in Productive mode and not in Test mode. To do so, go to *Plugins » Plugin overview*, click on the DHL Shipping (Versenden) plugin and select the setting *Productive* under *Configuration*.
+Make sure that the DHL Shipping (Versenden) plugin is in Productive mode and not in Test mode. To do so, go to *Plugins » Plugin set overview*, click on the DHL Shipping (Versenden) plugin and select the setting *Productive* under *Configuration > General*.
 
-The test mode is selected as a standard. This will allow that orders are registered in the sandbox environment (DHL developer portal) – you need separate access data for the developer portal. Once the productive mode is selected and saved, the orders registered with the live system.
+When the test mode is selected, this will allow that orders are registered in the sandbox environment (DHL developer portal) – you need separate login details for the DHL developer portal. Once the productive mode is selected and saved, the orders are registered with the live system.
 
 [#500]
 === Invalid XML: cvc-complex-type.2.4.d: Ungültiger Content wurde beginnend mit Element 'Shipment' gefunden.
@@ -107,22 +96,8 @@ In this sub-chapter, you will find error messages related to products, EKP, proc
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen.	Exception in extension function java.lang.RuntimeException: **productId cannot be mapped**.`
 
-This error message indicates that no billing number which includes the productId was saved. Save the billing number:
+This error message indicates that no billing number which includes the productId was saved. Save the billing number in the *DHL Shipping (Versenden): Basic settings* assistant in the *Billing numbers* step.
 
-* for the DHL Shipping plugin in the menu *Setup » Orders » Shipping » DHL Shipping » Billing numbers*
-
-* for the interface integration DHL Intraship / Versenden in the menu *Setup » Orders » Shipping » Settings » Tab: Shipping profiles* in the table of shipping charges of the corresponding region of the DHL shipping profile
-
-[#800]
-=== Exception in extension function java.lang.RuntimeException: productId +**EXP/OFP**+ cannot be mapped
-
-`Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Exception in extension function java.lang.RuntimeException: productId **EXP/OFP** cannot be mapped.`
-
-*DHL Paket* and *DHL Express* are two different service providers.
-
-DHL Intraship customers can use DHL Paket products as well as DHL Express products, e.g. OFP (Office Paket). Unfortunately, this is not possible any longer for customers of the business customer portal. They can only register DHL Paket products via the business customer portal.
-
-Since plentymarkets still uses the DHL Intraship interface and our registered orders might be transferred to the business customer portal – according to the settings in the customer’s account – customers of the business customer portal receive the message that the registration could not be mapped.
 
 [#900]
 == Shipping profiles
@@ -142,7 +117,7 @@ In many cases, the “old“ DHL shipping profile was linked to the order. The s
 
 If the shipping profile is consistent with the shipping profile in the order, check the region.
 
-If it is not possible to select the region in the shipping profile of the shipping settings, the region in the table of shipping charges of the shipping profile must be checked. To do so, go to *Setup » Orders » Shipping » Settings » Tab: Shipping profiles » Open shipping profile » Tab: Table of shipping charges*. The following note *must not* be displayed:
+If it is not possible to select the region in the shipping profile of the shipping settings, the region in the table of shipping charges of the shipping profile has to be checked. To do so, go to *Setup » Orders » Shipping » Settings » Tab: Shipping profiles » Open shipping profile » Tab: Table of shipping charges*. The following note *must not* be displayed:
 
 `Region not used in shipping profile. Save price to use region. Save and reload table of shipping charges to show shipping service provider settings.`
 
@@ -170,7 +145,7 @@ image::fulfilment/assets/DHL-table-of-shipping-charges-region.png[width=640, hei
 
 Check whether the correct shipping service provider was selected in the *Setup » Orders » Shipping » Settings » Tab: Shipping service provider* menu. The corresponding data can only be loaded if this is the case.
 
-When you have a look at the table of shipping charges, one would recognise that DHL specific data cannot be entered since the fields such as DHL billing number and DHL services are not available.
+When you have a look at the table of shipping charges, one would recognise that DHL specific data cannot be entered because the fields such as DHL billing number and DHL services are not available.
 
 [#1300]
 === Bitte Dateneingabe prüfen. unknown
@@ -184,7 +159,6 @@ Maybe you deleted a billing number that still is to be retrieved in the shipping
 
 * If the order is an export delivery that exceeds the value of EUR 1,000, the message `unknown` is displayed as well.
 
-One of our customers informed us that the following information is displayed at Intraship:
 
 [#1400]
 == Address data, Shipper/Receiver
@@ -204,7 +178,7 @@ You have to correct the data in the delivery address, for example.
 
 `Code 1 : Der Vorgang konnte nicht korrekt durchgeführt werden. Bitte Dateneingabe prüfen. Auftrag XXXXXX: The Customer ID Number is invalid. Please check the Customer ID Number. Your order could not be processed Your order could not be processed.`
 
-The “Postnummer“ in the delivery address is not correct or does not correspond to the customer’s data. Ask your customer for the correct data. Upon validation, DHL also checks the address that must be identical.
+The “Postnummer“ in the delivery address is not correct or does not correspond to the customer’s data. Ask your customer for the correct data. Upon validation, DHL also checks the address that has to be identical.
 
 [#1700]
 === Invalid value in element ‘germany’
@@ -229,10 +203,7 @@ or
 
 `Hard validation error occured, Bitte geben Sie eine gültige Telefonnummer an.`
 
-If one of the above listed messages is displayed more than once, it indicates that missing or incorrect data might have been saved in the *Setup » Orders » Shipping » Service provider » DHL Intraship/Versenden* menu.
-
-.Recipient data in the *Setup » Orders » Shipping » Service providers » DHL Intraship/Versenden*
-image::fulfillment/assets/DHL_Absenderdaten_Intraship_Versenden.png[width=640, height=360]
+If one of the above listed messages is displayed more than once, it indicates that missing or incorrect data might have been saved.
 
 If no error is “visible“, an invisible control character might be the cause. This is often unconsciously added with copy and paste. Thus, delete this control character. It might be necessary to enter the value once again.
 
@@ -243,6 +214,7 @@ If one of the above listed messages is displayed only once, check the recipient 
 
 In this sub-chapter, you will find error messages related to export deliveries, as well as possible solutions.
 
+////
 [#2000]
 === Hard validation error occured., Die Gewichtsangabe ist kleiner als im CN23-Formular.
 
@@ -254,7 +226,7 @@ We have informed DHL about that problem several times, but we were not able to f
 
 With the link:https://marketplace.plentymarkets.com/plugins/integration/DHLShipping_4871[DHL Shipping (Versenden) plugin^]{nbsp}icon:external-link[] which only works with plentymarkets version 7 such as all plugins, this problem no longer occurs.
 
-If you still use the interface and DHL Intraship, registering orders with your DHL Intraship access data is still possible and the above mentioned error message will not be displayed.
+////
 
 [#2100]
 === Bitte geben Sie eine Anzahl / Beschreibung / Warenwert / Gewicht / Art der Sendung an. Die angegebene Art der Sendung ist nicht gültig.
@@ -263,11 +235,11 @@ If you still use the interface and DHL Intraship, registering orders with your D
 
 In this case, information is missing which is relevant for export deliveries. In most cases, this is due to the fact that no prior registration of the CN23 form is possible. (Prior registration means that plentymarkets transfers the item data to DHL in advance. This is mandatory in case of export deliveries.)
 
-The reason why this is not possible is mostly because of the special regions located in the countries of delivery: They must be treated differently for customs reasons, but belong to a country of the European Union that does not require export documents. An example for such a region in Germany is the island Helgoland and in Spain the Canary Islands.
+The reason why this is not possible is mostly because of the special regions located in the countries of delivery: They have to be treated differently for customs reasons, but belong to a country of the European Union that does not require export documents. An example for such a region in Germany is the island Helgoland and in Spain the Canary Islands.
 
 Activate the corresponding country of delivery in the *Setup » Orders » Shipping » Settings » Tab: Countries of delivery* menu, assign it to a region in the *Region* tab and change the country of delivery in the order. This way the missing data can be transferred and the order registration process can be continued.
 
-If you use the DHL plugin, the error message could also be displayed because of the deployed plugin version: It is not possible to register export deliveries with the DHL plugin version older than 1.3.0. Therefore, you must use plugin version 1.3.0 at least to register export deliveries. In order to check which plugin version you use, go to *Plugins » Plugin overview* and have a look at the value that is displayed in the *Version active* column.
+If you use the DHL plugin, the error message could also be displayed because of the deployed plugin version: It is not possible to register export deliveries with the DHL plugin version older than 1.3.0. Therefore, you have to use plugin version 1.3.0 at least to register export deliveries. In order to check which plugin version you use, go to *Plugins » Plugin set overview* and have a look in the relevant plugin set at the value that is displayed in the *Deployed* column.
 
 Screenshot from the test system:
 

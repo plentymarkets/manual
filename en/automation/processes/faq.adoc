@@ -1,0 +1,187 @@
+= FAQ: Processes
+:lang: en
+include::{includedir}/_header.adoc[]
+:author: team-mobile
+:keywords: first help, Client, plentymarkets Client, Client problems, plentyBase, Processes, Processes problems, process problems, SOS processes, Processes FAQ, Process error message
+:position: 60
+:url: automation/processes/FAQ
+:id: Q0SNALQ
+
+The errors listed here are intended to help you identify possible reasons for malfunctions when working with the <<automation/processes#, processes>>.
+
+[#100]
+== Finding plentyBase log files
+
+Log files may help to identify the source of errors that occur while processes are running. If appropriate, our support staff will ask you to send the log files of the corresponding process. Proceed as described below to access the log files and forward them.
+
+[.instruction]
+Finding plentyBase log files:
+
+. Start plentyBase.
+. Run to process until the malfunction occurs.
+. Click on the plentyBase logo and then on *Show log files*. +
+→ If the malfunction occurred on an earlier date, select the file of the corresponding day.
+. Only send log files after they have been *_specifically requested_* by support staff and always use a private message to do so.
+
+[IMPORTANT]
+====
+.How to send log files
+If possible, include a link to your original forum post in your private message. Without this reference, there might be delays in providing support, which we would like to avoid. +
+*_Note:_* Always use private messages. Never attach log files to a public post! To learn how to send private messages in the plentymarkets forum, take a look at link:https://forum.plentymarkets.com/t/wie-sende-ich-private-nachrichten/3024[this post^] (German only).
+====
+
+[#200]
+== Error code 1206: Correct sub procedure (ID x)
+
+The error message `Correct sub procedure (ID x): Code 1206` is a very frequent one. This error message occurs due to changes being made to procedures for printing and saving. For example, if you use computer A to make changes to a process, such as adding procedures for saving or printing, you have to select the respective printer or storage path when creating the procedures. However, the printer or storage path is only valid for the specific computer that is being used at that moment. This is due to the fact that settings for printing and saving are stored locally on your computer. If you now try to run the process on computer B, the error message `Correct sub procedure (ID x): Code 1206` appears for every procedure used for saving or printing. Proceed as described below to resolve the error.
+
+[.instruction]
+Resolving the error:
+
+. Go to *Setup » Processes*.
+. Open the process that is causing the error message.
+. Edit every procedure used for printing and saving.
+. For every printer, add the printer that should be addressed by this procedure.
+  .. Open the sub-procedure *Print*. +
+  image::automation/processes/assets/beispiel_drucken_1-EN.png[]
+  .. Select the printer. +
+  image::automation/processes/assets/beispiel_drucken_2-EN.png[]
+  .. Save (icon:save[role="darkGrey"]) the change.
+. Add a storage path to each procedure used for saving.
+  .. Open the sub-procedure *Save*. +
+  image::automation/processes/assets/beispiel_speichern_1-EN.png[]
+  .. Select the storage path. +
+  image::automation/processes/assets/beispiel_speichern_2-EN.png[]
+  .. Save (icon:save[role="darkGrey"]) the change.
+. The error message can also appear with procedures of the type “In case of error”. Thus, also check if a procedure of this type has been set up for the original procedure.
+  .. Within the procedures, click on the *bug*. +
+  image::automation/processes/assets/beispiel_speichern_3-EN.png[]
+
+[#300]
+== Error message “Document not saved”
+
+Sometimes, the error `{Document type} not saved: No documents available. Relevant IDs: {xxx}` occurs. Proceed as described below to resolve the error.
+
+[.instruction]
+Create temp and cache folder:
+
+. Open the following folder: +
+Windows: *C:\\Users\\"YourUser"\\AppData\\Local\\plentymarkets\\plentybase\\Downloads* +
+MacOS: */Users/"YourUser"/Library/Caches/eu.plentymarkets.plentybase/Downloads*.
+. Check if the subfolder *temp* exists.
+. If it does not exist, create a subfolder named *temp*.
+
+[#400]
+== Error message “Previously started box picking exists for user”
+
+The message `Previously started box picking exists for user` is not exactly an error message. Rather, it informs you that the user has already started box picking, but has not finished it yet.
+
+. Check whether the setting *Previously started box picking* is set to *Continue* in the work step *Order group processing*. With this setting, the previous round of box picking is continued when the process is next started.
+
+If this error message persists or if you would like to discontinue box picking, you can reset it:
+
+. Go to *Setup » Settings » User » Accounts*.
+. Open the user account.
+. Click on the *Processes* tab.
+. Click on *Reset previously started box picking*. +
+→ The previous round of box picking is reset.
+
+[#500]
+== Error message “Documents not saved”
+
+If the error message `Documents not saved. No order data available. Relevant IDs: {xxx}` occurs, you should check if the shipping service provider that the process should register the shipment with is linked with the order.
+
+This error message occurs if e.g. the shipping service provider Hermes is saved for the order, while the process tries to register the order for shipment with DHL.
+
+In this case, either adjust the shipping profile in the order or change the process so that only orders for a specific shipping service provider are filtered.
+
+[#600]
+== The storage locations are not sorted properly
+
+This problem may occur with different documents (pick list, packing list, etc.) or within the work steps. You can resolve this problem by setting up an event procedure.
+Without the event procedure, the assignment within the processes always applies the first order document. However, this is too late for proper sorting within the process.
+
+[.instruction]
+Setting up an event procedure:
+
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure*. +
+→ The *Create new event procedure* window opens.
+. Enter a name.
+. Select the *event* listed in <<table-bp-ep-storage-location-sorting>>.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+. Carry out the settings according to <<table-bp-ep-storage-location-sorting>>.
+. Place a check mark next to the option *Active*.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+[[table-bp-ep-storage-location-sorting]]
+.Event procedure for sorting storage locations
+[cols="1,2,2"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Status change*
+|5.0
+
+| *Filter*
+| *Order > Order type*
+| *Order* +
+*Delivery order* +
+*Warranty* +
+*Repair*
+
+| *Procedure*
+| *Shipping > Assign storage location*
+| *Unassign old storage location*
+|====
+
+[#650]
+== No items are found in the item registration
+
+When carrying out the procedure *Item processing*, it may happen that no items are found. This error occurs when no sales prices are saved for the items that should be processed during item registration.
+Thus, go to *Setup » Item » Sales prices* and check if
+
+* a <<item/settings/prices#400, price type>> is saved for the item and
+* the <<item/settings/prices#400, price type>> is linked to the default client (store).
+
+Carry out the settings in case they do not exist yet. Afterwards, the respective items should be found by the *Item processing* procedure.
+
+[#700]
+== "Authentication for plentyBase tool missing. Check access token settings.”
+
+This message is not exactly an error message. Rather, it informs you that you have not yet set up an access token to establish a secure connection between plentymarkets and plentyBase.
+
+Create a token in plentymarkets and save it in plentyBase to keep this message from appearing. To do so, proceed as described below.
+
+[.instruction]
+Starting plentyBase and opening the menu:
+
+. Start plentyBase.
+. Log in to the back end of your plentymarkets system.
+. Go to *plentymarkets Logo (Start) » plentyBase*.
+. Open the *Settings* tab.
+. Generate a token and copy it to the clipboard.
+. *Save* (icon:save[role="lightGrey"]) the changes.
+
+image:automation/processes/assets/accesstoken-EN.png[]
+
+[.instruction]
+Opening the settings:
+
+. Click on the plentyBase logo in your computer’s task bar and click on *Open configuration*. +
+
+[.instruction]
+Saving a token:
+
+. Click on *Manage access token*.
+. Click on *Add*.
+. On the right, paste the copied token from the clipboard. To the right, enter *plentymarkets*, for example.
+. Click on *OK*.
+
+[#800]
+== “plentyBase not connected. Check status”
+
+The error message “plentyBase not conneected. Check status` refers to different connection problems that may occur with plentyBase. First, make sure that you have correctly generated *and* saved the plenty access token <<#700, as described above>>. 
+
+Depending on the model that you are using, your router may be causing connection problems with plentyBase. If you are using a Fritz!Box, connection problems might be directly related to it.  Users operating a Fritz!Box can find a suitable forum link:https://forum.plentymarkets.com/t/es-kann-keine-verbindung-zu-plentybase-hergestellt-werden-fritzbox-benutzer-loesungsvorschlag/607564[in this forum topic^]{nbsp}icon:external-link[].

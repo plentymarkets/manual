@@ -10,32 +10,24 @@ include::{includedir}/_header.adoc[]
 
 Auf dieser Handbuchseite findest du Informationen zum Einrichten des Preisvergleichportals und Marktplatzes idealo in plentymarkets. Du erfährst, wie du die Schnittstelle einrichtest, deine Artikel zu idealo exportierst und Verkaufspreise festlegst.
 
-[discrete]
-===== Über idealo
+[#2300]
+== Über idealo
 
 Im Jahr 2000 mit der Mission gestartet, Nutzer:innen zu helfen, bessere Kaufentscheidungen zu treffen, zählt idealo mit 50.000 Händler:innen und rund 18 Millionen Nutzer:innen pro Monat zu den relevantesten deutschen E-Commerce-Websites.
 
 Mit idealo Direktkauf bietet idealo einen starken Vertriebskanal. Die Schaltfläche "Zum Kauf" ermöglicht es Nutzer:innen, das Produkt direkt über eine vollintegrierte Checkout-Funktion über idealo.de zu bestellen. Vertragspartner:innen sind dabei stets die Händler:innen selbst, die auch wie gewohnt das Fulfillment übernehmen.
 
-[discrete]
-===== idealo Preisvergleich und idealo Direktkauf
-
-Mit plentymarkets können sowohl der idealo Preisvergleich als auch idealo Direktkauf genutzt werden. Mit idealo Direktkauf können Kund:innen deine Produkte direkt bei idealo kaufen, ohne in deinen Webshop zu wechseln.
-
+Mit plentymarkets können sowohl der idealo Preisvergleich als auch idealo Direktkauf genutzt werden. Mit idealo Direktkauf können Kund:innen deine Produkte direkt bei idealo kaufen, ohne in deinen plentyShop zu wechseln.
 
 [#100]
 == Bei idealo registrieren
 
 Um idealo in plentymarkets einrichten zu können, registriere dich zunächst bei idealo als Händler:in.
 
-[IMPORTANT]
-.Artikeldatenexport
-====
-Kläre vor dem Einrichten in plentymarkets mit idealo, wie Artikeldaten übertragen werden sollen (Erstellung, Aktualisierung und Löschen von Artikeln auf idealo). Artikeldaten können mit einer CSV-Datei oder per API (PWS 2.0-Schnittstelle) exportiert werden. +
-Wenn du PWS 2.0 für den Artikelexport nutzt, werden Artikel einmal täglich auf idealo erstellt und gelöscht. Preise und Bestände werden alle 15 Minuten aktualisiert. +
-Wenn du Artikel mit einer CSV-Datei über den elastischen Export zu idealo überträgst, können Artikel über eine URL von idealo abgerufen werden. +
-Wie du die verschiedenen Arten der Datenübertragung in plentymarkets einrichtest, ist im Kapitel <<Artikelexport einrichten, Artikelexport einrichten>> beschrieben.
-====
+[#3000]
+== Art des Artikeldatenexports wählen
+
+Kläre vor dem Einrichten in plentymarkets mit idealo, wie Artikeldaten übertragen werden sollen (Erstellen, Aktualisieren und Löschen von Artikeln auf idealo). Artikel können entweder mit dem automatischen Artikelexport über eine API (PWS 2.0-Schnittstelle) oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen werden. <<#artikelexport-idealo-1>> zeigt die wichtigsten Unterschiede zwischen den beiden Arten des Artikeldatenexports. Wie du die verschiedenen Arten der Datenübertragung in plentymarkets einrichtest, ist im Kapitel <<#800, Artikelexport einrichten>> beschrieben.
 
 [IMPORTANT]
 .Bei Artikeldatenexport per API vorab idealo kontaktieren
@@ -43,46 +35,244 @@ Wie du die verschiedenen Arten der Datenübertragung in plentymarkets einrichtes
 Wenn du deine Artikeldaten per API (PWS 2.0-Schnittstelle) zu idealo exportieren möchtest, kontaktiere vorher unbedingt idealo unter tam@idealo.de, um die Zugangsdaten zu erhalten.
 ====
 
-[#150]
-=== idealo-Plugin installieren
+[[artikelexport-idealo-1]]
+.Datenübertragung bei idealo
+[cols="1,1"]
+|====
+| Artikelexport per API (PWS 2.0) | Artikelexport mit elastischem Export
 
-Um idealo in plentymarkets nutzen zu können, musst du zunächst das link:https://marketplace.plentymarkets.com/plugins/sales/preisportale/elasticexportidealode_4723[ElasticExportIdealoDE-Plugin^] in deinem plentymarkets System installieren. Das Plugin erhältst du im link:https://marketplace.plentymarkets.com/[plentyMarketplace^]{nbsp}icon:external-link[].
+//tag::table-comparison[]
+|Artikeldatenübertragung per Schnittstelle
+|Artikeldatenübertragung per CSV-Datei
 
-[#175]
-=== Plugin Elastischer Export installieren
+| Unbegrenzte Anzahl an Artikeln kann übertragen werden
+| Um mehr als 9999 Artikel an idealo zu übertragen, muss in den Einstellungen des Elastischen Export die Option *Cache-Datei generieren* aktiviert sein. Wenn die Option *Cache-Datei generieren* aktiviert ist, wird die Ausgabedatei nur alle 24 Stunden neu generiert, um Ressourcen zu sparen. +
+*_Hinweis:_* Um eine optimale Performance des elastischen Exports zu gewährleisten, darf die Option *Cache-Datei generieren* bei maximal 20 Exportformaten aktiv sein.
 
-Um das idealo-Plugin nutzen zu können, musst du zunächst das Plugin link:https://marketplace.plentymarkets.com/plugins/sales/marktplaetze/elasticexport_4763[Elastischer Export^] in deinem plentymarkets System installieren. Das Plugin erhältst du im link:https://marketplace.plentymarkets.com/[plentyMarketplace^]{nbsp}icon:external-link[].
+|Tägliche Erstellung von Artikeln
+|Abruf von Artikeldaten per URL, die bei idealo gespeichert wird
 
+|Aktualisierung von Preisen alle 15 Minuten
+|Intervall, in dem Artikeldaten abgerufen werden, wird von idealo festgelegt
+
+|Aktualisierung von Beständen alle 15 Minuten
+|Intervall, in dem Artikeldaten abgerufen werden, wird von idealo festgelegt
+
+|Aufträge werden über den gewählten Mandanten importiert
+|Aufträge werden immer über den Standardmandanten importiert
+
+//end::table-comparison[]
+|====
+
+[#2400]
+== Benötigte Plugins installieren
+
+Um idealo in plentymarkets nutzen zu können, benötigst du die folgenden Plugins:
+
+* idealo
+* Elastischer Export +
+*_Hinweis:_* Du benötigst das Plugin Elastischer Export auch, wenn du deine Artikeldaten per Schnittstelle PWS 2.0 zu idealo exportierst.
+
+:plugin: idealo
+include::../_textblocks/instructions/plugin-installation.adoc[]
+
+:plugin: Elastischer Export
+include::../_textblocks/instructions/plugin-installation.adoc[]
 
 [#200]
 == idealo-Assistent durchlaufen
 
-Durchlaufe zunächst den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Omni-Channel*, um die Grundeinstellungen für idealo in plentymarkets vorzunehmen. Mit diesem Assistenten richtest du dein idealo-Konto in plentymarkets ein und nimmst Einstellungen für den Artikeldatenexport zu idealo und Auftragsimport von idealo Direktkauf vor. +
+Mit dem Assistenten *Grundeinstellungen - idealo* im Menü *Einrichtung » Assistenten » Plugins » [Mandant öffnen]* richtest du idealo in plentymarkets ein. Mit diesem Assistenten nimmst du außerdem Einstellungen zur Datenübertragung vor. Halte dafür die API-Zugangsdaten bereit, die du von idealo erhalten hast.
 
 [IMPORTANT]
 .Artikelexport per API
 ====
-Wenn du deine Artikel über PWS 2.0 exportierst, ist es zwingend erforderlich, den *idealo Grundeinstellungen*-Assistenten zu durchlaufen, da der automatische Artikelexport nur im idealo-Assistenten eingestellt werden kann.
+Wenn du deine Artikel über die Schnittstelle PWS 2.0 exportierst, ist es zwingend erforderlich, den *idealo Grundeinstellungen*-Assistenten zu durchlaufen. Der automatische Artikelexport kann nur im idealo-Assistenten eingestellt werden.
 ====
 
+:menu-path: pass:quotes[*Einrichtung » Assistenten » Plugins » [Mandant öffnen]*]
+:assistant-name: idealo Grundeinstellungen
+:number-of-boxes: Info-Boxen
+
+include::../_textblocks/instructions/assistant-basic-instructions.adoc[]
+
+[.collapseBox]
+.Schritt *Grundeinstellungen*
+--
+[[table-idealo-basic-settings]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *Welche Shop-ID hat der idealo-Shop, für den du das Benutzerkonto anlegen möchtest?*
+| Shop ID deines idealo-Shops eingeben. Die Shop-ID findest du im idealo Business Portal.
+
+| *Zu welcher Plattform gehört dein idealo-Shop?*
+|Plattform aus der Dropdown-Liste wählen.
+
+| *Mit welchem Mandanten sollen deine Artikel zu idealo exportiert und deine Aufträge in plentymarkets importiert werden?*
+a| Aus der Dropdown-Liste *Mandant* den Mandanten wählen.
+|======
+--
+
+[.collapseBox]
+.Schritt *Automatische Datenübertragung*
+--
+[[table-idealo-data-export]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *Möchtest du deine Artikel zu idealo per Schnittstelle (Partner Web Service 2.0) übertragen?*
+|Du kannst deine Artikel entweder per Schnittstelle oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen. Kläre vor der Einrichtung in plentymarkets mit idealo, wie Artikeldaten übertragen werden sollen. Preise und Bestände werden bei Datenübertragung per Schnittstelle alle 15 Minuten übertragen. Beim CSV-Export bestimmt idealo das Übertragungsintervall.
+
+| *Möchtest du deine Bestände und Preise zu idealo übertragen?*
+| *Bestände und Preise übertragen* aktiviert = Preise und Bestände werden alle 15 Minuten importiert.
+
+| *Möchtest du deine idealo Direktkauf-Aufträge in plentymarkets importieren?*
+|Aktivieren, um Aufträge automatisch alle 15 Minuten zu importieren. +
+*_Hinweis:_* Artikeldaten und Bestandsinformationen können nur übertragen werden, wenn diese Option aktiviert ist.
+
+| *Welcher Auftragsstatus soll vor dem Import stornierten idealo Direktkauf-Aufträgen zugewiesen werden?*
+| Manche idealo Direktkauf-Aufträge werden schon vor dem ersten Import in dein plentymarkets System storniert. Auftragsstatus wählen, der diesen stornierten Aufträgen beim Import zugewiesen werden soll. +
+*_Hinweis:_* Der Import dieser stornierten idealo Direktkauf-Aufträge löst die für den gewählten Status eingerichteten Ereignisaktionen aus. Wähle deshalb einen Status, bei dem keine Ereignisaktionen (zum Beispiel Stornierungsbestätigung an Kunden) ausgelöst werden.
+
+| *Möchtest du offene MOA-1.0-Aufträge weiterhin über dieses Konto abwickeln?*
+| Die Merchant Order API von idealo ist eine Rest-API, die das Abholung und Bearbeiten von Direktkauf-Bestellungen ermöglicht. Im Januar 2021 hat idealo diese Rest-API von Version 1.0 auf Version 2.0 umgestellt. Aktiviere diese Einstellung, wenn du mit diesem Konto schon über die alte MOA-1.0-Schnittstelle Aufträge importiert hast. Offene Aufträge werden dann weiter über dieses Konto automatisch bearbeitet. Wenn du ein neues idealo-Konto einrichtest, kannst du diese Einstellung ignorieren.
+
+|======
+--
+
+[.collapseBox]
+.Schritt *Zugangsdaten*
+--
+[[table-idealo-credentials]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *Wie lauten die Zugangsdaten deines Merchant Order API 2.0 API-Clients?*
+a| Gib für den API-Schlüssel den Token für die Merchant Order API v2 ein. Du erstellst den API-Schlüssel im idealo Business Portal unter *Mein idealo » Einstellungen » API Clients » Bestelldaten API*. Der API-Schlüssel erlaubt plentymarkets Zugriff auf idealo, damit idealo Direktkauf-Aufträge in plentymarkets importiert werden können.
+
+| *Wie lauten die Zugangsdaten deines Partner Web Service 2.0 API-Clients?*
+a| Du benötigst die API-Client-Zugangsdaten, damit plentymarkets auf dein idealo-Konto zugreifen kann. Dadurch kann der Artikeldatenaustausch aktiviert werden. Die Zugangsdaten forderst du bei idealo unter tam@idealo.de an.
+|======
+--
+
+[.collapseBox]
+.Schritt *Artikeldaten*
+--
+[[table-idealo-item-data]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *Welchen Artikelnamen möchtest du an idealo übertragen?*
+| *Name 1*, *Name 2* oder *Name 3* aus der Dropdown-Liste wählen. Dieser Artikelname wird übertragen. +
+*_Tipp:_* Artikelnamen gibst du im Tab <<artikel/artikel-verwalten#50, Texte>> des Artikels ein.
+
+| *Welche Artikelbeschreibung möchtest du an idealo übertragen?*
+| *Artikelbeschreibung*, *Vorschautext*, *Technische Daten* oder *Artikelbeschreibung und technische Daten* aus der Dropdown-Liste wählen. Diese Artikelbeschreibung wird an idealo übertragen.
+
+| *Welche URL möchtest du an idealo übertragen?*
+| Die URL wird benötigt, damit Kund:innen über das Preisportal in deinen plentyShop weitergeleitet werden können. Varianten-URLs können nur übertragen werden, wenn du den Ceres plentyShop verwendest.
+Artikel-URL
+Varianten-URL
+
+| *Welcher Preis soll als Mindestpreis an idealo übertragen werden?*
+a| Wenn du das Preisanpassungs-Feature für idealo Direktkauf-Händler:innen nutzt, kannst du zusätzlich zu dem Verkaufspreis eine Preisuntergrenze an idealo übermitteln. Verkaufspreis aus der Dropdown-Liste wählen, der als Mindestpreis übertragen werden soll. Weitere Informationen zur Preisanpassung findest du bei link:https://partner.idealo.com/de/magazin/repricing-bei-idealo-umsatzanstieg-durch-preisanpassung[idealo^]{nbsp}icon:external-link[]. +
+*_Tipp:_* In der Dropdown-Liste sind nur Verkaufspreise wählbar, bei denen <<#600, die Herkunft idealo aktiviert ist>>.
+
+* *Keinen Mindestpreis verwenden* = Die Preisanpassung ist deaktiviert.
+|======
+--
+
+[.collapseBox]
+.Schritt *Attribute*
+--
+[[table-idealo-attributes]]
+[width="100%"]
+[cols="1,1"]
+|======
+|Einstellung |Erläuterung
+
+| *Mit welchen Attributen, die du in plentymarkets angelegt hast, pflegst du Farben an deinen Artikeln?*
+| Aktiviere die Attribute, über die du Farben an deinen Artikeln pflegst.
+
+| *Mit welchen Attributen, die du in plentymarkets angelegt hast, pflegst du Größen an deinen Artikeln?*
+| Aktiviere die Attribute, über die du Größen an deinen Artikeln pflegst.
+|======
+--
+
+[.collapseBox]
+.Schritt *Zahlungsarten*
+--
+[[table-idealo-payment-methods]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *idealo-Zahlungsarten*
+| Aktiviere die Zahlungsarten, die du für Aufträge von idealo anbieten möchtest.
+|======
+--
+
+[.collapseBox]
+.Schritt *Versandarten*
+--
+[[table-idealo-shipping]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *plentymarkets Versanddienstleister verknüpfen mit:*
+| Wähle für jedes deiner Versandprofile einen Versanddienstleister von idealo aus der Dropdown-Liste. +
+*_Tipp:_* Wenn keine Versandprofile angezeigt werden, hast du für die Auftragsherkunft idealo und das entsprechende Zielland noch keine Versandprofile in plentymarkets eingerichtet. Versandprofile kannst du mit dem Assistenten *Versandeinstellungen* erstellen.
+|======
+--
+
+[.collapseBox]
+.Schritt *Benutzerkonto aktivieren*
+--
+[[table-idealo-account-activation]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+| *Möchtest du dein idealo-Benutzerkonto jetzt aktivieren?*
+a| _Nicht aktiviert_ = Die Einstellungen werden gespeichert, der Datenaustausch mit idealo aber noch nicht gestartet. +
+_Akiviert_ = Der Datenaustausch mit idealo wird nach Abschluss des Assistenten gestartet. +
+*_Empfehlung:_* Aktiviere das Benutzerkonto erst, wenn du alle Einstellungen geprüft hast und den Datenaustausch mit idealo tatsächlich starten möchtest.
+
+| *Möchtest du die bestehenden SKUs aus der alten idealo-Schnittstelle für dein neues Benutzerkonto übernehmen?*
+| Option *Bestehende SKUs übernehmen* aktivieren, wenn du bereits Artikel auf idealo verkaufst. So vermeidest du Artikeldubletten bei idealo. +
+*_Hinweis:_* Aktiviere diese Option nicht, wenn du neu als Händler:in auf idealo verkaufst. Dann werden SKUs auf Basis der Varianten-ID neu generiert.
+|======
+--
 
 [#300]
 == idealo Preisvergleich und idealo Direktkauf nutzen
 
-Je nachdem, ob du nur den idealo Preisvergleich nutzen möchtest oder deinen Kund:innen auch die Möglichkeit bieten möchtest, deine Artikel direkt bei idealo zu kaufen, ohne in deinen Webshop wechseln zu müssen, sind unterschiedliche Einstellungen nötig. Im Folgenden erhältst du eine Übersicht zu den nötigen Einstellungen für idealo Direktkauf.
+Je nachdem, ob du nur den idealo Preisvergleich nutzen möchtest oder deinen Kund:innen auch die Möglichkeit bieten möchtest, deine Artikel direkt bei idealo zu kaufen, ohne in deinen plentyShop wechseln zu müssen, sind unterschiedliche Einstellungen nötig. Im Folgenden erhältst du eine Übersicht zu den nötigen Einstellungen für idealo Direktkauf.
 
 *Einstellungen für idealo Direktkauf:*
 
-- *Grundeinstellungen:* Durchlaufe im Menü *Einrichtung » Assistenten » Omni-Channel* den Assistenten *idealo Grundeinstellungen*.
-- *Artikelexport:* Richte den <<Artikelexport per API, automatischen Artikelexport>> oder den <<Artikelexport mit elastischem Export, Artikelexport per CSV-Datei>> ein, je nachdem, wie du Artikel zu idealo übertragen möchtest.
-- *Auftragsherkunft:* Aktiviere im Menü *Einrichtung » Aufträge » Auftragsherkunft* zusätzlich zur Auftragsherkunft *idealo* auch die <<Auftragsherkunft aktivieren, Auftragsherkunft>> *idealo Direktkauf*.
-- *Variantenverfügbarkeit:* Aktiviere im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *» Tab: Varianten-ID » Tab: Verfügbarkeit* im Bereich *Märkte* zusätzlich zur Option *idealo* auch die <<Variantenverfügbarkeit einstellen, Verfügbarkeit>> *idealo Direktkauf*.
-- *Verkaufspreis:* Richte einen <<Verkaufspreis festlegen, Verkaufspreis>> ein.
-- *SKU:* Füge marktplatzspezifische <<SKU manuell festlegen, SKUs>> hinzu, wenn gewünscht.
-- *Zahlungsart:* Richte die <<Zahlungsart idealo Direktkauf aktivieren, Zahlungsart>> *idealo Direktkauf* ein.
-- *Merkmale:* Erstelle <<Merkmale erstellen, Merkmale>> für idealo Direktkauf. Mit Merkmalen überträgst du Artikeleigenschaften, Versandarten und Gebühren an idealo Direktkauf.
-- *Ereignisaktionen:* Richte <<Ereignisaktionen einrichten, Ereignisaktionen>> ein, um Änderungen am Auftragsstatus automatisch an idealo Direktkauf zu senden.
-
+- *Grundeinstellungen:* Durchlaufe im Menü *Einrichtung » Assistenten » Plugins » [Mandant öffnen]* den Assistenten *idealo Grundeinstellungen*.
+- *Artikelexport:* Richte den <<#850, automatischen Artikelexport>> oder den <<#900, Artikelexport per CSV-Datei>> ein, je nachdem, wie du Artikel zu idealo übertragen möchtest.
+- *Auftragsherkunft:* Aktiviere im Menü *Einrichtung » Aufträge » Auftragsherkunft* zusätzlich zur Auftragsherkunft *idealo* auch die <<#400, Auftragsherkunft>> *idealo Direktkauf*.
+- *Variantenverfügbarkeit:* Aktiviere im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Verfügbarkeit* im Bereich *Märkte* zusätzlich zur Option *idealo* auch die <<#500, Verfügbarkeit>> *idealo Direktkauf*.
+- *Verkaufspreis:* Richte einen <<#600, Verkaufspreis>> ein.
+- *SKU:* Füge marktplatzspezifische <<#700, SKUs>> hinzu, wenn gewünscht.
+- *Zahlungsart:* Richte die <<#1100, Zahlungsart>> *idealo Direktkauf* ein.
+- *Merkmale:* Erstelle <<#1200, Merkmale>> für idealo Direktkauf. Mit Merkmalen überträgst du Artikeleigenschaften, Versandarten und Gebühren an idealo Direktkauf.
+- *Ereignisaktionen:* Richte <<#1600, Ereignisaktionen>> ein, um Änderungen am Auftragsstatus automatisch an idealo Direktkauf zu senden.
 
 [#400]
 == Auftragsherkunft aktivieren
@@ -90,10 +280,9 @@ Je nachdem, ob du nur den idealo Preisvergleich nutzen möchtest oder deinen Kun
 :market: dem idealo Preisvergleich
 :referrer: idealo Preisvergleich
 :referrer-option: pass:quotes[Option *idealo*]
+:idealo-direkt:
 
 include::../_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
-
-Wenn du idealo Direktkauf nutzen möchtest, aktiviere zusätzlich die Auftragsherkunft *idealo Direktkauf*. Wenn du die Auftragsherkunft *idealo Direktkauf* aktivierst, wird in der über den elastischen Export generierten CSV-Datei die Spalte *checkout_approved* auf *true* gesetzt.
 
 [#500]
 == Variantenverfügbarkeit einstellen
@@ -107,33 +296,29 @@ include::../_textblocks/instructions/variantenverfuegbarkeit.adoc[]
 
 // Web-API erforderlich!
 
-
 [#600]
 == Verkaufspreis festlegen
 
 Gehe wie im Folgenden beschrieben vor, um für die Auftragsherkunft idealo einen Verkaufspreis festzulegen. Dieser Preis wird auf idealo angezeigt und ist für den idealo Preisvergleich und idealo Direktkauf gültig.
 
-[.instruction]
-Verkaufspreis für idealo festlegen:
+:referrer-price: idealo
 
-. Öffne das Menü *Einrichtung » Artikel » Verkaufspreise »* _Verkaufspreis öffnen_ *» Tab: Einstellungen*.
-. *_Optional:_* Wenn du noch keinen Verkaufspreis erstellt hast, klicke auf *Neu*, um einen Verkaufspreis zu erstellen.
-. Aktiviere die Herkunft *idealo*.
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
+include::../_textblocks/instructions/verkaufspreis-festlegen.adoc[]
 
 [TIP]
 .Mindestpreis
 ====
 Wenn du für die idealo-Preisspanne einen Mindestpreis angeben möchtest, musst du mindestens zwei Verkaufspreise für idealo festlegen, einen Mindestpreis und einen normalen Verkaufspreis. Außerdem muss der Mindestpreis vom Typ *Aktionspreis* sein und für die Herkunft *idealo Direktkauf* aktiviert werden. +
-Welcher Preis als Mindestpreis für die idealo-Preisspanne an idealo übertragen werden soll, legst du im idealo-Assistenten im xArtikeldaten* mit der Einstellung *Welcher Preis soll als Mindestpreis an idealo übertragen werden?* fest. +
+Welcher Preis als Mindestpreis für die idealo-Preisspanne an idealo übertragen werden soll, legst du im idealo-Assistenten im *Artikeldaten* mit der Einstellung *Welcher Preis soll als Mindestpreis an idealo übertragen werden?* fest. +
 Außerdem muss die Preisspanne bei idealo aktiviert sein.
 ====
 
-
 [#700]
-== SKU manuell festlegen
+== _Optional:_ SKU speichern
 
 :referrer-sku: idealo
+:referrer-id: 121
+:sku-others:
 
 include::../_textblocks/instructions/sku-manuell.adoc[]
 
@@ -141,11 +326,10 @@ include::../_textblocks/instructions/sku-manuell.adoc[]
 
 Wenn du idealo Direktkauf nutzen möchtest, füge zusätzlich SKUs mit der Herkunft *idealo Direktkauf* hinzu.
 
-
 [#800]
 == Artikelexport einrichten
 
-Artikel werden entweder mit dem automatischen Artikelexport über eine API (PWS 2.0-Schnittstelle) oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen. Je nachdem, welche Art der Datenübertragung du wählst, sind verschiedene Einstellungen notwendig. +
+Artikel werden entweder mit dem automatischen Artikelexport über eine API (PWS 2.0-Schnittstelle) oder mit einer CSV-Datei über den elastischen Export zu idealo übertragen. Je nachdem, welche Art der Datenübertragung du wählst, sind verschiedene Einstellungen notwendig.
 
 [IMPORTANT]
 .Art der Datenübertragung
@@ -161,26 +345,14 @@ Informationen zu den verschiedenen Arten der Datenübertragung findest du in <<#
 |====
 | Artikelexport per API (PWS 2.0) | Artikelexport mit elastischem Export
 
-|Artikeldatenübertragung per Schnittstelle
-|Artikeldatenübertragung per CSV-Datei
+include::idealo-einrichten.adoc[tag=table-comparison]
 
-|tägliche Erstellung von Artikeln
-|Abruf von Artikeldaten per URL, die bei idealo gespeichert wird
-
-|Aktualisierung von Preisen alle 15 Minuten
-|Intervall, in dem Artikeldaten abgerufen werden, wird von idealo festgelegt
-
-|Aktualisierung von Beständen alle 15 Minuten
-|
-
-|Aufträge werden über den gewählten Mandanten importiert
-|Aufträge werden immer über den Standardmandanten importiert
 |====
 
 [#850]
 === Artikelexport per API (PWS 2.0-Schnittstelle)
 
-Wenn du deine Artikel per Schnittstelle automatisch zu idealo übertragen möchtest, durchlaufe den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Omni-Channel* und aktiviere den automatischen Artikeldatenexport. Für den automatischen Artikelexport sind außerhalb des idealo-Assistenten keine weiteren Einstellungen in plentymarkets nötig. +
+Wenn du deine Artikel per Schnittstelle automatisch zu idealo übertragen möchtest, durchlaufe den Assistenten *idealo Grundeinstellungen* im Menü *Einrichtung » Assistenten » Plugins » [Mandant öffnen]* und aktiviere den automatischen Artikeldatenexport. Für den automatischen Artikelexport sind außerhalb des idealo-Assistenten keine weiteren Einstellungen in plentymarkets nötig. +
 
 Mit dieser Art der Datenübertragung werden Artikel einmal täglich auf idealo erstellt. Preise und Bestände werden alle 15 Minuten aktualisiert. Artikel können zudem alle 15 Minuten gelöscht werden.
 
@@ -190,7 +362,7 @@ Mit dieser Art der Datenübertragung werden Artikel einmal täglich auf idealo e
 
 Wenn du Artikel über den elastischen Export zu idealo überträgst, müssen im Menü *Daten » Elastischer Export* Einstellungen vorgenommen werden, um das Exportformat einzurichten. Als Voraussetzung muss das Plugin link:https://marketplace.plentymarkets.com/plugins/sales/marktplaetze/elasticexport_4763[Elastischer Export^]{nbsp}icon:external-link[] in deinem plentymarkets System installiert sein. Damit idealo deine Artikeldaten abrufen kann, erstelle zunächst das Datenformat IdealoDE und speichere im Anschluss die URL bei idealo.
 
-Wie du den Artikelexport über den elastischen Export in plentymarkets einrichtest, ist in den folgenden Kapiteln <<Das Format IdealoDE-Plugin in plentymarkets einrichten, Das Format IdealoDE-Plugin in plentymarkets einrichten>> und <<Verfügbare Spalten der Exportdatei, Verfügbare Spalten der Exportdatei>> beschrieben.
+Wie du den Artikelexport über den elastischen Export in plentymarkets einrichtest, ist in den folgenden Kapiteln <<#950, Das Format IdealoDE-Plugin in plentymarkets einrichten>> und <<#1000, Verfügbare Spalten der Exportdatei>> beschrieben.
 
 [#950]
 ==== Das Format IdealoDE-Plugin in plentymarkets einrichten
@@ -205,7 +377,7 @@ Die in diesem Kapitel beschriebenen Einstellungen sind nur notwendig, wenn du Ar
 .idealo Produkt-CSV prüfen
 ====
 Zurzeit sind in plentymarkets nicht alle Spalten der idealo Produkt-CSV verfügbar. Prüfe vor der Einrichtung, ob du Produktspalten benötigst, die in plentymarkets noch nicht verfügbar sind. In diesem Fall ist die Einrichtung von idealo zurzeit noch nicht möglich. +
-Eine Übersicht der in plentymarkets verfügbaren Spalten erhältst du im Kapitel <<Verfügbare Spalten der Exportdatei, Verfügbare Spalten der Exportdatei>>.
+Eine Übersicht der in plentymarkets verfügbaren Spalten erhältst du im Kapitel <<#1000, Verfügbare Spalten der Exportdatei>>.
 ====
 
 Damit deine Artikel mit dem elastischen Export zu idealo übertragen werden können, musst du das Exportformat *IdealoDE* einrichten. Weitere Informationen zum elastischen Export findest du auf der Handbuchseite <<daten/daten-exportieren/elastischer-export#, Elastischer Export>>. Um das Format *IdealoDE* für den elastischen Export nutzen zu können, installiere zunächst das Plugin *Elastischer Export* aus dem plentyMarketplace, wenn noch nicht geschehen.
@@ -223,7 +395,7 @@ In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellunge
 
 [[formateinstellungen-idealo]]
 .Formateinstellungen für IdealoDE
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Einstellung | Erläuterung
 
@@ -239,11 +411,18 @@ In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellunge
 | *IdealoDE-Plugin* wählen.
 
 | *Limit*
-|Zahl eingeben. Wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen, wird die Ausgabedatei für 24 Stunden nicht noch einmal neu generiert, um Ressourcen zu sparen. Wenn mehr als 9999 Datensätze benötigt werden, muss die Option *Cache-Datei generieren* aktiv sein. +
-*_Oder:_*  Wenn du mehr als 9999 Datensätze an idealo übertragen möchtest, kannst du als Alternative auch Version 2.0 des idealo-Plugins installieren.
+| Zahl eingeben. Diese Zahl bestimmt, wie viele Artikel maximal exportiert werden.
+
+*_Hinweis:_* Willst du mehr als 9999 Artikel zu idealo übertragen?
+
+* Dann wird die Ausgabedatei nur einmal alle 24 Stunden neu generiert, um Ressourcen zu sparen.
+* Dann wähle auch die Option *Cache-Datei generieren* weiter unten.
+
+*_Tipp:_*  Wenn du mehr als 9999 Artikel an idealo übertragen möchtest, kannst du als Alternative auch Version 2.0 des idealo-Plugins installieren.
 
 | *Cache-Datei generieren*
-|Aktivieren, wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen. Um eine optimale Performance des elastischen Exports zu gewährleisten, darf diese Option bei maximal 20 Exportformaten aktiv sein.
+| Aktivieren, wenn mehr als 9999 Artikel an idealo übertragen werden sollen. Wenn die Option aktiviert ist, wird die Ausgabedatei nur alle 24 Stunden neu generiert, um Ressourcen zu sparen. +
+*_Hinweis:_* Um eine optimale Performance des elastischen Exports zu gewährleisten, darf diese Option bei maximal 20 Exportformaten aktiv sein.
 
 | *Bereitstellung*
 | *URL* wählen.
@@ -273,7 +452,7 @@ a|Artikelfilter aus der Dropdown-Liste wählen und auf *Hinzufügen* klicken. St
 2+| *Formateinstellungen*
 
 | *Produkt-URL*
-|Wählen, ob die URL des Artikels oder der Variante an das Preisportal übertragen wird. Varianten URLs können nur in Kombination mit dem Ceres Webshop übertragen werden.
+|Wählen, ob die URL des Artikels oder der Variante an das Preisportal übertragen wird. Varianten URLs können nur in Kombination mit dem Ceres plentyShop übertragen werden.
 
 | *Mandant*
 |Mandant wählen. Diese Einstellung wird für den URL-Aufbau verwendet.
@@ -350,7 +529,7 @@ Wenn *Pauschale Versandkosten übertragen* gewählt wurde, wird nur Vorkasse als
 |Diese Option ist für dieses Format nicht relevant.
 
 | *Artikelverfügbarkeit*
-|Option *überschreiben* aktivieren und in die Felder *1* bis *10*, die die ID der Verfügbarkeit darstellen, Artikelverfügbarkeiten eingeben. Somit werden die Artikelverfügbarkeiten, die im Menü *System » Artikel » Verfügbarkeit* eingestellt wurden, überschrieben.
+|Option *überschreiben* aktivieren und in die Felder *1* bis *10*, die die ID der Verfügbarkeit darstellen, Artikelverfügbarkeiten eingeben. Somit werden die Artikelverfügbarkeiten, die im Menü *Einrichtung » Artikel » Verfügbarkeit* eingestellt wurden, überschrieben.
 |====
 
 [#1000]
@@ -358,7 +537,7 @@ Wenn *Pauschale Versandkosten übertragen* gewählt wurde, wird nur Vorkasse als
 
 [[spalten-exportdatei]]
 .Spalten der Exportdatei
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Spaltenbezeichnung | Erläuterung
 
@@ -382,13 +561,13 @@ Entsprechend der Formateinstellung Artikelname.
 Entsprechend der Formateinstellung *Beschreibung*.
 
 | *article_no*
-|Die Variantennr. unter *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Einstellungen » Grundeinstellungen*.
+|Die Variantennr. unter *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Einstellungen » Grundeinstellungen*.
 
 | *producer*
 |Der Name des Herstellers des Artikels. Der Externe Name unter *Einrichtung » Artikel » Hersteller* wird bevorzugt, wenn vorhanden.
 
 | *model*
-|Das Modell unter *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Einstellungen » Grundeinstellungen*.
+|Das Modell unter *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Einstellungen » Grundeinstellungen*.
 
 | *availability*
 | *Pflichtfeld* +
@@ -402,7 +581,7 @@ Bei idealo muss die Lieferzeit in Tagen angegeben werden.
 |Entsprechend der Formateinstellung *Barcode*.
 
 | *fedas*
-|Der Amazon-Produkttyp unter *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *» Multi-Channel » Amazon*.
+|Der Amazon-Produkttyp unter *Artikel » Artikel bearbeiten » [Artikel öffnen] » Multi-Channel » Amazon*.
 
 | *warranty*
 |Aktuell nicht gepflegt.
@@ -415,7 +594,7 @@ Der Verkaufspreis der Variante.
 |Der Verkaufspreis vom Typ UVP der Variante, wenn in den Formateinstellungen aktiviert.
 
 | *weight*
-|Gewicht brutto in Gramm unter *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Einstellungen » Maße*.
+|Gewicht brutto in Gramm unter *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Einstellungen » Maße*.
 
 | *category1-6*
 |Der Name der Kategorieebene des Kategoriepfads der Standard-Kategorie für den in den Formateinstellungen definierten Mandanten.
@@ -431,13 +610,14 @@ Der Verkaufspreis der Variante.
 URL zu dem Bild gemäß der Formateinstellung *Bild*.
 
 | *base_price*
-|Die Grundpreisinformation im Format "Preis / Einheit". (Beispiel: 10,00 EUR / Kilogramm)
+|Die Grundpreisinformation im Format "Preis / Einheit". +
+*_Beispiel:_* 10,00 EUR / Kilogramm
 
 | *free_text_field*
 |Der Wert eines Merkmals vom Typ Text oder Auswahl mit der Verknüpfung zu idealo.
 
 | *checkoutApproved*
-|Wird true gesetzt, wenn entweder die Auftragsherkunft idealo Direktkauf unter *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Verfügbarkeit » Märkte* aktiviert wurde oder ein Merkmal vom Typ *Kein* und der Verknüpfung zum idealo Direktkauf-Merkmal checkoutApproved gesetzt wurde.
+|Wird true gesetzt, wenn entweder die Auftragsherkunft idealo Direktkauf unter *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Verfügbarkeit » Märkte* aktiviert wurde oder ein Merkmal vom Typ *Kein* und der Verknüpfung zum idealo Direktkauf-Merkmal checkoutApproved gesetzt wurde.
 
 | *itemsInStock*
 | *Voraussetzung*: checkoutApproved ist true. +
@@ -460,7 +640,6 @@ Merkmal vom Typ *Text*, *Auswahl* oder *Kommazahl* und der Verknüpfung zum idea
 Es werden die Zahlungsarten gemäß der Formateinstellung *Versandkosten* in einer eigenen Spalte übermittelt.
 |====
 
-
 [#1100]
 == Zahlungsart idealo Direktkauf aktivieren
 
@@ -472,7 +651,7 @@ Damit Zahlungen für Aufträge von idealo Direktkauf durchgeführt und in deinem
 Die Zahlungsart *idealo Direktkauf* muss nur aktiviert werden, wenn du idealo Direktkauf nutzt.
 ====
 
-:paymentmethod: idealo Direktkauf
+:payment-method: idealo Direktkauf
 :folder: DE
 
 include::../_textblocks/instructions/zahlungsart_aktivieren.adoc[]
@@ -483,11 +662,10 @@ include::../_textblocks/instructions/zahlungsart_aktivieren.adoc[]
 Wenn du PayPal als Zahlungsart anbietest, muss die Zahlungsart PayPal zwingend in deinem plentymarkets System gespeichert und eingerichtet sein, damit die Zahlung korrekt importiert und dem Auftrag zugeordnet werden kann.
 ====
 
-
 [#1200]
 == Merkmale erstellen
 
-Mit <<artikel/einstellungen/eigenschaften#100, Merkmalen>> verknüpfst du bestimmte Eigenschaften, die du für die Einrichtung des Marktplatzes idealo Direktkauf benötigst, mit deinen Artikeln. Mit Merkmalen überträgst du Artikeleigenschaften, Versandarten und Gebühren an idealo Direktkauf.
+Mit <<artikel/einstellungen/eigenschaften#100, Merkmalen>> verknüpfst du bestimmte Artikeldetails, die du für die Einrichtung des Marktplatzes idealo Direktkauf benötigst, mit deinen Artikeln. Mit Merkmalen überträgst du Artikeldetails, Versandarten und Gebühren an idealo Direktkauf.
 
 [IMPORTANT]
 .Bestimmte Merkmale können nur mit Plugin-Version 2.0 verwendet werden
@@ -513,7 +691,7 @@ Merkmal für Material einrichten:
 . Wähle bei *idealo Direktkauf-Merkmal* das Merkmal *Material*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 [#1300]
 === Merkmal für Versandarten erstellen
@@ -533,12 +711,12 @@ Merkmal für Versandart erstellen:
 . Wähle je nach Versandart einen Wert aus der Dropdown-Liste. Die Werte *Spedition*, *Paketdienst*, *Brief* und *Download* sind verfügbar.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 [discrete]
 ===== Weitere Merkmale für Versandarten
 
-Für Artikel mit der Versandart *Spedition* kann die zusätzliche Dienstleistung *Zwei-Mann-Lieferung bis zum Aufstellort* und *Altgeräteabholung* als Merkmal an idealo Direktkauf übergeben werden. Die Altgeräteabholung kann nur in Kombination mit der Zwei-Mann-Lieferung übergeben werden. Das heißt, du musst sowohl das Merkmal *Zwei-Mann-Lieferung (twoManHandlingPrice)* als auch das Merkmal *Altgeräteabholung (DisposalPrice)* erstellen und beide mit dem Artikel verknüpfen. Wähle in beiden Fällen als Merkmaltyp *Kommazahl*. Gib den Aufpreis am Artikel für die zusätzliche Dienstleistung mit zwei Dezimalstellen und mit Punkt als Dezimaltrenner (19.99) im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* ein.
+Für Artikel mit der Versandart *Spedition* kann die zusätzliche Dienstleistung *Zwei-Mann-Lieferung bis zum Aufstellort* und *Altgeräteabholung* als Merkmal an idealo Direktkauf übergeben werden. Die Altgeräteabholung kann nur in Kombination mit der Zwei-Mann-Lieferung übergeben werden. Das heißt, du musst sowohl das Merkmal *Zwei-Mann-Lieferung (twoManHandlingPrice)* als auch das Merkmal *Altgeräteabholung (DisposalPrice)* erstellen und beide mit dem Artikel verknüpfen. Wähle in beiden Fällen als Merkmaltyp *Kommazahl*. Gib den Aufpreis am Artikel für die zusätzliche Dienstleistung mit zwei Dezimalstellen und mit Punkt als Dezimaltrenner (19.99) im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* ein.
 
 [#1350]
 === Merkmal für Kommentar zur Lieferung erstellen
@@ -556,7 +734,7 @@ Merkmal für Kommentar zur Lieferung erstellen:
 . Wähle bei *idealo Direktkauf-Merkmal* das Merkmal *DeliveryComment*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 [#1400]
 === Merkmal für Energieeffizienzklasse erstellen
@@ -566,7 +744,7 @@ Mit dem Merkmal *EnergyClass* überträgst du Informationen zur Energieeffizienz
 Gehe wie im Folgenden beschrieben vor, um das Merkmal *EnergyClass* zu erstellen.
 
 [.instruction]
-Merkmal für Energieeffizienzklasse einrichten:
+Merkmal für Energieeffizienzklasse erstellen:
 
 . Öffne das Menü *Einrichtung » Artikel » Merkmale » Tab: Neues Merkmal*.
 . Gib den *Namen (intern)* ein.
@@ -576,7 +754,7 @@ Merkmal für Energieeffizienzklasse einrichten:
 . Wähle je nach Energieeffizienzklasse einen Wert aus der Dropdown-Liste.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 [#1450]
 === Merkmal für kostenlose Rückgabe erstellen
@@ -586,7 +764,7 @@ Mit dem Merkmal *FreeReturnDays* überträgst du Informationen zur kostenlosen R
 Gehe wie im Folgenden beschrieben vor, um das Merkmal *FreeReturnDays* zu erstellen.
 
 [.instruction]
-Merkmal für kostenlose Rückgabefrist einrichten:
+Merkmal für kostenlose Rückgabefrist erstellen:
 
 . Öffne das Menü *Einrichtung » Artikel » Merkmale » Tab: Neues Merkmal*.
 . Gib den *Namen (intern)* ein.
@@ -594,7 +772,7 @@ Merkmal für kostenlose Rückgabefrist einrichten:
 . Wähle bei *idealo Direktkauf-Merkmal* das Merkmal *FreeReturnDays*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 [#1500]
 === Merkmal für Pfand erstellen
@@ -604,7 +782,7 @@ Mit dem Merkmal *DepositFee* überträgst du Informationen zum Pfand an idealo D
 Gehe wie im Folgenden beschrieben vor, um das Merkmal *DepositFee* zu erstellen.
 
 [.instruction]
-Merkmal für Pfand einrichten:
+Merkmal für Pfand erstellen:
 
 . Öffne das Menü *Einrichtung » Artikel » Merkmale » Tab: Neues Merkmal*.
 . Gib den *Namen (intern)* ein.
@@ -612,7 +790,7 @@ Merkmal für Pfand einrichten:
 . Wähle bei *idealo Direktkauf-Merkmal* das Merkmal *DepositFee*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 [#1550]
 === Merkmal für Replika erstellen
@@ -622,7 +800,7 @@ Mit dem Merkmal *Replica* gibst du an, ob es sich bei dem Artikel um eine Replik
 Gehe wie im Folgenden beschrieben vor, um das Merkmal *Replica* zu erstellen.
 
 [.instruction]
-Merkmal für Replika einrichten:
+Merkmal für Replika erstellen:
 
 . Öffne das Menü *Einrichtung » Artikel » Merkmale » Tab: Neues Merkmal*.
 . Gib den *Namen (intern)* ein.
@@ -630,54 +808,22 @@ Merkmal für Replika einrichten:
 . Wähle bei *idealo Direktkauf-Merkmal* das Merkmal *Replica*.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *»* _Variante öffnen_ *» Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
+Im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Merkmale* verknüpfst du anschließend das Merkmal mit dem Artikel.
 
 
 [#1600]
-== Ereignisaktionen einrichten
+== Ereignisaktionen für idealo Direktkauf erstellen
 
-Richte Ereignisaktionen ein, um Änderungen am Auftragsstatus automatisch an idealo zu senden. Du kannst mit Ereignisaktionen Auftragsbestätigungen, Versandbestätigungen, Retouren und Stornierungen automatisch an idealo Direktkauf senden.
+Du verwendest idealo Direktkauf? Dann richte Ereignisaktionen ein, um Änderungen am Auftragsstatus automatisch an idealo zu senden. Du kannst mit Ereignisaktionen Versandbestätigungen, Retouren und Stornierungen automatisch an idealo Direktkauf senden.
 
 [TIP]
-.Ereignisaktionen für idealo Direktkauf
+.Ereignisaktionen nur für idealo Direktkauf
 ====
 Ereignisaktionen müssen nur eingerichtet werden, wenn du idealo Direktkauf nutzt.
 ====
 
-[#1650]
-=== Auftragsbestätigungen automatisch senden
-
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um nach Eingang eines Auftrags automatisch eine Auftragsbestätigung an idealo zu senden.
-
-:table-event-procedure: <<#auftragsbestaetigung-idealo>>
-
-include::../../_includes/textblocks/instructions/EA.adoc[]
-
-[[auftragsbestaetigung-idealo]]
-.Ereignisaktion zum automatischen Senden von Auftragsbestätigungen an idealo
-[cols="1,3,3"]
-|====
-|Einstellung |Option |Auswahl
-
-| *Ereignis*
-| *Auftragsanlage: Neuer Auftrag*
-|
-
-| *Filter 1*
-| *Auftrag &gt; Auftragstyp*
-| *Auftrag*
-
-| *Filter 2*
-| *Auftrag &gt; Herkunft*
-| *idealo Direktkauf*
-
-| *Aktion*
-| *Auftrag &gt; Auftragsbestätigung an idealo senden*
-|
-|====
-
 [#1700]
-=== Versandbestätigungen automatisch senden
+=== Versandbestätigungen automatisch melden
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um automatisch eine Versandbestätigung an idealo zu senden, nachdem ein Warenausgang gebucht wurde.
 
@@ -686,13 +832,13 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um automa
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
 [[versandbestaetigung-idealo]]
-.Ereignisaktion zum automatischen Senden von Versandbestätigungen an idealo
+.Ereignisaktion zum automatischen Melden von Versandbestätigungen an idealo
 [cols="1,3,3"]
 |====
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| *Auftragsänderung: Warenausgang gebucht*
+| Ereignis wählen, zum Beispiel *Auftragsänderung: Warenausgang gebucht*
 |
 
 | *Filter 1*
@@ -704,12 +850,12 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *idealo Direktkauf*
 
 | *Aktion*
-| *Versand > Versandbestätigung an idealo senden*
+| *Plugins > Versandbestätigung an idealo melden*
 |
 |====
 
 [#1750]
-=== Retouren automatisch senden
+=== Retouren automatisch melden
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um idealo automatisch über Retouren zu informieren.
 
@@ -718,13 +864,13 @@ Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um idealo
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
 [[retouren-idealo]]
-.Ereignisaktion zum automatischen Senden von Retouren an idealo
+.Ereignisaktion zum automatischen Melden von Retouren an idealo
 [cols="1,3,3"]
 |====
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| *Auftragsanlage: Neue Retoure*
+| Ereignis wählen, zum Beispiel *Auftragsanlage: Neue Retoure*
 |
 
 | *Filter 1*
@@ -736,27 +882,33 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *idealo Direktkauf*
 
 | *Aktion*
-| *Retoure > Retoure an idealo senden*
+| *Plugins > Retoure an idealo melden*
 |
 |====
 
 [#1800]
-=== Stornierungen automatisch senden
+=== Stornierungen automatisch melden
 
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um idealo automatisch über Stornierungen zu informieren.
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um idealo automatisch über Stornierungen zu informieren. Für Stornierungen stehen die folgenden Aktionen zur Verfügung:
 
-:table-event-procedure: <<#stornierungen-idealo>>
+* Stornierung durch Händler an idealo melden
+* Stornierung durch Käufer an idealo melden
+
+[#1801]
+==== Stornierungen durch Händler automatisch melden
+
+:table-event-procedure: <<#stornierungen-haendler-idealo>>
 
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
-[[stornierungen-idealo]]
-.Ereignisaktion zum automatischen Senden von Stornierungen an idealo
+[[stornierungen-haendler-idealo]]
+.Ereignisaktion zum automatischen Melden von Stornierungen durch Händler an idealo
 [cols="1,3,3"]
 |====
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| *Statuswechsel: [8] Storniert*
+| Ereignis wählen, zum Beispiel *Statuswechsel: [8] Storniert*
 |
 
 | *Filter 1*
@@ -768,18 +920,87 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *idealo Direktkauf*
 
 | *Aktion*
-| *Auftrag: Stornierung an idealo senden*
+| *Plugins > Stornierung durch Händler an idealo senden*
 |
 |====
 
+[#1802]
+==== Stornierungen durch Kunden automatisch melden
+
+:table-event-procedure: <<#stornierungen-kaeufer-idealo>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[stornierungen-kaeufer-idealo]]
+.Ereignisaktion zum automatischen Melden von Stornierungen durch Kunden an idealo
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, zum Beispiel *Statuswechsel: [8.1] Storniert durch Kunden*
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *idealo Direktkauf*
+
+| *Aktion*
+| *Plugins > Stornierung durch Käufer an idealo senden*
+|
+|====
+
+[#1755]
+=== Rückerstattungen automatisch melden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um idealo automatisch über Rückerstattungen zu informieren.
+
+[IMPORTANT]
+.Nur Zahlungsart *idealo Direktkauf Payments*
+====
+Die Ereignisaktion *Rückerstattung an idealo melden* wird nur für Aufträge ausgelöst, die über die Zahlungsart *idealo Direktkauf Payments* bezahlt wurden. Für Aufträge, die via PayPal bezahlt wurden, kann die Ereignisaktion nicht verwendet werden.
+====
+
+:table-event-procedure: <<#erstattung-idealo>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[erstattung-idealo]]
+.Ereignisaktion zum automatischen Melden von Rückerstattungen an idealo
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, zum Beispiel *Auftragsanlage: Neue Gutschrift*
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Gutschrift*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *idealo Direktkauf*
+
+| *Aktion*
+| *Plugins > Rückerstattung an idealo melden*
+|
+|====
 
 [#1900]
 == Log abrufen
 
-:marktplatz: idealo
-:identifikator: ElasticExportIdealoDE
+:market: idealo
+include::../_textblocks/instructions/logs_abrufen.adoc[tag=data-log-intro]
 
-include::../_textblocks/instructions/logs_abrufen.adoc[]
+* *Identifikator* » *ElasticExportIdealoDE*
+
+include::../_textblocks/instructions/logs_abrufen.adoc[tag=data-log-config]
 
 [#2000]
 == FAQ
@@ -787,9 +1008,9 @@ include::../_textblocks/instructions/logs_abrufen.adoc[]
 [#2100]
 === Artikelexport per API (PWS 2.0-Schnittstelle)
 
-===== Nicht alle meine Artikel werden zu idealo exportiert. Was kann ich tun?
-
-[.indented]
+[.collapseBox]
+.Nicht alle meine Artikel werden zu idealo exportiert. Was kann ich tun?
+--
 Falls du deine Artikel per Schnittstelle (PWS 2.0) zu idealo überträgst, aber nicht alle Artikel exportiert wurden, kann der Zeitstempel für Marktplatzexporte aktualisiert werden. Dies kann helfen, da normalerweise nur Varianten zu idealo exportiert werden, die in den letzten zwei Tagen aktualisiert wurden.
 
 [.instruction]
@@ -799,3 +1020,4 @@ Zeitstempel für Marktplatzexporte aktualisieren:
 . Aktiviere im Bereich *Aktionen* die Option *Zeitstempel für Marktplatzexporte aktualisieren*.
 . Klicke auf *Anwenden* (icon:execute[set=plenty]). +
 → Alle Artikel, die für idealo verfügbar sind, werden mit dem nächsten Artikelexport zu idealo übertragen.
+--

@@ -1,0 +1,265 @@
+//zuletzt bearbeitet 29.01.21
+
+Do you have products that need to be imported into plentymarkets? And to complicate things even further: Do you sell these products in different sizes and colours?
+
+You might already know that plentymarkets has an import tool.
+But you might not have tried your hand at a realistic example yet.
+This page of the manual guides you step by step through the process of importing new items and variations in plentymarkets.
+This page relies on an example import, which you can download and import into your own system.
+
+[#requirements]
+[TIP]
+.Requirements
+====
+This page assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, import tool>>. Furthermore, make sure you’ve saved the following data in your system before you start importing items and variations:
+
+* <<item/settings/attributes#, Attributes and attribute values>>
+* <<item/settings/categories#, Categories>>
+* <<item/settings/prices#, Sales prices>>
+====
+
+This video gives you a playful introduction to the topic:
+
+.Importing items and variations
+video::336295453[vimeo]
+
+[#100]
+== Downloading the example files
+
+This page of the manual guides you step by step through the process of importing new items and variations in plentymarkets. This page relies on two example files, which you can download and import into your own system.
+
+* link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/BestPractice.csv[Example CSV file^]{nbsp}icon:external-link[]
+* link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/Best-Practice-25-02-20.json.zip[Example import (JSON compressed as a ZIP file)^]{nbsp}icon:external-link[]
+
+[TIP]
+.Carrying out imports
+====
+Download the example import, unzip the file and <<data/importing-data/ElasticSync#1640, import the JSON file into your plentymarkets system>>.
+
+Take a look at the CSV file and see which column headers it includes. Later, you’ll enter your own item and variation data into these columns.
+====
+
+[#200]
+== Entering product data into the CSV file
+
+[#300]
+=== Practical example: Initial situation
+
+Imagine you sell a t-shirt that’s available in small or medium and also in yellow or red. You want to import all four possible combinations: medium red, small red, small yellow and medium yellow.
+
+image::data/importing-data/assets/best-practice-variations-initial-situation.png[]
+
+[#400]
+=== Variation numbers
+
+In our example, we want to import a main variation with 4 sub-variations.
+Each sub-variation has its own unique number and each sub-variation can be traced back to the same main variation.
+
+First, transfer the variation numbers to a CSV file.
+In our example, the numbers would look like this in the CSV file:
+
+.Entering the numbers for main variation and variations
+image::data/importing-data/assets/best-practice-variations-numbers.png[]
+
+First, let’s look at the *Variation number* column:
+
+* The main variation has a unique number (main123). This number is displayed in the first line.
+* Each sub-variation has its own unique number (var123, var456, var567, var890). These numbers are also entered into this column.
+
+Now let’s look at the *Number of main variation* column:
+
+* Each sub-variation originates from the same main variation.
+This is represented by entering the main variation’s number next to each sub-variation.
+
+[TIP]
+.Main variation before sub-variations
+====
+Make sure that you always enter the main variation number first and then the individual sub-variations afterwards. Why? plentymarkets goes through the file line by line. So first it creates a main item. Then it creates the individual sub-variations based on this item.
+
+If you did it the other way around, then you’d be telling plentymarkets to create a variation on a main item that doesn’t exist yet. plentymarkets wouldn’t understand what you’re asking it to do and the data wouldn’t be imported correctly.
+====
+
+[TIP]
+.No variation numbers? No problem!
+====
+You don’t technically need sub-variation numbers for the import (var123, var456, var567, var890). If you don’t already have unique variation numbers, then just leave these lines blank and plentymarkets will automatically generate unique numbers for you during the import.
+====
+
+[WARNING]
+.Variation numbers must be unique
+====
+Both the number of the main variation and those of the sub-variations must be unique. The import fails if numbers are assigned more than once.
+====
+
+[#500]
+=== Attributes
+
+Attributes are characteristics like colour and size. If you combine them together, you’ll get a saleable item variation, for example a small, red t-shirt.
+Before you start importing items into plentymarkets, make sure you’ve <<item/settings/attributes#, created all of the necessary attributes and attribute values>>.
+
+Then open the mapping settings and decide how you want to format the attributes (like colour) and the values (like red).
+In this example, I’m working with the mapping field *Attributes / Attribute value combinations* and I’ve selected the format *Attribute:Value;*.
+Finally, enter the attributes and values into your CSV file with this exact formatting.
+
+.Creating variations using the attribute selection combination
+image::data/importing-data/assets/best-practice-variations-attributes.png[]
+
+[TIP]
+.Don’t enter attributes for the main variation
+====
+In this example, I didn't enter any attributes or values for the main variation, i.e. the first line of the CSV file.
+This prevents the main variation from being linked to attributes.
+
+We recommend that you work with variations and that you don’t enter any attributes for the main variation. This will make you much more flexible while creating variations.
+If you were to link attributes to the main variation, then you would only be able to create variations with these same attributes.
+====
+
+[#600]
+=== Images
+
+Regardless whether you use your supplier’s product images, or you take your own photos, your goal here is to get the image’s URL. In other words, your supplier might upload images to an FTP server or you might upload your own images in the plenymarkets webspace.
+However you go about getting the URL, enter it into your CSV file.
+In this example, I’m working with the mapping field *Item images / Multi-Url (Comma-separated)*. Therefore, I’ll enter the image URLs into the CSV file like so: *image1url;positionImage1,image2url;positionImage2*
+
+.Comparison of the mapping field and the column in the CSV file
+image::data/importing-data/assets/best-practice-variations-images.png[]
+
+Note the following about image URLs:
+
+* Enter a semicolon (;) and a number after the URL to specify when your customer should see this image. So whether the image should be displayed first, second, third, and so on.
+* If you want to use multiple product images, then separate them with commas.
+* You can upload images that show the main variation, i.e. the item as a whole. Or you can upload images that display each individual variation.
+
+[IMPORTANT]
+.100 images can be uploaded per item
+====
+You can upload up to 100 images per item, i.e. per item ID.
+This is a hard limit in the user interface.
+If you were to upload e.g. 150 images, then only the first 100 would appear in the user interface.
+Note that the limit applies to the entire item, i.e. to all of the variations together.
+====
+
+[#700]
+=== Categories
+
+Categories help you group your products. They determine how items are structured in your online store.
+Before you start importing items into plentymarkets, make sure you’ve <<item/settings/categories#, created all of the necessary categories>>.
+
+Each category has a unique ID. In your CSV file, enter the ID of whichever category the item should be listed in. If you want the item to be listed under multiple categories, then use commas to separate the category IDs.
+In order for the import to work, every item also needs to have a _default category_. Since items can be listed in multiple categories, the default category essentially just specifies which one is the best fit.
+
+.Category IDs and the default category ID
+image::data/importing-data/assets/best-practice-variations-categories.png[]
+
+[TIP]
+.Category ID or category name?
+====
+You might prefer to work with a category’s _name_ instead of its ID. No problem! Category names work just as well. If you use category names, make sure you specify the entire category path. The levels are separated by a semicolon.
+
+Also make sure that the values in the CSV file correspond to the mapping settings.
+For example, if you choose the field *Default categories / Category ID* in the mapping settings, then make sure you enter the ID in your CSV file.
+Or the other way around: if you choose the field *Default categories / Category name* in the mapping settings, then make sure you enter the name in your CSV file.
+====
+
+[#800]
+=== Sales prices
+
+Sales prices are the conditions under which a variation is sold at a specific price.
+Before you start importing items into plentymarkets, make sure you’ve <<item/settings/prices#, created all of the necessary sales prices>>.
+
+In the mapping settings, specify which sales price you want to use for the import. And enter the corresponding prices in your CSV file.
+
+.Comparison of the mapping field and the column in the CSV file
+image::data/importing-data/assets/best-practice-variations-prices.png[]
+
+[#900]
+== Importing the example import
+
+If you haven’t already done so, download the example import, unzip the file and <<data/importing-data/ElasticSync#1640, import the JSON file into your plentymarkets system>>.
+
+[TIP]
+.Check the default settings!
+====
+Lots of settings were pre-configured in the example import. Check these settings and make sure that they meet your needs.
+====
+
+[#1000]
+== Checking the matching settings
+
+During the import, plentymarkets will check whether the variation already exists. This is done with the help of a so-called matching field.
+Make sure you use a _variation-specific matching field_. A good choice is the variation number or the variation ID.
+
+The following matching settings were pre-configured in the example import:
+
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Matching field: Variation number*
+|The column header *Variation number* from the CSV file is pre-selected here.
+
+| *Import options*
+|The option *Import new, update existing data* is pre-selected here.
+|====
+
+[#1100]
+== Checking the mapping settings
+
+Your CSV file is already filled with a bunch of item information. Now you’ll decide _where in plentymarkets_ each piece of information should appear when you import the file. <<data/importing-data/sync-types/elasticSync-item#1920, Take a look at this page>> while you map the columns of your CSV file to the fields in plentymarkets.
+Lots of mapping settings were pre-configured in the example import. Check these settings and make sure that they meet your needs.
+
+We recommend that you only map those fields that you actually want to import. Unnecessary fields should be deactivated (icon:toggle-off[role="red"]) because they might otherwise cause errors to occur.
+
+[discrete]
+==== Mandatory fields
+
+There are some _mandatory fields_ for creating items with variations. These fields must be mapped for the import to work. Those mandatory fields are:
+
+[cols="1,2"]
+|====
+|What do you want to import? |Mandatory fields
+
+|Item and variation data
+a| * <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#700, Default category>>
+* <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#400, Main variation number>>
+* <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#400, Variation number>>
+* <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#500, Attribute value combinations>> (If sub-variations should also be generated)
+
+|Item and variation data + Stock
+a| * <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#700, Default category>>
+* <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#400, Main variation number>>
+* <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#400, Variation number>>
+* <<data/importing-data/elasticsync-best-practices/best-practices-elasticsync-creating-variations#500, Attribute value combinations>> (If sub-variations should also be generated)
+* <<data/importing-data/sync-types/elasticSync-item#2350, Warehouse>>
+* <<data/importing-data/sync-types/elasticSync-item#2350, Quantity>>
+* <<data/importing-data/sync-types/elasticSync-item#2350, Storage location>>
+|====
+
+[#1200]
+== Did it work?
+
+Ready to import your items? Start the import and check whether the data was correctly imported into plentymarkets.
+
+[.instruction]
+Starting the import and checking the result:
+
+. Activate the lines that should be imported (icon:toggle-on[role="green"]).
+. Test the import (icon:plugin_stage_deploy[set=plenty]) or start the import (icon:play-circle-o[role="darkGrey"]). +
+*_Note:_* This can take a few minutes.
+. Go to *Item » Edit item*.
+. Open a few item data records and check their settings.
+
+[TIP]
+.Do a trial run
+====
+We recommend testing the import (icon:plugin_stage_deploy[set=plenty]) before you start it for the first time.
+This imports the first 10 rows of the file and bypasses the cache.
+It gives you time to check whether the import works correctly. If the import does not perform as expected, you can correct it before importing the entire file.
+====
+
+[TIP]
+.Resetting the cache
+====
+Directly within the import, you’ll find the button *Reset cache* (icon:reload[set=plenty]).
+This button allows you to reset the cache in order to reimport a file that does not contain any changes.
+====
