@@ -20,22 +20,39 @@ Die Anbindung des Marktplatzes stellt die folgenden automatisierten Funktionen b
 |Daten |Intervall
 
 | Artikelexport
-| einmal täglich
+| plentymarkets generiert die Artikeldaten einmal täglich nachts als XML. Zalando ruft die XML meist einmal pro Tag ab.
 
 | Bestandsabgleich
-| alle 10 Minuten
+| Zalando ruft die Bestandsdaten alle 10 Minuten ab.
 
 | Preisabgleich
-| alle 15 Minuten
+| Alle 15 Minuten über API
 
 | Auftragsimport
-| alle 5 Minuten
+| Alle 5 Minuten über zDirect (API)
 |====
 
 [#100]
 == Bei Zalando registrieren
 
 Du möchtest am Partnerprogramm von Zalando teilnehmen? Dann link:https://www.zalando.de/partner-programm/[wende dich zunächst direkt an Zalando^]{nbsp}icon:external-link[].
+
+[#150]
+== Ablauf nach der Registrierung
+
+Du hast einen Vertrag mit Zalando abgeschlossen. Wie geht es jetzt weiter?
+
+* Melde dich in der Kategorie Multi-Channel des plentymarkets Forums.
+* Dort erhältst du ein Formular im CSV-Format. Dieses Formular enthält die folgenden Informationen:
+  ** REST-Routen für Artikel und Bestände
+  ** deinen Benutzernamen und Kennwort
+  ** Zugangsdaten zum plentymarkets FTP-Server für Silhouetten +
+  *_Tipp:_* Auf diesen FTP-Server sendet Zalando deine Silhouetten, damit wir sie in dein System importieren können.
+* Leite das ausgefüllte Formular an deine:n Zalando-Ansprechpartner:in weiter.
+* Durchlaufe den Assistenten *Kontoeinstellungen - Zalando*.
+* Dieses Konto kann nicht aktiviert werden.
+
+
 
 [#200]
 == Zalando in plentymarkets einrichten
@@ -92,44 +109,6 @@ a|Nach welcher Logik soll Zalando-Aufträgen ein Lager zugewiesen werden?
 | *Ermäßigter Steuersatz*
 | *19 %* oder *7 %* wählen.
 |====
-
-[#250]
-== Auftragsherkunft aktivieren
-
-:market: Zalando
-:referrer: Zalando
-:referrer-option: pass:quotes[Option *Zalando*]
-
-include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
-
-[#300]
-== Variantenverfügbarkeit einstellen
-
-:market-availability: Zalando
-:option-availability: Zalando
-:web-api:
-
-include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
-
-// Web-API erforderlich!
-
-[#330]
-== _Optional:_ SKU speichern
-
-:referrer-sku: Zalando
-:referrer-id: 118
-:sku-others:
-
-include::_textblocks/instructions/sku-manuell.adoc[]
-
-// Marktplatzkonto nicht erforderlich!
-
-[#350]
-== Verkaufspreis festlegen
-
-:referrer-price: Zalando
-
-include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
 
 [#1400]
 == Einstellungen im Assistenten vornehmen
@@ -236,19 +215,19 @@ a| Wählen, ob echte Daten oder Testdaten importiert werden sollen.
 *_Hinweis:_* Wähle einen Status, bei dem durch den Statuswechsel keine Ereignisaktion an Zalando ausgelöst wird. Aufträge, die vor dem Import der Reservierung von Käufer:innen storniert werden, werden nicht importiert.
 
 | *plentymarkets Retourengrund verknüpfen mit*
-|Für jeden in plentymarkets gespeicherten Retourengrund einen Retourengrund von Zalando aus der Dropdown-Liste wählen. Die Retourengründe werden nur für den Auftragstyp *Retoure* übertragen und müssen an den Artikelpositionen der Retouren  gepflegt werden.
+a|Für jeden in plentymarkets gespeicherten Retourengrund einen Retourengrund von Zalando aus der Dropdown-Liste wählen. Die Retourengründe werden nur für den Auftragstyp *Retoure* übertragen und müssen an den Artikelpositionen der Retouren  gepflegt werden.
 
 Zalando hat zurzeit die folgenden Retourengründe:
 
-*Unbekannter Grund*
-*Gefällt nicht*
-*Zu groß*
-*Zu klein*
-*Schlechtes Preis-Leistungs-Verhältnis*
-*Lieferung zu spät*
-*Artikel nicht wie erwartet*
-*Falscher Artikel gesendet*
-*Defekt*
+* *Unbekannter Grund*
+* *Gefällt nicht*
+* *Zu groß*
+* *Zu klein*
+* *Schlechtes Preis-Leistungs-Verhältnis*
+* *Lieferung zu spät*
+* *Artikel nicht wie erwartet*
+* *Falscher Artikel gesendet*
+* *Defekt*
 
 *_Hinweis:_* Das Übermitteln von Retourengründen an Zalando ist optional, wird aber von Zalando empfohlen.
 |====
@@ -271,64 +250,67 @@ Gib in deinem Foren-Post die folgenden Informationen an:
     *_Hinweis:_* Pro Händler:innenkonto bei Zalando kann nur ein Konto bei plentymarkets verknüpft werden.
 --
 
-[#1100]
-== Varianten vorbereiten
-
-Zalando erwartet bestimmte Pflichtangaben. Das bedeutet, dass nur Varianten an den Marktplatz exportiert werden können, für die diese Angaben gespeichert sind. Die in <<#zalando-varianten-pflicht>> aufgeführten Angaben müssen an allen Varianten gespeichert sein, die an Zalando exportiert werden sollen.
-
-[[zalando-varianten-pflicht]]
-.Pflichtfelder an der Variante
-[cols="1,3a"]
-|====
-|Pflichtdaten |Erläuterung
-
-| EAN
-a| Für jede Variante muss eine EAN gespeichert sein.
-
-* Im Menü *Einrichtung » Artikel » Barcode* muss eine EAN eingerichtet und mit der Herkunft Zalando verknüpft sein.
-* Die EAN muss im Tab *Einstellungen* der Variante im Bereich *Barcode* hinzugefügt und ein Barcode-Code eingegeben werden.
-
-| Technische Daten
-a| Für jeden Artikel müssen technische Daten gespeichert sein.
-
-* Im Tab *Texte* des Artikels muss im Feld *Technische Daten* Text gespeichert sein.
-
-| Bilder
-a| Für jede Variante muss ein Bild gespeichert sein.
-
-* Im Tab *Bilder* des Artikels muss in der Dropdown-Liste *Verfügbarkeit* die Option *Zalando* aktiviert sein.
-
-| Preis
-a| Für jede Variante muss ein Preis gespeichert sein.
-
-* Der Verkaufspreis muss im Menü *Einrichtung » Artikel » Verkaufspreise* für die Herkunft Zalando aktiviert sein.
-* Der Verkaufspreis muss im Tab *Einstellungen* einer Variante im Bereich *Verkaufspreise* hinzugefügt werden.
-* Ein Preis muss für den Verkaufspreis gespeichert sein.
-
-| Supplier-SKU
-a| Für jede Variante muss eine Supplier-SKU gespeichert sein. Speichere diese Supplier-SKU im Feld *Modell* der Variante.
-|====
-
 [#400]
 == Kategorien verknüpfen
 
-Verknüpfe deine plentymarkets Kategorien mit den Kategorien von Zalando, damit deine Artikel in diesen Zalando-Kategorien angezeigt werden.
+Verknüpfe deine plentymarkets Kategorien mit den Kategorien von Zalando, damit deine Varianten in diesen Zalando-Kategorien angezeigt werden.
 
 [.instruction]
 Kategorien verknüpfen:
 
 . Öffne das Menü *Einrichtung » Märkte » Zalando » Kategorieverknüpfung*. +
-→ Eine Liste deiner Kategorien wird angezeigt. +
+→ In der Spalte *Kategorie* wird eine Liste deiner Kategorien angezeigt. +
 → In der Spalte *Zalando-Kategorie* kannst du jeder Kategorie eine Zalando-Kategorie zuordnen.
-. Wähle in der Spalte *Zalando-Kategorie* eine Zalando-Kategorie aus der Dropdown-Liste.
+. Wähle in der Spalte *Zalando-Kategorie* für alle nötigen Kategorien eine Zalando-Kategorie aus der Dropdown-Liste.
 . *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Kategorie wird mit der gewählten Zalando-Kategorie verknüpft. +
-→ Neue Artikel, die du für die plentymarkets Kategorie erstellst, werden automatisch auch der Zalando-Kategorie zugewiesen.
+→ Die Kategorien werden mit den gewählten Zalando-Kategorien verknüpft. +
+→ Neue Varianten, die du für eine plentymarkets Kategorie erstellst, werden automatisch auch der verknüpften Zalando-Kategorie zugewiesen.
+
+[#250]
+== Auftragsherkunft aktivieren
+
+:market: Zalando
+:referrer: Zalando
+:referrer-option: pass:quotes[Option *Zalando*]
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#350]
+== Verkaufspreis festlegen
+
+:referrer-price: Zalando
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#300]
+== Variantenverfügbarkeit einstellen
+
+:market-availability: Zalando
+:option-availability: Zalando
+:web-api:
+
+include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
+
+// Web-API erforderlich!
+
+[#330]
+== _Optional:_ SKU speichern
+
+:referrer-sku: Zalando
+:referrer-id: 118
+:sku-others:
+
+include::_textblocks/instructions/sku-manuell.adoc[]
+
+// Marktplatzkonto nicht erforderlich!
 
 [#500]
 == Silhouetten in Merkmale konvertieren
 
-Zalando gruppiert Produkte in sogenannte "Silhouetten", die Zalando inzwischen auch "Artikeltypen" oder "article types" nennt. Beispiele für Silhouetten sind "Röcke", "Kleider", "Hosen". Im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Silhouetten* konvertierst du Zalando-Silhouetten in Artikelmerkmale. Silhouetten werden bei der Ersteinrichtung von Zalando in plentymarkets importiert.
+Zalando gruppiert Produkte in sogenannte "Silhouetten". Zalando nennt diese Silhouetten inzwischen auch "Artikeltypen" oder "article types". Beispiele für Silhouetten sind "Röcke", "Kleider", "Hosen". Im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Silhouetten* konvertierst du Zalando-Silhouetten in Artikelmerkmale. Silhouetten werden bei der Ersteinrichtung von Zalando in plentymarkets importiert. Wenn Zalando neue Silhouetten veröffentlicht, aktualisiert plentymarkets diese Silhouetten am darauffolgenden Mittwoch. Danach kannst du neue Silhouetten bei Bedarf in Merkmale konvertieren.
+
+[.instruction]
+Silhouetten in Merkmale konvertieren:
 
 . Öffne das Menü *Einrichtung » Märkte » Zalando » Einstellungen*.
 . Wechsele in das Tab *Silhouetten*.
@@ -355,7 +337,7 @@ Verknüpfe mindestens die folgenden Pflichtmerkmale, damit deine Varianten an Za
 [.collapseBox]
 .*_Tipp:_* Referenzdatei mit Zalando-Artikelmerkmale exportieren
 --
-Wenn du die Zalando-Silhouetten in Merkmale konvertierst werden mehrere hundert Merkmale in plentymarkets erstellt. Um dir die Arbeit mit diesen Merkmalen zu erleichtern, kannst du die Merkmale exportieren. So hast du schnellen Zugriff auf die IDs der Zalando-Merkmale. Zum Beispiel kannst du dann einfacher die Merkmale <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-merkmalverknuepfung#import_merkmalverknüpfungen, per Import>> mit deinen Artikeln verknüpfen.
+Wenn du die Zalando-Silhouetten in Merkmale konvertierst, werden mehrere hundert Merkmale in plentymarkets erstellt. Um dir die Arbeit mit diesen Merkmalen zu erleichtern, kannst du die Merkmale exportieren. So hast du schnellen Zugriff auf die IDs der Zalando-Merkmale. Zum Beispiel kannst du dann einfacher die Merkmale <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-merkmalverknuepfung#import_merkmalverknüpfungen, per Import>> mit deinen Artikeln verknüpfen.
 
 [.instruction]
 Zalando-Artikelmerkmale exportieren:
@@ -418,6 +400,20 @@ Merkmal mit Artikel verknüpfen:
 
 Wenn du Attribute in deinem plentymarkets System erstellt hast, musst du diese Attribute mit Zalando verknüpfen. Im Folgenden wird beschrieben, wie du das Attribut Farbe mit Zalando verknüpfst. Verknüpfe anschließend weitere Attribute auf die gleiche Weise.
 
+Verknüpfe mindestens die folgenden Attribute, damit deine Varianten an Zalando übertragen werden können:
+
+* Größe (size Register)
+
+_und/oder_
+
+* Farbe für 1. Farbcode / Herstellerfarbe
+
+_und/oder_
+
+* Length register bei Längenangaben (z.B. Hosenlänge)
+
+NOTE: Pro Attribut kann nur ein Größenregister oder ein Längenregister verknüpft werden.
+
 :attribute-option: Zalando
 :attribute: Farbe
 :attribute-dropdown:
@@ -433,6 +429,71 @@ include::_textblocks/instructions/link-attributes.adoc[]
 :folder: International
 
 include::_textblocks/instructions/zahlungsart_aktivieren.adoc[]
+
+[#1100]
+== _Checkliste_ für den Variantenexport
+
+Zalando erwartet bestimmte Pflichtangaben. Das bedeutet, dass nur Varianten an den Marktplatz exportiert werden können, für die diese Angaben gespeichert sind. Die in <<#zalando-varianten-pflicht>> aufgeführten Angaben müssen an allen Varianten gespeichert sein, die an Zalando exportiert werden sollen.
+
+[[zalando-varianten-pflicht]]
+.Pflichtfelder an der Variante
+[cols="1,3a"]
+|====
+|Pflichtdaten |Erläuterung
+
+| EAN
+a| Für jede Variante muss eine EAN gespeichert sein.
+
+* Im Menü *Einrichtung » Artikel » Barcode* muss eine EAN eingerichtet und mit der Herkunft Zalando verknüpft sein.
+* Die EAN muss im Tab *Einstellungen* der Variante im Bereich *Barcode* hinzugefügt und ein Barcode-Code eingegeben werden.
+
+| Technische Daten
+a| Für jeden Artikel müssen technische Daten gespeichert sein.
+
+* Im Tab *Texte* des Artikels muss im Feld *Technische Daten* Text gespeichert sein.
+
+| Bilder
+a| Für jede Variante muss ein Bild gespeichert sein.
+
+* Im Tab *Bilder* des Artikels muss in der Dropdown-Liste *Verfügbarkeit* die Option *Zalando* aktiviert sein.
+
+| Preis
+a| Für jede Variante muss ein Preis gespeichert sein.
+
+* Der Verkaufspreis muss im Menü *Einrichtung » Artikel » Verkaufspreise* für die Herkunft Zalando aktiviert sein.
+* Der Verkaufspreis muss im Tab *Einstellungen* einer Variante im Bereich *Verkaufspreise* hinzugefügt werden.
+* Ein Preis muss für den Verkaufspreis gespeichert sein.
+
+| Supplier-SKU
+a| Für jede Variante muss eine Supplier-SKU gespeichert sein. Speichere diese Supplier-SKU im Feld *Modell* der Variante.
+
+| Merkmale
+a| Mindestens die folgenden Pflichtmerkmale müssen mit dem Artikel verknüpft sein:
+
+* 1. Farbcode
+* Altersgruppe(n)
+* Geschlecht
+* Größenregister
+* Hersteller-Code
+* Herstellerfarbe
+* Jahreszeiten-Code
+* Silhouetten-Typ
+
+| Attribute
+a| Mindestens die folgenden Attribute müssen mit der Variante verknüpft sein:
+
+* Größe (size Register)
+
+_und/oder_
+
+* Farbe für 1. Farbcode / Herstellerfarbe
+
+_und/oder_
+
+* Length register bei Längenangaben (z.B. Hosenlänge)
+
+NOTE: Pro Attribut kann nur ein Größenregister oder ein Längenregister verknüpft werden.
+|====
 
 [#1200]
 == Versandbestätigungen automatisch senden (zDirect)
@@ -654,21 +715,59 @@ Export-Log herunterladen:
 → Die CSV-Datei wird generiert.
 . Speichere die CSV-Datei auf deinem Rechner.
 
-*_Häufige Fehler und Warnungen:_*
+[[zalando-errors]]
+.Fehlermeldungen aus dem Export-Log (zalandoArticleExportLog.txt)
+[cols="1,3a"]
+|====
+|Einstellung |Erläuterung
 
-* specialDescriptions = Technische Daten
-* lengthRegister = Längen-Register (Merkmale)
-* Keywords = Meta-Keywords (Artikel-Tab: Texte)
-* size / length = Größe und Länge (Merkmal) oder innerhalb der Attributsverknüpfungen für Zalando bei Variantenartikeln
-* ageGroup = Altersgruppe
-* brand = Marke
-* color = Farbe
-* gender = Geschlecht
-* lengthGrid = Länge
-* material = Material
-* season = Jahreszeit
-* silhouette = Kategorie (Bekleidung, Schuhe etc.)
-* sizeGrid = Größe
+
+| specialDescriptions
+| Technische Daten
+
+| brand
+| Merkmal *Zalando » Hersteller-Code*
+
+| season
+| Merkmal *Zalando » Jahreszeiten-Code*
+
+| genders
+| Merkmal *Zalando » Geschlecht*
+
+| ageGroups
+| Merkmal *Zalando » Altersgruppe(n)*
+
+| sizeRegister
+| Merkmal *Zalando » Größen-Register*
+
+| mainColorCode
+| Kommt aus dem Merkmal *Zalando » 1. Farbcode* +
+*_Ausnahme:_* Die Variante hat ein Farbattribut. Dann wird die Farbe über Attributverknüpfungen gepflegt.
+
+| supplierColor
+| Merkmal *Zalando » Hersteller-Farbe* oder optional 2. Attributsverknüpfung
+
+| images
+| Die Variante muss mindestens ein Bild haben.
+
+| ean
+| Die Variante benötigt eine GTIN 13.
+
+| lengthRegister
+| Merkmal *Zalando » Längen-Register*
+
+| Keywords
+| Meta-Keywords (Artikel-Tab: Texte)
+
+| partnerArticleModelId
+| Wird aus der SKU genommen. Aktuell können nur reine Zahlen verarbeitet werden. Zeichenketten mit Buchstaben sind nicht erlaubt.
+
+| partnerArticleSimpleId
+|
+|====
+
+
+
 
 [#910]
 === Produkt-Status-Bericht herunterladen
