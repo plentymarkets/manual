@@ -1,24 +1,16 @@
 = Improving your Google Page Speed Insights rating
 :lang: en
-:keywords: Online store, client, Standard, Ceres, Plugin, Ceres, HowTo, setup, Plugin-Sets, Google, PSI, page speed, Page Speed, insights, Pages Speed Index, Performance, optimisation, optimization, 
+:keywords: Online store, client, Standard, Ceres, Plugin, Ceres, HowTo, setup, Plugin-Sets, Google, PSI, page speed, Page Speed, insights, Pages Speed Index, Performance, optimisation, optimization, web vitals, google core update, lcp, largest contentful paint, cls, cumulative layout shift, lighthouse, preloading, lazy loading, server-side rendering, ssr,
 :position: 110
 :author: team-webshop
 
 In this Best Practice you will learn which measures you can take to improve the link:https://developers.google.com/speed/pagespeed/insights/?hl=de[Google Page Speed Insights] performance rating of your plentyShop. In a first step, you will learn which of the standard Ceres functionality you can use in order to achieve higher PSI values. At a later point, this guide will also include modifications you can implement via a theme in order to attain a higher performance rating. The measures explicated below require no background in programming whatsoever.  
 
-
-[IMPORTANT]
-====
-The measures we suggest in this guide can only improve the performance rating of your plentyShop to a certain degree. The release of plentyShop 6.0 will include adjustments that positively impact the PSI rating. We are alsways striving to improve the performance of plentyShop Ceres with each new version we release.
-====
-
-The following chapters detail 7 adjustments you can make to your plentyShop that you can implement without the need to code:
+The following chapters detail a number of adjustments you can make to your plentyShop that you can implement without the need to code:
     
 == Activating the Live Mode in the Ceres plugin
 
 The Ceres plugin offers you the possibility to choose between the *Development mode* and the *Live mode*. In the development mode, you can use debbuging options and the plugin files are neither minimised nor bundled, which can negatively impact the performance of the online store. We advise you to operate your online store in live mode, in order to increase the performance. Take the following steps to activate live mode:
-
-
 
 [.instruction]
 Activate live mode:
@@ -35,33 +27,73 @@ Activate live mode:
 If you activate the live mode, the Ceres files are bundled and minimised, resulting in a quicker loading of the pages of your online store.
 
 
+== Activating Vue Server-Side Rendering
+
+With the release of Ceres v5.0.29, we're introducing Vue Server-Side Rendering (SSR). SSR makes it possible that many components of the online shop are already processed on the server. Therefore, the browser receives pages that have already been rendered. The browser does not need to execute the received code again. This improves the rating of mobile pages in particular. +
+
+We added the setting **Activate Vue Server-Sider Rendering** to the plentyShop assistant and the Ceres settings in the *Performance* settings. You should initially activate this setting in a separate plugin set and test your shop thoroughly before you activate SSR for your productive system. +
+
+If you want to use SSR, you should also adjust the image widgets that you use on your pages. You have two important settings for image widgets at your disposal: Peloading and lazy loading. The following chapters explain how to optimise your image widgets.
+
+
 == Optimising image widgets
 
 Image files are one of the major culprits for low online store performance. You should, if possible, only include as many image widgets on your online store pages as you need for your purposes. A lower number of image widgets per page will positively impact the performance of your plentyShop. + 
 
+
+=== Preloading images in the visible area
+
+With the release of Ceres v5.0.29 we added the setting **Preload image** to the widgets image box, image carousel, background widget, and item image. This setting can only be used in combination with Server-Side Rendering (see above). By peloading images that are located in the initially visible viewport of your pages, you can significantly decrease the Largest Contentful Paint (LCP). The LCP is the largest rendered content element in the visible area. Usually, this is a large image. +
+You should activate the setting **Preload image** for all images that are visible on the page before the user scrolls further down the page. You can learn how to identify the Largest Contentful Paint on your pages below.
+
+=== Activating lazy loading for images that are not initially visible
+
+Additionally, we recommend that you activate the option *Only load visible content* in the widget settings of every widget that includes images. This option, the so-called "Lazy loading", makes sure that image files which are not visible upon the initial access of the relevant page are loaded at a later time. The initial loading time of your online store pages is positively impacted by activating this option. +
+This setting is deactivated by default in the ShopBuilder presets.
+
+[IMPORTANT]
+====
+If you use Server-Side Rendering (SSR), it is important that you only activate lazy loading for image widgets that are **not** located in the initially visible viewport.
+====
+
 === Using modern image formats
 
-Furthermore, we advise you to use modern image formats for the images you include in your online store. For the widgets *Background image*, *Image box*, and *Image carousel*, we recommend that you use the input field *Image selection* to store images in the format *WebP*. If you store a WebP image, the additional input field *Image selection for older browsers* will be displayed, which serves to display fallback images in browsers, that are not yet compatible with modern image formats. IF possible, we advise you to store images in JPEG format for these browsers. +
+Furthermore, we advise you to use modern image formats for the images you include in your online store. For the widgets *Background image*, *Image box*, and *Image carousel*, we recommend that you use the input field *Image selection* to store images in the format *WebP*. If you store a WebP image, the additional input field *Image selection for older browsers* will be displayed, which serves to display fallback images in browsers, that are not yet compatible with modern image formats. If possible, we advise you to store images in JPEG format for these browsers. +
 
 
-=== Activating lazy loading
+=== Identifying the Largest Contenful Paint (LCP)
 
-Additionally, we recommend that you activate the option *Only load visible content* in the widget settings of every widget that includes images. This option, the so-called "Lazy loading", makes sure that image files which are not visible upon the initial access of the relevant page are loaded at a later time. The initial loading time of your online store pages is positively impacted by activating this option. 
+You can use link:https://developers.google.com/speed/pagespeed/insights/[PageSpeed Insights] to identify the Largest Contentful Paint of your pages. +
+
+[.instruction]
+Identifying the LCP:
+
+. Open link:https://developers.google.com/speed/pagespeed/insights/[PageSpeed Insights].
+. Enter the URL of the page for which you want to identify the LCP.
+. Click on *Analyze*.
+→ The page analysis is started.
+. After the analysis has been concluded, scroll down to the *Diagnostics* area.
+. Click on *Largest Contentful Paint element*, to expand the section.
+. The content element displayed there is the LCP of this page.
+
+After you have identified the page's LCP, you can now check if you:
+
+. activated the setting **Preloaded image** in combination with SSR
+. stored the image in WebP image format
+. can decrease the image's file size
+
+These three measures can help you significantly in reducing the page's Largest Contentful Paint.
 
 == Reducting the number of widgets
 
 The number of widgets you include on each online store page is prone to negatively affecting the performance of your plentyShop. The larger the number of widgets per page, the slower the loading times. This is particularly applicable to image widgets and to widgets that necessitate a large quantity of item data. Each additional widget impacts the time to first full interactivity of the page. +
 We therefore recommend you use only as many widgets per page as is necessary for your purposes. On category pages, in particular, it is advisable to reduce the numver of displayed items, since category pages need to load large quantities of data and complex Javascript.
 
-== Avoid invisible text caused by custom fonts
-
-If you include custom fonts for your online store and do not use the drsign settings of the ShopBuilder, it is possible that browsers try to display certain sections of text before the custom font is loaded. As a result, your online store may be prone to a so-called *Flash of invisible text (FOIT)*, meaning a short time during which the text you want to display cannot be displayed by the browser. + 
-
-In order to avoit FOITS, you can use a CSS command to intermittenly display a system font instead of your custom font. to do so, you add the directive *font-display: swap* in your *@font-face* styles, for instance by using the link:https://marketplace.plentymarkets.com/plugins/storefront/widgets/cfourcustomcssjs_5143[Custom CSS/JS in the front end]) plugin. You can thereby prevent annyoing FOITS to happen, which can have a positive impact on the PSI rating of your online store.
-
 == Activating the ShopBooster
 
-The Time to first Byte (TTFB) is also part of the parameters evaluated by PSI, albeit to a small degree. In order to improve your TTFB values, you can activate the additional ShopBooster module for a fee. By activating the ShopBooster, page contents of your plentyShop are written into the cache, so that a second access to the page will benefit from greatly improved TTFB times.
+The Time to first Byte (TTFB) is also part of the parameters evaluated by PSI, albeit to a small degree. In order to improve your TTFB values, you can activate the additional ShopBooster module for a fee. By activating the ShopBooster, page contents of your plentyShop are written into the cache, so that a second access to the page will benefit from greatly improved TTFB times. +
+
+The use of ShopBooster is particularly fruitful in combination with Server-Side Rendering (SSR), since using SSR can slightly increase the TTFB of your shop.
 
 [IMPORTANT]
 .Additional costs
@@ -86,6 +118,13 @@ Activating the ShopBooster:
 → A window is opened, informaing you about the additional costs involved.
 . Click *Confirm* to activate the ShopBooster. +
 → The notification *ShopBooster has been activated* is displayed.
+
+== Avoid invisible text caused by custom fonts
+
+If you include custom fonts for your online store and do not use the drsign settings of the ShopBuilder, it is possible that browsers try to display certain sections of text before the custom font is loaded. As a result, your online store may be prone to a so-called *Flash of invisible text (FOIT)*, meaning a short time during which the text you want to display cannot be displayed by the browser. + 
+
+In order to avoit FOITS, you can use a CSS command to intermittenly display a system font instead of your custom font. to do so, you add the directive *font-display: swap* in your *@font-face* styles, for instance by using the link:https://marketplace.plentymarkets.com/plugins/storefront/widgets/cfourcustomcssjs_5143[Custom CSS/JS in the front end]) plugin. You can thereby prevent annyoing FOITS to happen, which can have a positive impact on the PSI rating of your online store.
+
 
 == Avoiding Javascript in code widgets
 
