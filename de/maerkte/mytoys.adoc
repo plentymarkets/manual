@@ -8,7 +8,7 @@ include::{includedir}/_header.adoc[]
 :url: maerkte/mytoys
 :id: CQERJR4
 
-////
+LINK ANPASSEN:
 
 [IMPORTANT]
 .myToys-Plugin herunterladen
@@ -16,12 +16,11 @@ include::{includedir}/_header.adoc[]
 Die Schnittstelle zu myToys wird über ein Plugin integriert. Um das myToys-Plugin nutzen zu können, lade das Plugin im link:https://marketplace.plentymarkets.com/ANPASSEN[plentyMarketplace^]{nbsp}icon:external-link[] herunter.
 ====
 
-////
 
 [#100]
 == Über myToys
 
-Text kommt wahrscheinlich von myToys direkt, wie bei limango auch
+Text kommt wahrscheinlich von myToys direkt, wie bei limango auch.
 
 [#150]
 == Partner:in bei myToys werden
@@ -42,7 +41,7 @@ Nach der Registrierung erhältst du Zugangsdaten für limango. Diese Zugangsdate
 
 Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datenaustausch-myToys>> automatisierten Abläufe bereit:
 
-[[datenaustausch-yToys]]
+[[datenaustausch-myToys]]
 .Häufigkeit des Datenaustauschs
 [cols="1,3a"]
 |====
@@ -51,24 +50,20 @@ Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datena
 2+| Artikeldaten
 
 | Artikelexport
-|
+| täglich
 
 | Bestandsabgleich
-|  +
-////
-*_Tipp:_* Aus technischen Gründen sind kürzere Abstände beim Bestandsabgleich nicht möglich. Lege bei Bedarf einen <<#300, Bestandspuffer>> fest, um Überverkäufe zu verhindern.
-////
+| alle 15 Minuten +
 
 | Preisabgleich
-|
+| stündlich
 
 2+| Auftragsdaten
 
 | Auftragsimport
-|  +
-////
+| alle 15 Minuten +
 *_Hinweis:_* Kund:innen zahlen an myToys. Deshalb werden alle Aufträge mit dem Status *[5] Bezahlt* importiert.
-////
+
 |====
 
 [#220]
@@ -95,6 +90,10 @@ include::_textblocks/instructions/plugin-installation.adoc[]
 Ich nehme an dieses Kapitel fällt weg, da in Plugin keine Konfigurationen vorzunehmen sind. Das wird über 2 Assistenten abgedeckt.
 
 DB: Ja, genau. Laut meiner Notizen: das Kapitel "myToys einrichten" würde dann den 1. Assistenten umfassen und das Kapitel "Katalog erstellen" weiter unten, würde auf den 2. Assistenten verweisen.
+
+JW: Auftragsstatus werden über Ereignisaktionen abgebildet.
+Versanddienstleister werden im ersten Assistenten gemappt. Ins Handbuch evtl. einen Hinweis (entscheiden wir, wenn wir die Assistenten bez. Texten und Übersetzungen durchgehen.)
+Bestandspuffer fällt weg.
 
 [#300]
 == myToys einrichten
@@ -141,7 +140,7 @@ limango einrichten:
 2+| *Informationen*
 
 | *Durch Plugin erstellte Auftragsherkunft-ID*
-| Die ID der Auftragsherkunft *limango*, die automatisch beim Installieren des Plugins erstellt wird. Diese ID wird automatisch eingetragen.
+| Die ID der Auftragsherkunft *myToys*, die automatisch beim Installieren des Plugins erstellt wird. Diese ID wird automatisch eingetragen.
 
 | *Status des letzten Preisexports*
 a| * *1* = Die Preise wurden erfolgreich zu limango exportiert. Der Zeitpunkt des Exports wird unter *Zeitpunkt des letzten erfolgreichen Preisexports* angezeigt.
@@ -211,9 +210,7 @@ include::_textblocks/instructions/shipping-profile-activate.adoc[]
 
 [#900]
 == Artikelexport einrichten
-////
-check
-////
+
 Artikeldaten werden über ein Katalog-Format zu myToys übertragen. Kataloge erstellst du im Menü *Daten » Kataloge*. Du arbeitest zum ersten Mal mit den Katalogen? Dann solltest du dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut machen>>.
 
 Damit du deine Artikel zu myToys exportieren kannst, musst du einen Katalog erstellen. Verknüpfe anschließend im Marktplatz-Format die von myToys vorgegebenen Felder mit den in plentymarkets gespeicherten Artikeldaten. Die Katalogdaten werden automatisch in regelmäßigen Abständen zu myToys exportiert, wenn du den Katalog aktivierst.
@@ -221,12 +218,16 @@ Damit du deine Artikel zu myToys exportieren kannst, musst du einen Katalog erst
 [#901]
 === Besonderheiten der myToys-Artikeldatenstruktur
 ////
-MÜssen noch besprochen und eingefügt werden.
-////
-Die Struktur der Artikeldaten von myToys unterscheidet sich von der Struktur in plentymarkets.
+Die Artikelsturktur bei myToys gleicht der von plentymarkets, lediglich die Benennungen sind anders. Bei beiden gibt es ein parent und ein child level.
+Item = Product (parent level)
+Variation = articles (child level)
+Variationen basieren auch auf Attributen, wie z.B. Farbe und Größe
 
-////
-Die limango Artikeldatenstruktur gliedert sich in drei Ebenen:
+Es gibt mandatory fields für myToys. Die vollständige Liste bekommen wir noch. So far:
+- UVP
+- clothing: material composition muss angegeben werden
+
+Die Struktur der Artikeldaten von limango unterscheidet sich von der Struktur in plentymarkets. Die limango Artikeldatenstruktur gliedert sich in drei Ebenen:
 
 . *Produktgruppe:* Ein Produkt in allen Ausprägungen
 . *Produkt:* Eine Farbvariation des Produkts
@@ -251,10 +252,6 @@ DB: Ja, indem man den 2. Assistenten mehrmals durchläuft. Muss man sogar, um be
 ////
 Artikeldaten werden über das Marktplatz-Format *xy* zu myToys übertragen. Um deine Artikel zu myToys zu übertragen, erstellst du im Menü *Daten » Kataloge* einen Katalog. Verknüpfe dann im Marktplatz-Format die von myToys vorgegebenen Felder mit in plentymarkets gespeicherten Artikeldaten. Du arbeitest zum ersten Mal mit den Katalogen? Dann solltest du dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut machen>>.
 
-////
-LÖSCHEN
-TIP: Du kannst für limango nur einen Katalog erstellen. Mehrere Kataloge werden für limango aktuell nicht unterstützt.
-////
 :catalogue-template-name: myToys
 :catalogue-plugin:
 
@@ -453,7 +450,7 @@ include::_textblocks/explanations/limango-recommended-mappings.adoc[]
 [#904]
 === Katalog aktivieren
 
-:interval: ??
+:interval:
 :market: myToys
 
 include::_textblocks/instructions/catalogue-activation.adoc[]
@@ -471,7 +468,7 @@ include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
 // Web-API NICHT erforderlich!
 ////
 
-== Stornierungen automatisch an limango melden
+== Stornierungen automatisch an myToys melden
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um myToys automatisch über Stornierungen zu informieren.
 
@@ -499,102 +496,25 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 | *Plugins > myToys: Auftragsstornierung an myToys melden*
 |
 |===
-////
-check Benennungen der Filter und Aktionen
-////
+
 [#1300]
-== Automatische Versandbestätigungen einrichten
-////
+== Versandbestätigungen automatisch an myToys senden
 
-FÜR MYTOYS AUCH SO KOMPLIZIERT? MINDESTENS PLUGIN-EINSTELLUNGEN SOLLTEN WEGFALLEN.
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um myToys automatisch über Versandbestätigungen zu informieren.
 
-Versandbestätigungen an limango müssen eine Sendungsverfolgungsnummer enthalten. Außerdem muss der Versanddienstleister im Auftrag in den Plugin-Einstellungen korrekt mit dem limango-Versanddienstleister verknüpft sein.
-
-Um limango automatisch über den Versand zu informieren, benötigst du zwei Ereignisaktionen:
-
-* Ereignisaktion 1: Versandinformation an limango melden
-* Ereignisaktion 2: Warenausgang buchen
-
-[#13001]
-=== Ablauf von automatischen Versandbestätigungen
-
-Der Ablauf von automatischen Versandbestätigungen ist abhängig davon, ob in den Plugin-Einstellungen der Versanddienstleister am Auftrag korrekt mit dem Versanddienstleister von limango verknüpft ist.
-
-[cols="1,3a"]
-|====
-|Fall |Ablauf
-
-| Versanddienstleister korrekt verknüpft
-| * Für den Auftrag wird eine Paketnummer gespeichert.
-* Die Ereignisaktion *Versandinformation an limango melden* prüft, ob der Versanddienstleister korrekt verknüpft ist.
-* Die Aktion *Versandinformation an limango melden* wird ausgelöst: Eine Versandbestätigung wird an limango gesendet.
-* Der Auftrag wird in den Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)* verschoben.
-* Nur Aktion 1 der Ereignisaktion *Warenausgang buchen* wird ausgelöst. +
-→ Der Warenausgang wird gebucht. +
-→ Eine zweite Versandbestätigung wird _nicht_ an limango gesendet.
-
-| Versanddienstleister nicht korrekt verknüpft
-| * Für den Auftrag wird eine Paketnummer gespeichert.
-* Die Ereignisaktion *Versandinformation an limango melden* prüft, ob der Versanddienstleister korrekt verknüpft ist.
-* Der Auftrag wird in den Status für *Auftragsstatus für Aufträge ohne Versanddienstleister (> 5 - < 7)* verschoben.
-* Du prüfst und korrigierst die Verknüpfung des Versanddienstleisters in den Plugin-Einstellungen. +
-*_Tipp:_* Die Verknüpfung korrigierst du im Menü *Plugins » Plugin-Set-Übersicht » [Plugin-Set öffnen] » limango-Plugin öffnen » Versanddienstleister*.
-* Nach der Korrektur schiebst du den Auftrag in den Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)*.
-* Aktion 1 der Ereignisaktion *Warenausgang buchen* wird ausgelöst. +
-→ Der Warenausgang wird gebucht.
-* Aktion 2 der Ereignisaktion *Warenausgang buchen* wird ausgelöst. +
-→ Eine Versandbestätigung wird an limango gesendet.
-|====
-
-[#13002]
-=== Versandbestätigungen automatisch an limango senden
-
-Richte als Ereignisaktion 1 für Versandbestätigungen die in <<#ereignisaktion-versandinfo-limango>> gezeigte <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein.
-
-:table-event-procedure: <<#ereignisaktion-versandinfo-limango>>
+:table-event-procedure: <<#ereignisaktion-versandinfo-myToys>>
 
 include::../_includes/textblocks/instructions/EA.adoc[]
 
-[[ereignisaktion-versandinfo-limango]]
-.Ereignisaktion 1 für Versandbestätigungen
-[cols="1,2,2"]
-|===
-|Einstellung |Option |Auswahl
-
-| *Ereignis*
-| *Auftragsänderung > Paketnummer*
-|
-
-| *Filter 1*
-| *Auftrag > Auftragstyp*
-| *Auftrag* +
-*Lieferauftrag*
-
-| *Filter 2*
-| *Auftrag > Herkunft*
-| *limango*
-
-| *Aktion*
-| *Plugin*
-| *Versandinformation an limango melden*
-|===
-
-Richte als Ereignisaktion 2 für Versandbestätigungen die in <<#ereignisaktion-warenausgang-limango>> gezeigte <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein.
-
-:table-event-procedure: <<#ereignisaktion-warenausgang-limango>>
-
-include::../_includes/textblocks/instructions/EA.adoc[]
-
-[[ereignisaktion-warenausgang-limango]]
-.Ereignisaktion 2 für Versandbestätigungen
+[[ereignisaktion-versandinfo-myToys]]
+.Ereignisaktion für Versandbestätigungen
 [cols="1,2,2"]
 |===
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
 | *Statuswechsel*
-| Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)* wählen. +
-Diesen Status legst du im Menü *Plugins » Plugin-Set-Übersicht » [Plugin-Set öffnen] » limango-Plugin öffnen] » Auftragsstatus* fest.
+| Ereignis wählen, zum Beispiel *[7] Warenausgang gebucht*.
 
 | *Filter 1*
 | *Auftrag > Auftragstyp*
@@ -602,17 +522,17 @@ Diesen Status legst du im Menü *Plugins » Plugin-Set-Übersicht » [Plugin-Set
 *Lieferauftrag*
 
 | *Filter 2*
-| *Auftrag > Herkunft*
-| *limango*
+| *Auftrag &gt; Herkunft*
+| *myToys*
+////
+Filter so ok?
+////
 
-| *Aktion 1*
-| *Auftrag*
-| *Warenausgang buchen*
-
-| *Aktion 2*
+| *Aktion*
 | *Plugin*
-| *Versandinformation an limango melden*
+| *Versandinformation an myToys melden*
 |===
+
 ////
 [#1000]
 == Retourenverwaltung einrichten
@@ -629,9 +549,9 @@ Der Lieferschein ist gleichzeitig Retourenschein. Eine Retoure läuft bei myToys
 . Du informierst myToys darüber, dass du die Ware erhalten hast.
 . myToys erstattet Käufer:innen den Kaufpreis zurück. +
 *_Hinweis:_* Wenn du myToys mitteilst, dass die Retoure abgeschlossen ist, wird bei myToys eine Gutschrift ausgelöst und Endkund:innen erhalten eine Rückerstattung. Achte deshalb darauf, dass du myToys erst über den Abschluss der Retoure informierst, nachdem du die Ware erhalten und geprüft hast.
-
+////
 [#1030]
-=== Retourenabschluss automatisch an limango melden
+=== Retoure automatisch an myToys melden
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um myToys automatisch darüber zu informieren, dass eine Retoure abgeschlossen wurde.
 
@@ -662,9 +582,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 *_Hinweis:_* Durch die Aktion *Retoure an myToys melden* wird bei myToys eine Gutschrift ausgelöst. Endkund:innen erhalten also eine Rückerstattung. Achte deshalb darauf, dass die Ereignisaktion erst ausgelöst wird, nachdem du die retournierte Ware erhalten und geprüft hast.
 |
 |====
-////
-CHECK Ablauf generell sowie Benennung Filter und Aktion
-////
+
 [#1600]
 == Lieferscheine für myToys vorbereiten
 ////
@@ -727,8 +645,6 @@ include::_textblocks/explanations/limango-delivery-note-text.adoc[]
 ////
 [#1100]
 == Fehlersuche: Log-Einträge abrufen
-////
-CHECK
 
 NOTE: Deine Varianten wurden nicht zu myToys exportiert? Wenn mindestens eine Variante die Anforderungen von myToys nicht erfüllt, werden keine Variantendaten exportiert. Deine Varianten werden also schon bei einer einzigen ungültigen Variante nicht zu myToys übertragen. Um den Fehler zu finden, prüfe die Einträge im Daten-Log.
 
@@ -739,4 +655,3 @@ include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-intro]
 * *Referenztyp* » *variationId*
 
 include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-config]
-////
