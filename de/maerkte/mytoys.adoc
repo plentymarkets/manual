@@ -199,6 +199,8 @@ Ordne nun die Datenfelder von myToys den in plentymarkets gespeicherten Artikeld
 
 include::_textblocks/instructions/katalog-datenfelder-zuordnen.adoc[]
 
+//Hinweis zu simple and complex mappings hinzufügen
+
 [#800]
 ==== Besonderheiten bei der Zuordnung von Datenfeldern
 
@@ -206,7 +208,11 @@ Jeder Marktplatz strukturiert Artikeldaten anders. Deshalb treten beim Zuordnen 
 
 Beachte außerdem, dass es für myToys einige *Pflichtfelder* gibt. Mindestens diese Pflichtfelder müssen in der Zuordnung ausgefüllt werden. Über den Toggle *Nur Pflichtfelder anzeigen* kannst du dir auch ausschließlich die Pflichtfelder anzeigen lassen.
 
-Für einige Zuordnungen ist es sinnvoll vorher <<artikel/einstellungen/eigenschaften#500, Eigenschaften>> anzulegen. Diese sind erst nach dem Erstellen und Speichern in den Zuordnungen verfügbar. Stelle daher sicher, dass du alle benötigten Eigenschaften vorher erstellt hast.
+Für einige Zuordnungen ist es sinnvoll vorher <<artikel/einstellungen/eigenschaften#500, Eigenschaften>> anzulegen. Diese sind erst nach dem Erstellen und Speichern in den Zuordnungen verfügbar. Stelle daher sicher, dass du alle benötigten Eigenschaften vorher erstellt hast. +
+Für alle complex mappings gilt, dass alle Eigenschaftstypen außer *kein* verwendet werden dürfen.
+// "complex mappings" hier noch mal erklären oder reicht es dann oben?
+
+Da myToys keine HTML-Tags verarbeiten kann, werden diese herausgefiltert. Achte darauf, besonders für Artikelbeschreibungen und Aufzählungszeichen.
 
 [[catalogue-myToys-mappings]]
 .Besonderheiten bei der Katalogzuordnung
@@ -215,8 +221,7 @@ Für einige Zuordnungen ist es sinnvoll vorher <<artikel/einstellungen/eigenscha
 | Marktplatz-Datenfeld | Erklärung
 
 |*Produktname*
-|Die Zeichenzahl für Produktnamen ist technisch nicht limitiert. Achte dennoch darauf, nicht zu viele Zeichen zu verwenden, da der Produktname systemseitig von myToys sonst abgeschnitten wird. +
-Es gibt keine Vorgaben für Produktnamen. Hersteller bzw. Eigenmarken müssen nicht im Produktnamen erwähnt werden, diese werden bei myToys gesondert darüber angezeigt.
+|Die Zeichenzahl für Produktnamen ist technisch nicht limitiert. Achte dennoch darauf, nicht zu viele Zeichen zu verwenden, da der Produktname systemseitig von myToys sonst abgeschnitten wird. Der Produktname sollte daher so kurz wie möglich sein. Hersteller bzw. Eigenmarken müssen nicht im Produktnamen erwähnt werden, diese werden bei myToys gesondert darüber angezeigt. Auch Farben oder ähnliches sollten nicht über den Produktnamen genannt werden. +
 
 |*Marke*
 |Die Entsprechung in plentymarkets ist der externe Hersteller.
@@ -230,14 +235,30 @@ Wenn ein eingegebener Preis kleiner als der UVP ist, wird der UVP auf der myToys
 *_Hinweis:_* Wenn du keinen UVP hast, z.B., weil du Hersteller bist, ordne erneut den Verkaufspreis im Feld *UVP* zu. Bei myToys wird dann kein durchgestrichener Preis ausgegeben.
 
 |*Aufzählungszeichen*
-|Auf der myToys Artikelseite werden zusätzliche Informationen über den Artikel mit Aufzählungszeichen aufgeführt. Hierfür bietet es sich an, dies in plentymarkets über die Eigenschaft *Kurztext* zu pflegen.
+|Auf der myToys Artikelseite werden zusätzliche Informationen über den Artikel mit Aufzählungszeichen (bullet points) aufgeführt. Hierfür bietet es sich an, dies in plentymarkets über die Eigenschaft *Kurztext* zu pflegen. +
+Die Zeichenlimitierung für Bullet Points beträgt 255 Zeichen, danach wird der Text abgeschnitten und mit “...” versehen.
 
 |*Saison*
 |Möchtest du einen saisonunabhängigen Artikel einstellen, wähle hier *NOOS* (never out of season) aus. Weitere Abkürzungen: +
 - *FS* = Frühling / Sommer +
 - *HW* = Herbst / Winter
 
-//Noch weitere Besonderheiten / Infos, die hier eingefügt werden sollten?
+|*Muster*
+|Möchtest du einen Artikel ohne Muster einstellen, wähle hier *uni* aus.
+
+|*EAN & Intrastat-Nr.*
+|Diese beiden Werte sind Pflichtwerte und müssen am Artikel gepflegt sein, da sie genau so an myToys übergeben werden.
+
+|*Materialzusammensetzung*
+|Einige Kategorien, z.B. Fashion, verlangen die Angabe der Materialzusammensetzung. Von den fünf zur Verfügung stehenden Feldern muss mindestens ein Feld verknüpft werden. Hierbei handelt es sich um ein mehrdimensionales Mapping: +
+- Im 1. Schritt muss der Materialtyp (complex mapping) verknüpft werden, z.B. "Obermaterial". +
+- Im 2. Schritt muss die Materialzusammensetzung von “Obermaterial” in folgendem Format eingebeben werden: +
+{"material1": "prozentwert","material2": "prozentwert","material3": "prozentwert"} +
+_Beispiel:_ {"WO": "90","EL": "10"}
+//Materialangabe von limango übernommen. Passt so?
+
+|*Artikelgewicht*
+|Der eingegebene Wert wird in Gramm übertragen.
 
 |====
 
