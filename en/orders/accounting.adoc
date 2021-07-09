@@ -4,7 +4,7 @@ include::{includedir}/_header.adoc[]
 :position: 30
 :url: orders/accounting
 :id: O4EBBOD
-:keywords: accounting, VAT rates, currencies, exchange rates, price calculation, calculation of prices, calculation, booking keys, revenue, revenue account, account, debtor account, price, prices, documents, accounting, accounting location, gross price, net price, sum, variation price, quantity, decimal place, amount, VAT amount, rounded price, rounding prices, rounding single variation price, rounded order item sums, rounded totals, client, location, totals, round totals, invoice, VAT amount single unit, total cross, total net, invoice amount, net value, gross value, net sum, business address, EU, European Union, non-EU, delivery, export, export shipping, shipping costs, VAT ID, delivery threshold, default location, POS, country, small business owner regulation, deliveries, entry certificate, gross invoice, net invoice, VAT number, export shipping, export, export shipment, tax, taxes, revenue, revenues, B2C, B2B, posting key, DATEV, DATEV exports, pending amount, booking, tax key, Collmex, payment, payment method, account, accounting data, data export, differing VAT rate, lowered rate, taric, taric number, taric code, taric table, customs, customs tariff number, OSS
+:keywords: accounting, VAT rates, currencies, exchange rates, price calculation, calculation of prices, calculation, booking keys, revenue, revenue account, account, debtor account, price, prices, documents, accounting, accounting location, gross price, net price, sum, variation price, quantity, decimal place, amount, VAT amount, rounded price, rounding prices, rounding single variation price, rounded order item sums, rounded totals, client, location, totals, round totals, invoice, VAT amount single unit, total cross, total net, invoice amount, net value, gross value, net sum, business address, EU, European Union, non-EU, delivery, export, export shipping, shipping costs, VAT ID, delivery threshold, default location, POS, country, small business owner regulation, deliveries, entry certificate, gross invoice, net invoice, VAT number, export shipping, export, export shipment, tax, taxes, revenue, revenues, B2C, B2B, posting key, DATEV, DATEV exports, pending amount, booking, tax key, Collmex, payment, payment method, account, accounting data, data export, differing VAT rate, lowered rate, taric, taric number, taric code, taric table, customs, customs tariff number, OSS, OneStopShop, one-stop-shop, One-Stop-Shop, onestopshop
 :author: team-order-payment
 
 Learn more about settings in plentymarkets that are relevant for your accounting. These settings include among others VAT rates, rounding settings, booking keys, revenue accounts, debtor accounts but also taric numbers.
@@ -238,7 +238,7 @@ In Germany, the Federal Central Tax Office is responsible for the OSS procedure.
 To represent all this in plentymarkets, you need to implement two things in particular:
 
 * Set up <<orders/accounting#550, VAT rates>> for your delivery countries. This is not to be confused with creating a new <<orders/accounting#320, location>>. You can create VAT rates as described in the <<orders/accounting#550, following chapter>> or you use the VAT rate assistant. +
-Either way, it is very important that you make sure to enter the correct data. Otherwise, wrong VAT rates and incorrect configurations could be created which cannot be reversed. Also make sure to enter the highest rate as *Tax rate A* and the others in descending order.
+Either way, it is very important that you make sure to enter the correct data. Otherwise, wrong VAT rates and incorrect configurations could be created which cannot be reversed.
 * Enter and maintain <<orders/accounting#620, taric codes>>, as these are central for mapping the different taxation of items. Add the taric codes on the variations and then link these with the corresponding VAT rates of the individual EU countries in the taric code table.
 
 [#550]
@@ -262,7 +262,8 @@ Setting up VAT rates:
 . Change to the *VAT rates* tab.
 . Click on *New configuration*.
 . Select a *Country*.
-. Enter the highest VAT rate as *VAT rate A*. Enter further VAT rates in descending order.
+. Enter the *Tax rates* for the selected country. +
+→ Regarding this, especially note the table entry about <<orders/accounting#intable-enter-tax-rate, entering tax rates>>.
 . Enter your *VAT number*.
 . Select a starting date from which on the rates will be valid.
 . Pay attention to the explanations given in <<table-setting-up-VAT-configuration>>.
@@ -291,12 +292,15 @@ As soon as a VAT configuration is active, only the *Invalid from* date is editab
 *Tax rate D in %* +
 *Tax rate E in %* +
 *Tax rate F in %*
-|Enter the tax rates, starting with the highest rate as *Tax rate A* and continue in descending order. Examples (correctness of tax rates without guarantee): +
-For Germany: Tax rate A = 19%, Tax rate B = 7 % +
-For France: Tax rate A = 20&, Tax rate B = 10%, Tax rate C = 5,5%, Tax rate D = 2,1% +
+|Enter the tax rates for the country selected in the field *Country*. Use the same structure of entering tax rates for every country. For example: +
+Tax rate A = Standard rate (e.g. Germany 19%, France 20 %) +
+Tax rate B = First reduced rate (e.g. Germany 7%, France 10%,) +
+Tax rate C = Second reduced rate (e.g. France 5,5%,) +
+Tax rate D = super reduced rate / special rates (e.g. France 2,1%)
+
 *_Important_*: +
 - You can make changes to VAT rate configurations as long as they are not valid. Once the rates are, valid they cannot be changed or extended. +
-- Do not enter the same VAT rate twice in one configuration. This leads to errors. +
+- Do not enter the same tax rate twice in one configuration. This leads to errors. +
 - Use the <<orders/accounting#620, taric codes>> for the different taxation of items. +
 - The *names* are only relevant for the accounting software Xero.
 
@@ -355,7 +359,7 @@ Taric codes are relevant for you if you are trading EU-wide and have exceeded th
 Goods are charged with different taxes in different EU countries. In order to take this into account and thus also have a correct basis for the calculation of orders, the taric codes have to be entered into the system and mapped with the VAT rates which are set for different countries.
 Thus, as a first step, you have to maintain the taric codes in your system. Taric codes are entered in the <<item/managing-items#280, variations>>. Moreover, you need to set <<orders/accounting#550, VAT rates>> for the required countries. These VAT rates could also be entered later, but we recommend setting these in the system in time.
 
-The table in the menu *Setup » Client » Setting » Taric code* then enables the linking of taric code, VAT rate and country. Thus, this taric code table is a basis for the calculation of orders and has to be maintained as well. Wichtig ist zu beachten, dass hier keine Steuersätze direkt eingegeben werden, sondern jeweils A, B, C, usw. für den entsprechenden Steuersatz aus der Steuersatzkonfiguration des entsprechenden Landes ausgewählt wird. Deswegen ist es unerlässlich, die <<auftraege/buchhaltung#550, Umsatzsteuersätze>> sorgfältig zu pflegen.
+The table in the menu *Setup » Client » Setting » Taric code* then enables the linking of taric code, VAT rate and country. Thus, this taric code table is a basis for the calculation of orders and has to be maintained as well. It is important to note that no tax rates are entered directly here. Instead, you select the ID (A, B, C, etc.) of the tax rate of the corresponding tax rate configuration. Therefore, it is essential to be careful in the maintenance of the <<orders/accounting#550, VAT settings>>.
 
 [.collapseBox]
 .*This happens in the background when orders are calculated*
