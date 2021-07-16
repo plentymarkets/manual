@@ -48,6 +48,13 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 * In der Artikelsuche für Bestellungen wurden die neuen Filter hinzugefügt.
 
 [discrete]
+=== Neckermann.at
+
+* Unter *Artikel » Artikel Bearbeiten » Artikel öffnen » Tab: Multi-Channel » Bereich: Neckermann.at Enterprise* wurden neue Provisionsmodelle ergänzt:
+** `308A`
+** `308B`
+
+[discrete]
 === Warenwirtschaft
 
 * Du kannst ab jetzt entscheiden, für welche Artikel du Meldebestand (und hiermit Bestellvorschlag) haben solltest.
@@ -70,6 +77,22 @@ Verwende den Import vom Typ Artikel, wenn du den Wert für zahlreiche Varianten 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
+=== Aufträge
+
+* Bei Anlage von unvollständigen Aufträgen (Status 1) wurden Artikelbestände bisher nur zeitversetzt neu kalkuliert. Dieses Verhalten wurde angepasst, sodass Artikelbestände nun auch bei Anlage von unvollständigen Aufträgen (Status 1) direkt neu kalkuliert werden, wenn der Status 1 in dem Bereich der Auftragsreservierung enthalten ist.
+
+[discrete]
+=== Cloud-Hosting
+
+* Alle SSL-Zertifikate können nun mit einer neuen GUI über den SSL-Assistenten bestellt werden. Damit einher gehen folgende Änderungen:
+** Die Möglichkeit, Comodo-Zertifikate zu erwerben wurde entfernt.
+** Die Möglichkeit, RapidSSL-Zertifikate zu erwerben wurde hinzugefügt.
+** Die Laufzeit von AlwaysOn-Zertifikaten wurde auf 3 Monate reduziert.
+** Es ist nun möglich, AlwaysOn-Zertifikate automatisch verlängern zu lassen.
+** SSL-Zertifikate werden jetzt innerhalb weniger Sekunden ausgeliefert.
+
+
+[discrete]
 === Zahlungsarten
 
 * Wir haben das Präfix „Plugin“ bei den Zahlungsarten, die über das Interface durch ein Plugin oder einen Marktplatz registriert wurden, entfernt. Gleichzeitig haben wir das Präfix „Legacy“ für alle alten Zahlungsarten hinzugefügt, sofern diese noch in Verwendung sind. Dies hat nur Auswirkungen auf die Anzeige dieser Zahlungsarten in Filtern etc. innerhalb des Backends. Funktionalitäten sind ist hiervon nicht betroffen.
@@ -85,6 +108,20 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 === Aufträge
 
 * In der Artikelsuche der Auftragsanlage (Beta) waren die Checkbox-Filter auch dann sichtbar, wenn man versucht hat sie zu entfernen oder die Zurücksetzen-Funktion genutzt hat. Dies wurde behoben, die Checkbox-Filter sind nur sichtbar, wenn sie aktiv sind.
+* Wenn ein Stornobeleg zu einer Rechnung oder einer Gutschrift erstellt wurde, die einen Mehrzweckgutschein enthält, wurde dieses nicht korrekt in die AccountingSummary aufgenommen. Der Wert des Gutscheines fehlte und dafür gab es eine Auftragsposition mit Typ-ID `-1` und 0,00 EUR. Dies wurde behoben.
+
+[discrete]
+=== Fruugo
+
+* Beim Import eines Auftrags konnte es zu einem Fehler kommen, wenn die Sprache, die Fruugo uns übermittelte noch nicht in unserem System verfügbar ist. In diesen Fällen findet ihr unter *Daten » Log* Fehlermeldungen ohne eine Nachricht mit den folgenden Suchparametern:
+** *Identifikator*: `fruugo`
+** *Level*: `critical`
+** *Referenztype*: `action`
+** *Referenzwert*: `orderImport`
+
++
+Wenn ihr den Eintrag öffnet findet ihr im Feld `messageBag` ein Array mit der Nachricht `"Document language "NO" is not valid!"`. Der Fehler wurde behoben, indem Englisch als Sprache eingetragen wird, sollte die Sprache nicht verfügbar sein. Aufträge, die deswegen nicht importiert werden konnten, werden automatisch importiert.
+* Beim Auftragsimport konnte es zu einem Abbruch kommen, wenn ein fruugo-Auftrag mehr als eine Artikelposition enthielt. Dieses Verhalten wurde behoben. Wenn der Fehler erstmals zwischen dem 9. Juli und 12. Juli auftrat, werden die fehlenden Aufträge automatisch importiert. Sollten euch Aufträge vor dieser Zeitspanne fehlen, kontaktiert uns gern dazu im Forum, damit wir diese Aufträge für euch importieren können.
 
 --
 
@@ -97,7 +134,10 @@ early::
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
+[discrete]
+=== Zahlungsarten
 
+* Im Menü *Aufträge » Neue Zahlungen* wurde die neue Navigation hinzugefügt.
 
 '''
 
@@ -106,7 +146,10 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
+[discrete]
+=== Aufträge
 
+* Bisher wurde beim Splitten von Bundles der Steuersatz an den Komponenten anhand der Einstellung der Steuersatzes an der Komponentenvariante gesetzt. Nun wird der Steuersatz am Bundle berücksichtigt und an den Komponenten übernommen, sofern dieser explizit gesetzt ist.
 
 '''
 
@@ -115,7 +158,10 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
+[discrete]
+=== Zahlungsarten
 
+* Im Menü *Aufträge » Neue Zahlungen* wurden beim Duplizieren eines Tabs die gleichen Daten in beiden Tabs angezeigt. Dieser Fehler wurde behoben, Änderungen in einem Tab werden nicht automatisch in den zweiten geöffneten Tab übernommen.
 
 --
 
