@@ -28,8 +28,9 @@ jobs:
               asciidoctor ${changed_file} >> lint-results.txt
               echo "" >> lint-results.txt
             done
-            export lintResults=$(<lint-results.txt)
-            echo "::set-env name=lintResults::$lintResults"
+            echo 'LINT_RESULTS<<EOF' >> $LINT_RESULTS
+            lintResults=$(<lint-results.txt) >> $LINT_RESULTS
+            echo 'EOF' >> $LINT_RESULTS
 
       - uses: actions/github-script@0.9.0
         with:
