@@ -34,7 +34,7 @@ After setting up OTTO Market in plentymarkets, the automatic processes described
 If new stock is booked for such a variation, the variation is reactivated during the nightly item export.
 
 | Order import
-| once per hour
+| every 15 minutes
 
 | Import of return announcements by customers
 | once per hour
@@ -183,8 +183,8 @@ include::../_textblocks/instructions/define-sales-price.adoc[]
 [#425]
 == Activating the payment method
 
+:market: OTTO Market
 :payment-method: Otto Payment
-:folder: International
 
 include::../_textblocks/instructions/activate-payment-method.adoc[]
 
@@ -278,7 +278,7 @@ The sales price is created with the following settings:
 
 You have already mapped important mandatory fields for the OTTO category group in the assistant. However, after you have completed the assistant, you need to map additional data fields to send more information regarding your products to OTTO Market.
 
-TIP: Map at least the data fields *Brand*, *Delivery type* and *Category* with plentymarkets data fields.
+TIP: Map at least the marketplace data fields *Brand*, *Delivery type* and *Category* with plentymarkets data fields.
 
 :catalogue-assistant:
 include::../_textblocks/instructions/catalogue-map-data-fields.adoc[]
@@ -499,6 +499,8 @@ This chapter describes how OTTO Market orders are processed.
 === Order import
 
 * OTTO Market orders are imported into plentymarkets with status *[3] Waiting for payment*.
+* Orders with the OTTO Market status ANNOUNCED are imported to plentymarkets without address details and with the status *[1] Incomplete data*. These are orders with the payment method cash in advance that have not been paid. As soon as the order changes to the status PROCESSABLE at OTTO Market, the address is added tot he order and the order is moved to status *[3] Waiting for payment*. +
+*_Important:_* No stock is reserved for orders in status *[1] Invalid data* by default. To make sure that stock is reserved for these orders, go to *Setup » Orders » Settings*. Go to the setting *Status for order reservation (Reservation of stocks)*. For the option *to*, select the status *[1] Incomplete data*. In the drop-down list to the far right, select the option *All orders*.
 * After an order was confirmed by OTTO Market, the order changes to status *[5] Shipment process started*.
 * A payment is created for the order in plentymarkets and the order is marked as *paid*. +
 If customers paid an OTTO Market order per bank transfer, it might take longer to confirm the order than for other payment methods. In plentymarkets, the payment method is always *OTTO Payment*. +
@@ -691,53 +693,18 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#900]
-=== Sending returns to OTTO
+=== Accepting OTTO Market returns
 
-In order that OTTO Market accepts the return, you first have to create an order of the type *Credit note*. In a second step, the return information is sent to OTTO. As such, you need two event procedures to inform OTTO about returns:
+Set up an <<automation/event-procedures#, event procedure>> to notify OTTO Market when you accept returns.
 
-* Event procedure 1: Create orders of the type *Credit note*
-* Event procedure 2: Send return to OTTO
+*_Workflow of the return process:_*
 
-Set up these event procedures as described below.
-
-[[image-return-otto-credit-note]]
-.Event procedure for creating orders of the type *Credit note*
-image::markets/otto/assets/otto-market-return-credit-note.png[width=640, height=360]
-
-
-:table-event-procedure: <<#return-otto-credit-note>>
-
-include::../../_includes/textblocks/instructions/EA.adoc[]
-
-[[return-otto-credit-note]]
-.Event procedure for creating orders of the type *Credit note*
-[cols="1,3,3"]
-|====
-|Setting |Option |Selection
-
-| *Event*
-| Select an event, for example *Order change: Status change*. +
-*_Note:_* Select a status that suits your workflow. Select the status *[9.11] Send return to OTTO*, for example.
-|
-
-| *Filter 1*
-| *Order > Order type*
-| *Return*
-
-| *Filter 2*
-| *Order > Referrer*
-| *OTTO Market*
-
-| *Procedure*
-| *Order > Create credit note (order)*
-|
-|====
-
-Set up another <<automation/event-procedures#, event procedure>> to inform OTTO Market about returns.
-
-[[image-return-otto]]
-.Event procedure to send returns to OTTO Market
-image::markets/otto/assets/otto-market-accept-return.png[width=640, height=360]
+. The plentymarkets action *Send return to OTTO* is triggered.
+. OTTO creates a credit note receipt.
+. An order of the type *Credit note* is created in plentymarkets. +
+*_Note:_* If prices and/or shipping costs do not match, this information is updated based on the receipt data.
+. The credit note receipt that OTTO created is saved to the order of the type *Credit note*.
+. A child order of the type *Credit note* is created for the return.
 
 :table-event-procedure: <<#return-otto>>
 
@@ -750,12 +717,13 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| Select an event, for example *Order generation: New credit note*.
+| Select an event, for example *Order change: Status change*. +
+*_Note:_* Select a status that suits your workflow. For example, you could create a status *[9.11] Send return to OTTO*.
 |
 
 | *Filter 1*
 | *Order > Order type*
-| *Credit note*
+| *Return*
 
 | *Filter 2*
 | *Order > Referrer*
@@ -765,14 +733,14 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *Plugins > Retoure an OTTO melden* (Send return to OTTO)
 a| *_Notes:_*
 
-* The procedure *Send return to OTTO* triggers a credit note and the buyer receives a refund. The credit note document created by OTTO is automatically attached to the order of the type *Credit note*.
-* OTTO will refund the complete sales price of an order item. You cannot notify OTTO Market of a partial refund for an order item. As such, even if you adjust the price of an order item, this does not affect the refund document that OTTO creates.
+* If the original order was part of a discount campaign, that discount campaign is also imported to the credit note order as an order item and the prices are applied.
+* OTTO will refund the complete sales price of an order item. You cannot notify OTTO Market of a partial refund for an order item. As such, even if you adjust the price of an order item, this adjustment does not affect the refund document that OTTO creates.
 |====
 
 [#1000]
-=== Sending return rejections to OTTO
+=== Rejecting OTTO Market returns
 
-Set up an <<automation/event-procedures#, event procedure>> to inform OTTO Market about the rejection of returns.
+Set up an <<automation/event-procedures#, event procedure>> to notify OTTO Market when you reject returns.
 
 :table-event-procedure: <<#return-rejection-otto>>
 
