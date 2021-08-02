@@ -22,9 +22,11 @@ limango, a member of the Otto Group, is the number one platform for young famili
 [#150]
 == Becoming a limango partner
 
-Join the leading platform for family shopping and click ink:https://entdecke.limango.de/marktplatz-partnerprogramm[here^]{nbsp}icon:external-link[] for more information on the limango marketplace and our partner program and to send your registration request (please note: information is only available in German).
+Join the leading platform for family shopping and click ink:https://entdecke.limango.de/marktplatz-partnerprogramm[here^]{nbsp}icon:external-link[] for more information on the limango marketplace and their partner program and to send your registration request (please note: information is only available in German).
 
 Alternatively, you can also contact our team of partner managers by sending an email to marketplace@limango.de. A partner manager will get in touch with you soon and will work with you to evaluate the potential on link:https://www.limango.de[limango.de^]{nbsp}icon:external-link[] and talk about your next steps.
+
+After registering, you will receive login details from limango. You need these login details to set up the limango plugin in plentymarkets.
 
 [#200]
 == Overview of automatic data exchange with limango
@@ -33,7 +35,7 @@ After installing and setting up the plugin, the automatic processes described in
 
 [[data-exchange-limango]]
 .Frequency of data exchange
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Data |Interval
 
@@ -65,25 +67,19 @@ After installing and setting up the plugin, the automatic processes described in
 * → The order is imported to plentymarkets. +
 *_Note:_* Because customers make their payments to limango, orders are imported with the status *[5] Paid*.
 * When you receive the order, you ship the products (drop shipping).
-* limango communicates with the customer and takes care of customer service.
 
 [#170]
 == Installing the limango plugin
 
 To connect to limango in plentymarkets, install the link:https://marketplace.plentymarkets.com/en/limango_7023[limango plugin^] in your plentymarkets system. You can download the plugin in the link:https://marketplace.plentymarkets.com/en[plentyMarketplace^]{nbsp}icon:external-link[].
 
-[.collapseBox]
-.Not sure how to install the limango plugin?
---
 :plugin: limango
-
-include::../../../plugins/_textblocks/instructions/plugin-installieren-en_gb.adoc[]
---
+include::_textblocks/instructions/plugin-installation.adoc[]
 
 [#300]
 == Setting up limango
 
-After you have installed the limango plugin, set up the market in the plugin settings.
+After you have installed the limango plugin, set up the market in the plugin settings. Keep the login details at hand that you received from limango.
 
 [.instruction]
 Setting up limango:
@@ -95,12 +91,12 @@ Setting up limango:
 . Click on the plugin *limango*. +
 → The plugin settings open.
 . Carry out the settings. Pay attention to the information given in <<#limango-setup>>.
-. *Save* (icon:save[role="green"]) the settings.
+. *Save* (icon:save[role="green"]) the settings in each area in which you made changes.
 
 
 [[limango-setup]]
 .Setting up limango
-[cols="1,3"]
+[cols="1,2a"]
 |====
 |Setting |Explanation
 
@@ -116,12 +112,13 @@ Setting up limango:
 *Password*
 | You will receive these credentials from limango.
 
-2+| *Plugin item properties*
+2+| *Stock export*
 
-| *limango category property*
-| The ID of the property *limangoTemplate* that is created automatically when the plugin is installed. The ID is filled in automatically.
+| *Stock buffer*
+| The stock of all warehouses is exported to limango. Enter a whole number to reduce the exported stock information by the entered amount. +
+*_Note:_* Stock information is exported to limango once per hour. For technical reasons, shorter stock update intervals are not possible. Use the stock buffer to prevent overselling.
 
-2+| *Fields created by plugin*
+2+| *Information*
 
 | *Order referrer ID created by plugin*
 | The ID of the order referrer *limango* that is created automatically when you install the plugin. The ID is filled in automatically.
@@ -133,12 +130,47 @@ a| * *1* = The prices were exported to limango. You can check the last time the 
 | *Time of last successful price export*
 | The timestamp of the last successful price export.
 
-2+| *Stock export*
+2+| *Order status*
 
-| *Stock buffer*
-| The stock of all warehouses is exported to limango. Enter a whole number to reduce the exported stock information by the entered amount. +
-*_Note:_* Stock information is exported to limango once per hour. For technical reasons, shorter stock update intervals are not possible. Use the stock buffer to prevent overselling.
+| *Order status for orders with items that cannot be linked to items in plentymarkets (>= 5)*
+| Enter an order status of 5 or higher. This status is assigned to orders that contain one or more items that no longer exist in plentymarkets. For example, this can happen if a customer orders an item on limango that was deleted in plentymarkets after the last item export to limango.
 
+| *Order status for orders without shipping carrier mapping (> 5 - < 7)*
+| Which status is assigned to orders if the shipping service provider in the order is not linked to a shipping service provider in plentymarkets?
+
+*_The selected status must be:_*
+
+* Greater than 5
+* Less than 7
+* Less than the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*
+
+After correcting the shipping carrier mapping, move orders with this status into the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*.
+
+| *Order status for orders with shipping carrier mapping (> 5 - < 7)*
+| Which status is assigned to orders if the shipping service provider in the order is linked to a shipping service provider in plentymarkets?
+
+*_The selected status must be:_*
+
+* Greater than 5
+* Less than 7
+* Greater than the status for *Order status for orders without shipping carrier mapping (> 5 - < 7)*
+
+2+| *Shipping service provider*
+
+| *DHL*; +
+*Hermes*; +
+*UPS* +
+etc.
+| For each shipping service provider that you want to offer for limango orders, enter the ID of the shipping service provider in plentymarkets. +
+*_Tip:_* Go to *Setup » Orders » Shipping » Settings » Tab: Shipping service provider* to find the ID of your shipping service providers in the column *ID*.
+
+2+| *Client selection*
+
+| *Plenty ID*
+| Enter the plenty ID of a client. limango orders are imported for this client. +
+→ The order documents for this client are used during order processing. +
+If you do not enter a client, the default client is used for importing orders.
+*_Tip:_* The plenty ID of your clients is saved in the *Setup » Client » [Select client] » Settings » Option: Plenty ID* menu.
 |====
 
 [#600]
@@ -157,29 +189,17 @@ include::_textblocks/instructions/activate-referrer.adoc[]
 
 include::_textblocks/instructions/define-sales-price.adoc[]
 
-[#750]
-== Setting the variation availability
+[#550]
+== Activating the referrer in shipping profiles
 
-:market-availability: limango
-:option-availability: limango
+:referrer: limango
 
-include::_textblocks/instructions/variation-availability.adoc[]
-
-// Web API NOT required!
-
-[#800]
-== Linking variations with the property limangoTemplate
-
-Items that you want to sell on limango have to be linked with the *limangoTemplate* variation property. This variation property is created in your plentymarkets system automatically as soon as you install the limango plugin.
-
-:property-link: limangoTemplate
-
-include::_textblocks/instructions/properties-link-to-variation.adoc[]
+include::_textblocks/instructions/shipping-profile-activate.adoc[]
 
 [#900]
 == Setting up the item export
 
-Item data is exported to limango via catalogue formats. Go to *Data » Catalogues* to create catalogues. Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, principle of catalogues first>>.
+Item data is exported to limango via a catalogue format. Go to *Data » Catalogues* to create catalogues. Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, principle of catalogues first>>.
 
 To export your item data to limango, you need to create a catalogue. Link the limango data fields with the item data saved in plentymarkets in the marketplace format afterwards. After you activate the catalogue, the catalogue data is automatically exported to limango in regular intervals.
 
@@ -189,10 +209,19 @@ To export your item data to limango, you need to create a catalogue. Link the li
 The structure of limango item data differs from the structure in plentymarkets. The limango item data is categorised into three levels:
 
 . *Product group:* A product in all its different versions
-. *Product:* A specific colour version of the product
-. *Variation:* Equivalent to the size / EAN / SKU
+. *Product:* A colour version of the product
+. *Variation:* The size / EAN / SKU
 
-If the product is only available in a single version, then the product group equals the variant.
+If the product is only available in a single version, then the product group is equivalent to the variant.
+
+[IMPORTANT]
+.Use the parent-SKU
+====
+Do you sell products in different colours but manage these different colours in separate items? The parent SKU allows you to link these separate items. Parent SKUs can be saved for both items and individual variations. The manual maintenance of SKUs allows you to assign the Parent SKU of entirely different item variations to variations of an item.
+
+* You can assign the Parent SKU of a variation which belongs to an entirely different item five times to an item with five variations. These variations are listed on limango as variations of the item with the Parent SKU they are assigned to. +
+* If one variation has a different Parent SKU than the remaining variations of an item, then two different items are listed on limango. You only have to maintain one item in your plentymarkets system.
+====
 
 [#902]
 === Creating a catalogue
@@ -229,7 +258,7 @@ Every market structures item data differently. As such, there are some particula
 
 [[catalogue-limango-mappings]]
 .Notes on mapping data fields
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Marketplace data field | plentymarkets data field
 
@@ -253,30 +282,15 @@ Now, map the plentymarkets data field that you want in the catalogue:
 . To the right of the column, click on *Settings* (icon:cog[]).
 . From the drop-down list *Separator*, select the option *Space*.
 
-| Measurements with corresponding data fields in plentymarkets +
+| Measurements +
 (*Length*; +
 *Width*; +
 *Height*; +
+*Volume*; +
+*Diameter*; +
+*Weight* +
 etc.)
-a| Measurements must be exported to limango with the format *[numeric value];[unit]*. In plentymarkets, the numerical value and the unit are saved in separate data fields. As such, for mapping you combine two plentymarkets data fields and use a semicolon as the separator.
-
-[.collapseBox]
-.*_Example:_* Exporting the length to limango
---
-. Map the marketplace data field *Length* to the plentymarkets data field *Length mm*.
-. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
-. Map a field *Own value*.
-. Enter *mm* in this field.
-. To the right of the column, click on *Settings* (icon:cog[]).
-. From the drop-down list *Separator*, select the option *Semicolon*.
---
-
-| Measurements without corresponding data fields in plentymarkets +
-(e.g. *Diameter*; +
-*Leg height*; +
-*Heel height*; +
-etc.)
-a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Create two properties for measurements for which no data field exists in plentymarkets:
+a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Due to the limango product structure, the normal plentymarkets data fields for measurements cannot be mapped. Instead, create two properties:
 
 * One property of the type *Decimal number* for the numerical value.
 * One property of the type *Selection* for the unit.
@@ -284,21 +298,119 @@ a| Measurements must be exported to limango with the format *[numeric value];[un
 Combine these two properties, separated by a semicolon.
 
 [.collapseBox]
-.*_Example:_* Exporting the diameter to limango
+.*_Example:_* Exporting the length to limango
 --
-. Create a property of the type *Decimal number* with the name *Diameter*.
-. Create a property of the type *Selection* with the name *Diameter unit*.
-. Add the units you need to the property *Diameter unit* as property values. +
-*_Tip:_* If you are sure that you only need one unit for all your items, you can also export the unit by entering it as an own value (as in the example for *Length* above).
-. Map the marketplace data field *Diameter* to the plentymarkets data field *Diameter*.
+. Create a property of the type *Decimal number* with the name *Length*.
+. Create a property of the type *Selection* with the name *Length unit*.
+. Add the units you need to the property *Length unit* as property values.
+. Open the limango catalogue.
+. Map the marketplace data field *Length* to the plentymarkets property *Length*.
 . To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
-. Map the property *Diameter unit*.
+. Map the property *Length unit*. +
+*_Tip:_* If you are sure that you only need one unit for all your variations, you can also export the unit by entering it as an own value. To do so, instead of mapping the property *Length unit*, map the field *Own value* and enter the unit in the field that opens.
 . To the right of the column, click on *Settings* (icon:cog[]).
 . From the drop-down list *Separator*, select the option *Semicolon*.
 --
+
+[.collapseBox]
+.*_Example:_* Exporting the volume to limango
+--
+. Create a property of the type *Decimal number* with the name *Volume*.
+. Create a property of the type *Selection* with the name *Volume unit*.
+. Add the units you need to the property *Volume unit* as property values. +
+*_Note:_* Only the units l (for litres) and ml (for millilitres) can be exported.
+. Open the limango catalogue.
+. Map the marketplace data field *Volume* to the plentymarkets property *Volume*.
+. To the right of this data field, click on *Add data field* (icon:link[rotate=90]).
+. Map the property *Volume unit*. +
+*_Tip:_* If you are sure that you only need one unit for all your variations, you can also export the unit by entering it as an own value. To do so, instead of mapping the property *Volume unit*, map the field *Own value* and enter the unit in the field that opens.
+. To the right of the column, click on *Settings* (icon:cog[]).
+. From the drop-down list *Separator*, select the option *Semicolon*.
+--
+
+| Data fields under Material composition
+a| Material information is exported to limango using a property of the type *Short text*. You need one property for each marketplace data field. This property is used to save all components of the material mix for a main variation.
+Enter the material composition in the following format:
+
+* *{"material1": "percentage","material2": "percentage","material3": "percentage"}* +
+*_Example:_* *{"baumwolle": "90","elasthan": "10"}*
+
+Specify the individual materials in descending order based on the percentage value. As such, the first material is the one with the highest percentage value, the last one that with the lowest percentage value. The sum of all percentages must be 100. You can specify as many materials as you need.
+
+[.collapseBox]
+.*_Example:_* Exporting material information for a blazer to limango
+--
+The following example shows you how to save material information for a blazer for the limango export.
+
+[.instruction]
+Mapping outer fabric and saving material mix for a variation:
+
+. Create a property of the type *Short text* with the name *Material 1*.
+. Map the marketplace data field *Material 1* to the plentymarkets property *Material 1*.
+. Link the property *Material 1* to the main variation of the item.
+. Our blazer is made of 65% polyester, 32% rayon and 3% elastane. Enter the following into the text field of the property:
+  * {"polyester": "65","viskose": "32","elastan": "3"}
+. Save the settings.
+
+[.instruction]
+Mapping lining and saving material mix for a variation:
+
+. Create a property of the type *Short text* with the name *Lining 1*.
+. Map the marketplace data field *Lining 1* to the plentymarkets property *Lining 1*.
+. Link the property *Lining 1* to the main variation of the item.
+. The lining of the blazer is made of 100% rayon. Enter the following into the text field of the property:
+  *
+. Save the settings.
+--
+
+| *Colour value*
+| limango distinguishes by colours but not by shades. For example, if you offer a dress in both light and dark green, both are presented if customers search for green dresses on the market.
+
+To ensure that different products are created for variations in different shades of the same colour, the colour value saved in plentymarkets is exported as part of the merchant product ID and the product name instead of the limango colour value.
+
+[.collapseBox]
+.*_Example:_* Mapping different shades of green to the colour value *green*
+--
+This example shows you how to map different shades of green to the colour value *green*.
+
+[.instruction]
+Assumed scenario:
+
+You want to map all your shades of green to the limango colour value *green*.
+
+The following shades of green are saved as values of the attribute *Colour*:
+
+* Light green
+* Dark green
+
+The following shades of green are saved as property values:
+
+* Lime green
+* Coriander
+
+[.instruction]
+Mapping different shades of green to the colour value "green":
+
+. Open the limango catalogue.
+. Navigate to the area *Colour*.
+. Map the marketplace data field *Colour* to the following plentymarkets data fields: +
+*_Data field:_* Field *Value name* of the attribute for *Colour* +
+*_Fallback data fields:_* Property for *Colour*
+. Navigate to the area *Colour value*.
+. Map the marketplace data field *Colour value: green* to the plentymarkets attribute value *Light green*.
+. Click on *+ Add fallback data field*.
+. As the first fallback data field, map the plentymarkets attribute value *Dark green*.
+. Click on *+ Add fallback data field*.
+. As the second fallback data field, map the plentymarkets property value *Lime green*.
+. Click on *+ Add fallback data field*.
+. As the third fallback data field, map the plentymarkets property value *Coriander*. +
+→ The shade of green that is saved for the variation is exported as part of the merchant product ID and the product name. +
+→ On limango, all products are listed with the colour Green. +
+*_Tip:_* The order for mapping the different shades described here is random. You can map the values in any order.
+--
 |====
 
-[#910]
+[#906]
 ==== Recommendations for limango data field mapping
 
 To help you with mapping your data fields for the limango catalogue, we have created a list of recommended data field mappings for limango. Note that these mappings are recommendations only. Depending on how you manage your item data, other mappings may be more appropriate than the recommendation given here.
@@ -316,6 +428,16 @@ include::_textblocks/explanations/limango-recommended-mappings.adoc[]
 :market: limango
 
 include::_textblocks/instructions/catalogue-activation.adoc[]
+
+[#750]
+== Setting the variation availability
+
+:market-availability: limango
+:option-availability: limango
+
+include::_textblocks/instructions/variation-availability.adoc[]
+
+// Web API NOT required!
 
 == Automatically notify limango about cancellations
 
@@ -335,7 +457,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 
 | *Event*
 | *Status change*
-| Select an event, e.g. *[8] Cancelled*.
+| Select an event, for example [8] *Waiting for payment*.
 
 | *Filter*
 | *Order > Referrer*
@@ -349,31 +471,108 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 [#1300]
 == Setting up automatic shipping confirmations
 
-Set up an <<automation/event-procedures#, event procedure>> to automatically send a shipping confirmation to limango when outgoing items have been booked for an order.
+Shipping confirmations for limango must contain a tracking number. In addition, the shipping service provider of the order must be linked to the limango shipping service provider correctly in the plugin settings.
 
-:table-event-procedure: <<#event-procedure-shipping-confirmation-limango>>
+You need two event procedures to automatically confirm the shipping to limango:
+
+* Event procedure 1: Send shipping confirmation to limango
+* Event procedure 2: Book outgoing items
+
+[#13001]
+=== Workflow for automatic order confirmations
+
+The workflow for automated shipping confirmations depends on whether or not the order’s shipping service provider is correctly linked to the limango shipping service provider in the plugin settings.
+
+[cols="1,3a"]
+|====
+|Case |Procedure
+
+| Shipping service provider linked
+| * A package number is saved for the order.
+* The event procedure *Send shipping confirmation to limango* checks if the shipping service provider is linked correctly.
+* The procedure *Send shipping confirmation to limango* is triggered: A shipping confirmation is sent to limango.
+* The order is moved to the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*.
+* Only procedure 1 of the event procedure *Book outgoing items* is triggered. +
+→ The outgoing items are booked. +
+→ _No_ second shipping confirmation is sent to limango.
+
+| Shipping service provider linked correctly
+| * A package number is saved for the order.
+* The event procedure *Send shipping confirmation to limango* checks if the shipping service provider is linked correctly.
+* The order is moved to the status for *Order status for orders without shipping carrier mapping (> 5 - < 7)*.
+* You check and correct the mapping for the shipping service provider in the plugin settings. +
+*_Tip:_* Go to *Plugins » Plugin set overview » [Open plugin set] » Open limango plugin » Shipping service provider* to correct the mapping.
+* You move the order into the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*.
+* Procedure 1 of the event procedure *Book outgoing items* is triggered. +
+→ The outgoing items are booked.
+* Procedure 2 of the event procedure *Book outgoing items* is triggered. +
+→ A shipping confirmation is sent to limango.
+|====
+
+[#13002]
+=== Automatically sending shipping confirmations to limango
+
+For event procedure 1 for shipping confirmations, set up the <<automation/event-procedures#, event procedure>> described in <<#event-procedure-shipping-info-limango>>.
+
+:table-event-procedure: <<#event-procedure-shipping-info-limango>>
 
 include::../_includes/textblocks/instructions/EA.adoc[]
 
-[[event-procedure-shipping-confirmation-limango]]
-.Event procedure to send shipping confirmations to limango
+[[event-procedure-shipping-info-limango]]
+.Event procedure 1 for shipping confirmations
 [cols="1,2,2"]
 |===
 |Setting |Option |Selection
 
 | *Event*
-| *Status change*
-| Select an event, for example [7] *Outgoing items booked*.
+| *Order change > Package number*
+|
 
 | *Filter 1*
 | *Order > Order type*
-| *Order*
+| *Order* +
+* Delivery order*
 
 | *Filter 2*
 | *Order > Referrer*
 | *limango*
 
 | *Procedure*
+| *Plugin*
+| *Send shipping confirmation to limango*
+|===
+
+For event procedure 2 for shipping confirmations, set up the <<automation/event-procedures#, event procedure>> described in <<#event-procedure-booking-items-limango>>.
+
+:table-event-procedure: <<#event-procedure-booking-items-limango>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[event-procedure-booking-items-limango]]
+.Event procedure 2 for shipping confirmations
+[cols="1,2,2"]
+|===
+|Setting |Option |Selection
+
+| *Event*
+| *Status change*
+| Select the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)* +
+Go to *Plugins » Plugin set overview » [Open plugin set] » Open limango plugin » Order status* to set this status.
+
+| *Filter 1*
+| *Order > Order type*
+| *Order* +
+* Delivery order*
+
+| *Filter 2*
+| *Order > Referrer*
+| *limango*
+
+| *Procedure 1*
+| *Order*
+| *Book outgoing items*
+
+| *Procedure 2*
 | *Plugin*
 | *Send shipping confirmation to limango*
 |===
@@ -386,11 +585,10 @@ Now set up the processing of returns for limango.
 [#1010]
 === Workflow for returns
 
-The workflow of limango returns is as follows:
+The delivery note also functions as the return form. The workflow of limango returns is as follows:
 
-. Customers announce the return to limango.
-. You process the return in plentymarkets manually.
 . Customers return the items to you.
+. You process the return in plentymarkets.
 . You notify limango when you have received the items.
 . limango reimburses the customer. +
 *_Note:_* When you notify limango that the return is completed, limango triggers a credit note and the buyer receives a refund. As such, only notify limango about completing the return after you have received and checked the returned items.
@@ -411,8 +609,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| Select an event, for example *Order change: Status change* +
-*_Note:_* Select a status that suits your workflow. Select the status *[9.12] Send return to limango*, for example.
+| *New return*
 |
 
 | *Filter 1*
@@ -424,8 +621,8 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 | *limango*
 
 | *Procedure*
-| *Order > Notify limango of return completion* +
-*_Note:_* The procedure *Notify limango about completing a return* triggers a credit note. As such, a refund will be issued to the buyer. As such, make sure the event procedure is only triggered after you have received and checked the returned items.
+| *Plugins > Send return notification to limango* +
+*_Note:_* The procedure *Send return notification to limango* triggers a credit note. As such, a refund will be issued to the buyer. As such, make sure the event procedure is only triggered after you have received and checked the returned items.
 |
 |====
 
@@ -470,7 +667,7 @@ limango specifies a text containing return instructions that needs to be shown o
 [.instruction]
 Entering return information for limango delivery notes:
 
-. Expand the "Text: Return instructions for limango delivery notes" below this description.
+. Expand the info box "Text: Return instructions for limango delivery notes" below this description.
 . Copy the text to the clipboard.
 . Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
 . Scroll down to the area *Optional elements below stock unit table*, to the setting *Payment instruction*.
@@ -486,3 +683,16 @@ Entering return information for limango delivery notes:
 --
 include::_textblocks/explanations/limango-delivery-note-text.adoc[]
 --
+
+[#1100]
+== Troubleshooting: Viewing log entries
+
+NOTE: Your variations were not exported to limango? No variation data is exported if one or more variations do not meet the requirements of limango. As such, none of your variations will be exported to limango if one of your variations is invalid. To find the error, check the entries in the data log.
+
+:market: limango
+include::_textblocks/instructions/viewing_logs.adoc[tag=data-log-intro]
+
+* *Integration* » *limango*
+* *Reference type* » *variationId*
+
+include::_textblocks/instructions/viewing_logs.adoc[tag=data-log-config]

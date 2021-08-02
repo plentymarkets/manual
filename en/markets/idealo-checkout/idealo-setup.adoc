@@ -17,7 +17,7 @@ idealo started business in 2000 with the vision of helping users to make the rig
 
 With idealo Checkout, idealo offers a strong sales channel. The "Zum Kauf" (Buy now) button allows users to order a product directly on idealo.de, using a fully integrated checkout function. The sellers remain the contractual partners and take care of fulfilment as usual.
 
-With plentymarkets, you can both use the idealo price comparison and idealo Checkout. idealo Checkout enables your customers to buy items directly on the idealo website without having to enter your web shop.
+With plentymarkets, you can both use the idealo price comparison and idealo Checkout. idealo Checkout enables your customers to buy items directly on the idealo website without having to enter your plentyShop.
 
 [#100]
 == Registering with idealo
@@ -41,8 +41,13 @@ If you would like to export your items to idealo via API (PWS 2.0 interface), fi
 |====
 | Item data export via API (PWS 2.0) | Item data export via elastic export
 
+//tag::table-comparison[]
 |Item data export via interface
 |Item data export via CSV file
+
+| Unlimited number of items can be transferred
+| To transfer more than 9999 items to idealo, the option *Generate cache file* must be activated in the Elastic Export settings. If the option *Generate cache file* is activated, the output file will only be generated every 24 hours. This is to save resources. +
+*_Note:_* We recommend that you do not activate the option *Generate cache file* for more than 20 export formats. This is to ensure a high performance of the elastic export.
 
 |Items are created once a day
 |Retrieval of item data via URL that is saved at idealo
@@ -51,10 +56,12 @@ If you would like to export your items to idealo via API (PWS 2.0 interface), fi
 |Time interval for retrieval of item data is defined by idealo
 
 |Stock updates every 15 minutes
-|
+|Time interval for retrieval of item data is defined by idealo
 
 |Orders are imported to the selected client
 |Orders are always imported to the default client
+
+//end::table-comparison[]
 |====
 
 [#2400]
@@ -67,22 +74,10 @@ To use idealo in plentymarkets, you need the following plugins:
 *_Note:_* You also need the Elastic Export plugin if you export your item data to idealo via the interface PWS 2.0.
 
 :plugin: idealo
-
-[#150]
-[.collapseBox]
-.Installing the plugin *idealo*
---
-include::../../plugins/_textblocks/instructions/plugin-installieren-en_gb.adoc[]
---
+include::../_textblocks/instructions/plugin-installation.adoc[]
 
 :plugin: Elastic Export
-
-[#175]
-[.collapseBox]
-.Installing the *Elastic Export* plugin
---
-include::../../plugins/_textblocks/instructions/plugin-installieren-en_gb.adoc[]
---
+include::../_textblocks/instructions/plugin-installation.adoc[]
 
 [#200]
 == Completing the idealo assistant
@@ -106,7 +101,7 @@ include::../_textblocks/instructions/assistant-basic-instructions.adoc[]
 --
 [[table-idealo-basic-settings]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
@@ -126,7 +121,7 @@ a| From the drop-down list *Client*, select a client.
 --
 [[table-idealo-data-export]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
@@ -134,7 +129,7 @@ a| From the drop-down list *Client*, select a client.
 |Items can be exported to idealo via interface or via CSV file with the elastic export. Check with idealo how item data should be transferred before the setup in plentymarkets. Via interface, prices and stock will be transferred every fifteen minutes. The interval of data transfer with CSV export is defined by idealo.
 
 | *Would you like to export your stock and prices?*
-| *Export stock and prices* = Prices and stock are updated every 15 minutes.
+| *Export stock and prices* activated = Prices and stock are updated every 15 minutes.
 
 | *Would you like to import your idealo Checkout orders into plentymarkets?*
 |Activate to import orders every 15 minutes automatically. +
@@ -144,6 +139,17 @@ a| From the drop-down list *Client*, select a client.
 | Some idealo Checkout orders are cancelled before they are first imported to your plentymarkets system. Select the order status that is to be assigned to such cancelled orders during the import. +
 *_Note:_* The import of these cancelled idealo Checkout orders triggers the event procedures set up for the selected status. As such, select a status that does not trigger any event procedures (such as cancellation confirmations being sent to customers).
 
+| *Do you want to continue processing open MOA 1.0 orders with this account?*
+| The idealo Merchant Order API is a REST API for retrieving and processing idealo Checkout orders. In January 2021, idealo updated this REST API from version 1.0 to version 2.0. Activate this setting if you used this account to import orders with the old MOA 1.0 interface. Any open orders will then be processed automatically as usual. Ignore this setting if you are setting up a new idealo account.
+
+| [#intable-status-cancellation-by-buyer]*What status should an order change to when customers request a cancellation?*
+| Customers might only request a cancellation after an idealo Checkout order is already imported into your plentymarkets system. Such cancellation requests are imported into plentymarkets every 15 minutes. Select an order status that is assigned to these orders. A separate status allows you to view and process these orders individually. +
+*_Tip:_* Set up the event procedure <<#1803, Accept cancellation by buyer>> to process cancellation requests automatically.
+
+| *Up to which status should requests for order cancellations by customers be considered?*
+| Which orders cancelled by customers should be moved to the order status that you selected above? Set a limit for accepting cancellation requests. +
+→ Orders with this or a lower status are moved to the status you selected for *What status should an order change to when customers request a cancellation?* if customers request a cancellation. +
+→ Orders with a higher order status remain in their original status, i.e. are not moved into the status for orders cancelled by customers.
 |======
 --
 
@@ -152,12 +158,12 @@ a| From the drop-down list *Client*, select a client.
 --
 [[table-idealo-credentials]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
-| *Enter the access data for your API client.*
-|For the API key, enter the token for Merchant Order API v1. Go to the idealo Business Portal and generate the API key. The API client access data is required to allow plentymarkets access to your idealo account so that the data exchange can be activated.
+| *Enter the access data of your Merchant Order API 2.0 API client.*
+a| For the API key, enter the token for the Merchant Order API v2. Go to the idealo Business Portal and generate the API key. The API client access data is required to allow plentymarkets access to your idealo account so that the data exchange can be activated.
 
 | *Enter the access data of your Partner Web Service 2.0 API client.*
 a| You need the API client access data so that plentymarkets can connect to your idealo account. This activates the exchange of item data. Contact idealo by sending an email to tam@idealo.de to request the access data.
@@ -169,7 +175,7 @@ a| You need the API client access data so that plentymarkets can connect to your
 --
 [[table-idealo-item-data]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
@@ -181,7 +187,7 @@ a| You need the API client access data so that plentymarkets can connect to your
 | Select *Item description*, *Preview text*, *Technical data* or *Item description and technical data* from the drop-down list. This item description is transferred to idealo.
 
 | *Select the URL that should be transferred to idealo.*
-| The URL is required so that customers can be redirected from the price search engine to your online store. Variation URLs can only be transferred if you use the Ceres shop.
+| The URL is required so that customers can be redirected from the price search engine to your plentyShop. Variation URLs can only be transferred if you use the Ceres plentyShop.
 Item URL
 Variation URL
 
@@ -198,7 +204,7 @@ a| If you use the price range feature for idealo checkout sellers, you can speci
 --
 [[table-idealo-attributes]]
 [width="100%"]
-[cols="1,1"]
+[cols="1,1a"]
 |======
 |Setting |Explanation
 
@@ -207,6 +213,116 @@ a| If you use the price range feature for idealo checkout sellers, you can speci
 
 | *Select the attributes that you have created in plentymarkets to specify sizes for your items.*
 | Activate the attributes that you use to create variations based on size.
+
+| *What plentymarkets property do you use for the idealo energy efficiency attribute "Energy efficiency class"?* +
+(plugin versions 3.3.5 and higher)
+| This property is used to export the energy efficiency class of products that need to be labelled.
+
+*_Allowed values:_*
+
+* New energy efficiency scale (from 1st of March 2021): +
+  ** `A`, `B`, `C`, `D`, `E`, `F`, `G` +
+*_Example:_* `C`
+* Old energy efficiency scale (up to 28th of February 2021): +
+  ** `A&#43;&#43;&#43;`, `A&#43;&#43;`, `A&#43;`, `A`, `B`, `C`, `D`, `E`, `F`, `G` +
+*_Example:_* `A&#43;&#43;&#43;`
+
+*_Note:_* You specify the energy efficiency scale used with the idealo attribute *Version*.
+
+[cols="1,3"]
+!===
+! *Create new property*
+! Creates a property of the type *Character string* and links this property with the idealo attribute. When you link this property to a variation and save a value, this value is exported to idealo. +
+*_Tip:_* The property is saved in the property group *idealo*.
+
+! *Link existing property*
+! From the drop-down list, select a property of the type *Character string*. When you link this property to a variation and save a value, this value is exported to idealo.
+!===
+
+*_Tip:_* Learn how to link properties to variations in the <<item/settings/properties#1420, Linking properties and saving a value>> chapter.
+
+| *What plentymarkets property do you use for the idealo energy efficiency attribute "Spectrum"?* +
+(plugin versions 3.3.5 and higher)
+| This property is used to export the spectrum of available energy efficiency classes of products that need to be labelled. Use a minus sign to specify a range. +
+
+*_Allowed values:_*
+
+* New energy efficiency scale (from 1st of March 2021): +
+  ** `A`, `B`, `C`, `D`, `E`, `F`, `G` +
+*_Example:_* `A-G`
+* Old energy efficiency scale (up to 28th of February 2021): +
+  ** `A&#43;&#43;&#43;`, `A&#43;&#43;`, `A&#43;`, `A`, `B`, `C`, `D`, `E`, `F`, `G` +
+*_Example:_* `A&#43;&#43;&#43;-G`
+
+*_Background:_* The spectrum depends on the device type. For example, a spectrum of A to D is used for household washing machines. However, for household refrigerating appliances, the spectrum range is A to G.
+
+[cols="1,3"]
+!===
+! *Create new property*
+! Creates a property of the type *Character string* and links this property with the idealo attribute. When you link this property to a variation and save a value, this value is exported to idealo. +
+*_Tip:_* The property is saved in the property group *idealo*.
+
+! *Link existing property*
+! From the drop-down list, select a property of the type *Character string*. When you link this property to a variation and save a value, this value is exported to idealo.
+!===
+
+*_Tip:_* Learn how to link properties to variations in the <<item/settings/properties#1420, Linking properties and saving a value>> chapter.
+
+| *What plentymarkets property do you use for the idealo energy efficiency attribute "Link to label"?* +
+(plugin versions 3.3.5 and higher)
+| This property is used to export links to image files that contain the energy efficiency labels of products that need to be labelled. +
+*_Example:_* `http://www.link.to/label.jpg` +
+*_Important:_* Make sure that the image’s resolution is high enough to allow customers to scan the label’s QR code.
+
+[cols="1,3"]
+!===
+! *Create new property*
+! Creates a property of the type *File* and links this property with the idealo attribute. When you link this property to a variation and save a value, this value is exported to idealo. +
+*_Tip:_* The property is saved in the property group *idealo*.
+
+! *Link existing property*
+! From the drop-down list, select a property of the type *File*. When you link this property to a variation and save a value, this value is exported to idealo.
+!===
+
+*_Tip:_* Learn how to link properties to variations in the <<item/settings/properties#1420, Linking properties and saving a value>> chapter.
+
+| *What plentymarkets property do you use for the idealo energy efficiency attribute "Link to data sheet"?* +
+(plugin versions 3.3.5 and higher)
+| This property is used to export links to PDF files that contain the EEK data sheets of products that need to be labelled. +
+*_Example:_* `http://www.example.com/datasheet.pdf`
+
+[cols="1,3"]
+!===
+! *Create new property*
+! Creates a property of the type *File* and links this property with the idealo attribute. When you link this property to a variation and save a value, this value is exported to idealo. +
+*_Tip:_* The property is saved in the property group *idealo*.
+
+! *Link existing property*
+! From the drop-down list, select a property of the type *File*. When you link this property to a variation and save a value, this value is exported to idealo.
+!===
+
+*_Tip:_* Learn how to link properties to variations in the <<item/settings/properties#1420, Linking properties and saving a value>> chapter.
+
+| *What plentymarkets property do you use for the idealo energy efficiency attribute "Version"?* +
+(plugin versions 3.3.5 and higher)
+| This property is used to specify if the data that you export with the other idealo attributes is based on the old or the new energy efficiency scale.
+
+*_Allowed values:_*
+
+* `0` = Old energy efficiency scale (up to 28th of February 2021)
+* `1` = New energy efficiency scale (from 1st of March 2021)
+
+[cols="1,3"]
+!===
+! *Create new property*
+! Creates a property of the type *Whole number* and links this property with the idealo attribute. When you link this property to a variation and save a value, this value is exported to idealo. +
+*_Tip:_* The property is saved in the property group *idealo*.
+
+! *Link existing property*
+! From the drop-down list, select a property of the type *Whole number*. When you link this property to a variation and save a value, this value is exported to idealo.
+!===
+
+*_Tip:_* Learn how to link properties to variations in the <<item/settings/properties#1420, Linking properties and saving a value>> chapter.
 |======
 --
 
@@ -215,7 +331,7 @@ a| If you use the price range feature for idealo checkout sellers, you can speci
 --
 [[table-idealo-payment-methods]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
@@ -229,7 +345,7 @@ a| If you use the price range feature for idealo checkout sellers, you can speci
 --
 [[table-idealo-shipping]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
@@ -244,7 +360,7 @@ a| If you use the price range feature for idealo checkout sellers, you can speci
 --
 [[table-idealo-account-activation]]
 [width="100%"]
-[cols="1,2"]
+[cols="1,2a"]
 |======
 |Setting |Explanation
 
@@ -262,17 +378,16 @@ _Activated_ = Data exchange with idealo is started once the assistant is complet
 [#300]
 == Using idealo price comparison and idealo Checkout
 
-Depending on whether you only want to use the idealo price comparison or whether you want to enable your customers to buy items directly at idealo without having to enter your online store, different settings must be carried out. The overview below lists the settings required for idealo Checkout.
+Depending on whether you only want to use the idealo price comparison or whether you want to enable your customers to buy items directly at idealo without having to enter your plentyShop, different settings must be carried out. The overview below lists the settings required for idealo Checkout.
 
 *Settings for idealo Checkout:*
 
 - *Basic settings:* Go through the assistant *Base settings - idealo* in the *Setup » Assistants » Plugins » [Open client]* menu.
 - *Item export:* Set up the <<#850, automatic item export>> or the <<#900, item data export via CSV file>>, depending on how you want to export your items to idealo.
 - *Order referrer:* In addition to the order referrer *idealo*, also activate the <<#400, order referrer>> *idealo Checkout* in the *Setup » Orders » Order referrer* menu.
-- *Variation availability:* In addition to the order referrer *idealo*, also activate the <<#500, order referrer>> *idealo Checkout* in the *Markets* area of the *Item » Edit item » [Open item] » Tab: Variation ID » Tab: Availability* menu.
+- *Variation availability:* In addition to the order referrer *idealo*, also activate the <<#500, order referrer>> *idealo Checkout* in the *Markets* area of the *Item » Edit item » [Open item] » [Open variation] » Tab: Availability* menu.
 - *Sales price:* Set up a <<#600, sales price>>.
 - *SKU:* Add <<#700, SKUs>> if needed.
-- *Payment method:* Activate the <<#1100, payment method>> *idealo Checkout*.
 - *Characteristics:* Create <<#1200, characteristics>> for idealo Checkout. Item characteristics, shipping methods and fees are transferred to idealo Checkout with characteristics.
 - *Event procedures:* Set up <<#1600, event procedures>> to automatically inform idealo about changes in the order status.
 
@@ -316,9 +431,11 @@ The "price range" feature must also be activated at idealo.
 ====
 
 [#700]
-== Defining SKU manually
+== _Optional:_ Saving SKU
 
 :referrer-sku: idealo
+:referrer-id: 121
+:sku-others:
 
 include::../_textblocks/instructions/sku-manually.adoc[]
 
@@ -345,26 +462,14 @@ Information about the different types of data transfer is available in <<#item-e
 |====
 | Item data export via API (PWS 2.0) | Item data export via elastic export
 
-|Item data export via interface
-|Item data export via CSV file
+include::idealo-setup.adoc[tag=table-comparison]
 
-|Items are created once a day
-|Retrieval of item data via URL that is saved at idealo
-
-|Price updates every 15 minutes
-|Time interval for retrieval of item data is defined by idealo
-
-|Stock updates every 15 minutes
-|
-
-|Orders are imported to the selected client
-|Orders are always imported to the default client
 |====
 
 [#850]
 === Item data export via API (PWS 2.0)
 
-If you want to transfer your items to idealo via API, go through the *idealo Basic settings* assistant in the *Setup » Assistants » Omni-Channel* menu and activate the automatic item data export. Apart from the assistant, no further settings are required to set up the automatic item export in plentymarkets. +
+If you want to transfer your items to idealo via API, go through the *idealo Basic settings* assistant in the *Setup » Assistants » Plugins » [Open client]* menu and activate the automatic item data export. Apart from the assistant, no further settings are required to set up the automatic item export in plentymarkets. +
 
 If you transfer your items via API, items will be created at idealo once per day. Prices and stock are updated every 15 minutes. Items can also be deleted every 15 minutes.
 
@@ -407,7 +512,7 @@ The following table lists details for settings, format settings and recommended 
 
 [[format-settings-idealo]]
 .Format settings for IdealoDE
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Setting | Explanation
 
@@ -423,11 +528,18 @@ The following table lists details for settings, format settings and recommended 
 | Select *IdealoDE-Plugin*.
 
 | *Limit*
-|Enter a number. If you want to transfer more than 9999 data records, then the output file is not generated again for another 24 hours. This is to save resources. If more than 9999 data records are necessary, the setting *Generate cache file* has to be active. +
-*_Or:_* If you want to transfer more than 9999 data records to idealo, you can also install version 2.0 of the idealo plugin.
+| Enter a number. This number determines how many items are exported at maximum.
+
+*_Note:_* Do you want to transmit more than 9999 items to idealo?
+
+* Then the output file will only be generated every 24 hours. This is to save resources.
+* Then also select the option *Generate cache file* further below.
+
+*_Tip:_* If you want to transfer more than 9999 items to idealo, you can also install version 2.0 of the idealo plugin.
 
 | *Generate cache file*
-|Activate if you want to transfer more than 9999 data records to the price search engine. We recommend that you do not activate this setting for more than 20 export formats. This is to ensure a high performance of the elastic export.
+| Activate if you want to transfer more than 9999 items to idealo. If the option is activated, the output file will only be generated every 24 hours. This is to save resources. +
+*_Note:_* We recommend that you do not activate this option for more than 20 export formats. This is to ensure a high performance of the elastic export.
 
 | *Provisioning*
 | Select *URL*.
@@ -443,7 +555,7 @@ The following table lists details for settings, format settings and recommended 
 | *Add item filters*
 a|Select an item filter from the drop-down list and click on *Add*. There are no filters set by default. It is possible to add multiple item filters from the drop-down list one after the other. +
 
-* *Variations* = Select *Transfer all* or *Only transfer main variations*. +
+* *Variations* = *Transfer all* or *Only transfer main variations*. +
 * *Markets* = Select *idealo*. +
 * *Currency* = Select a currency. +
 * *Category* = Activate to transfer the item with its category link. Only items belonging to this category will be transmitted. +
@@ -457,7 +569,7 @@ a|Select an item filter from the drop-down list and click on *Add*. There are no
 2+| *Format settings*
 
 | *Product URL*
-|Select the URL that you wish to transfer to the price search engine. You can either send the item’s URL and the variation’s URL. URLs of variations can only be transferred in combination with the Ceres store.
+|Select the URL that you wish to transfer to the price search engine. You can either send the item’s URL and the variation’s URL. URLs of variations can only be transferred in combination with the Ceres plentyShop.
 
 | *Client*
 |Select a client. This setting is used for the URL structure.
@@ -542,7 +654,7 @@ If *Transfer flat rate shipping charge* has been selected, only prepayment will 
 
 [[columns-export-file]]
 .Columns for the export file
-[cols="1,3"]
+[cols="1,3a"]
 |====
 | Column header | Explanation
 
@@ -633,11 +745,11 @@ The net stock of the variation. For items which are not limited to the net stock
 Characteristic of type *No* with link to one of the options for the idealo Checkout characteristic *FulfillmentType > Spedition*, *FulfillmentType > Paketdienst*, *FulfillmentType > Brief* or *FulfillmentType > Download*.
 
 | *twoManHandlingPrice*
-| *Requirement*: checkoutApproved is true and fulfillmentType is "Spedition". +
+| *Requirement*: checkoutApproved is true and fulfillmentType is “Spedition”. +
 Characteristic of type *Text*, *Selection* or *float* and the link to the idealo Checkout characteristic *twoManHandlingPrice*.
 
 | *disposalPrice*
-| *Requirement*: checkoutApproved is true and fulfillmentType is "Spedition". +
+| *Requirement*: checkoutApproved is true and fulfillmentType is “Spedition”. +
 Characteristic of type *Text*, *Selection* or *float* and the link to the idealo Checkout characteristic *disposalPrice*.
 
 | *Payment methods*
@@ -648,23 +760,15 @@ All payment methods will be exported, according to the format setting *Shipping 
 [#1100]
 == Activating the payment method idealo Checkout
 
-Activate the payment method *idealo Checkout*. This allows payments to be made for orders on idealo and to be displayed in your plentymarkets system.
-
-[TIP]
-.Payment method for idealo Checkout only
-====
-You only have to activate the payment method *idealo Checkout* if you use idealo Checkout.
-====
-
+:marketplace: idealo
 :payment-method: idealo Checkout
-:folder: DE
 
 include::../_textblocks/instructions/activate-payment-method.adoc[]
 
 [IMPORTANT]
 .PayPal payment method
 ====
-If you offer the PayPal payment method, it is mandatory to create and configure this payment method in your plentymarkets system. This is to ensure that the payment is imported and assigned to the order correctly.
+If you offer the payment method <<payment/payment-plugins/paypal#, PayPal>>, it is mandatory to create and configure this payment method in your plentymarkets system. This is to ensure that the payment is imported and assigned to the order correctly.
 ====
 
 [#1200]
@@ -683,7 +787,7 @@ If you transfer your items with via CSV file with the elastic export, you can on
 [#1250]
 === Creating the characteristics material and gender
 
-Use the characteristics *Material* and *Gender* to transfer information about material and target group or gender to idealo Checkout.
+Use the characteristics Material and Gender to transfer information about material and target group or gender to idealo Checkout.
 
 Proceed as described below to create the characteristic *Material*. Create the *Gender* characteristic in the same way, but select the characteristic type *Text* instead.
 
@@ -696,7 +800,7 @@ Creating a characteristic for material:
 . Select the characteristic *Material* for *idealo Checkout characteristic*.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 [#1300]
 === Creating characteristics for shipping methods
@@ -716,12 +820,12 @@ Creating a characteristic for the shipping method:
 . Select a value from the drop-down list, depending on the shipping type. The values *Spedition* (shipping company), *Paketdienst* (parcel service), *Brief* (letter), and *Download* (download) are available.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 [discrete]
 ===== Further characteristics for shipping methods
 
-For items which have the shipping method shipping company, it is also possible to transfer the additional services *TwoManHandlingPrice* and *DisposalPrice* to idealo Checkout. DisposalPrice can only be used in combination with TwoManHandlingPrice. That means you have to create the characteristic *TwoManHandlingPrice* as well as the property *DisposalPrice* and link them to the item. In both cases, select *decimal number* as the characteristic type. Go to *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* and enter the surcharge for the additional service with two decimal places behind the decimal separator. Use a period for the decimal separator (19.99).
+For items which have the shipping method shipping company, it is also possible to transfer the additional services *TwoManHandlingPrice* and *DisposalPrice* to idealo Checkout. DisposalPrice can only be used in combination with TwoManHandlingPrice. That means you have to create the characteristic *TwoManHandlingPrice* as well as the property *DisposalPrice* and link them to the item. In both cases, select *decimal number* as the characteristic type. Go to *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* and enter the surcharge for the additional service with two decimal places behind the decimal separator. Use a period for the decimal separator (19.99).
 
 [#1350]
 === Creating a characteristic for delivery comments
@@ -739,12 +843,14 @@ Creating a characteristic to specify further information about the delivery:
 . Select the characteristic *DeliveryComment* for *idealo Checkout characteristic*.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 [#1400]
 === Creating the characteristic energy efficiency class
 
-Use the characteristic *EnergyClass* to transfer information about the energy efficiency class to idealo Checkout.
+Use the characteristic *EnergyClass* to transfer information about the energy efficiency class to idealo Checkout. +
+
+TIP: For plugin versions 3.3.5 and higher, you only need the characteristic for the energy efficiency class if you export your item data using the elastic export. If you use the API (PWS 2.0) for exporting item data, you specify properties for exporting energy efficiency information in the assistant.
 
 Proceed as described below to create the characteristic *EnergyClass*.
 
@@ -759,7 +865,7 @@ Creating the characteristic energy efficiency class:
 . Select a value from the drop-down list, depending on the energy efficiency class.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 [#1450]
 === Creating the characteristic free return
@@ -777,7 +883,7 @@ Creating a characteristic for the free return period:
 . Select the characteristic *FreeReturnDays* for *idealo Checkout characteristic*.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 [#1500]
 === Creating the characteristic deposit fee
@@ -795,7 +901,7 @@ Creating the characteristic deposit fee:
 . Select the characteristic *DepositFee* for *idealo Checkout characteristic*.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 [#1550]
 === Creating the characteristic replica
@@ -813,7 +919,7 @@ Creating the characteristic replica:
 . Select the characteristic *Replica* for *idealo Checkout characteristic*.
 . *Save* (icon:save[role="green"]) the settings.
 
-Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Tab: Characteristics* menu.
+Next, you have to link the characteristic to the item in the *Item » Edit item » [Open item] » [Open variation] » Variation tab: Characteristics* menu.
 
 
 [#1600]
@@ -913,7 +1019,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| Select an event, e.g. *Status change: [8] Cancelled*
+| Select an event, for example *Status change: [8] Cancelled*
 |
 
 | *Filter 1*
@@ -943,7 +1049,7 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Setting |Option |Selection
 
 | *Event*
-| Select an event, e.g. *Status change: [8.1] Cancelled by buyer*
+| Select an event, for example *Status change: [8.1] Cancelled by customer*
 |
 
 | *Filter 1*
@@ -956,6 +1062,36 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 
 | *Procedure*
 | *Plugins > Send buyer cancellation to idealo*
+|
+|====
+
+[#1803]
+==== Automatically accepting cancellation by buyer
+
+:table-event-procedure: <<#accept-cancellations-buyer-idealo>>
+
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[accept-cancellations-buyer-idealo]]
+.Event procedure for automatically accepting cancellations by buyer
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select an event, for example *Status change*. Select the status that you <<markets/idealo-checkout/idealo-setup#intable-status-cancellation-by-buyer, set in the assistant>> for orders that customers want to cancel.
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Filter 2*
+| *Order > Referrer*
+| *idealo Checkout*
+
+| *Procedure*
+| *Plugins > Accept cancellation by buyer*
 |
 |====
 
@@ -1001,9 +1137,11 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 == Viewing the log
 
 :market: idealo
-:identifier: ElasticExportIdealoDE
+include::../_textblocks/instructions/viewing_logs.adoc[tag=data-log-intro]
 
-include::../_textblocks/instructions/viewing_logs.adoc[]
+* *Identifier* » *ElasticExportIdealoDE*
+
+include::../_textblocks/instructions/viewing_logs.adoc[tag=data-log-config]
 
 [#2000]
 == FAQ
@@ -1011,9 +1149,9 @@ include::../_textblocks/instructions/viewing_logs.adoc[]
 [#2100]
 === Item data export via API (PWS 2.0)
 
-===== Not all of my items are exported to idealo. What can I do?
-
-[.indented]
+[.collapseBox]
+.Not all of my items are exported to idealo. What can I do?
+--
 If you transfer your items to idealo via API (PWS 2.0), but not all of your items have been exported, you can try to update the timestamp for market exports. Updating the timestamp might help because usually, only variations which have been updated within the last two days are exported to idealo.
 
 [.instruction]
@@ -1023,3 +1161,4 @@ Updating the timestamp for market exports:
 . In the *Procedures* area, activate the option *Update timestamp for market exports*.
 . Click on *Apply* (icon:execute[set=plenty]). +
 → All items which are configured for idealo will be exported to idealo with the next item export.
+--

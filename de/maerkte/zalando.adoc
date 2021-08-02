@@ -9,17 +9,53 @@ include::{includedir}/_header.adoc[]
 :id: H1AGZUB
 
 :ea-queue:
+:market: Zalando
 
 Durch das Zalando-Partnerprogramm können Online-Händler:innen und Hersteller:innen Zalando als zusätzlichen Absatzkanal für hochwertige Produkte nutzen und von der großen Markenbekanntheit von Zalando profitieren.
 
-Die Anbindung des Marktplatzes stellt die folgenden automatisierten Funktionen bereit:
+[#200]
+== Übersicht des automatischen Datenaustauschs
 
-* Täglicher Artikelexport
+Die Anbindung des Marktplatzes stellt die in <<#datenaustausch-zalando>> gelisteten automatisierten Funktionen bereit.
+
+[[datenaustausch-zalando]]
+[cols="1,1"]
+|====
+|Daten |Intervall
+
+| Artikelexport
+| plentymarkets generiert die Artikeldaten einmal täglich nachts als XML-Datei (artikel.xml). Zalando ruft diese XML normalerweise einmal pro Tag ab.
+
+| Bestandsabgleich
+| Zalando ruft die Bestandsdaten alle 10 Minuten ab (über die XML-Datei stock.xml).
+
+| Preisabgleich
+| Alle 15 Minuten über API
+
+| Auftragsimport
+| Alle 5 Minuten über die API-Schnittstelle zDirect
+|====
 
 [#100]
 == Bei Zalando registrieren
 
 Du möchtest am Partnerprogramm von Zalando teilnehmen? Dann link:https://www.zalando.de/partner-programm/[wende dich zunächst direkt an Zalando^]{nbsp}icon:external-link[].
+
+[#150]
+== Ablauf nach der Registrierung
+
+Du hast einen Vertrag mit Zalando abgeschlossen. Super. Wie geht es jetzt weiter?
+
+* Melde dich in der Kategorie link:https://forum.plentymarkets.com/c/multi-channel/zalando[Multi-Channel: Zalando^]{nbsp}icon:external-link[] des plentymarkets Forums.
+* Im Forum erhältst du von unserem Support-Team ein Formular im CSV-Format. Dieses Formular enthält die folgenden Informationen:
+  ** Routen für Artikel und Bestände
+  ** Benutzernamen und Kennwort
+  ** Zugangsdaten zum plentymarkets FTP-Server für Silhouetten +
+  *_Tipp:_* Auf diesen FTP-Server sendet Zalando deine Silhouetten, damit sie in dein System importiert werden können.
+* Leite das ausgefüllte Formular an deine:n Zalando-Ansprechpartner:in weiter.
+* Durchlaufe den Assistenten *Kontoeinstellungen - Zalando*.
+* Richte die Schnittstelle zu Zalando wie auf dieser Seite beschreiben in deinem plentymarkets System ein.
+* Aktiviere dein Zalando-Konto im Assistenten. (<<#1500, Wie?>>)
 
 [#200]
 == Zalando in plentymarkets einrichten
@@ -36,7 +72,7 @@ Zalando in plentymarkets einrichten:
 
 [[grundeinstellungen-zalando]]
 .Grundeinstellungen des Marktplatzes Zalando
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Einstellung |Erläuterung
 
@@ -77,42 +113,6 @@ a|Nach welcher Logik soll Zalando-Aufträgen ein Lager zugewiesen werden?
 | *19 %* oder *7 %* wählen.
 |====
 
-[#250]
-== Auftragsherkunft aktivieren
-
-:market: Zalando
-:referrer: Zalando
-:referrer-option: pass:quotes[Option *Zalando*]
-
-include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
-
-[#300]
-== Variantenverfügbarkeit einstellen
-
-:market-availability: Zalando
-:option-availability: Zalando
-:web-api:
-
-include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
-
-// Web-API erforderlich!
-
-[#330]
-== SKU manuell festlegen
-
-:referrer-sku: Zalando
-
-include::_textblocks/instructions/sku-manuell.adoc[]
-
-// Marktplatzkonto nicht erforderlich!
-
-[#350]
-== Verkaufspreis festlegen
-
-:referrer-price: Zalando
-
-include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
-
 [#1400]
 == Einstellungen im Assistenten vornehmen
 
@@ -145,12 +145,15 @@ Die Produkt-Status-Berichte werden von Zalando generiert. Die Berichte enthalten
 --
 
 [[assistant-zalando-prices]]
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Einstellung |Erläuterung
 
 | *Möchtest du Preise zu Zalando exportieren?*
-| *Preisexport aktivieren* = Option aktivieren, um alle 15 Minuten  deine Preise zu Zalando zu exportieren.
+| *Preisexport aktivieren* = Option aktivieren, um alle 15 Minuten deine Preise zu Zalando zu exportieren. +
+*_Tipp:_* Informationen zu den Preis-Updates findest du in den Preis-Berichten.
+
+<<#915, So lädst du Preis-Berichte herunter>>
 
 | *In welche Schnittstellenumgebung sollen die Preise exportiert werden?*
 a| Wählen, ob echte Daten oder Testdaten exportiert werden sollen.
@@ -159,12 +162,11 @@ a| Wählen, ob echte Daten oder Testdaten exportiert werden sollen.
 * *Productive* = Echte Preisdaten werden an Zalando exportiert.
 
 | *Sollen Warnungen zu Preisaktualisierungen von Zalando ignoriert werden?*
-a| Diese Option ist zurzeit ohne Funktion.
-// Bei Preisaktualisierungen prüft Zalando die Plausibilität deiner Preise anhand von bestimmten Kriterien. Zalando vergleicht zum Beispiel die Preise der Varianten auf den verschiedenen Plattformen miteinander und gleicht den normalen Preis mit dem reduzierten Preise ab. Bei Auffälligkeiten gibt Zalando eine Warnung aus. Wähle, ob solche Warnungen bei Preisaktualisierungen ignoriert werden sollen.
+a| Bei Preisaktualisierungen prüft Zalando die Plausibilität deiner Preise anhand von bestimmten Kriterien. Zalando vergleicht zum Beispiel die Preise der Varianten auf den verschiedenen Plattformen miteinander und gleicht den normalen Preis mit dem reduzierten Preis ab. Bei Auffälligkeiten gibt Zalando eine Warnung aus. Wähle, ob solche Warnungen bei Preisaktualisierungen ignoriert werden sollen.
 
-// * icon:toggle-on[role="green"] = Die neuen Preise gehen trotz Warnung live.
-// * icon:toggle-off[role="darkGrey"] (Standardeinstellung) = Zalando lehnt neue Preise ab, wenn sie die Plausibilitätsprüfung nicht bestehen. +
-// *_Tipp:_* Warnungen findest du im Menü *Daten » Log*.
+* icon:toggle-on[role="green"] = Die neuen Preise gehen trotz Warnung live.
+* icon:toggle-off[role="darkGrey"] (Standardeinstellung) = Zalando lehnt neue Preise ab, wenn sie die Plausibilitätsprüfung nicht bestehen. +
+*_Tipp:_* Warnungen findest du im Menü *Daten » Log* und in den Preis-Berichten.
 
 | *Welcher Verkaufspreis soll als normaler Preis zu Zalando exportiert werden?*
 | Verkaufspreis aus der Dropdown-Liste wählen, der als *Normaler Preis* zu Zalando exportiert werden soll. Es stehen nur Verkaufspreise des Typs *Standard* oder *UVP* zur Auswahl, für die die Herkunft Zalando, das Land und die Währung des Landes aktiviert sind. +
@@ -191,12 +193,12 @@ Definiere bis zu drei geplante Preise. Geplante Preise geben dir mehr Sicherheit
 --
 
 [[assistant-zalando-orders]]
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Einstellung |Erläuterung
 
 | *Möchtest du Zalando-Aufträge in plentymarkets importieren?*
-| Aktivieren, um Aufträge automatisch einmal täglich zu importieren. +
+| Aktivieren, um Aufträge automatisch alle fünf Minuten zu importieren. +
 *_Hinweis:_* Artikeldaten und Bestandsinformationen können nur zu Zalando übertragen werden, wenn diese Option aktiviert ist.
 
 | *Wähle eine Umgebung für den Auftragsimport.*
@@ -216,19 +218,19 @@ a| Wählen, ob echte Daten oder Testdaten importiert werden sollen.
 *_Hinweis:_* Wähle einen Status, bei dem durch den Statuswechsel keine Ereignisaktion an Zalando ausgelöst wird. Aufträge, die vor dem Import der Reservierung von Käufer:innen storniert werden, werden nicht importiert.
 
 | *plentymarkets Retourengrund verknüpfen mit*
-|Für jeden in plentymarkets gespeicherten Retourengrund einen Retourengrund von Zalando aus der Dropdown-Liste wählen. Die Retourengründe werden nur für den Auftragstyp *Retoure* übertragen und müssen an den Artikelpositionen der Retouren  gepflegt werden.
+a|Für jeden in plentymarkets gespeicherten Retourengrund einen Retourengrund von Zalando aus der Dropdown-Liste wählen. Die Retourengründe werden nur für den Auftragstyp *Retoure* übertragen und müssen an den Artikelpositionen der Retouren  gepflegt werden.
 
 Zalando hat zurzeit die folgenden Retourengründe:
 
-*Unbekannter Grund*
-*Gefällt nicht*
-*Zu groß*
-*Zu klein*
-*Schlechtes Preis-Leistungs-Verhältnis*
-*Lieferung zu spät*
-*Artikel nicht wie erwartet*
-*Falscher Artikel gesendet*
-*Defekt*
+* *Unbekannter Grund*
+* *Gefällt nicht*
+* *Zu groß*
+* *Zu klein*
+* *Schlechtes Preis-Leistungs-Verhältnis*
+* *Lieferung zu spät*
+* *Artikel nicht wie erwartet*
+* *Falscher Artikel gesendet*
+* *Defekt*
 
 *_Hinweis:_* Das Übermitteln von Retourengründen an Zalando ist optional, wird aber von Zalando empfohlen.
 |====
@@ -251,67 +253,74 @@ Gib in deinem Foren-Post die folgenden Informationen an:
     *_Hinweis:_* Pro Händler:innenkonto bei Zalando kann nur ein Konto bei plentymarkets verknüpft werden.
 --
 
-[#1100]
-== Varianten vorbereiten
-
-Zalando gibt bestimmte Pflichtangaben vor. Das bedeutet, dass nur Varianten an den Marktplatz exportiert werden können, für die diese Angaben gespeichert sind. Die in <<#zalando-varianten-pflicht>> aufgeführten Angaben müssen an allen Varianten gespeichert sein, die an Zalando exportiert werden sollen.
-
-[[zalando-varianten-pflicht]]
-.Pflichtfelder an der Variante
-[cols="1,3"]
-|====
-|Pflichtdaten |Erläuterung
-
-| EAN
-a| Für jede Variante muss eine EAN gespeichert sein.
-
-* Im Menü *Einrichtung » Artikel » Barcode* muss eine EAN eingerichtet und mit der Herkunft Zalando verknüpft sein.
-* Die EAN muss im Tab *Einstellungen* der Variante im Bereich *Barcode* hinzugefügt und ein Barcode-Code eingegeben werden.
-
-| Technische Daten
-a| Für jeden Artikel müssen technische Daten gespeichert sein.
-
-* Im Tab *Texte* des Artikels muss im Feld *Technische Daten* Text gespeichert sein.
-
-| Bilder
-a| Für jede Variante muss ein Bild gespeichert sein.
-
-* Im Tab *Bilder* des Artikels muss in der Dropdown-Liste *Verfügbarkeit* die Option *Zalando* aktiviert sein.
-
-| Preis
-a| Für jede Variante muss ein Preis gespeichert sein.
-
-* Der Verkaufspreis muss im Menü *Einrichtung » Artikel » Verkaufspreise* für die Herkunft Zalando aktiviert sein.
-* Der Verkaufspreis muss im Tab *Einstellungen* einer Variante im Bereich *Verkaufspreise* hinzugefügt werden.
-* Ein Preis muss für den Verkaufspreis gespeichert sein.
-|====
-
 [#400]
 == Kategorien verknüpfen
 
-Verknüpfe deine Webshop-Kategorien mit den Kategorien von Zalando, damit deine Artikel in diesen Zalando-Kategorien angezeigt werden.
+Verknüpfe deine plentymarkets Kategorien mit den Kategorien von Zalando, damit deine Varianten in diesen Zalando-Kategorien angezeigt werden.
 
 [.instruction]
 Kategorien verknüpfen:
 
 . Öffne das Menü *Einrichtung » Märkte » Zalando » Kategorieverknüpfung*. +
-→ Eine Liste deiner Kategorien wird angezeigt. +
+→ In der Spalte *Kategorie* wird eine Liste deiner Kategorien angezeigt. +
 → In der Spalte *Zalando-Kategorie* kannst du jeder Kategorie eine Zalando-Kategorie zuordnen.
-. Wähle in der Spalte *Zalando-Kategorie* eine Zalando-Kategorie aus der Dropdown-Liste.
+. Wähle in der Spalte *Zalando-Kategorie* für alle nötigen Kategorien eine Zalando-Kategorie aus der Dropdown-Liste.
 . *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Kategorie wird mit der gewählten Zalando-Kategorie verknüpft. +
-→ Neue Artikel, die du für die plentymarkets Kategorie erstellst, werden automatisch auch der Zalando-Kategorie zugewiesen.
+→ Die Kategorien werden mit den gewählten Zalando-Kategorien verknüpft. +
+→ Neue Varianten, die du für eine plentymarkets Kategorie erstellst, werden automatisch auch der verknüpften Zalando-Kategorie zugewiesen.
+
+[#250]
+== Auftragsherkunft aktivieren
+
+:market: Zalando
+:referrer: Zalando
+:referrer-option: pass:quotes[Option *Zalando*]
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#350]
+== Verkaufspreis festlegen
+
+:referrer-price: Zalando
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#300]
+== Variantenverfügbarkeit einstellen
+
+:market-availability: Zalando
+:option-availability: Zalando
+:web-api:
+
+include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
+
+// Web-API erforderlich!
+
+[#330]
+== _Optional:_ SKU speichern
+
+:referrer-sku: Zalando
+:referrer-id: 118
+:sku-others:
+
+include::_textblocks/instructions/sku-manuell.adoc[]
+
+// Marktplatzkonto nicht erforderlich!
 
 [#500]
 == Silhouetten in Merkmale konvertieren
 
-Zalando gruppiert Produkte in sogenannte "Silhouetten", die Zalando inzwischen auch "Artikeltypen" oder "article types" nennt. Beispiele für Silhouetten sind "Röcke", "Kleider", "Hosen". Im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Silhouetten* konvertierst du Zalando-Silhouetten in Artikelmerkmale. Silhouetten werden bei der Ersteinrichtung von Zalando in plentymarkets importiert.
+Zalando gruppiert Produkte in sogenannte "Silhouetten". Zalando nennt diese Silhouetten inzwischen auch "Artikeltypen" oder "article types". Beispiele für Silhouetten sind "Röcke", "Kleider", "Hosen". Im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Silhouetten* konvertierst du Zalando-Silhouetten in Artikelmerkmale. Silhouetten werden bei der Ersteinrichtung von Zalando in plentymarkets importiert. Wenn Zalando neue Silhouetten veröffentlicht, aktualisiert plentymarkets diese Silhouetten am darauffolgenden Mittwoch. Danach kannst du neue Silhouetten bei Bedarf in Merkmale konvertieren.
+
+[.instruction]
+Silhouetten in Merkmale konvertieren:
 
 . Öffne das Menü *Einrichtung » Märkte » Zalando » Einstellungen*.
 . Wechsele in das Tab *Silhouetten*.
-. Wähle die *Gruppen* für die Merkmale, die du konvertieren möchtest.
+. Wähle die *Gruppen* für die Merkmale, die du konvertieren möchtest. +
+*_Hinweis:_* Werden keine Gruppen angezeigt? Dann hat Zalando entweder noch keine Silhouetten bereitgestellt oder du hast Zalando noch keine FTP-Zugangsdaten zukommen lassen (siehe <<#150, Ablauf nach der Registrierung>>).
 . *Speichere* (icon:save[role="green"]) die Einstellungen. +
-→ Die Merkmale werden im plentymarkets System erstellt.
+→ Aus den Silhouetten werden Merkmale im plentymarkets System erstellt.
 
 [#600]
 == Merkmale mit Artikeln verknüpfen
@@ -332,7 +341,7 @@ Verknüpfe mindestens die folgenden Pflichtmerkmale, damit deine Varianten an Za
 [.collapseBox]
 .*_Tipp:_* Referenzdatei mit Zalando-Artikelmerkmale exportieren
 --
-Wenn du die Zalando-Silhouetten in Merkmale konvertierst werden mehrere hundert Merkmale in plentymarkets erstellt. Um dir die Arbeit mit diesen Merkmalen zu erleichtern, kannst du die Merkmale exportieren. So hast du schnellen Zugriff auf die IDs der Zalando-Merkmale. Zum Beispiel kannst du dann einfacher die Merkmale <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-merkmalverknuepfung#import_merkmalverknüpfungen, per Import>> mit deinen Artikeln verknüpfen.
+Wenn du die Zalando-Silhouetten in Merkmale konvertierst, werden mehrere hundert Merkmale in plentymarkets erstellt. Um dir die Arbeit mit diesen Merkmalen zu erleichtern, kannst du die Merkmale exportieren. So hast du schnellen Zugriff auf die IDs der Zalando-Merkmale. Zum Beispiel kannst du dann einfacher die Merkmale <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-merkmalverknuepfung#import_merkmalverknüpfungen, per Import>> mit deinen Artikeln verknüpfen.
 
 [.instruction]
 Zalando-Artikelmerkmale exportieren:
@@ -346,7 +355,7 @@ Zalando-Artikelmerkmale exportieren:
 
 [[zalando-merkmale]]
 .Zalando-Merkmale
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Spalte |Erläuterung
 
@@ -395,29 +404,114 @@ Merkmal mit Artikel verknüpfen:
 
 Wenn du Attribute in deinem plentymarkets System erstellt hast, musst du diese Attribute mit Zalando verknüpfen. Im Folgenden wird beschrieben, wie du das Attribut Farbe mit Zalando verknüpfst. Verknüpfe anschließend weitere Attribute auf die gleiche Weise.
 
-[.instruction]
-Attribute "Farbe" verknüpfen:
+Verknüpfe mindestens die folgenden Attribute, damit deine Varianten an Zalando übertragen werden können:
 
-. Öffne das Menü *Einrichtung » Artikel » Attribute*. +
-→ Eine Liste der Attribute wird angezeigt.
-. Klicke auf das Attribut *Farbe*.
-. Wechsele in das Tab *Attributverknüpfung*.
-. Klicke in der Marktplatzliste auf *Zalando*.
-. Wähle aus der Dropdown-Liste *Kategorie* die Option *Farbe*.
-. Wähle für jeden Attributwert aus der Dropdown-Liste *Marktplatz-Attribute* einen Wert. +
-*_Beispiel:_* Wähle für die Farbe Lila aus der ersten Dropdown-Liste *dark purple* und aus der zweiten Dropdown-Liste *Lila*.
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
+* Größe (size register)
+
+_und/oder_
+
+* Farbe für 1. Farbcode / Herstellerfarbe
+
+_und/oder_
+
+* Länge (length register) bei Längenangaben (z.B. Hosenlänge)
+
+NOTE: Pro Attribut kann nur ein Größenregister oder ein Längenregister verknüpft werden.
+
+:attribute-option: Zalando
+:attribute: Farbe
+:attribute-dropdown:
+:select-attribute-values:
+:attribute-example: pass:quotes[*_Beispiel:_* Wähle für die Farbe Lila aus der ersten Dropdown-Liste *dark purple* und aus der zweiten Dropdown-Liste *Lila*.]
+
+include::_textblocks/instructions/link-attributes.adoc[]
 
 [#800]
 == Zahlungsart aktivieren
 
+:marketplace: Zalando
 :payment-method: Zalando Payment
-:folder: International
 
 include::_textblocks/instructions/zahlungsart_aktivieren.adoc[]
 
+[#1100]
+== _Checkliste_ für den Variantenexport
+
+Zalando erwartet bestimmte Pflichtangaben. Das bedeutet, dass nur Varianten an den Marktplatz exportiert werden können, für die diese Angaben gespeichert sind. Die in <<#zalando-varianten-pflicht>> aufgeführten Angaben müssen an allen Varianten gespeichert sein, die an Zalando exportiert werden sollen.
+
+[[zalando-varianten-pflicht]]
+.Pflichtfelder an der Variante
+[cols="1,3a"]
+|====
+|Pflichtdaten |Erläuterung
+
+| EAN
+a| Für jede Variante muss eine EAN gespeichert sein.
+
+* Im Menü *Einrichtung » Artikel » Barcode* muss eine EAN eingerichtet und mit der Herkunft Zalando verknüpft sein.
+* Die EAN muss im Tab *Einstellungen* der Variante im Bereich *Barcode* hinzugefügt und ein Barcode-Code eingegeben werden.
+
+| Technische Daten
+a| Für jeden Artikel müssen technische Daten gespeichert sein.
+
+* Im Tab *Texte* des Artikels muss im Feld *Technische Daten* Text gespeichert sein.
+
+| Bilder
+a| Für jede Variante muss ein Bild gespeichert sein.
+
+* Im Tab *Bilder* des Artikels muss in der Dropdown-Liste *Verfügbarkeit* die Option *Zalando* aktiviert sein.
+
+| Preis
+a| Für jede Variante muss ein Preis gespeichert sein.
+
+* Der Verkaufspreis muss im Menü *Einrichtung » Artikel » Verkaufspreise* für die Herkunft Zalando aktiviert sein.
+* Der Verkaufspreis muss im Tab *Einstellungen* einer Variante im Bereich *Verkaufspreise* hinzugefügt werden.
+* Ein Preis muss für den Verkaufspreis gespeichert sein.
+
+| Supplier-SKU
+a| Für jede Variante muss eine Supplier-SKU gespeichert sein. Speichere diese Supplier-SKU im Feld *Modell* der Variante.
+
+| Merkmale
+a| Mindestens die folgenden Pflichtmerkmale müssen mit dem Artikel verknüpft sein:
+
+* 1. Farbcode
+* Altersgruppe(n)
+* Geschlecht
+* Größenregister
+* Hersteller-Code
+* Herstellerfarbe
+* Jahreszeiten-Code
+* Silhouetten-Typ
+
+| Attribute
+a| Mindestens die folgenden Attribute müssen mit der Variante verknüpft sein:
+
+* Größe (size register)
+
+_und/oder_
+
+* Farbe für 1. Farbcode / Herstellerfarbe
+
+_und/oder_
+
+* Länge (length register) bei Längenangaben (z.B. Hosenlänge)
+
+NOTE: Pro Attribut kann nur ein Größenregister oder ein Längenregister verknüpft werden.
+|====
+
+[#1200-1]
+== Auftragsabwicklung automatisieren
+
+Für die automatische Auftragsabwicklung über zDirect stehen die folgenden Ereignisaktionen zur Verfügung:
+
+* Versandbestätigungen automatisch senden (zDirect) (<<#1200, Wie?>>)
+* Stornierungen automatisch senden (zDirect) (<<#1300, Wie?>>)
+* Retouren automatisch senden (zDirect) (<<#1600, Wie?>>)
+
+Wenn du noch die alte API nutzt, werden Änderungen am Auftragsstatus Zalando nicht mit Ereignisaktionen mitgeteilt. (<<#850, Wie sonst?>>)
+
 [#1200]
-== Versandbestätigungen automatisch senden (zDirect)
+=== Versandbestätigungen automatisch senden (zDirect)
 
 Ein Auftrag muss folgende Bedingungen erfüllen, damit eine Versandbestätigung gesendet werden kann:
 
@@ -430,10 +524,10 @@ Ein Auftrag muss folgende Bedingungen erfüllen, damit eine Versandbestätigung 
 --
 Du hast verschiedene Möglichkeiten, die Tracking-ID am Auftrag zu speichern:
 
-* <<fulfillment/versand-center#retourenetikett-hauptauftrag-abrufen, Ein Retourenetikett über Versandcenter erzeugen>>
+* <<fulfillment/versand-center#retourenetikett-hauptauftrag-abrufen, Ein Retourenetikett über Versandcenter erzeugen.>>
 * <<automatisierung/prozesse/aktionen#380, Ein Retourenetikett per Prozess-Aktion erzeugen.>>
-* link:https://developers.plentymarkets.com/rest-doc#/Returns/put_rest_orders__orderId__shipping_returns_assign_label__returnsId_[Das Retourenetikett per REST hinzufügen^]{nbsp}icon:external-link[]
-* link:https://developers.plentymarkets.com/rest-doc#/Order/put_rest_orders__orderId__shipping_packages__orderShippingPackageId_[Die Tracking-ID der Retoure per REST zu einem Paket am Auftrag hinzufügen^]{nbsp}icon:external-link[]
+* link:https://developers.plentymarkets.com/rest-doc#/Returns/put_rest_orders__orderId__shipping_returns_assign_label__returnsId_[Das Retourenetikett per REST hinzufügen.^]{nbsp}icon:external-link[]
+* link:https://developers.plentymarkets.com/rest-doc#/Order/put_rest_orders__orderId__shipping_packages__orderShippingPackageId_[Die Tracking-ID der Retoure per REST zu einem Paket am Auftrag hinzufügen.^]{nbsp}icon:external-link[]
 --
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um Versandbestätigungen automatisch an Zalando zu senden, nachdem ein Warenausgang gebucht wurde.
@@ -467,7 +561,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#1300]
-== Stornierungen automatisch senden (zDirect)
+=== Stornierungen automatisch senden (zDirect)
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um Zalando automatisch über Stornierungen zu informieren. Beachte, dass als versendet markierte Aufträge nicht mehr storniert werden können.
 
@@ -482,9 +576,9 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| *Statuswechsel: [8.0] Storniert* +
+| *Statuswechsel*
+| Status wählen, zum Beispiel *[8.0] Storniert* +
 *_Hinweis:_* Du kannst auch ein anderes Ereignis wählen. Stelle aber sicher, dass das gewählte Ereignis nicht für Aufträge ausgelöst wird, die als versendet markiert oder von Kund:innen storniert wurden.
-|
 
 | *Filter 1*
 | *Auftrag &gt; Auftragstyp*
@@ -500,7 +594,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#1600]
-== Retouren automatisch senden (zDirect)
+=== Retouren automatisch senden (zDirect)
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um Zalando automatisch über Retouren zu informieren. Beachte, dass der Auftrag bereits als versendet markiert sein muss.
 
@@ -534,6 +628,27 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |
 |====
 
+[#850]
+=== Änderungen am Auftragsstatus (alte API)
+
+Wenn du noch die alte API nutzt, werden Änderungen am Auftragsstatus Zalando nicht mit Ereignisaktionen mitgeteilt. Stattdessen ruft Zalando den Auftragsstatus automatisch per Schnittstelle ab. Die Auftragsstatus *Versandbestätigung*, *Stornierung* und *Retoure* werden an Zalando gesendet, wenn die in <<#tabelle-zalando-auftragsstatus>> gezeigten Kriterien erfüllt sind:
+
+[[tabelle-zalando-auftragsstatus]]
+.Kriterien für Auftragsstatus
+[cols="1,3a"]
+|====
+|Auftragsstatus |Kriterien
+
+| *Versandbestätigung*
+|Der Warenausgang wurde gebucht. Außerdem wurde ein Retourenlabel erzeugt und Paketnummern wurden hinzugefügt.
+
+| *Stornierung*
+|Der Auftrag wurde in *Status [8.X]* verschoben oder die Menge der Auftragsposition wurde auf *0* geändert.
+
+| *Retoure*
+|In plentymarkets wurde eine Retoure erstellt.
+|====
+
 [#1500]
 == Zalando-Konto aktivieren
 
@@ -542,7 +657,8 @@ Nachdem du Zalando eingerichtet hast, aktivierst du dein Zalando-Konto im Assist
 [.collapseBox]
 .Vorgehen bei *Dieses Konto kann nicht aktiviert werden.*
 --
-Der Datenaustausch mit Zalando ist nicht aktiv. Um die zDirect-API-Schnittstelle von Zalando zu aktivieren, muss dein Zalando-Konto mit dem plentymarkets Entwicklungskonto verknüpft werden. Diese Verknüpfung passiert im Verlauf der Integration automatisch. Allerdings muss plentymarkets in einem zusätzlichen Schritt Zugangsdaten für die API generieren und diese Zugangsdaten in deinem System hinterlegen. Diese Zugangsdaten dürfen nicht von dir einsehbar sein. Deshalb kann plentymarkets dir die Zugangsdaten nicht bereitstellen. link:https://forum.plentymarkets.com/t/sammelthema-aktivierung-neuer-zalando-konten/600409[Melde dich in diesem Forum-Thread, um die Freischaltung deines Kontos zu erbitten.]
+Der Datenaustausch mit Zalando ist nicht aktiv. Um die zDirect-API-Schnittstelle von Zalando zu aktivieren, muss dein Zalando-Konto mit dem plentymarkets Entwicklungskonto verknüpft werden. Diese Verknüpfung passiert im Verlauf der Integration automatisch. Allerdings muss plentymarkets in einem zusätzlichen Schritt Zugangsdaten für die API generieren und diese Zugangsdaten in deinem System hinterlegen. Diese Zugangsdaten dürfen nicht von dir einsehbar sein. Deshalb kann plentymarkets dir die Zugangsdaten nicht bereitstellen. Melde dich in link:https://forum.plentymarkets.com/t/sammelthema-aktivierung-neuer-zalando-konten/600409[diesem Forum-Thread^]{nbsp}icon:external-link[], um die Freischaltung deines Kontos zu erbitten.
+
 Gib in deinem Foren-Post die folgenden Informationen an:
 
     ** Den Firmen-/ Markennamen, unter dem Du bei Zalando registriert bist
@@ -562,66 +678,108 @@ Zalando-Konto aktivieren:
 → Die Kontoeinstellungen werden gespeichert. +
 → Der Datenaustausch mit Zalando wird aktiviert.
 
-[#850]
-== Änderungen am Auftragsstatus (alte API)
-
-Änderungen am Auftragsstatus werden Zalando nicht mit Ereignisaktionen mitgeteilt. Stattdessen ruft Zalando den Auftragsstatus automatisch per Schnittstelle ab. Die Auftragsstatus *Versandbestätigung*, *Stornierung* und *Retoure* werden an Zalando gesendet, wenn die in <<#tabelle-zalando-auftragsstatus>> gezeigten Kriterien erfüllt sind:
-
-[[tabelle-zalando-auftragsstatus]]
-.Kriterien für Auftragsstatus
-[cols="1,3"]
-|====
-|Auftragsstatus |Kriterien
-
-| *Versandbestätigung*
-|Der Warenausgang wurde gebucht. Außerdem wurde ein Retourenlabel erzeugt und Paketnummern wurden hinzugefügt.
-
-| *Stornierung*
-|Der Auftrag wurde in *Status [8.X]* verschoben oder die Menge der Auftragsposition wurde auf *0* geändert.
-
-| *Retoure*
-|In plentymarkets wurde eine Retoure erstellt.
-|====
-
-
 [#900]
-== Berichte abrufen
+== Berichte herunterladen
 
-Im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Verarbeitungsberichte* kannst du die folgenden Berichte für Zalando herunterladen:
+Für Zalando stehen verschiedene Berichte zur Verfügung. Im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Verarbeitungsberichte* kannst du die folgenden Berichte herunterladen:
 
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Bericht |Erläuterung
 
-| *Export-Log*
-a| Das Export-Log enthält Log-Einträge für Varianten, die nicht zu Zalando exportiert werden konnten. Der Bericht wird einmal pro Nacht automatisch generiert. +
-<<#905, So rufst du das Export-Log ab>>
+2+| *Export-Log*
 
-| *Produkt-Status-Berichte*
-a| Die Produkt-Status-Berichte werden von Zalando generiert. Diese Berichte enthalten deshalb nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden.
+| *zalandoArticleExportLog.txt*
+a| Das Export-Log *zalandoArticleExportLog.txt* enthält Log-Einträge für Varianten, die nicht zu Zalando exportiert werden konnten. Das Export-Log wird einmal pro Nacht automatisch generiert.
 
-* *_ProductErrorReport.csv_*: Enthält Varianten, die seit dem letzten Export nicht auf Zalando verkauft werden können. Der Bericht wird einmal pro Nacht automatisch generiert.
-* *_ProductLiveReport.csv_*: Enthält Varianten, die seit dem letzten Export auf Zalando verkauft werden können sowie Bestand und Preis jeder Variante auf den Zalando-Channels (DE, FR usw.) zu dem Zeitpunkt, zu dem die Datei generiert wurde. Der Bericht wird einmal pro Nacht automatisch generiert.
+<<#905, So lädst du das Export-Log herunter>>
 
-<<#910, So rufst du Produkt-Status-Berichte ab>>
+2+| *Berichte*
+
+| *Artikelstatusberichte*
+a| Die Artikelstatusberichte werden einmal täglich über Nacht von Zalando generiert. Die Berichte enthalten nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden.
+
+[cols="1,3"]
+!===
+! *_ProductErrorReport.csv_*
+! Enthält Varianten, die seit dem letzten Export nicht auf Zalando verkauft werden können. Der Bericht wird einmal pro Nacht automatisch generiert.
+
+! *_ProductLiveReport.csv_*
+! Enthält Varianten, die seit dem letzten Export auf Zalando verkauft werden können sowie Bestand und Preis jeder Variante auf den Zalando-Channels (DE, FR usw.) zu dem Zeitpunkt, zu dem die Datei generiert wurde. Der Bericht wird einmal pro Nacht automatisch generiert.
+!===
+
+<<#910, So lädst du Produkt-Status-Berichte herunter>>
+
+| *Preis-Berichte*
+a| Die Preis-Berichte werden einmal täglich über Nacht pro aktiven Channel von Zalando generiert. Diese Berichte enthalten Informationen zum Verarbeitungsstatus aller Preis-Updates, die in den letzten sieben Tagen bei Zalando eingegangen sind.
+
+<<#915, So lädst du Preis-Berichte herunter>>
 |====
 
 [#905]
-=== Export-Log abrufen
+=== Export-Log herunterladen
 
 Das Export-Log enthält plentymarkets Log-Einträge für Artikel, die nicht zu Zalando exportiert werden konnten.
 
 [.instruction]
-Export-Log abrufen:
+Export-Log herunterladen:
 
 . Öffne das Menü *Einrichtung » Märkte » Zalando » Einstellungen*.
 . Wechsele in das Tab *Verarbeitungsberichte*.
 . Klicke im Bereich *Export-Log* auf *Datei herunterladen* (icon:eye[role="blue"]). +
 → Die CSV-Datei wird generiert.
 . Speichere die CSV-Datei auf deinem Rechner.
+. Filtere die Einträge nach dem Status *error*.
+. Prüfe die Einträge und korrigiere die betroffenen Varianten im plentymarkets Backend. +
+*_Tipp:_* Einträge mit dem Status *Warning* kannst du ignorieren.
+
+[[zalando-errors]]
+.Fehlermeldungen aus dem Export-Log (zalandoArticleExportLog.txt)
+[cols="1,3a"]
+|====
+|Einstellung |Erläuterung
+
+
+| specialDescriptions
+| Technische Daten
+
+| brand
+| Merkmal *Zalando » Hersteller-Code*
+
+| season
+| Merkmal *Zalando » Jahreszeiten-Code*
+
+| genders
+| Merkmal *Zalando » Geschlecht*
+
+| ageGroups
+| Merkmal *Zalando » Altersgruppe(n)*
+
+| sizeRegister
+| Merkmal *Zalando » Größen-Register*
+
+| mainColorCode
+| Kommt aus dem Merkmal *Zalando » 1. Farbcode* +
+*_Ausnahme:_* Die Variante hat ein Farbattribut. Dann wird die Farbe über Attributverknüpfungen gepflegt.
+
+| supplierColor
+| Merkmal *Zalando » Hersteller-Farbe* oder optional 2. Attributsverknüpfung
+
+| images
+| Die Variante muss mindestens ein Bild haben.
+
+| ean
+| Die Variante benötigt eine GTIN 13.
+
+| lengthRegister
+| Merkmal *Zalando » Längen-Register*
+
+| Keywords
+| Meta-Keywords (Artikel-Tab: Texte)
+|====
 
 [#910]
-=== Produkt-Status-Bericht abrufen
+=== Produkt-Status-Bericht herunterladen
 
 Produkt-Status-Berichte enthalten Informationen zu den Artikeln, die zu Zalando exportiert wurden. Diese Berichte werden von Zalando generiert. Deshalb enthalten die Berichte nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden. Folgende Berichte sind verfügbar:
 
@@ -643,7 +801,7 @@ So aktivierst du die Artikelstatusberichte:
 --
 
 [.instruction]
-Produkt-Status-Bericht abrufen:
+Produkt-Status-Bericht herunterladen:
 
 . Öffne das Menü *Einrichtung » Märkte » Zalando » Einstellungen*.
 . Wechsele in das Tab *Verarbeitungsberichte*. +
@@ -657,6 +815,171 @@ Produkt-Status-Bericht abrufen:
 → Die CSV-Datei wird generiert.
 . Speichere die CSV-Datei auf deinem Rechner.
 
+[#915]
+=== Preis-Berichte herunterladen
+
+Zalando generiert einmal täglich über Nacht einen Preis-Bericht pro aktiven Channel. Diese Berichte enthalten Informationen zum Verarbeitungsstatus aller Preis-Updates, die in den letzten sieben Tagen bei Zalando eingegangen sind. Die Berichte können also für dieselbe EAN mehrere Einträge enthalten.
+
+[.instruction]
+Preis-Berichte herunterladen:
+
+. Öffne das Menü *Einrichtung » Märkte » Zalando » Einstellungen*.
+. Wechsele in das Tab *Verarbeitungsberichte*. +
+→ Im Bereich *Preis-Berichte* sind Dateien für alle aktiven Channels verfügbar.
+. *_Optional:_* Standardmäßig wird die Datei einmal pro Nacht aktualisiert. Klicke in der Spalte *Aktionen* auf *Datei aktualisieren* (icon:cog[]), um vor dem Herunterladen aktuelle Daten bei Zalando abzurufen.
+. Klicke im Bereich *Preis-Berichte* in der Zeile eines Verarbeitungsberichts auf *Datei herunterladen* (icon:eye[role="blue"]). +
+→ Die CSV-Datei wird generiert.
+. Speichere die CSV-Datei auf deinem Rechner.
+
+[.collapseBox]
+.Welche Informationen sind in Preis-Berichten enthalten?
+--
+[cols="1,3"]
+|====
+| Timestamp
+| Entspricht dem aktuellsten Zeitstempel aus den Spalten *Status History* und *Scheduled Price (1-3) - Status History*.
+
+| EAN
+| Die EAN der Variante, deren Preis aktualisiert wurde.
+
+| Ignore Warnings?
+| Entspricht der Einstellung *Ignoriere Warnungen* unter *Einrichtung » Assistenten » Omni-Channel » Zalando Kontoeinstellungen » [Konto öffnen] » Schritt: Preise für [Zielland]* zum Zeitpunkt der Übertragung des Updates.
+
+| Regular Price
+| Übertragener Wert des normalen Preises.
+
+| Regular Price Currency
+| Übertragene Währung des normalen Preises.
+
+| Promotional Price
+| Übertragener Wert des reduzierten Preises.
+
+| Promotional Price Currency
+| Übertragene Währung des reduzierten Preises.
+
+| Status
+a| Status der Verarbeitung. Mögliche Status:
+
+[cols="1,3"]
+!===
+! RECEIVED
+! Der Preis ist eingegangen.
+
+! ACCEPTED
+! Der Preis wurde akzeptiert und zur weiteren Validierung weitergeleitet.
+
+! REJECTED
+! Der Preis hat die Validierung nicht bestanden. Siehe die Statusmeldungen in *Status History* für weitere Informationen.
+
+! FAILED
+! Bei der Preisaktualisierung ist ein unerwarteter Fehler aufgetreten. Siehe die Statusmeldungen in *Status History* für weitere Informationen.
+
+! SCHEDULED
+! Der Preis wurde erfolgreich validiert und wartet auf die Übermittlung.
+
+! SUBMITTED
+! Der Preis wurde eingereicht und wird in Kürze im Shop angezeigt.
+
+! AWAITING_ONBOARDING
+! Der Preis wurde akzeptiert, aber der Artikel wurde noch nicht aktiviert. Der Preis wird angewendet, wenn das Onboarding abgeschlossen ist.
+!===
+
+| Status History
+a| Verlauf der Statusänderung. Je Änderung gibt es einen Absatz in der Zelle mit dem folgenden Schema (Platzhalter in eckigen Klammern):
+
+* [Zeitstempel]: FROM [Ursprungsstatus] TO [Neuer Status] - Code: [Code] [Schweregrad] [Nachricht]
+
+| Scheduled Price (1-3) - Start
+| Startdatum des geplanten Preises.
+
+| Scheduled Price (1-3) - End
+| Enddatum des geplanten Preises.
+
+| Scheduled Price (1-3) - Regular Price
+| Übertragener Wert des normalen Preises für den geplanten Preis.
+
+| Scheduled Price (1-3) - Regular Price Currency
+| Übertragene Währung des normalen Preises.
+
+| Scheduled Price (1-3) - Promotional Price
+| Übertragener Wert des reduzierten Preises.
+
+| Scheduled Price (1-3) - Promotional Price Currency
+| Übertragene Währung des reduzierten Preises.
+
+| Scheduled Price (1-3) - Status
+a| Status der Verarbeitung des geplanten Preises. Mögliche Status:
+
+[cols="1,3"]
+!===
+! RECEIVED
+! Der Preis ist eingegangen.
+
+! ACCEPTED
+! Der Preis wurde akzeptiert und zur weiteren Validierung weitergeleitet.
+
+! REJECTED
+! Der Preis hat die Validierung nicht bestanden. Siehe die Statusmeldungen in *Scheduled Price (1-3) - Status History* für weitere Informationen.
+
+! FAILED
+! Bei der Preisaktualisierung ist ein unerwarteter Fehler aufgetreten. Siehe die Statusmeldungen in *Scheduled Price (1-3) - Status History* für weitere Informationen.
+
+! SCHEDULED
+! Der Preis wurde erfolgreich validiert und wartet auf die Übermittlung.
+
+! OVERRIDDEN
+! Der Preis wurde geplant, aber durch eine neue Preisaktualisierung überschrieben, bevor er übermittelt werden konnte.
+
+! SUBMITTED
+! Der Preis wurde eingereicht und wird in Kürze im Shop angezeigt.
+
+! AWAITING_ONBOARDING
+! Der Preis wurde akzeptiert, aber der Artikel wurde noch nicht aktiviert. Der Preis wird angewendet, wenn das Onboarding abgeschlossen ist.
+!===
+
+| Scheduled Price (1-3) - Status History
+a| Verlauf der Statusänderung des geplanten Preises. Je Änderung gibt es einen Absatz in der Zelle mit dem folgenden Schema (Platzhalter in eckigen Klammern):
+
+* [Zeitstempel] from [Ursprungsstatus] to [Neuer Status] - Code: [Code] Severity: [Schweregrad] Message: [Nachricht]
+|====
+--
+
+[#1010]
+== Daten-Log abrufen
+
+:market: Zalando
+include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-intro]
+
+* *Identifikator* » *Zalando*
+
+include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-config]
+
+Nutze optional die in <<#tabelle-referenztypen>> aufgeführten Filter, um die Suchergebnisse weiter einzugrenzen:
+
+[[tabelle-referenztypen]]
+.Filter
+[cols="1a,2a,2a"]
+|====
+|Log-Einträge |Empfohlene Filter |Erläuterung
+
+| Preis-Updates
+| * Identifikator » Zalando
+* Level: Error
+* Referenzen:
+    ** Referenztyp » action +
+    Referenzwert » PriceUpdate
+    ** Referenztyp » ean +
+    Referenzwert » EAN der Variante
+| Beim Generieren der <<#915, Preis-Berichte>> wird für alle Einträge ein Fehler-Log geschrieben, die seit dem letzten Generieren der Datei (minus einer Stunde als Puffer) in den Status REJECTED, FAILED oder OVERRIDDEN geschoben wurden.
+
+| Preis-Berichte
+| * Identifikator » Zalando
+* Referenzen:
+  ** Referenztyp » action +
+  Referenzwert » PriceReporting
+| Log-Einträge zu Fehlern beim Generieren der Preis-Berichte
+|====
+
 [#1000]
 == API-Log abrufen
 
@@ -667,7 +990,7 @@ API-Log abrufen:
 
 . Öffne das Menü *Daten » API-Log » Tab: API-Log*.
 . Wähle das Format *ZalandoController* aus der Dropdown-Liste *Vorgang*.
-. *_Optional:_* Wähle ein Datum, um nur Einträge eines bestimmten Tags anzuzeigen.
+. *_Optional:_* Wähle ein Datum, um nur Einträge eines bestimmten Tages anzuzeigen.
 . Wähle die Anzahl der Ergebnisse pro Seite.
-. Klicke auf *Suchen* (icon:search[role="blue"]).
+. Klicke auf *Suchen* (icon:search[role="blue"]). +
 → Die Ergebnisse werden angezeigt.

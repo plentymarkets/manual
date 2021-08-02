@@ -1,46 +1,20 @@
 In diesem Kapitel findest du Antworten auf häufig gestellte Fragen.
 (Stand: 21.12.2020)
 
-FAQ: Allgemeine Fragen und Antworten
-
-* <<#1301, Wie setzt sich der Produkttitel bei OTTO Market zusammen?>>
-* <<#13014, Wo hinterlege ich die Versandkosten im OTTO-Partnerportal?>>
-
-FAQ: Artikeldatenexport
-
-* <<#1302, Warum werden meine Artikeldaten nicht zu OTTO Market exportiert?>>
-* <<#13016, Mögliche Fehlermeldungen im Log>>
-  ** <<#13023, delivery.deliveryTime>>
-  ** <<#13010, delivery.type>>
-  ** <<#13017, ean>>
-  ** <<#1309, mediaAssets.IMAGE _oder_ mediaAssets>>
-  ** <<#13024, pricing.standardPrice.amount _oder_ pricing.standardPrice.currency>>
-  ** <<#1308, productDescription.brand>>
-  ** <<#13011, productDescription.category>>
-  ** <<#13018, sku>>
-  ** <<#13019, stock>>
-  ** <<#13025, sku-validation-error, validation error found _oder_ Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.>>
-
-FAQ: Auftragsbearbeitung
-
-* <<#1303, Wie ordne ich ein Retourenpaket dem richtigen Auftrag in plentymarkets zu?>>
-* <<#1304, Wie finde ich bei Anfragen von Kund:innen einen Auftrag von OTTO Market in plentymarkets?>>
-* <<#13027, Eine Versandbestätigung wurde nicht an OTTO Market gemeldet. Was kann ich tun?>>
-* <<#1305, Mögliche Fehlermeldungen im Log>>
-  ** <<#13051, The return package nor shipping package contain a valid return tracking number.>>
-  ** <<#1307, Code: 200009 - ATTRIBUTE_CHANGE_DENIED oder title: Der Wert dieses Feldes kann nicht geändert werden.>>
-  ** <<#13012, Carrier ID (X) not mapped in OTTO market config.>>
-
 [#13013]
 === FAQ: Allgemeine Fragen und Antworten
 
 [#1301]
-==== Wie setzt sich der Produkttitel bei OTTO Market zusammen?
-
+[.collapseBox]
+.Wie setzt sich der Produkttitel bei OTTO Market zusammen?
+--
 Der Titel, der bei OTTO Market an deinem Artikel angezeigt wird, setzt sich aus den folgenden Feldern zusammen, die du im Katalog verknüpfst: *Marke* + *Modell* + *Besondere Merkmale* + alle Felder, bei denen in Klammern *Namenbildend* steht.
+--
 
 [#13014]
-==== Wo hinterlege ich die Versandkosten im OTTO-Partnerportal?
+[.collapseBox]
+.Wo hinterlege ich die Versandkosten im OTTO-Partnerportal?
+--
 
 Die Versandkosten für deine OTTO Market-Artikel konfigurierst du im OTTO-Partnerportal. Du kannst dort zwei Versandarten anlegen:
 
@@ -50,13 +24,16 @@ Für versandkostenfreie Paketlieferung hinterlegst du den Wert *0,00*.
 Für Speditionsversand speicherst du einen Speditionszuschlag, der auf die Standardversandkosten addiert wird.
 
 Ob ein Artikel ein Paketartikel oder ein Speditionsartikel ist, legst du am Artikel fest.
+--
 
 [#1302]
 === FAQ: Artikeldatenexport
 
-[#1302]
-==== Warum werden meine Artikeldaten nicht zu OTTO Market exportiert?
 
+[#1302]
+[.collapseBox]
+.Warum werden meine Artikeldaten nicht zu OTTO Market exportiert?
+--
 [TIP]
 ====
 Eine oder mehrere deiner Varianten wurden nicht exportiert? Gehe zunächst die <<#2200, _Checkliste:_ Voraussetzungen für den Variantenexport>> durch.
@@ -77,6 +54,62 @@ Logs durchsuchen:
 . Wenn die Variante in keinem dieser Logs angezeigt wird, öffne zusätzlich das Log mit dem folgenden Filter:
   .. *Integration*: Plenty\Modules\Otto\Item\Templates\Mutators\DefaultSkuMutator
   .. *Identifikator*: OTTO Market
+--
+
+[#13015]
+[.collapseBox]
+.Ich möchte den Grundpreis meiner Varianten an OTTO übermitteln. Wie gehe ich vor?
+--
+*Voraussetzung*: Um den Grundpreis an OTTO zu übermitteln, benötigst du Angaben zu Inhalt und Einheit der Variante. Diese Angaben speicherst du an der Variante im Tab *Einstellungen* und dort im Bereich *Maße*:
+
+Die Option *Inhalt* setzt sich aus *Inhalt Menge* und *Inhalt Einheit* zusammen.
+
+Im Katalog sind die folgenden OTTO Market-Datenfelder notwendig, um den Grundpreis zu übermitteln:
+
+* Verkaufspreismenge
+* Grundpreismenge
+* Grundpreiseinheit
+* Verkaufspreiseinheit
+
+OTTO berechnet den Grundpreis der Variante anhand dieser Daten. Die Tabelle unten zeigt Details zu den Datenfeldern.
+
+[cols="1,3a,3a"]
+|====
+|OTTO Market-Datenfeld |Zuordnung in plentymarkets |Erläuterung
+
+| Verkaufspreismenge
+| * Ordner *Variante*, Option *Inhalt Menge*
+| Die Verkaufspreismenge bezieht sich auf die reguläre Menge des Inhalts aus der Variante. Dazu benötigst du also den Inhalt der Variante in deinen Maßangaben.
+
+| Grundpreismenge
+| * Eigenschaft mit den von OTTO erlaubten Werten
+| Die Grundpreismenge dient als Grundlage für das Berechnen des Grundpreises. OTTO erlaubt die Werte *1*, *100* oder *1000*. Ordne dieses Feld einer Eigenschaft zu, die den Wert *1*, *100* oder *1000* beinhaltet. +
+*_Tipp:_* Wenn alle Varianten des Katalogs eine Grundpreismenge von *1* erhalten, kannst du das Feld *Grundpreismenge* unzugeordnet lassen. Wir übergeben dann den Standardwert *1*.
+
+| Grundpreiseinheit
+| * Ordner *Variante*, Option *Inhalt Einheit* +
+In das Feld den ISO-Code der Einheit eingeben. +
+Die ISO-Codes findest du im Menü *Einrichtung » Artikel » Einheiten* in der Spalte *ISO*. +
+*_Beispiel:_* Für die Angabe *Stück* wird der Wert "C62" erwartet.
+
+_oder_
+
+* Eigenschaft mit den von OTTO erlaubten Werten (ISO-Codes)
+
+| Die Grundpreiseinheit bezieht sich auf den Inhalt der Einheit der Maßangaben der Variante.
+
+| Verkaufspreiseinheit
+| * Ordner *Variante*, Option *Inhalt Einheit* +
+In das Feld den ISO-Code der Einheit eingeben. +
+Die ISO-Codes findest du im Menü *Einrichtung » Artikel » Einheiten* in der Spalte *ISO*. +
+*_Beispiel:_* Für die Angabe *Stück* wird der Wert "C62" erwartet.
+
+_oder_
+
+* Eigenschaft mit den von OTTO erlaubten Werten (ISO-Codes)
+| Die Verkaufspreiseinheit bezieht sich auf den Inhalt der Einheit deiner Maßangaben der Varianten.
+|====
+--
 
 [#13016]
 ==== Artikelexport: Fehlermeldungen im Log
@@ -172,7 +205,7 @@ Die Variante hat keinen positiven Netto-Warenbestand in dem Lager, das im Katalo
 [.collapseBox]
 .*missing requirements: sku-validation-error, validation error found* oder *Duplicate entry. Combination of the fields variationId, marketId and accountId must be unique.*
 --
-Der Fehler wird im Log z.B. auch unter *SKU 1234 nicht generiert* oder *0:sku* angezeigt
+Der Fehler wird im Log zum Beispiel auch unter *SKU 1234 nicht generiert* oder *0:sku* angezeigt.
 
 Im Katalog wird an erster Stelle definiert, aus welcher Quelle die SKU generiert werden soll. Wir unterscheiden dort zwischen einer *Parent-SKU* und einer *Variation-SKU*. Die dort gewählte Quelle sollte sich auf eine Datenzeile beziehen, die einmalig existiert. Es ist also nicht möglich, für unterschiedliche Artikel dieselbe SKU zu vergeben.
 
@@ -204,19 +237,40 @@ Es wird hiermit also ein *_zweites Datenfeld_* hinzugefügt. Beim nächsten Expo
 
 In einigen Fällen kann es zu Fehlern bei der Verarbeitung der Aufträge kommen. Mögliche Ursachen und häufige Fehler werden hier beschrieben.
 
+[#13026-1]
+[.collapseBox]
+.Warum werden einige Aufträge ohne Adressdaten und mit dem Status *[1] Unvollständige Daten* importiert?
+--
+Wenn Kund:innen per Vorkasse zahlen und die Zahlung noch nicht erfolgt ist, gibt OTTO Market Aufträgen den Status ANNOUNCED. Aufträge mit diesem Status werden ohne Adressdaten in Status *[1] Unvollständige Daten* in plentymarkets importiert. Sobald der Auftrag bei OTTO in den Status PROCESSABLE wechselt, werden die Adressen am Auftrag ergänzt und der Auftrag wird in Status *[3] Warten auf Zahlung* verschoben. +
+*_Wichtig:_* Standardmäßig wird für Aufträge im Status *[1] Unvollständige Daten* kein Warenbestand reserviert. Mit der unten beschriebenen Einstellung kannst du Warenbestand für diese Aufträge reservieren.
+
+[.instruction]
+Warenbestand für Aufträge mit Status 1 reservieren:
+
+. Öffne das Menü *Einrichtung » Aufträge » Einstellungen*.
+. Wähle die folgenden Optionen für die Einstellung *Status Auftragsreservierung (Reservierung von Beständen)*:
+  ** Option *von*: Status *[1] Unvollständige Daten*
+  ** Wähle in der letzten Dropdown-Liste die Option *Alle Aufträge*.
+. Speichere die Einstellungen. +
+→ Für die Aufträge mit diesem Status wird Warenbestand reserviert. +
+*_Hinweis:_* Diese Einstellung gilt für alle Aufträge, nicht nur für OTTO Market-Aufträge.
+--
 
 [#1303]
-==== Wie ordne ich ein Retourenpaket dem richtigen Auftrag in plentymarkets zu?
-
+[.collapseBox]
+.Wie ordne ich ein Retourenpaket dem richtigen Auftrag in plentymarkets zu?
+--
 Nachfolgend findest du ein exemplarisches DHL-Retourenetikett. Auf dem Etikett ist ersichtlich, welche Informationen dir zur Verfügung stehen.
 
 [[dhl-retourenetikett]]
 .DHL-Retourenetikett
 image::maerkte/otto/assets/dhl-retourenetikett.png[DHL-Retourenetikett]
+--
 
 [#1304]
-==== Wie finde ich bei Anfragen von Kund:innen einen Auftrag von OTTO Market in plentymarkets?
-
+[.collapseBox]
+.Wie finde ich bei Anfragen von Kund:innen einen Auftrag von OTTO Market in plentymarkets?
+--
 Im plentymarkets Forum wird öfters von *PositionID* (Beispiel: 715e9369-01e3-4d09-ae91-8688dfa139b2) und *SalesOrderID* (Beispiel: 4245eac7-4647-4f76-8c48-261afb19aa96) gesprochen, diese sind für dich als Händler:in jedoch nicht relevant. Diese IDs sind für dich nicht sichtbar - es handelt sich um die Bezeichnung des Auftrags und der enthaltenen Positionen in der plentymarkets Datenbank.
 
 Aufträge mit der Herkunft *OTTO Market* erhalten die übliche Auftrags-ID von deinem plentymarkets System, zur Identifikation des Auftrags wird jedoch eine “externe Auftragsnummer” an dem Auftrag gespeichert, mit welcher der Auftrag eindeutig zugeordnet werden kann.
@@ -244,10 +298,12 @@ image::maerkte/otto/assets/plentymarkets_externe-auftragsnummer.png[externe Auft
 Wenn Kund:innen eine Rückfrage zum Auftrag haben, findest du den Auftrag anhand der externen Auftragsnummer.
 
 Natürlich kannst du mit dem Filter *Herkunft* immer alle OTTO Market-Aufträge filtern.
+--
 
 [#13027]
-==== Eine Versandbestätigung wurde nicht an OTTO Market gemeldet. Was kann ich tun?
-
+[.collapseBox]
+.Eine Versandbestätigung wurde nicht an OTTO Market gemeldet. Was kann ich tun?
+--
 Sollte eine Versandbestätigung nicht an OTTO Market gemeldet worden sein, findest du mögliche Ursachen im Log.
 
 [.instruction]
@@ -263,6 +319,7 @@ Log durchsuchen:
 . Öffne die Logs mit der Nachricht *Variante ungültig*. +
 → Im Log erhältst du die Varianten-ID und den Grund für die Ablehnung bzw. das fehlende Merkmal.
 . Unterhalb dieser Beschreibung findest du mögliche Fehlermeldungen und Lösungsansätze.
+--
 
 [#1305]
 ==== Auftragsbearbeitung: Fehlermeldungen im Log
@@ -290,7 +347,6 @@ Dieser Fehler zeigt an, dass du eine Änderung an einem OTTO-Artikelattribut vor
 Ein Artikel kann bei OTTO Market _nicht_ gelöscht werden, weder durch plentymarkets noch durch OTTO selbst. Es ist lediglich möglich, den Artikel auf OTTO Market als *nicht verfügbar* zu kennzeichnen. Deshalb solltest du vor der Artikelübertragung immer sicherstellen, dass im Katalog die korrekten Datenfelder verknüpft wurden.
 ======
 --
-
 [#13012]
 [.collapseBox]
 .*Carrier ID (X) not mapped in OTTO market config.*
