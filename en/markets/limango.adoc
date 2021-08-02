@@ -96,7 +96,7 @@ Setting up limango:
 
 [[limango-setup]]
 .Setting up limango
-[cols="1,3a"]
+[cols="1,2a"]
 |====
 |Setting |Explanation
 
@@ -135,8 +135,25 @@ a| * *1* = The prices were exported to limango. You can check the last time the 
 | *Order status for orders with items that cannot be linked to items in plentymarkets (>= 5)*
 | Enter an order status of 5 or higher. This status is assigned to orders that contain one or more items that no longer exist in plentymarkets. For example, this can happen if a customer orders an item on limango that was deleted in plentymarkets after the last item export to limango.
 
-| *Order status for orders with no shipping service provider (>= 7)*
-| Enter an order status of 7 or higher. This status is assigned to orders if the shipping service provider in the order is not linked to a shipping service provider in plentymarkets.
+| *Order status for orders without shipping carrier mapping (> 5 - < 7)*
+| Which status is assigned to orders if the shipping service provider in the order is not linked to a shipping service provider in plentymarkets?
+
+*_The selected status must be:_*
+
+* Greater than 5
+* Less than 7
+* Less than the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*
+
+After correcting the shipping carrier mapping, move orders with this status into the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*.
+
+| *Order status for orders with shipping carrier mapping (> 5 - < 7)*
+| Which status is assigned to orders if the shipping service provider in the order is linked to a shipping service provider in plentymarkets?
+
+*_The selected status must be:_*
+
+* Greater than 5
+* Less than 7
+* Greater than the status for *Order status for orders without shipping carrier mapping (> 5 - < 7)*
 
 2+| *Shipping service provider*
 
@@ -146,6 +163,14 @@ a| * *1* = The prices were exported to limango. You can check the last time the 
 etc.
 | For each shipping service provider that you want to offer for limango orders, enter the ID of the shipping service provider in plentymarkets. +
 *_Tip:_* Go to *Setup » Orders » Shipping » Settings » Tab: Shipping service provider* to find the ID of your shipping service providers in the column *ID*.
+
+2+| *Client selection*
+
+| *Plenty ID*
+| Enter the plenty ID of a client. limango orders are imported for this client. +
+→ The order documents for this client are used during order processing. +
+If you do not enter a client, the default client is used for importing orders.
+*_Tip:_* The plenty ID of your clients is saved in the *Setup » Client » [Select client] » Settings » Option: Plenty ID* menu.
 |====
 
 [#600]
@@ -192,7 +217,7 @@ If the product is only available in a single version, then the product group is 
 [IMPORTANT]
 .Use the parent-SKU
 ====
-Do you sell products in different colours but manage these different colours in separate items? The parent SKU allows you to link these separate items. Parent SKUs can be saved for both items and individual variations. The manual maintenance of SKUs enables you to assign the Parent SKU of entirely different item variations to variations of an item.
+Do you sell products in different colours but manage these different colours in separate items? The parent SKU allows you to link these separate items. Parent SKUs can be saved for both items and individual variations. The manual maintenance of SKUs allows you to assign the Parent SKU of entirely different item variations to variations of an item.
 
 * You can assign the Parent SKU of a variation which belongs to an entirely different item five times to an item with five variations. These variations are listed on limango as variations of the item with the Parent SKU they are assigned to. +
 * If one variation has a different Parent SKU than the remaining variations of an item, then two different items are listed on limango. You only have to maintain one item in your plentymarkets system.
@@ -257,13 +282,13 @@ Now, map the plentymarkets data field that you want in the catalogue:
 . To the right of the column, click on *Settings* (icon:cog[]).
 . From the drop-down list *Separator*, select the option *Space*.
 
-| Measurements
+| Measurements +
 (*Length*; +
 *Width*; +
 *Height*; +
 *Volume*; +
 *Diameter*; +
-*Weight*
+*Weight* +
 etc.)
 a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Due to the limango product structure, the normal plentymarkets data fields for measurements cannot be mapped. Instead, create two properties:
 
@@ -308,7 +333,7 @@ a| Material information is exported to limango using a property of the type *Sho
 Enter the material composition in the following format:
 
 * *{"material1": "percentage","material2": "percentage","material3": "percentage"}* +
-*_Example:_* *{"baumwolle": "90","elastan": "10"}*
+*_Example:_* *{"baumwolle": "90","elasthan": "10"}*
 
 Specify the individual materials in descending order based on the percentage value. As such, the first material is the one with the highest percentage value, the last one that with the lowest percentage value. The sum of all percentages must be 100. You can specify as many materials as you need.
 
@@ -336,6 +361,52 @@ Mapping lining and saving material mix for a variation:
 . The lining of the blazer is made of 100% rayon. Enter the following into the text field of the property:
   *
 . Save the settings.
+--
+
+| *Colour value*
+| limango distinguishes by colours but not by shades. For example, if you offer a dress in both light and dark green, both are presented if customers search for green dresses on the market.
+
+To ensure that different products are created for variations in different shades of the same colour, the colour value saved in plentymarkets is exported as part of the merchant product ID and the product name instead of the limango colour value.
+
+[.collapseBox]
+.*_Example:_* Mapping different shades of green to the colour value *green*
+--
+This example shows you how to map different shades of green to the colour value *green*.
+
+[.instruction]
+Assumed scenario:
+
+You want to map all your shades of green to the limango colour value *green*.
+
+The following shades of green are saved as values of the attribute *Colour*:
+
+* Light green
+* Dark green
+
+The following shades of green are saved as property values:
+
+* Lime green
+* Coriander
+
+[.instruction]
+Mapping different shades of green to the colour value "green":
+
+. Open the limango catalogue.
+. Navigate to the area *Colour*.
+. Map the marketplace data field *Colour* to the following plentymarkets data fields: +
+*_Data field:_* Field *Value name* of the attribute for *Colour* +
+*_Fallback data fields:_* Property for *Colour*
+. Navigate to the area *Colour value*.
+. Map the marketplace data field *Colour value: green* to the plentymarkets attribute value *Light green*.
+. Click on *+ Add fallback data field*.
+. As the first fallback data field, map the plentymarkets attribute value *Dark green*.
+. Click on *+ Add fallback data field*.
+. As the second fallback data field, map the plentymarkets property value *Lime green*.
+. Click on *+ Add fallback data field*.
+. As the third fallback data field, map the plentymarkets property value *Coriander*. +
+→ The shade of green that is saved for the variation is exported as part of the merchant product ID and the product name. +
+→ On limango, all products are listed with the colour Green. +
+*_Tip:_* The order for mapping the different shades described here is random. You can map the values in any order.
 --
 |====
 
@@ -386,7 +457,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 
 | *Event*
 | *Status change*
-| Select an event, e.g. *[8] Cancelled*.
+| Select an event, for example [8] *Waiting for payment*.
 
 | *Filter*
 | *Order > Referrer*
@@ -400,60 +471,108 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 [#1300]
 == Setting up automatic shipping confirmations
 
-limango expects each shipping confirmation to contain a tracking number. As such, set up an <<automation/event-procedures#, event procedure>> to automatically book outgoing items whe a tracking number is created.
+Shipping confirmations for limango must contain a tracking number. In addition, the shipping service provider of the order must be linked to the limango shipping service provider correctly in the plugin settings.
 
-:table-event-procedure: <<#event-procedure-tracking-number-limango>>
+You need two event procedures to automatically confirm the shipping to limango:
+
+* Event procedure 1: Send shipping confirmation to limango
+* Event procedure 2: Book outgoing items
+
+[#13001]
+=== Workflow for automatic order confirmations
+
+The workflow for automated shipping confirmations depends on whether or not the order’s shipping service provider is correctly linked to the limango shipping service provider in the plugin settings.
+
+[cols="1,3a"]
+|====
+|Case |Procedure
+
+| Shipping service provider linked
+| * A package number is saved for the order.
+* The event procedure *Send shipping confirmation to limango* checks if the shipping service provider is linked correctly.
+* The procedure *Send shipping confirmation to limango* is triggered: A shipping confirmation is sent to limango.
+* The order is moved to the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*.
+* Only procedure 1 of the event procedure *Book outgoing items* is triggered. +
+→ The outgoing items are booked. +
+→ _No_ second shipping confirmation is sent to limango.
+
+| Shipping service provider linked correctly
+| * A package number is saved for the order.
+* The event procedure *Send shipping confirmation to limango* checks if the shipping service provider is linked correctly.
+* The order is moved to the status for *Order status for orders without shipping carrier mapping (> 5 - < 7)*.
+* You check and correct the mapping for the shipping service provider in the plugin settings. +
+*_Tip:_* Go to *Plugins » Plugin set overview » [Open plugin set] » Open limango plugin » Shipping service provider* to correct the mapping.
+* You move the order into the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)*.
+* Procedure 1 of the event procedure *Book outgoing items* is triggered. +
+→ The outgoing items are booked.
+* Procedure 2 of the event procedure *Book outgoing items* is triggered. +
+→ A shipping confirmation is sent to limango.
+|====
+
+[#13002]
+=== Automatically sending shipping confirmations to limango
+
+For event procedure 1 for shipping confirmations, set up the <<automation/event-procedures#, event procedure>> described in <<#event-procedure-shipping-info-limango>>.
+
+:table-event-procedure: <<#event-procedure-shipping-info-limango>>
 
 include::../_includes/textblocks/instructions/EA.adoc[]
 
-[[event-procedure-tracking-number-limango]]
-.Event procedure for booking outgoing items
+[[event-procedure-shipping-info-limango]]
+.Event procedure 1 for shipping confirmations
 [cols="1,2,2"]
 |===
 |Setting |Option |Selection
 
 | *Event*
-| *Package number*
+| *Order change > Package number*
 |
 
 | *Filter 1*
 | *Order > Order type*
-| *Order*
+| *Order* +
+* Delivery order*
 
 | *Filter 2*
 | *Order > Referrer*
 | *limango*
 
 | *Procedure*
-| *Order*
-| *Book outgoing items*
+| *Plugin*
+| *Send shipping confirmation to limango*
 |===
 
-Now, set up an <<automation/event-procedures#, event procedure>> to automatically send a shipping confirmation to limango when outgoing items have been booked for an order.
+For event procedure 2 for shipping confirmations, set up the <<automation/event-procedures#, event procedure>> described in <<#event-procedure-booking-items-limango>>.
 
-:table-event-procedure: <<#event-procedure-shipping-confirmation-limango>>
+:table-event-procedure: <<#event-procedure-booking-items-limango>>
 
 include::../_includes/textblocks/instructions/EA.adoc[]
 
-[[event-procedure-shipping-confirmation-limango]]
-.Event procedure to send shipping confirmations to limango
+[[event-procedure-booking-items-limango]]
+.Event procedure 2 for shipping confirmations
 [cols="1,2,2"]
 |===
 |Setting |Option |Selection
 
 | *Event*
 | *Status change*
-| Select an event, for example [7] *Outgoing items booked*.
+| Select the status for *Order status for orders with shipping carrier mapping (> 5 - < 7)* +
+Go to *Plugins » Plugin set overview » [Open plugin set] » Open limango plugin » Order status* to set this status.
 
 | *Filter 1*
 | *Order > Order type*
-| *Order*
+| *Order* +
+* Delivery order*
 
 | *Filter 2*
 | *Order > Referrer*
 | *limango*
 
-| *Procedure*
+| *Procedure 1*
+| *Order*
+| *Book outgoing items*
+
+| *Procedure 2*
 | *Plugin*
 | *Send shipping confirmation to limango*
 |===
@@ -548,7 +667,7 @@ limango specifies a text containing return instructions that needs to be shown o
 [.instruction]
 Entering return information for limango delivery notes:
 
-. Expand the "Text: Return instructions for limango delivery notes" below this description.
+. Expand the info box "Text: Return instructions for limango delivery notes" below this description.
 . Copy the text to the clipboard.
 . Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
 . Scroll down to the area *Optional elements below stock unit table*, to the setting *Payment instruction*.
@@ -564,7 +683,6 @@ Entering return information for limango delivery notes:
 --
 include::_textblocks/explanations/limango-delivery-note-text.adoc[]
 --
-
 
 [#1100]
 == Troubleshooting: Viewing log entries

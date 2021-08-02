@@ -2153,14 +2153,17 @@ The delete icon (icon:minus-square[role="red"]) is not displayed when: +
 - A delivery order was created. +
 Generally, orders should not be deleted. Errors can occur when orders are deleted because the orders are linked to items, shipping settings and other functions such as cancellations and returns. However, it is possible to delete newly created orders.
 
-| *Split up*
-|Splits the order. When splitting an order, 2 new orders are created. The original order is deleted. The shipping costs are recalculated for the new orders. Before splitting the order you are asked how the order items are to be distributed. +
+| [#intable-splitting-orders]*Split up*
+|Splits the order. The behaviour during splitting depends on your <<orders/basic-settings#intable-behaviour-after-splitting, basic setting>> for this. +
+The standard behaviour is that 2 new orders are created when an order is split. The original order is deleted. The shipping costs are recalculated for the new orders. Before splitting the order you are asked how the order items are to be distributed. +
 An order can be split when: +
 - It is not locked, +
 - outgoing items have not been booked yet, +
 - no child orders have been created (e.g. returns, delivery orders) +
 - no tax-relevant documents have been created and +
-- no payments have been assigned to the order yet.
+- no payments have been assigned to the order yet.+
+If you selected the other option *Change of order status* , 2 new orders are created as well. But the original order remains and is assigned a new order status defined by you. With this setting, it is also allowed to split orders with a payment already assigned to it and for which tax-relevant documents (important: invoice as well as reversal document) have been created. The assigned payment as well as the documents remain with the original order and are not transferred to the split orders. +
+If you want a different <<orders/basic-settings#intable-splitting-behaviour-shipping-costs, behaviour of shipping costs>> than the standard described above, you can select a different setting in the basic settings for orders.
 
 | *Return; Credit note; Warranty*
 |Click on the drop-down list to create or search for the order document.
@@ -2224,10 +2227,16 @@ An order’s basic parameters are saved in the *Settings* tab, e.g. the *Status*
 |The status of the order. If required, the status can be adapted by using the dropdown list. +
 Note that the order status *[7] Outgoing items booked* cannot be changed to a lower status. This is because the items have already been shipped. However, if you still want to do this, then you first need to reset the outgoing items that were booked. It is possible to switch to a lower order status afterwards.
 
-|*Order type* +
-*Owner* +
-*Referrer* +
-|The order type, the assigned owner as well as the referrer of the order are displayed. All three fields are editable.
+|*Order type*
+|The order type of the order is displayed. You can change the order type manually by using the drop-down list.
+
+|*Owner*
+|The owner of the order is displayed. You can change the owner type manually by using the drop-down list. +
+The note *Missing owner right order* is displayed if the owner does not have the needed <<business-decisions/user-accounts-access#40, owner rights>>. Go to the menu *Setup » Settings » User » Account* and select that the module Order is available to this user as an owner. +
+In case the owner of the order does not have a plentymarkets user account, the note *Unkown user* is displayed. If needed, you can create a <<business-decisions/user-accounts-access#10, user account>> for this user.
+
+|*Referrer*
+|The referrer of the order is displayed. You can change the order referrer manually by using the drop-down list.
 
 |*Location*
 |The location of the order is displayed.
@@ -2527,17 +2536,23 @@ You can use the *group function* to carry out processes for several orders at th
 [.discrete]
 ==== Grouping orders
 
-By using the group function *Group orders*, you can group certain orders. This means that the selected orders are combined into a new order. The original orders are deleted. Shipping costs are recalculated for the new order. Orders can be grouped when: +
+By using the group function *Group orders*, you can group certain orders. This means that the selected orders are combined into a new order. The behaviour for grouping depends on your <<orders/basic-settings#intable-behaviour-after-grouping, basic setting>> for this. The standard behaviour is that the original orders are deleted. Shipping costs are recalculated for the new order. Orders can be grouped when: +
 - They are not locked, +
 - outgoing items have not been booked yet, +
 - no payments have been assigned to the order yet, +
+- it has no tax-relevant documents, +
 - they have the same plentyID, +
 - they are of the same order type, +
 - they have the same referrer, +
 - they have the same owner, +
 - they have the same  contact, +
-- they have the same address,+
+- they have the same address, +
+- they have the same payment method, +
 - they have the same currency and exchange rate.
+
+If you selected the other option *Change of order status* , a new order is created by grouping as well. But the original orders remain and are assigned a new order status defined by you. With this setting, it is also allowed to group orders with payments already assigned to them and for which tax-relevant documents (important: invoice as well as reversal document) have been created. The assigned payments as well as the documents remain with the original orders and are not transferred to the split orders.
+
+Regardless of the chosen setting, shipping costs are recalculated for grouped orders and order notes are copied to the new order as well.
 
 [.discrete]
 ==== Examples
