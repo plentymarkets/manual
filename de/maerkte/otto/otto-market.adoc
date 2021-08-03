@@ -186,12 +186,14 @@ include::../_textblocks/instructions/verkaufspreis-festlegen.adoc[]
 :marketplace: OTTO Market
 :payment-method: Otto Payment
 
-include::../_textblocks/instructions/zahlungsart_aktivieren-neu.adoc[]
+include::../_textblocks/instructions/zahlungsart_aktivieren.adoc[]
 
 [#450]
 == Artikelexport einrichten
 
-Artikeldaten werden über Kataloge zu OTTO Market übertragen. Mit dem Assistenten *Kataloge erstellen - OTTO Market* erstellst du ein Marktplatz-Format pro OTTO-Kategoriegruppe. Du arbeitest zum ersten Mal mit den Katalogen? Dann solltest du dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut machen>>. Dort findest du auch weitere Informationen zu den plentymarkets <<daten/daten-exportieren/kataloge-verwalten#_datenquellen_zuordnen, Datenfeldern>>, die du zuordnen kannst.
+Artikeldaten werden über Kataloge zu OTTO Market übertragen. Mit dem Assistenten *Kataloge erstellen - OTTO Market* erstellst du ein Marktplatz-Format pro OTTO-Kategoriegruppe.
+
+* Du arbeitest zum ersten Mal mit den Katalogen? Dann solltest du dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut machen>>. Dort findest du auch weitere Informationen zu den plentymarkets <<daten/daten-exportieren/kataloge-verwalten#_datenquellen_zuordnen, Datenfeldern>>, die du zuordnen kannst.
 
 [IMPORTANT]
 .Artikel können bei OTTO Market nicht gelöscht werden
@@ -248,7 +250,7 @@ In diesem Schritt des Assistenten legst du fest, welche in plentymarkets gespeic
 Die automatisch erstellte Eigenschaft hat die folgenden Einstellungen:
 
 * Bereich = Artikel
-* Eigenschaftstyp = _je nach Anforderung des Marktplatzes_
+* Typ = _je nach Anforderung des Marktplatzes_
 * Sprache = Deutsch
 * Name = Feld der OTTO-Kategoriegruppe
 * Gruppe = OTTO Market
@@ -683,53 +685,18 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#900]
-=== Retoure an OTTO melden
+=== OTTO Market-Retouren annehmen
 
-Für die Annahme einer Retoure muss zuerst ein Auftrag vom Typ *Gutschrift* erstellt werden. In einem zweiten Schritt wird die Retoure an OTTO gemeldet. Für Retourenmeldungen benötigst du also zwei Ereignisaktionen:
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market zu informieren, wenn du Retouren annimmst.
 
-* Ereignisaktion 1: Aufträge vom Typ *Gutschrift* erstellen
-* Ereignisaktion 2: Retouren an OTTO melden
+*_Ablauf des Retourenprozesses:_*
 
-Richte diese Ereignisaktionen wie unten beschrieben ein.
-
-[[bild-retoure-otto-gutschrift]]
-.Ereignisaktion, um Aufträge vom Typ *Gutschrift* zu erstellen
-image::maerkte/otto/assets/otto-market-retoure-gutschrift.png[width=640, height=360]
-
-
-:table-event-procedure: <<#retoure-otto-gutschrift>>
-
-include::../../_includes/textblocks/instructions/EA.adoc[]
-
-[[retoure-otto-gutschrift]]
-.Ereignisaktion, um Aufträge vom Typ *Gutschrift* zu erstellen
-[cols="1,3,3"]
-|====
-|Einstellung |Option |Auswahl
-
-| *Ereignis*
-| Ereignis wählen, zum Beispiel *Auftragsänderung: Statuswechsel* +
-*_Hinweis:_* Wähle einen Status, der zu deinem Arbeitsablauf passt. Du kannst dafür beispielsweise den Status *[9.11] Retoure an OTTO melden* erstellen.
-|
-
-| *Filter 1*
-| *Auftrag &gt; Auftragstyp*
-| *Retoure*
-
-| *Filter 2*
-| *Auftrag &gt; Herkunft*
-| *OTTO Market*
-
-| *Aktion*
-| *Auftrag > Gutschrift (Auftrag) anlegen*
-|
-|====
-
-Richte eine weitere <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market über die Retouren zu informieren.
-
-[[bild-retoure-otto]]
-.Ereignisaktion, um Retouren an OTTO Market zu melden
-image::maerkte/otto/assets/otto-market-retoure-von-otto-annehmen.png[width=640, height=360]
+. Die plentymarkets Aktion *Retoure an OTTO melden* wird ausgelöst.
+. OTTO erstellt einen Gutschriftbeleg.
+. In plentymarkets wird ein Auftrag des Typs *Gutschrift* erstellt. +
+*_Hinweis:_* Wenn Preise und/oder Versandkosten abweichen, werden diese Information anhand der Belegdaten korrigiert.
+. Der von OTTO erstellte Gutschriftbeleg wird am Auftrag des Typs *Gutschrift* gespeichert.
+. An der Retoure wird ein Kindauftrag des Typs *Gutschrift* erstellt.
 
 :table-event-procedure: <<#retoure-otto>>
 
@@ -742,12 +709,13 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Ereignis wählen, zum Beispiel *Auftragsanlage: Neue Gutschrift*
+| Ereignis wählen, zum Beispiel *Auftragsänderung: Statuswechsel* +
+*_Hinweis:_* Wähle einen Status, der zu deinem Arbeitsablauf passt. Du kannst zum Beispiel den Status *[9.11] Retoure an OTTO melden* erstellen.
 |
 
 | *Filter 1*
 | *Auftrag &gt; Auftragstyp*
-| *Gutschrift*
+| *Retoure*
 
 | *Filter 2*
 | *Auftrag &gt; Herkunft*
@@ -757,14 +725,14 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *Plugins > Retoure an OTTO melden*
 a| *_Hinweise:_*
 
-* Durch die Aktion *Retoure an OTTO melden* wird eine Gutschrift ausgelöst und Endkund:innen erhalten eine Rückerstattung. Das von OTTO erstellte Gutschriftendokument wird automatisch an den Auftrag vom Typ *Gutschrift* angehängt.
-* OTTO erstattet immer den kompletten Verkaufspreis einer Position. Es ist nicht möglich, OTTO Market Teilerstattungen für eine Auftragsposition zu melden. Auch wenn du einzelne Positionen im Preis korrigiert hast, hat dies also keinen Einfluss auf das von OTTO erstellte Erstattungsdokument.
+* Wenn im ursprünglichen Auftrag eine Rabattaktion verwendet wurde, wird diese Rabattaktion auch im Gutschriften-Auftrag als Artikelposition importiert und die Preise werden berücksichtigt.
+* OTTO erstattet immer den kompletten Verkaufspreis einer Position. Teilerstattungen für eine Auftragsposition können nicht an OTTO Market gemeldet werden. Auch wenn du einzelne Positionen im Preis korrigiert hast, hat diese Korrektur also keinen Einfluss auf das von OTTO erstellte Erstattungsdokument.
 |====
 
 [#1000]
-=== Ablehnung von Retouren an OTTO melden
+=== OTTO Market-Retouren ablehnen
 
-Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market über die Ablehnung von Retouren zu informieren.
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market zu informieren, wenn du Retouren ablehnst.
 
 :table-event-procedure: <<#ablehnung-retoure-otto>>
 
