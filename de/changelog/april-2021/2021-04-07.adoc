@@ -1,0 +1,220 @@
+= Changelog 07. April 2021
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10720
+:startWeekDate: 01. April 2021
+:endWeekDate: 07. April 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Die Artikelbeschreibung in der Artikeltabelle im letzten Schritt der Auftragsanlage (Beta) ist nun anpassbar. Durch Klicken in das Eingabefeld können Änderungen an der Artikelbeschreibung für diesen Auftrag vorgenommen werden.
+* In der Artikelsuche der neuen Auftragsanlage (Beta) wurde die alte Filterkomponente durch eine neue ersetzt. Zusätzlich zu den bereits bestehenden Filtern wurden zwei neue hinzugefügt: *Hersteller* und *Tag Artikel*. Die neue Komponente ermöglicht es, verschiedene Filter zu kombinieren.
+
+[discrete]
+=== Kataloge
+
+* Ab sofort sind in der UI Exportfilter verfügbar (je nach Verfügbarkeit).
+* Wir haben den asynchronen Download technisch verbessert.
+* Das Standardformat *Hersteller* wurde im Katalog hinzugefügt.
+Dieses Format wurde aus dem Elastischen Export migriert.
+
+[discrete]
+=== Prozesse
+
+* In der Aktion *Retoure anlegen/bearbeiten* wurde eine neue Option namens *Größere Artikelbildvorschau anzeigen* hinzugefügt. Bei Aktivierung dieser Option wird beim Durchlaufen der Aktion ein größeres Artikelvorschaubild angezeigt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Amazon
+
+* Die Auftragskorrektur ist jetzt in der Lage am Auftrag Versandkosten hinzuzufügen, sollten diese fehlen.
+Des Weiteren wurde ein Fehler behoben, durch den es zur Anzeige der Umsatzsteuernummer des falschen Landes kommen konnte. Dies geschah, wenn das Land und die zugehörigen Steuersätze am Auftrag korrigiert wurde. Dabei wurde bisher an den Auftragspositionen die sogenannten CountryVatID nicht angepasst, was zu diesem Verhalten führte.
+
+[discrete]
+=== Aufträge
+
+* Es wurde beim Kopieren eines Auftrags der Status übertragen, statt wie vorher den Standard-Status für den neuen Auftrag zu verwenden.
+* Zahlungsbedingungen können nun auch auf Dokumenten ausgegeben werden, wenn es sich bei der Zahlungsart des Auftrags um *Vorkasse* handelt. <<auftraege/auftraege-verwalten#intable-zahlungsbedingungen-auftrag, Weitere Informationen>>.
+* Während der Auftragsanlage konnten Artikel nicht aus der Warenkorbtabelle gelöscht werden. Dies ist nun behoben. Artikel können wieder gelöscht werden.
+* Wenn ein neuer Auftragsstatus erstellt wurde, wurde die Seite nicht neu geladen und auch nicht zum neu erstellen Auftragsstatus weitergeleitet. Dies ist nun behoben.
+* Wenn versucht wurde einen Auftragsstatus zu erstellen, dieser aber bereits existiert, wurde ein Fehler angezeigt und nicht zum bereits existierenden Status weitergeleitet. Dies ist nun behoben.
+* Wenn in einer Auftragspositionstabelle mit mehr als einer Seite mit der Material Navigation zu einer bestimmten Tabellenseite navigiert wurde, änderte die Seite sich nicht sondern wurde immer wieder auf die zuletzt gewählte Seite gesetzt. Dies ist nun behoben.
+
+[discrete]
+=== Git
+
+* Es ist wieder möglich, die Zugangsdaten von Git-Repositorys zu aktualisieren.
+
+[discrete]
+=== Lagerverwaltung
+
+* Wenn man etwas in der Struktur des Lagers änderte (Beispiel: Position Nr. eines Lagerorts), wurde die Lagerstruktur nach Speichern zusammengebrochen. Das Verhalten wurde nun behoben.
+
+[discrete]
+=== Neckermann.at
+
+* In der Datenbanktabelle für die bereits übertragenen Bilder kam es zu einem Fehler beim Abspeichern der SKU. Die SKU wurde als Integer statt als String gespeichert und dadurch abgeschnitten. Das hatte zur Folge, dass statt nur neuer oder geänderter Bilder immer alle Bilder zu Neckermann übertragen wurden. Dies hat dort zu erhöhten Traffic geführt. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Netto
+
+* Beim Artikelexport wurde im Menü *Daten » Log* nach der Fehlermeldung `SKU nicht gespeichert.` immer direkt danach die Fehlermeldung `Kein Produktname` ausgegeben, unabhängig davon, ob der Produktname vorhanden ist oder nicht. Dieses Verhalten wurde nun korrigiert.
+
+[discrete]
+=== OTTO Market
+
+* Beim Kürzen der Bulletpoints auf die vorgegebene Maximallänge von 180 Zeichen konnte es dazu kommen, dass dabei die Zeichenkette eines HTML-codierten Sonderzeichens abgeschnitten wurde. Dies führte dann zu einem invaliden UTF-8-Zeichen, was wiederum dazu führte, dass keine JSON-Datei zur Übermittlung an OTTO Market erstellt werden konnte.
++
+Dieses Verhalten wurde nun behoben, indem das letzte Leerzeichen vor der Grenze von 180 Zeichen gesucht wird und die Bulletpoints dann an dieser Stelle abgeschnitten werden.
+* Beim Versuch den Zeitstempel des letzten Bestandsupdates an der SKU zu aktualisieren, kommt es nun nicht mehr zum Fehler `Bestandsaktualisierung abgebrochen`. Der zugehörige Logeintrag konnte mit folgenden Angaben gefunden werden:
+** *Integration*: `Plenty\Modules\Otto\Cron\StockExportCron`
+** *Identifikator*: `OTTO market`
+
+[discrete]
+=== Plugins
+
+* In der Plugin-Konfiguration ist es wieder möglich, Dropdown-Listen zu scrollen.
+* In der Plugin-Konfiguration werden Untermenüs jetzt als eigene Abschnitte angezeigt. Diese Einträge wurden vorübergehend nicht geladen.
+
+[discrete]
+=== Webshop
+
+* Wenn für einen Webshop ShopBooster aktiv war und die plentyShop-Vorschau mit einem nicht verknüpften Plugin-Set genutzt wurde, wurden nach einiger Zeit falsche Inhalte im Live-Webshop angezeigt. Dieses Problem wurde behoben.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* In der neuen Auftragsanlage (Beta) wurden folgende Neuerungen veröffentlicht:
+** Zwei neue Infoboxen wurden im letzten Schritt der Auftragsanlage hinzugefügt: *Rabatt* und *Offener Betrag*.
+** Die einzelnen Spalten *Artikel-ID* und *Varianten-ID* wurden im zweiten Schritt der Auftragsanlage hinzugefügt.
+** In der Warenkorbtabelle sind die Spalten *Artikel-ID/Varianten-ID*, *Artikel-ID*, *Varianten-ID*, *Variantennummer* und *Artikelname* nun sortierbar.
+** Spalten mit der Benennung *Artikelbeschreibung* wurden in *Artikelname* umbenannt.
+** In den Standardeinstellungen wurden die Einstellung *Warenkorb als Tabelle* in *Warenkorb als Tabelle (unterhalb der Suchergebnisse)* umbenannt.
+* In der Nachbestellung und der Umbuchung können Lieferdaten nun auch für einzelne Artikel der Bestellung manuell hinterlegt werden. Das Setzen eines Lieferdatums für den gesamten Auftrag in den Auftragsdetails bleibt bestehen. Beim Setzen dieses Lieferdatums in den Auftragsdetails kannst du nun wählen, ob das gleiche Lieferdatum für Artikelpositionen ohne Lieferdatum gesetzt werden soll. Lieferdaten können angepasst werden, solange der Auftrag nicht abgeschlossen wurde.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Warenwirtschaft
+
+* Der Zulauf für Nachbestellungen wurde bis jetzt für 1 Jahr gerechnet. Wenn man eine Nachbestellung mit älterem Erstellungsdatum als 1 Jahr hatte, wurde die noch nicht belieferte Ware im Zulauf in der Bestandsübersicht nicht angezeigt. Der Zulauf wird von jetzt an für 2 Jahre berechnet.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name |Version |To-do
+
+|link:https://marketplace.plentymarkets.com/eaporderitemchangewarehouse_54549[Aktion für das Ändern des Lagers von Aufträgen^]
+|1.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
+|5.0.26
+a|Im Zuge des Releases von Ceres 5.0.26 gab es Änderungen an den im Folgenden aufgelisteten Template-Dateien, die für Theme-Entwickler relevant sind. Die Verlinkungen führen direkt zu den umgesetzten Änderungen in den entsprechenden Dateien.
+
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2753/files#diff-eab69464064e5200e309de7a80e4fa43773919c60a5f31d5997058b8f7e2f478[resources/js/src/app/components/itemList/filter/ItemFilter.vue^]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2697/files#diff-33a10158d672d50c9bc1c0e8a46fbd8edb701925dcb3f619c6ff6f8ca11e45ee[resources/views/PageDesign/Partials/Head.twig^]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2754/files#diff-2e0729c79085beac37d2ad03e5d1a25ddec4020ecf8e3551d50e64a6cf5f91d3[resources/js/src/app/components/basket/list/BasketListItem.vue^]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2754/files#diff-be8788b59e5887730f9bb4aa5a12d093908265ff19c26bb5ddca99485e7d7621[resources/js/src/app/components/wishList/WishListItem.vue^]
+
+|link:https://marketplace.plentymarkets.com/clearvat_6925[eClear – Umsatzsteuer-Automatisierung für E-Commerce in der EU^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/infinityscroller_6660[Endlos-Scrollen in Artikellisten^]
+|1.3.2
+|-
+
+|link:https://marketplace.plentymarkets.com/edon_6618[FairGeben^]
+|1.2.0
+|-
+
+|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com^]
+|1.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/reviewconverter_6843[Google Shopping Produktbewertungen (Sterne)^]
+|1.0.7
+|-
+
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.26
+|-
+
+|link:https://marketplace.plentymarkets.com/paypal_4690[PayPal^]
+|5.5.2
+|-
+
+|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
+|1.24.11
+|-
+
+|link:https://marketplace.plentymarkets.com/smsnotification_7105[SMS Notifications^]
+|1.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/cytautomaticcrossselling_7016[Wird oft gekauft mit...^]
+|1.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce.com^]
+|2.7.0
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
+--
+
+====

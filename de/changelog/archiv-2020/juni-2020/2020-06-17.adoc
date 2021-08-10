@@ -1,0 +1,212 @@
+= Changelog 17. Juni 2020
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10340
+:startWeekDate: 11. Juni 2020
+:endWeekDate: 17. Juni 2020
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+--
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+== Amazon
+
+* Ab sofort kannst du Variantendaten auch per Katalog an Amazon übertragen. Pro Kombination aus Amazon-Plattform und Flatfile erstellst du einen Katalog.
++
+Beim Erstellen der Kataloge hilft dir der Assistent *Kataloge erstellen - Amazon* im Menü *Einrichtung » Assistenten » Omni-Channel*. In diesem Assistenten nimmst du die Katalogeinstellungen vor und verknüpfst alle Pflichtfelder der gewählten Flatfile. Für diese Pflichtfelder kannst du außerdem bei Bedarf direkt im Assistenten ganz bequem neue Eigenschaften anlegen. Optionale Datenfelder einer Flatfile verknüpfst du im Menü Daten » Kataloge, nachdem du den Assistenten abgeschlossen hast.
++
+Deine Amazon-Kataloge kannst du im Menü *Einrichtung » Märkte » Amazon » Datenaustausch » Datenexport* als CSV-Datei herunterladen. So kannst du zum Beispiel die Verknüpfungen prüfen, bevor du den Export aktivierst.
++
+Beachte, dass Kataloge keine Merkmale und Freitextfelder unterstützen. Nur Eigenschaften können per Katalog an Amazon übertragen werden. Deshalb bleibt der alte Datenexport auch weiterhin verfügbar.
++
+Weitere Informationen zum Erstellen von Katalogen und dem Übertragen der Daten zu Amazon findest du auf der Seite <<maerkte/amazon/variantendaten-exportieren#, Amazon-Variantenexport per Katalog einrichten>>. Wenn du noch keine Erfahrung mit Katalogen hast, kannst du dir auf der Seite <<daten/daten-exportieren/kataloge-verwalten#, Kataloge verwalten>> einen ersten Überblick verschaffen.
+
+[discrete]
+=== Import
+
+* Du kannst ab jetzt das Lademittel im Bereich *Versand* importieren.
+
+[discrete]
+=== OTTO market
+
+* Wir haben einen neuen Prozess für OTTO Market implementiert, der Gutschriftendokumente an den Aufträgen importiert.
++
+Weitere Informationen zu diesem Prozess findest du auf der Seite <<maerkte/otto/otto-market#1400, OTTO market>>.
++
+[IMPORTANT]
+======
+Solltet ihr einen nachträglichen Import wünschen, könnt ihr diese Gutschriftendokumente von OTTO Market durch unsere Supporter importieren lassen. Meldet euch dafür bitte im Forum in der Kategorie link:https://forum.plentymarkets.com/c/multi-channel/Otto-Market[multi-channel:Otto-Market^] mit einer Liste aller plentymarkets Gutschriften-IDs, für die ihr einen nachträglichen Import wünscht.
+======
+
+[discrete]
+=== Prozesse
+
+* In den Prozessen wurden die Möglichkeiten zum Filtern von Aufträgen mit Treueprogramm erweitert. Mit dieser Änderung kann nicht nur allgemein nach Amazon Prime Aufträgen gefiltert werden, sondern nun auch differenziert nach *Amazon SameDay*, *Amazon Prime SameDay*, *Amazon SecondDay* und *Amazon Prime SecondDay*. Die neuen Filtermöglichkeiten stehen in den Prozessbereichen *Auftragssuche*, *Auftragsabwicklung*, *Filter* und *Split* zur Verfügung.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Wenn ein Auftrag angelegt wird und einen Kundenwunsch enthält, gab es das Problem, dass das Ereignis `Auftragsnotiz durch Kunden` vor dem Ereignis `Neuer Auftrag` ausgelöst wurde, und zu Problemen führte, wenn etwas beim Auftrag durch die Ereignisaktion geändert wurde.
++
+Der Versuch die Reihenfolge zu ändern, indem der Kundenwunsch nach dem Auftrag gespeichert wurde, führt zu anderen Problemen, da beim Auslösen von `Neuer Auftrag` der Kundenwunsch nicht in E-Mails verfügbar war.
+Wir haben nun das Verhalten geändert. Der Kundenwunsch wird gespeichert, aber das Ereignis `Auftragsnotiz durch Kunden` nicht direkt, sondern erst nach dem Ereignis `Neuer Auftrag` ausgelöst.
+
+[discrete]
+=== bol.com
+
+* Im Menü *Einrichtung » Märkte » bol.com » Einstellungen* wurden folgende Optionen umbenannt:
+** *Client ID (v3)* zu *Client ID*
+** *Client Secret (v3)* zu *Client Secret*
+
++
+In diesem Zuge wurden die Optionen *Public key (v2)* und *Private key (v2)* entfernt.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 12.06.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/bKyXSHmDrKc6XSk2Z0VOwUpF2vg.xlsx
+
+include::../../_textblocks/otto-master-file.adoc[]
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Es wurde beim Löschen eines Auftrags teilweise kein Eintrag in den `DeleteLog` geschrieben (REST-Route: `GET /rest/delete_log`). Das wurde behoben.
+* Es gab einen Anzeigefehler in der zweiten Option der Einstellung *Währung des Dokumentes*. Dort stand *Währung des Lieferscheines*. Das wurde geändert in *Währung des Auftrages*.
+
+[discrete]
+=== Import
+
+* Verwendete man eine URL mit Sonderzeichen als Importquelle, so wurde diese als ungültig angezeigt.
+Diesen Fehler haben wir behoben.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* In der Auftragssuche, wird beim Klick auf eine externe Gutschriftennummer das Dokument geöffnet und nicht mehr die Maske zum erstellen einer neuen Gutschrift.
+* Es wurden bei der manuellen Auftragsanlage nicht die Werte für Valuta und Skonto aus der Firma des Kontaktes geladen. Das wurde behoben.
+* Bei der Anlage eines Auftrags ohne Artikel wurde kein Versandprofil gesetzt. Es wird nun wieder das Standard-Versandprofil gesetzt.
+* Bei einer Auftragsanlage mit Bestellmerkmalen wurde unter Umständen der Name des Merkmals nicht gespeichert. Das wurde behoben.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Listings
+
+* Du kannst ab nun einen neuen Platzhalter in dein Layout einbinden, das dir die ID deines Kontos ausgibt, das im Market-Listing hinterlegt ist. Der Platzhalter nennt sich `$CredentialsId`.
++
+Diese ID kommt nun ebenfalls auch pro Cross-Selling-Eintrag zurück. Somit ist es nun mit einem einfachen Check möglich, dass man im Cross-Selling nur Listings anzeigen lässt, die auch vom gleichen Verkäufer-Konto sind.
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Bol.com
+
+* Log-Einträge zur Ereignisaktion für bol.com wurden überarbeitet. Es wird für jedes Auslösen der Ereignisaktion mindestens ein Log-Eintrag geschrieben, maximal ein Log-Eintrag pro Auftragsposition.
++
+Zum Suchen der Einträge können die folgenden Suchfilter verwendet werden:
+
+** *Identifikator*: `bol.com`
+** *Referenztyp*: `action`
+** *Referenzwerte*:
+*** `CancelOrder` (Stornierung des Auftrags)
+*** `ShipOrder` (Versand des Auftrags)
+*** `HandleReturn` (Eingang einer auf bol.com gemeldeten Retoure bestätigen)
+*** `CreateReturn` (Eingang einer nicht auf bol.com gemeldeten Retoure melden)
+
++
+Zur weiteren Reduzierung der Suchergebnisse können abhängig von der Log-Nachricht die folgenden Referenztypen verwendet werden:
+
+** `orderId` (die Auftrags-ID des Auftrags in plentymarkets)
+** `externalOrderId` (die Auftragsnummer des Auftrags bei bol.com)
+** `externalOrderItemId` (die ID der Auftragsposition bei bol.com)
+
+[discrete]
+=== Datenbereinigung
+
+* Das totale Limit der Datenbereinigung wurde auf 100.000 Datensätze pro Durchlauf erhöht. Das native Limit pro Bereinigungstyp wurde ebenfalls individuell angepasst.
+
+[discrete]
+=== Elastischer Export
+
+* Die Auswahl des Attributs springt nun nicht mehr auf `ungültige Auswahl` wenn man einen bereits erstellten Elastischen-Export mit Attribut-Filter lädt, sondern zeigt die richtige Auswahl an.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name
+|Version
+|To-do
+
+|link:https://marketplace.plentymarkets.com/avocadostore_6430[Avocado Order Import Plugin^]
+|1.0.13
+|-
+
+|link:https://marketplace.plentymarkets.com/enderecoaddressautocomplete_6622[Endereco Address Autocomplete^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic^]
+|3.1.0
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+--
+
+====
