@@ -16,6 +16,8 @@ include::{includedir}/_header.adoc[]
 On this page, we will present you the functions of the new EmailBuilder. The EmailBuilder is continuously being developed further; more functions and features will be added. In the course of development, also this page of the user manual will be completed step-by-step.
 ====
 
+All emails that are sent with plentymarkets are based on templates. You create and manage templates with the EmailBuilder in the *CRM » EmailBuilder (Test phase)* menu.
+
 The EmailBuilder is a modular construction kit for quickly creating and editing your email templates via drag-and-drop. No programming skills are required.
 
 The EmailBuilder consists of 2 views: the configuration manager and the editor. With the configuration manager, you create folders and, if needed, sub-folders, templates as well as templates for your footer and your header. With the editor, you fill your templates, headers and footers with content. You can create a template for an invoice, for example, and use this template for all invoices that are sent to your customers in the future. +
@@ -23,11 +25,18 @@ You can then use the header and footer templates in the email templates as desir
 
 The header, the footer and the settings in the template such as the name, the subject etc. form the framework of your email, so to say. The content of the template is formed with widgets and variables. In the emails that are sent to your customer, the variables will then be replaced with the correct content. For example: The variable `Delivery address First name and last name` will be replaced in the email with the first name and the last name of the contact from the delivery address.
 
+In case of certain events, e.g. if a new order is placed in your online shop or when a contact subscribes to a newsletter, your plentymarkets system automatically creates emails from these templates and sends them to your contacts.
+
+[#preparatory-settings]
+== Carrying out the preparatory settings
+
+The following sub-chapters describe which preparatory settings are needed so that you can work with the EmailBuilder.
+
 
 [#assign-rights]
-== Assigning rights for back end users
+=== Assigning rights for back end users
 
-:rights-purpose: to work with the EmailBuilder
+:rights-purpose: work with the EmailBuilder
 :right-one: pass:quotes[*CRM > Email > Edit automatic email*]
 :right-two: pass:quotes[*CRM > Email > Edit HTML design*]
 :right-three: pass:quotes[*CRM > Email > Edit info service*]
@@ -39,6 +48,79 @@ The header, the footer and the settings in the template such as the name, the su
 
 include::../_includes/textblocks/instructions/rights.adoc[]
 
+[#email-server-login-details]
+=== Saving the email server's login details
+
+In the *Setup »Client » [Select client] » Email » Login* details menu, you save the login details of a mailbox so that plentymarkets emails such as order or shipping confirmations can be sent from this email address.
+
+[.instruction]
+Saving the email server's login details:
+
+. Go to *Setup » Client » [Select client] » Email » Login details*.
+. Carry out the desired settings. Note <<#table-email-server-login-details>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-email-server-login-details]]
+.Saving the email server's login details
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Test mode*
+| Select *Active* or *Inactive*. +
+*Active* = The test mode is activated. All emails are only sent to the saved email address. This allows you to test the settings before switching to the live mode. +
+*Inactive* = The live mode is activated. +
+*_Important:_* The test mode is only applied to this online store. The settings for additional clients (stores) are carried out in the client's menu.
+
+| *Name of sender*
+|Enter your name or the name of the online shop. The name is displayed to the recipient. Avoid using special characters in order to allow for correct display.
+
+| *Email address*
+|Enter the email address as it is listed in the email programme.
+
+| *Outgoing mail server/SMTP server*
+|Enter the outgoing mail server as specified by the provider (usually smtp.domain.co.uk or mail.domain.co.uk). +
+*_mailbox.org:_* For mailbox.org mailboxes, enter the outgoing mail server *smtp.mailbox.org* and select the encryption method *SSL*.
+
+| *User name*
+|Enter the user name that matches the email address. +
+*_mailbox.org:_* The mailbox.org user name is the complete email address of the mailbox.org mailbox.
+
+| *Password*
+|Enter the password that matches the user name and email address.
+
+| *Port (standard port: 25)*
+|Enter the value *25*. This value is correct for nearly all providers. Otherwise, ask your provider about the correct port. +
+*_mailbox.org:_* For mailbox.org mailboxes, enter port *465* and select the encryption method *SSL*.
+
+| *Encryption*
+| Select *SSL*, *TLS* or *No encryption*.  +
+*_mailbox.org:_* For mailbox.org mailboxes, enter port *465* and select the encryption method *SSL*.
+
+|====
+
+[TIP]
+.Entering newsletter login details
+====
+Go to *Setup » Client » [Select client] » Email » Newsletter*. Enter the login details to use the newsletter service that is integrated in plentymarkets. For further information, refer to the <<crm/sending-newsletters#200, Entering newsletter login details>> chapter of the <<crm/sending-newsletters#, Newsletters>> page of the manual.
+====
+
+[#email-signature]
+=== Saving the email signature
+
+Go to *Setup» Client » [Select client] » Email » Signature* to save the signature. The signature is then automatically added to your email templates when you inserted the corresponding variable in the template.
+
+[IMPORTANT]
+.Note the priority of the signature
+====
+The signature that was saved for a user in his or her user account in the *Setup » Settings » User » Accounts* menu takes priority over the signature that is saved in the *Setup » Client » Select client » Email » Signature* menu. +
+*_This means:_* If you insert, for example, the variable `Signature in HTML format` in the template, the signature is taken from the user account. If no signature is saved in the user account, the signature that is saved in the *Setup » Client » [Select client] » Email » Signature* menu is used.
+====
+
+// If you inserted the template variable `Signature in plain text` in the email template, the signature that is saved in the *Setup » Client » [Select client] » Email » Signature* menu is always used.
+
+
+
 
 [#manage-folders]
 == Managing folders
@@ -49,7 +131,7 @@ Your plentymarkets system contains a folder with pre-defined default templates. 
 
 [[image-emailbuilder-folder-structure]]
 .Folder structure in the EmailBuilder
-image::crm/assets/emailbuilder-folder-structure-with-default-templates.png[width=640, height=360]
+image::crm/assets/emailbuilder-folder-structure.png[width=640, height=360]
 
 
 
@@ -127,7 +209,7 @@ Deleting a folder:
 → A window opens.
 . Click on *Delete*. +
 → A window opens and you need to confirm your decision.
-. Click on *Delete*.
+. Click on *Delete*. +
 → The folder with all corresponding sub-folders and templates contained in there will be deleted.
 
 [#manage-templates]
@@ -229,7 +311,7 @@ Now create the template and save basic settings such as the name, the subject, C
 
 [[image-emailbuilder-template]]
 .Creating a template in the EmailBuilder
-image::crm/assets/emailbuilder-create-new-template-with-default-template.png[width=640, height=360]
+image::crm/assets/emailbuilder-create-new-template.png[width=640, height=360]
 
 [.instruction]
 Creating a template:
@@ -443,8 +525,10 @@ Before you <<#create-folder, created a new folder>>, you might have recognised t
 
 Besides the content of the email, the name of the template as well as the subject are already filled in in a default template. This means that you only have to select the header and footer and fill the fields *Reply to* and, if needed, also *CC* and *BCC*.
 
+////
 If you want to have another variable displayed in the subject line, put the English variable into a double curly bracket and – if present – replace the blank space with a dot. +
-*_Example:_* Replace `Order ID` with `&#123;&#123;order.id&#125;&#125;` and `Shipping profile` with `&#123;&#123;shipping.profile&#125;&#125;`.
+*_Example:_* Replace `Order ID` with `&#123;&#8288;&#123;order.id&#125;&#8288;&#125;` and `Shipping profile` with `&#123;&#8288;&#123;shipping.profile&#125;&#8288;&#125;`.
+////
 
 
 [[image-emailbuilder-example-default-template]]
@@ -468,25 +552,25 @@ Would you like to know which default templates are already available in the Emai
 |German template |Subject
 
 |Auftrag: Änderung
-|Auftragsänderung Ihrer Bestellung mit der ID &#123;&#123;order.id&#125;&#125;
+|Auftragsänderung Ihrer Bestellung mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |Auftrag: Teilzahlung erhalten
-|Teilzahlung für Auftrags-ID &#123;&#123;order.id&#125;&#125; erhalten
+|Teilzahlung für Auftrags-ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; erhalten
 
 |Auftrag: Versandbestätigung
-|Versandbestätigung für Ihre Bestellung mit der ID &#123;&#123;order.id&#125;&#125;
+|Versandbestätigung für Ihre Bestellung mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |Auftrag: Zahlungseingang vollständig
-|Zahlung für Auftrag &#123;&#123;order.id&#125;&#125; vollständig erhalten
+|Zahlung für Auftrag &#123;&#8288;&#123;order.id&#125;&#8288;&#125; vollständig erhalten
 
 |eBay: Disput / Storno, keine Zahlung
-|Ihre Bestellung mit der ID &#123;&#123;order.id&#125;&#125; wurde storniert
+|Ihre Bestellung mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; wurde storniert
 
 |eBay: Eingangsbestätigung Bestellung
-|eBay-Auktion gewonnen: Auftrags-ID &#123;&#123;order.id&#125;&#125;
+|eBay-Auktion gewonnen: Auftrags-ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |eBay: Eingangsbestätigung mit Bankdaten ohne Checkout
-|Eingangsbestätigung zum eBay-Auftrag mit der ID &#123;&#123;order.id&#125;&#125;
+|Eingangsbestätigung zum eBay-Auftrag mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |Shop: Neues Passwort
 |Ihre angeforderten Zugangsdaten zu unserem Webshop
@@ -495,8 +579,7 @@ Would you like to know which default templates are already available in the Emai
 |Bestätigung zur Newsletter-Anmeldung
 
 |Shop: Eingangsbestätigung Bestellung
-|Auftragsbestätigung für Auftrags-ID &#123;&#123;order.id&#125;&#125;
-
+|Auftragsbestätigung für Auftrags-ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |====
 
@@ -509,25 +592,25 @@ Would you like to know which default templates are already available in the Emai
 |English template |Subject
 
 |Order: Changes
-|Change to your order with ID &#123;&#123;order.id&#125;&#125;
+|Change to your order with ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |Order: Partial payment received
-|Partial payment for order ID &#123;&#123;order.id&#125;&#125; received
+|Partial payment for order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; received
 
 |Order: Shipping confirmation
-|Shipping confirmation for your order with ID &#123;&#123;order.id&#125;&#125;
+|Shipping confirmation for your order with ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |Order: Payment complete
-|Payment for order ID &#123;&#123;order.id&#125;&#125; fully received
+|Payment for order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; fully received
 
 |eBay: dispute / cancellation, no payment
-|Your order with the ID &#123;&#123;order.id&#125;&#125; was canceled
+|Your order with the ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; was canceled
 
 |eBay: Order confirmation
-|eBay auction won: Order ID &#123;&#123;order.id&#125;&#125;
+|eBay auction won: Order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |eBay: Order confirmation with bank details without checkout
-|Order confirmation for your eBay order with the ID &#123;&#123;order.id&#125;&#125;
+|Order confirmation for your eBay order with the ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |Shop: New password
 |Your requested login details for our online shop
@@ -536,7 +619,7 @@ Would you like to know which default templates are already available in the Emai
 |Confirmation of newsletter registration
 
 |Shop: Order confirmation
-|Order confirmation for your order with ID &#123;&#123;order.id&#125;&#125;
+|Order confirmation for your order with ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
 
 |====
 
@@ -1124,3 +1207,78 @@ As an alternative, you can find the account holder in the *Setup » Settings » 
 ** Returns the URL to confirm the newsletter subscription.
 
 --
+
+[#automate-email-despatch]
+== Automating the email despatch
+
+You have multiple options in plentymarkets to automate the email despatch to your customers.
+
+=== Setting up automatic emails
+
+The *Setup» Client » [Select client] » Email » Automatic* menu contains various events that can be linked with a template. Select from the drop-down list the template that you <<#create-template, created>> before in the *CRM » EmailBuilder (Test phase)* menu. This ensures that the email template is sent to your contacts once the event occurs.
+
+[IMPORTANT]
+.Removing the link before deleting the email template
+====
+Deleting an email template that is linked with an event in the *Automatic email* area may lead to undesired effects. Therefore, first go to *Setup » Client » [Select client] » Email » Automatic* and remove the link by selecting the option *Do not send* from the drop-down list in the line of the event. Afterwards, delete the template in the *CRM » EmailBuilder (Test phase)* menu.
+====
+
+[.instruction]
+Setting up the automatic email despatch:
+
+. Go to *Setup » Client » [Select client] » Email » Automatic*.
+. Select a template from the drop-down list in the line of the event. Note <<#table-events-automatic-email-dispatch>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+
+[[table-events-automatic-email-dispatch]]
+.Explanations about some events for the automatic despatch
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *New order from online store*
+|The contacts receive an email including the order confirmation after the purchase has been completed in the online store. +
+*Note:* If your customers should be able to access the order processing in your online shop with this email to see the order status, you have to insert the variable `URL to checkout` in the email template that you select for this automatic event.
+
+| *Send customer email to change password*
+|The contacts receive an email with a link to the new password. The link has to be actively confirmed. The variable `URL to change password` has to be contained in the template.
+
+| *Newsletter opt-in*
+|The contacts receive an email when they have registered for the newsletter. The template should include the confirmation link that the contacts have to click in order to complete the newsletter registration process: `URL to confirm newsletter subscription`.
+
+| *Newsletter opt-in confirmation*
+|The contacts receive a confirmation email once they have activated the confirmation link that was sent with the email template for the *Newsletter opt-in* event.
+
+| *Email when item becomes available*
+|The contacts receive an email containing the information that a certain item is available again. Requirement: The contacts have entered their email address in the online store directly next to the item that could not be delivered at that time.
+
+|====
+
+[#set-up-event-procedures]
+=== Setting up event procedures
+
+It is also possible to set up event procedures in the *Setup » Orders » Events* menu. Define an event, activate one or more filters and decide which procedures your plentymarkets system should carry out automatically when the event occurs.
+
+For example, you can use filters to trigger a procedure once a contact has placed a certain number of orders. The procedure could send an email that includes a coupon. For further information, refer to the <<automation/event-procedures#, Event procedures>> page.
+
+[#email-despatch-to-multiple-email-addresses]
+[discrete]
+=== Email despatch to multiple email addresses
+
+Go to *Setup » Orders » Events* to set up an <<automation/event-procedures#, event procedure>> that will send an email to your customers and employees when the event that you determined occurs.
+
+Add in the event procedure the procedure *Customer > Send email* and select the appropriate template as well as the recipients to send the email to multiple recipients at the same time once the selected event occurs.
+
+The following recipients are available:
+
+* Customer
+* Storage
+* Invoice address from order 
+* Invoice address from order 
+* Contact email business 
+* Contact email private 
+* Contact email PayPal
+* available owners
+
+You can either send the same template to all recipients or select a separate template each.
