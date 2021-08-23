@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 29. Juli 2021
-:endWeekDate: 04. August 2021
-:nav-alias: Changelog 04. August 2021
+:startWeekDate: 12. August 2021
+:endWeekDate: 18. August 2021
+:nav-alias: Changelog 18. August 2021
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,7 +31,17 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 [discrete]
 === Aufträge
 
-* Für das Reverse-Charge-Verfahren wurde im Menü *Einrichtung » Mandant » Standorte » Buchhaltung* eine neue Einstellungsmöglichkeit hinzugefügt. Zudem gibt es einen neuen Steuerhinweis auf Rechnungsdokumenten für das Reverse-Charge-Verfahren. Diesen kannst du unter *Steuerrechtlicher Hinweis 3* in der Rechnungsvorlage einfügen. Weitere Informationen findest du auf der Handbuchseite <<auftraege/buchhaltung#510, Buchhaltung>>.
+* In der Auftragsanlage (Beta) sind jetzt Eigenschaften für Auftragspositionen verfügbar. Beim Erstellen eines neuen Auftrags kannst du im Warenkorb Eigenschaften der Auftragspositionen bearbeiten, hinzufügen oder löschen. Die Eigenschaften müssen dafür vorher im Menü Einrichtung » Einstellungen » Eigenschaften » Konfiguration erstellt worden und als Bestelleigenschaft gesetzt worden sein.
+
+[discrete]
+=== Bol.com
+
+* Die Daten für die Ereignisaktion *Retourenstatus an BOL senden* werden ab sofort nicht mehr live beim Auslösen der Ereignisaktion übermittelt. Stattdessen werden die Daten in einer Warteschlange registriert. Dadurch kann es zu Verzögerungen im Sekunden- bis Minutenbereich kommen, wenn viele Jobs vorhanden sind. Bei fehlender Erreichbarkeit oder Drosselung des Zielservers werden mehrere Übermittlungsversuche unternommen.
+
+[discrete]
+=== Daten
+
+* Wir haben eine neue Dropdown-Liste im Filterbereich im Menü *Daten » Logs* hinzugefügt, über die du den Mandanten auswählen kannst, für den du Logs anzeigen lassen möchtest.
 
 '''
 
@@ -41,27 +51,9 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Katalog
+=== Abonnement
 
-* Es ist jetzt möglich, mehrere benutzerdefinierte Converter für Marktplatz-Exporte zu registrieren. Dabei ist jedoch zu beachten, dass result converters jetzt über die Methode getResultConverterContainer in der link:https://developers.plentymarkets.com/en-gb/interface/stable7/Catalog.html#catalog_providers_abstractgroupedtemplateprovider[template provider-Klasse^]{nbsp}icon:external-link[] registriert werden müssen. Weitere Informationen zu den Änderungen sind in der link:https://developers.plentymarkets.com/en-gb/developers/main/export-plugins/result-converters.html[Result converter-Dokumentation^]{nbsp}icon:external-link[] zu finden.
-
-[discrete]
-=== OTTO
-
-:otto-master-date: 30.07.2021
-:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/3Wz6WoHzMDOQI6VQWlYqibElXi.xlsx
-
-include::./changelog/_textblocks/otto-master-file.adoc[]
-
-[discrete]
-=== OTTO Market
-
-* Die Ereignisaktion *Retoure akzeptieren* für OTTO Market kann direkt am Hauptauftrag ausgeführt werden, um den anschließenden Gutschriften-Import auszuführen. Der Gutschriften-Import erstellt selbstständig einen neuen Kindauftrag am Hauptauftrag und fügt dem Kindauftrag den von OTTO erstellten Beleg an.
-
-[discrete]
-=== plentyShop
-
-* Die neue Warenkorblogik *Order Preview* wurde aktiviert. Dadurch ändert sich im Hintergrund die Art und Weise, wie Artikelpreise und Summen im Warenkorb berechnet werden. Dadurch werden Rundungsdifferenzen zwischen Warenkorb und Bestellbestätigung vermieden.
+* In der Auswahl der Adressen wird nun auch die ID der Adresse sowie die E-Mail (falls vorhanden) mit angezeigt. Auch wird an der primären Adresse ein Stern vorangestellt.
 
 '''
 
@@ -73,25 +65,17 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 [discrete]
 === Aufträge
 
-* Wenn ein Artikel zwei verschiedenen Lagern zugeordnet ist, kann man das passende Lager in der Artikelsuche einer Umbuchung auswählen. Wenn eine Transaktion ausgeführt werden sollte, wurde dann aber nicht das richtige Lager zugeordnet. Dies wurde behoben.
-* Wenn die Menge einer Auftragsposition geändert wurde und man danach noch die Menge einer weiteren Auftragsposition änderte, wurde die Menge der ersten geänderten Auftragsposition fälschlicherweise übernommen. Dies wurde behoben.
-* Unter seltenen Umständen wurde bei Auftragsanlage über den Webshop der falsche Steuersatz über die Zolltarifnummer ermittelt und an den Positionen zugewiesen. Dies wurde behoben.
-* Bei Ausfuhrlieferungen, bei denen die Einstellung bzgl. der Anzeige der MwSt. der Versandkosten auf *Nur Inland und EU* gesetzt ist, wurden die Summen nicht richtig gesetzt, da die Versandkosten keine MwSt. haben. Dadurch kam es beim FiBu-Export bei Gutschriften zu fehlhaften Ausgaben (Aufträge waren auch betroffen, die Summen wurden aber bei Rechnungserzeugung korrigiert, was bei der Gutschrift nicht der Fall ist). Nun werden die Versandkosten ohne MwSt. im Feld *OrderAmount.taxlessAmount* gespeichert und kommen auch entsprechend im FiBu-Export korrekt raus.
-* Bei der letzten Umstellung der Nachbestellung-UI auf die neue Navigation wurde versehentlich für den Filter *Beschränken auf Lieferant* eine falsche Übersetzung genutzt. Dies wurde behoben. Die Funktionalität des Filters war nicht betroffen.
-* Das Intervall in einem Abonnement wurde nach einer Änderung nicht gespeichert. Dies ist nun behoben.
-* Wenn an einem Auftrag eine Zahlung verbucht wird und dieser dadurch als voll bezahlt gilt und für den Auftrag ausreichend Bestand vorhanden ist, konnte es dazu kommen das dem Auftrag nicht die Lagerorte zugewiesen wurden. Dies wurde behoben.
-* Es konnte vorkommen, dass das Order Item Date mit Type ID `6` (Retourendatum) mit dem Wert `0000-00-00 00:00:00` gespeichert wurde.
-* Im Menü *CRM » Kontakte » Kontakt » Neues Abonnment* war es nicht möglich ein neues Abonnement anzulegen. Dies wurde behoben.
+* Seit link:https://forum.plentymarkets.com/t/auftragssummen-bei-exportlieferungen-order-sums-for-export-deliveries/646944[einem kürzlich veröffentlichten Fix^]{nbsp}icon:external-link[], wird die Netto-Zwischensumme auf den Auftragsdokumenten ohne die Versandkosten angezeigt, wenn es sich um Ausfuhrlieferungen handelt und die Buchhaltungseinstellung bzgl. Versandkosten auf „Nur Inland und EU“ gesetzt ist. Dies wurde behoben.
 
 [discrete]
-=== OTTO Market
+=== BI
 
-* In einigen Fällen wurden beim Gutschriften-Import Gutschriften mehrfach erstellt. Dieses Verhalten wurde behoben.
+* Es gab einen Fehler, dass bei manchen Kennzahlen in der Komponente *Kachel* gar kein Wert statt der Wert 0 ausgegeben wurde. Dieses Problem wurde behoben.
 
 [discrete]
 === Prozesse
 
-* In den Prozessen wurden die englischen Fehlermeldungen falsch dargestellt. Dieses Verhalten wurde behoben. Zusätzlich wurden einige Fehlermeldungen im Menü Daten » Log überarbeitet.
+* Bei Prozessen konnte es in der Aktion *SEPA Pain001* zu Problemen mit Gastbestellungen kommen. Diese wurde behoben.
 
 --
 
@@ -105,33 +89,25 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
+=== Aufträge
 
-* Wir haben im Menü *Einrichtung » Aufträge » Ereignisse* die Aktion *Kunde > E-Mail* versenden um die folgenden Empfänger:innen erweitert:
-
-** Rechnungsadresse aus Auftrag
-** Lieferadresse aus Auftrag
-** Kontakt E-Mail geschäftlich
-** Kontakt E-Mail privat
-** Kontakt E-Mail PayPal
-
-+
-Du kannst für jeden dieser Empfänger:innen die selbe oder eine separate E-Mail-Vorlage wählen und somit bei Eintritt des gewählten Ereignisses zeitgleich eine E-Mail an die oben genannten Empfänger:innen senden.
+* Folgende Verbesserungen wurden an der neuen Auftragsanlage vorgenommen:
+** Die neue Spalte *Gesamtsumme* wurde zur Warenkorb-Tabelle und zur Auftragspositionen-Tabelle hinzugefügt. In dieser Spalte wird der Artikelpreis zuzüglich Aufschläge für Bestelleigenschaften aufgeführt.
+** Die neue Spalte *Gesamtsumme der Eigenschaften* wurde zur Warenkorb-Tabelle und zur Auftragspositionen-Tabelle hinzugefügt. In dieser Spalte wird die Summe der Aufschläge für Bestelleigenschaften aufgeführt.
 
 [discrete]
-=== Export
+=== BI
 
-* Für die Formate *Auftrag* und *Auftragspositionen* im ElasticExport wurde der Filter Mandant hinzugefügt.
-
-[discrete]
-=== plentyShop
-
-* Wir haben im Kern auf die neue Warenkorblogik OrderPreview umgestellt. Durch die Aktivierung der OrderPreview-Route ändert sich im Hintergrund die Art und Weise, wie Artikelpreise und Summen im Warenkorb berechnet werden. Der Warenkorb bleibt dabei technisch unberührt. Wir übernehmen die berechneten Ergebnisse in das bestehende Warenkorbsystem. Dadurch werden Rundungsdifferenzen zwischen Warenkorb und Bestellbestätigung vermieden.
+* Es ist jetzt möglich, auf der obersten Ebene eines Dashboard zu bestimmen, ob dieses in der Seitennavigation angezeigt wird und ob die Seitennavigation bei diesem Dashboard ein/ausgeklappt sein soll.
+* Es wurde die Möglichkeit geschaffen, Tabellen nach eigenen Wünschen zu sortieren. Die Reihenfolge der Sortierung ist die Reihenfolge wie die Felder hinzugefügt wurden. Zusätzlich kann man auswählen, ob nach dem entsprechenden Parameter auf- oder absteigend sortiert werden soll.
+* Die kombinierte Tabelle erlaubt jetzt auch die Gruppierung bei gleichen Werten (genau wie die normale Tabelle).
+* Die neue Komponente *Globales Zeitintervall* ist jetzt verfügbar. Diese erlaubt sämtliche Zeitintervalle für das aktive Dashboard temporär zu überschreiben. Wird diese aktiviert, werden alle anderen Komponenten wie Kacheln, Tabellen oder Graphen mit dem gewählten Zeitintervall angezeigt. Zusätzlich gibt es einen „Reset“-Button, um alle Komponenten wieder auf das ursprüngliche Zeitintervall zurückzusetzen. Diese Komponente kann pro Dashboard nur einmal gesetzt werden und wurde auch durch die MyView auf diese Anzahl limitiert.
 
 [discrete]
-=== Zahlungen
+=== Warenwirtschaft
 
-* Im Menü *Aufträge » Neue Zahlungen (Testphase)* wurde die neue Filterkomponente sowohl für die Übersicht als auch die Ansicht *Zahlung teilen* hinzugefügt.
-* Der Filter *Externe Auftrags-ID* wurde in der Ansicht *Zahlung teilen* hinzugefügt.
+* Du kannst ab jetzt es einstellen lassen, dass die leeren Lagerorte nach 12 Monaten gelöscht werden.
+** ToDo: Aktiviere den Haken bei der Funktionalität *Leeren Lagerort löschen nach* auf 12 Monate. Die Funktionalität findest du unter *Einrichtung-Waren-Warenbestand-Wareneingang*.
 
 '''
 
@@ -141,41 +117,28 @@ Du kannst für jeden dieser Empfänger:innen die selbe oder eine separate E-Mail
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== eBay
+=== Backend
 
-* Bei der Anlage von eBay-Aufträgen werden nun die Standort- und Buchhaltungseinstellungen insofern berücksichtigt, als bei einem Auftrag, zu dem laut Einstellungen eine Netto-Rechnung erzeugt werden soll, die Preise von eBay auch als Netto-Preise im Auftrag hinterlegt werden.
-+
-Dadurch wird auch der Fall berücksichtigt, dass du in dem entsprechenden Land gemeldet bist und die MwSt. selbst abführst.
-+
-Falls in den Buchhaltungseinstellungen für Ausfuhrlieferungen eingestellt ist, dass eine Brutto-Rechnung erstellt werden soll, werden die Preise als Brutto-Preise am Auftrag hinterlegt.
+* Aus Gründen der Einheitlichkeit haben wir alle firmenbezogenen Felder im englischen Backend von *account* in *company* umbenannt.
+** ToDo: Bitte prüft eure Import- und Exportformate, in denen ihr Firmendaten importiert bzw. exportiert, da dort in einigen Fällen die englischen Felder verwendet werden. Die REST-Routen sind von dieser Änderung nicht betroffen.
+
 
 '''
 
 [discrete]
 == Behoben
 
-Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
-=== CRM
+=== BI
 
-* Adressen konnten in manchen Fällen nach dem Ändern der Groß-und Kleinschreibung nicht gespeichert werden. Dieses Verhalten wurde behoben.
-
-[discrete]
-=== Export
-
-* Im Export-Typ *Bestellwesen* hat die englische Übersetzung für den Filter Lieferdatum des Auftrages gefehlt. Dies wurde behoben.
+* Es war nicht möglich, in der Komponente für die Datumsauswahl via Tab von *von* in *bis* zu springen. Dieses Problem wurde behoben.
 
 [discrete]
-=== Plugins
+=== REST
 
-* Wenn man in einem Plugin-Set den Namen des Plugin-Sets ändert, wird die Änderung jetzt direkt in der Seitennavigation angezeigt.
-* Beim Aktualisieren von Plugins werden die Einträge in der To-Do-Liste jetzt in der richtigen Reihenfolge angezeigt.
-
-[discrete]
-=== Zahlungen
-
-* Im *Menü Aufträge » Neue Zahlungen (Testphase)* war es in der Suche nicht möglich, ein Datum für die Datumsfilter auszuwählen. Dies wurde behoben.
+* Eine Eingabe von mehr als 32 Zeichen bei dem Feld `numberWithPrefix` der Route: `POST ​/rest​/orders​/{orderId}​/documents​/{type}` hatte zu Fehlern geführt. Das Feld wird jetzt auf diese Länge validiert.
 
 --
 
@@ -189,79 +152,57 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/axytosinvoice_54780[axytos Rechnungskauf 3.0^]
-|1.0.5
-|-
-
-|link:https://marketplace.plentymarkets.com/b2bshop_6574[B2B Shop^]
-|1.6.1
-|-
 
 |link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
-|5.0.36
+|5.0.37
+|Aufgrund von Änderungen an bestehenden Widgets müssen die ShopBuilder-Inhalte im Menü *CMS » ShopBuilder* über die Schaltfläche *Inhalte neu generieren* aktualisiert werden.
+
+|link:https://marketplace.plentymarkets.com/clc_7017[CLC^]
+|1.0.4
 |-
 
-|link:https://marketplace.plentymarkets.com/infinityscroller_6660[Endlos-Scrollen in Artikellisten^]
-|1.4.2
+|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad^]
+|1.1.14
 |-
 
-|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
-|2.1.1
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.6.20
 |-
 
-|link:https://marketplace.plentymarkets.com/googleanalyticsgtag_54921[Google Analytics GTAG^]
-|1.5.1
+|link:https://marketplace.plentymarkets.com/ebaysdk_4784[eBay SDK^]
+|1.2.6
 |-
 
-|link:https://marketplace.plentymarkets.com/googletagmanagerultimate_54789[Google Tag Manager + Conversion API - 8 Tools in einem^]
-|1.1.2
-a|
-* Der Konfigurator muss erneut durchlaufen werden.
-* Nutze beim Import im Google Tag Manager die Option *Zusammenführen*, wenn du eigene Anpassungen an der Konfiguration vorgenommen hast
-* Nutze die Option *Überschreiben*, wenn du die Standardkonfiguration verwendest
-
-|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de^]
-|3.3.7
-|-
-
-|link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.36
-|-
-
-|link:https://marketplace.plentymarkets.com/matrixvarianten_6620[Mehrere Varianten gleichzeitig in den Warenkorb legen^]
-|1.3.1
-|-
-
-|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent Toolbox^]
-|4.6.3
-|-
-
-|link:https://marketplace.plentymarkets.com/payone_5434[PAYONE^]
-|2.1.3
-|-
-
-|link:https://marketplace.plentymarkets.com/pospaymentmethodrenaming_6813[plentyPOS Zahlungsarten^]
+|link:https://marketplace.plentymarkets.com/ebaymarketing_5158[eBay Marketing^]
 |1.0.7
 |-
 
-|link:https://marketplace.plentymarkets.com/cytcustomitemlistpages_54920[Quick & Easy Artikelliste für Newsletter Kampagnen, Aktionen, Direktvertrieb u.v.m.^]
-|1.0.1
+|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
+|2.1.5
 |-
 
-|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
-|2.9.8
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic - Search & Navigation Platform^]
+|3.7.1
 |-
 
-|link:https://marketplace.plentymarkets.com/skrill_5142[Skrill^]
-|1.0.34
+|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
+|1.1.6
 |-
 
-|link:https://marketplace.plentymarkets.com/stripe_4904[Stripe^]
-|1.3.3
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.37
 |-
 
-|link:https://marketplace.plentymarkets.com/trackingmanager_54743[TrackingManager^]
-|1.0.6
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.46
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.6.2
+|-
+
+|link:https://marketplace.plentymarkets.com/voelknerextension_6949[Voelkner^]
+|1.1.19
 |-
 
 |===
@@ -270,4 +211,15 @@ Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest
 
 --
 
+App::
++
+--
+App-Update 1.11.17: Am Donnerstag, den 12.08.2021 veröffentlichen wir die Version 1.11.17 der plentymarkets App im PlayStore und AppStore.
+
+[discrete]
+== Neu
+
+* v1.11.17: In den POS-Einstellungen wurde die neue Funktion *TSE an Drucker registrieren* hinzugefügt. Diese Funktion kann betätigt werden, wenn es bei der Kommunikation zwischen der technischen Sicherheitseinrichtung und dem Bondrucker zu Problemen kommt und alle anderen Lösungswege fehlschlagen.
+
+--
 ====
