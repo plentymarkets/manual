@@ -9,7 +9,6 @@ include::{includedir}/_header.adoc[]
 :author: team-crm
 
 
-
 [IMPORTANT]
 .EmailBuilder wird kontinuierlich weiterentwickelt
 ====
@@ -231,7 +230,7 @@ In den folgenden Unterkapiteln erfährst du, wie du Vorlagen für <<#header-erst
 
 Die Widgets und Variablen, die in der Vorlage enthalten sind, bilden den eigentlichen Inhalt deiner E-Mail. In einer Vorlage kannst du über die verfügbaren Widgets beliebig viele Variablen per Drag-and-drop einfügen, die dann in der E-Mail an deine Kund:innen durch den korrekten Inhalt ersetzt werden.
 
-Welche Variablen dir für deine E-Mail-Vorlagen zur Verfügung stehen, findest du in den Listen ganz unten auf dieser Seite im Kapitel <<#variablen-emailbuilder, Verfügbare Variablen für den EmailBuilder>>.
+Welche Variablen dir für deine E-Mail-Vorlagen zur Verfügung stehen, findest du in den Listen ganz unten auf dieser Seite im Kapitel <<#variablen-emailbuilder, Verfügbare Variablen und twig expressions für das Code-Widget und den Betreff>>.
 
 
 [#vorlage-header-footer]
@@ -554,10 +553,6 @@ Bevor du einen <<#ordner-erstellen, neuen Ordner erstellt>> hast, sind dir besti
 
 In einer Standardvorlage sind neben dem Inhalt der E-Mail bereits der Name der Vorlage sowie der Betreff ausgefüllt. Das bedeutet, du musst nur noch Header und Footer wählen und die Felder *Antwort an* und ggf. *CC* und *BCC* befüllen.
 
-////
-Wenn du im Betreff eine weitere Variable anzeigen lassen möchtest, setze die englische Variable in eine doppelte geschweifte Klammer und ersetze ggf. die Leerzeichen durch einen Punkt. +
-*_Beispiel:_* Ersetze `Order ID` durch `&#123;&#8288;&#123;order.id&#125;&#8288;&#125;` und `Shipping profile` durch `&#123;&#8288;&#123;shipping.profile&#125;&#8288;&#125;`.
-////
 
 
 [[image-emailbuilder-example-default-template]]
@@ -633,7 +628,7 @@ Möchtest du wissen, welche Standardvorlagen bereits im EmailBuilder vorhanden s
 |Payment for order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; fully received
 
 |eBay: dispute / cancellation, no payment
-|Your order with the ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; was canceled
+|Your order with the ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; was cancelled
 
 |eBay: Order confirmation
 |eBay auction won: Order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
@@ -716,7 +711,13 @@ Vorlage löschen:
 
 
 [#variablen-emailbuilder]
-== Verfügbare Variablen für den EmailBuilder
+== Verfügbare Variablen und twig expressions für das Code-Widget und den Betreff
+
+Erfahre in den folgenden Unterkapiteln, welche Variablen dir zur Verfügung stehen und wie die twig expressions lauten, die du im Code-Widget und im Betreff der Vorlage einfügen kannst.
+
+[#verfuegbare-variablen]
+[discrete]
+=== Verfügbare Variablen
 
 Die verfügbaren Variablen für den EmailBuilder sind in verschiedene Kategorien bzw. Unterkategorien gruppiert:
 
@@ -725,7 +726,7 @@ Die verfügbaren Variablen für den EmailBuilder sind in verschiedene Kategorien
 ** Auftragsvariablen allgemein
 ** Lieferadresse
 ** Rechnungsadresse
-** Auftragspositionen
+** Auftragspositionen (nur für Artikellisten-Widget)
 ** Versand
 
 * Kontakt
@@ -739,8 +740,27 @@ Die verfügbaren Variablen für den EmailBuilder sind in verschiedene Kategorien
 
 * Newsletter
 
+Möchtest du wissen, welche Variablen für die einzelnen Kategorien und Unterkategorien zur Verfügung stehen und wie die twig expressions lauten, die du im Code-Widget und im Betreff einer Vorlage verwenden kannst? Dann klappe weiter unten die jeweiligen Bereiche mit einem Klick auf icon:expand_more[set=material] einfach auf.
 
-Möchtest du wissen, welche Variablen für die einzelnen Kategorien und Unterkategorien zur Verfügung stehen? Dann klappe die Bereiche mit einem Klick auf icon:expand_more[set=material] einfach auf.
+[#twig]
+[discrete]
+=== Twig expressions für das Code-Widget und den Betreff
+
+In den folgenden aufklappbaren Bereichen findest du neben den Variablen auch die twig expressions, die du im Code-Widget und im Betreff einer Vorlage verwenden kannst.
+
+*Twig expression im Betreff*
+
+Wenn du eine twig expression im Betreff der Vorlage verwenden möchtest, muss diese von doppelt geschweiften Klammern umgeben sein.
+
+*_Beispiel:_* Wenn du im Betreff deiner Vorlage den Versanddienstleister anzeigen möchtest, öffnest du den aufklappbaren Bereich *Auftrag / Versand*, suchst nach der Variable *Versanddienstleister* und setzt dann die entsprechende twig expression wie folgt in den Betreff deiner Vorlage ein:  `&#123;&#8288;&#123;order.formattedShipping.providerName&#125;&#8288;&#125;`.
+
+*Twig expression im Code-Widget*
+
+Wenn du im Code-Widget beispielsweise mit link:https://twig.symfony.com/doc/3.x/tags/if.html[if-Abfragen^]{nbsp}icon:external-link[] arbeitest, benötigst du in der if-Abfrage selbst keine doppelt geschweiften Klammern zusätzlich, sondern nur im Fließtext. Allgemeine Informationen zu Twig findest du in der link:https://twig.symfony.com/doc/3.x/[Twig Documentation^]{nbsp}icon:external-link[].
+
+Im Kapitel <<#code-beispiele-code-widget, Code-Beispiele für das Code-Wigdet>> findest du einige if-Abfragen, die du einfach in dein Code-Widget kopieren kannst.
+
+Möchtest du wissen, welche Variablen für die einzelnen Kategorien und Unterkategorien zur Verfügung stehen und wie die twig expressions lauten, die du im Code-Widget verwenden kannst? Dann klappe jeweils die folgenden Bereiche mit einem Klick auf icon:expand_more[set=material] einfach auf.
 
 
 [#variablen-auftrag]
@@ -748,77 +768,199 @@ Möchtest du wissen, welche Variablen für die einzelnen Kategorien und Unterkat
 .Variablen in der Kategorie *Auftrag*
 --
 
-* `Auftrags-ID`
+[cols="2,4,3"]
+|====
+|Name der Variable |Erläuterung |Twig expression
 
-* `ID des Hauptauftrags`
-** ID des obersten Vorgängerauftrags. Dies ist in der Regel ein normaler Auftrag. +
+| `Auftrags-ID`
+|
+| `order.id`
+
+| `ID des Hauptauftrags`
+|ID des obersten Vorgängerauftrags. Dies ist in der Regel ein normaler Auftrag. +
 *_Beispiel:_* Bei einer Gutschrift G1 aus einer Retoure R1 aus einem Auftrag A1 gibt die Variable `ID des Elternauftrags` die ID von R1 und `ID des Hauptauftrags` die ID von A1 aus.
+| `order.formattedOriginOrder.originOrderId`
 
-* `ID des Elternauftrags`
-** ID des direkten Vorgängerauftrags +
+| `ID des Elternauftrags`
+|ID des direkten Vorgängerauftrags +
 *_Beispiel:_* Bei einer Gutschrift kann es die ID der Retoure oder des Auftrags sein, aus dem die Gutschrift erzeugt wurde.
+| `order.parent_order_id`
 
-* `Status`
-** Name des Auftragsstatus wie im Menü *Einrichtung » Aufträge » Status* gespeichert.
+| `Status`
+|Name des Auftragsstatus wie im Menü *Einrichtung » Aufträge » Status* gespeichert.
+| `order.statusName`
 
-* `Status-ID`
-** ID des Auftragsstatus wie im Menü *Einrichtung » Aufträge » Status* gespeichert.
+| `Status-ID`
+|ID des Auftragsstatus wie im Menü *Einrichtung » Aufträge » Status* gespeichert.
+| `order.statusId`
 
-* `Markierung`
-* `Kundenzeichen`
-* `Externe Auftrags-ID`
-* `Währung`
-* `Rechnungsadresse USt-IdNr.`
-* `Lieferadresse USt-IdNr.`
-* `Wert des Artikels`
-* `Gesamtrechnungsbetrag`
-* `Gesamtrechnungsbetrag, durch Punkt getrennt`
-* `Gesamtrechnungsbetrag netto`
-* `Gesamtbetrag der Mehrwertsteuer`
-* `Gesamtbetrag des Auftrags netto`
-* `Datum und Uhrzeit des Auftragseingangs`
-* `Datum des Zahlungseingangs`
+| `Markierung`
+|Markierung, die im Auftrag gewählt wurde.
+| `order.formattedProperties.flag`
 
-* `Zahlungsart`
-** Name der Zahlungsart wie im Menü *Einrichtung » Aufträge » Zahlung » Zahlungsarten* gespeichert.
 
-* `Zahlungsart-ID`
-** Die ID wird vom System vergeben. Die IDs sind im Menü *Einrichtung » Aufträge » Zahlung » Zahlungsarten* aufgeführt.
+| `Kundenzeichen`
+|
+| `order.formattedProperties.customerSign`
 
-* `Herkunft`
-** Name der Auftragsherkunft wie im Menü *Einrichtung » Aufträge » Auftragsherkunft* gespeichert.
 
-* `Herkunfts-ID`
-** ID der Auftragsherkunft wie im Menü *Einrichtung » Aufträge » Auftragsherkunft* gespeichert.
+| `Externe Auftrags-ID`
+|
+| `order.formattedProperties.externalOrderId`
 
-* `Bezahlter Betrag`
-* `Offener Betrag`
-* `Überbezahlter Betrag`
-* `Auftrag Lager-ID`
 
-* `Mandanten-ID`
-** Die ID wird vom System vergeben und kann nicht geändert werden. Du findest die ID im Menü *Einrichtung » Mandant » [Mandant wählen] » Einstellungen*.
+| `Währungscode`
+|Währungscode, z.B. *EUR* oder *USD*.
+| `order.formattedSubtotals.currencyCode`
 
-* `Verkäuferkonto`
-* `eBay-Zahlungs-ID`
-* `Barcode-ID`
 
-* `Kundenwunsch`
-** Kund:innen können bei der Bestellung über den Webshop einen Wunsch angeben. Dieser Wunsch wird als Auftragsnotiz in den Auftragsdaten gespeichert.
+| `Währungszeichen`
+|Währungssymbol, z.B. *€* oder *$*.
+| `order.formattedSubtotals.currencySymbol`
 
-* `Auftragstyp`
-** Typ des Auftrags, z.B. Lieferauftrag, Retoure, Gutschrift oder Reparatur.
 
-* `Auftrag im Webshop aufrufen`
-** Öffnet die URL des Auftrags in deinem Webshop
+| `Rechnungsadresse USt-IdNr.`
+|Umsatzsteuer-Identifikationsnummer aus der Rechnungsadresse, wie im Auftrag gespeichert.
+| `order.formattedAddresses.invoiceAddress.formattedOptions.VATNumber`
 
-* `Nachbestellungs-ID`
-* `Gutscheinwert`
-* `Rechnungsnummer-ID`
 
-* `DHL Retoure Online QR-Code`
-** Sendet deinen Kund:innen einen QR-Code für DHL Retoure Online. Wenn deine Kund:innen einen Artikel zurücksenden möchten, müssen sie dem Personal in der Postfiliale vor Ort den QR-Code auf ihrem Smartphone vorzeigen und diese drucken dann das Retourenlabel und bringen es auf dem Paket an. Deine Kund:innen benötigen also keinen Drucker mehr und du musst das Retourenlabel nicht als PDF-Anhang in der E-Mail versenden. +
+| `Lieferadresse USt-IdNr.`
+|Umsatzsteuer-Identifikationsnummer aus der Lieferadresse, wie im Auftrag gespeichert.
+| `order.formattedAddresses.deliveryAddress.formattedOptions.VATNumber`
+
+
+| `Wert der Artikel`
+|
+| `order.formattedGeneral.valueOfItems`
+
+
+| `Gesamtrechnungsbetrag`
+|*_Beispiel:_* 1.234,00
+| `order.formattedGeneral.invoiceTotal \| number_format(2, ',', '.')`
+
+
+| `Gesamtrechnungsbetrag, durch Punkt getrennt`
+|*_Beispiel:_* 1234.00
+| `order.formattedGeneral.invoiceTotal \| number_format(2, '.', '')`
+
+
+| `Gesamtrechnungsbetrag netto`
+|
+| `order.formattedGeneral.invoiceTotalNet`
+
+
+| `Gesamtbetrag der Mehrwertsteuer`
+|
+| `order.formattedGeneral.totalVat`
+
+
+| `Gesamtbetrag des Auftrags netto`
+|
+| `order.formattedGeneral.totalNet`
+
+
+| `Datum und Uhrzeit des Auftragseingangs`
+|
+| `order.formattedDates.createdOn`
+
+
+| `Datum des Zahlungseingangs`
+|Datum und Uhrzeit des Zahlungseingangs wie im Auftrag gespeichert.
+| `order.formattedDates.paidOn`
+
+| `Zahlungsart`
+|Name der Zahlungsart wie im Menü *Einrichtung » Aufträge » Zahlung » Zahlungsarten* gespeichert.
+| `order.formattedGeneral.methodOfPaymentName`
+
+
+| `Zahlungsart-ID`
+|Die ID wird vom System vergeben. Die IDs sind im Menü *Einrichtung » Aufträge » Zahlung » Zahlungsarten* aufgeführt.
+| `order.formattedProperties.paymentMethod`
+
+| `Herkunft`
+|Name der Auftragsherkunft wie im Menü *Einrichtung » Aufträge » Auftragsherkunft* gespeichert.
+| `order.formattedReferrer.name`
+
+| `Herkunfts-ID`
+|ID der Auftragsherkunft wie im Menü *Einrichtung » Aufträge » Auftragsherkunft* gespeichert.
+| `order.formattedReferrer.id`
+
+| `Bezahlter Betrag`
+|
+| `order.formattedGeneral.paidAmount`
+
+
+| `Offener Betrag`
+|
+| `order.formattedGeneral.openAmount`
+
+
+| `Überbezahlter Betrag`
+|
+| `order.formattedGeneral.overpaidAmount`
+
+
+| `Auftrag Lager-ID`
+|
+| `order.formattedProperties.warehouse`
+
+
+| `Plenty ID`
+|Die ID wird vom System vergeben und kann nicht geändert werden. Du findest die ID im Menü *Einrichtung » Mandant » [Mandant wählen] » Einstellungen*.
+| `order.plentyId`
+
+
+| `Verkäuferkonto`
+|
+| `order.formattedProperties.sellerAccount`
+
+
+| `eBay-Zahlungs-ID`
+|
+| `order.formattedProperties.ebayUniquePaymentID`
+
+
+| `Barcode-ID`
+|
+| `order.formattedGeneral.barcodeOrderID`
+
+
+| `Kundenwunsch`
+|Kund:innen können bei der Bestellung über den Webshop einen Wunsch angeben. Dieser Wunsch wird als Auftragsnotiz in den Auftragsdaten gespeichert.
+| `order.formattedComments.customerSpecialWishes`
+
+
+| `Auftragstyp`
+|Typ des Auftrags, z.B. Lieferauftrag, Retoure, Gutschrift oder Reparatur.
+| `order.typeId`
+
+
+| `Auftrag im Webshop aufrufen`
+|Öffnet die URL des Auftrags in deinem Webshop.
+| `order.access_key`
+
+
+| `Nachbestellungs-ID`
+|
+| `order.formattedReorder.id`
+
+
+| `Gutscheinwert`
+|
+| `order.formattedGeneral.couponValue`
+
+
+| `Rechnungsnummer-ID`
+|
+| `order.formattedDocuments.invoice`
+
+
+| `DHL Retoure Online QR-Code`
+|Sendet deinen Kund:innen einen QR-Code für DHL Retoure Online. Wenn deine Kund:innen einen Artikel zurücksenden möchten, müssen sie dem Personal in der Postfiliale vor Ort den QR-Code auf ihrem Smartphone vorzeigen und diese drucken dann das Retourenlabel und bringen es auf dem Paket an. Deine Kund:innen benötigen also keinen Drucker mehr und du musst das Retourenlabel nicht als PDF-Anhang in der E-Mail versenden. +
 Der QR-Code wird in der E-Mail an deine Kund:innen als URL ausgegeben. Nach einem Klick auf die URL erscheint dann in einem separaten Fenster der QR-Code.
+| `order.formattedGeneral.DHLRetoureOnlineQRCodeURL`
+
+|====
 
 --
 
@@ -827,22 +969,74 @@ Der QR-Code wird in der E-Mail an deine Kund:innen als URL ausgegeben. Nach eine
 .Variablen in der Unterkategorie *Auftrag / Lieferadresse*
 --
 
-* `Lieferadresse Vorname und Nachname`
-* `Lieferadresse Adresszusatz`
-* `Lieferadresse Vorname`
-* `Lieferadresse Nachname`
-* `Lieferadresse Firmenname`
-* `Lieferadresse Kontaktperson`
-* `Lieferadresse Telefon`
-* `Lieferadresse Straße`
-* `Lieferadresse Postleitzahl und Ort`
-* `Lieferadresse Ort`
-* `Lieferadresse Postleitzahl`
-* `Lieferadresse Land`
-* `Lieferadresse Länder-ID`
-* `Lieferadresse Länder-ISO-Code 2`
-* `Lieferadresse Länder-ISO-Code 3`
-* `Lieferadresse Bundesland`
+[cols="1,3"]
+|====
+|Name der Variable |Twig expression
+
+| `Lieferadresse Vorname und Nachname`
+| `order.formattedAddresses.deliveryAddress.name2 ~ ' ' ~ order.formattedAddresses.deliveryAddress.name3`
+
+
+| `Lieferadresse Adresszusatz`
+| `order.formattedAddresses.deliveryAddress.address3`
+
+
+| `Lieferadresse Vorname`
+| `order.formattedAddresses.deliveryAddress.name2`
+
+
+| `Lieferadresse Nachname`
+| `order.formattedAddresses.deliveryAddress.name3`
+
+
+| `Lieferadresse Firmenname`
+| `order.formattedAddresses.deliveryAddress.name1`
+
+
+| `Lieferadresse Kontaktperson`
+| `order.formattedAddresses.deliveryAddress.formattedOptions.contactPerson`
+
+
+| `Lieferadresse Telefon`
+| `order.formattedAddresses.deliveryAddress.formattedOptions.telephone`
+
+
+| `Lieferadresse Straße`
+| `order.formattedAddresses.deliveryAddress.address1`
+
+
+| `Lieferadresse Postleitzahl und Ort`
+| `order.formattedAddresses.deliveryAddress.postalCode ~ ' ' ~ order.formattedAddresses.deliveryAddress.town`
+
+
+| `Lieferadresse Ort`
+| `order.formattedAddresses.deliveryAddress.town`
+
+
+| `Lieferadresse Postleitzahl`
+| `order.formattedAddresses.deliveryAddress.postalCode`
+
+
+| `Lieferadresse Land`
+| `order.formattedAddresses.deliveryAddress.country.name`
+
+
+| `Lieferadresse Länder-ID`
+| `order.formattedAddresses.deliveryAddress.country.id`
+
+
+| `Lieferadresse Länder-ISO-Code 2`
+| `order.formattedAddresses.deliveryAddress.country.isoCode2`
+
+
+| `Lieferadresse Länder-ISO-Code 3`
+| `order.formattedAddresses.deliveryAddress.country.isoCode3`
+
+
+| `Lieferadresse Bundesland`
+| `order.formattedAddresses.deliveryAddress.state.name`
+
+|====
 
 --
 
@@ -854,22 +1048,74 @@ Der QR-Code wird in der E-Mail an deine Kund:innen als URL ausgegeben. Nach eine
 .Variablen in der Unterkategorie *Auftrag / Rechnungsadresse*
 --
 
-* `Rechnungsadresse Vorname und Nachname`
-* `Rechnungsadresse Adresszusatz`
-* `Rechnungsadresse Vorname`
-* `Rechnungsadresse Nachname`
-* `Rechnungsadresse Firmenname`
-* `Rechnungsadresse Kontaktperson`
-* `Rechnungsadresse Telefon`
-* `Rechnungsadresse Straße`
-* `Rechnungsadresse Postleitzahl und Ort`
-* `Rechnungsadresse Ort`
-* `Rechnungsadresse Postleitzahl`
-* `Rechnungsadresse Land`
-* `Rechnungsadresse Länder-ID`
-* `Rechnungsadresse Länder-ISO-Code 2`
-* `Rechnungsadresse Länder-ISO-Code 3`
-* `Rechnungsadresse Bundesland`
+[cols="1,3"]
+|====
+|Name der Variable |Twig expression
+
+| `Rechnungsadresse Vorname und Nachname`
+| `order.formattedAddresses.invoiceAddress.name2 ~ ' ' ~ order.formattedAddresses.invoiceAddress.name3`
+
+
+| `Rechnungsadresse Adresszusatz`
+| `order.formattedAddresses.invoiceAddress.address3`
+
+
+| `Rechnungsadresse Vorname`
+| `order.formattedAddresses.invoiceAddress.name2`
+
+
+| `Rechnungsadresse Nachname`
+| `order.formattedAddresses.invoiceAddress.name3`
+
+
+| `Rechnungsadresse Firmenname`
+| `order.formattedAddresses.invoiceAddress.name1`
+
+
+| `Rechnungsadresse Kontaktperson`
+| `order.formattedAddresses.invoiceAddress.formattedOptions.contactPerson`
+
+
+| `Rechnungsadresse Telefon`
+| `order.formattedAddresses.invoiceAddress.formattedOptions.telephone`
+
+
+| `Rechnungsadresse Straße`
+| `order.formattedAddresses.invoiceAddress.address1`
+
+
+| `Rechnungsadresse Postleitzahl und Ort`
+| `order.formattedAddresses.invoiceAddress.postalCode ~ ' ' ~ order.formattedAddresses.invoiceAddress.town`
+
+
+| `Rechnungsadresse Ort`
+| `order.formattedAddresses.invoiceAddress.town`
+
+
+| `Rechnungsadresse Postleitzahl`
+| `order.formattedAddresses.invoiceAddress.postalCode`
+
+
+| `Rechnungsadresse Land`
+| `order.formattedAddresses.invoiceAddress.country.name`
+
+
+| `Rechnungsadresse Länder-ID`
+| `order.formattedAddresses.invoiceAddress.country.id`
+
+
+| `Rechnungsadresse Länder-ISO-Code 2`
+| `order.formattedAddresses.invoiceAddress.country.isoCode2`
+
+
+| `Rechnungsadresse Länder-ISO-Code 3`
+| `order.formattedAddresses.invoiceAddress.country.isoCode3`
+
+
+| `Rechnungsadresse Bundesland`
+| `order.formattedAddresses.invoiceAddress.state.name`
+
+|====
 
 --
 
@@ -880,84 +1126,306 @@ Der QR-Code wird in der E-Mail an deine Kund:innen als URL ausgegeben. Nach eine
 .Variablen in der Unterkategorie *Auftrag / Auftragspositionen*
 --
 
-* `Artikel-ID`
-* `Artikeleigenschaften`
-* `Status-ID des retournierten Artikels`
-* `Name des retournierten Artikels`
-* `Variantennummer`
-* `Artikelname`
-* `Artikelmenge`
-* `Bruttopreis`
-* `Nettopreis`
-* `Mehrwertsteuersatz`
-* `Herkunft`
-* `Externe Artikel-ID`
-* `Externe Varianten-ID`
-* `Externe Token-ID`
-* `Inhalt`
-* `Einheit`
-* `Variantenname`
-* `Varianten-ID`
-* `Attributwerte`
+[cols="2,4,3"]
+|====
+|Name der Variable |Erläuterung |Twig expression
 
-* `Modell`
-** Modellbezeichnung des Artikels
+| `Artikel-ID`
+|
+| `orderItem.variation.itemId`
 
-* `GTIN`
-** Global Trade Item Number (GTIN) des Artikels
 
-* `ISBN`
-** ISBN-Code des Artikels
+| `Artikeleigenschaften`
+|
+| `orderItem.formattedProperties.all`
 
-* `ASIN`
-** Amazon Standard Ident Number (ASIN) des Artikels
 
-* `Verfügbarkeitstext`
-** Name der Artikelverfügbarkeit des Nettowarenbestands
+| `Artikelnummer`
+|
+| `orderItem.variation.item.ArtNo`
 
-* `Verfügbarkeits-ID`
-** ID der Artikelverfügbarket des Netttowarenbestands
 
-* `Verfügbarkeitstext physischer Warenbestand`
-** Name der Artikelverfügbarkeit des physischen Warenbestands
+| `Status-ID des retournierten Artikels`
+|
+| `orderItem.formattedReturn.statusId`
 
-* `Verfügbarkeits-ID physischer Warenbestand`
-** ID der Artikelverfügbarkeit des physischen Warenbestands
 
-* `Freitextfelder 1 bis 20`
-** Freitextfelder für die Artikel wie im Menü *Einrichtung » Artikel » Freitextfelder* gespeichert. +
+| `Name des retournierten Artikels`
+|
+| `orderItem.formattedReturn.statusLabel`
+
+
+| `Variantennummer`
+|
+| `orderItem.variation.number`
+
+
+| `Artikelname`
+|
+| `orderItem.orderItemName`
+
+
+| `Artikelmenge`
+|
+| `orderItem.quantity`
+
+
+| `Bruttopreis`
+|
+| `orderItem.formattedAmounts.grossPrice`
+
+
+| `Nettopreis`
+|
+| `orderItem.formattedAmounts.netPrice`
+
+
+| `Mehrwertsteuersatz`
+|
+| `orderItem.vatRate`
+
+
+| `Herkunft`
+|
+| `orderItem.formattedReferrer.referrerName`
+
+
+| `Externe Artikel-ID`
+|
+| `orderItem.variation.item.external_article_id`
+
+
+| `Externe Varianten-ID`
+|
+| `orderItem.variation.externalId`
+
+
+| `Externe Token-ID`
+|
+| `orderItem.formattedExternalTokenId`
+
+
+| `Inhalt`
+|
+| `orderItem.formattedUnit.unitContent`
+
+
+| `Einheit`
+|
+| `orderItem.formattedUnit.unitName`
+
+
+| `Variantenname`
+|
+| `orderItem.variation.name`
+
+
+| `Varianten-ID`
+|
+| `orderItem.variation.id`
+
+
+| `Attributwerte`
+|
+| `orderItem.attributeValues`
+
+| `Modell`
+|Modellbezeichnung des Artikels
+| `orderItem.variation.model`
+
+| `GTIN`
+|Global Trade Item Number (GTIN) des Artikels
+| `orderItem.formattedBarcodes.GTIN`
+
+| `ISBN`
+|ISBN-Code des Artikels
+| `orderItem.formattedBarcodes.ISBN`
+
+| `ASIN`
+|Amazon Standard Ident Number (ASIN) des Artikels
+| `orderItem.formattedBarcodes.ASIN`
+
+| `Verfügbarkeitstext`
+|Name der Artikelverfügbarkeit des Nettowarenbestands
+| `orderItem.formattedAvailability.availabilityName`
+
+| `Verfügbarkeits-ID`
+|ID der Artikelverfügbarket des Netttowarenbestands
+| `orderItem.formattedAvailability.availabilityId`
+
+| `Verfügbarkeitstext physischer Warenbestand`
+|Name der Artikelverfügbarkeit des physischen Warenbestands
+| `orderItem.formattedAvailability.availabilityPhysicalStockName`
+
+| `Verfügbarkeits-ID physischer Warenbestand`
+|ID der Artikelverfügbarkeit des physischen Warenbestands
+| `orderItem.formattedAvailability.availabilityPhysicalStockId`
+
+| `Freitextfeld 1`
+|Freitextfelder für die Artikel wie im Menü *Einrichtung » Artikel » Freitextfelder* gespeichert. +
 *_Beispiel:_* `Freitextfeld 3` gibt den Text aus, der unter *Feld 3* gespeichert ist.
+| `orderItem.variation.item.free1`
 
-* `URL zum Variantenbild`
-** Gibt die URL zum Variantenbild aus.
 
-* `Herstellername`
+| `Freitextfeld 2`
+|
+| `orderItem.variation.item.free2`
 
-* `Lager-ID`
 
-* `Retourenkommentar`
+| `Freitextfeld 3`
+|
+| `orderItem.variation.item.free3`
 
-* `Wert der Retoure in Prozent`
 
-* `ID des Retourengrunds`
-** ID des Retourengrund wie im Menü *Einrichtung » Aufträge » Auftragstypen » Retoure* gespeichert.
+| `Freitextfeld 4`
+|
+| `orderItem.variation.item.free4`
 
-* `Retourengrund`
-** Name des Retourengrund wie im Menü *Einrichtung » Aufträge » Auftragstypen » Retoure* gespeichert.
 
-* `Codes eines Gutscheins`
+| `Freitextfeld 5`
+|
+| `orderItem.variation.item.free5`
 
-* `Zolltarifnummer`
 
-* `Erscheinungsdatum`
+| `Freitextfeld 6`
+|
+| `orderItem.variation.item.free6`
 
-* `Gesamtpreis (Einzelpreis x Menge)`
 
-* `Rabatt pro Auftragsposition`
+| `Freitextfeld 7`
+|
+| `orderItem.variation.item.free7`
 
-* `URL zum Artikel`
-** Gibt die URL zum Artikel im Webshop aus.
 
+| `Freitextfeld 8`
+|
+| `orderItem.variation.item.free8`
+
+
+| `Freitextfeld 9`
+|
+| `orderItem.variation.item.free9`
+
+
+| `Freitextfeld 10`
+|
+| `orderItem.variation.item.free10`
+
+
+| `Freitextfeld 11`
+|
+| `orderItem.variation.item.free11`
+
+| `Freitextfeld 12`
+|
+| `orderItem.variation.item.free12`
+
+
+| `Freitextfeld 13`
+|
+| `orderItem.variation.item.free13`
+
+
+| `Freitextfeld 14`
+|
+| `orderItem.variation.item.free14`
+
+
+| `Freitextfeld 15`
+|
+| `orderItem.variation.item.free15`
+
+
+| `Freitextfeld 16`
+|
+| `orderItem.variation.item.free16`
+
+
+| `Freitextfeld 17`
+|
+| `orderItem.variation.item.free17`
+
+
+| `Freitextfeld 18`
+|
+| `orderItem.variation.item.free18`
+
+
+| `Freitextfeld 19`
+|
+| `orderItem.variation.item.free19`
+
+
+| `Freitextfeld 20`
+|
+| `orderItem.variation.item.free20`
+
+
+| `URL zum Variantenbild`
+|Gibt die URL zum Variantenbild aus.
+| `orderItem.formattedImageUrl`
+
+
+| `Herstellername`
+|
+| `orderItem.variation.item.producer`
+
+
+| `Lager-ID`
+|
+| `orderItem.warehouseId`
+
+
+| `Retourenkommentar`
+|
+| `orderItem.formattedReturn.comment`
+
+
+| `Wert der Retoure in Prozent`
+|
+| `orderItem.formattedReturn.percentage`
+
+
+| `ID des Retourengrunds`
+|ID des Retourengrund wie im Menü *Einrichtung » Aufträge » Auftragstypen » Retoure* gespeichert.
+| `orderItem.formattedReturn.reasonId`
+
+
+| `Retourengrund`
+|Name des Retourengrund wie im Menü *Einrichtung » Aufträge » Auftragstypen » Retoure* gespeichert.
+| `orderItem.formattedReturn.reasonLabel`
+
+
+| `Codes eines Gutscheins`
+|
+| `orderItem.formattedVoucherCodes`
+
+
+| `Zolltarifnummer`
+|
+| `orderItem.variation.customsTariffNumber`
+
+
+| `Erscheinungsdatum`
+|
+| `orderItem.variation.releasedAt`
+
+
+| `Gesamtpreis (Einzelpreis x Menge)`
+|
+| `orderItem.formattedAmounts.totalPrice`
+
+
+| `Rabatt pro Auftragsposition`
+|
+| `orderItem.formattedAmounts.discount`
+
+
+| `URL zum Artikel`
+|Gibt die URL zum Artikel im Webshop aus.
+| `orderItem.formattedLink`
+
+|====
 
 --
 
@@ -970,35 +1438,75 @@ Der QR-Code wird in der E-Mail an deine Kund:innen als URL ausgegeben. Nach eine
 .Variablen in der Unterkategorie *Auftrag / Versand*
 --
 
-* `Mögliches Lieferdatum`
-* `Voraussichtliches Versanddatum`
-* `Datum des Retoureneingangs`
-* `Voraussichtliches Lieferdatum`
-* `Retourenpaketnummer`
-* `Versandkosten gesamt`
+[cols="2,4,3"]
+|====
+|Name der Variable |Erläuterung |Twig expression
 
-* `Paketnummernliste`
-** Paketnummern bzw. Tracking-Nummern werden nach erfolgreicher Auftragsanmeldung beim Versanddienstleister im Auftrag im Tab *Einstellungen* gespeichert.
-
-* `Tracking-URL`
-** Dient zur Sendungsverfolgung. Die URL wird im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister* gespeichert.
-
-* `Versanddienstleister`
-** Name des Versanddienstleisters wie im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister* gespeichert.
-
-* `Versanddienstleister-ID`
-** Wird automatisch vom System vergeben. Die ID des Versanddienstleisters findest du im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister*.
-
-* `Versandprofil`
-** Name des Versandprofils wie im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versandprofile* gespeichert.
-
-* `Versandprofil-ID`
-** Wird automatisch vom System vergeben. Die ID des Versandprofils findest du im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versandprofile*.
+| `Mögliches Lieferdatum`
+|
+| `order.formattedDates.earliestDeliveryDate`
 
 
-* `Lieferschein-ID`
-* Nachbestellung Lieferdatum
+| `Voraussichtliches Versanddatum`
+|
+| `order.formattedDates.estimatedShippingDate`
 
+
+| `Datum des Retoureneingangs`
+|
+| `order.formattedDates.returnDate`
+
+
+| `Voraussichtliches Lieferdatum`
+|
+| `order.formattedDates.estimatedDeliveryDate`
+
+
+| `Retourenpaketnummer`
+|
+| `order.returns_code`
+
+
+| `Versandkosten gesamt`
+|
+| `order.formattedGeneral.shippingCosts`
+
+| `Paketnummernliste`
+|Paketnummern bzw. Tracking-Nummern werden nach erfolgreicher Auftragsanmeldung beim Versanddienstleister im Auftrag im Tab *Einstellungen* gespeichert.
+| `order.formattedShipping.packageNumberList`
+
+| `Tracking-URL`
+|Dient zur Sendungsverfolgung. Die URL wird im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister* gespeichert.
+| `order.formattedShipping.trackingURL`
+
+| `Versanddienstleister`
+|Name des Versanddienstleisters wie im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister* gespeichert.
+| `order.formattedShipping.providerName`
+
+| `Versanddienstleister-ID`
+|Wird automatisch vom System vergeben. Die ID des Versanddienstleisters findest du im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister*.
+| `order.formattedShipping.providerId`
+
+| `Versandprofil`
+| Name des Versandprofils wie im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versandprofile* gespeichert.
+| `order.formattedShipping.profileName`
+
+| `Versandprofil-ID`
+|Wird automatisch vom System vergeben. Die ID des Versandprofils findest du im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versandprofile*.
+| `order.formattedShipping.profileId`
+
+
+| `Lieferschein-ID`
+|
+| `order.formattedDocuments.deliveryNote`
+
+
+| `Nachbestellung Lieferdatum`
+|
+| `order.formattedReorder.estimatedDeliveryDate`
+
+
+|====
 
 --
 
@@ -1009,41 +1517,127 @@ Der QR-Code wird in der E-Mail an deine Kund:innen als URL ausgegeben. Nach eine
 .Variablen in der Kategorie *Kontakt*
 --
 
-* `Kontakt-ID`
-* `Vorname`
-* `Nachname`
-* `Vollständiger Name`
-* `Geschlecht`
-* `Anrede`
-* `Anrede geschäftlich`
-* `Anrede privat`
-* `Firmenname`
-* `Sprache`
 
-* `Klasse`
-** Klasse, der der Kontakt zugeordnet ist. Klassen erstellst du im Menü *Einrichtung » CRM » Kundenklassen*.
 
-* `Nummer`
-** Zusätzliche Nummer für den Kontakt
+[cols="2,4,3"]
+|====
+|Name der Variable |Erläuterung |Twig expression
 
-* `Titel`
-* `Vorname und Nachname des Systembenutzers`
-** Vorname und Nachname des Systembenutzers, der als Eigner am Kontaktdatensatz gespeichert ist.
-* `Signatur des Systembenutzers`
-** Signatur des Systembenutzers, der als Eigner am Kontaktdatensatz gespeichert ist, im Textformat.
-* `Signatur des Systembenutzers im HTML-Format`
-** Signatur des Systembenutzers, der als Eigner im Kontaktdatensatz gespeichert ist, im HTML-Format.
-* `Kontoinhaber (Kontakt)`
-* `Bankname des Kontakts`
-* `IBAN des Kontakts`
-* `BIC des Kontakts`
-* `Anzahl der Aufträge`
-* `Newsletter-Empfang: Zustimmung durch Kontakt`
-** Datum, wann der Kontakt dem Newsletter-Empfang zugestimmt hat. +
+| `Kontakt-ID`
+|
+| `contact.id`
+
+
+| `Vorname`
+|
+| `contact.firstName`
+
+
+| `Nachname`
+|
+| `contact.lastName`
+
+
+| `Vollständiger Name`
+|
+| `contact.fullName`
+
+
+
+| `Geschlecht`
+|Anzeige, wenn männlich: *male* +
+Anzeige, wenn weiblich: *female* +
+Anzeige, wenn divers: leere Option
+| `contact.gender is same as ('diverse') ? '' : contact.gender`
+
+
+| `Anrede`
+|
+| `contact.formattedSalutation.label`
+
+
+| `Anrede geschäftlich`
+|
+| `contact.formattedOptions.salutationWork`
+
+
+| `Anrede privat`
+|
+| `contact.formattedOptions.salutationPrivate`
+
+
+| `Firmenname`
+|
+| `contact.formattedAccounts.companyName`
+
+
+| `Sprache`
+|Sprache wie im Kontaktdatensatz gespeichert. Wenn du eine E-Mail-Vorlage in der gewählten Sprache erstellt hast, werden E-Mail-Vorlagen in dieser Sprache an den Kontakt versendet.
+| `contact.lang`
+
+
+| `Klasse`
+| Klasse, der der Kontakt zugeordnet ist. Klassen erstellst du im Menü *Einrichtung » CRM » Kundenklassen*.
+| `contact.formattedClass.name`
+
+
+| `Nummer`
+|Zusätzliche Nummer für den Kontakt
+| `contact.number`
+
+
+| `Titel`
+|
+| `contact.title`
+
+
+| `Vorname und Nachname des Systembenutzers`
+|Vorname und Nachname des Systembenutzers, der als Eigner am Kontaktdatensatz gespeichert ist.
+| `contact.formattedUser.realName`
+
+
+| `Signatur des Systembenutzers`
+|Signatur des Systembenutzers, der als Eigner am Kontaktdatensatz gespeichert ist, im Textformat.
+| `contact.formattedUser.signatureNoHtml`
+
+
+| `Signatur des Systembenutzers im HTML-Format`
+|Signatur des Systembenutzers, der als Eigner im Kontaktdatensatz gespeichert ist, im HTML-Format.
+| `contact.formattedUser.signatureHtml`
+
+
+| `Kontoinhaber (Kontakt)`
+|Kontoinhaber:in wie im Kontaktdatensatz gespeichert.
+| `contact.formattedBanks.accountOwner`
+
+
+| `Bankname des Kontakts`
+|Bankname wie im Kontaktdatensatz gespeichert.
+| `contact.formattedBanks.bankName`
+
+
+| `IBAN des Kontakts`
+|IBAN wie im Kontaktdatensatz gespeichert.
+| `contact.formattedBanks.iban`
+
+
+| `BIC des Kontakts`
+|BIC wie im Kontaktdatensatz gespeichert.
+| `contact.formattedBanks.bic`
+
+
+| `Anzahl der Aufträge`
+|
+| `contact.formattedOrdersCount`
+
+
+| `Newsletter-Empfang: Zustimmung durch Kontakt`
+|Datum, wann der Kontakt dem Newsletter-Empfang zugestimmt hat. +
 Datumsformat in der E-Mail: `mm-tt-jjjj`. +
 Im Kontaktdatensatz wird zusätzlich zum Datum im Format `tt-mm-jjjj` der Zeitstempel im Format `00:00:00` gespeichert.
+| `contact.newsletterAllowanceAt`
 
-
+|====
 
 --
 
@@ -1054,21 +1648,70 @@ Im Kontaktdatensatz wird zusätzlich zum Datum im Format `tt-mm-jjjj` der Zeitst
 .Variablen in der Unterkategorie *Kontakt / Lieferadresse*
 --
 
-* `Lieferadresse Vorname und Nachname`
-* `Lieferadresse Adresszusatz`
-* `Lieferadresse Vorname`
-* `Lieferadresse Nachname`
-* `Lieferadresse Firmenname`
-* `Lieferadresse Telefon`
-* `Lieferadresse Straße`
-* `Lieferadresse Postleitzahl und Ort`
-* `Lieferadresse Ort`
-* `Lieferadresse Postleitzahl`
-* `Lieferadresse Land`
-* `Lieferadresse Länder-ID`
-* `Lieferadresse Länder-ISO-Code 2`
-* `Lieferadresse Länder-ISO-Code 3`
-* `Lieferadresse Bundesland`
+[cols="1,3"]
+|====
+|Name der Variable |Twig expression
+
+| `Lieferadresse Vorname und Nachname`
+| `contact.formattedAddresses.deliveryAddress.name2 ~ ' ' ~ contact.formattedAddresses.deliveryAddress.name3`
+
+
+| `Lieferadresse Adresszusatz`
+| `contact.formattedAddresses.deliveryAddress.address3 ~ ' ' ~ contact.formattedAddresses.deliveryAddress.address4`
+
+
+| `Lieferadresse Vorname`
+| `contact.formattedAddresses.deliveryAddress.name2`
+
+
+| `Lieferadresse Nachname`
+| `contact.formattedAddresses.deliveryAddress.name3`
+
+
+| `Lieferadresse Firmenname`
+| `contact.formattedAddresses.deliveryAddress.name1`
+
+
+| `Lieferadresse Telefon`
+| `contact.formattedAddresses.deliveryAddress.formattedOptions.telephone`
+
+
+| `Lieferadresse Straße`
+| `contact.formattedAddresses.deliveryAddress.address1 ~ ' ' ~ contact.formattedAddresses.deliveryAddress.address2`
+
+
+| `Lieferadresse Postleitzahl und Ort`
+| `contact.formattedAddresses.deliveryAddress.postalCode ~ ' ' ~ contact.formattedAddresses.deliveryAddress.town`
+
+
+| `Lieferadresse Ort`
+| `contact.formattedAddresses.deliveryAddress.town`
+
+
+| `Lieferadresse Postleitzahl`
+| `contact.formattedAddresses.deliveryAddress.postalCode`
+
+
+| `Lieferadresse Land`
+| `contact.formattedAddresses.deliveryAddress.country.name`
+
+
+| `Lieferadresse Länder-ID`
+| `contact.formattedAddresses.deliveryAddress.country.id`
+
+
+| `Lieferadresse Länder-ISO-Code 2`
+| `contact.formattedAddresses.deliveryAddress.country.isoCode2`
+
+
+| `Lieferadresse Länder-ISO-Code 3`
+| `contact.formattedAddresses.deliveryAddress.country.isoCode3`
+
+
+| `Lieferadresse Bundesland`
+| `contact.formattedAddresses.deliveryAddress.state.name`
+
+|====
 
 --
 
@@ -1078,21 +1721,69 @@ Im Kontaktdatensatz wird zusätzlich zum Datum im Format `tt-mm-jjjj` der Zeitst
 .Variablen in der Unterkategorie *Kontakt / Rechnungsadresse*
 --
 
-* `Rechnungsadresse Vorname und Nachname`
-* `Rechnungsadresse Adresszusatz`
-* `Rechnungsadresse Vorname`
-* `Rechnungsadresse Nachname`
-* `Rechnungsadresse Firmenname`
-* `Rechnungsadresse Telefon`
-* `Rechnungsadresse Straße`
-* `Rechnungsadresse Postleitzahl und Ort`
-* `Rechnungsadresse Ort`
-* `Rechnungsadresse Postleitzahl`
-* `Rechnungsadresse Land`
-* `Rechnungsadresse Länder-ID`
-* `Rechnungsadresse Länder-ISO-Code 2`
-* `Rechnungsadresse Länder-ISO-Code 3`
-* `Rechnungsadresse Bundesland`
+[cols="1,3"]
+|====
+|Name der Variable |Twig expression
+
+| `Rechnungsadresse Vorname und Nachname`
+| `contact.formattedAddresses.invoiceAddress.name2 ~ ' ' ~ contact.formattedAddresses.invoiceAddress.name3`
+
+
+| `Rechnungsadresse Adresszusatz`
+| `contact.formattedAddresses.invoiceAddress.address3 ~ ' ' ~ contact.formattedAddresses.invoiceAddress.address4`
+
+
+| `Rechnungsadresse Vorname`
+| `contact.formattedAddresses.invoiceAddress.name2`
+
+
+| `Rechnungsadresse Nachname`
+| `contact.formattedAddresses.invoiceAddress.name3`
+
+
+| `Rechnungsadresse Firmenname`
+| `contact.formattedAddresses.invoiceAddress.name1`
+
+
+| `Rechnungsadresse Telefon`
+| `contact.formattedAddresses.invoiceAddress.formattedOptions.telephone`
+
+
+| `Rechnungsadresse Straße`
+| `contact.formattedAddresses.invoiceAddress.address1 ~ ' ' ~ contact.formattedAddresses.invoiceAddress.address2`
+
+
+| `Rechnungsadresse Postleitzahl und Ort`
+| `contact.formattedAddresses.invoiceAddress.postalCode ~ ' ' ~ contact.formattedAddresses.invoiceAddress.town`
+
+
+| `Rechnungsadresse Ort`
+| `contact.formattedAddresses.invoiceAddress.town`
+
+| `Rechnungsadresse Postleitzahl`
+| `contact.formattedAddresses.invoiceAddress.postalCode`
+
+
+| `Rechnungsadresse Land`
+| `contact.formattedAddresses.invoiceAddress.country.name`
+
+
+| `Rechnungsadresse Länder-ID`
+| `contact.formattedAddresses.invoiceAddress.country.id`
+
+
+| `Rechnungsadresse Länder-ISO-Code 2`
+| `contact.formattedAddresses.invoiceAddress.country.isoCode2`
+
+
+| `Rechnungsadresse Länder-ISO-Code 3`
+| `contact.formattedAddresses.invoiceAddress.country.isoCode3`
+
+
+| `Rechnungsadresse Bundesland`
+| `contact.formattedAddresses.invoiceAddress.state.name`
+
+|====
 
 --
 
@@ -1103,32 +1794,55 @@ Im Kontaktdatensatz wird zusätzlich zum Datum im Format `tt-mm-jjjj` der Zeitst
 .Variablen in der Unterkategorie *Kontakt / Optionen*
 --
 
-* `E-Mail privat`
-* `Telefon privat`
-* `Mobiltelefon privat`
-* `Fax privat`
-* `E-Mail geschäftlich`
-* `Telefon geschäftlich`
-* `Mobiltelefon geschäftlich`
-* `Fax geschäftlich`
-* `eBay-Name`
-* `E-Mail PayPal`
-* `Zusätzlicher Ansprechpartner`
+[cols="1,3"]
+|====
+|Name der Variable |Twig expression
+
+| `E-Mail privat`
+| `contact.formattedOptions.emailPrivate`
+
+| `Telefon privat`
+| `contact.formattedOptions.telephonePrivate`
+
+
+| `Mobiltelefon privat`
+| `contact.formattedOptions.telephoneMobilePrivate`
+
+
+| `Fax privat`
+| `contact.formattedOptions.telefaxPrivate`
+
+
+| `E-Mail geschäftlich`
+| `contact.formattedOptions.emailWork`
+
+
+| `Telefon geschäftlich`
+| `contact.formattedOptions.telephoneWork`
+
+
+| `Mobiltelefon geschäftlich`
+| `contact.formattedOptions.telephoneMobileWork`
+
+
+| `Fax geschäftlich`
+| `contact.formattedOptions.telefaxWork`
+
+
+| `eBay-Name`
+| `contact.formattedOptions.marketplaceEbay`
+
+
+| `E-Mail PayPal`
+| `contact.formattedOptions.emailPayPal`
+
+
+| `Zusätzlicher Ansprechpartner`
+| `contact.formattedOptions.additionalContactPerson`
+
+|====
 
 --
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1140,91 +1854,159 @@ Im Kontaktdatensatz wird zusätzlich zum Datum im Format `tt-mm-jjjj` der Zeitst
 .Variablen in der Kategorie *Global*
 --
 
-[cols="1,3"]
+[cols="2,5,2"]
 |====
-|Variable in der Kategorie *Global* |Erläuterung
+|Name der Variable |Erläuterung |Twig expression
 
 | `URL zum Checkout`
 |Gibt die URL zum Checkout-Bereich des Auftrags im Webshop aus.
+| `globals.links.linkCheckout`
 
 | `URL zum Warenkorb`
 |Gibt die URL zum Warenkorb im Webshop aus.
+| `globals.links.linkBasket`
 
 | `URL zu den Geschäftsbedingungen`
 |Gibt die URL zu den AGB aus.
+| `globals.links.linkTermsConditions`
 
 | `URL zum Webshop`
 |Gibt die URL zum Webshop aus.
+| `globals.links.linkWebstore`
 
 | `URL zum neuen Passwort`
 |Gibt die URL zu einem Formular zum Erstellen eines neuen Passworts aus. Dort geben Kund:innen ihre E-Mail-Adresse ein.
+| `globals.links.linkNewPassword`
 
 | `URL zum Ändern des Passworts`
 |Gibt die URL zum Bereich *Passwort ändern* im Webshop aus. Dort können Kund:innen ein neues Passwort eingeben.
+| `globals.links.linkChangePassword`
 
 | `URL zum Bestätigen der E-Mail-Adresse`
 |Gibt die URL zum Bestätigen der E-Mail-Adressänderung des Kontakts aus.
+| `globals.account.newCustomerEmail`
 
 | `Widerrufsrecht im HTML-Format`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Widerrufsrecht* und dort im Tab *HTML* gespeichert.
+| `globals.legalInformation.cancellationRights.html`
 
 | `Widerrufsrecht im reinen Textformat`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Widerrufsrecht* und dort im Tab *Text* gespeichert.
+| `globals.legalInformation.cancellationRights.plain`
 
 | `Datenschutzerklärung im reinen Textformat`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Datenschutzerklärung* und dort im Tab *Text* gespeichert.
+| `globals.legalInformation.privacyPolicy.plain`
 
 | `Datenschutzerklärung im HTML-Format`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Datenschutzerklärung* und dort im Tab *HTML* gespeichert.
+| `globals.legalInformation.privacyPolicy.html`
 
 | `Impressum im reinen Textformat`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Impressum* und dort im Tab *Text* gespeichert.
+| `globals.legalInformation.legalDisclosure.plain`
 
 | `Impressum im HTML-Format`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Impressum* und dort im Tab *HTML* gespeichert.
+| `globals.legalInformation.withdrawalForm.html`
 
 | `Widerrufsformular im reinen Textformat`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Widerrufsformular* und dort im Tab *Text* gespeichert.
+| `globals.legalInformation.withdrawalForm.plain`
 
 | `Widerrufsformular im HTML-Format`
 |Der Text wird im Menü *Einrichtung » Mandant » [Mandant wählen] » Webshop » Rechtliches » [Sprache aufklappen]* im Tab *Widerrufsformular* und dort im Tab *HTML* gespeichert.
+| `globals.legalInformation.withdrawalForm.html`
 
 | `Heutiges Datum`
 |Gibt das heutige Datum im Format `tt-mm-jjjj` aus.
+| `"now"\|date("d-m-Y")`
 
 | `Bankname (Stammdaten)`
 |Bankname aus den Stammdaten deines plentymarkets Systems. Wird im *Basics*-Assistenten im Schritt *Bankdaten* gespeichert. Du findest den Assistenten im Menü *Einrichtung » Assistenten » Grundeinstellungen*. +
 Alternativ findest du den gespeicherten Banknamen im Menü *Einrichtung » Einstellungen » Bank*.
+| `globals.bank.name`
 
 | `IBAN (Stammdaten)`
 |IBAN aus den Stammdaten deines plentymarkets Systems. Wird im *Basics*-Assistenten im Schritt *Bankdaten* gespeichert. Du findest den Assistenten im Menü *Einrichtung » Assistenten » Grundeinstellungen*. +
 Alternativ findest du die gespeicherte IBAN im Menü *Einrichtung » Einstellungen » Bank*.
+| `globals.bank.iban`
 
 | `BIC (Stammdaten)`
 |BIC aus den Stammdaten deines plentymarkets Systems. Wird im *Basics*-Assistenten im Schritt *Bankdaten* gespeichert. Du findest den Assistenten im Menü *Einrichtung » Assistenten » Grundeinstellungen*. +
 Alternativ findest du die gespeicherte BIC im Menü *Einrichtung » Einstellungen » Bank*.
+| `globals.bank.bic`
 
 | `Kontoinhaber (Stammdaten)`
 |Kontoinhaber:in aus den Stammdaten deines plentymarkets Systems. Wird im *Basics*-Assistenten im Schritt *Bankdaten* gespeichert. Du findest den Assistenten im Menü *Einrichtung » Assistenten » Grundeinstellungen*. +
 Alternativ findest du den:die Kontoinhaber:in im Menü *Einrichtung » Einstellungen » Bank*.
+| `globals.bank.owner`
 
 | `Signatur im reinen Textformat`
 |Die Signatur wird im Menü *Einrichtung » Mandant » [Mandant wählen] » E-Mail » Signatur* im Bereich *Reine Textsignatur* gespeichert.
+| `globals.account.signatureText`
 
 | `Signatur im HTML-Format`
 |Die Signatur wird im Menü *Einrichtung » Mandant » [Mandant wählen] » E-Mail » Signatur* im Bereich *HTML-Signatur* gespeichert.
+| `globals.account.signatureHTML`
 
-| `Gutschein-Code (1) bis (10)`
+| `Gutschein-Code (1)`
 |Gutschein-Codes werden in der Kampagne im Menü *Aufträge » Gutscheine* generiert. Ein Gutschein-Code kann immer nur jeweils einer Kampagne zugeordnet werden, um diesen Gutschein-Code aus der Kampagne in der E-Mail-Vorlage zu versenden.
+| `globals.coupons.couponCode1`
+
+
+| `Gutschein-Code (2)`
+|
+| `globals.coupons.couponCode2`
+
+
+| `Gutschein-Code (3)`
+|
+| `globals.coupons.couponCode3`
+
+
+| `Gutschein-Code (4)`
+|
+| `globals.coupons.couponCode4`
+
+
+| `Gutschein-Code (5)`
+|
+| `globals.coupons.couponCode5`
+
+
+| `Gutschein-Code (6)`
+|
+| `globals.coupons.couponCode6`
+
+
+| `Gutschein-Code (7)`
+|
+| `globals.coupons.couponCode7`
+
+
+| `Gutschein-Code (8)`
+|
+| `globals.coupons.couponCode8`
+
+
+| `Gutschein-Code (9)`
+|
+| `globals.coupons.couponCode9`
+
+
+| `Gutschein-Code (10)`
+|
+| `globals.coupons.couponCode10`
+
 
 | `EORI-Nummer`
-|Eindeutige Identifizierungsnummer, die für Zollzwecke benötigt wird
+|Eindeutige Identifizierungsnummer, die für Zollzwecke benötigt wird.
+| `globals.account.EORINumber`
 
 |====
 
 --
-
-
 
 
 [#variablen-newsletter]
@@ -1232,8 +2014,15 @@ Alternativ findest du den:die Kontoinhaber:in im Menü *Einrichtung » Einstellu
 .Variablen in der Kategorie *Newsletter*
 --
 
-* `URL zur Bestätigung des Newsletter-Abonnements`
-** Gibt die URL zum Bestätigen des Newsletter-Abonnements aus.
+[cols="2,5,2"]
+|====
+|Name der Variable |Erläuterung |Twig expression
+
+| `URL zur Bestätigung des Newsletter-Abonnements`
+|Gibt die URL zum Bestätigen des Newsletter-Abonnements aus.
+| `newsletter.formattedConfirmUrl`
+
+|====
 
 --
 
@@ -1268,7 +2057,7 @@ Automatischen E-Mail-Versand einrichten:
 
 | *Neue Bestellung über den Webshop*
 |Sendet Kund:innen eine E-Mail mit der Auftragsbestätigung, nachdem der Kaufvorgang im Webshop abgeschlossen wurde. +
-*Hinweis:_* Wenn du möchtest, dass dein:e Kund:in über diese E-Mail in die Auftragsabwicklung in deinem Webshop gelangen kann, um den Status der Bestellung einzusehen, musst du die Variable `URL zum Checkout` in die Vorlage, die du für dieses automatische Ereignis wählst, einfügen.
+*_Hinweis:_* Wenn du möchtest, dass dein:e Kund:in über diese E-Mail in die Auftragsabwicklung in deinem Webshop gelangen kann, um den Status der Bestellung einzusehen, musst du die Variable `URL zum Checkout` in die Vorlage, die du für dieses automatische Ereignis wählst, einfügen.
 
 | *Sende Kunde E-Mail zur Passwortänderung*
 |Sendet Kund:innen eine E-Mail mit einem Link zum neuen Passwort, der aktiv bestätigt werden muss. Die Variable `URL zum Ändern des Passworts` muss in der Vorlage enthalten sein.
@@ -1311,3 +2100,43 @@ Die folgenden Empfänger:innen stehen zur Verfügung:
 * verfügbare Eigner
 
 Du kannst entweder die selbe Vorlage an alle Empfänger:innen senden oder jeweils eine separate Vorlage wählen.
+
+
+[#code-beispiele-code-widget]
+== Code-Beispiele für das Code-Wigdet
+
+Setze in deinen E-Mail-Vorlagen Fallunterscheidungen nach den Prinzipien der if-Abfragen ein. Im Folgenden findest du einige if-Abfragen, die du einfach in dein Code-Widget kopieren kannst.
+
+[#code-beispiel-versandprofil]
+=== Code-Beispiel: Versandprofil
+
+Füge einen Code ein, der bewirkt, dass ein Hinweis bezüglich der Spedition und Kontaktaufnahme in der E-Mail an deine Kund:innen nur angezeigt wird, wenn der Versanddienstleister im Versandprofil eine Spedition ist. In unserem Beispiel hat das Versandprofil mit der Spedition die ID `6`.
+
+[source,plenty]
+----
+include::assets/emailbuilder-code-beispiel-versandprofil.txt[]
+
+----
+
+[#code-beispiel-bankdaten]
+=== Code-Beispiel: Bankdaten
+
+Füge einen Code ein, der bewirkt, dass deine Bankdaten in der E-Mail an deine Kund:innen nur angezeigt werden, wenn sie im plentyShop die Zahlungsart *Vorkasse* (ID `0`) gewählt haben.
+
+[source,plenty]
+----
+include::assets/emailbuilder-code-beispiel-bankdaten.txt[]
+
+----
+
+
+[#code-beispiel-auftragspositionen]
+=== Code-Beispiel: Auftragspositionen
+
+Füge einen Code ein, der bewirkt, dass die Auftragspositionen mit den Varianten-IDs, den Artikelnamen, der Artikelanzahl und dem Preis in einer Tabelle angezeigt werden.
+
+[source,plenty]
+----
+include::assets/emailbuilder-code-beispiel-auftragspositionen.txt[]
+
+----
