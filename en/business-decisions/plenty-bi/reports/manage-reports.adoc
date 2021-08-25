@@ -1,9 +1,9 @@
 = Managing reports
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Report, Reports, raw data, key performance indicator, KPI, key figure, data analysis, statistics, BI, Business Intelligence
+:keywords: Report, raw data, analyse raw data, create raw data, raw data format
 :position: 10
-:url: business-decisions/plenty-bi/reports/manage-reports
+:url: business-decisions/plenty-bi/reports/managing-reports
 :id: LAKHMQK
 :author: team-bi
 
@@ -11,20 +11,20 @@ A report is a data analysis that determines a single key performance indicator (
 
 == Raw data
 
-Raw data is collected in the background, usually over night. The raw data to be saved is set in the *Setup » plentyBI » Raw data* menu. You can retrieve the generated files via the REST API and process the data externally.
+Raw data is collected in the background, usually over night.  The settings made in the *Setup » plentyBI » Raw data* determine which types of raw data are saved.  You can retrieve the generated files via the REST API and process the data externally.
 
 === For end users
 
-We have observed that business decisions are often not made based on key figures, but rather intuitively. In order to change this behaviour, we recommend using a business intelligence tool. Ideally, such a toll analyses different data from several sources. This allows you to identify specific recommendations for action. Start now and use our integrated plentyBI dashboard to keep track of relevant data and key figures. Further information is available in the <<business-decisions/plenty-bi#, plentyBI>> section of the manual.
+We have observed that business decisions are often not made based on key figures, but rather intuitively. In order to change this behaviour, we recommend using a business intelligence tool. Ideally, such a tool analyses different data from several sources. Start now and use our integrated plentyBI dashboard to keep track of relevant data and key figures. Further information is available in the <<business-decisions/plenty-bi#, plentyBI>> section of the manual.
 
 === For developers
 
-Raw data is available in CSV format and can therefore easily be processed. All plentymarkets systems have a standardised REST API. You can find the documentation on link:https://developers.plentymarkets.com/[this page^]{nbsp}icon:external-link[].
+Raw data is available in CSV format and can therefore easily be processed.  All plentymarkets systems have a standardised REST API. The documentation is available on link:https://developers.plentymarkets.com/[this page^]{nbsp}icon:external-link[].
 
-Raw data is retrieved in two steps. We recommend retrieving the data once a day after around noon. At this point, the process of generating raw data is completed for all systems.
+Raw data is retrieved in two steps. We recommend retrieving the data once a day after around noon. the process of generating raw data is completed for all systems.
 
-First, a list of available raw data files is retrieved via this link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data[route^]{nbsp}icon:external-link[]. The time at which the latest file of the last retrieval was created serves as a filter for the next retrieval. In this way, the files are not retrieved several times. The number of files that are generated per day may vary depending on how many creator processes are activated for a plentymarkets system. Furthermore, only a certain number of data rows is written in each file. If required, another file is created. With this route, either all files of a single creator or all files that were created during the retrieval interval are exported.
-With this link:https://developers.plentymarkets.com/rest-doc#/Report/get_rest_report_raw_data_file[route^]{nbsp}icon:external-link[], a raw data file is exported. The required file path is contained in the sample space of the REST route listed in point 1. Raw data files are provided as a GZIP-compressed CSV file (RFC 1952). A comma is used as column separator.
+1.	First, a list of available raw data files is retrieved via this link:https://developers.plentymarkets.com/en-gb/plentymarkets-rest-api/index.html#/BI/get_rest_bi_raw_data[route^]{nbsp}icon:external-link[]. The time at which the latest file of the last retrieval was created serves as a filter for the next retrieval so that data is not requested several times. The number of files that are generated per day may vary depending on how many creator processes are activated for a plentymarkets system. Furthermore, only a certain number of data rows is written in each file. If required, a additional file is created. With this route, either all files of a single creator or all files that were created during the retrieval interval are exported.
+2.	With this link:https://developers.plentymarkets.com/en-gb/plentymarkets-rest-api/index.html#/BI/get_rest_bi_raw_data_file[route^]{nbsp}icon:external-link[], a raw data file is exported. The required file path is contained in the sample space of the REST route listed in point 1.  Raw data files are provided as a GZIP-compressed CSV file (RFC 1952). A comma is used as column separator.
 
 [TIP]
 .Standard time stamp format
@@ -36,20 +36,30 @@ The standard date format is MM/DD/YYYY HH:MI:SS TZ. This date format can be copi
 
 The creator is a specific process that provides a raw data format. Each creator only saves data after you have activated the creator in the *Setup » plentyBI » Raw data* menu.
 
-For explanations and links to individual format pages, see <<table-reports-data-formats>>.
+The individual data formats are named in English. For explanations and links to individual format pages, refer to <<table-reports-data-formats>>.
+
 
 [IMPORTANT]
-.Limited saving of raw data
+.Limited storage periods for raw data and calculation results
 ====
-In plentymarkets, raw data are the data basis for the key figures available in the <<business-decisions/plenty-bi#, plentyBI>> module. Depending on the plentyBI tariff that was booked, raw data are saved for different periods of time in the system. In general,the following periods apply: +
+Within your plentymarkets system, raw data serve as the data basis for the key figures available in the <<business-decisions/plenty-bi#, plentyBI>> module. Depending on the plentyBI edition that was booked, raw data is stored for different periods of time.
+The following storage periods apply per plentyBI edition: +
 
-* plentyBI XS: 3 months
-* plentyBI S:  6 months
-* plentyBI M:  12 months
-* plentyBI L:  48 months
+* plentyBI XS: 6 months
+* plentyBI S: 12 months
+* plentyBIM:14 months
+* plentyBI L: 48 months
 
-More detailed information for each raw data format can be accessed by clicking on the links in <<table-reports-data-formats>>.
+The calculation results yielded by the stored raw data are available for different periods of time, according to your plentyBI edition: +
+
+* plentyBI XS: 12 months
+* plentyBI S: 24 months
+* plentyBI M: 36 months
+* plentyBI L: 120 months
+
+More detailed information on each raw data format is available by clicking on the links in <<table-reports-data-formats>>.
 ====
+
 
 [[table-reports-data-formats]]
 .Available raw data formats
@@ -58,116 +68,116 @@ More detailed information for each raw data format can be accessed by clicking o
 |Data format |Explanation
 
 |accountContacts
-|Contact +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/accountcontacts#, accountContacts>> page.
+|Contact person +
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/accountcontacts#, accountContacts>> page of the manual.
 
 |accounts
 |Company +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/accounts#, accounts>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/accounts#, accounts>> page of the manual.
 
 |categories
 |Categories +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/categories#, categories>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/categories#, categories>> page of the manual.
 
 |feedbacks
 |Feedbacks +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/feedbacks#, feedbacks>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/feedbacks#, feedbacks>> page of the manual.
 
 |itemManufacturer
 |Manufacturer +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/itemmanufacturer#, itemManufacturer>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/itemmanufacturers#, itemManufacturer>> page of the manual.
 
 |itemVariations
 |Variation +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/itemvariations#, ItemVariations>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/itemvariations#, itemVariations>> page of the manual.
 
 |itemVariationSuppliers
 |Links between suppliers and variations +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/itemvariationsuppliers#, itemVariationSuppliers>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/itemvariationsuppliers#, itemVariationSuppliers>> page of the manual.
 
 |marketplaceStockMovement
 |Stock information that was exported to specific markets +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/marketplaceStockMovement#, marketplaceStockMovement>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/marketplaceStockMovement#, marketplaceStockMovement>> page of the manual.
 
 |messages
 |Messages +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/messages#, messages>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/messages#, messages>> page of the manual.
 
 |messageTagRelations
 |Tag relations of messages +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/messagetagrelations#, messageTagRelations>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/messageTagRelations#, messageTagRelations>> page of the manual.
 
 |orderDocuments
 |Order documents +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/orderdocuments#, orderDocuments>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orderdocuments#, orderDocuments>> page of the manual.
 
 |orderItemAmounts
-|Number of order items +
-For further information, see the <<business-decisions/plenty-bib/reports/data-formats/orderitemamounts#, orderItemAmounts>> page.
+|Value of order items +
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orderitemamounts#, orderItemAmounts>> page of the manual.
 
 |orderItemProperties
 |Property of the order item +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/orderitemproperties#, orderItemProperties>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orderitemproperties#, orderItemProperties>> page of the manual.
 
 |orderItems
 |Order item +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/orderitems#, orderItems>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orderitems#, orderItems>> page of the manual.
 
 |orderProperties
 |Order property +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/orderproperties#, orderProperties>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orderproperties#, orderProperties>> page of the manual.
 
 |orders
 |Order +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/orders#, orders>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orders#, orders>> page of the manual.
 
 |orderStatuses
 |Order status +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/orderstatuses#, orderStatuses>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/orderstatuses#, orderStatuses>> page of the manual.
 
 |paymentOrderRelations
-|Links between payments and orders +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/paymentorderrelations#, paymentOrderRelations>> page.
+|Relations between payments and orders +
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/paymentorderrelations#, paymentOrderRelations>> page of the manual.
 
 |payments
 |Payments +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/payments#, payments>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/payments#, payments>> page of the manual.
 
 |properties
 |Properties +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/properties#, properties>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/properties#, properties>> page of the manual.
 
 |propertyRelations
 |Links between properties and other data +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/propertyrelations#, propertyRelations>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/propertyrelations#, propertyRelations>> page of the manual.
 
 |stockManagementStock
 |Stock +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/stockmanagementstock#, stockManagementStock>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/stockmanagementstock#, stockManagementStock>> page of the manual.
 
 |stockManagementStockMovements
 |Stock movements +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/stockmanagementstockmovements#, stockManagementStockMovements>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/stockmanagementstockmovements#, stockManagementStockMovements>> page of the manual.
 
 |stockManagementWarehouses
-|Warehouses +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/stockmanagementwarehouses#, stockManagementWarehouses>> page.
+|Storage +
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/stockmanagementwarehouses#, stockManagementWarehouses>> page of the manual.
 
 |tags
 |Tags +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/tags#, tags>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/tags#, tags>> page of the manual.
 
 |tagRelations
 |Tag links +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/tagrelations#, tagRelations>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/tagrelations#, tagRelations>> page of the manual.
 
 |users
-|Users +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/users#, users>> page.
+|User +
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/users#, users>> page of the manual.
 
 |variationValidation
 |Variations that have been exported to markets but have been rejected +
-For further information, see the <<business-decisions/plenty-bi/reports/data-formats/marketplacevariationvalidation#, marketplaceVariationValidation>> page.
+For further information, refer to the <<business-decisions/plenty-bi/reports/data-formats/marketplacevariationvalidation#, variationValidation#, variationValidation>> page of the manual.
 
 |====
 

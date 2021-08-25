@@ -1,4 +1,4 @@
-= Using the FBA service by Amazon
+= Amazon: Using the FBA service
 :lang: en
 include::{includedir}/_header.adoc[]
 :keywords: Amazon FBA, FBA, Amazon Multi-Channel, Amazon FBA Multi-Channel, setting up Amazon FBA, FBA setup, set up Amazon FBA, shipping by Amazon, Amazon ships, Fulfillment by Amazon, Fulfilment by Amazon, Amazon Fulfilment, Amazon Fulfillment
@@ -9,6 +9,12 @@ include::{includedir}/_header.adoc[]
 :author: team-multi-channel
 
 The abbreviation FBA stands for Fulfilment by Amazon. Instead of dealing with the orders yourself, packaging the items and sending them, you let Amazon take care of this task for you with the FBA programme. Of course, you then have to store at least some of your items with Amazon.
+
+[.collapseBox]
+.FBA order workflow
+--
+include::amazon-fulfilment.adoc[tag=amazon-fba-workflow]
+--
 
 For further information about setting up Amazon FBA in plentymarkets, watch this video tutorial:
 
@@ -93,6 +99,12 @@ Creating a warehouse:
 . *Save* (icon:save[role="green"]) the settings. +
 → The warehouse is created.
 
+[TIP]
+.Separate Amazon FBA stock display for EU and UK
+====
+Since Brexit, the FBA UK stock for amazon.co.uk is managed separately and not subsumed under the FBA EU stock. To have the *FBA EU stock* as well as the *FBA UK stock* displayed, at least one account is needed in the system which is linked to a European seller account and which is allowed to retrieve information from a European Amazon platform. An additional account is needed in the system, which is linked to a European seller account and which is allowed to retrieve information from the platform amazon.co.uk. This account then retrieves the total FBA UK stock. For more information, refer to the best practice <<arkets/amazon/best-practices-amazon-fba-stock-display#, Amazon FBA stock display for EU and UK>>.
+====
+
 [#90]
 === Setting up FBA Inbound shipments
 
@@ -169,7 +181,7 @@ Setting up FBA outbound orders:
 | Select the <<orders/managing-orders#1200, status>> that is to be assigned to orders that are imported from Amazon.
 
 | *Warehouse*
-| Select which <<Creating a warehouse for Amazon FBA, Amazon FBA warehouse>> should be used for stock synchronisation with the account. This warehouse is also used to assign the FBA order to the account if no FBA order could be assigned to the country the order originates in because no warehouse is set up for the order country.
+| Select which Amazon FBA warehouse should be used for stock synchronisation with the account. This warehouse is also used to assign the FBA order to the account if no FBA order could be assigned to the country the order originates in because no warehouse is set up for the order country.
 
 | *Warehouse for unsellable stock*
 | Select which <<#60, Amazon FBA warehouse>> should be used for unsellable stock for this account. If you do not select a warehouse, the unsellable stock will not be imported. +
@@ -241,7 +253,7 @@ Discount granted by the seller:
 !===
 
 | *Ignore shipping discounts from campaigns during import*
-| Amazon order reports do not specify of any shipping discounts were granted by the seller or by Amazon. In both cases, the discounted amount is deducted from the order value during the order import. However, if Amazon granted the discount, the order value differs from the amount that Amazon pays you for the order. In such cases, you need to manually adjust the order. Otherwise, you do not pay enough VAT on the order.
+| Amazon order reports do not specify if any shipping discounts were granted by the seller or by Amazon. In both cases, the discounted amount is deducted from the order value during the order import. However, if Amazon granted the discount, the order value differs from the amount that Amazon pays you for the order. In such cases, you need to manually adjust the order. Otherwise, you do not pay enough VAT on the order.
 
 Select how to deal with shipping discounts when orders are imported.
 
@@ -400,7 +412,7 @@ Setting up Amazon Multi-Channel:
 | *Active*
 | Place a check mark to activate the daily order import.
 
-| *Referrers*
+| *Referrer*
 | *Only use for Amazon orders* = Only process Amazon orders with FBA. +
 *Can be used for all orders* = Process all orders with FBA.
 
@@ -938,20 +950,19 @@ Outbound orders have the following workflow:
 *  Amazon sends the items.
 *  The plentymarkets system requests a report.
 *  Amazon creates the report.
-*  The next day, plentymarkets automatically checks whether any Amazon reports exist. If yes, then these reports are imported.
-*  From the information contained in these reports, orders and contacts are generated in plentymarkets.
-* 30 days after the order is created, the contacts are anonymised. The customer data in the contact is anonymized and the link between the order and the contact is deleted. The customer details in the order remain unchanged. +
+*  The next day, plentymarkets automatically checks whether any Amazon reports exist. If yes, then these reports are imported. +
+*_Note:_* Amazon only generates the reports once every 4 hours.
+*  From the information contained in these reports, orders and contacts are generated in plentymarkets:
+ ** Amazon FBA outbound orders are imported with the parameters *Status* and *Referrer*. Select the *Status* that is most appropriate for your process. For example, this could be status *[7] Outgoing items booked*. The referrer is automatically set to Amazon FBA or an Amazon FBA sub-referrer, e.g. Amazon FBA USA. The date when items are shipped is saved directly in plentymarkets. Therefore, stock is not reserved for items that are included in the order.
+* 30 days after the order is created in plentymarkets, the contacts are anonymised. The customer data in the contact is anonymized and the link between the order and the contact is deleted. The customer details in the order remain unchanged. +
   ** First name and last name of the contact is anonymized.
-  ** The following data is deleted:
+  ** The following details are deleted from the contact:
       *** Addresses and address relations
       *** Address options
       *** Order relations
       *** Contact options
       *** Any relation to a company
       *** Bank details
-
-
-Amazon FBA outbound orders are imported with the parameters *Status* and *Referrer*. Select the *Status* that is most appropriate for your process. For example, this could be status *[7] Outgoing items booked*. The referrer is automatically set to Amazon FBA or an Amazon FBA sub-referrer, e.g. Amazon FBA USA. The date when items are shipped is saved directly in plentymarkets. Therefore, stock is not reserved for items that are included in the order.
 
 [TIP]
 .Event procedures for fulfilment
@@ -960,11 +971,10 @@ Configure the event procedures that are necessary for the fulfilment process. Su
 For further information, refer to the <<automation/event-procedures#, Event procedures>> and <<fulfilment#, Fulfilment>> pages of the manual.
 ====
 
-
 [IMPORTANT]
 .Note regarding the order import
 ====
-Amazon only generates a list of orders once per day. Because it can take up to 2 days before an item is ready for shipping, FBA orders are available in your system with a time delay. Generally, the order confirmation that was generated by Amazon is available in your system two days after the item was shipped or a total of up to 4 days after it was ordered. The punctuality of the deliveries, however, is not affected. They will be carried out with the quickness that is customary for Amazon.
+Amazon only generates FBA reports once every 4 hours. Because it can take up to 2 days before an item is ready for shipping, FBA orders are available in your system with a time delay. Generally, the order confirmation that was generated by Amazon is available in your system two days after the item was shipped or a total of up to 4 days after it was ordered. The punctuality of the deliveries, however, is not affected. They will be carried out with the quickness that is customary for Amazon.
 ====
 
 [#30]
@@ -972,3 +982,25 @@ Amazon only generates a list of orders once per day. Because it can take up to 2
 
 Amazon will send Amazon FBA partial deliveries if the items ordered by the customer are stored in separate warehouses. Hence, the customer receives multiple packages for one order.
 In plentymarkets, each FBA Outbound partial delivery is saved as a separate order, depending on the FBA warehouse which sends the item. You can import one tracking number from Amazon for each partial delivery and then assign it to the according partial delivery. You can generate a separate invoice for each partial delivery. This is necessary if the Amazon warehouses are located in different countries due to differing taxes.
+
+[#460]
+=== Troubleshooting: Manually generating FBA reports
+
+Amazon generates FBA reports once every 4 hours. FBA order details are then imported into plentymarkets automatically. However, to check orders or if there are problems with the import, you can manually generate a report of your FBA orders in the plentymarkets back end. Unlike the report that you can manually generate in Seller Central, this plentymarkets FBA report also contains personally identifiable information of your end customers. When you generate a report in the plentymarkets back end, any missing, deleted or corrected FBA orders are also imported into plentymarkets.
+
+IMPORTANT: Generating FBA reports requires a lot of processing power. As such, the API of your system is temporarily deactivated if you generate too many reports. This can also negatively affect other processes in your system. To avoid this, only generate an FBA report if problems occurred with the automatic import.
+
+[.instruction]
+Manually generating FBA reports:
+
+. Go to *Setup » Markets » Amazon » Data exchange » Reports*.
+. Click on the *FBA reports* tab.
+. Select an *Amazon account* from the drop-down list.
+. Select a starting date. +
+*_Tip:_* The start date must not be more than one year ago and must be before the end date.
+. Select an ending date. +
+*_Tip:_* The end date must not be in future. Also, start date and end date must not be more than one week in apart. +
+*_Note:_* The FBA reports contain orders from 00:00 AM on the start date to 00:00 AM on the end date. As such, the reports do not contain any orders of the selected end date. The time zone of the plentymarkets system is applied.
+. Click on *Generate report* (icon:execute[set=plenty]). +
+→ The FBA report is generated. +
+→ Missing, deleted or incorrect FBA orders are imported into plentymarkets.

@@ -2,7 +2,7 @@
 :lang: en
 include::{includedir}/_header.adoc[]
 :author: team-multi-channel
-:keywords: Zalando, market, marketplace, marketplace Zalando, setting up Zalando, Zalando setup, multichannel, multi-channel, multi channel, multi-channel Zalando
+:keywords: Zalando, Zalando
 :description: Multi-Channel in plentymarkets: Set up the interface to the market Zalando in your plentymarkets system.
 :position: 250
 :url: markets/zalando
@@ -13,29 +13,49 @@ include::{includedir}/_header.adoc[]
 
 Thanks to the Zalando partner programme, online sellers and manufacturers can use Zalando as an additional distribution channel for selling their high-quality products and take advantage of the well-known brand name Zalando.
 
-Connecting to this market allows for the following automatic functions to take place:
+[#200]
+== Overview of automatic data exchange
 
+Connecting to this market allows for the automatic functions listed in <<#data-exchange-zalando>> to take place.
+
+[[data-exchange-zalando]]
 [cols="1,1"]
 |====
 |Data |Interval
 
 | Item export
-| once daily
+| plentymarkets generates an XML file with the item data once daily during the night (artikel.xml). Zalando usually retrieves this XML once per day.
 
-| Stock update
-| every 10 minutes
+| Stock synchronisation
+| Zalando retrieves the stock information (i.e. the XML file stock.xml) every 10 minutes.
 
-| Price update
-| every 15 minutes
+| Price synchronisation
+| Every 15 minutes via API
 
 | Order import
-| every 5 minutes
+| Every 5 minutes via the API interface zDirect
 |====
 
 [#100]
 == Registering with Zalando
 
 Do you want to join the Zalando partner programme? Then link:https://www.zalando.co.uk/partner-programme/[contact Zalando directly^]{nbsp}icon:external-link[].
+
+[#150]
+== After registration
+
+You have signed a contract with Zalando. Great. What happens now?
+
+* Contact our support team in the link:https://forum.plentymarkets.com/c/multi-channel/zalando[Multi-Channel: Zalando^]{nbsp}icon:external-link[] category of the plentymarkets forum.
+* Our support team will provide you with a CSV file. This file contains the following information:
+  ** Routes for items and stock
+  ** User name and password
+  ** Login details for the plentymarkets FTP server for silhouettes +
+  *_Tip:_* Zalando sends your silhouettes to this FTP server for import into your system.
+* Send this form to your Zalando contact person.
+* Complete the assistant *Account settings - Zalando*.
+* Set up the interface to Zalando in your plentymarkets system as described on this page.
+* Activate your Zalando account in the assistant. (<<#1500, How?>>)
 
 [#200]
 == Setting up Zalando in plentymarkets
@@ -92,44 +112,6 @@ a|Select a warehouse logic. A warehouse is assigned to each Zalando order based 
 | *Reduced tax rate*
 | Select *19%* or *7%*.
 |====
-
-[#250]
-== Activating the order referrer
-
-:market: Zalando
-:referrer: Zalando
-:referrer-option: pass:quotes[option *Zalando*]
-
-include::_textblocks/instructions/activate-referrer.adoc[]
-
-[#300]
-== Setting the variation availability
-
-:market-availability: Zalando
-:option-availability: Zalando
-:web-api:
-
-include::_textblocks/instructions/variation-availability.adoc[]
-
-// Web API required!
-
-[#330]
-== _Optional:_ Saving SKU
-
-:referrer-sku: Zalando
-:referrer-id: 118
-:sku-others:
-
-include::_textblocks/instructions/sku-manually.adoc[]
-
-// Marketplace account not required!
-
-[#350]
-== Defining a sales price
-
-:referrer-price: Zalando
-
-include::_textblocks/instructions/define-sales-price.adoc[]
 
 [#1400]
 == Carrying out settings in the assistant
@@ -198,9 +180,9 @@ a| During price updates, Zalando checks the plausibility of your prices based on
 a|
 Define up to three scheduled prices. Scheduled prices ensure that Zalando really changes your prices at the specified time. To export scheduled prices to Zalando, you need at least a sales price for the regular price and a property that contains the start date and time for the new price. The start date for scheduled prices must be in the future. You can also select a property for an end date for a scheduled price.
 
-* *Property for start date* = Select the property from the drop-down list that you use to manage the start time for your variations. Only properties of the types *Date* or *Short text* can be selected. +
+* *Property for start date* = Select the property from the drop-down list that you use to manage the start time for your variations. Only properties of the types *Date* or *Text* can be selected. +
 *_Note:_* The start times of more than one scheduled prices must be separated by at least 60 minutes.
-* *Property for end date* (optional) = Select the property from the drop-down list that you use to manage the end time for your variations. Only properties of the types *Date* or *Short text* can be selected.
+* *Property for end date* (optional) = Select the property from the drop-down list that you use to manage the end time for your variations. Only properties of the types *Date* or *Text* can be selected.
 * *Select price* = Select the sales price from the drop-down list that you want to export to Zalando as the *Scheduled price*.
 
 |====
@@ -236,19 +218,19 @@ a| Select if real or test data is to be imported.
 *_Note:_* Select a status that does not trigger an event procedure to Zalando as a result of the status change. Any orders that customers cancel before the import of reservations is started are not imported.
 
 | *Map plentymarkets reason for return with*
-|From the drop-down list, select a Zalando return reason for each return reason saved in plentymarkets. The return reasons are only transmitted for the order type *Return* and if they are saved in the order items of the return.
+a|From the drop-down list, select a Zalando return reason for each return reason saved in plentymarkets. The return reasons are only transmitted for the order type *Return* and if they are saved in the order items of the return.
 
 Zalando currently has the following reasons for return:
 
-*Unknown reason*
-*Do not like the item*
-*Too big*
-*Too small*
-*Bad value for money*
-*Not delivered on time*
-*Item not as expected*
-*Wrong item sent*
-*Item defective*
+* *Unknown reason*
+* *Do not like the item*
+* *Too big*
+* *Too small*
+* *Bad value for money*
+* *Not delivered on time*
+* *Item not as expected*
+* *Wrong item sent*
+* *Item defective*
 
 *_Note:_* Sending reasons of return to Zalando is optional. However, Zalando recommends that you send a reason.
 |====
@@ -271,67 +253,74 @@ In the forum post, provide the following information:
     *_Note:_* Only one account can be linked in plentymarkets for each Zalando seller account.
 --
 
-[#1100]
-== Preparing variations
-
-Zalando specifies some mandatory information. That means that a variation can be exported to the market if this mandatory information is saved for the variation. The information listed in <<#zalando-variations-mandatory>> must be saved for all variations that you want to export to Zalando.
-
-[[zalando-variations-mandatory]]
-.Mandatory fields for the variation
-[cols="1,3a"]
-|====
-|Mandatory data |Explanation
-
-| EAN
-a| An EAN must be saved for the variation.
-
-* In the *Setup » Item » Barcode* menu, an EAN must be created and linked to the referrer Zalando.
-* The EAN must be added to the *Settings* tab of the variation in the *Barcode* area and a barcode code must be entered.
-
-| Technical data
-a| Technical data must be saved for the item.
-
-* In the *Texts* tab of the item, text must be saved in the *Technical data* field.
-
-| Images
-a| An image must be saved for the variation.
-
-* in the *Images* tab of the item, the option *Zalando* must be selected from the drop-down list *Availability*.
-
-| Price
-a| A price must be saved for the variation.
-
-* The sales price must be activated for the referrer Zalando in the *Setup » Item » Sales prices*.
-* The sales price must be added in the *Settings* tab in the *Sales price* area of the variation.
-* A price must be saved for the sales price.
-|====
-
 [#400]
 == Linking categories
 
-Link your plentymarkets categories to the Zalando categories in order to display your items in these categories.
+Link your plentymarkets categories to the Zalando categories in order to display your variations in these categories.
 
 [.instruction]
 Linking categories:
 
 . Go to *Setup » Markets » Zalando » Category link*. +
-→ A list of your categories is shown. +
+→ A list of your categories is shown in the column *Category*. +
 → In the column *Zalando category*, you can link a Zalando category to each of your plentymarkets categories.
-. In the column *Zalando category*, select a Zalando category from the drop-down list.
+. In the column *Zalando category*, select a Zalando category from the drop-down list for all categories that you need.
 . *Save* (icon:save[role="green"]) the settings. +
-→ The category is linked to the selected Zalando category. +
-→ New items that you create for the plentymarkets category are also assigned to the Zalando category.
+→ The categories are linked to the selected Zalando categories. +
+→ New variations that you create for the plentymarkets category are also assigned to the linked Zalando category.
+
+[#250]
+== Activating the order referrer
+
+:market: Zalando
+:referrer: Zalando
+:referrer-option: pass:quotes[option *Zalando*]
+
+include::_textblocks/instructions/activate-referrer.adoc[]
+
+[#350]
+== Defining a sales price
+
+:referrer-price: Zalando
+
+include::_textblocks/instructions/define-sales-price.adoc[]
+
+[#300]
+== Setting the variation availability
+
+:market-availability: Zalando
+:option-availability: Zalando
+:web-api:
+
+include::_textblocks/instructions/variation-availability.adoc[]
+
+// Web API required!
+
+[#330]
+== _Optional:_ Saving SKU
+
+:referrer-sku: Zalando
+:referrer-id: 118
+:sku-others:
+
+include::_textblocks/instructions/sku-manually.adoc[]
+
+// Marketplace account not required!
 
 [#500]
 == Converting silhouettes to characteristics
 
-Zalando groups into "silhouettes". Zalando now calls these "article types". For example, "skirts", "dresses", and "trousers" are all silhouettes. In the *Setup » Markets » Zalando » Settings » Tab: Silhouettes* menu, you convert Zalando silhouettes to item characteristics. Silhouettes are imported into plentymarkets when Zalando is first set up.
+Zalando groups products into "silhouettes". Zalando also calls these silhouettes "article types". For example, "skirts", "dresses", and "trousers" are all silhouettes. In the *Setup » Markets » Zalando » Settings » Tab: Silhouettes* menu, you convert Zalando silhouettes to item characteristics. Silhouettes are imported into plentymarkets when Zalando is first set up. When Zalando publishes new silhouettes, plentymarkets updates these silhouettes on the following Wednesday. After that, you can convert new silhouettes into characteristics if necessary.
+
+[.instruction]
+Converting silhouettes to characteristics:
 
 . Go to *Setup » Markets » Zalando » Settings*.
 . Click on the *Silhouettes* tab.
-. Select the *Groups* for the characteristics that you want to convert.
+. Select the *Groups* for the characteristics that you want to convert. +
+*_Note:_* No groups? Either Zalando has not provided the silhouettes or you have not sent the FTP credentials to Zalando (see <<#150, After the registration>>).
 . *Save* (icon:save[role="green"]) the settings. +
-→ The characteristics are created in your plentymarkets system.
+→ Characteristics are created in your plentymarkets system based on the silhouettes.
 
 [#600]
 == Linking characteristics to items
@@ -376,14 +365,14 @@ Exporting Zalando item characteristics:
 | *Silhouette*
 |Values of all silhouettes
 
-| *Characteristics ID*
+| *Characteristic ID*
 |IDs of the characteristics, see also *Setup » Items » Characteristics*
 
 | *Characteristics type*
 a|Characteristic type
 
 * *empty* = No type +
-* *text* = Long text +
+* *text* = Text +
 * *int* = Whole number +
 * *selection* = Selection ID
 
@@ -415,6 +404,20 @@ Linking a characteristic to an item:
 
 If you have created attributes in your plentymarkets system, you need to link these attributes with Zalando. The following example describes how you can link the attribute “colour” with Zalando. Link further attributes in the same way.
 
+Link at least the following attributes to export your variations to Zalando:
+
+* Größe (size register)
+
+_and/or_
+
+* A colour for the 1st Farbcode (colour code)/Herstellerfarbe (manufacturer colour)
+
+_and/or_
+
+* Länge (length register) for length information (e.g. skirt length)
+
+NOTE: You can only link one size register and one length register to each attribute.
+
 :attribute-option: Zalando
 :attribute: Colour
 :attribute-dropdown:
@@ -426,13 +429,89 @@ include::_textblocks/instructions/link-attributes.adoc[]
 [#800]
 == Activating the payment method
 
+:market: Zalando
 :payment-method: Zalando Payment
-:folder: International
 
 include::_textblocks/instructions/activate-payment-method.adoc[]
 
+[#1100]
+== _Check list_ for exporting variations
+
+Zalando expects some mandatory product information. That means that a variation can be exported to the market if this mandatory information is saved for the variation. The information listed in <<#zalando-variations-mandatory>> must be saved for all variations that you want to export to Zalando.
+
+[[zalando-variations-mandatory]]
+.Mandatory fields for the variation
+[cols="1,3a"]
+|====
+|Mandatory data |Explanation
+
+| EAN
+a| An EAN must be saved for the variation.
+
+* In the *Setup » Item » Barcode* menu, an EAN must be created and linked to the referrer Zalando.
+* The EAN must be added to the *Settings* tab of the variation in the *Barcode* area and a barcode code must be entered.
+
+| Technical data
+a| Technical data must be saved for the item.
+
+* In the *Texts* tab of the item, text must be saved in the *Technical data* field.
+
+| Images
+a| An image must be saved for the variation.
+
+* in the *Images* tab of the item, the option *Zalando* must be selected from the drop-down list *Availability*.
+
+| Price
+a| A price must be saved for the variation.
+
+* The sales price must be activated for the referrer Zalando in the *Setup » Item » Sales prices*.
+* The sales price must be added in the *Settings* tab in the *Sales price* area of the variation.
+* A price must be saved for the sales price.
+
+| Supplier SKU
+a| An supplier SKU must be saved for each variation. Save this supplier SKU in the *Model* field of your variations.
+
+| Properties
+a| As a minimum, the following mandatory characteristics need to be linked to an item:
+
+* 1. Farbcode (colour code)
+* Altersgruppe(n) (age group(s))
+* Form of address
+* Größenregister (size list)
+* Hersteller-Code (manufacturer code)
+* Herstellerfarbe (manufacturer colour)
+* Jahreszeiten-Code (Seasonal code)
+* Silhouetten-Typ (silhouette type)
+
+| Attributes
+a| As a minimum, the following attributes must be linked to the variation:
+
+* Größe (size register)
+
+_and/or_
+
+* A colour for the 1st Farbcode (colour code)/Herstellerfarbe (manufacturer colour)
+
+_and/or_
+
+* Länge (length register) for length information (e.g. skirt length)
+
+NOTE: You can only link one size register or one length register to each attribute.
+|====
+
+[#1200-1]
+== Automating order processing
+
+The following event procedures are available for automating order processing with zDirect:
+
+* Automatically sending shipping confirmations (zDirect) (<<#1200, How?>>)
+* Automatically sending cancellations (zDirect) (<<#1300, How?>>)
+* Automatically sending returns (zDirect) (<<#1600, How?>>)
+
+If you still use the old API, changes to the order status are not communicated to Zalando with event procedures. (<<#850, How else?>>)
+
 [#1200]
-== Automatically sending shipping confirmations (zDirect)
+=== Automatically sending shipping confirmations (zDirect)
 
 A shipping confirmation can only be sent if an order meets the following conditions:
 
@@ -482,7 +561,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#1300]
-== Automatically sending cancellations (zDirect)
+=== Automatically sending cancellations (zDirect)
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically inform Zalando of cancellations. Note that orders marked as shipped can no longer be cancelled.
 
@@ -498,7 +577,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 
 | *Event*
 | *Status change*
-| e.g. *[8.0] Cancelled* +
+| Select a status, for example *[8.0] Cancelled* +
 *_Note:_* You can select a different event. However, ensure that the selected event is not triggered for orders that are flagged as shipped or that are cancelled by customers.
 
 | *Filter 1*
@@ -515,7 +594,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |====
 
 [#1600]
-== Automatically sending returns (zDirect)
+=== Automatically sending returns (zDirect)
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically inform Zalando about returns. Note that the order must be flagged as shipped.
 
@@ -549,6 +628,27 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |
 |====
 
+[#850]
+=== Order status changes (old API)
+
+If you still use the old API, changes to the order status are not communicated to Zalando with event procedures. Instead, Zalando automatically retrieves the order status via the interface. The order statuses *shipping confirmation*, *cancellation*, and *return* are sent to Zalando if the criteria listed in <<#table-zalando-order-status>> are met:
+
+[[table-zalando-order-status]]
+.Criteria for order statuses
+[cols="1,3a"]
+|====
+|Order status |Criteria
+
+| *Shipping confirmation*
+|The outgoing items have been booked. In addition, a return label was created and package numbers were added.
+
+| *Cancellation*
+|The order moved to *status [8.X]* or the quantity of an order item is *0*.
+
+| *Return*
+|A return was created in plentymarkets.
+|====
+
 [#1500]
 == Activating the Zalando account
 
@@ -557,7 +657,8 @@ After you have saved the settings for Zalando, activate your Zalando account in 
 [.collapseBox]
 .What to do if *This account cannot be activated.*
 --
-Data is not exchanged with Zalando. To activate Zalando’s zDirect API interface, your Zalando account must be linked to the plentymarkets developer account. This link is established automatically during the integration. However, plentymarkets also needs to generate additional credentials for the API and then save these credentials in your system. We cannot give you access to these credentials. As such, plentymarkets cannot give you access to these credentials. link:https://forum.plentymarkets.com/t/sammelthema-aktivierung-neuer-zalando-konten/600409[Ask our support staff to activate your account in this thread of the plentymarkets forum.]
+Data is not exchanged with Zalando. To activate Zalando’s zDirect API interface, your Zalando account must be linked to the plentymarkets developer account. This link is established automatically during the integration. However, plentymarkets also needs to generate additional credentials for the API and then save these credentials in your system. We cannot give you access to these credentials. As such, plentymarkets is not allowed to give you access to these credentials. Ask our support staff to activate your account in link:https://forum.plentymarkets.com/t/sammelthema-aktivierung-neuer-zalando-konten/600409[this thread^]{nbsp}icon:external-link[] of the plentymarkets forum.
+
 In the forum post, provide the following information:
 
     ** The company/brand name you used to register with Zalando
@@ -577,28 +678,6 @@ Activating the Zalando account:
 → The account settings are saved. +
 → The data exchange with Zalando is activated.
 
-[#850]
-== Order status changes (old API)
-
-Changes in the order status are not communicated to Zalando via event procedures. Instead, Zalando automatically retrieves the order status via the interface. The order statuses *shipping confirmation*, *cancellation*, and *return* are sent to Zalando if the criteria listed in <<#table-zalando-order-status>> are met:
-
-[[table-zalando-order-status]]
-.Criteria for order statuses
-[cols="1,3a"]
-|====
-|Order status |Criteria
-
-| *Shipping confirmation*
-|The outgoing items have been booked. In addition, a return label was created and package numbers were added.
-
-| *Cancellation*
-|The order moved to *status [8.X]* or the quantity of an order item is *0*.
-
-| *Return*
-|A return was created in plentymarkets.
-|====
-
-
 [#900]
 == Download reports
 
@@ -611,7 +690,7 @@ There are a number of reports available for Zalando. Go to the *Setup » Markets
 2+| *Export-Log*
 
 | *zalandoArticleExportLog.txt*
-a| The export log *zalandoArticleExportLog.txt* contains log entries for variations that could not be exported to Zalando. The report is generated once every night.
+a| The export log *zalandoArticleExportLog.txt* contains log entries for variations that could not be exported to Zalando. The export log is generated once every night.
 
 <<#905, How to download the export log>>
 
@@ -650,6 +729,54 @@ Downloading the export log:
 . In the *Export log* area, click on *Download file* (icon:eye[role="blue"]). +
 → The CSV file is generated.
 . Save the CSV file on your computer.
+. Filter the entries to only see the status *error*.
+. Check the entries. Correct any variation data in the plentymarkets back end. +
+*_Tip:_* You can ignore any entries with the status *warning*.
+
+[[zalando-errors]]
+.Error messages in the export log (zalandoArticleExportLog.txt)
+[cols="1,3a"]
+|====
+|Setting |Explanation
+
+
+| specialDescriptions
+| Technical data
+
+| brand
+| Characteristic *Zalando » Hersteller-Code* (manufacturer code)
+
+| season
+| Characteristic *Zalando » Jahreszeiten-Code* (season code)
+
+| genders
+| Characteristic *Zalando » Geschlecht* (gender)
+
+| ageGroups
+| Characteristic *Zalando » Altersgruppe(n)* (age groups)
+
+| sizeRegister
+| Characteristic *Zalando » Größen-Register* (size register)
+
+| mainColorCode
+| From the Characteristic *Zalando » 1. Farbcode* (Zalando » 1st colour code) +
+*_Exception:_* The variation has a colour attribute. In that case, attribute links are used to manage colours.
+
+| supplierColor
+| Characteristic *Zalando » Hersteller-Farbe* (Zalando » Manufacturer colour) or an optional 2nd attribute link
+
+| images
+| The variation must have at least one image.
+
+| ean
+| The variation needs a GTIN 13.
+
+| lengthRegister
+| Characteristic *Zalando » Längen-Register* (length register)
+
+| Keywords
+| Meta keywords (item tab: Texts)
+|====
 
 [#910]
 === Downloading a product status report
@@ -823,17 +950,17 @@ a| History of the status change of the scheduled price. For each change, the cel
 :market: Zalando
 include::_textblocks/instructions/viewing_logs.adoc[tag=data-log-intro]
 
-* *Identifikator* » *Zalando*
+* *Identifier* » *Zalando*
 
 include::_textblocks/instructions/viewing_logs.adoc[tag=data-log-config]
 
-Use the filters listed in <<#table-log-filters>> to limit the search results.
+Use any filters listed in <<#table-reference-types>> to limit the search results.
 
-[[table-log-filters]]
+[[table-reference-types]]
 .Filters
 [cols="1a,2a,2a"]
 |====
-|Log entries |Recommended filters |Explanations
+|Log entries |Recommended filters |Explanation
 
 | Price updates
 | * Identifier » Zalando
@@ -843,22 +970,15 @@ Use the filters listed in <<#table-log-filters>> to limit the search results.
     Reference value » PriceUpdate
     ** Reference type » ean +
     Reference value » EAN of variation
-| While generating <<#915, price reports>>, an error log is written for all entries that have been in the REJECTED, FAILED or OVERRIDDEN status since the file was last generated (minus one hour as a buffer).
+| While the <<#915, price reports>> are generated, an error log is also written for all entries that have been in the REJECTED, FAILED or OVERRIDDEN status since the file was last generated (minus one hour as a buffer).
 
 | Price reports
 | * Identifier » Zalando
-* Reference type » action
-* Reference value » PriceReporting
-| Log entries for errors when generating the price reports
+* References:
+  ** Reference type » action +
+  Reference value » PriceReporting
+| Log entries for errors during generation of price reports
 |====
-
-
-
-
-
-
-
-
 
 [#1000]
 == Viewing the API log
