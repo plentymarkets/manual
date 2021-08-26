@@ -4,37 +4,54 @@ include::{includedir}/_header.adoc[]
 :position: 50
 :url: orders/faq/exceeding-delivery-threshold
 :id: 2SGCUHA
-:keywords: exceeding delivery threshold, pass delivery threshold, delivery threshold, taxes, tax configuration, VAT rate, location, EU country, VAT configuration, VAT number, tax identification number
+:keywords: exceeding delivery threshold, pass delivery threshold, delivery threshold
 :author: team-order-payment
 
-You exceeded the delivery threshold in a country and have to correct orders and invoices now? If so, follow the steps listed below. Proceed with care because editing a VAT configuration is no longer possible once it is actively used. Therefore, be sure and check that you entered the correct data.
+You exceeded the common delivery threshold of € 10,000 for all EU countries and now have to correct orders and invoices? If so, follow the steps listed below. Proceed with care because editing the VAT configuration is no longer possible once it is actively used. Therefore, be sure and check that you entered the correct data. +
+For more information on this topic, see also the manual chapter <<orders/accounting#525, Delivery threshold and OSS>>.
 
 * *Step 1*: Cancelling invoices +
-Create an <<automation/event-procedures#100, event procedure>> so that a cancellation document is generated for orders you move into a separate status. Filter all required orders and move them into this <<orders/managing-orders#1230, separate status>>. By doing this, the invoices are cancelled and the orders are unlocked.
+Create an <<automation/event-procedures#100, event procedure>> so that a cancellation document is generated for the orders when you move them into the separate status. Filter all required orders and move them into a <<orders/managing-orders#1230, separate status>>. By doing this, the invoices are cancelled and the orders are unlocked.
 
 * *Step 2*: Create a new VAT configuration +
-Set up a new VAT configuration for the required country in the location from which you have exceeded the delivery threshold. +
-_Example_: You are delivering from the location Germany to France and exceed the delivery threshold in France. In this case you go to the location Germany and set up a new VAT configuration for France with the corresponding VAT rates. Remember to enter the correct VAT number, in this case the VAT number for France.
+Set up a new VAT configuration for each of your EU delivery countries in the location from which you have exceeded the delivery threshold. You can do it as described in the following instructions or you use the EU VAT rate assistants. +
+_Example_: You are delivering from the location Germany to France, Italy, Poland and Belgium and exceed the delivery threshold. In this case you need a VAT configuration each for France, Italy, Poland and Belgium with the corresponding VAT rates in the location Germany. Remember to add the correct VAT number for each country.
 
 [.instruction]
 Creating a new VAT configuration:
 
-. Go to *System » Client » [Select client] » Locations » [Select location] » Accounting*.
-. Change to the VAT rates tab.
+. Navigate to *System » Client » _Select client_ » Locations » _Select location_ » Accounting*.
+. Change to the *VAT rates* tab.
 . Click on *New configuration*.
 . Select a *country*.
-. Enter the highest VAT rate as *VAT rate A*. Enter further VAT rates in descending order.
+. Enter the *Tax rates* for the selected country.
 . Enter your *VAT number* for the required country.
-. Select a start date from which on the VAT rates will be valid. In this case, select the day on which you exceeded the delivery threshold.
+. Select a starting date from which on the VAT rates will be valid. In this case, select the day on which you exceeded the delivery threshold.
 . *Save* (icon:save[role="green"]) the settings.
 
-If the delivery threshold was also exceeded in other clients or locations, you have to set up a VAT configuration for those as well. If this is the case, repeat the instructions in step 2.
+If the delivery threshold was exceeded in other clients or locations, you have to set up a VAT configuration for those as well. If this is the case, repeat the instructions in step 2.
+
+[.collapseBox]
+.*Entering tax rates*
+--
+Enter the tax rates for the country selected in the field *Country*. Use the same structure of entering tax rates for every country. For example:
+
+*Tax rate A* = Standard rate (e.g. Germany 19%, France 20 %) +
+*Tax rate B* = First reduced rate (e.g. Germany 7%, France 10%,) +
+*Tax rate C* = Second reduced rate (e.g. France 5,5%,) +
+*Tax rate D* = super reduced rate / special rates (e.g. France 2,1%)
+
+*_Important_*: +
+- You can make changes to VAT rate configurations as long as they are not valid. Once the rates are, valid they cannot be changed or extended. +
+- Do not enter the same tax rate twice in one configuration. This leads to errors. +
+- Use the <<orders/accounting#620, taric codes>> for the different taxation of items. +
+--
 
 * *Step 3*: Recalculation of order +
 Recalculate the orders which you have moved to a new status. This way, the new VAT rates are applied. +
 Usually, orders are recalculated when a new invoice is generated. But by doing this, orders are also locked. Alternatively, you can go to the *Settings* tab in an order and save the order there. This way, the order is updated without being locked. If you have to recalculate a lot of orders, contact the plenty Support, they can take over.
 
 * *Step 4*: Generating new invoices +
-Proceed similarly to step 1. Create a new event procedure, so that the status change triggers the generation of a new invoice for each order. Move the orders into a further separate status. The invoices generated by this are updated because of the setup of the new VAT configuration and the recalculation of the orders.
+Proceed similarly to step 1. Create a new event procedure, so that the status change triggers the generation of new invoices for each order. Move the orders into a further separate status. The invoices generated by this are updated because of the setup of the new VAT configuration and the recalculation of the orders.
 
-Because of the new VAT configuration as described in step 2, all orders which are created or imported are calculated with the new VAT rates from the date set in the configuration. If you have further questions, you can contact our supporters in the link:https://forum.plentymarkets.com/[forum].
+Because of the new VAT configuration as described in step 2, all orders which are created or imported are calculated with the new VAT rates from the date on which is set in the configuration. If you have further questions, you can contact our supporters in the link:https://forum.plentymarkets.com/[forum].

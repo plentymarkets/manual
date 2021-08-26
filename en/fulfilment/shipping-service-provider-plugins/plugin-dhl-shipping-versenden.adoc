@@ -1,7 +1,7 @@
 = DHL Shipping (Versenden)
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: DHL Shipping, DHL Versenden, DHL Shipping (Versenden), DHL Shipping Versenden, DHL plugin, Plugin DHL, DHL business customer portal, DHL BCP, DHL assistant, DHL Shipping assistant, DHL Versenden assistant
+:keywords: DHL Shipping, DHL Versenden, DHL Shipping Versenden, DHL plugin, DHL business customer portal, DHL BCP, DHL assistant
 :description: Learn how to set up the “DHL Shipping (Versenden)” plugin in plentymarkets.
 :position: 100
 :url: fulfilment/shipping-service-provider-plugins/plugin-dhl-shipping-versenden
@@ -107,6 +107,12 @@ If you want to carry out further settings such as blocking customer classes or p
 icon:exclamation-triangle[role="red"] This workaround is still necessary because not all functions and settings have been transferred from the shipping profile to the assistant yet. We will implement the missing settings in the assistant step by step.
 ====
 
+
+
+[#completed-assistant-shipping-settings]
+[discrete]
+=== Completed *Shipping settings* assistant
+
 [.collapseBox]
 .Which data is shown when the *Shipping settings* assistant has been completed?
 --
@@ -149,7 +155,7 @@ If you linked the login details in the *DHL Shipping (Versenden): Settings combi
 
 Furthermore, determine for each of your logins whether shipping labels should always be generated, also when shipping orders with non-codable addresses are created, e.g. when the address data is not complete or not available at all. DHL corrects the incorrect data and bills you for this service. Afterwards, the order can be registered successfully.
 
-If the option *Force label generation* is not activated – i.e. the button is red icon:toggle-off[role="red"]–, non-codable shipping orders are rejected by DHL when trying to register them with DHL Versenden and an error message is displayed. The order is not registered and no shipping label is generated in your plentymarkets system.
+If the option *Force label generation* is _not_ activated – this means the button is grey (icon:toggle_off[set=material, role=darkGrey]) –, non-codable shipping orders are rejected by DHL when trying to register them with DHL Versenden and an error message is displayed. The order is not registered and no shipping label is generated in your plentymarkets system.
 
 *_Note:_*
 
@@ -160,24 +166,24 @@ If the option *Force label generation* is not activated – i.e. the button is r
 [discrete]
 ==== Shipper data
 
-In this step, enter your shipper data. The data is shown as sender address on the shipping label.
+In this step, enter your shipper data. The data is shown as sender address on the shipping label. Furthermore, you can show the bank details and polling data by activating the buttons (icon:toggle_on[set=material, role=skyBlue]).
 
-Do you want to display your company logo on the shipping label? To do so, select the option *Use shipper reference from the DHL business customer portal*. DHL then uses both address data that you saved in the DHL business customer portal and the company logo that you uploaded there. Only the sender reference is transferred to DHL, but not the sender data from plentymarkets.
+Do you want to display your company logo on the shipping label? To do so, select the option *Use shipper reference from the DHL business customer portal*. DHL then uses both address data that you saved in the DHL business customer portal and the company logo that you uploaded there. Only the sender reference is transferred to DHL, but _not_ the sender data from plentymarkets.
 
-*_Note:_* If you activate the *Show polling data* area at the bottom of this assistant step, the *Account reference* and *Sender reference* fields are visible (see <<#image-dhl-shipping-show-polling-data>>). Entering the account reference and the sender reference in this area is only necessary if you register your shipments via the _polling format_. The account reference and the sender reference are _not_ relevant for the transmission via the interface.
+*_Note:_* If you activate (icon:toggle_on[set=material, role=skyBlue]) the *Show polling data* button in this step, the *Account reference* and *Sender reference* fields are visible (see <<#image-dhl-shipping-show-polling-data>>). Entering the account reference and the sender reference in this area is only necessary if you register your shipments via the _polling format_. The account reference and the sender reference are _not_ relevant for the transmission via the interface.
 
 [[image-dhl-shipping-show-polling-data]]
 .Show polling data
-image::fulfilment/assets/dhl-assistant-show-polling-data.png[width=640, height=360]
+image::fulfilment/assets/dhl-shipping-show-polling-data.png[width=640, height=360]
 
 [discrete]
 ==== Billing number
 
 In this step, save your DHL billing number in accordance with your DHL contract.
 
-The billing number consists of 14 digits in total and is composed of 3 components: EKP (customer number), product and subscription. The first 10 digits are the EKP, the 11th and 12th digit are the product and the 13th and 14th digit are the subscription.
+The DHL billing number consists of 14 digits in total and is composed of 3 components: EKP (customer number), product and subscription. The first 10 digits are the EKP, the 11th and 12th digit are the product and the 13th and 14th digit are the subscription.
 
-*_Example of a billing number:_* `1234567890 53 01`
+*_Example of a DHL billing number:_* `1234567890 53 01`
 
 * `1234567890` is the EKP (customer number)
 * `53` is the product _DHL Paket International_
@@ -198,7 +204,11 @@ The following DHL products are available in the assistant:
 [discrete]
 ==== Reference on label
 
-In this step, you can select the references as they should appear on the shipping label. The setting that you select from the drop-down list *Reference per order* will be shown on the shipping label once. The setting that you select from the drop-down list *Reference per item position* will be shown on the shipping label per item position.
+In this step, you can select the references as they should appear on the shipping label:
+
+* The setting that you select from the drop-down list *Reference per order* will be shown on the shipping label _once_.
+
+* The setting that you select from the drop-down list *Reference per item position* will be shown on the shipping label _per item position_.
 
 *_Note:_* Both selected settings will be shown combined in one field on the label. The maximum number of characters is limited to 35. If the maximum number of characters is exceeded, the reference will be cut off after the last pipe and the sign *»* will be displayed.
 
@@ -206,11 +216,12 @@ You can select the following values for the order data:
 
 * Order ID
 * External order ID
-* Order ID + external order ID
+* Order ID / External order ID
 
 You can select the following values for the item data:
 
 * Variation number
+* Name1
 * Variation name
 * Variation ID
 * External variation ID
@@ -238,32 +249,67 @@ Link the shipping setting with the shipping region, your login details, your shi
 Check which options you have selected for *Default shipping method* and *Default shipping profile* in the *Setup » Client » [Select client] » Orders* menu. Adjust the settings, if needed.
 
 [TIP]
-If you select a billing number that is used for international shipments, the step *International shipments* automatically appears in the assistant. <<#international-shipments, Further down in this chapter>>, it is described which settings you can carry out in this step.
+If you select a DHL billing number that is used for international shipments, the step *International shipments* automatically appears in the assistant. <<#international-shipments, Further down in this chapter>>, it is described which settings you can carry out in this step.
 
 
 
 [IMPORTANT]
-.DHL Wunschpaket services only visible after having downloaded the DHL Wunschpaket plugin
+.DHL Preferred Delivery services only visible after having downloaded the DHL Preferred Delivery plugin
 ====
-The DHL Wunschpaket services *Preferred day*, *Preferred location* and *Preferred neighbour* are only available in this area once you have downloaded the DHL Wunschpaket plugin in the link:https://marketplace.plentymarkets.com/en/plugins/integration/dhlwunschpaket_5435[plentyMarketplace^]{nbsp}icon:external-link[] and installed it in a plugin set. +
+The DHL Preferred Delivery services *Preferred day*, *Preferred location* and *Preferred neighbour* are only available in this area once you have downloaded the DHL Preferred Delivery plugin in the link:https://marketplace.plentymarkets.com/en/plugins/integration/dhlwunschpaket_5435[plentyMarketplace^]{nbsp}icon:external-link[] and installed it in a plugin set. +
 Also for this plugin, there is an assistant available in the *Setup » Assistants » Plugins* menu in the relevant plugin set allowing you to simply and quickly set up the services.
 ====
 
-Furthermore, you can determine in this step whether your customers can use a finder in your online shop to select the address of a packstation or a post office as delivery address and whether you want to transfer a minimum package weight to DHL to register the order. Furthermore, you can determine that the phone numbers of your customers are neither transmitted to DHL nor displayed on the shipping label.
+Furthermore, use the buttons to determine whether your customers can use a finder in your online shop to select the address of a packstation or a post office as delivery address and whether you want to transfer a minimum package weight to DHL to register the order. Furthermore, you can determine that the phone numbers of your customers are neither transmitted to DHL nor displayed on the shipping label.
 
 [#international-shipments]
 [discrete]
 ==== International shipments
 
-This step is only visible if you selected a billing number for international shipments in the previous step *Settings combination*.
+This step is only visible if you selected a DHL billing number for international shipments in the previous step *Settings combination*.
 
 In this step, determine via the service _Sender's instructions_ how your parcels are handled in case they cannot be delivered in the recipient’s country. Select either the return to sender with costs or the abandonment (auction or disposal) of the parcels without costs. The service _Sender’s instructions_ is mandatory for international shipments.
 
 *Shipment to non-EU countries*
 
-If you ship your parcels to non-EU countries, activate (icon:toggle-on[role="green"]) the option *Export delivery*. Two additional fields appear where you can select the postage and the type of shipment for export deliveries. These two values are mandatory for export deliveries.
+If you ship your parcels to countries that do _not_ belong to the European Union, activate (icon:toggle_on[set=material, role=skyBlue]) the option *Export delivery*. Two additional fields appear where you can select the franking (see <<#table-franking-incoterms>>) and the type of shipment for export deliveries. These two values are mandatory for export deliveries. +
 Note also the information about the CN23 form in the <<#customs-declaration, Customs declaration>> chapter.
 
+[[table-franking-incoterms]]
+.Available frankings for export deliveries
+[cols="3,2,4"]
+|====
+|Franking |Abbreviation |Who pays?
+
+| *DAP (Free delivery excl. customs clearance, duties and taxes)*
+|DAP = Delivered at place
+a|
+* Sender pays freight charges
+* Recipient pays customs clearance, duties and taxes
+
+| *DAP (Free delivery incl. customs clearance, duties and taxes)*
+|DDP = Delivery duty paid
+a|
+* Sender pays freight charges, customs clearance, duties and taxes
+* Recipient pays nothing
+
+| *DXV (Free delivery incl. customs clearance, duties, excl. taxes)*
+|DXV = Delivery duty paid (excl. taxes)
+a|
+* Sender pays freight charges, customs clearance and duties
+* Recipient pays taxes
+
+| *DDX (Free delivery incl. customs clearance, excl. duties and taxes)*
+|DXV = Delivery duty paid (excl. duties and taxes)
+a|
+* Sender pays freight charges
+* Recipient pays customs clearance, duties and taxes
+
+|====
+
+[#completed-assistant-settings-combination]
+[discrete]
+==== Completed *DHL Shipping (Versenden): Settings combination* assistant
 
 [.collapseBox]
 .Which data is shown when the *DHL Shipping (Versenden): Settings combination* assistant has been completed?
@@ -309,7 +355,7 @@ Note that the following services _cannot_ be transmitted to DHL via the polling 
 
 * Return immediately, 2nd attempt of delivery, Verpackungsrücknahme, Unzustellbarkeitsnachricht (when selecting the product 01 - DHL Paket) +
 * immediate, after deadline abandonment (when selecting the product 53 - DHL Paket International) +
-* DHL Wunschpaket services
+* DHL Preferred Delivery services
 ====
 
 [#service-retail-outlet-routing]
@@ -407,7 +453,7 @@ image::fulfilment/assets/dhl-shipping-warenpost-standard-package.png[width=640, 
 
 * Go to the *DHL Shipping (Versenden): Basic settings* assistant and select the product *62 - Warenpost* in the *Billing number* step.
 
-* Go to the *DHL Shipping (Versenden): Settings combination* assistant and select the billing number for Warenpost and the appropriate services that you want to link with this shipping setting.
+* Go to the *DHL Shipping (Versenden): Settings combination* assistant and select the DHL billing number for Warenpost and the appropriate services that you want to link with this shipping setting.
 
 [#dhl-warenpost-settings-gkp]
 === Settings in the DHL business customer portal
@@ -427,43 +473,21 @@ For further information, refer to the link:https://www.dhl.de/en/geschaeftskunde
 [#dhl-shipping-user-rights]
 == Assigning rights for back end users
 
-In order to use the DHL Shipping plugin, you have to activate some rights for users with *Back end* access in their user account.
+:rights-purpose: work with the DHL Shipping (Versenden) plugin
+:right-one: pass:quotes[*Orders > Show*]
+:right-two: pass:quotes[*Orders > Update*]
+:right-three: pass:quotes[*Orders > Shipping > Shipping package*]
+:right-four: pass:quotes[*Orders > Shipping > Package type > Show*]
+:right-five: pass:quotes[*Orders > Order properties > Show*]
+:right-six: pass:quotes[*Orders > Documents > Create*]
 
+include::../../_includes/textblocks/instructions/rights.adoc[]
+
+[IMPORTANT]
+.*Ship* function in DHL business customer portal
+====
 Note that the function *Ship* has to be activated for the user in the DHL business customer portal.
-
-[.instruction]
-Assigning rights for back end users:
-
-. Go to *Setup » Settings » User » Rights » User*.
-. Use the search function (icon:search[role="blue"]) and open the account that should be edited.
-. In the *Authorisations* area, activate the rights as listed in <<#table-user-rights-back-end-user>>.
-. *Save* (icon:save[role="green"]) the settings.
-
-[[table-user-rights-back-end-user]]
-.Assigning rights for back end users
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-| *Orders > Show*
-|Authorises the back end user to see orders.
-
-| *Orders > Update*
-|Authorises the back end user to update orders.
-
-| *Orders > Shipping > Shipping package*
-|Authorises the back end user to see, update, create and delete the shipping packages as well as the items within the shipping package.
-
-| *Orders > Shipping > Package type > Show*
-|Authorises the back end user to see package types.
-
-| *Orders > Order properties > Show*
-|Authorises the back end user to see order properties.
-
-| *Orders > Documents > Create*
-|Authorises the back end user to create documents, such as shipping labels and export documents via a process and plentyBase.
-
-|====
+====
 
 [#activate-test-mode]
 == Activating the test mode
