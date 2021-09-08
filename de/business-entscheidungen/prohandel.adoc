@@ -248,6 +248,9 @@ Deaktiviere die Umschalttaste (icon:toggle-off[role="grey"]) nach dem ersten Imp
 Dadurch werden bei zukünftigen Importen nur noch neue Datensätze berücksichtigt.
 Ein solcher Arbeitsablauf schont Ressourcen.
 
+*_Hinweis_*:
+Bei Deaktivierung verschwindet automatisch das Feld *Ab Datum* weiter unten.
+
 2+| *Artikelfilter*
 
 | *Filtergrundlage*; +
@@ -256,6 +259,25 @@ Ein solcher Arbeitsablauf schont Ressourcen.
 
 . Wähle eine Grundlage aus der Dropdown-Liste aus.
 . Gib ein Datum in das Feld ein.
+
+[cols="1,4a"]
+!===
+!Grundlage !Erläuterung
+
+! *Erstes Wareneingangsdatum*
+!Dies ist ein Zeitstempel für Artikel in Prohandel.
+Der Zeitstempel wird erzeugt, wenn der Artikel erstmalig in Prohandel angelegt wird.
+Dieser Zeitstempel ändert sich nie.
+
+*_Hinweis_*:
+Dieser Zeitstempel ist nicht zu verwechseln mit dem _zweiten_ Wareneingangsdatum, welcher sich aktualisiert, sobald neuer Wareneingang auf den Artikel gebucht wird.
+
+! *Zweites Verkaufsdatum*
+!Dies ist ein Zeitstempel für Artikel in Prohandel.
+Der Zeitstempel gibt an, wann der Artikel zuletzt verkauft wurde.
+Dieser Zeitstempel wird fortlaufend in Prohandel aktualisiert, wenn ein neuer Verkauf getätigt wird.
+
+!===
 
 *_Beispiel_*:
 Stell dir vor, du verwendest das erste Wareneingangsdatum als Filtergrundlage und du gibst das Datum 01.01.2020 ein.
@@ -558,27 +580,37 @@ In diesem Schritt aktivierst du die Cron-Jobs, die automatisch ausgeführt werde
 
 [[table-cron-settings]]
 .Wann werden die Crons ausgeführt?
-[cols="1,1"]
+[cols="1,1,3a"]
 |====
-|Cron |Intervall
+|Cron |Intervall |Erläuterung
 
-|Artikelimport
+| *Artikelimport*
 |Täglich
+|Der Import basiert auf den zuvor gewählten <<business-entscheidungen/prohandel#70, Importeinstellungen>>.
+Es werden nur neue Artikel importiert und neue Varianten zu bestehenden Artikeln.
+Bestehende Artikel werden nicht über diesen Cron aktualisiert.
 
-|Artikelaktualisierung
+| *Artikelaktualisierung*
 |Stündlich
+|Bestehende Artikel und Varianten werden aktualisiert.
+Folgende Daten werden über diesen Cron aktualisiert:
 
-|Preisaktualisierung
+* Verknüpfte Varianteneigenschaften
+* Tags (sofern das Prohandel-Muster als Tag importiert wird)
+* Hersteller (sofern der Hersteller importiert wird)
+* EAN
+
+| *Preisaktualisierung*
 |Stündlich
+|
 
-|Bestandsaktualisierung
+| *Bestandsaktualisierung*
 |Alle 15 Minuten
+|
 |====
 
 [#120]
 == Neu importierte Artikeldaten öffnen und ergänzen
-
-//Frage an Team PM --> aktuell werden Artikel als inaktiv importiert. Wird sich das ändern? Falls ja, wisst ihr ungefähr wann?
 
 Deine Artikeldaten werden bei der nächsten Ausführung des Cron-Jobs von Prohandel nach plentymarkets übertragen.
 Dies setzt voraus, dass du:
@@ -595,7 +627,8 @@ Dies setzt voraus, dass du:
 . Öffne das Menü *Artikel » Artikel bearbeiten*.
 . Lege mit den <<artikel/einleitung/suche#, Suchfiltern>> in der linken Spalte fest, welche Artikel du abrufen willst.
 Zum Beispiel:
-.. Setze den Tag-Filter auf den im Assistant gewählten <<business-entscheidungen/prohandel#70, Tag für neu importierte Artikel>>.
+.. Setze den Filter *Aktiv* auf *ALLE* oder *Nein*, da Artikel beim Import inaktiv sind.
+.. Setze den Filter *Tag* auf den im Assistant gewählten <<business-entscheidungen/prohandel#70, Tag für neu importierte Artikel>>.
 . Klicke auf *Suchen* (icon:search[role="blue"]). +
 → Die Suchergebnisse werden in der Übersicht rechts angezeigt.
 . Klicke auf einen Artikel in der Übersicht, um den Artikeldatensatz zu öffnen.
@@ -621,7 +654,8 @@ Wenn du mit den übertragenen Artikeldaten zufrieden bist, dann kannst du deine 
 Zum Beispiel kannst du:
 
 * <<artikel/artikel-verwalten#50, Beschreibungstexte>>, <<artikel/artikel-verwalten#90, Produktbilder>> und relevante <<artikel/artikel-verwalten#50, Metadaten>> hinzufügen.
-* angeben, wo deine Produkte verkauft werden sollen, d.h. <<artikel/artikel-verwalten#340, Auftragsherkünfte>> und <<artikel/artikel-verwalten#340, Mandanten>> aktivieren.
+* angeben, wo deine Produkte verkauft werden sollen, d.h. <<artikel/artikel-verwalten#340, Auftragsherkünfte>> und <<artikel/artikel-verwalten#340, Mandanten>> wählen.
+* deine Varianten <<artikel/artikel-verwalten#200, aktivieren>>, sobald sie veröffentlicht werden sollen.
 
 Eine vollständige Liste aller Artikeldatenfelder in plentymarkets findest du auf der Handbuchseite <<artikel/artikel-verwalten#, Verzeichnis der Datenfelder>>.
 

@@ -248,6 +248,9 @@ Then deactivate the toggle button (icon:toggle-off[role="grey"]) after the first
 As a result, only new data records will be taken into account for future imports.
 Such a workflow saves resources.
 
+*_Note_*:
+When you deactivate the toggle button, the field *From date* automatically disappears.
+
 2+| *Item filter*
 
 | *Filter basis*; +
@@ -256,6 +259,26 @@ Such a workflow saves resources.
 
 . Select a basis from the drop-down list.
 . Enter a date into the field.
+
+[cols="1,4a"]
+!===
+!Basis !Explanation
+
+! *Incoming goods - first date*
+!This is a timestamp for items in Prohandel.
+The timestamp is generated when the item is initially created in Prohandel.
+This timestamp never changes.
+
+*_Note_*:
+Don't confuse this timestamp with the _second date_ for incoming goods.
+It's updated every time new goods are received for the item.
+
+! *Sale - second date*
+!This is a timestamp for items in Prohandel.
+The timestamp indicates when the item was last sold.
+This timestamp is updated in Prohandel every time the item is sold.
+
+!===
 
 *_Example_*:
 Imagine you use the first incoming goods date as the filter basis and you enter the date 01.01.2020.
@@ -558,27 +581,37 @@ In this step, you’ll activate the cron jobs that should run automatically (ico
 
 [[table-cron-settings]]
 .When do the crons run?
-[cols="1,1"]
+[cols="1,1,3a"]
 |====
-|Cron |Interval
+|Cron |Interval |Explanation
 
 |Item import
 |Daily
+|The import is based on the previously selected <<business-decisions/prohandel#70, import settings>>.
+Only new items are imported and new variations on existing items.
+Existing items are not updated with this cron.
 
 |Item update
 |Hourly
+|Existing items and variations are updated.
+This cron updates the following data:
+
+* Linked variation properties
+* Tags (assuming that the Prohandel pattern is imported as a tag)
+* Manufacturers (assuming that the manufacturer is imported)
+* EAN
 
 |Price update
 |Hourly
+|
 
 |Stock update
 |Every 15 minutes
+|
 |====
 
 [#120]
 == Opening and modifying newly imported item data
-
-//Frage an Team PM --> aktuell werden Artikel als inaktiv importiert. Wird sich das ändern? Falls ja, wisst ihr ungefähr wann?
 
 The next time the cron job runs, your item data will be transmitted from Prohandel to plentymarkets.
 This assumes that you’ve:
@@ -595,7 +628,8 @@ Open a few item data records and make sure that your item data was correctly imp
 . Go to *Item » Edit item*.
 . Use the <<item/introduction/search#, search filters>> on the left to specify which items you want to access.
 For example:
-.. Set the tag filter to whichever <<business-decisions/prohandel#70, tag for newly imported items>> you chose in the assistant.
+.. Set the *Active* filter to *ALL* or *No*, since items are inactive when they are imported.
+.. Set the *Tag* filter to whichever <<business-decisions/prohandel#70, tag for newly imported items>> you chose in the assistant.
 . Click on *Search* (icon:search[role="blue"]). +
 → The search results are displayed in an overview on the right.
 . Click on an item in the overview to open the item data record.
@@ -621,7 +655,8 @@ Once you’re happy with the item data that was transmitted, you can start prepa
 For example, you can:
 
 * add <<item/managing-items#50, descriptive texts>>, <<item/managing-items#90, product images>> and relevant <<item/managing-items#50, meta data>>.
-* specify where your products should be sold, i.e. activate <<item/managing-items#340, order referrers>> and <<item/managing-items#340, clients>>.
+* specify where your products should be sold, i.e. select <<item/managing-items#340, order referrers>> and <<item/managing-items#340, clients>>.
+* <<item/managing-items#200, activate>> your variations when you are ready for them to go live.
 
 For a complete list of all the item data fields in plentymarkets, refer to the page <<item/managing-items#, Directory of data fields>>.
 
