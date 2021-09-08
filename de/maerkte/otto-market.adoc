@@ -1,0 +1,801 @@
+= OTTO Market
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: OTTO Market, OTTO Market, OTTO, OTTO, ottomarket, otto.market
+:description: Multi-Channel in plentymarkets: Richte die Schnittstelle zu OTTO Market in deinem plentymarkets System ein.
+:position: 150
+:url: maerkte/otto/otto-market
+:id: SMKVRT7
+:author: team-multi-channel
+:ea-queue:
+
+//tag::otto-market-page[]
+OTTO Market ist das Marktplatzmodell von OTTO. Du wirst als Verkäufer:in an deinen Produkten angezeigt. Die Kommunikation mit Kund:innen läuft aber über OTTO.
+
+[#100]
+== Übersicht des automatischen Datenaustauschs
+
+Nachdem du OTTO Market in plentymarkets eingerichtet hast, stehen die in <<#data-exchange-market>> beschriebenen automatisierten Abläufe bereit:
+
+[[data-exchange-market]]
+.Häufigkeit des Datenaustauschs
+[cols="2,3a"]
+|====
+|Daten |Intervall
+
+| Artikelexport
+| einmal pro Nacht
+
+| Preisabgleich
+| einmal pro Nacht zeitgleich mit Artikelexport
+
+| Bestandsabgleich
+| alle 15 Minuten +
+*_Hinweis:_* Fällt eine Variante auf Bestand 0, wird diese Variante zum Schutz des Artikel-Rankings auf OTTO Market nach 15 Tagen automatisch deaktiviert. +
+Wenn neuer Bestand für eine solche deaktivierte Variante gebucht wird, wird die Variante mit dem nächtlichen Artikelexport wieder aktiviert.
+
+| Auftragsimport
+| alle 15 Minuten
+
+| Import von Retouren-Anmeldungen durch Endkund:innen
+| einmal pro Stunde
+
+| Aktualisierung der Kategoriegruppen/Katalogvorlagen
+| zweimal wöchentlich
+
+| Aktualisierung der Liste der Marken
+| alle drei Stunden
+|====
+
+[#200]
+== Konto einrichten
+
+Mit dem Assistenten *Grundeinstellungen - OTTO Market* im Menü *Einrichtung » Assistenten » Omni-Channel* richtest du OTTO Market in plentymarkets ein. Mit diesem Assistenten nimmst du außerdem Einstellungen zur Datenübertragung vor. Halte dafür die API-Zugangsdaten bereit, die du von OTTO Market erhalten hast.
+
+:menu-path: pass:quotes[*Einrichtung » Assistenten » Omni-Channel*]
+:assistant-name: Grundeinstellungen - OTTO Market
+:number-of-boxes: Info-Box
+
+include::_textblocks/instructions/assistant-basic-instructions.adoc[]
+
+[.collapseBox]
+.Erläuterungen zu den Optionen des Assistenten
+--
+[[table-otto-market-basic-settings-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+2+|Schritt *Einstellungen*
+
+| *Unter welchem Mandanten möchtest du deine Artikel verkaufen?*
+a| Wähle aus der Dropdown-Liste *Mandant* den Mandanten, der genutzt werden soll, um die Artikel-URL im Katalog zu erzeugen und dem OTTO Market-Aufträge zugeordnet werden sollen.
+
+| *Möchtest du dein OTTO Market-Benutzerkonto aktivieren?*
+a| _Nicht aktiviert_ = Die Einstellungen werden gespeichert, der Datenaustausch mit OTTO Market aber noch nicht gestartet. +
+_Akiviert_ = Der Datenaustausch mit OTTO Market wird nach Abschluss des Assistenten gestartet. +
+*_Empfehlung:_* Aktiviere das Benutzerkonto erst, nachdem du alle Einstellungen geprüft hast.
+
+2+|Schritt *API-Zugangsdaten*
+
+| *Wie lauten die API-Zugangsdaten?*
+a| * *API-Nutzer* (Pflichtangabe) = Gib den Benutzernamen für die API-Schnittstelle ein, den du von OTTO Market erhalten hast.
+* *Passwort* (Pflichtangabe) = Gib das Passwort für die API-Schnittstelle ein, das du von OTTO Market erhalten hast.
+
+2+|Schritt *Datenaustausch*
+
+| *Möchtest du OTTO Market-Aufträge in plentymarkets importieren?*
+| Aktivieren, um Aufträge automatisch einmal pro Stunde zu importieren. +
+*_Hinweis:_* Artikeldaten und Bestandsinformationen können nur übertragen werden, wenn diese Option aktiviert ist.
+
+| *Welche Daten möchtest du zu OTTO market übertragen?* +
+(wird nur angezeigt, wenn *Aufträge importieren* aktiviert ist)
+a| Wähle, welche Daten übertragen werden sollen. +
+*_Hinweis:_* Artikeldaten und Bestandsinformationen können nur übertragen werden, wenn Aufträge automatisch importiert werden.
+
+* *Artikeldaten* = Artikeldaten werden einmal täglich nachts abgeglichen.
+* *Bestandsinformationen* = Der Bestand wird alle 15 Minuten abgeglichen. +
+*_Hinweis:_* Fällt eine Variante auf Bestand 0, wird diese Variante zum Schutz des Artikel-Rankings auf OTTO Market nach 15 Tagen automatisch deaktiviert. Wenn neuer Bestand für eine solche deaktivierte Variante gebucht wird, wird die Variante mit dem nächtlichen Artikelexport wieder aktiviert.
+
+| *Möchtest du Retouren-Anmeldungen von OTTO Market in plentymarkets importieren?*
+| Aktivieren, um Retouren, die Kund*innen auf OTTO Market erstellen, einmal stündlich zu importieren. Jede retournierte Auftragsposition wird am ursprünglichen Auftrag im Tab *Aufträge* als einzelne Retoure angezeigt.
+
+| *Welchen Auftragsstatus sollen Retouren-Anmeldungen beim Import bekommen?* +
+(wird nur angezeigt, wenn *Retourenanmeldungen importieren* aktiviert ist)
+| Aus der Dropdown-Liste den Status wählen, der Retouren-Anmeldungen zugewiesen werden soll, wenn sie importiert werden. +
+*_Hinweis:_* Eine Retouren-Anmeldung garantiert nicht, dass Kund*innen die Retoure auch wirklich abschicken. Wähle deshalb einen Status, bei dem keine unerwünschten Ereignisaktionen ausgelöst werden, zum Beispiel Ereignisaktionen für das Erzeugen von Gutschriften.
+
+| *Möchtest du die Bestandsmenge für Varianten ohne Bestandsbeschränkung ersetzen?*
+a| *Bestandsmenge ersetzen* aktivieren, um eine Bestandsmenge einzugeben.
+
+| *Bestandsmenge* +
+(wird nur angezeigt, wenn *Bestandsmenge ersetzen* aktiviert ist)
+| Bestandsmenge eingeben. Diese Bestandsmenge wird übertragen, wenn für eine Variante die Einstellung *Beschränkung* auf *Keine* oder *Keinen WB für diese Variante führen* steht und der Bestand kleiner oder gleich 0 ist.
+
+| *Möchtest du Kaufbelege als externe Rechnungen importieren?*
+a| Standardmäßig werden Kaufbelege seit 15.12.2020 als normale Auftragsdokumente importiert. Bis zu diesem Zeitpunkt wurden die von OTTO Market bereitgestellten Auftragsdokumente mit dem Dokumententyp *Externe Rechnung* importiert, obwohl es sich dabei nicht um Rechnungen handelt. Wenn du aufgrund von Abhängigkeiten zu anderen Exporten, Schnittstellen oder Software-Produkten den Dokumententyp *Externe Rechnung* beibehalten möchtest, aktiviere die Option *Kaufbelege als externe Rechnungen importieren*. Weitere Infos findest du auch in unserem link:https://forum.plentymarkets.com/t/aenderung-des-dokumententyps-der-kaufbelege-von-otto-change-of-document-type-of-purchase-receipts-from-otto/619731[Forum^]{nbsp}icon:external-link[].
+
+2+|Schritt *Versanddienstleister*
+
+| *plentymarkets Versanddienstleister verknüpfen mit:*
+| Pro plentymarkets Versanddienstleister einen passenden OTTO Market Versanddienstleister aus der Dropdown-Liste wählen.
+
+2+|Schritt *Retouren-Versanddienstleister*
+
+| *plentymarkets Versanddienstleister verknüpfen mit:*
+| Pro plentymarkets Versanddienstleister für Retouren einen passenden Versanddienstleister für Retouren von OTTO Market aus der Dropdown-Liste wählen.
+
+| *Welcher Versanddienstleister soll als Alternative zu den verknüpften Retouren-Versanddienstleistern verwendet werden?*
+a| Wählen, welcher Versanddienstleister verwendet werden soll, wenn Retouren-Sendungsnummern via REST-API in plentymarkets ergänzt werden. Retouren-Sendungsnummern kommen zum Beispiel über die REST-API ins System, wenn du mit einem externen Fulfillment-Unternehmen arbeitest, das sich über diese API angebunden hat. Bei Retouren-Sendungsnummern via REST-API greifen die unter *OTTO Market-Versanddienstleister für Retouren* vorgenommenen Verknüpfungen nicht. +
+*_Hinweis:_* In den Dropdown-Listen sind keine Retouren-Versanddienstleister wählbar? Dann installiere mindestens ein Plugin für Versanddienstleister aus dem link:https://marketplace.plentymarkets.com/plugins/fulfillment-stock/versand[plentyMarketplace^]{nbsp}icon:external-link[].
+
+* *Aus Versandprofil ermitteln* (Standardeinstellung) = Der Versanddienstleister aus dem Versandprofil des Auftrags wird auch als Versanddienstleister für die Retoure verwendet.
+* *Alternativer Retouren-Versanddienstleister* = Einen Versanddienstleister aus der angezeigten Dropdown-Liste wählen. Dieser feste Versanddienstleister wird für alle Sendungen verwendet, bei denen die Verknüpfungen nicht greifen.
+* *Keinen alternativen Retouren-Versanddienstleister verwenden* = Es wird nicht versucht, einen alternativen Retouren-Versanddienstleister zu ermitteln. +
+*_Hinweis:_* Bei OTTO Market muss mit der Versandbestätigung eine Sendungsnummer für eine mögliche Retoure an OTTO Market gesendet werden. Wenn du die Option *Keinen alternativen Retouren-Versanddienstleister verwenden* wählst, wird deshalb die Versandmeldung unter Umständen nicht an OTTO Market übermittelt.
+
+|======
+--
+
+[#275]
+== Auftragsherkunft aktivieren
+
+:market: OTTO Market
+:referrer: OTTO Market
+:referrer-option: pass:quotes[Option *OTTO Market*]
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#300]
+== Variantenverfügbarkeit einstellen
+
+:market-availability: OTTO Market
+:option-availability: OTTO Market
+
+include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
+
+// Web-API NICHT erforderlich!
+
+Wenn du die Marktplatzverfügbarkeit einer Variante für OTTO Market im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen]» Tab: Verfügbarkeit* deaktivierst, wird die Variante innerhalb von 15 Minuten auf OTTO Market deaktiviert. Wenn du die Verfügbarkeit wieder aktivierst, wird die Variante erst mit dem nächtlichen Artikelexport auf OTTO Market reaktiviert.
+
+[#350]
+== Verfügbarkeit am Bild einstellen
+
+Damit Artikelbilder auf OTTO Market angezeigt werden, muss im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » Artikel-Tab: Bilder* die Verfügbarkeit *OTTO Market* am Bild hinzugefügt werden.
+
+[.instruction]
+Verfügbarkeit am Bild einstellen:
+
+. Öffne das Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » Artikel-Tab: Bilder*.
+. Aktiviere in der Dropdown-Liste *Verfügbarkeit* die Option *OTTO Market*.
+. *Speichere* (icon:save[role="green"]) die Einstellungen. +
+→ Das Bild wird am Artikel auf OTTO Market angezeigt.
+
+
+[#400]
+== Verkaufspreis festlegen
+
+:referrer-price: OTTO Market
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+
+[#425]
+== Zahlungsart aktivieren
+
+:marketplace: OTTO Market
+:payment-method: Otto Payment
+
+include::_textblocks/instructions/zahlungsart_aktivieren.adoc[]
+
+[#450]
+== Artikelexport einrichten
+
+Artikeldaten werden über Kataloge zu OTTO Market übertragen. Mit dem Assistenten *Kataloge erstellen - OTTO Market* erstellst du ein Marktplatz-Format pro OTTO-Kategoriegruppe.
+
+* Du arbeitest zum ersten Mal mit den Katalogen? Dann mach dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut>>. Dort findest du auch weitere Informationen zu den plentymarkets <<daten/daten-exportieren/kataloge-verwalten#_datenquellen_zuordnen, Datenfeldern>>, die du zuordnen kannst.
+
+[IMPORTANT]
+.Artikel können bei OTTO Market nicht gelöscht werden
+====
+Ein Artikel kann bei OTTO Market nicht gelöscht werden, weder durch plentymarkets noch durch OTTO selbst. Es ist nur möglich, den Artikel auf OTTO Market als *nicht verfügbar* zu kennzeichnen. Deshalb solltest du vor der Artikelübertragung besonders sorgfältig prüfen, dass im Katalog die korrekten Datenfelder verknüpft wurden.
+====
+
+=== Katalog mit dem Assistenten erstellen
+
+:catalogue-assistant-name: Kataloge erstellen - OTTO Market
+:number-of-boxes: Info-Boxen
+:catalogue-path: pass:quotes[*Einrichtung » Assistenten » Omni-Channel*]
+:catalogue-note: Für jede OTTO-Kategoriegruppe benötigst du einen eigenen Katalog.
+:mapping-fields: weitere
+
+include::_textblocks/instructions/catalogue-assistant-config.adoc[]
+
+[.collapseBox]
+.Schritt *Name und Kategoriegruppe*
+--
+[[table-otto-market-catalogue-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|====
+| Einstellung | Erläuterung
+
+| *Gib einen Namen für den Katalog ein.*
+a| Name für den Katalog eingeben.
+
+| *Für welche OTTO-Kategoriegruppe möchtest du einen Katalog erstellen?*
+| Eine OTTO-Kategoriegruppe aus der Dropdown-Liste wählen. +
+*_Hinweis:_* Für jede OTTO-Kategoriegruppe benötigst du einen eigenen Katalog.
+|====
+--
+
+[.collapseBox]
+.Schritt *Pflichtfelder*
+--
+In diesem Schritt des Assistenten legst du fest, welche in plentymarkets gespeicherten Variantendaten an den Marktplatz exportiert werden sollen. Dazu ordnest du jedem Pflichtfeld des Marktplatzes das plentymarkets Datenfeld zu, das die Daten enthält, die du an den Marktplatz exportieren möchtest. Welche Datenfelder Pflichtfelder sind, ist abhängig vom Marktplatz und von der Produktkategorie. Statt ein bestehendes plentymarkets Datenfeld zuzuordnen, kannst du für einige Marktplatz-Datenfelder auch direkt im Assistenten eine Eigenschaft erstellen.
+
+'''
+*Parent-SKU* = Wähle aus der Dropdown-Liste, welches plentymarkets Datenfeld als Parent-SKU exportiert werden soll.
+
+'''
+*SKU* = Wähle aus der Dropdown-Liste, welches plentymarkets Datenfeld als SKU exportiert werden soll.
+
+'''
+*plentymarkets Datenfeld wählen* = Ein bereits in plentymarkets vorhandenes Datenfeld wird an OTTO Market exportiert. Das Datenfeld aus der Dropdown-Liste *plentymarkets Datenfeld* wählen. +
+*_Hinweis:_* Die Zuordnungen, die du vornimmst, werden nicht auf Sinnhaftigkeit geprüft. Prüfe deshalb die Zuordnungen sorgfältig, bevor du den Export startest.
+
+'''
+*Eigenschaft erstellen* = Erstellt eine Eigenschaft und ordnet diese Eigenschaft dem Marktplatz-Datenfeld zu. Diese automatisch erstellte Eigenschaft wird im Menü <<artikel/einstellungen/eigenschaften#, Einrichtung » Einstellungen » Eigenschaften » Konfiguration>> gespeichert.
+
+Die automatisch erstellte Eigenschaft hat die folgenden Einstellungen:
+
+* Bereich = Artikel
+* Typ = _je nach Anforderung des Marktplatzes_
+* Sprache = Deutsch
+* Name = Feld der OTTO-Kategoriegruppe
+* Gruppe = OTTO Market
+
+'''
+*Verkaufspreis erstellen* = Erstellt einen neuen Verkaufspreis und ordnet diesen Verkaufspreis dem Marktplatz-Datenfeld zu. Dieser automatisch erstellte Verkaufspreis kann im Menü <<artikel/einstellungen/preise#400, Einrichtung » Artikel » Verkaufspreise>> geprüft und bearbeitet werden.
+
+Der automatisch erstellte Verkaufspreis hat die folgenden Einstellungen:
+
+* Abo-Intervall = Keins
+* Interner Name = OTTO Market
+* Externer Name = OTTO Market
+* Ab Menge = 1
+* Live umrechnen = Nein
+* Währung = Euro
+* Darstellung = Bei neuem Artikel immer anzeigen
+* Mandant = ALLE
+* Klasse = ALLE
+* Land = Deutschland
+
+'''
+*Barcode erstellen* = Erstellt einen Barcode *OTTO Market* und ordnet diesen Barcode dem Marktplatz-Datenfeld zu. Ist bereits ein Barcode mit dem Namen *OTTO Market* im System, wird stattdessen dieser Barcode zugeordnet. Der automatisch erstellte Barcode kann im Menü <<artikel/einstellungen/barcodes#100, Einrichtung » Artikel » Barcodes>> geprüft und bearbeitet werden.
+--
+
+[#600]
+=== Weitere Datenfelder im Katalog zuordnen (nicht im Assistenten)
+
+Mit dem Assistenten hast du bereits wichtige Pflichtfelder für die gewählte OTTO-Kategoriegruppe zugeordnet. Nachdem du den Assistenten abgeschlossen hast, musst du aber noch weitere Datenfelder zuordnen, um noch mehr Informationen zu deinen Produkten an OTTO Market zu übermitteln.
+
+TIP: Ordne mindestens die Marktplatz-Datenfelder *Marke*, *Versandart* und *Kategorie* plentymarkets Datenfeldern zu.
+
+:catalogue-assistant:
+include::_textblocks/instructions/katalog-datenfelder-zuordnen.adoc[]
+
+
+[#905]
+=== Besonderheiten bei der Zuordnung von Datenfeldern
+
+Jeder Marktplatz strukturiert Artikeldaten anders. Deshalb treten beim Zuordnen von Datenfeldern bestimmte Sonderfälle auf. In <<#catalogue-otto-market-mappings>> findest du Hinweise dazu, was du beim Zuordnen von Datenfeldern für OTTO Market beachten solltest.
+
+[[catalogue-otto-market-mappings]]
+.Besonderheiten bei der Katalogzuordnung
+[cols="1,3a"]
+|====
+| Marktplatz-Datenfeld | plentymarkets Datenfeld
+
+| *Kategoriegruppenbezogene Attribute*
+| Aktuelle Informationen zu den OTTO Market-Attributen findest du in der Kategorienliste von OTTO Market link:https://og2gether-my.sharepoint.com/:x:/g/personal/micha_saake_otto_de/EXg5Id8bTxNKuV8mRkQ1wrsBNFuBrjP8iQJINZjcezvjdg?rtime=3FovyUEf2Ug[in der Registerkarte "Attributsliste"^]{nbsp}icon:external-link[]
+
+| *Lieferzeit in Tagen* +
+(Pflichtfeld)
+| Gib als Lieferzeit die Gesamtlieferzeit in Tagen an, also vom Zeitpunkt der Bestellung bis zur Zustellung durch einen Transportdienstleister. +
+Beim Export übersetzt OTTO die Werte in die Kund:innen bekannten Lieferaussagen von OTTO.
+
+| *Kategorie*
+| Aktuelle Informationen zu den OTTO Market-Attributen findest du in der Kategorieliste von OTTO Market link:https://og2gether-my.sharepoint.com/:x:/g/personal/micha_saake_otto_de/EXg5Id8bTxNKuV8mRkQ1wrsBNFuBrjP8iQJINZjcezvjdg?rtime=ueiZ-kgf2Ug[in der Registerkarte "Übersicht Kategorien"^]{nbsp}icon:external-link[]
+
+[.collapseBox]
+.Lieferzeiten: Liste und Beispiele
+--
+[cols="1,3"]
+!===
+! *Lieferzeit*
+! *OTTO-Lieferaussage*
+
+! 2 Tage
+! lieferbar - in 1-2 Werktagen bei Ihnen
+
+! 3 Tage
+! lieferbar - in 2-3 Werktagen bei Ihnen
+
+! 4 Tage
+! lieferbar - in 3-4 Werktagen bei Ihnen
+
+! 5 Tage
+! lieferbar - in 4-5 Werktagen bei Ihnen
+
+! 6 Tage
+! lieferbar - in 5-6 Werktagen bei Ihnen
+
+! 7 Tage
+! lieferbar - in 6-7 Werktagen bei Ihnen
+
+! 8 Tage
+! lieferbar - in 6-8 Werktagen bei Ihnen
+
+! 9 Tage
+! lieferbar - in 7-9 Werktagen bei Ihnen
+
+! 10 Tage
+! lieferbar - in 8-10 Werktagen bei Ihnen
+
+! 11 Tage
+! lieferbar - in 9-11 Werktagen bei Ihnen
+
+! 14 Tage
+! lieferbar in 2 Wochen
+
+! 21 Tage
+! lieferbar in 3 Wochen
+
+! 28 Tage
+! lieferbar in 4 Wochen
+
+! 35 Tage
+! lieferbar in 5 Wochen
+
+! 42 Tage
+! lieferbar in 6 Wochen
+
+! 49 Tage
+! lieferbar in 7 Wochen
+
+! 56 Tage
+! lieferbar in 8 Wochen
+
+! 63 Tage
+! lieferbar in 9 Wochen
+
+! 70 Tage
+! lieferbar in 10 Wochen
+
+! 77 Tage
+! lieferbar in 11 Wochen
+
+! 84 Tage
+! lieferbar in 12 Wochen
+
+! 91 Tage
+! lieferbar in 13 Wochen
+
+! 98 Tage
+! lieferbar in 14 Wochen
+
+! 105 Tage
+! lieferbar in 15 Wochen
+
+! 112 Tage
+! lieferbar in 16 Wochen
+!===
+
+*_Beispiele:_*
+
+* Wenn du als Lieferzeit kleiner oder gleich 2 angibst, wird Endkund:innen auf otto.de "lieferbar - in 1 - 2 Werktagen bei Ihnen" angezeigt.
+* Wenn du als Lieferzeit größer 11 aber kleiner oder gleich 14 angibst, wird wird Endkund:innen auf otto.de "lieferbar in 2 Wochen" angezeigt.
+--
+
+| *"My Otto"-Identifikationsnummer* +
+(Pflichtfeld)
+| Die "My Otto"-Identifikationsnummer (MOIN) ist eine eindeutige Produktkennzeichnung von OTTO Market. Ab 11.08.2021 weist OTTO Market jeder Variante eine eindeutige MOIN zu.
+
+* Im Katalog wird dem Marktplatz-Datenfeld *"My Otto"-Identifikationsnummer* automatisch das plentymarkets Datenfeld *MOIN* zugeordnet.
+* Deine Varianten werden automatisch mit einer MOIN ausgestattet: OTTO Market weist deinen Varianten beim Export eine MOIN zu.
+* Es gibt zwei Möglichkeiten, wie deine Varianten zu einer MOIN kommen:
+  ** *_Möglichkeit 1:_* Das Produkt wird bereits auf OTTO Market verkauft. +
+  → Deiner Variante wird eine existierende MOIN zugewiesen. +
+  ** *_Möglichkeit 2:_* Das Produkt wird auf OTTO Market noch nicht angeboten. +
+  → OTTO Market erstellt eine neue MOIN und weist sie deiner Variante zu.
+
+Unabhängig davon, ob die MOIN bereits existiert oder OTTO Market eine neue MOIN für die Variante erstellt, ist der Ablauf wie folgt:
+
+. Die Variante wird zu OTTO Market exportiert.
+. 15 Minuten später vergibt OTTO Market eine MOIN für die Variante.
+. Die MOIN wird in dein plentymarkets System importiert und an der Variate gespeichert. Du findest sie im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Tab: Einstellungen » Bereich: ASIN/ePID*.
+. Beim nächsten Export wird die MOIN mit den anderen Artikeldaten exportiert. +
+*_Hinweis:_* Wenn du eine Variante zum ersten Mal exportierst, für die es auf OTTO Market schon Angebote anderer Händer:innen gibt, kann es bis zu zwei Nächte dauern, bis dein Angebot bei OTTO Market online ist.
+
+|====
+
+[#602]
+=== _Beispiel:_ Datenfeld "Bestand" verknüpfen
+
+Im Folgenden wird beispielhaft beschrieben, wie du das Datenfeld *Bestand* mit Artikeldaten aus plentymarkets verknüpfst. Mit dem Datenfeld *Bestand* bestimmst du, aus welchem Lager der Bestand an OTTO Market übertragen wird.
+
+[.instruction]
+Datenfeld "Bestand" verknüpfen:
+
+. Öffne das Menü *Daten » Kataloge*.
+. Klicke auf den Katalog. +
+→ Der Katalog wird geöffnet.
+. Navigiere zum OTTO Market-Datenfeld *Bestand*.
+. Klicke auf *Datenfeld hinzufügen*.
+. Klicke in der Liste links auf den Ordner *Bestand*. +
+→ In der Dropdown-Liste werden alle in plentymarkets erstellten Lager angezeigt.
+. Klicke auf das Plus für das Lager, aus dem der Bestand zu OTTO Market übertragen werden soll. +
+*_Optional:_* Um Bestand aus mehreren Lagern zu OTTO Market zu übertragen, klicke auf *Ausweich-Datenfeld hinzufügen* (icon:link[role="yellow"]) und füge ein weiteres Lager hinzu. +
+→ Der Bestand aller Lager, die als Datenfelder und Ausweich-Datenfelder hinzugefügt wurden, wird addiert. +
+*_Hinweis:_* Wenn du das Datenfeld *Bestand* nicht mit einem Lager verknüpfst, wird die Summe der Nettobestände aller Vertriebslager (Datenfeld *Virtuelles Gesamtlager*) an OTTO Market übertragen.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[#701]
+== Im Assistenten erstellte Felder mit Varianten verknüpfen
+
+:property-group: OTTO Market
+
+include::_textblocks/instructions/assistent-quellen-verknuepfen.adoc[]
+
+[#475]
+== Varianten mit OTTO-Kategoriegruppe verknüpfen
+
+Nachdem du mit dem Assistenten *OTTO Market Kataloge erstellen* oder manuell ein Marktplatz-Format für OTTO Market erstellt hast, wird in deinem plentymarkets System die Eigenschaft *OTTO-Kategoriegruppe* erstellt. Für jede OTTO-Kategoriegruppe, die du im ersten Schritt *Name und Kategoriegruppe* des Assistenten wählst, wird die gewählte OTTO-Kategoriegruppe als neuer Auswahlwert zur Eigenschaft *OTTO-Kategoriegruppe* hinzugefügt. Damit deine Varianten im gewünschten Katalog exportiert werden, müssen sie im *Tab: Eigenschaften* einer Variante mit der Eigenschaft *OTTO-Kategoriegruppe* verknüpft werden.
+
+[.instruction]
+Variante mit OTTO-Kategoriegruppe verknüpfen:
+
+. Öffne das Menü *Artikel » Artikel bearbeiten » [Artikel öffnen]*.
+. Wechsele in das *Tab: Varianten*.
+. Öffne die Variante, die du verknüpfen möchtest.
+. Wechsele in das *Tab: Eigenschaften*.
+. Wähle im Bereich *Varianteneigenschaften* aus der Dropdown-Liste *Eigenschaften* die Eigenschaft *OTTO-Kategoriegruppe* und klicke auf *Hinzufügen* (icon:plus-square[role="green"]). +
+→ Die Eigenschaft wird hinzugefügt.
+. Wähle für die Eigenschaft *OTTO-Kategoriegruppe* aus der Dropdown-Liste *Wert* die gewünschte Kategoriegruppe. +
+*_Hinweis:_* An OTTO Market wird nicht der Name des Katalogs, sondern der Name des Marktplatz-Formats übertragen. +
+→ Die Variante wird im zugehörigen Katalog exportiert. +
+*_Beispiel:_* Wählst du den Wert *Betten*, wird die Variante im Katalog für die OTTO-Kategoriegruppe *Betten* exportiert.
+. *Speichere* (icon:save[role="green"]) die Einstellungen.
+
+[#2000]
+== Katalogexport zu OTTO Market aktivieren
+
+:interval: einmal täglich nachts
+:market: OTTO Market
+
+include::_textblocks/instructions/catalogue-activation.adoc[]
+
+[#2200]
+== _Checkliste:_ Voraussetzungen für den Variantenexport
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-intro]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-variation-active]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-availability-active]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-net-stock]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-sales-price]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-categories-otto]
+
+:anchor-catalogue-mapping: #600
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-catalogue-mapped-multi]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-catalogue-active]
+
+:checklist-log-integration: pass:quotes[*Otto itemexport*]
+:checklist-log-reference: pass:quotes[*Plenty\Modules\Otto\Item\Services\ItemExportService*]
+
+include::_textblocks/instructions/checklist-variations.adoc[tag=checklist-check-log]
+
+[#1050]
+== Auftragsbearbeitung bei OTTO Market
+
+Im Folgenden erfährst du, wie Aufträge bei OTTO Market verarbeitet werden.
+
+[#1100]
+=== Auftragsimport
+
+* OTTO Market-Aufträge werden als unbezahlt in Status *[3] Warten auf Zahlung* in plentymarkets importiert.
+* Aufträge mit dem OTTO Market-Status ANNOUNCED werden ohne Adressdaten in Status *[1] Unvollständige Daten* in plentymarkets importiert. Hierbei handelt es sich um Aufträge mit der Zahlungsmethode Vorkasse, die noch nicht bezahlt wurden. Sobald der Auftrag bei OTTO in den Status PROCESSABLE wechselt, werden die Adressen am Auftrag ergänzt und der Auftrag wird in Status *[3] Warten auf Zahlung* verschoben. +
+*_Wichtig:_* Standardmäßig wird für Aufträge im Status *[1] Unvollständige Daten* kein Warenbestand reserviert. Damit für diese Aufträge Warenbestand reserviert wird, öffne das Menü *Einrichtung » Aufträge » Einstellungen*. Wähle bei der Einstellung *Status Auftragsreservierung (Reservierung von Beständen)* für die Option *von* den Status *[1] Unvollständige Daten*. Wähle in der letzten Dropdown-Liste die Option *Alle Aufträge*.
+* Nachdem ein Auftrag von OTTO Market bestätigt wurde, wechselt der Auftrag in den Status *[5] Freigabe Versand*.
+* In plentymarkets wird eine Zahlung für den Auftrag erstellt und der Auftrag als *bezahlt* gekennzeichnet. +
+Falls der Auftrag bei OTTO Market per Überweisung bezahlt wurde, kann die Auftragsbestätigung länger dauern als bei anderen Zahlungsarten. In plentymarkets wird die Zahlungsart immer als *OTTO Payment* angezeigt. +
+* Wenn ein Auftrag nicht bezahlt wird, storniert OTTO Market den Auftrag nach einer gewissen Zeit und sendet eine Stornierung an plentymarkets. In plentymarkets wechselt der unbezahlte Auftrag dann automatisch in den Status *[8] Storniert*.
+
+[#1200]
+=== Rechnungsimport
+
+* Rechnungen für OTTO Market-Aufträge werden von OTTO Market selbst erstellt und automatisch in plentymarkets importiert, sobald du den Versand der Ware bei OTTO Market bestätigt hast.
+* Eine Versandbestätigung sendest du mit der Ereignisaktion <<#700, Versandinformation an OTTO melden>> an OTTO Market.
+* Die Rechnungsdokumente sind nach erfolgreicher Versandbestätigung im Tab *Belege* des Hauptauftrags verfügbar. Das heißt, dass du für OTTO Market keine Rechnungen in plentymarkets erstellen kannst.
+* Da Rechnungen immer dann von OTTO Market erstellt werden, wenn der Versand eines Artikels bestätigt wurde, werden auch Rechnungen für Teillieferungen generiert.
+
+[#1400]
+=== Gutschriftenimport
+
+* Gutschriften und Teilgutschriften für OTTO Market-Aufträge werden von OTTO Market selbst erstellt und automatisch in plentymarkets importiert, sobald du eine Retoure der Ware bei OTTO Market bestätigt hast.
+* Die Gutschriftendokumente sind nach erfolgreicher Retourenbestätigung im Tab *Belege* des Auftrags verfügbar.
+* Eine Retoure bestätigst du mit der Ereignisaktion *Retoure an OTTO melden*.
+* Wenn du eine Retoure meldest, werden die Bestandteile der einzelnen Positionen deiner Gutschrift/Retoure an OTTO gesendet. Das führt dazu, dass OTTO immer den kompletten Verkaufspreis einer Position erstattet. Es ist deshalb nicht möglich, OTTO Market Teilerstattungen für eine Auftragsposition zu melden. Auch wenn du einzelne Positionen im Preis korrigiert hast, hat dies also keinen Einfluss auf das von OTTO erstellte Erstattungsdokument.
+* Da Gutschriften immer dann von OTTO Market erstellt werden, wenn die Retoure eines Artikels bestätigt wurde, werden auch Gutschriften für Teilretouren generiert.
+
+[#500]
+== Auftragsabwicklung automatisieren
+
+Richte <<automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um OTTO Market automatisch über Änderungen des Auftragsstatus zu informieren. Folgende Ereignisaktionen stehen für OTTO Market zur Verfügung:
+
+* Retourenlabel generieren (<<#550, Wie?>>)
+* Versandinformation an OTTO melden (<<#700, Wie?>>)
+* Auftragsstornierung an OTTO melden (<<#800, Wie?>>)
+* Retoure an OTTO melden (<<#900, Wie?>>)
+* Ablehnung der Retoure an OTTO melden (<<#1000, Wie?>>)
+
+[IMPORTANT]
+.Reihenfolge der Ereignisaktionen beachten
+====
+Beachte bei der Auftragsbearbeitung unbedingt die Reihenfolge der Ereignisaktionen. Zuerst muss die Ereignisaktion <<Retourenlabel generieren, Retourenlabel generieren>> ausgelöst werden und danach die Ereignisaktion <<Versandinformation an OTTO melden, Versandinformation an OTTO melden>>. Wenn zuvor kein Retourenlabel erstellt wurde, kann keine Versandbestätigung an OTTO Market gesendet werden.
+====
+
+[#550]
+=== Retourenlabel generieren
+
+Wenn OTTO Market-Aufträge in dein plentymarkets System importiert wurden, müssen für diese Aufträge Retourenlabels generiert werden, bevor der Versand bei OTTO Market bestätigt wird. Mit einer Ereignisaktion zum Erstellen eines Retourenlabels wird automatisch eine Tracking-Nummer für eine Retoure (retTrackingNumber) erstellt, die am Auftrag gespeichert wird. Dadurch kann sichergestellt werden, dass es eine Tracking-Nummer für eine Retoure gibt, falls Kund:innen einen Artikel zurücksenden möchten. +
+
+Damit die Tracking-Nummer zusammen mit der Versandbestätigung an OTTO Market gesendet wird, muss ein Retourenlabel erstellen werden. Retourenlabels können zurzeit mit DHL, Hermes und GLS Shipping generiert werden. Du benötigst dazu die folgenden Versanddienstleister-Plugins:
+
+* link:https://marketplace.plentymarkets.com/plugins/integration/dhlretoureonline_6714[DHL Retoure Online^]
+* link:https://marketplace.plentymarkets.com/plugins/integration/glsshipping_6463[GLS Shipping^]
+* link:https://marketplace.plentymarkets.com/plugins/integration/hermesshippinginterface_5437[Hermes^]
+
+[#550-1]
+==== DHL-Retourenlabel generieren
+
+:table-event-procedure: <<#dhl-retouren-label-otto>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[dhl-retouren-label-otto]]
+.Ereignisaktion zum Erstellen eines DHL-Retourenlabels
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, z.B. *Statuswechsel: [5] Freigabe Versand* +
+*_Hinweis:_* Wähle ein Ereignis, das vor der Versandbestätigung liegt. Das Ereignis *Neuer Auftrag* wird _nicht_ empfohlen.
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *OTTO Market*
+
+| *Aktion*
+| *Plugins > DHL Retoure Online-Label generieren* +
+*_Hinweis:_* Das Plugin link:https://marketplace.plentymarkets.com/plugins/integration/dhlretoureonline_6714[DHL Retoure Online^] muss installiert, aktiviert und eingerichtet sein, damit diese Aktion verfügbar ist.
+|
+|====
+
+[#550-1]
+==== GLS-Retourenlabel generieren
+
+:table-event-procedure: <<#gls-retouren-label-otto>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[gls-retouren-label-otto]]
+.Ereignisaktion zum Erstellen eines GLS-Retourenlabels
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, z.B. *Statuswechsel: [5] Freigabe Versand* +
+*_Hinweis:_* Wähle ein Ereignis, das vor der Versandbestätigung liegt. Das Ereignis *Neuer Auftrag* wird _nicht_ empfohlen.
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *OTTO Market*
+
+| *Aktion*
+| *Plugins > GLSShipping: Register return label* +
+*_Hinweis:_* Das Plugin link:https://marketplace.plentymarkets.com/plugins/integration/glsshipping_6463[GLS Shipping^] muss installiert, aktiviert und eingerichtet sein, damit diese Aktion verfügbar ist.
+|
+|====
+
+[#550-2]
+==== Hermes-Retourenlabel generieren
+
+Bei Hermes können Retourenlabels nicht über eine Ereignisaktion erstellt werden. Bevor das Versandetikett für OTTO Market erstellt wird, muss deshalb das Retourenlabel für Hermes entweder manuell über das <<fulfillment/versand-center#, Versand-Center>> oder über eine <<automatisierung/prozesse/aktionen#preamble, Aktion>> in einem Prozess erstellt werden. Weitere Informationen findest du im link:https://marketplace.plentymarkets.com/plugins/integration/hermesshippinginterface_5437[User Guide^] des Hermes-Plugins.
+
+[#700]
+=== Versandinformation an OTTO melden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market über den Versand des Artikels zu informieren.
+
+[TIP]
+.Adresse des Absenders speichern
+====
+Die Versandbestätigung wird nur an OTTO Market gesendet, wenn die Absenderadresse des Händlers gespeichert wurde. Die Adresse speicherst du in den Einstellungen eines Lagers unter *Einrichtung » Waren » Lager » [Lager wählen] » Einstellungen*. Die Adresse muss in dem Lager gespeichert sein, das für den jeweiligen Auftrag verwendet wird.
+====
+
+:table-event-procedure: <<#versandbestaetigung-otto>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[versandbestaetigung-otto]]
+.Ereignisaktion um Versandinformation an OTTO Market zu melden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Statuswechsel*
+| Status wählen, zum Beispiel *[7] Warenausgang gebucht* +
+*_Hinweis:_* Wenn noch kein Retourenlabel erstellt wurde, kann keine Versandbestätigung an OTTO Market gesendet werden. Wähle deshalb ein Ereignis, das erst eintritt, nachdem die Ereignisaktion *Retourenlabel generieren* ausgelöst wurde.
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *OTTO Market*
+
+| *Aktion*
+| *Plugins > Versandinformation an OTTO melden*
+|
+|====
+
+[#800]
+=== Auftragsstornierung an OTTO melden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market über die Stornierung von Aufträgen zu informieren. Es kann aus verschiedenen Gründen erforderlich sein, Aufträge zu stornieren. Wenn zum Beispiel Kund:innen den Auftrag stornieren, wähle *Status [8.1] Storniert durch Kunden*.
+
+:table-event-procedure: <<#auftragsstornierung-otto>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[auftragsstornierung-otto]]
+.Ereignisaktion, um Auftragsstornierungen an OTTO Market zu melden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Auftragsänderung: Statuswechsel*
+| Ereignis wählen, zum Beispiel *[8.1] Storniert durch Kunden* +
+*_Hinweis:_* Aufträge, die OTTO Market storniert, werden mit dem Status *[8] Storniert* in plentymarkets importiert. Wähle deshalb einen anderen Status, weil du sonst OTTO Market über eine dort bereits durchgeführte Stornierung informierst.
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *OTTO Market*
+
+| *Aktion*
+| *Plugins > Auftragsstornierung an OTTO melden*
+|
+|====
+
+[#900]
+=== OTTO Market-Retouren annehmen
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market zu informieren, wenn du Retouren annimmst.
+
+*_Ablauf des Retourenprozesses:_*
+
+. Die plentymarkets Aktion *Retoure an OTTO melden* wird ausgelöst.
+. OTTO erstellt einen Gutschriftbeleg.
+. In plentymarkets wird ein Auftrag des Typs *Gutschrift* erstellt. +
+*_Hinweis:_* Wenn Preise und/oder Versandkosten abweichen, werden diese Information anhand der Belegdaten korrigiert.
+. Der von OTTO erstellte Gutschriftbeleg wird am Auftrag des Typs *Gutschrift* gespeichert.
+. An der Retoure wird ein Kindauftrag des Typs *Gutschrift* erstellt.
+
+:table-event-procedure: <<#retoure-otto>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[retoure-otto]]
+.Ereignisaktion, um Retouren an OTTO Market zu melden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, zum Beispiel *Auftragsänderung: Statuswechsel* +
+*_Hinweis:_* Wähle einen Status, der zu deinem Arbeitsablauf passt. Du kannst zum Beispiel den Status *[9.11] Retoure an OTTO melden* erstellen.
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Retoure*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *OTTO Market*
+
+| *Aktion*
+| *Plugins > Retoure an OTTO melden*
+a| *_Hinweise:_*
+
+* Wenn im ursprünglichen Auftrag eine Rabattaktion verwendet wurde, wird diese Rabattaktion auch im Gutschriften-Auftrag als Artikelposition importiert und die Preise werden berücksichtigt.
+* OTTO erstattet immer den kompletten Verkaufspreis einer Position. Teilerstattungen für eine Auftragsposition können nicht an OTTO Market gemeldet werden. Auch wenn du einzelne Positionen im Preis korrigiert hast, hat diese Korrektur also keinen Einfluss auf das von OTTO erstellte Erstattungsdokument.
+|====
+
+[#1000]
+=== OTTO Market-Retouren ablehnen
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um OTTO Market zu informieren, wenn du Retouren ablehnst.
+
+:table-event-procedure: <<#ablehnung-retoure-otto>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[ablehnung-retoure-otto]]
+.Ereignisaktion um die Ablehnung einer Retoure an OTTO Market zu melden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, zum Beispiel *Auftragsänderung: Statuswechsel* +
+*_Hinweis:_* Wähle einen Status, der zu deinem Arbeitsablauf passt. Du kannst dazu beispielsweise den Status *[9.12] Retoure von OTTO ablehnen* erstellen.
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Retoure*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *OTTO Market*
+
+| *Aktion*
+| *Plugins > Ablehnung der Retoure an OTTO melden*
+|
+|====
+
+[#10000]
+== Log abrufen
+
+:market: OTTO Market
+include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-intro]
+
+* *Identifikator* » *Otto Market*
+
+include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-config]
+
+[#1300]
+== FAQ
+
+include::_textblocks/otto-market/otto-faq.adoc[]
+
+//end::otto-market-page[]
