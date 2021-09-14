@@ -1,7 +1,7 @@
 = Mollie
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: Zahlungsarten, Zahlungen, mollie, Mollie, Mollie-Plugin, Plugin, Mollie-Assistent, Mollieassistent, Mollieplugin, Mollie-Account, Molliehändler, Mollieaccount, Mollie-Zahlung, Molliezahlung, Mollie-Zahlungsart, Molliezahlungsart, mollie-template, Mollie-Ereignisaktion, Mollieereignisaktion, Mollieversand, Mollie-Versand, Molliestorno, Molliestornierung, Mollie-Storno, Mollie-Stornierung, Molliegutschrift, Mollie-Gutschrift, Mollie-Rückzahlung, Mollierückzahlung, Mollie-Konfiguration, Molliekonfiguration, Mollie-Einstellung, Mollieeinstellung, Mollie-Schnittstelle, Mollieschnittstelle, Zahlungsplugin, Zahlungs-Plugin, Payment-Plugin, Paymentplugin, Payment-Integration, Paymentintegration, Paymentschnittstelle, Payment-Schnittstelle
+:keywords: Zahlungsarten, Mollie, Mollie-Plugin, Mollie-Assistent, Mollieassistent, Mollieplugin, Mollie-Account, Molliehändler, Mollieaccount, Mollie-Zahlung, Molliezahlung, Mollie-Zahlungsart, Molliezahlungsart, mollie-template, Mollie-Ereignisaktion, Mollieereignisaktion, Mollieversand, Mollie-Versand, Molliestorno, Molliestornierung, Mollie-Storno, Mollie-Stornierung, Molliegutschrift, Mollie-Gutschrift, Mollie-Rückzahlung, Mollierückzahlung, Mollie-Konfiguration, Molliekonfiguration, Mollie-Einstellung, Mollieeinstellung, Mollie-Schnittstelle, Mollieschnittstelle, Zahlungsplugin, Zahlungs-Plugin, Payment-Plugin, Paymentplugin, Payment-Integration, Paymentintegration, Paymentschnittstelle, Payment-Schnittstelle, Zahlart, Zahlarten
 :description: Integration des Mollie-Plugins.
 :position: 60
 :url: payment/payment-plugins/mollie
@@ -22,7 +22,7 @@ Für die Nutzung von Mollie benötigst du einen Account und die Zugangsdaten von
 :name-des-assistenten: Mollie
 :name-der-zahlungsart: Mollie
 
-include::../_textblocks/ausfuehrung-assistent.adoc[]
+include::../../_includes/textblocks/instructions/ausfuehrung-assistent-zahlungsart.adoc[]
 
 [IMPORTANT]
 .Assistent muss erneut durchlaufen werden
@@ -70,34 +70,20 @@ Gehe wie folgt vor, um die Container-Verknüpfungen einzustellen:
 [#50]
 == Kundenklassen und Versandprofile
 
-include::../_textblocks/kundenklassen-und-versandprofile.adoc[]
+include::../../_includes/textblocks/instructions/kundenklassen-und-versandprofile.adoc[]
 
 [#60]
 == Ereignisaktionen einrichten
 
-3 separate Ereignisaktionen sind notwendig, damit alle benötigten Daten direkt an Mollie gesendet werden. Die Ereignisse sind der Versand der Artikelpositionen eines Auftrags, Stornierung und Gutschrift. Mollie muss informiert werden, wenn etwas davon eingeleitet wird. Gehe wie im Folgenden beschrieben vor, um diese 3 Ereignisaktionen einzurichten.
+3 separate Ereignisaktionen sind notwendig, damit alle benötigten Daten direkt an Mollie gesendet werden. Die Ereignisse sind der Versand der Artikelpositionen eines Auftrags, Stornierung eines Auftrags und die Erstellung einer Gutschrift. Mollie muss informiert werden, wenn etwas davon eingeleitet wird. Gehe wie im Folgenden beschrieben vor, um diese 3 Ereignisaktionen einzurichten.
 
-[.collapseBox]
-.*Ereignisaktion einrichten*
---
-
-[.instruction]
-Einrichtung einer Ereignisaktion:
-
-. Öffne das Menü *Einrichtung » Aufträge » Ereignisse*.
-. Klicke auf *Ereignisaktion hinzufügen*. +
-→ Das Fenster *Neue Ereignisaktion erstellen* wird geöffnet.
-. Gib einen Namen ein.
-. Wähle das Ereignis gemäß Tabellen 2-4.
-. *Speichere* (icon:save[role=green]) die Einstellungen.
-. Nimm die Einstellungen gemäß Tabellen 2-4 vor.
-. Aktiviere die Option *Aktiv*.
-. *Speichere* (icon:save[role=green]) die Einstellungen.
-
---
+Neben den drei erforderlichen Ereignisaktionen *Versand anmelden*, *Storno anmelden* und *Gutschrift anmelden*, durch die wichtige Informationen an Mollie weitergeleitet werden, steht dir auch noch das Ereignis *Mollie | Zahlung gescheitert* zur Verfügung. Die Nutzung dieses Ereignisses ist optional. Du kannst es verwenden um zu bestimmen, wie mit Aufträgen verfahren werden soll, für die die Zahlung nicht erfolgen konnte.
 
 [#70]
 === Versand bei Mollie anmelden
+
+:table-event-procedure: <<table-procedure-mollie-shipment>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
 
 [[table-procedure-mollie-shipment]]
 .Ereignisaktion "Mollie | Versand anmelden"
@@ -124,6 +110,9 @@ Diese Ereignisaktion kann auch für Lieferaufträge verwendet werden. Der Liefer
 [#80]
 === Storno bei Mollie anmelden
 
+:table-event-procedure: <<table-procedure-mollie-cancellation>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
 [[table-procedure-mollie-cancellation]]
 .Ereignisaktion "Mollie | Storno anmelden"
 [cols="1,3,3"]
@@ -149,7 +138,11 @@ _Beachte_, dass ein Auftrag nicht storniert werden kann, solange eine Zahlung no
 [#90]
 === Gutschrift bei Mollie anmelden
 
-Achte beim Anlegen der Gutschrift darauf, dass die Auftragspositionen, die gutgeschrieben werden sollen, auch in der Gutschrift enthalten sind. Mehr Informationen über Gutschriften allgemein findest du im Kapitel <<auftraege/auftraege-verwalten#500, Auftragstyp Gutschrift>> nutzen im Handbuch.
+Achte beim Anlegen der Gutschrift darauf, dass die Auftragspositionen, die gutgeschrieben werden sollen, auch in der Gutschrift enthalten sind. Mehr Informationen über Gutschriften allgemein findest du im Kapitel <<auftraege/auftraege-verwalten#500, Auftragstyp Gutschrift>> nutzen im Handbuch. +
+Die Ereignisaktion *Mollie | Gutschrift anmelden* kann auf Basis eines Auftrags und eines Gutschriftauftrags ausgeführt werden.
+
+:table-event-procedure: <<table-procedure-mollie-refunds>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
 
 [[table-procedure-mollie-refunds]]
 .Ereignisaktion "Mollie | Gutschrift anmelden"
