@@ -46,7 +46,7 @@ Think about which order data are relevant for you. Let’s assume you only need 
 
 - Order ID: To match data later on and to extend data, if needed.
 - Order amounts: For an overview of different order amounts. Decide which amounts are relevant for you, e.g. gross or net. We use the invoice amount for this example.
-- Delivery country: To evaluate how many deliveries are shipped to which country.
+- Order type: For a first overview of the different used order types.
 - Payment method: To evaluate, which payment methods are used most often.
 
 You can customise this list, either adapt or extend data. Also decide which combination of information is relevant for you. Maybe it is useful to group data and to combine them in several separate catalogues.
@@ -58,10 +58,11 @@ Add the following <<data/exporting-data/managing-catalogues#160, data fields>> t
 
 .Data fields:
 * *Order > Order ID*
-* *Order > Amounts > Invoice amount*
-* *Order > Delivery country* +
-After you added the data field, select how the delivery country is to be exported, e.g. as ISO-Code or as ID.
-* *Order > Payment method*
+* *Order > Amounts > Invoice total* +
+After you added the data field, select in which currency the amount is to be exported.
+* *Order > Order type* +
+* *Order > Property* +
+After you added the data field, select *Payment method* from the drop-down list.
 
 [IMPORTANT]
 .Structure of data fields
@@ -77,7 +78,7 @@ Think about which orders are to be exported and how the results can be narrowed 
 
 For the example we want data of the last 14 days, therefore we need this filter:
 
-* *Creation date* +
+* *Created on* +
 Click on *Add filter* and select *Last* from the drop-down list. Enter the number of days, for this example 14.
 
 The filters are individually extendable. For example, if you only want to export already paid orders, you can additionally add the filter *Payment status* and then select *Paid* from the drop-down list. By adding more filters, the results are narrowed down. +
@@ -99,13 +100,13 @@ You could simply extend data fields and filters of an existing catalogue. But if
 Therefore, <<data/exporting-data/managing-catalogues#190, copy>> the just created catalogue so that we can extend the copy for this example. +
 Then think about which order item data are relevant for you. For this example, we only want to extend the existing data by a few more basic information. But you can individually adapt this.
 
-- Item ID = To break down which items were sold.
-- Quantity = To break down how many of the items (defined by the ID) were sold.
+- Variation ID = To break down which items were sold.
+- Quantity = To break down how many of the items (defined by the variation ID) were sold.
 
 Add the following data fields for this:
 
-* *Order > Positions > Item ID*
-* *Order > Positions > Quantity*
+* *Order > Order items > Variation ID*
+* *Order > Order items > Quantity*
 
 If needed, change the <<data/exporting-data/managing-catalogues#165, order of data fields>>. In addition, you could also adapt the <<data/exporting-data/managing-catalogues#162, Export keys>>. Save (icon:save[set=material]) the catalogue after you added the data fields.
 
@@ -154,17 +155,22 @@ Save (icon:save[set=material]) the catalogue after you added the data fields.
 
 .Data fields:
 * *Order > Order ID*
-* *Order > Amounts > Net*
-* *Order > Amounts > Gross*
-* *Order > Amounts > VAT total*
-* *Order > Amounts > Net shipping costs*
-* *Order > Amounts Gross shipping costs*
-* *Order > Warehouse > Warehouse ID*
-* *Order > Payment method*
-* **Order > Positions > Item ID*
-* **Order > Positions > Variation ID*
-* **Order > Positions > Quantity*
-* *Order > Positions > Tax rate (A, B, C etc.)* link with *Order > Positions > Tax rate in %* +
+* *Order > Amounts > Net amount* +
+After you added the data field, select in which currency the amount is to be exported.
+* *Order > Amounts > Gross amount* +
+After you added the data field, select in which currency the amount is to be exported.
+* *Order > Amounts > VAT total* +
+After you added the data field, select in which currency the amount is to be exported.
+* *Order > Amounts > Net shipping costs* +
+After you added the data field, select in which currency the amount is to be exported.
+* *Order > Amounts Gross shipping costs* +
+After you added the data field, select in which currency the amount is to be exported.
+* *Variation > Main warehouse*
+* *Order > Property* +
+After you added the data field, select *Payment method* from the drop-down list.
+* *Order > Order items > Variation ID*
+* *Order > Order items > Quantity*
+* *Order > Order items > Tax rate (A, B, C etc.)* link with *Order > Order items > Tax rate in %* +
 This way, the tax rate in % is exported together with the mapping A, B, C, etc.
 * *Shipping service provider > ID* +
 Here, the ID is exported which is assigned in the *Setup » Orders » Shipping » Settings* menu in the *Shipping service provider* tab.
@@ -173,12 +179,13 @@ Here, the <<data/internal-IDs#shipping-service-provider, ID of the shipping serv
 * *Documents > Document type* +
 After adding the data field, select the document type. Exported are always the data for the current document.
 * *Documents > User ID* +
-Here, the ID of the user who created the document is exported.
+Here, the ID of the user who created the document is exported. After adding the data field, select the document type.
 * *Contact > Contact ID* link with *Contact > First name* link with *Contact > Last name* +
 Because all three data fields are linked, the information are exported together. Note that no information are exported when the order is a guest order.
-* *Address > Address ID*
-* *Address > Postal code*
-* *Address > Postal code* +
+* *Addresses > Address ID* +
+After adding the data field, select the address type.
+* *Addresses > Postcode*
+* *Addresses > Postcode* +
 Why twice? You can add data fields more than once and then make a further selection for each data field. In this case, select *Invoice address* for one of them and *Delivery address* for the other.
 
 If you take over the <<data/exporting-data/managing-catalogues#165, order of data fields>> as it is listed above, the data are also exported in this order. Because of this, decide which order is most useful to you before you start the export. For example, order amounts are listed one after the other. However, you could also add tax information here, for example.
@@ -194,7 +201,7 @@ Think about which orders are to be exported and how the results can be narrowed 
 
 The examples provides some restrictions: today’s orders, outgoing items booked, delivery countries and order referrers. Therefore, add the following filters:
 
-* *Creation date* +
+* *Created on* +
 Click on *Add filter* and select *Today* from the drop-down list. With this selection, only today’s orders are exported.
 * *Order status* +
 Click on *Add filter* and select the order status or statuses which you are using for outgoing items. By default, this is *7 | Outgoing items booked*
