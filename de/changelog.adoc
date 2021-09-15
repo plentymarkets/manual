@@ -6,9 +6,9 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 02. September 2021
-:endWeekDate: 08. September 2021
-:nav-alias: Changelog 08. September 2021
+:startWeekDate: 09. September 2021
+:endWeekDate: 15. September 2021
+:nav-alias: Changelog 15. September 2021
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -27,134 +27,6 @@ stable::
 == Neu
 
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Amazon
-
-* Wir haben eine neue Spalte zum Sendungsstatus in der Übersicht im Menü *Waren » Amazon FBA Inbound* hinzugefügt. Die verfügbaren Status von Amazon, die wir in dieser Liste anzeigen, sind:
-
-** WORKING
-** SHIPPED
-** CANCELLED
-
-+
-Außerdem hast du nun die Möglichkeit, die Sendung als versendet zu markieren und die Sendung zu stornieren.
-
-[discrete]
-=== Aufträge
-
-* Du kannst in der neuen Auftragsanlage (Beta) nun deine vorher angelegten Auftragsvorlagen auswählen, um sie auf einen Auftrag anzuwenden. Verwende dafür die Dropdown-Liste *Auftragsvorlage* im ersten Schritt der neuen Auftragsanlage.
-
-[discrete]
-=== CRM
-
-* Im EmailBuilder wurde ein neues Widget hinzugefügt, mit dem du deine Inhalte in drei Spalten anordnen kannst.
-
-* Ein Editor wurde im Text-Widget ergänzt, mit dessen Hilfe du deine Texte in der Vorlage formatieren kannst.
-
-[discrete]
-=== Kataloge
-
-* Ab sofort könnt ihr in der Katalog-Übersicht nach Name filtern und so den gewünschten Katalog schneller finden.
-
-[discrete]
-=== Neckermann.at
-
-* Unter *Artikel » Artikel bearbeiten » [Artikel öffnen] » Tab: Multi-Channel » Bereich: Neckermann.at Enterprise* wurden neue Provisionsmodelle ergänzt: 312A.
-
-[discrete]
-=== plentyBI
-
-* Die Komponente *Trichterdiagramm* ist jetzt in allen Systemen verfügbar.
-
-[discrete]
-=== Plugins
-
-* Die Git-UI im Menü *Plugins » Git* wurde mit neuen Komponenten aktualisiert. Du kannst ab jetzt beim Bearbeiten von Git-Repositorys außerdem den zu installierenden Branch angeben. Das bedeutet für dich, dass du einen neuen Branch angeben kannst, wenn ein Branch im Git-Repository gelöscht wurde oder keine valide Plugin-JSON mehr enthält.
-
-'''
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
-
-[discrete]
-=== Amazon VCS
-
-* Bei VCS Amazon wird jetzt auch bei externen Gutschriftendokumenten die entsprechende Nummer in der Auftragsübersicht angezeigt. Dies gilt nur für Dokumente, die nach diesem Update angelegt werden.
-
-[discrete]
-=== Shopgate
-
-* Unter *Einrichtung » Märkte » Shopgate » [Mandant öffnen] » Bereich: Erweiterte Optionen* wurde die Option *Zahlungsart für Kreditkartenzahlung* ergänzt. Diese erlaubt es euch, dass Aufträgen statt der Legacy-Zahlungsart für Kreditkarte entweder die Shopgate-Zahlungsart oder eine Plugin-Zahlungsart eurer Wahl zugeordnet wird.
-
-'''
-
-[discrete]
-== Behoben
-
-Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
-
-[discrete]
-=== Amazon VCS
-
-* Teilweise kam es bei Gutschriftskorrekturen bei VCS Lite oder auch VCS plentymarkets dazu, dass Gutschriftsdokumente erst storniert und dann neu erzeugt wurden. Dies sah danach aus, als wäre die Korrektur doppelt durchgeführt worden, unterteilt sich aber in zwei Fälle:
-
-** Fall 1: Bei der Anlage der Gutschrift auf Basis des VCS-Berichts wurde durch eine Ereignisaktion eine Gutschrift generiert, weil die OrderProperty 47 (Externer Steuerservice) im Hauptauftrag auf 0 stand. Dies geschah dann vor der darauffolgenden Korrektur, weswegen das Dokument korrekt storniert wurde.
-Die OrderProperty am Hauptauftrag wird nun vor Anlage der Gutschrift auf 1 gesetzt und erst nach der Korrektur wieder auf 0, damit die Erzeugung entsprechender Dokumente während des Korrektur-Prozesses geblockt ist.
-
-** Fall 2: Bei der Anlage der Gutschrift wurde fälschlicherweise eine Promotion-Position für z.B. die Versandkosten übernommen, obwohl diese nicht in die Gutschrift gehörte. Die Werte dieser Position sorgten dann auch beim zweiten Korrektur-Lauf dafür, dass eine Abweichung erkannt wurde, die korrigiert werden musste.
-Die Promotion-Positionen werden jetzt bei der Gutschriftsanlage nicht mehr übernommen, wenn deren Wert im VCS-Bericht 0 entspricht.
-
-[discrete]
-=== Aufträge
-
-* Im Menü *Waren » Bestellungen* wurde der Messenger zurückgesetzt, wenn der Tab gewechselt wurde. Zudem konnte der Tab nicht dupliziert werden. Dies ist nun behoben.
-
-* Wenn ein externes Gutschrifts-Dokument gelöscht wurde, wurde die Dokumentnummer am Auftrag nicht entfernt. Dadurch wurde diese weiterhin in der Auftragssuche dargestellt.
-Dies wurde behoben.
-
-* Der Filter *Lieferland* hat nicht korrekt gegriffen, was zur Folge hatte, dass die Exportdatei leer war. Dies wurde behoben.
-
-* Wenn das Enddatum eines Abonnements geändert wurde, konnte das Abonnement danach aufgrund eines Fehlers nicht gespeichert werden. Dies wurde behoben, das Speichern von Abonnements funktioniert wieder wie gewohnt.
-
-* Nur die erste Nachbestellung, die geöffnet wird, wurde korrekt geladen. Für alle weiteren Nachbestellungen konnten die Daten nicht korrekt gesetzt werden. Dies wurde behoben, alle Nachbestellungen werden wieder korrekt geladen.
-
-* Bei der Ereignisaktion *Versandbestätigung an Otto Direktversand senden* konnte es zu einem Fehler kommen, wodurch diese und Folgeaktionen abgebrochen wurden. Dies wurde behoben.
-
-* Der Filter *Auftragslager* in den Ereignissen hat für Aufträge mit Set-Artikeln nicht korrekt funktioniert, wenn die Einstellung gesetzt war, dass pro Artikelposition ein Lager zugeordnet werden kann. Dies wurde behoben.
-
-[discrete]
-=== Elastischer Export
-
-* Bei den ElasticExport-Formaten für Bestellungen wurde der Status bei *Auftragsstatus ändern* nach dem Speichern nicht angezeigt.
-
-[discrete]
-=== OTTO Market
-
-* Gutscheine und Rabatte wurden mit positiven statt negativen Werten importiert, wodurch die Auftragssumme falsch war. Dies wurde bereits korrigiert. Eine Migration wurde gestartet, die bei betroffenen Aufträgen die entsprechenden Positionen invertiert hat. Bereits existierende Rechnungs- oder Gutsschriftdokumente wurden vorher storniert und im Anschluss neu generiert. Pro Auftrag wurde im Log festgehalten, was korrigiert wurde. Weitere Informationen und Updates gibt es hier im link:https://forum.plentymarkets.com/t/otto-market-falsche-anlage-von-rabatten-und-gutscheine-wrong-creation-of-discounts-and-coupons/651364[hier im Forum^].
-
-[discrete]
-=== Warenwirtschaft
-
-* Nachdem man Mengen in den Nachbestellungen stornierte, wurden diese Mengen von den Bestellmengen vom Reiter Zulauf nicht abgezogen. Der Fehler wurde nun behoben.
-
-[discrete]
-=== Zahlungen
-
-* In der UI für *Neue Zahlungen*, haben die Filter *Verwendungszweck* und *ReferenzID* nicht funktioniert. Dies wurde nun behoben.
-
---
-
-early::
-+
---
-
-[discrete]
-== Neu
-
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
 === Aufträge
@@ -177,7 +49,12 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 [discrete]
 == Geändert
 
-Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* In der Auftrags-UI lässt sich nun auch das Adressfeld 4 (`address4`) editieren.
 
 [discrete]
 === plentyBI
@@ -189,7 +66,7 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 [discrete]
 == Behoben
 
-Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
 === Aufträge
@@ -201,6 +78,19 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 ** Duplizierte Aufrufe und Einträge von Eigenschaften an Auftragspositionen wurden behoben.
 ** Die zweite Zeilenebene der Tabelle war nicht korrekt.
 
+* In der neuen Auftragsanlage (Testphase) konnten keine Auftragsvorlagen ausgewählt werden. Dies ist nun behoben.
+
+* Nur die erste Umbuchung, die geöffnet wird, wurde korrekt geladen. Für alle weiteren Umbuchung konnten die Daten nicht korrekt gesetzt werden. Dies wurde behoben, alle Umbuchungen werden wieder korrekt geladen.
+
+* Es konnte vorkommen, dass bei der Auftragsanlage der Eigner nicht korrekt ermittelt wurde. Dieses Verhalten wurde behoben.
+
+* Beim Import konnte es zu Problemen beim Setzen des Versandprofils kommen.
+
+[discrete]
+=== CRM
+
+* Wenn bei einer Benutzerrolle nur die Berechtigung *CRM > Kampagne > Anzeigen* aktiviert war, konnte diese Rolle trotzdem Gutscheincodes erstellen, Gutscheinen Kampagnen zuweisen, Gutscheine bearbeiten und Gutscheine aktivieren und deaktivieren. Dieses Verhalten wurde behoben.
+
 [discrete]
 === plentyBI
 
@@ -208,11 +98,55 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 * In der Benutzeroberfläche *Rohdaten* gab es ein Problem bei der Paginierung. Dieses wurde behoben und man kann nun wie gewollt sämtliche Seiten durchlaufen.
 
+
 --
 
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Im Menü *Aufträge » Abonnements (Testphase)* sowie in der Artikelsuche von Abonnements wurde die neue Komponente *Filter bookmarks* hinzugefügt. Diese Komponente ermöglicht das Speichern und Wiederverwenden von Filtern direkt im Menü.
+
+* Im Menü *Waren » Bestellung » Umbuchung* wurde die neue Komponente *Filter bookmarks* hinzugefügt. Diese Komponente ermöglicht das Speichern und Wiederverwenden von Filtern direkt im Menü.
+
+* Die neue Komponente *Filter bookmarks* wurde in der Artikelsuche in der neuen Auftragsanlage (Testphase) hinzugefügt. Diese Komponente ermöglicht das Speichern und Wiederverwenden von Filtern direkt im Menü.
+
+* In der Auftragsübersicht der Nachbestellungen und Umbuchungen wurde die alte Filterkomponente durch die neue ersetzt.
+
+[discrete]
+=== CRM
+
+* Im EmailBuilder wurde die Variantennummer im Widget *Auftragspositionen* hinzugefügt. Du kannst die Variantennummer nun also in den Einstellungen des Widgets wählen, sodass diese in der Tabelle des Widgets angezeigt wird.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== CRM
+
+* Im Auftrag im Tab *Mail > E-Mail-Vorlagen > E-Mail-Vorlagen anderer Benutzer* wurde in der Vorschau in manchen Fällen der falsche Titel in der Vorlage angezeigt. Dieses Verhalten wurde behoben.
+
+* Neue E-Mail-Vorlagen, die im EmailBuilder erstellt wurden, konnten nicht aus der Nachbestellungs-UI über den E-Mail-Service versendet werden. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Prozesse
+
+* Noch offenen Lieferaufträgen wurde nach dem Teilen von Aufträgen in der Artikelerfassung innerhalb der Prozesse kein neuer Status zugeordnet. Dieses Verhalten wurde behoben.
 
 
-
+--
 
 Plugin-Updates::
 +
@@ -224,58 +158,69 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.26.4
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
+|2.9.10
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/sales/berichte-analysen/econdatagmanager-47820_54876[econda Tag Manager^]
-|6
+|link:https://marketplace.plentymarkets.com/klarna_6731[Klarna^]
+|2.3.4
 |-
 
-|link:https://marketplace.plentymarkets.com/ebaymarketing_5158[eBay Marketing^]
-|1.0.8
+|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
+|2.1.6
 |-
 
 |link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
 |2.9.9
 |-
 
-|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce.com^]
-|2.9.2
+|link:https://marketplace.plentymarkets.com/paypaldispute_6582[PayPalDispute^]
+|1.1.0
 |-
 
-|link:https://marketplace.plentymarkets.com/ebayreviewwidget_54926[eBay Review Widget - echte Bewertungen von echten Käufern präsentieren^]
-|1.0.1
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.39
 |-
 
-|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
-|1.0.20
+|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
+|5.0.39
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/sales/berichte-analysen/econdausabilityanalytics-47820_54860[econda Usability Analytics^]
-|5
+|link:https://marketplace.plentymarkets.com/voelknerextension_6949[Voelkner^]
+|1.1.21
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/sales/berichte-analysen/econdaaudiencerelationshipplatform-47820_54871[econda Audience Relationship Platform^]
-|4
+|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad^]
+|1.1.15
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/rechtliches/econdaprivacyprotection-47820_54875[econda Privacy Protection^]
-|3
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.47
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/econdacrosssell-47820_54870[econda Cross Sell^]
-|3
+|link:https://marketplace.plentymarkets.com/vatidcheck_6023[VAT ID Check^]
+|2.2.4
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/sales/berichte-analysen/econdaanalytics-47820_54861[econda Analytics^]
-|3
+|link:https://marketplace.plentymarkets.com/zettle_54918[Zettle by PayPal^]
+|1.0.2
 |-
 
 |===
 
 Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
 
+--
+
+plentymarkets App::
++
+--
+App-Update 1.11.20: Anfang der Kalenderwoche 37 veröffentlichen wir die Version 1.11.20 der plentymarkets App für Android im PlayStore.
+
+[discrete]
+== Behoben
+
+* v.1.11.20: Bei einigen Android-Versionen verursachte die Version 1.11.18 Probleme bzgl. der Kommunikation mit TSE und/oder plentyBase. Dieses Verhalten sollte mit der Version 1.11.20 behoben sein.
 --
 
 ====
