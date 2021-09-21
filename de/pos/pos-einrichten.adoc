@@ -2,7 +2,8 @@
 :lang: de
 include::{includedir}/_header.adoc[]
 :author: team-mobile
-:keywords: plentymarkets POS, plentyPOS, plenty POS, Kasse, Kassensystem, Kassen, IDEA-Export, IDEA, GoBD, Kassenjournal, Kassenbuch, GoBD konform, Registrierkasse, RKSV, DEP-Export, mobile Kasse, mobile Registrierkasse, Smartphone-Kasse, Kasse Sicherheitseinrichtung, Vertrauensdiensteanbieter POS, Vertrauensdiensteanbieter Kasse, Registrierkassensicherheitsverordnung, Kasse Österreich, POS Österreich, rechtssichere Kasse, RKSV-konform, plentyPOS, RKSV, Startbeleg, QR-Code, mobile Kassa, Kassasoftware, Kassensoftware, Kassa-Software, Kassen-Software, Laufkundschaft, Laufkunden, Kundenkarte, Kundenkarten, Barcode-Karte, Barcode-Karten, Kasse entkoppeln, POS entkoppeln, plentyPOS entkoppeln, Gerät entkoppeln, Geräte entkoppeln
+:keywords: plentyPOS, POS einrichten, POS Einrichtung, POS Benutzer, POS Zahlungsart, POS Buchungskonto, POS Selbstabholung, Preise Kassenaufträge, Rundungsverhalten Kassenaufträge, Kassenauftrag, Dummy-Artikel, Diversartikel, POS Gutschein, POS Retoure, Kasse verbinden, POS verbinden, Kassenbeleg senden, Kassenbeleg drucken, Kundenkarte, Kassenjournal, Kassenauftrag ändern, POS Auftrag ändern, Kasse löschen, POS löschen, POS entkoppeln, POS Berechtigungen, POS Rechte
+:table-event-procedure: <<table-POS-event-procedure-outgoing-items>>, <<table-POS-event-procedure-send-receipt>>
 :position: 10
 :url: pos/pos-einrichten
 :id: LLRIR57
@@ -30,7 +31,7 @@ plentyPOS ist für das Kassieren mit den Währungen Euro (EUR), Schweizer Franke
 [IMPORTANT]
 ====
 .Kasse buchen
-Um plentyPOS verwenden zu können, link:https://www.plentymarkets.eu/preise/[buche zunächst eine oder mehrere Kassen^] für deinen plentymarkets Tarif. Informationen zu den Konditionen findest du direkt bei der Buchung oder auf der link:https://www.plentymarkets.eu/produkt/pos/[plentyPOS Produktseite^]{nbsp}icon:external-link[].
+Um plentyPOS verwenden zu können, link:https://www.plentymarkets.com/de/produkt/preise/[buche zunächst eine oder mehrere Kassen^] für deine plentymarkets Edition. Informationen zu den Konditionen findest du direkt bei der Buchung oder auf der link:https://www.plentymarkets.com/de/produkt/module/point-of-sale/[plentyPOS Produktseite^]{nbsp}icon:external-link[].
 ====
 
 Nachdem du Kassen gebucht hast, richtest du diese Kassen im plentymarkets Backend ein. Zunächst weist du die Kassen einem Mandanten zu, indem du die Kasse im Menü **Einrichtung » Mandant » [Mandant wählen] » POS** erstellst und weitere Einstellungen vornimmst. Gehe dazu wie unten beschrieben vor.
@@ -53,7 +54,7 @@ Kasse für Mandanten erstellen:
 
 <<table-POS-menu-bar>> beschreibt die Menüleiste der Kasse.
 
-[[table-pos-menu-bar]]
+[[table-POS-menu-bar]]
 .Menüleiste der Kasse
 [cols="1,3"]
 |====
@@ -359,7 +360,7 @@ Der Gutscheinbeleg enthält die folgenden Informationen zum Gutschein:
 dem Beleg die entsprechende Zusatzinformation zum verkauften Artikel auszugeben. Die Information wird unterhalb des Artikelnamens auf dem Kassenbeleg angezeigt. Die Option *Keine* aktivieren, um keine Zusatzinformation anzuzeigen.
 
 | *Barcode*
-|Sollen Barcodes auf deinen Belege erscheinen? +
+|Sollen Barcodes auf deinen Belegen erscheinen? +
 Im Falle einer <<pos/pos-kassenbenutzer#175, Retoure>> oder eines <<pos/pos-online-bestellungen#, Click & Collect-Auftrags>> bringen Kund:innen typischerweise ihre Kaufbelege mit in den Laden. Wurde ein Barcode auf dem Beleg gedruckt, muss das Kassenpersonal lediglich <<pos/pos-kassenbenutzer#520, den Barcode scannen>>, um den entsprechenden Auftrag aufzurufen. +
 Barcodes helfen also dem Kassenpersonal, Aufträge schneller zu finden. Die manuelle Eingabe der Belegnummer oder Auftrags-ID entfällt. +
 *_Hinweis_* Die Belegnummer wird als Barcode dargestellt und enthält dabei ein Sternchen (*) als Präfix. Beim Scannen gibt das Sternchen an, dass eine Belegnummer gesucht wird.
@@ -430,48 +431,21 @@ Die App-PIN erlaubt einen schnellen Wechsel des Benutzerkontos in bestimmten Men
 ====
 
 [#150]
-=== Berechtigungen für Kassenpersonal aktivieren
+=== Berechtigungen für Kassenpersonal erteilen
 
-Erteile nun Berechtigungen für die Kommunikation zwischen plentyPOS und dem plentymarkets Backend über die REST-API.
+Erteile nun Berechtigungen für die korrekte Kommunikation zwischen plentyPOS und dem plentymarkets Backend.
 
-[.instruction]
-Berechtigungen aktivieren:
+:rights-purpose: die Grundfunktionen von plentyPOS als Kassenpersonal nutzen können
+:right-one: pass:quotes[*POS*]
+:right-two: pass:quotes[*CRM > Kampagne > Code > Anzeigen*]
+:right-three: pass:quotes[*CRM > Kampagne > Code > Erstellen*]
+:right-four: pass:quotes[*CRM > Kampagne > Code > Löschen*]
+:right-five: pass:quotes[*CRM > Adresse > Anzeigen*]
+:right-six: pass:quotes[*Aufträge > Anzeigen*]
+:right-seven: pass:quotes[*Aufträge > Erstellen*]
+:right-eight: pass:quotes[*Warenbestände > Lager > Lagerort > Anzeigen*]
 
-. Öffne das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer*. +
-→ Die Übersicht wird geöffnet.
-. *_Optional:_* Gib in den Filtereinstellungen links eine ID oder einen Namen ein, um die Suche einzuschränken.
-. Klicke auf *Suchen* (icon:search[role="blue"]). +
-→ Die gefundenen Konten werden angezeigt. +
-*_Tipp:_* Ausgegraute Konten haben Admin-Rechte.
-. Klicke auf das gewünschte Konto. +
-→ Die Ansicht *Rechte* wird geöffnet.
-. Aktiviere im Bereich *Berechtigungen* die in <<table-POS-REST-rights>> gelisteten Berechtigungen.
-. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen.
-
-[[table-POS-REST-rights]]
-.Berechtigungen für Backend-Konten
-[cols="1,3"]
-|====
-|Bereich |Berechtigung
-
-| *POS*
-a| * *POS* +
-→ Die untergeordneten Berechtigungen werden automatisch aktiviert.
-
-| *CRM*
-a| * *Kampagne » Code » Anzeigen*
-* *Kampagne » Code » Erstellen*
-* *Kampagne » Code » Löschen*
-* *Adresse » Anzeigen*
-
-| *Aufträge*
-a| * *Anzeigen*
-* *Erstellen*
-
-| *Warenbestände*
-a| * *Lager » Lagerort » Anzeigen*
-
-|====
+include::../_includes/textblocks/instructions/rechte.adoc[]
 
 [#160]
 === POS-Sichtbarkeit für Kassenpersonal aktivieren
@@ -622,83 +596,42 @@ Benutzer entsperren:
 . Klicke auf **Login entsperren**. +
 → Die Kassenkraft kann sich wieder bei der plentymarkets App anmelden.
 
-[#700]
+[#710]
 == Zahlungsarten für Kassenaufträge aktivieren
 
 Damit Aufträge über plentyPOS kassiert werden können, aktivierst du die Zahlungsarten, die du über plentyPOS erlauben möchtest. Mindestens die Zahlungsart **Bar bei Übergabe** muss aktiviert werden, damit Kassenaufträge bar bezahlt werden können. Weitere Zahlungsarten sind optional.
 
-[#710]
-=== plentymarkets Zahlungsarten aktivieren
-
-Aktiviere nun die Zahlungsarten, die du benötigst. Beachte, dass Zahlungsarten in einem weiteren Schritt für Kundenklassen erlaubt werden müssen. Weitere Informationen findest du unter <<payment/zahlungsarten-verwalten#30, Zahlungsart in Kundenklasse erlauben>>.
-
-Aktivere die folgenden Zahlungsarten, damit Kassenaufträge korrekt dargestellt werden:
+Zur Aktivierung der Zahlungsarten für plentyPOS benötigst du das kostenlose Plugin *plentyPOS Zahlungsarten*. Das Plugin stellt die folgenden Zahlungsarten zur Verfügung:
 
 * **4 » Bar bei Übergabe** für Barzahlungen
 * **11 » Barverkauf/EC-Karte** für Kartenzahlungen über externe EC-Kartenterminals
 * **1700 » Coupon** für Gutscheinzahlungen
 
-Gehe wie unten beschrieben vor, um diese Zahlungsarten zu aktivieren.
-
 [.instruction]
-Zahlungsarten für Kassenaufträge einrichten:
+Zahlungsarten für Kassenaufträge aktivieren:
 
-. Öffne das Menü **Einrichtung » Aufträge » Zahlung » Zahlungsarten**.
-. Aktiviere die Einstellung **Auch inaktive zeigen**.
-. Öffne den Ordner **International**.
-. Klicke auf die Zahlungsart. +
-→ Das Tab **Einstellungen** wird geöffnet.
-. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<table-POS-payment-methods>>.
-. Aktiviere die Option **Aktiv**.
-. **Speichere** (icon:save[role="darkGrey"]) die Einstellungen.
+. Installiere das Plugin link:https://marketplace.plentymarkets.com/pospaymentmethodrenaming_6813[plentyPOS Zahlungsarten^]{nbsp}icon:external-link[]. +
+*_Hinweis:_* Beachte die Informationen im Bereich *Beschreibung* des Plugins.
+. Öffne das Menü *Einrichtung » Assistenten » Plugins*.
+. Wähle das Plugin-Set, in dem du das Plugin installiert hast.
+. Öffne den Assistenten *plentyPOS Zahlungsarten*.
+. Vergib Namen für die Zahlungsarten.
+. Schließe den Assistenten ab. +
+→ Die Zahlungsarten werden aktiviert und stehen im Menü *Einrichtung » Aufträge » Zahlungen » Zahlungsarten zur Verfügung*. Dort kannst du bei Bedarf einzelne Zahlungsarten deaktivieren. Achte jedoch darauf, dass für plentyPOS immer mindestens die Zahlungsart *Bar bei Übergabe* aktiviert sein muss.
 
-[[table-POS-payment-methods]]
-.Einstellungen der Zahlungsarten für Kassenaufträge
-[cols="1,3"]
-|====
-|Einstellung |Erläuterung
+[IMPORTANT]
+.Zahlungsarten umbenennen
+====
+Du kannst den Assistenten zu einem späteren Zeitpunkt erneut durchlaufen, wenn du die Namen der Zahlungsarten erneut ändern möchtest. Der Name wird im plentymarkets Backend, auf plentyPOS Belegen, im Zwischenbericht, Tagesabschluss und in den über plentyPOS generierten Exporten angezeigt.
+====
 
-| **Sprache**
-|Sprache wählen. Folgende Optionen werden sprachabhängig gespeichert: Name, Infoseite, Infoseite (Intern), Logo und Logo hochladen.
-
-| **Name**
-|Den externen Namen eingeben, der auf dem Kassenbeleg und im Webshop und auf Rechnungen angezeigt werden soll. Wenn kein Name gespeichert ist, wird der Backend-Name der Zahlungsart für den Kassenbeleg verwendet. +
-*_Tipp:_* Der externe Name wird in der Sprache auf dem Beleg ausgegeben, die das Kassenpersonal bei der Kassenanmeldung wählt.
-
-| **Infoseite**
-|Die Standardeinstellung **---** nur ändern, wenn die Zahlungsart auch im Webshop verwendet wird.
-
-| **Lieferländer**
-|Ein oder mehrere Lieferländer wählen. +
-*_Hinweis:_* Lieferländer nur wählen, wenn die Zahlungsart auch im Webshop verwendet wird.
-
-| **Mandant**
-|Den Mandanten der POS-Kassen wählen.
-
-| **Logo**
-|Die Standardeinstellung **Standardlogo anzeigen** nur ändern, wenn die Zahlungsart auch im Webshop verwendet wird.
-
-| **Kosten: Pauschal oder Prozentual**
-|Für alle Kosten **0,00** eingeben, damit kein Aufpreis für die Zahlungsart berechnet wird.
-|====
+Beachte auch, dass Zahlungsarten in einem weiteren Schritt für Kundenklassen erlaubt werden müssen. Weitere Informationen findest du unter <<payment/zahlungsarten-verwalten#30, Zahlungsart in Kundenklasse erlauben>>.
 
 [TIP]
 .Zahlungsart Barverkauf/EC-Karte
 ====
 Stelle für die Zahlungsart **11 » Barverkauf/EC-Karte** außerdem im Menü **Einrichtung » Mandant » [Mandant wählen] » POS  » [Kasse öffnen] » Tab: Zahlungsart** die Option **Ohne Anbindung** im Bereich **EC-Terminal** ein.
 ====
-
-[#720]
-
-=== plentyPOS Zahlungsarten umbenennen
-
-Die <<#710, oben>> beschriebenen Standardzahlungsarten **4 » Bar bei Übergabe** und **11 » Barverkauf/EC-Karte** kannst du bei Bedarf im Backend individuell umbenennen.
-
-Zur Umbenennung der Zahlungsarten wird das folgende Plugin benötigt:
-
-* link:https://marketplace.plentymarkets.com/pospaymentmethodrenaming_6813[plentyPOS Zahlungsarten^]{nbsp}icon:external-link[]
-
-Wie du das Plugin einrichtest und weitere Informationen findest du in der Beschreibung des Plugins.
 
 [#1070]
 === Kartenterminals anbinden
@@ -708,8 +641,9 @@ Bestimmte Kartenterminals können über ein Plugin an plentyPOS angebunden werde
 * link:https://marketplace.plentymarkets.com/plugins/payment/ingenicozvt_5140[Ingenico-Geräte über ZVT-Schnittstelle^]{nbsp}icon:external-link[]
 * link:https://marketplace.plentymarkets.com/plugins/payment/sumup_5141[SumUp Air^]{nbsp}icon:external-link[]
 * link:https://marketplace.plentymarkets.com/plugins/payment/VerifoneZVT_5504[Verifone-Geräte über ZVT-Schnittstelle^]{nbsp}icon:external-link[]
+* link:https://marketplace.plentymarkets.com/zettle_54918[Zettle by PayPal^]{nbsp}icon:external-link[]
 
-Wie du das Plugin einrichtest und weitere Informationen zur Anbindung an plentyPOS findest du in der Beschreibung des Plugins.
+Wie du die Plugins einrichtest und weitere Informationen findest du in den Beschreibungen der Plugins.
 
 [#1080]
 === Kauf auf Rechnung und Anzahlungen anbieten
@@ -1092,7 +1026,7 @@ PLZ**; +
 |Straße, Postleitzahl und Ort eingeben.
 
 | **Land**
-|Land aus der Dropdown-Liste wählen, in dem die Kasse eingesetzt wird. Standardeinstellung richtet sich nach der Option **Firmensitz für FiBu** im Menü <<willkommen/schnelleinstieg/schnelleinstieg-basiseinstellungen#100, Einrichtung » Einstellungen » Stammdaten>>.
+|Land aus der Dropdown-Liste wählen, in dem die Kasse eingesetzt wird. Standardeinstellung richtet sich nach der Option **Land** im Menü <<willkommen/schnelleinstieg/schnelleinstieg-basiseinstellungen#100, Einrichtung » Einstellungen » Stammdaten>>.
 
 | **Mandant**
 |Mandanten aus der Dropdown-Liste wählen, wenn die Kasse nicht dem Standardmandanten zugeordnet ist.
@@ -1157,11 +1091,11 @@ Obwohl Mehrzweckgutscheine und Aktionsgutscheine unterschiedliche Anwendungsfäl
 
 Um Mehrzweckgutscheine und Aktionsgutscheine mit plentyPOS anzubieten, sind die folgenden Vorbereitungen im plentymarkets Backend erforderlich:
 
-* Entscheide <<auftraege/gutscheine#artikel-gutscheinzahlung-vorbereiten, welche Artikel aus deinem Sortiment>> per Gutschein bezahlbar sein sollen.
-* <<auftraege/gutscheine#gutscheinartikel-erstellen, Erstelle Gutscheinartikel>> mit 0% MwSt., d.h. füge die kaufbare Geschenkgutscheine deinem Sortiment hinzu.
+* Entscheide, <<auftraege/gutscheine#artikel-gutscheinzahlung-vorbereiten, welche Artikel aus deinem Sortiment>> per Gutschein bezahlbar sein sollen.
+* <<auftraege/gutscheine#gutscheinartikel-erstellen, Erstelle Gutscheinartikel>> mit 0% MwSt., d.h. füge die kaufbaren Geschenkgutscheine deinem Sortiment hinzu.
 * <<auftraege/gutscheine#kampagne-erstellen, Erstelle eine Kampagne>> für deine Gutscheine. Bestimme mit der Option *Gutscheinart*, ob es sich um Mehrzweckgutscheine oder Aktionsgutscheine handelt.
 * <<auftraege/gutscheine#gutscheinartikel-mit-kampagne-verknuepfen, Verknüpfe deine Gutscheinartikel mit der Kampagne>>.
-* *_Optional:_* <<pos/pos-einrichten#850, Generiere Gutschein-Codes>> oder speichere deine eigene Gutschein-Codes im Backend.
+* *_Optional:_* <<pos/pos-einrichten#850, Generiere Gutschein-Codes>> oder speichere deine eigenen Gutschein-Codes im Backend.
 * *_Optional:_* Gutscheinvordrucke erstellen und dem Kassenpersonal zur Verfügung stellen.
 * *_Optional:_* Gutschein-Codes dem Kassenpersonal zur Verfügung stellen.
 
@@ -1213,7 +1147,7 @@ Kampagne für POS-Mehrzweckgutscheine erstellen:
 | **Einlösung bis Wert aufgebraucht ist** wählen.
 
 | **Nutzung**
-| **Einzelbestellungen** oder <<auftraege/scheduler#, Abonnements>> oder beides wählen.
+| **Einzelbestellungen**, <<auftraege/scheduler#, Abonnements>> oder beides wählen.
 
 | **Mindestbestellwert**
 |Keinen Wert eingeben, da Mehrzweckgutscheine wie Zahlungsmittel zu behandeln sind und keinem Mindestbestellwert unterliegen dürfen.
@@ -1503,33 +1437,14 @@ video::382590675[vimeo]
 [#3800]
 === Berechtigungen für Gutscheinverkauf erteilen
 
-Benutzer mit Admin-Rechten haben standardmäßig die Berechtigungen, Mehrzweckgutscheine zu erstellen. Benutzern der Benutzerklasse *Backend* müssen diese Berechtigungen separat erteilt werden.
+Personen mit Admin-Rechten haben standardmäßig die Berechtigungen, Mehrzweckgutscheine zu erstellen. Benutzern der Benutzerklasse *Backend* müssen diese Berechtigungen separat erteilt werden.
 
-[.instruction]
-Berechtigungen für Gutscheinverkauf erteilen:
+:rights-purpose: Gutscheine verkaufen können
+:right-one: pass:quotes[*CRM > Kampagne > Code > Anzeigen*]
+:right-two: pass:quotes[*CRM > Kampagne > Code > Erstellen*]
+:right-three: pass:quotes[*CRM > Kampagne > Code > Löschen*]
 
-. Öffne das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer*. +
-→ Die Übersicht wird geöffnet.
-. *_Optional:_* Gib in den Filtereinstellungen links eine ID oder einen Namen ein, um die Suche einzuschränken.
-. Klicke auf *Suchen* (icon:search[role="blue"]). +
-→ Die gefundenen Konten werden angezeigt. +
-*_Tipp:_* Ausgegraute Konten haben Admin-Rechte.
-. Klicke auf das gewünschte Konto. +
-→ Die Ansicht *Rechte* wird geöffnet.
-. Aktiviere im Bereich *Berechtigungen* die in <<table-rights-selling-coupons>> gelisteten Berechtigungen.
-. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen.
-
-[[table-rights-selling-coupons]]
-.Berechtigungen für Gutscheinverkauf
-[cols="1,3"]
-|====
-|Bereich |Berechtigung
-
-| *CRM*
-a| * *Kampagne » Code » Anzeigen*
-* *Kampagne » Code » Erstellen*
-* *Kampagne » Code » Löschen*
-|====
+include::../_includes/textblocks/instructions/rechte.adoc[]
 
 [#2700]
 === Besonderheiten beim Verkauf von Mehrzweckgutscheinen
@@ -1786,21 +1701,12 @@ Gutscheinartikel für Retouren mit Kasse verknüpfen:
 
 Personen mit Admin-Rechten haben standardmäßig die Berechtigung, Retourengutscheine zu erstellen. Konten der Benutzerklasse *Backend* müssen diese Berechtigungen separat erteilt werden.
 
-[.instruction]
-Berechtigungen für Retourengutscheine erteilen:
+:rights-purpose: Retourengutscheine erstellen können
+:right-one: pass:quotes[*CRM > Kampagne > Code > Anzeigen*]
+:right-two: pass:quotes[*CRM > Kampagne > Code > Erstellen*]
+:right-three: pass:quotes[*CRM > Kampagne > Code > Löschen*]
 
-. Öffne das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer*.
-. *_Optional:_* Gib in den Filtereinstellungen links eine ID oder einen Namen ein, um die Suche einzuschränken.
-. Klicke auf *Suchen* (icon:search[role="blue"]). +
-→ Die gefundenen Konten werden angezeigt. +
-*_Tipp:_* Ausgegraute Konten haben Admin-Rechte.
-. Klicke auf das gewünschte Konto. +
-→ Die Ansicht *Rechte* wird geöffnet.
-. Aktiviere im Bereich *Berechtigungen* die folgenden Berechtigungen:
-	** *Gutschein » Kampagne » Code » Code erstellen*
-	** *Gutschein » Kampagne » Code » Code löschen*
-	** *Gutschein » Kampagne » Code » Code anzeigen*
-. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen.
+include::../_includes/textblocks/instructions/rechte.adoc[]
 
 [#3500]
 ==== Besonderheiten bei Gutscheinen aus Retouren
@@ -1814,19 +1720,7 @@ Berechtigungen für Retourengutscheine erteilen:
 
 Der Warenbestand wird nicht automatisch verringert, wenn du einen Artikel verkaufst. Erstelle die unten beschriebene Ereignisaktion, um Waren automatisch auszubuchen, wenn ein Kassenauftrag erstellt wird. Weitere Informationen zum Verwalten von Warenbestand findest du auf der Handbuchseite <<warenwirtschaft/waren-ausbuchen#, Waren ausbuchen>>.
 
-[.collapseBox]
-.Buchen des Warenausgangs beim Erstellen eines Kassenauftrags
---
-. Öffne das Menü **Einrichtung » Aufträge » Ereignisse**.
-. Klicke auf **Ereignisaktion hinzufügen**. +
-→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
-. Gib einen Namen ein.
-. Wähle das **Ereignis** gemäß <<table-POS-event-procedure-outgoing-items>>.
-. **Speichere** (icon:save[role="darkGrey"]) die Einstellungen.
-. Nimm die Einstellungen gemäß <<table-POS-event-procedure-outgoing-items>> vor.
-. Setze ein Häkchen bei **Aktiv**.
-. **Speichere** (icon:save[role="darkGrey"]) die Einstellungen.
---
+include::../_includes/textblocks/instructions/EA.adoc[]
 
 [[table-POS-event-procedure-outgoing-items]]
 .Ereignisaktion zum automatischen Buchen des Warenausgangs beim Erstellen eines Kassenauftrags
@@ -1965,21 +1859,9 @@ E-Mail-Vorlage erstellen:
 [#270]
 === Ereignisaktion für automatischen E-Mail-Versand erstellen
 
-Erstelle nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wird, wenn ein Kassenbeleg generiert wird.
+Erstelle nun eine Ereignisaktion, die die E-Mail-Vorlage versendet, wenn ein Kassenbeleg generiert wird.
 
-[.collapseBox]
-.Ereignisaktion für automatischen E-Mail-Versand erstellen
---
-. Öffne das Menü **Einrichtung » Aufträge » Ereignisse**.
-. Klicke auf **Ereignisaktion hinzufügen**. +
-→ Das Fenster **Neue Ereignisaktion erstellen** wird geöffnet.
-. Gib einen Namen ein.
-. Wähle das **Ereignis** gemäß <<table-POS-event-procedure-send-receipt>>.
-. **Speichere** (icon:save[role="darkGrey"]) die Einstellungen.
-. Nimm die Einstellungen gemäß <<table-POS-event-procedure-send-receipt>> vor.
-. Setze ein Häkchen bei **Aktiv**.
-. **Speichere** (icon:save[role="darkGrey"]) die Einstellungen.
---
+include::../_includes/textblocks/instructions/EA.adoc[]
 
 [[table-POS-event-procedure-send-receipt]]
 .Ereignisaktion zum automatischen Senden des Kassenbelegs
@@ -2009,7 +1891,7 @@ Erstelle nun eine Ereignisaktion, über die die E-Mail-Vorlage versendet wird, w
 [#990]
 == Kundenkarten verwenden
 
-Neben dem automatischen Versand von Kassenbelegen kannst du Bestandskund:innen einen weiteren Service anbieten. Kundenkarten mit Barcodes erlauben dir, den Barcode direkt beim <<pos/pos-kassenbenutzer#30, Kassiervorgang>> zu scannen. So wird automatisch ein Kontakt ausgewählt. Wie bei <<#2700, Gutscheinkarten>> wird der Kontakt anhand eines Barcodes auf der Kundenkarte gefunden. Je nach Vorgehensweise kann der Kontakt entweder über die Kontakt-ID oder die Kundennummer gefunden werden. <<table-pos-customer-cards>> erläutert beide Vorgehensweisen und beschreibt vorbereitende Schritte zur Erstellung der Kundenkarten.
+Neben dem automatischen Versand von Kassenbelegen kannst du Bestandskund:innen einen weiteren Service anbieten. Kundenkarten mit Barcodes erlauben dir, den Barcode direkt beim <<pos/pos-kassenbenutzer#30, Kassiervorgang>> zu scannen. So wird automatisch ein Kontakt ausgewählt. Wie bei <<#2700, Gutscheinkarten>> wird der Kontakt anhand eines Barcodes auf der Kundenkarte gefunden. Je nach Vorgehensweise kann der Kontakt entweder über die Kontakt-ID oder die Kundennummer gefunden werden. <<table-pos-loyalty-cards>> erläutert beide Vorgehensweisen und beschreibt vorbereitende Schritte zur Erstellung der Kundenkarten.
 
 [WARNING]
 .Nur eine Vorgehensweise auswählen
@@ -2017,7 +1899,7 @@ Neben dem automatischen Versand von Kassenbelegen kannst du Bestandskund:innen e
 Überlege dir im Voraus, wie du vorgehen möchtest und welche Zuordnung für dich und deine Arbeitsweise im Ladengeschäft passend sind. Ändere die Vorgehensweise später nicht, da die Kontaktdaten sonst im Kassiervorgang nicht mehr korrekt gefunden werden können.
 ====
 
-[[table-pos-customer-cards]]
+[[table-pos-loyalty-cards]]
 .Vorgehensweisen zur Verwendung von Kundenkarten
 |====
 
