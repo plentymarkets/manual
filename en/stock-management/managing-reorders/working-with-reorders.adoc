@@ -5,7 +5,7 @@ include::{includedir}/_header.adoc[]
 :position: 10
 :id: SJ8T7XV
 :url: stock-management/managing-reorders/working-with-reorders
-:keywords: Reorder, reordering, stock, purchase order, redistribution, goods, supplier, creating a reorder, adding order items, booking in items, quantity, quantity suggestion, reorder document, reorder management, sales period, reorder level, net stock, average consumption, stock turnover, replacement, ordered quantity, tags, variation, warehouse, static reorder level, dynamic reorder level, stock overview, delivery period, minimum order quantity, order items, purchase price, incoming items, delivery date, dealer sign, storage location, partial quantities, cancel, cancel reorder, cancel partial quantities, supply, cancel quantities
+:keywords: reorder, reordering, stock, purchase order, reorder document, reorder management, reorder level, dynamic reorder level, backlog list, procurement costs
 :author: team-order-payment
 
 In the *Stock » Reorder management » Purchase order* menu, you do not only carry out <<stock-management/working-with-redistributions#, redistributions>>, but you also create reorders. Reorders are used to reorder goods from your suppliers.
@@ -403,7 +403,7 @@ Entering a static reorder level:
 [TIP]
 .Displaying items below the reorder level on the dashboard of your system
 ====
-You can add an element that shows you variations that are below the reorder level on the dashboard of your system. Displayed there are items below reorder level, that are active, and without item bundles. To do so, add the element *Items below reorder level*. By clicking on the number of variations, you can open the *Stock » Stocks* menu and filter the variations that are below the reorder level. _Note_ that you will also get reorder suggestions for items with negative net stock for which you don't maintain the reorder levels.
+You can add an element that shows you variations that are below the reorder level on the dashboard of your system. Displayed there are items below reorder level, that are active, and without item bundles. To do so, add the element *Items below reorder level*. By clicking on the number of variations, you can open the *Stock » Stocks* menu and filter the variations that are below the reorder level. _Note_ that also items with negative net stock for which no reorder levels are maintained are displayed on the dashboard.
 ====
 
 [#dynamicReorderLevel.subhead]
@@ -454,79 +454,28 @@ The reorder suggestion remains on 0 if you do not enter a reorder level.
 
 [#180]
 === Assigning rights
-Users of the type *Backend* can only access limited areas and menus in the plentymarkets back end. Thus, their access to the system is limited. If users of this type should be able to create and process reorders, a user of the type *Admin* has to assign at least the rights listed in <<table-rights-reorders>> to those users.
 
-For general information about user accounts, refer to the <<business-decisions/user-accounts-access, User accounts and access>> page of the manual.
+*Back end* type users <<business-decisions/user-accounts-access#105, can only see certain areas and menus>> in plentymarkets. This means they only have limited access to the system. If you want *back end* type users to create and process reorders, you have to grant them the following rights:
 
-[.instruction]
-Assigning rights:
-
-. Go to *Setup » Settings » User » Rights » User*.
-. Use the search function and open the user that should be edited.
-. In the *Authorisations* area, activate the rights as listed in <<table-rights-reorder>>.
-. *Save* (icon:save[role="green"]) the settings.
-
-[[table-rights-reorders]]
-.Required rights for back end users
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-| *CRM > Contact > Show*
-|Authorises the back end user to access the contact data (e.g. of the supplier).
-
-| *CRM > Message > Show*
-|Authorises the back end user to see messages in the messenger.
-
-| *Items > Item > Variation > Show*
-|Authorises the back end user to see variations.
-
-| *Items > Settings > Edit*
-|Authorises the back end user to edit items.
-
-| *Orders > Show*
-|Authorises the back end user to see orders in the plentymarkets system.
-
-| *Orders > Order items > Transactions*
-|Authorises the back end user to see stock movements of orders.
-
-| *Orders > Purchase order*
-|Authorises the back end user to create purchase orders and edit the respective settings.
-
-| *Orders > Booking*
-|Authorises the back end user to book items in and out.
-
-| *Orders > Documents > Create*
-|Authorises the back end user to create and see order documents.
-
-| *POS > Show*
-|Authorises the back end user to see the integrated POS.
-
-| *Setup > Property > Show*
-|Authorises the back end user to see item properties.
-
-| *Setup > Tag > Create*
-|Authorises the back end user to see, update, create and delete tag relationships.
-
-| *Setup > Tag > Delete*
-|Authorises the back end user to delete tags.
-
-| *Setup > Tag > Show*
-|Authorises the back end user to see tags.
-
-| *Stock > Reorder*
-|Authorises the back end user to see and edit reorders.
-
-| *Stock > Show*
-|Authorises the back end user to see stocks.
-
-| *Stock > Warehouses*
-|Authorises the back end user to see information regarding warehouses.
-
-| *Stock > Warehouse location management*
-|Authorises the back end user to use the storage location management functionality.
-
-|====
+* *CRM > Contact > Show*
+* *CRM > Message > Show*
+* *Items > Item > Variation > Show*
+* *Items > Settings > Edit*
+* *Orders > Show*
+* *Orders > Order items > Transactions*
+* *Orders > Purchase order*
+* *Orders > Booking*
+* *Orders > Documents > Create*
+* *Orders > Documents > Show*
+* *POS > Show*
+* *Setup > Property > Show*
+* *Setup > Tag > Create*
+* *Setup > Tag > Delete*
+* *Setup > Tag > Show*
+* *Stock > Reorder*
+* *Stock > Show*
+* *Stock > Warehouses*
+* *Stock > Warehouse location management*
 
 [#190]
 === Using the messenger
@@ -729,6 +678,7 @@ _Note_ that the reorder has now been created but was not executed yet. This mean
 
 |====
 
+You can use the filter bookmarks (icon:bookmarks[set=material]) to save selected filters in the UI. These filters are then preselected every time you open the menu. Every user can decide individually which filters to save.
 
 [.collapseBox]
 .*Customising the adding order items table*
@@ -895,6 +845,15 @@ Click on *Save* (icon:save[role="green"]) after setting or editing the delivery 
 |The system currency is displayed in this field by default. If needed, enter a different *Currency* for the supplier as well as the *Exchange rate* that is currently valid for the currency. The *Details* area will then include a display of the calculated *Net order value*.
 
 |====
+
+Above the order details of an already created reorder, info boxes with basic information about the reorder are displayed. The status of these is displayed by different colours.
+
+* Net order value = The net order value of the ordered items is displayed. Grey means that the value is zero (e.g. because the reorder has not been initiated yet). Green means that the value is above zero.
+* Ordered items = The number of ordered items is displayed. This info box is always grey.
+* Open items = The number of items not yet delivered is displayed. Grey means that no items are open because the reorder has not been initiated yet. Green means that no items are open because all of them have been delivered. Orange means that items are open.
+* Delivered items = The number of already delivered items is displayed. Grey means that no items were delivered yet. Orange means that the items were partially delivered and green that all the items of this reorder were delivered.
+* Cancelled items = The number of cancelled items is displayed. Grey means that no items were cancelled. Black means that at least one item was cancelled.
+* Procurement costs in total = The total of procurement costs is displayed. Grey means that the total is zero. Red means that the total is above zero.
 
 [#700]
 == Initiating and sending a reorder
@@ -1181,14 +1140,9 @@ The behaviour of the new reorder is the same as that of other reorders. You can 
 
 [#1100]
 == Searching for reorders
-When opening the *Stock » Reorder management » Purchase order* menu, all existing reorders and <<stock-management/working-with-redistributions#, redistributions>> are displayed. You can change the result by changing the filter settings. You can either choose to use more filters or to reset the filters and to get all reorders.
 
-[.instruction]
-Searching for reorders:
-
-. Go to *Stock » Reorder management » Purchase order*. +
-. Select one or several of the filters listed in <<table-reorder-search>> to limit the search results.
-. Click on *Search* (icon:search[role="blue"]).
+When opening the *Stock » Reorder management » Purchase order* menu, all existing reorders and <<stock-management/working-with-redistributions#, redistributions>> are displayed. Use the search (icon:filter[]) to limit the search results to the required purchase orders. To do so, set the required filters and click *Search* (icon:search[role="blue"]). You can combine several filters. <<table-reorder-search>> explains the filter settings. +
+Additionally, you can use the filter bookmarks (icon:bookmarks[set=material]) to save selected filters in the UI. These filters are then preselected every time you open the menu. Every user can decide individually which filters to save.
 
 [[table-reorder-search]]
 .Available filters for searching for reorders

@@ -1,7 +1,7 @@
 = Elastic export: setup and use
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Export, elastic, Elastic Export, FormatDesigner, export format, export formats, Elastic Export plugin, price comparison, price comparison portal, Data export, Export data, Exporting data
+:keywords: Export, elastic, Elastic Export, FormatDesigner, export format, export formats, Elastic Export plugin, Data export, Export data, Exporting data
 :position: 10
 :url: data/exporting-data/elastic-export
 :id: COEO41G
@@ -355,7 +355,7 @@ Otherwise, all data records will be transferred during export.
 | Filter | Explanation
 
 | *Level*
-|Limits the export to <<item/settings/categories#120, categories saved on a specific level>>.
+|Limits the export to <<item/settings/categories#100, categories saved on a specific level>>.
 
 | *Client*
 |Limits the export to <<item/settings/categories#700, categories saved for a specific client>>.
@@ -640,24 +640,77 @@ The following filters are available:
 [discrete]
 ===== Order filters
 
-The following filters are available:
+The following filters are available to filter orders before the export. Combine filters to refine the selection even further before the export.
 
-* *Order status*
-* *Update date*
-* *Order ID*
-* *Order type*
-* *Creation date*
-* *Referrer ID*
-* *Contact ID*
-* *Contact group*
-* *Warehouse*
-* *Delivery country*
-* *Shipping profile*
-* *Completion date*
-* *Method of payment*
-* *Payment date*
-* *Payment status*
-* *Estimated delivery date*
+[cols="1,3"]
+|====
+| Filter | Erläuterung
+
+|*Client*
+|Limits the export to orders of the selected client.
+
+|*Completion date*
+|Limits the export to orders for which the items were booked out on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Contact group*
+|Limits the export to orders that contain the selected <<crm/managing-contacts#15, customer classes>>.
+
+|*Contact ID*
+|By setting an operator and entering a contact ID you determine to which orders the export should be limited. Orders are always filtered for the entered contact ID. +
+*=* = Only orders of this contact are exported. +
+*≠* = All orders except those of this contact are exported. +
+*<* = All orders of contacts with an ID lower than the entered one are exported. +
+*≤* = All orders of contacts with an ID lower than the entered one as well as the orders of the contact with this ID are exported. For example, if you enter 12, all orders of contacts with the ID from 1 to and including 12 are exported. +
+*>* = All orders of contacts with an ID higher than the entered one are exported. +
+*≥* All orders of contacts with an ID higher than the entered one as well as the orders of the contact with this ID are exported. For example, if you enter 12, all orders of contacts from and including 12 are exported.
+
+|*Creation date*
+|Limits the export to orders that were created on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Delivery country*
+|Limits the export to orders that contain the selected delivery countries.
+
+|*Estimated delivery date*
+|Limits the export to orders with the selected estimated delivery date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Method of payment*
+|Limits the export to orders that contain the selected payment methods.
+
+|*Order ID*
+|By setting an operator and entering an order ID you determine to which orders the export should be limited. +
+*=* = Only this one order is exported. +
+*≠* = All orders except this one are exported. +
+*<* = All orders with an ID lower than the entered one are exported. +
+*≤* = All orders with an ID lower than the entered one as well as the order with this ID are exported. For example, if you enter 12, all orders with the ID frp 1 to and including 12 are exported. +
+*>* = All orders with an ID higher than the entered one are exported. +
+*≥* All orders with an ID higher than the entered one as well as the orders with this ID are exported. For example, if you enter 12, all orders from and including 12 are exported.
+
+|*Order type*
+|Limits the export to the selected order types.
+
+|*Payment date*
+|Limits the export to orders with incoming payment on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Payment status*
+|Limits the export to orders for which the selected payment statuses apply.
+
+|*Referrer ID*
+|Limits the export to orders to those generated via the selected <<orders/order-referrer#, order referrers>>.
+
+|*Shipping profile*
+|Limits the export to orders with the selected <<fulfilment/preparing-the-shipment#1000, shipping profiles>> .
+
+|*Update date*
+|Limits the export to orders that were last changed on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Warehouse*
+|Limits the export to orders with the selected <<stock-management/setting-up-a-warehouse#, warehouses>>.
+
+|*Order status*
+|Limits the export to orders with the selected <<orders/managing-orders#1200, order statuses>>.
+_This filter is a required field._
+
+|====
 
 [discrete]
 ===== Format settings
@@ -667,7 +720,66 @@ The following filters are available:
 | Setting | Explanation
 
 | *Change order status*
-|If a status is selected, then all of the exported orders will be changed to this status.
+|If a status is selected, then all of the exported orders will be changed to this <<orders/managing-orders#1200, order status>>.
+|====
+
+--
+
+[.collapseBox]
+.*Purchase order*
+--
+
+[discrete]
+===== Filters purchase order
+
+The following filters are available to filter <<stock-management/managing-reorders/working-with-reorders#, reorders>> and <<stock-management/working-with-redistributions#, redistributions>> (purchase orders) before the export. Combine filters to refine the selection even further before the export.
+
+[cols="1,3"]
+|====
+| Filter | Erläuterung
+
+|*Creation date*
+|Limits the export to purchase orders that were created on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Finish date*
+|Limits the export to purchase orders that were already completed on a specific date, i.e. for which a *Finish date* was set in the order details. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Inbound warehouse*
+|Limits the export to purchase orders for which the selected warehouse is set as the receiver warehouse. The receiver warehouse is the inbound warehouse into which the orders items are booked.
+
+|*Delivery date*
+|Limits the export to purchase orders for which a *Delivery date* was set in the order details. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order type*
+|Limits the export to the selected order types. You can choose between reorders and redistributions. Use the <<data/exporting-data/FormatDesigner/format-types/orders#, format type Orders>> if you want to export other order types.
+
+|*Ordered date*
+|Limits the export to purchase orders that were already initiated, i.e. for which the *Order initiated* date was set in the order details. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Outbound warehouse*
+|This filter only works for redistributions. Limits the export to redistributions for which the selected warehouse is set as the sender warehouse. The sender warehouse is the outbound warehouse from which the orders items are booked out.
+
+|*Suppliers*
+|Limits the export to purchase orders that contain order items of the selected supplier.
+
+|*Update date*
+|Limits the export to purchase orders that were last changed on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order status*
+|Limits the export to purchase orders with the selected <<orders/managing-orders#1200, order statuses>>.
+_This filter is a required field._
+
+|====
+
+[discrete]
+===== Format settings
+
+[cols="1,3"]
+|====
+| Setting | Explanation
+
+| *Change order status*
+|If a status is selected, then all of the exported orders will be changed to this <<orders/managing-orders#1200, order status>>.
 |====
 
 --
@@ -679,26 +791,83 @@ The following filters are available:
 [discrete]
 ===== Order item filters
 
-The following filters are available:
+The following filters are available to filter order items before the export. Combine filters to refine the selection even further before the export.
 
-* *Order status*
-* *Order item update date*
-* *Order update date*
-* *Order ID*
-* *Order referrer*
-* *Order type*
-* *Order creation date*
-* *Order item referrer*
-* *Manufacturer*
-* *Order item warehouse*
-* *Order warehouse*
-* *Delivery country*
-* *Order item type*
-* *Variation ID*
-* *Variation number*
-* *Shipping profile*
-* *Order completion date*
-* *Estimated delivery date*
+[cols="1,3"]
+|====
+| Filter | Erläuterung
+
+|*Client*
+|Limits the export to order items of the selected client.
+
+|*Delivery country*
+|Limits the export to orders items with the selected delivery countries.
+
+|*Estimated delivery date*
+|Limits the export to order items of those orders with the selected estimated delivery date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Item producer*
+|Limits the export to order items of the selected manufacturers.
+
+|*Order ID*
+|By setting an operator and entering an order ID you determine to which order items of which orders the export should be limited. +
+*=* = Only the order items of this order are exported. +
+*≠* = The order items of all orders except this one are exported. +
+*<* = The order items of all orders with an ID lower than the entered one are exported. +
+*≤* = The order items of all orders with an ID lower than the entered one as well as the order items of the order with this ID are exported. For example, if you enter 12, all order items of the orders with the ID from 1 to and including 12 are exported. +
+*>* = The order items of all orders with an ID higher than the entered one are exported. +
+*≥* The order items of all orders with an ID higher than the entered one as well as the order items of the order with this ID are exported. For example, if you enter 12, all order items of orders with an ID from and including 12 are exported.
+
+|*Order completion date*
+|Limits the export to order items of orders for which the items were booked out on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order creation date*
+|Limits the export to order items of orders that were created on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order item referrer*
+|Limits the export to order items of the selected order referrers.
+
+|*Order item type*
+|Limits the export to order items of the selected types.
+
+|*Order item update date*
+|Limits the export to order items that were last changed on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order item warehouse*
+|Limits the export to order items to which the selected warehouses are assigned.
+
+|*Order referrer*
+|Limits the export to order items of the orders that were generated via the selected <<orders/order-referrer#, order referrers>>.
+
+|*Order type*
+|Limits the export to order items of orders of the selected order types.
+
+|*Order update date*
+|Limits the export to order items of orders that were last changed on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order warehouse*
+|Limits the export to order items of orders that have the selected warehouses assigned.
+
+|*Shipping profile*
+|Limits the export to order items to which the selected shipping profiles are assigned.
+
+|*Variation ID*
+|By setting an operator and entering a variation ID you determine to which order items the export should be limited. +
+*=* = Only order items corresponding to this variation ID are exported. +
+*≠* = All order items except the one corresponding to this variation ID are exported. +
+*<* = All order items that correspond to a variation ID lower than the entered one are exported. +
+*≤* = All order items that correspond to a variation ID lower than the entered one as well as to this ID are exported. For example, if you enter 12, all order items corresponding to variations with the IDs from 1 to and including 12 are exported. +
+*>* = All order items that correspond to a variation ID higher than the entered one are exported. +
+*≥* = All order items that correspond to a variation ID higher than the entered one as well as to this ID are exported. For example, if you enter 12, all order items corresponding to variations with the ID from and including 12 are exported.
+
+|*Variation number*
+|Limits the export to order items containing the entered variation number.
+
+|*Order status*
+|Limits the export to order items of orders with the selected <<orders/managing-orders#1200, order statuses>>.
+_This filter is a required field._
+
+|====
 
 [discrete]
 ===== Format settings
@@ -708,7 +877,96 @@ The following filters are available:
 | Setting | Explanation
 
 | *Change order status*
-|If a status is selected, then all of the exported orders will be changed to this status.
+|If a status is selected, then all of the exported orders will be changed to this <<orders/managing-orders#1200, order status>>.
+|====
+
+--
+
+[.collapseBox]
+.*Purchase order items*
+--
+
+[discrete]
+===== Filter purchase order items
+
+The following filters are available to filter the order items of purchase orders before the export. Combine filters to refine the selection even further before the export.
+
+[cols="1,3"]
+|====
+| Setting | Explanation
+
+|*Delivery date*
+|Limits the export to purchase order items for which a *Delivery date* was set in the order details. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Delivery status of positions*
+|Limits the export to order items for which the selected delivery statuses apply.
+
+|*External item ID*
+|Limits the export to order items with the entered external item IDs. You can enter more than one ID by separating them with a comma.
+
+|*Finish date*
+|Limits the export to order items of purchase orders that were already completed on a specific date, i.e. for which a *Finish date* was set in the order details. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Inbound warehouse*
+|Limits the export to order items of purchase orders for which the selected warehouse is set as the receiver warehouse. The receiver warehouse is the inbound warehouse into which the orders items are booked.
+
+|*Order ID*
+|By setting an operator and entering an order ID you determine to which order items of which purchase orders the export should be limited. +
+*=* = Only the order items of this purchase order are exported. +
+*≠* = The order items of all purchase orders except this one are exported. +
+*<* = The order items of all purchase orders with an ID lower than the entered one are exported. +
+*≤* = The order items of all purchase orders with an ID lower than the entered one as well as the order items of the purchase order with this ID are exported. For example, if you enter 12, all order items of the purchase orders with the ID 1 to and including 12 are exported. +
+*>* = The order items of all purchase orders with an ID higher than the entered one are exported. +
+*≥* The order items of all purchase orders with an ID higher than the entered one as well as the purchase order items of the order with this ID are exported. For example, if you enter 12, all order items of purchase orders with an ID from and including 12 are exported.
+
+|*Order creation date*
+|Limits the export to order items of purchase orders that were created on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order item update date*
+|Limits the export to order items that were last changed on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Order type*
+|Limits the exports to order items of the selected order types. You can choose between reorders and redistributions. Use the <<data/exporting-data/FormatDesigner/format-types/orders#, format type Orders>> if you want to export order items of other order types.
+
+|*Order update date*
+|Limits the export to order items of purchase orders that were last changed on a specific date. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Ordered date*
+|Limits the export to order items of purchase orders that were already initiated, i.e. for which the *Order initiated* date was set in the order details. After adding this filter, select a specific date or a period of time by using the operators and the date picker.
+
+|*Outbound warehouse*
+|This filter only works for order items of redistributions. Limits the export to order items of redistributions for which the selected warehouse is set as the sender warehouse. The sender warehouse is the outbound warehouse from which the orders items are booked out.
+
+|*Suppliers*
+|Limits the export to order items of the selected suppliers.
+
+|*Variation ID*
+|By setting an operator and entering a variation ID you determine to which order items the export should be limited. +
+*=* = Only order items corresponding to this variation ID are exported. +
+*≠* = All order items except the one corresponding to this variation ID are exported. +
+*<* = All order items that correspond to a variation ID lower than the entered one are exported. +
+*≤* = All order items that correspond to a variation ID lower than the entered one as well as to this ID are exported. For example, if you enter 12, all order items corresponding to variations with the ID from 1 to and including 12 are exported. +
+*>* = All order items that correspond to a variation ID higher than the entered one are exported. +
+*≥* = All order items that correspond to a variation ID higher than the entered one as well as to this ID are exported. For example, if you enter 12, all order items corresponding to variations with the ID from and including 12 are exported.
+
+|*Variation number*
+|Limits the export to order items containing the entered variation number.
+
+|*Order status*
+|Limits the export to order items of orders with the selected <<orders/managing-orders#1200, order statuses>>.
+_This filter is a required field._
+
+|====
+
+[discrete]
+===== Format settings
+
+[cols="1,3"]
+|====
+| Setting | Explanation
+
+| *Change order status*
+|If a status is selected, then all of the exported orders will be changed to this <<orders/managing-orders#1200, order status>>.
 |====
 
 --
