@@ -6,9 +6,13 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 23. September 2021
-:endWeekDate: 29. September 2021
-:nav-alias: Changelog 29. September 2021
+:startWeekDate: 07. Oktober 2021
+:endWeekDate: 13. Oktober 2021
+:nav-alias: Changelog 13. Oktober 2021
+
+// Ab Hier weitermachen: https://forum.plentymarkets.com/t/auftrag-ereignisaktion-rechnung-generiert-order-event-action-invoice-generated/656058
+
+// Zusätzlich für 20.10. early: https://forum.plentymarkets.com/t/ereignisse-ereignisgruppe-zahlung-bei-gutschriften-ausloesen-events-trigger-event-group-payment-for-credit-notes/655881
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -29,47 +33,29 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Artikel
+=== Kataloge
 
-* Wir haben die ASIN-Verknüpfungen um folgende Länderkürzel erweitert:
-** se - Schweden
-** pl - Polen
-** tr - Türkei
-** ae - Vereinigte Arabische Emirate
-** ca - Kanada
-** mx - Mexiko
+* Du kannst ab jetzt MHD und Charge mit dem Katalog Format Warenbewegungen exportieren. Die Felder sind im Katalog unter Aktienbewegungen verfügbar:
++
+image:changelog/assets/warenbewegungen-mhd-charge-exportieren.png[width=640, alt=Das Datenfeld BestBeforeDate in den Datenformaten.]
+* In den Katalogen (*Daten » Kataloge*) steht nun ein Auftragsformat zur Verfügung, um Bestellungen und Auftragspositionen von Bestellungen zu exportieren. Weitere Informationen findest du auf der Handbuchseite <<daten/daten-exportieren/katalog-bestellungen#, Praxisbeipiele Kataloge für Bestellungen>>.
+* Im Auftragsexport bei Katalogen wurden einige Namen-Felder eingeführt:
+** Auftrag:
+*** Statusname
+*** Name des Mandanten
+*** Name des Standortes
+** Kontakt:
+*** Name des Kontakttyps
+** Variante:
+*** Name des Herstellers
 
-[discrete]
-=== eBay
-
-* Ab jetzt wird das späteste Versanddatum, das eBay uns pro Auftragsposition übergibt, als OrderItemDate an den Auftragspositionen hinterlegt.
-Wir benutzen das Feld *HandleByTime* der eBay-Trading-API, das dort folgendermaßen beschrieben wird:
 +
-`This timestamp indicates the latest date/time that the seller should ship the package to ensure that the package arrives to the buyer within the estimated delivery window. This date/time is calculated by adding the handling time (in days) to the purchase time.`
-+
-Das Datum kann man über den FormatDesigner mit dem Typ *Auftragspositionen* exportiert werden.
-Unter dem Reiter *OrderItemDate* findest du in der Zuordnung das Feld *Spätestes Versanddatum*.
-+
-Auch über den link:https://developers.plentymarkets.com/en-gb/plentymarkets-rest-api/index.html#/Order/get_rest_orders[REST-Call] `GET /rest/orders` wird das Feld ausgegeben.
+image:changelog/assets/auftragsexport-log-namen.png[width=640, alt=Das Datenfeld BestBeforeDate in den Datenformaten.]
 
 [discrete]
 === EmailBuilder
 
-* Ein Bilder-Widget wurde hinzugefügt, in das du z.B. dein Firmenlogo einfügen kannst.
-* Eine Breadcrumb-Navigation wurde eingebaut, die es ermöglicht, zwischen den Bearbeitungsfenstern mehrerer Vorlagen hin- und herzuwechseln und zum Ordnerbaum zurück zu gelangen.
-* Die Variable *Rechnungsdatum* wurde in der Liste der Variablen des EmailBuilder (Kategorie: *Auftrag*) hinzugefügt.
-* Die Variable *Paketgewicht* (Gewicht und Einheit) wurde in der Liste der Variablen des EmailBuilder (Kategorie: *Auftrag / Versand*) hinzugefügt.
-
-[discrete]
-=== Kataloge
-
-* In den Katalogen (Daten » Kataloge) steht nun ein Auftragsformat zur Verfügung, um Aufträge und Auftragspositionen zu exportieren.
-<<daten/daten-exportieren/katalog-auftraege#, Praxisbeispiele>>
-
-[discrete]
-=== Warenwirtschaft
-
-* Bis jetzt wurde das Lieferdatum der Nachbestellung im Reiter Zulauf der Variante angezeigt. Ab jetzt wird das Lieferdatum der Variation ID ausgestellt.
+* Die Variable *Erscheinungsdatum* ist in der Kategorie *Auftrag / Auftragspositionen (nur für Artikellisten-Widget)* des EmailBuilders verfügbar.
 
 '''
 
@@ -79,9 +65,20 @@ Auch über den link:https://developers.plentymarkets.com/en-gb/plentymarkets-res
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== plentyBI
 
-* Die alten Infoboxen in der Detailansicht einer Zahlung sowie der Zahlung teilen-Ansicht wurden ersetzt durch neue Infoboxen mit farbiger Statusanzeige.
+* Die Standardansicht des Dashboards wurde für eine bessere Übersicht überarbeitet und angepasst.
+
+[discrete]
+=== Kontakt-UI
+
+* In der Kontaktoptionen der Kontakt-UI wurden immer alle Zahlungsarten zur Auswahl bereitgestellt.
+Es werden nun nur noch die aktiven Zahlungsarten angezeigt.
+
+[discrete]
+=== eBay Fulfillment by Orange Connex
+
+* Beim Stornieren eines Outbound-Auftrags, der mehrere OC-Aufträge beinhaltet, wird die Stornierung nun für alle OC-Aufträge gesendet.
 
 '''
 
@@ -91,35 +88,44 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Import
+
+* Es kam vor, dass Auswahlwerte, die durch einen Assistenten angelegt worden sind, nicht direkt importiert werden konnten. Dieses Problem wurde nun behoben.
+
+[discrete]
+=== Kataloge
+
+* Wenn man nach Varianten-ID filtern wollte, hat das Filter im Katalog Format Warenbewegungen nicht funktioniert. Der Fehler wurde nun behoben.
+
+[discrete]
 === Aufträge
 
-* Beim Erstellen eines neuen Auftrags wurde das Präfix des Artikelpakets nicht zum Artikel hinzugefügt. Dies wurde behoben, die Artikelpakete werden wieder korrekt dargestellt.
-* Bei einer Änderung der Steuerkonfiguration konnte es sein, dass diese nicht korrekt an einen existierenden Auftrag bei Erzeugung einer Rechnung übernommen wurde.
+* Durch das Buchen des Warenausgangs des letzten offenen Lieferauftrages eines Auftrages wird auch der Warenausgang des Hauptauftrages gebucht.
+Hierbei konnte es dazu kommen, dass alle Lieferaufträge des Auftrages in den Status 7 verschoben wurde, auch wenn diese bereits in einem höheren Status waren.
+Dies wurde behoben.
+* Der Link zur Kaufabwicklung am Auftrag hat eine ältere Einstellung genutzt, sodass bei Änderung der Domain eines Mandanten ein Link mit der alten Domain erstellt wurde. Dies wurde behoben.
 
 [discrete]
-=== Amazon
+=== Kaufland.de
 
-* In seltenen Fällen wurden MFN-Aufträge doppelt erstellt, wenn der reguläre Cron (in der Regel in 15-Minuten-Intervallen) parallel zum täglichen Backup-Import lief. Der reguläre Cron wird ab sofort so lange ausgesetzt, bis der tägliche Backup-Import abgeschlossen ist. Dadurch kann es nicht mehr zu doppelten Aufträgen kommen.
-
-[discrete]
-=== eBay
-
-* Es konnte vorkommen, dass Ebay Retouren nicht importiert wurden. Dies wurde behoben.
+* Nach der täglichen Generierung der Produktdaten für Kaufland.de wurde keine Benachrichtigung an Kaufland.de gesendet, damit diese die Datei abrufen.
+Dies wurde jetzt behoben.
 
 [discrete]
-=== Eigenschaften
+=== OTTO Market
 
-* Es gab einen Fehler, dass sich Eigenschaften vom Typ Datei ohne Wert nicht an der Variante löschen ließen. Das Verhalten konnten wir fixen.
-
-[discrete]
-=== plentyShop
-
-* Im plentyShop-Frontend wurde standardmäßig das Standardlagerort des Lieferlandes verwendet, sodass es beim Bestellabschluss dazu kommen konnte, dass das Lager und dadurch auch die anfallende Mehrwertsteuer gewechselt wurde. Dies wurde für alle Ceres-Versionen ab 5.0.0 behoben.
+* Durch die <<maerkte/otto/otto-market#800, Ereignisaktion zur Stornierung des Auftrags>> wurde immer nur der erste Auftragsartikel eines Auftrags als storniert gemeldet.
+Dies wurde nun behoben.
 
 [discrete]
-=== Umsatzsteuersatz
+=== EmailBuilder
 
-* Das Importieren der Steuersatz-IDs 4 und 5 ist jetzt möglich.
+* In einigen Systemen kam es vor, dass sich die Vorschau der neuen Vorlagen, die über den EmailBuilder erstellt wurden, nicht geöffnet hat und die Bedienoberfläche nicht aufgehört hat zu laden. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Wenn man Aufträge anlegt, die Bundles mit mehr als einer Komponenten enthalten, kam es dazu, dass einige der Komponenten im Auftrag doppelt angelegt wurden. Dies wurde behoben.
 
 --
 
@@ -133,9 +139,28 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Fulfillment
+=== Aufträge
 
-* Wenn Orange Connex einen Auftrag in mehreren Paketen versendet, dann zeigen wir von nun an alle OC Auftrags-IDs kommasepariert in den Auftragsnotizen und in der Auftragseigenschaft. Außerdem speichern wir alle Paketnummern am Auftrag.
+* Es ist jetzt möglich den Präfix im Artikelnamen von geteilten Artikelpakten in Aufträgen zu konfigurieren. Die Einstellung befindet sich unter *Einrichtung » Aufträge » Einstellungen*.
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Innerhalb der Funktionalität zur Auftragsanlage (beta) wurden alle Buttons durch Material Buttons ersetzt.
+* Ab sofort sind Verkaufspreise in der Auftragsanlage (beta) verfügbar. Beim Anlegen eines neues Auftrags werden die Verkaufspreise basierend auf den Auftragsdetails und der Artikelmenge berechnet. Die Verkaufspreise können beim Hinzufügen von Artikeln und im Warenkorb geändert werden.
+* Für Kategorie- und Kundenklassenrabatte, die in Verkaufspreisen enthalten sind, wurden jeweils neue Spalten hinzugefügt.
+* Es ist nun möglich, einen globalen (allgemeinen) Rabatt für den Auftrag zu hinterlegen. Außerdem wurde eine Spalte hinzugefügt, um den Rabatt für jede Auftragsposition anzuzeigen.
+
+[discrete]
+=== Kataloge
+
+Du kannst ab jetzt deine Warenbewegungen nach Grund ID filtern. Das Filter *Grund-ID* ist im Katalog Format *Warenbewegungen* verfügbar.
+
+[discrete]
+=== Amazon
+
+* Seit dem 22. August muss für alle Produkte das Herstellungsland (Country of Origin, COO) angegeben werden. Deshalb wird ab sofort für das Feld *country_of_origin* von Amazon das am Artikel gespeicherte Land des Felds *Herstellungsland* exportiert. Der Name des Landes wird automatisch für jede Amazon-Plattform übersetzt. Es ist also nicht notwendig, den Namen der Länder in verschiedenen Sprachen zu speichern.
+Weiterführende Informationen zum Thema könnt ihr unserem <<maerkte/amazon/varianten-vorbereiten#country-of-origin, Handbuch>> entnehmen.
 
 '''
 
@@ -145,14 +170,16 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Abonnements
+=== plentyBI
 
-* Die alten Infoboxen in der Detailansicht eines Abonnements wurden ersetzt durch neue Infoboxen mit farbiger Statusanzeige.
+* Die Abstände innerhalb der Baumstruktur (treemap) wurden angepasst und verringert, für eine übersichtlichere Ausgabe und Auswertung der Daten.
+* Es ist nun möglich, das Zeitintervall einer Kachel zu verbergen.
+Diese Einstellung findet man in den Einstellungen der jeweiligen Kachel im Dashboard.
 
 [discrete]
-=== Aufträge
+=== Auftragsanlage (beta)
 
-* Die alten Infoboxen in der Detailansicht einer Nachbestellung wurden ersetzt durch neue Infoboxen mit farbiger Statusanzeige.
+Die vorherigen Infoboxen in der Detailansicht der Auftragsanlage (Schritt Übersicht) wurden neu gestaltet. Sie enthalten nun Statusbalken, die je nach enthaltener Information in verschiedenen Farben dargestellt werden.
 
 '''
 
@@ -162,35 +189,34 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
-=== Abonnements
+=== plentyBI
 
-* In der Abonnement-UI wurden die Artikel-ID und die Varianten-ID nicht in der Filterkomponente angezeigt. Dies wurde behoben.
-
-[discrete]
-=== Aufträge
-
-* Der Enddatumsfilter in jeder auftragsbasierten Suche funktionierte nicht korrekt. Dies wurde behoben.
+* Es gab einen Fehler, bei dem die Datumsauswahl für den Rohdaten Report unter dem Reiter *Daten* nicht angezeigt wurde. Dieser Fehler wurde behoben und die Datumsauswahl ist wieder regulär verfügbar.
 
 [discrete]
-=== eBay
+=== Auftragsanlage (beta)
 
-* Die Synchonisierung der Retouren-Gründe unter *Einrichtung » Märkte » eBay » Datenaustausch* im Tab Sonstiges war nicht mehr funktional, da der API-Call zu eBay im Hintergrund nicht mehr unterstützt wurde. Der Abruf wurde nun auf einen neuen Call umgebaut und die Synchronisierung funktioniert wieder.
-
-[discrete]
-=== Eigenschaften
-
-* Die Gruppen-ID der Texteigenschaftsverknüpfungen wurde im Hintergrund nicht mitgeschickt. Das wurde nun korrigiert.
-
-[discrete]
-=== Import
-
-* Wenn ein bereits verlinktes Versandprofil per Import noch mal verknüpft wurde, gab es eine unnötige Fehlermeldung. Diese wurde jetzt entfernt.
+* Wenn im letzten Schritt der Auftragsanlage ein Gutschein entfernt und dann wieder hinzugefügt wurde, wurde der Wert des Gutscheins nicht korrekt berechnet. Dieses Verhalten wurde behoben.
+* Wenn im letzten Schritt der Auftragsanlage Versandkosten manuell eingegeben wurden, wurden diese beim Speichern des Auftrags nicht berücksichtigt. Dieses Verhalten wurde behoben.
+* Die Spalte Einkaufspreis enthält nun den korrekten EK der Variante.
+* Der Wert von Gutscheincodes wird nun bei jeder Neuberechnung des Auftrags aktualisiert.
+* Wenn ein Verkaufspreis manuell geändert wird, wird die Gesamtsumme nun in der Seitennavigation und in der Tabellenansicht des Warenkorbs korrekt berechnet und angezeigt.
 
 [discrete]
-=== Payment
+=== Nachbestellung
 
-* In der Suche innerhalb der Neue Zahlungen-UI wurden Aufrufe mehrmals ausgeführt. Dies wurde behoben.
-* Das Zurücksetzen der Filter in der Neue Zahlungen-UI führte dazu, dass die falschen Filter für die Suche verwendet wurden. Dies wurde behoben.
+* Wenn die Währung der Nachbestellung von der Systemwährung abwich, wurden im Warenkorb eingegebene Rabatte nicht gespeichert. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Gutscheine
+
+* Bei der Einlösung eines Gutscheines in einer Fremdwährung in Kombination mit bereits eingelösten Teilbetrag des Gutscheines, kam es zur Einlösung eines falschen Betrages. Dies wurde behoben.
+
+[discrete]
+=== CleverReach
+
+* Es konnte vorkommen, dass neue E-Mail-Adressen nicht an CleverReach übertragen wurden, obwohl der Haken für die automatische Übertragung im Menü *Einrichtung » CRM » Newsletter » CleverReach* gesetzt war.
+Dieses Verhalten wurde behoben.
 
 --
 
@@ -204,87 +230,65 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/notificationwidget_54765[Aktions- und Informationsleiste]
-|1.1.1
+|link:https://marketplace.plentymarkets.com/vatidcheck_6023[VAT ID Check^]
+|2.2.6
 |-
 
-|link:https://marketplace.plentymarkets.com/b2bshop_6574[B2B Shop]
-|1.6.2
+|link:https://marketplace.plentymarkets.com/enderecoaddressautocomplete_6622[Endereco Address Autocomplete^]
+|2.0.5
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourcereselectronic5_6861[Ceres Electronic 5]
-|5.0.8
+|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
+|1.0.21
+|Gib die Plugin-Zugangsdaten nach dem Plugin-Update erneut ein und speichere die Einstellungen noch einmal.
+
+|link:https://marketplace.plentymarkets.com/listinglayoutconfigurator_6867[Layout Konfigurator^]
+|1.1.4
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourceresfashion5_6864[Ceres Fashion 5]
-|5.0.5
+|link:https://marketplace.plentymarkets.com/sendcloudplugin_6985[Sendcloud shipping^]
+|1.0.4
 |-
 
-|link:https://marketplace.plentymarkets.com/cfourceresfurniture5_6866[Ceres Furniture 5]
-|5.0.4
+|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad^]
+|1.1.17
 |-
 
-|link:https://marketplace.plentymarkets.com/conradextension_6948[Conrad]
-|1.1.16
+|link:https://marketplace.plentymarkets.com/voelknerextension_6949[Voelkner^]
+|1.1.23
 |-
 
-|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy]
-|2.1.8
+|link:https://marketplace.plentymarkets.com/plentydevtool_6652[plentyDevTool^]
+|1.4.2
 |-
 
-|link:https://marketplace.plentymarkets.com/feed4ceres_6097[Feed4Ceres]
-|4.0.5
+|link:https://marketplace.plentymarkets.com/googletagmanagerultimate_54789[Google Tag Manager + Conversion API^]
+|1.1.5
 |-
 
-|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com]
-|1.2.2
+|link:https://marketplace.plentymarkets.com/wesiocatalog_6759[Kataloggenerator - Kataloge schnell und einfach erstellen^]
+|1.1.0
 |-
 
-|link:https://marketplace.plentymarkets.com/glsshipping_6463[GLS Shipping]
-|1.3.5
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.52
 |-
 
-|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de]
-|3.3.14
+|link:https://marketplace.plentymarkets.com/rewe_5901[Rewe^]
+|1.26.7
 |-
 
-|link:https://marketplace.plentymarkets.com/klarna_6731[Klarna]
-|2.3.6
+|link:https://marketplace.plentymarkets.com/glsshipping_6463[GLS Shipping^]
+|1.3.8
 |-
 
-|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector]
-|1.1.49
+|link:https://marketplace.plentymarkets.com/elasticexportcheck24de_4730[Check24^]
+|1.2.9
 |-
 
-|link:https://marketplace.plentymarkets.com/plentybase_5053[plentyBase]
-|1.8.0
+|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com^]
+|1.3.0
 |-
-
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE]
-|1.26.6
-|-
-
-|link:https://marketplace.plentymarkets.com/sendcloudplugin_6985[Sendcloud shipping]
-|1.0.2
-|-
-
-|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com]
-|2.9.12
-|-
-
-|link:https://marketplace.plentymarkets.com/trackingmanager_54743[TrackingManager]
-|1.0.9
-|-
-
-
-|link:https://marketplace.plentymarkets.com/voelknerextension_6949[Voelkner]
-|1.1.22
-|-
-
-|link:https://marketplace.plentymarkets.com/wayfair_6273[Wayfair]
-|1.2.0
-|-
-
 
 |===
 
