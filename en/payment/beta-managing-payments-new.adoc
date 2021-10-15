@@ -1,4 +1,4 @@
-= Test phase: Managing payments
+= Managing payments
 :lang: en
 include::{includedir}/_header.adoc[]
 :description: Payments in plentymarkets: Get to know everything about working with and editing payments.
@@ -8,12 +8,58 @@ include::{includedir}/_header.adoc[]
 :keywords: payments, incoming payments, assigning payments, automatic assignment, auto-assign, split payment, splitting payments, partial payments, mapping payments
 :author: team-order-payment
 
-This page of the manual describes and explains how to manage payments working with the new user interface. The functions explained here are currently in a test phase, but the old user interface is also still available at the same time. Note that the information in chapter <<payment/managing-payments#10, Carrying out basic settings for incoming payments>> as well as those in chapter <<payment/managing-payments#20, Booking payments>> also apply when you work with the new user interface.
+This page of the manual describes and explains how to manage payments. You receive payments in your system from different sources. Independent of the payment source, you can manage all incoming payments in the *Orders » Payments* menu.
+
+[#basic-settings]
+== Carrying out basic settings for incoming payments
+
+First, carry out basic settings for automatically assigning payments to orders and for giving goodwill on payments. Default settings are already saved in the system. These default values are generally recommended. To change these settings, proceed as follows.
+
+[.instruction]
+Changing the basic settings:
+
+. Go to *Setup » Orders » Payment » Incoming*.
+. Carry out the settings as described in <<table-settings-incoming-payments>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-settings-incoming-payments]]
+.Basic settings for incoming payments
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Match for automatic assignment*
+|Choose between *0.7* (no exact match required for assignment) and *1.0* (exact match required). If you enter a relatively high value, then it may not be possible to assign some payments. Therefore, the value *0.75* is set by *default*.
+
+| *Goodwill on payment*
+|You can ensure that, e.g. internal decimal amounts (starting with the third decimal place) do not lead to incorrect bookings by entering a *minimum amount* of *0.01* (default setting). If you set *0.05*, then amounts that are incorrect by 5 cents or less will still be treated as correct bookings.
+
+| [#intable-import-customer-bank-data]*Import customer bank data*
+|Select whether or not the customer's *bank data* should be *imported* and saved in the *customer data* when incoming payments are received. +
+*_Important:_* The customer has to agree to having their bank data imported and saved. Therefore, this function is set to *No* by default. Before activating the function, contact a legal adviser to discuss the legality of doing so. You may need to consider the laws that relate to several different countries of delivery.
+
+| *Only assign incoming PayPal payment to corresponding eBay listing if attached to the payment*
+|*_Note:_* This functionality only applies to the old PayPal interface for Callisto online shops in plentymarkets, *not* for the PayPal plugin! +
+If you use eBay listings in combination with the payment method PayPal, we recommend to set this option to *Yes*. This way, it is made sure that incoming payments effected via PayPal are correctly assigned to the corresponding eBay order. If an eBay listing ID is attached to a PayPal payment and the option is activated, the payment is only assigned to the order with a corresponding eBay listing ID.
+
+| *Ignore WooCommerce PayPal transactions*
+|*_Note:_* This functionality only applies to the old PayPal interface for Callisto online shops in plentymarkets, *not* for the PayPal plugin! +
+Select the option *Yes* to deactivate the automatic import of payments belonging to orders imported from WooCommerce with the payment method PayPal.
+
+|*Exclude orders with the following payment methods from automatic assignment*
+|Select those payment methods for which no payments are incoming. They are then ignored for payment assignment. +
+Use the keyboard to select multiple payment methods.
+
+|*Exclude orders with the following referrers from automatic assignment*
+|Select those referrers for which no payments are incoming. They are then ignored for payment assignment. +
+Use the keyboard to select multiple referrers.
+
+|====
 
 [#10]
 == New payments in the system
 
-After payments are booked in plentymarkets, they are automatically assigned to orders with a fuzzy search. If the payment cannot be assigned to the order automatically, then you can still manually assign the payment to an order. Payments are edited in the *Orders » Payments* menu. Unassigned payments are marked with a *green arrow* (icon:payment_assign[set=plenty,role="green"]).
+Payments can either come into your system automatically or they can be booked manually. After payments are booked in plentymarkets, they are automatically assigned to orders with a fuzzy search. If the payment cannot be assigned to the order automatically, then you can still manually assign the payment to an order. Edit and manage payments in the *Orders » Payments* menu. Unassigned payments are marked with a *green arrow* (icon:payment_assign[set=plenty,role="green"]). +
 In this overview, payments are displayed in your <<payment/currencies#30, system currency>>. If the payment is in a different currency, this amount is displayed in brackets next to the system currency.
 
 [TIP]
@@ -21,6 +67,58 @@ In this overview, payments are displayed in your <<payment/currencies#30, system
 ====
 Payment receipt is an important event when it comes to processing orders because items are not typically shipped until the payment was received. In most cases, the order status in plentymarkets changes from *status [3] - waiting for payment* to *status [5] - cleared for shipping* as soon as the payment was received. Create <<automation/event-procedures#, event procedures>> to automatically process orders and ship the items once payment is received.
 ====
+
+[#15]
+=== Manually booking payments
+
+In order to manually book a payment or partial payment in the order, e.g. because the customer picked up the item and paid the item in cash or because a payment cannot be found in the overview, proceed as follows.
+
+[.instruction]
+Booking a payment:
+
+. Go to *Orders » Edit orders*.
+. Open the order for which you want to book a payment. +
+→ The *Overview* tab opens.
+. Open the *Payment* tab.
+. Click on *Book payment*. +
+→ The *Book payment* window opens.
+. Carry out the settings according to the information given in <<table-manually-booking-payments>>.
+. Click on *Book payment*. +
+→ The payment is booked and displayed in the payment overview.
+
+[[table-manually-booking-payments]]
+.Manually booking payments
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Amount*
+|Enter the full or partial amount that you want to book.
+
+| *Credit/Debit*
+|Select *Credit* or *Debit*. The selection depends on the pending amount. *Credit* is selected by default. *Debit* is selected for negative pending amounts, e.g. overpaid payments. This selection can be changed if needed.
+
+| *Currency*
+|Select the currency in which the payment should be made.
+
+| *Exchange rate*
+|If needed, enter a different exchange rate than what is currently configured in the system. +
+*_Important_*: In some cases, you may want to book a payment in a different currency than is currently selected for the payment (default currency), e.g. in US dollars. In this case, select the option *USD* under *Currency* and enter the amount received under *Amount*. +
+If you calculated the <<payment/currencies#20, exchange rate>> in the *Setup » Orders » Payment » Currencies* menu and you want to use this exchange rate, then you do not have to enter anything under *Exchange rate*, because the exchange rate is automatically used. You will need to make an entry under *Exchange rate* if you want to use a different exchange rate for this payment, e.g. the exchange rate at the exact moment when the payment is received. In this case, enter the exchange rate that is applicable at this moment.
+
+| *Designated use*
+|The order ID is entered by default. The entry can be changed.
+
+| *Incoming payment*
+|Select a date for the incoming payment. The current date is selected by default.
+|====
+
+You can recognise manually booked payments by the *Manual booking* icon.
+
+[bank-postings-import]
+=== Importing bank postings
+
+The payment method cash in advance and other transfers take the form of bank postings. With these payment methods, the payments that were booked into your bank account have to be reported to the system and then they need to be assigned to the orders. Use the import type <<data/importing-data/sync-types/elasticSync-bank-postings, Bank postings>> to import your bank postings into your plentymarkets system. After the import, the bank postings are treated as other payments and are automatically assigned to orders. Accordingly, editing and managing of these payments is also done in the *Orders » Payments* menu.
 
 [#20]
 == Searching for payments
@@ -309,3 +407,18 @@ The *Assignment* area offers you a list of the orders with the highest matching 
 The *History* offers you an overview over all actions executed for this payment. It is also shown who initiated an action at what time so that transparency is ensured.
 
 The *Properties* in the lower area show all information regarding the payment. These information usually exceed the information given in the details. Which information are shown in the Properties depends on the payment itself, for example which payment method was used or which information a payment provider transfers.
+
+[#100]
+== Displaying incoming payments on the dashboard
+
+You can add the element *Payments* to the <<welcome/customise-system#110, dashboard>> of your plentymarkets back end. This element displays information about unassigned payments as well as about all incoming payments from yesterday and today. If you don't want to use this element on your dashboard, you can get the same results by going to *Orders » payments* and using the search filters.
+
+It is recommended that you take a look at the unassigned payments before editing orders. You should see whether incoming *cash in advance* payments are among them, which can usually be assigned to an order without a doubt thanks to the amount and the booking text. This saves your customers long waiting times and it saves you unpleasant complaints.
+
+At least once a week, you should edit and sort out the unassigned payments so that you don't lose track of them in your day-to-day business. For further information about assigning unassigned payments and bookings to orders, refer to <<payment/managing-payments#70, Assigning payments>>.
+
+[TIP]
+.Tip
+====
+Sofortbanking payments will be confirmed via an interface immediately after the payment process. They will then appear again in the system as bank postings. You can delete these bank postings from the list of unassigned payments without concern because the orders in question have already been assigned to the payment.
+====
