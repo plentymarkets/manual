@@ -2,11 +2,13 @@
 :lang: en
 include::{includedir}/_header.adoc[]
 :author: team-multi-channel
-:keywords: Check24, Check24, Check23, Check 24
+:keywords: Check24, ElasticExportCheck24DE, Check24DE, Check 24, Check24, Check24DE
 :description: Multi-Channel in plentymarkets: Set up the interface to the market Check24 in your plentymarkets system.
 :position: 50
 :url: markets/check24
 :id: BZ3ZIMQ
+:check24:
+:format-item-new:
 
 Check24.de is an online comparison portal that helps consumers find the right price/quality products. In addition to price comparisons, items are also sold on the Check24.de market.
 
@@ -17,13 +19,44 @@ On this page, you will find information about the settings you need to carry out
 
 You need to register with link:https://merchantcenter.check24.de/landing/partner_info[Check24^]{nbsp}icon:external-link[] before setting up Check24 in plentymarkets.
 
+////
 [#200]
-== Setting up Check24 in plentymarkets
+== Information about data exchange intervals
+
+After installing and setting up the plugin, the automatic processes described in <<#data-exchange>> become available.
+
+[[data-exchange]]
+.Frequency of data exchange
+[cols="1,3a"]
+|====
+|Data |Interval
+
+2+| Item data
+
+| Item export
+| once a day
+
+| Stock synchronisation
+| xxx
+
+| Price synchronisation
+| xxx
+
+2+| Order data
+
+| Order import
+| Hourly +
+*_Note:_* Orders are imported with *Status [5] Cleared for shipping*. The invoice address is always Check24. The customer's address is the delivery address.
+|====
+////
+
+[#200]
+== Setting up the interface to Check24
 
 Carry out the following settings in plentymarkets in order to set up the interface to Check24.
 
 [.instruction]
-Setting up Check24:
+Setting up the interface to Check24:
 
 . Go to *Setup » Markets » Check24*.
 . Activate the automatic data exchange.
@@ -57,7 +90,7 @@ include::_textblocks/instructions/variation-availability.adoc[]
 
 
 [#400]
-==  Defining SKUs
+== _Optional:_ Saving SKU
 
 :referrer-sku: Check24
 :referrer-id: 150
@@ -77,33 +110,59 @@ include::_textblocks/instructions/define-sales-price.adoc[]
 [#700]
 == Activating the payment method
 
-:market: check 24
-:payment-method: check 24
+:market: check24
+:payment-method: check24
 
 include::_textblocks/instructions/activate-payment-method.adoc[]
 
+[#item-export]
+== Exporting item data
+
+* <<#500, _Alternative 1:_ Item export with the Elastic Export (deprecated)>>
+* <<#catalogue-export, _Alternative 2:_ Item export with catalogue formats (test phase)>>
 
 [#500]
-== Setting up the item export
+=== _Alternative 1:_ Elastic Export (deprecated)
 
-This section explains how to transfer your items to Check24. The item export for Check24DE is carried out by the elastic export. The data formats Check24DE and Check24DE Fashion are used for this. You need to install the plugins *ElasticExport* and *ElasticExportCheck24DE* to use these data formats. First, create the data format Check24DE. Then transfer the URL to Check24.
+This section explains how to transfer your items to Check24. In the old plugin, the item export for Check24DE is carried out by the elastic export. The data formats Check24DE and Check24DE Fashion are used for this.
+
+NOTE: No new features are planned for the Elastic Export and the export formats for Check24. As such, we recommend that you <<#900, create catalogues for Check24 instead>>.
+
+[#500]
+=== Item export with the Elastic Export (deprecated)
+
+NOTE: No new features are planned for the Elastic Export and the export formats. As such, we recommend that you <<#catalogue-export, create catalogues instead>>.
+
+==== Installing plugins for the Elastic Export
+
+:price-search-engine: to Check24 with the Elastic Export
+:plugin-name: Check24
+:plugin-link: https://marketplace.plentymarkets.com/en/elasticexportcheck24de_4730
+
+include::../_textblocks/explanations/plugin-download.adoc[]
+
+First, create the export format Check24DE. Then transfer the URL to Check24.
 
 [#500-1]
-=== Export format Check24DE
+==== Export format Check24DE
+
+Create the export format *Check24DE* as described below. Note the following points:
+
+* If you change one or more settings, then you will have to transfer the new link to Check24.
+* A maximum of 4000 items is exported at once. If you export more items, then a second export is automatically carried out. To display the second export process, set the parameter *&Page* = in the export link to *2*.
+* Technical data is transferred to Check24 in the last column of the export file.
 
 [#500-3]
-==== Creating the export format Check24DE
+[.instruction]
+.Creating the export format Check24DE:
 
-Creating an export format:
-
-1. Go to *Data » Elastic export*.
-2. Click on *New export*.
-3. Carry out the settings. Pay attention to the explanations given in <<#settings-item-export-check24>>.
-4. *Save* the settings. +
-→ An ID is created for the export format *Check24DE-Plugin*. +
+. Go to *Data » Elastic export*.
+. Click on *New export*.
+. Carry out the settings. Pay attention to the explanations given in <<#settings-item-export-check24>>. +
+*_Important:_* If you change one or more settings, then you will have to transfer the new link to Check24.
+. *Save* the settings. +
+→ The export format is given an ID. +
 → The export format is shown in the *Exports* overview.
-
-The following table lists details for settings, format settings and recommended item filters for the format *Check24DE plugin*.
 
 [[settings-item-export-check24]]
 .Settings for the data format *Check24DE-Plugin*
@@ -112,24 +171,35 @@ The following table lists details for settings, format settings and recommended 
 |Setting |Explanation
 
 2+| *Settings*
-| *Name*| Enter a name. The export format is listed by this name in the overview within the *Exports* tab.
 
-| *Type*| Select the type *item* from the drop-down list.
+| *Name*
+| Enter a name. The export format is listed by this name in the overview within the *Exports* tab.
 
-| *Format*| Select *Check24DE-Plugin*.
+| *Type*
+| Select the type *item* from the drop-down list.
 
-| *Limit*| Enter a number. If you want to transfer more than 9999 data records, then the output file is not generated again for another 24 hours. This is to save resources. If more than 9999 data records are necessary, the setting *Generate cache file* has to be active.
+| *Format*
+| Select *Check24DE-Plugin*.
 
-| *Generate cache file*| Place a check mark if you want to transfer more than 9999 data records to the price search engine. We recommend that you do not activate this setting for more than 20 export formats. This is to ensure a high performance of the elastic export.
+| *Limit*
+| Enter a number. If you want to transfer more than 9999 data records, then the output file is not generated again for another 24 hours. This is to save resources. If more than 9999 data records are necessary, the setting *Generate cache file* has to be active.
 
-| *Provisioning*| Select *URL*. Use this option to generate a token for authentication in order to allow external access.
+| *Generate cache file*
+| Place a check mark if you want to transfer more than 9999 data records to the price search engine. We recommend that you do not activate this setting for more than 20 export formats. This is to ensure a high performance of the elastic export.
 
-| *Token, URL*| If you selected the option *URL* under *Provisioning*, click on *Generate token*. The token is entered automatically. The URL is entered automatically if the token has been generated under *Token*.
+| *Provisioning*
+| Select *URL*. Use this option to generate a token for authentication in order to allow external access.
 
-| *File name*| The file name must have the ending *.csv* or *.txt* for Check24.de to be able to import the file successfully.
+| *Token, URL*
+| If you selected the option *URL* under *Provisioning*, click on *Generate token*. The token is entered automatically. The URL is entered automatically if the token has been generated under *Token*.
+
+| *File name*
+| The file name must have the ending *.csv* or *.txt* for Check24.de to be able to import the file successfully.
 
 2+| *Item filters*
-| *Add item filters*| Select one or more item filters from the drop-down list and click on *Add*. There are no filters set by default. It is possible to add all item filters listed below from the drop-down list one after the other.
+
+| *Add item filters*
+| Select one or more item filters from the drop-down list and click on *Add*. There are no filters set by default. It is possible to add all item filters listed below from the drop-down list one after the other.
 
 * *Variations* = *Transfer all* or *Only transfer main variations*.
 * *Markets* = Select one market, several or *ALL*. The availability for all markets selected here has to be saved for the item. Otherwise, the export will not take place.
@@ -143,75 +213,89 @@ The following table lists details for settings, format settings and recommended 
 * *Active* = Only active variations will be exported.
 
 2+| *Format settings*
-| *Product URL*| Select the URL that you wish to transfer to the price search engine. You can either send the item’s URL and the variation’s URL. URLs of variations can only be transferred in combination with the Ceres store.
 
-| *Client*| Select a client. This setting is used for the URL structure and to filter valid sales prices.
+| *Product URL*
+| Select the URL that you wish to transfer to the price search engine. You can either send the item’s URL and the variation’s URL. URLs of variations can only be transferred in combination with the Ceres store.
 
-| *URL parameter*| Enter a suffix for the product URL if this is required for the export. If you activated the *transfer* option for the product URL further up, then this character string is added to the product URL.
+| *Client*
+| Select a client. This setting is used for the URL structure and to filter valid sales prices.
 
-| *Order referrer*| Select the order referrer that should be assigned during the order import from the drop-down list. The order referrer is also used to filter valid sales prices and images. The selected referrer is added to the product URL so that sales can be analysed later.
+| *URL parameter*
+| Enter a suffix for the product URL if this is required for the export. If you activated the *transfer* option for the product URL further up, then this character string is added to the product URL.
 
-| *Marketplace account*| Select the marketplace account from the drop-down list.
+| *Order referrer*
+| Select the order referrer that should be assigned during the order import from the drop-down list. The order referrer is also used to filter valid sales prices and images. The selected referrer is added to the product URL so that sales can be analysed later.
 
-| *Language*| Select the language from the drop-down list.
+| *Marketplace account*
+| Select the marketplace account from the drop-down list.
 
-| *Item name*| Select *Name 1*, *Name 2* or *Name 3*. The names are saved in the *Texts* tab of the item. Enter a number into the *Maximum number of characters (def. text)* field if desired. This specifies how many characters are exported for the item name.
+| *Language*
+| Select the language from the drop-down list.
 
-| *Preview text*| This option does not affect this format.
+| *Item name*
+| Select *Name 1*, *Name 2* or *Name 3*. The names are saved in the *Texts* tab of the item. Enter a number into the *Maximum number of characters (def. text)* field if desired. This specifies how many characters are exported for the item name.
 
-| *Description*| Select the text that you want to transfer as description. Enter a number into the *Maximum number of characters (def. text)* field if desired. This specifies how many characters are exported for the description. Activate the option *Remove HTML tags* if you want HTML tags to be removed during the export. If you only want to allow specific HTML tags to be exported, then enter these tags into the field * Permitted HTML tags, separated by comma (def. text)* field. Use commas to separate multiple tags.
+| *Preview text*
+| This option does not affect this format.
 
-| *Target country*| Select the target country from the drop-down list.
+| *Description*
+| Select the text that you want to transfer as description. Enter a number into the *Maximum number of characters (def. text)* field if desired. This specifies how many characters are exported for the description. Activate the option *Remove HTML tags* if you want HTML tags to be removed during the export. If you only want to allow specific HTML tags to be exported, then enter these tags into the field * Permitted HTML tags, separated by comma (def. text)* field. Use commas to separate multiple tags.
 
-| *Barcode*| Select the ASIN, ISBN or an EAN from the drop-down list. The barcode has to be linked to the order referrer selected above. Otherwise, the barcode will not be exported.
+| *Target country*
+| Select the target country from the drop-down list.
 
-| *Image*| Select *Position 0* or *First image* to export this image.
+| *Barcode*
+| Select the ASIN, ISBN or an EAN from the drop-down list. The barcode has to be linked to the order referrer selected above. Otherwise, the barcode will not be exported.
+
+| *Image*
+| Select *Position 0* or *First image* to export this image.
 
 * *Position 0* = An image with position 0 is transferred.
 * *First image* = The first image is transferred.
 
-| *Image position of the energy label*| This option does not affect this format.
+| *Image position of the energy label*
+| This option does not affect this format.
 
-| *Stock buffer*| The stock buffer for variations with limitation to the net stock.
+| *Stock buffer*
+| The stock buffer for variations with limitation to the net stock.
 
-| *Stock for variations without stock limitation*| The stock for variations without stock limitation.
+| *Stock for variations without stock limitation*
+| The stock for variations without stock limitation.
 
-| *Stock for variations with no stock administration*| The stock for variations without stock administration.
+| *Stock for variations with no stock administration*
+| The stock for variations without stock administration.
 
-| *Live currency conversion*| Activate this option to convert the price into the currency of the selected country of delivery. The price has to be released for the corresponding currency.
+| *Live currency conversion*
+| Activate this option to convert the price into the currency of the selected country of delivery. The price has to be released for the corresponding currency.
 
-| *Sales price*| Select gross price or net price from the drop-down list.
+| *Sales price*
+| Select gross price or net price from the drop-down list.
 
-| *Offer price*| This option does not affect this format.
+| *Offer price*
+| This option does not affect this format.
 
-| *RRP*| This option does not affect this format.
+| *RRP*
+| This option does not affect this format.
 
-| *Shipping costs*| Activate this option if you want to use the shipping costs that are saved in a configuration. If this option is activated, then you are able to select the configuration and the payment method from the drop-down lists. Activate the option *Transfer flat rate shipping charge* if you want to use a flat rate shipping charge. If this option is activated, a value has to be entered in the line underneath.
+| *Shipping costs*
+| Activate this option if you want to use the shipping costs that are saved in a configuration. If this option is activated, then you are able to select the configuration and the payment method from the drop-down lists. Activate the option *Transfer flat rate shipping charge* if you want to use a flat rate shipping charge. If this option is activated, a value has to be entered in the line underneath.
 
-| *VAT note*| This option does not affect this format.
+| *VAT note*
+| This option does not affect this format.
 
-| *Item availability*| Activate the *overwrite* option and enter item availabilities into the fields *1* to *10*. The fields represent the IDs of the availabilities. This overwrites the item availabilities that are saved in the menu *System » Item » Item availability*.
+| *Item availability*
+| Activate the *overwrite* option and enter item availabilities into the fields *1* to *10*. The fields represent the IDs of the availabilities. This overwrites the item availabilities that are saved in the menu *System » Item » Item availability*.
 |====
 
-[IMPORTANT]
-.Export information
-====
-If you change one or more settings, then you will have to transfer the new link to Check24.
-
-A maximum of 4000 items is exported at once. If you export more items, then a second export is automatically carried out. To display the second export process, set the parameter *&Page* = in the export link to *2*.
-
-Technical data is transferred to Check24 in the last column of the export file.
-====
-
 [#500-2]
-==== Available columns of the export file for the export format Check24DE
+==== Check24DE: Available columns for the export file
 
 :export-format: Check24DE-Plugin
 
 include::_textblocks/instructions/download_export-file.adoc[]
 
 [[columns-export-file-check24]]
-.Available columns of the export file for the export format *Check24DE-Plugin*
+.Check24DE: Available columns for the export file
 [cols="1,3"]
 |====
 | Column header | Explanation
@@ -276,23 +360,25 @@ _*Allowed file types:*_ jpg, gif, bmp, png
 [#650]
 === Export format Check24DE Fashion
 
-By installing this plugin you will receive the export format *Check24DE Fashion*. Use this format to exchange data between plentymarkets and Check24.de using the elastic export. You also need to install the plugin *Elastic export* from the plentyMarketplace first before you can use the format in plentymarkets.
+Create the export format *Check24DE Fashion* as described below. Note the following points:
 
-Once both plugins are installed, you can create the <<data/exporting-data/elastic-export#, export format>> *Check24DE Fashion*.
+* If you change one or more settings, then you will have to transfer the new link to Check24.
+* A maximum of 4000 items is exported at once. If you export more items, then a second export is automatically carried out. To display the second export process, set the parameter *&Page* = in the export link to *2*.
+* Technical data is transferred to Check24 in the last column of the export file.
 
 [#650-1]
 ==== Creating the export format Check24DE Fashion
 
-Creating an export format:
+[.instruction]
+.Creating the export format Check24DE Fashion:
 
-1. Go to *Data » Elastic export*.
-2. Click on *New export*.
-3. Carry out the settings. Pay attention to the explanations given in <<#settings-item-export-check24-fashion>>.
-4. *Save* the settings. +
-→ An ID is created for the export format *Check24DE-Plugin*. +
+. Go to *Data » Elastic export*.
+. Click on *New export*.
+. Carry out the settings. Pay attention to the explanations given in <<#settings-item-export-check24-fashion>>. +
+*_Important:_* If you change one or more settings, then you will have to transfer the new link to Check24.
+. *Save* the settings. +
+→ The export format is given an ID. +
 → The export format is shown in the *Exports* overview.
-
-The following table lists details for settings, format settings and recommended item filters for the format *Check24DE Fashion*.
 
 [[settings-item-export-check24-fashion]]
 .Settings for the data format *Check24DE Fashion*
@@ -417,20 +503,19 @@ The following table lists details for settings, format settings and recommended 
 |====
 
 [#650-2]
-==== Available columns of the data format Check24DE Fashion
+==== Check24DE Fashion: Available columns for the export file
 
-:export-format: Check24DE-Plugin
+:export-format: Check24DE Fashion
 
 include::_textblocks/instructions/download_export-file.adoc[]
 
 [[columns-export-file-check24-fashion]]
-.Available columns of the data format *Check24DE Fashion*
+.Check24DE Fashion: Available columns for the export file
 [cols="1,3"]
 |====
 | Column header | Explanation
 
-| Produktname +
-(product name)
+| Product name +
 (mandatory)
 | According to the format setting *Item name* or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Produktname*.
 
@@ -443,24 +528,20 @@ include::_textblocks/instructions/download_export-file.adoc[]
 | The *parent SKU* of the variation for Check24.
 
 | Kategorie-Pfad +
-(category path) +
 (mandatory)
 | Category path of the default category of the client chosen in the settings above or from a characteristic of the type *text* or *selection* with the *Check24 Fashion Property* link: *Kategorie-Pfad*.
 
-| Kurzbeschreibung +
-(short description)
+| Short description
 | According to the format setting *Preview text* or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Kurzbeschreibung*. Characteristics will be prioritised.
 
 | Ausführliche Beschreibung +
-(detailed description) +
 (mandatory)
 | According to the format setting *Description* or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Ausführliche Beschreibung*. Characteristics will be prioritised.
 
 | Amazon Sales Rank
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Amazon Sales Rank*.
 
-| Unverbindliche Preisempfehlung +
-(recommended retail price)
+| Unverbindliche Preisempfehlung
 | The *Sales Price* of type *RRP*.
 
 | EAN +
@@ -480,40 +561,32 @@ include::_textblocks/instructions/download_export-file.adoc[]
 | Barcode of the type *UPC* or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *UPC*. Characteristics will be prioritised.
 
 | Bild-URL #1 - #20 +
-(image url #1 - #20) +
 (mandatory)
 | The *URL path* of the item images according to the format setting *Image*. If colour variations exist, only images linked to the variation will be exported. Otherwise all images will be exported.
 
-| Absatzform +
-(heel form)
+| Absatzform
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Absatzform*.
 
-| Schuhspitze +
-(shoe toe)
+| Schuhspitze
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Schuhspitze*.
 
-| Geschlecht +
-(gender) +
+| Gender +
 (mandatory)
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Geschlecht*.
 
 | Altersgruppe +
-(age group) +
 (mandatory)
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Altersgruppe*.
 
-| Größe +
-(size) +
+| Size +
 (mandatory)
 | Attribute with the attribute link *Size* for Google Shopping or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Größe*. Attributes will be prioritised.
 
 | Größensystem +
-(size system) +
 (mandatory)
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Größensystem*.
 
-| Marke +
-(brand) +
+| Brand +
 (mandatory)
 | The *name of the manufacturer* of the item or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Marke*. Characteristics will be prioritised. The *external name* saved in the *Setup » Item » Manufacturers* menu is preferred if existing.
 
@@ -521,73 +594,115 @@ include::_textblocks/instructions/download_export-file.adoc[]
 (mandatory)
 | Attribute with the attribute link *Material* for Google Shopping or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Material*. Attributes will be prioritised.
 
-| Innenfutter +
-(lining)
+| Innenfutter
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Innenfutter*.
 
-| Absatzhöhe +
-(heel hight)
+| Heel height
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Absatzhöhe*. Save the measurement as well as the unit of measurement as the characteristics value for the item. *_Example:_* `2 cm`
 
-| Sohlenmaterial +
-(sole material)
+| Sohlenmaterial
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Sohlenmaterial*.
 
-| Passform +
-(fit)
+| Passform
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Passform*.
 
-| Verschluss +
-(fastening)
+| Verschluss
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Verschluss*.
 
-| Schafthöhe +
-(leg hight)
+| Leg height
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Schafthöhe*. Save the measurement as well as the unit of measurement as the characteristics value for the item. *_Example:_* `5 cm`
 
-| Schaftweite +
-(leg girth)
+| Schaftweite
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Schaftweite*. Save the measurement as well as the unit of measurement as the characteristics value for the item. *_Example:_* `5 cm`
 
-| Weite +
-(width)
+| Weite
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Weite*. Save the measurement as well as the unit of measurement as the characteristics value for the item. +
-*_Example:_* *5 cm*
+*_Example:_* `5 cm`
 
-| Muster +
-(pattern)
+| Muster
 | Attribute with the attribute link *Muster* for Google Shopping or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Muster*. Attributes will be prioritised.
 
-| Herstellerfarbe +
-(manufacturer colour) +
+| Manufacturer colour +
 (mandatory)
 | Attribute with the attribute link *Farbe* for Google Shopping or from a characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Herstellerfarbe*. Attributes will be prioritised.
 
-| Innensohlenmaterial +
-(insole material)
-
+| Innensohlenmaterial
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Innensohlenmaterial*.
 
-| Anlass +
-(occasion)
+| Occasion
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Anlass*.
 
-| Saison +
-(season)
+| Season
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Saison*.
 
-| Sonstige +
-(other)
+| Sonstige
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Sonstige*.
 
-| Applikationen +
-(applications)
+| Applikationen
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Applikationen*.
 
-| Modestil +
-(style)
+| Modestil
 | Characteristic of the type *text* or *selection* with the *Check24 Fashion property* link *Modestil*.
 |====
+--
+
+[#catalogue-export]
+=== _Alternative 2:_ Catalogue export (test phase)
+
+You can now export item data to Check24 using catalogue formats. Go to *Data » Catalogues* to create catalogues.
+
+* Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, basic concept of the plentymarkets catalogues first>>.
+
+[#catalogue-creation]
+==== Creating a catalogue
+
+Item data is exported with the marketplace formats *Check24* und *Check24 Fashion*. To export your items to Check24, create catalogues in the *Data » Catalogue* menu. Link the Check24 data fields with item data saved in plentymarkets in the marketplace format afterwards. After you activate the catalogue, the catalogue data is automatically exported to Check24 in regular intervals.
+
+* Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, basic concept of the plentymarkets catalogues first>>.
+
+:catalogue-template-name: Check24
+:catalogue-plugin:
+:one-per-category:
+
+include::_textblocks/catalogues/instructions/catalogue-creation.adoc[]
+
+[#catalogue-mapping]
+==== Mapping data fields in the catalogue
+
+Now, map the Check24 data fields to the item data saved in plentymarkets.
+
+include::_textblocks/catalogues/instructions/catalogue-mapping.adoc[]
+
+[#recommended-mappings]
+==== Recommendations for data field mappings
+
+To help you with mapping your data fields for the catalogue, we have created a list of recommended data field mappings. Note that these mappings are recommendations only. Depending on how you manage your item data, other mappings may be more appropriate than the recommendation given here.
+
+[.collapseBox]
+.List of recommended data field mappings for Check24
+--
+include::_textblocks/catalogues/recommended-mappings/check24-recommended-mappings.adoc[]
+--
+
+[.collapseBox]
+.List of recommended data field mappings for Check24 Fashion
+--
+include::_textblocks/catalogues/recommended-mappings/check24fashion-recommended-mappings.adoc[]
+--
+
+[.collapseBox]
+.List of recommended data field mappings for Check24 Offer
+--
+include::_textblocks/catalogues/recommended-mappings/check24offer-recommended-mappings.adoc[]
+--
+
+[#904]
+==== Activating the catalogue
+
+:interval: once a day during the night
+:market: Check24
+
+include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
 
 [#950]
 == Order import
