@@ -7,6 +7,8 @@ include::{includedir}/_header.adoc[]
 :position: 50
 :url: maerkte/check24
 :id: BZ3ZIMQ
+:check24:
+:format-item-new:
 
 Check24.de ist ein Online-Vergleichsportal, das Verbraucher:innen bei der Suche nach dem für sie passenden Preis-/Leistungsumfang hilft. Auch du kannst auf dem Marktplatz Check24.de deine Artikel verkaufen.
 
@@ -17,13 +19,44 @@ Auf dieser Handbuchseite findest du Informationen zur Einrichtung des Marktplatz
 
 Bevor du Check24 in plentymarkets einrichtest, musst du dich bei link:https://merchantcenter.check24.de/landing/partner_info[Check24^]{nbsp}icon:external-link[] registrieren.
 
+////
 [#200]
-== Check24 in plentymarkets einrichten
+== Informationen zur Häufigkeit des Datenaustauschs
+
+Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datenaustausch>> gelisteten automatisierten Abläufe bereit:
+
+[[datenaustausch]]
+.Häufigkeit des Datenaustauschs
+[cols="1,3a"]
+|====
+|Daten |Intervall
+
+2+| Artikeldaten
+
+| Artikelexport
+| einmal täglich
+
+| Bestandsabgleich
+| xxx
+
+| Preisabgleich
+| xxx
+
+2+| Auftragsdaten
+
+| Auftragsimport
+| stündlich +
+*_Hinweis:_* Aufträge werden mit dem *Status [5] Freigabe Versand* importiert. Als Rechnungsadresse wird immer Check24 übermittelt. Die Adresse von Kund:innen dient nur als Lieferadresse.
+|====
+////
+
+[#200]
+== Schnittstelle zu Check24 einrichten
 
 Nimm die folgenden Einstellungen in plentymarkets vor, um die Schnittstelle zu Check24 einzurichten.
 
 [.instruction]
-Check24 einrichten:
+Schnittstelle zu Check24 einrichten:
 
 . Öffne das Menü *Einrichtung » Märkte » Check24*.
 . Aktiviere den automatischen Datenaustausch.
@@ -57,7 +90,7 @@ include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
 
 
 [#400]
-==  SKU festlegen
+== _Optional:_ SKU speichern
 
 :referrer-sku: Check24
 :referrer-id: 150
@@ -77,33 +110,54 @@ include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
 [#700]
 == Zahlungsart aktivieren
 
-:marketplace: check24
+:market: check24
 :payment-method: check24
 
 include::_textblocks/instructions/zahlungsart_aktivieren.adoc[]
 
+[#item-export]
+== Artikeldaten exportieren
+
+* <<#500, _Möglichkeit 1:_ Artikelexport über Elastischen Export (veraltet)>>
+* <<#catalogue-export, _Möglichkeit 2:_ Artikelexport über Katalog-Formate (Testphase)>>
 
 [#500]
-== Artikelexport einrichten
+=== _Möglichkeit 1:_ Elastischer Export (veraltet)
 
-In diesem Kapitel wird beschrieben, wie du deine Artikel zu Check24 überträgst. Artikel werden über den elastischen Export mit den Datenformaten Check24DE und Check24DE Fashion zu Check24 exportiert. Dafür müssen die Plugins *ElasticExport* und *ElasticExportCheck24DE* installiert sein. Erstelle zunächst das Datenformat Check24DE und übermittele im Anschluss die URL zu Check24.
+In diesem Kapitel wird beschrieben, wie du deine Artikel zu Check24 überträgst. Im alten Plugin werden Artikel über den elastischen Export mit den Datenformaten Check24DE und Check24DE Fashion zu Check24 exportiert.
+
+NOTE: Der Elastische Export und die Exportformate für Check24 werden für den Marktplatz-Export nicht mehr weiterentwickelt. Wir empfehlen dir deshalb, <<#900, Kataloge für Check24 zu erstellen>>.
+
+==== Plugins für Elastischen Export installieren
+
+:price-search-engine: über den Elastischen Export an Check24
+:plugin-name: Check24
+:plugin-link: https://marketplace.plentymarkets.com/elasticexportcheck24de_4730
+
+include::_textblocks/explanations/plugin-download.adoc[]
+
+Erstelle zunächst das Exportformat Check24DE und übermittele im Anschluss die URL an Check24.
 
 [#500-1]
-=== Exportformat Check24DE
+==== Exportformat Check24DE
+
+Erstelle wie unten beschrieben das Exportformat *Check24DE* für Check24. Beachte vorher die folgenden Besonderheiten:
+
+* Wenn du eine oder mehrere Einstellungen änderst, musst du den neuen Link an Check24 übergeben.
+* Pro Export werden maximal 4000 Artikel exportiert. Wenn du mehr Artikel exportierst, wird automatisch ein zweiter Export ausgeführt. Um den zweiten Export anzuzeigen, setze den Parameter *&amp;Page* = im Export-Link auf *2*.
+* Technische Daten werden in der letzten Spalte der Exportdatei an Check24 übergeben.
 
 [#500-3]
-==== Exportformat Check24DE erstellen
+[.instruction]
+.Exportformat Check24DE erstellen:
 
-Exportformat erstellen:
-
-1. Öffne das Menü *Daten » Elastischer Export*.
-2. Klicke auf *Neuer Export*.
-3. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<#einstellungen-artikelexport-check24>>.
-4. *Speichere* die Einstellungen. +
-→ Eine ID für das Exportformat *Check24DE-Plugin* wird vergeben. +
+. Öffne das Menü *Daten » Elastischer Export*.
+. Klicke auf *Neuer Export*.
+. Nimm die Formateinstellungen vor. Beachte dazu die Erläuterungen in <<#einstellungen-artikelexport-check24>>. +
+*_Wichtig:_* Wenn du eine oder mehrere Einstellungen änderst, musst du den neuen Link an Check24 übergeben.
+. *Speichere* die Einstellungen. +
+→ Eine ID für das Exportformat wird vergeben. +
 → Das Exportformat wird in der Übersicht *Exporte* angezeigt.
-
-In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellungen und empfohlenen Artikelfiltern für das Format *Check24DE-Plugin*.
 
 [[einstellungen-artikelexport-check24]]
 .Einstellungen für das Datenformat *Check24DE-Plugin*
@@ -112,24 +166,35 @@ In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellunge
 |Einstellung |Erläuterung
 
 2+| *Einstellungen*
-| *Name*| Name eingeben. Unter diesem Namen erscheint das Exportformat in der Übersicht im Tab *Exporte*.
 
-| *Typ*| Typ *Artikel* aus der Dropdown-Liste wählen.
+| *Name*
+| Name eingeben. Unter diesem Namen erscheint das Exportformat in der Übersicht im Tab *Exporte*.
 
-| *Format*| *Check24DE-Plugin* wählen.
+| *Typ*
+| Typ *Artikel* aus der Dropdown-Liste wählen.
 
-| *Limit*| Zahl eingeben. Wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen, wird die Ausgabedatei wird für 24 Stunden nicht noch einmal neu generiert, um Ressourcen zu sparen. Wenn mehr als 9999 Datensätze benötigt werden, muss die Option *Cache-Datei generieren* aktiv sein.
+| *Format*
+| *Check24DE-Plugin* wählen.
 
-| *Cache-Datei generieren*| Häkchen setzen, wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen. Um eine optimale Performance des elastischen Exports zu gewährleisten, darf diese Option bei maximal 20 Exportformaten aktiv sein.
+| *Limit*
+| Zahl eingeben. Wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen, wird die Ausgabedatei wird für 24 Stunden nicht noch einmal neu generiert, um Ressourcen zu sparen. Wenn mehr als 9999 Datensätze benötigt werden, muss die Option *Cache-Datei generieren* aktiv sein.
 
-| *Bereitstellung*| *URL* wählen. Mit dieser Option kann ein Token für die Authentifizierung generiert werden, damit ein externer Zugriff möglich ist.
+| *Cache-Datei generieren*
+| Häkchen setzen, wenn mehr als 9999 Datensätze an die Preissuchmaschine übertragen werden sollen. Um eine optimale Performance des elastischen Exports zu gewährleisten, darf diese Option bei maximal 20 Exportformaten aktiv sein.
 
-| *Token, URL*| Wenn unter *Bereitstellung* die Option *URL* gewählt wurde, auf *Token generieren* klicken. Der Token wird dann automatisch eingetragen. Die URL wird automatisch eingetragen, wenn unter *Token* der Token generiert wurde.
+| *Bereitstellung*
+| *URL* wählen. Mit dieser Option kann ein Token für die Authentifizierung generiert werden, damit ein externer Zugriff möglich ist.
 
-| *Dateiname*| Der Dateiname muss auf *.csv* oder *.txt* enden, damit Check24.de die Datei erfolgreich importieren kann.
+| *Token, URL*
+| Wenn unter *Bereitstellung* die Option *URL* gewählt wurde, auf *Token generieren* klicken. Der Token wird dann automatisch eingetragen. Die URL wird automatisch eingetragen, wenn unter *Token* der Token generiert wurde.
+
+| *Dateiname*
+| Der Dateiname muss auf *.csv* oder *.txt* enden, damit Check24.de die Datei erfolgreich importieren kann.
 
 2+| *Artikelfilter*
-| *Artikelfilter hinzufügen*| Einen oder mehrere der folgenden Artikelfilter aus der Dropdown-Liste wählen und auf *Hinzufügen* klicken. Standardmäßig sind keine Filter voreingestellt. Es ist möglich, alle unten aufgeführten Artikelfilter aus der Dropdown-Liste nacheinander hinzuzufügen.
+
+| *Artikelfilter hinzufügen*
+| Einen oder mehrere der folgenden Artikelfilter aus der Dropdown-Liste wählen und auf *Hinzufügen* klicken. Standardmäßig sind keine Filter voreingestellt. Es ist möglich, alle unten aufgeführten Artikelfilter aus der Dropdown-Liste nacheinander hinzuzufügen.
 
 * *Varianten* = *Alle übertragen* oder *Nur Hauptvarianten übertragen* wählen.
 * *Märkte* = Einen, mehrere oder *ALLE* Märkte wählen. Die Verfügbarkeit muss für alle hier gewählten Märkte am Artikel hinterlegt sein. Andernfalls findet kein Export statt.
@@ -143,75 +208,89 @@ In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellunge
 * *Aktiv* = Nur aktive Varianten werden übertragen.
 
 2+| *Formateinstellungen*
-| *Produkt-URL*| Wählen, ob die URL des Artikels oder der Variante an das Preisportal übertragen wird. Varianten URLs können nur in Kombination mit dem Ceres Webshop übertragen werden.
 
-| *Mandant*| Mandant wählen. Diese Einstellung wird für den URL-Aufbau und zum Filtern gültiger Verkaufspreise verwendet.
+| *Produkt-URL*
+| Wählen, ob die URL des Artikels oder der Variante an das Preisportal übertragen wird. Varianten URLs können nur in Kombination mit dem Ceres Webshop übertragen werden.
 
-| *URL-Parameter*| Suffix für die Produkt-URL eingeben, wenn dies für den Export erforderlich ist. Die Produkt-URL wird dann um die eingegebene Zeichenkette erweitert, wenn weiter oben die Option *übertragen* für die Produkt-URL aktiviert wurde.
+| *Mandant*
+| Mandant wählen. Diese Einstellung wird für den URL-Aufbau und zum Filtern gültiger Verkaufspreise verwendet.
 
-| *Auftragsherkunft*| Aus der Dropdown-Liste die Auftragsherkunft wählen, die beim Auftragsimport zugeordnet werden soll. Die Auftragsherkunft wird zum Filtern gültiger Verkaufspreise und Bilder verwendet. Die Produkt-URL wird um die gewählte Auftragsherkunft erweitert, damit die Verkäufe später analysiert werden können.
+| *URL-Parameter*
+| Suffix für die Produkt-URL eingeben, wenn dies für den Export erforderlich ist. Die Produkt-URL wird dann um die eingegebene Zeichenkette erweitert, wenn weiter oben die Option *übertragen* für die Produkt-URL aktiviert wurde.
 
-| *Marktplatzkonto*| Marktplatzkonto aus der Dropdown-Liste wählen.
+| *Auftragsherkunft*
+| Aus der Dropdown-Liste die Auftragsherkunft wählen, die beim Auftragsimport zugeordnet werden soll. Die Auftragsherkunft wird zum Filtern gültiger Verkaufspreise und Bilder verwendet. Die Produkt-URL wird um die gewählte Auftragsherkunft erweitert, damit die Verkäufe später analysiert werden können.
 
-| *Sprache*| Sprache aus der Dropdown-Liste wählen.
+| *Marktplatzkonto*
+| Marktplatzkonto aus der Dropdown-Liste wählen.
 
-| *Artikelname*| *Name 1*, *Name 2* oder *Name 3* wählen. Die Namen sind im Tab *Texte* eines Artikels gespeichert. Im Feld *Maximale Zeichenlänge (def. Text)* optional eine Zahl eingeben, wenn die Preissuchmaschine eine Begrenzung der Länge des Artikelnamen beim Export vorgibt.
+| *Sprache*
+| Sprache aus der Dropdown-Liste wählen.
 
-| *Vorschautext*| Diese Option ist für dieses Format nicht relevant.
+| *Artikelname*
+| *Name 1*, *Name 2* oder *Name 3* wählen. Die Namen sind im Tab *Texte* eines Artikels gespeichert. Im Feld *Maximale Zeichenlänge (def. Text)* optional eine Zahl eingeben, wenn die Preissuchmaschine eine Begrenzung der Länge des Artikelnamen beim Export vorgibt.
 
-| *Beschreibung*| Wählen, welcher Text als Beschreibungstext übertragen werden soll. Im Feld *Maximale Zeichenlänge (def. Text)* optional eine Zahl eingeben, wenn die Preissuchmaschine eine Begrenzung der Länge der Beschreibung beim Export vorgibt. Option *HTML-Tags entfernen* aktivieren, damit die HTML-Tags beim Export entfernt werden. Im Feld *Erlaubte HTML-Tags, kommagetrennt (def. Text)* optional die HTML-Tags eingeben, die beim Export erlaubt sind. Wenn mehrere Tags eingegeben werden, mit Komma trennen.
+| *Vorschautext*
+| Diese Option ist für dieses Format nicht relevant.
 
-| *Zielland*| Zielland aus der Dropdown-Liste wählen.
+| *Beschreibung*
+| Wählen, welcher Text als Beschreibungstext übertragen werden soll. Im Feld *Maximale Zeichenlänge (def. Text)* optional eine Zahl eingeben, wenn die Preissuchmaschine eine Begrenzung der Länge der Beschreibung beim Export vorgibt. Option *HTML-Tags entfernen* aktivieren, damit die HTML-Tags beim Export entfernt werden. Im Feld *Erlaubte HTML-Tags, kommagetrennt (def. Text)* optional die HTML-Tags eingeben, die beim Export erlaubt sind. Wenn mehrere Tags eingegeben werden, mit Komma trennen.
 
-| *Barcode*| ASIN, ISBN oder eine EAN aus der Dropdown-Liste wählen. Der gewählte Barcode muss mit der oben gewählten Auftragsherkunft verknüpft sein. Andernfalls wird der Barcode nicht exportiert.
+| *Zielland*
+| Zielland aus der Dropdown-Liste wählen.
 
-| *Bild*| *Position 0* oder *Erstes Bild* wählen, um dieses Bild zu exportieren.
+| *Barcode*
+| ASIN, ISBN oder eine EAN aus der Dropdown-Liste wählen. Der gewählte Barcode muss mit der oben gewählten Auftragsherkunft verknüpft sein. Andernfalls wird der Barcode nicht exportiert.
+
+| *Bild*
+| *Position 0* oder *Erstes Bild* wählen, um dieses Bild zu exportieren.
 
 * *Position 0* = Ein Bild mit der Position 0 wird übertragen.
 * *Erstes Bild* = Das erste Bild wird übertragen.
 
-| *Bildposition des Energieetiketts*| Diese Option ist für dieses Format nicht relevant.
+| *Bildposition des Energieetiketts*
+| Diese Option ist für dieses Format nicht relevant.
 
-| *Bestandspuffer*| Der Bestandspuffer für Varianten mit der Beschränkung auf den Netto-Warenbestand.
+| *Bestandspuffer*
+| Der Bestandspuffer für Varianten mit der Beschränkung auf den Netto-Warenbestand.
 
-| *Bestand für Varianten ohne Bestandsbeschränkung*| Der Bestand für Varianten ohne Bestandsbeschränkung.
+| *Bestand für Varianten ohne Bestandsbeschränkung*
+| Der Bestand für Varianten ohne Bestandsbeschränkung.
 
-| *Bestand für Varianten ohne Bestandsführung*| Der Bestand für Varianten ohne Bestandsführung.
+| *Bestand für Varianten ohne Bestandsführung*
+| Der Bestand für Varianten ohne Bestandsführung.
 
-| *Währung live umrechnen*| Aktivieren, damit der Preis je nach eingestelltem Lieferland in die Währung des Lieferlandes umgerechnet wird. Der Preis muss für die entsprechende Währung freigegeben sein.
+| *Währung live umrechnen*
+| Aktivieren, damit der Preis je nach eingestelltem Lieferland in die Währung des Lieferlandes umgerechnet wird. Der Preis muss für die entsprechende Währung freigegeben sein.
 
-| *Verkaufspreis*| Brutto- oder Nettopreis aus der Dropdown-Liste wählen.
+| *Verkaufspreis*
+| Brutto- oder Nettopreis aus der Dropdown-Liste wählen.
 
-| *Angebotspreis*| Diese Option ist für dieses Format nicht relevant.
+| *Angebotspreis*
+| Diese Option ist für dieses Format nicht relevant.
 
-| *UVP*| Diese Option ist für dieses Format nicht relevant.
+| *UVP*
+| Diese Option ist für dieses Format nicht relevant.
 
-| *Versandkosten*| Aktivieren, damit die Versandkosten aus der Konfiguration übernommen werden. Wenn die Option aktiviert ist, stehen in den beiden Dropdown-Listen Optionen für die Konfiguration und die Zahlungsart zur Verfügung. Option *Pauschale Versandkosten übertragen* aktivieren, damit die pauschalen Versandkosten übertragen werden. Wenn diese Option aktiviert ist, muss im Feld darunter ein Betrag eingegeben werden.
+| *Versandkosten*
+| Aktivieren, damit die Versandkosten aus der Konfiguration übernommen werden. Wenn die Option aktiviert ist, stehen in den beiden Dropdown-Listen Optionen für die Konfiguration und die Zahlungsart zur Verfügung. Option *Pauschale Versandkosten übertragen* aktivieren, damit die pauschalen Versandkosten übertragen werden. Wenn diese Option aktiviert ist, muss im Feld darunter ein Betrag eingegeben werden.
 
-| *MwSt.-Hinweis*| Diese Option ist für dieses Format nicht relevant.
+| *MwSt.-Hinweis*
+| Diese Option ist für dieses Format nicht relevant.
 
-| *Artikelverfügbarkeit*| Option *überschreiben* aktivieren und in die Felder *1* bis *10*, die die ID der Verfügbarkeit darstellen, Artikelverfügbarkeiten eintragen. Somit werden die Artikelverfügbarkeiten, die im Menü *System » Artikel » Verfügbarkeit* eingestellt wurden, überschrieben.
+| *Artikelverfügbarkeit*
+| Option *überschreiben* aktivieren und in die Felder *1* bis *10*, die die ID der Verfügbarkeit darstellen, Artikelverfügbarkeiten eintragen. Somit werden die Artikelverfügbarkeiten, die im Menü *System » Artikel » Verfügbarkeit* eingestellt wurden, überschrieben.
 |====
 
-[IMPORTANT]
-.Exportinformationen
-====
-Wenn du eine oder mehrere Einstellungen änderst, musst du den neuen Link an Check24 übergeben.
-
-Pro Export werden maximal 4000 Artikel exportiert. Wenn du mehr Artikel exportierst, wird automatisch ein zweiter Export ausgeführt. Um den zweiten Export anzuzeigen, setze den Parameter *&amp;Page* = im Export-Link auf *2*.
-
-Technische Daten werden in der letzten Spalte der Exportdatei an Check24 übergeben.
-====
-
 [#500-2]
-==== Verfügbare Spalten der Exportdatei für Exportformat Check24DE
+==== Check24DE: Verfügbare Spalten der Exportdatei
 
 :export-format: Check24DE-Plugin
 
 include::_textblocks/instructions/exportdatei-herunterladen.adoc[]
 
 [[spalten-exportdatei-check24]]
-.Verfügbare Spalten der Exportdatei für das Exportformat *Check24DE-Plugin*
+.Check24DE: Verfügbare Spalten der Exportdatei
 [cols="1,3"]
 |====
 | Spaltenbezeichnung | Erläuterung
@@ -274,25 +353,27 @@ gewählten Mandanten in den Formateinstellungen.
 |====
 
 [#650]
-=== Exportformat Check24DE Fashion
+==== Exportformat Check24DE Fashion
 
-Mit der Installation dieses Plugins erhältst du das Exportformat *Check24DE Fashion*, mit dem du Daten über den elastischen Export zu Check24.de überträgst. Um dieses Format für den elastischen Export nutzen zu können, installiere zunächst das Plugin *Elastic Export* aus dem plentyMarketplace, wenn noch nicht geschehen.
+Erstelle wie unten beschrieben das Exportformat *Check24DE Fashion* für Check24. Beachte vorher die folgenden Besonderheiten:
 
-Sobald beide Plugins in deinem System installiert sind, kann das <<daten/daten-exportieren/elastischer-export#, Exportformat>> *Check24DE Fashion* erstellt werden.
+* Wenn du eine oder mehrere Einstellungen änderst, musst du den neuen Link an Check24 übergeben.
+* Pro Export werden maximal 4000 Artikel exportiert. Wenn du mehr Artikel exportierst, wird automatisch ein zweiter Export ausgeführt. Um den zweiten Export anzuzeigen, setze den Parameter *&amp;Page* = im Export-Link auf *2*.
+* Technische Daten werden in der letzten Spalte der Exportdatei an Check24 übergeben.
 
 [#650-1]
 ==== Exportformat Check24DE Fashion erstellen
 
-Exportformat erstellen:
+[.instruction]
+.Exportformat Check24DE Fashion erstellen:
 
-1. Öffne das Menü *Daten » Elastischer Export*.
-2. Klicke auf *Neuer Export*.
-3. Nimm die Einstellungen vor. Beachte dazu die Erläuterungen in <<#einstellungen-artikelexport-check24-fashion>>.
-4. *Speichere* die Einstellungen. +
-→ Eine ID für das Exportformat *Check24DE-Plugin* wird vergeben. +
+. Öffne das Menü *Daten » Elastischer Export*.
+. Klicke auf *Neuer Export*.
+. Nimm die Formateinstellungen vor. Beachte dazu die Erläuterungen in <<#einstellungen-artikelexport-check24-fashion>>. +
+*_Wichtig:_* Wenn du eine oder mehrere Einstellungen änderst, musst du den neuen Link an Check24 übergeben.
+. *Speichere* die Einstellungen. +
+→ Eine ID für das Exportformat wird vergeben. +
 → Das Exportformat wird in der Übersicht *Exporte* angezeigt.
-
-In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellungen und empfohlenen Artikelfiltern für das Format *Check24DE Fashion*.
 
 [[einstellungen-artikelexport-check24-fashion]]
 .Einstellungen für das Datenformat *Check24DE Fashion*
@@ -417,14 +498,14 @@ In der folgenden Tabelle findest du Hinweise zu den einzelnen Formateinstellunge
 |====
 
 [#650-2]
-==== Verfügbare Spalten des Formats Check24DE Fashion
+==== Check24DE Fashion: Verfügbare Spalten der Exportdatei
 
-:export-format: Check24DE-Plugin
+:export-format: Check24DE Fashion
 
 include::_textblocks/instructions/exportdatei-herunterladen.adoc[]
 
 [[spalten-exportdatei-check24-fashion]]
-.Verfügbare Spalten des Datenformats *Check24DE Fashion*
+.Check24DE Fashion: Verfügbare Spalten der Exportdatei
 [cols="1,3"]
 |====
 | Spaltenbezeichnung | Erläuterung
@@ -558,6 +639,69 @@ include::_textblocks/instructions/exportdatei-herunterladen.adoc[]
 | Modestil
 | Merkmal des Typs *Text* oder *Auswahl* mit der *Check24 Fashion-Merkmal*-Verknüpfung: *Modestil*.
 |====
+
+[#catalogue-export]
+=== _Möglichkeit 2:_ Katalogexport (Testphase)
+
+Du kannst Artikeldaten jetzt auch über Katalog-Formate zu Check24 übertragen. Kataloge erstellst du im Menü *Daten » Kataloge*.
+
+* Du arbeitest zum ersten Mal mit den Katalogen? Dann mache dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut>>.
+
+[#catalogue-creation]
+==== Katalog erstellen
+
+Artikeldaten werden über die Marktplatz-Formate *Check24* und *Check24 Fashion* zu Check24 übertragen. Um deine Artikel zu Check24 zu übertragen, erstellst du im Menü *Daten » Kataloge* den Katalog. Verknüpfe dann im Marktplatz-Format die von Check24 vorgegebenen Felder mit in plentymarkets gespeicherten Artikeldaten. Die Katalogdaten werden automatisch in regelmäßigen Abständen zu Check24 exportiert, wenn du den Katalog aktivierst.
+
+* Du arbeitest zum ersten Mal mit den Katalogen? Dann mache dich zuerst <<daten/daten-exportieren/kataloge-verwalten#, mit dem Prinzip der Kataloge vertraut>>.
+
+:catalogue-template-name: Check24
+:catalogue-plugin:
+:one-per-category:
+
+include::_textblocks/catalogues/instructions/catalogue-creation.adoc[]
+
+[#filter-export]
+=== Filter für Export setzen
+
+include::_textblocks/catalogues/instructions/catalogue-filters.adoc[]
+
+[#catalogue-mapping]
+==== Datenfelder im Katalog zuordnen
+
+Ordne nun die Datenfelder von Check24 den in plentymarkets gespeicherten Artikeldaten zu.
+
+include::_textblocks/catalogues/instructions/catalogue-mapping.adoc[]
+
+[#recommended-mappings]
+==== Empfehlungen für Datenfeld-Zuordnungen
+
+Um dich beim Erstellen eines Katalogs zu unterstützen, haben wir eine Liste mit empfohlenen Datenfeld-Zuordnungen zusammengestellt. Beachte, dass es sich hierbei nur um Empfehlungen handelt. Je nachdem, wie du deine Artikeldaten pflegst, können andere Zuordnungen sinnvoller sein als die hier gegebenen Empfehlungen.
+
+[.collapseBox]
+.Liste mit empfohlenen Datenfeld-Zuordnungen für Check24
+--
+include::_textblocks/catalogues/recommended-mappings/check24-recommended-mappings.adoc[]
+--
+
+[.collapseBox]
+.Liste mit empfohlenen Datenfeld-Zuordnungen für Check24 Fashion
+--
+include::_textblocks/catalogues/recommended-mappings/check24fashion-recommended-mappings.adoc[]
+--
+
+[.collapseBox]
+.Liste mit empfohlenen Datenfeld-Zuordnungen für Check24 Offer
+--
+include::_textblocks/catalogues/recommended-mappings/check24offer-recommended-mappings.adoc[]
+--
+
+[#904]
+==== Katalog aktivieren
+
+:interval: einmal täglich nachts
+:market: Check24
+
+include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
 
 [#950]
 == Auftragsimport

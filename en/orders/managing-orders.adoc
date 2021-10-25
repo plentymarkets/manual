@@ -215,6 +215,9 @@ Clicking on the the preview (icon:eye[role="blue"]) redirects you to the contact
 |If a payment method is defined for the contact, for example in a <<crm/managing-contacts#15, customer class>>, this is preselected. Otherwise you can enter a payment method and select it. Available are all payment methods integrated in your plentymarkets system. +
 If you use an <<orders/managing-orders#295, order template>>, the payment method selected in the template is taken over as soon as you select the template for an order. After applying the template, the payment method can be changed manually if required.
 
+|*Discount in %*
+|You can manually enter a percental discount which is then applied to all order items of the order. The value entered has to be between 0 and 100, negative values are not allowed.
+
 |*Currency*
 |The <<payment/currencies#30, system currency>> is preselected. You can change the currency for the order in the drop-down list.
 
@@ -467,22 +470,20 @@ The shopping cart table is customisable. This means that you can decide which ta
 * Variation no.
 * Item name
 * Attributes
-* Variation name
-* Sales price
-* Net price
-* Gross price
+* Purchase price system
+* Price
 * Surcharges total = The sum of the order item properties surcharges.
 * Total amount = The item price plus the order item properties surcharges.
+* Discount = Includes the discount manually entered in the order details in the first step of the order creation.
 * Warehouse
-* VAT %
+* Quantity
 * Delete icon
 
 The following table columns can be displayed but are not shown by default:
 
-* Quantity
 * Item ID
 * Variation ID
-* Barcode
+* Price selection
 * Customer class rebate = The customer class rebate in per cent as applied to the selected sales price.
 * Category rebate = The category rebate in per cent as applied to the selected sales price.
 
@@ -552,11 +553,12 @@ When you are done with editing the order item properties and the shopping cart, 
 
 In this last step, the order is completed. Different amounts of the order are displayed in info boxes above the order details:
 
-* Total amount gross: Shows the calculated total gross amount of the order. The status bar is displayed grey when the amount is zero and green, when the amount is above zero.
-* Total amount net: Shows the calculated total net amount of the order. The status bar is displayed grey when the amount is zero and green, when the amount is above zero.
+* Total amount (gross): Shows the calculated total gross amount of the order. The status bar is displayed green when the order is a gross order. Otherwise the status bar is grey.
+* Total amount (net): Shows the calculated total net amount of the order. The status bar is displayed green when the order is a gross order. Otherwise the status bar is grey.
 * Total number of items: Shows the total number of order items of this order. The status bar is always displayed in grey.
-* Discount: Shows the granted discount (discount for promotional coupons) for this order. The status bar is always displayed in grey.
-* Open amount: Shows the open amount the customer still has to pay. The status bar is displayed green when the amount is zero. Red means the amount is above zero and orange means the amount is below zero.
+* Coupon amount: Shows the granted discount from promotional coupons. The status bar is displayed in orange when a promotional coupon was used in this order. Otherwise the status bar is grey.
+* Order discount: Shows the discount amount resulting from the discount granted in the first step of the order creation. The summed up discount amount of all the order items is calculated. The status bar is displayed in orange when a discount was set in the first step. Otherwise the status bar is grey.
+* Open amount: Shows the open invoice amount the customer has to pay. The status bar is displayed green when the amount is zero. i.e. the customer has already paid the full invoice amount. Red means the full invoice amount is still open. Orange means the invoice amount is still partially open.
 
 In the order details, the *Shipping method* and the *Shipping costs* can be adapted if required. +
 Moreover, you can enter one or more coupon codes in the *Coupon codes* field to redeem these with this order. Enter a coupon code and press _enter_ or click outside the field. It is immediately checked if the coupon is redeemable. Redeemable coupons turn green, display the value of the coupon and show with a tooltip what type of coupon it is. Irredeemable coupon codes turn red and display *Not redeemable* instead of the entered code. Repeat this with more coupon codes, if needed. +
@@ -577,12 +579,14 @@ The table in the last step of the order create is customisable. This means that 
 * Item name
 * Attributes
 * Variation name
-* Purchase price
+* Purchase price system
+* Price selection
 * Net price
 * Gross price
 * Total amount = The item price plus the order item properties surcharges.
+* Discount = Includes the discount manually entered in the order details in the first step of the order creation.
 * Warehouse
-* VAT %
+* VAT
 * Delete icon
 
 The following table columns can be displayed but are not shown by default:
@@ -591,7 +595,7 @@ The following table columns can be displayed but are not shown by default:
 * Item ID
 * Variation ID
 * Barcode
-* Properties total amount = The sum of the order item properties surcharges.
+* Surcharge total = The sum of the order item properties surcharges.
 * Customer class rebate = The customer class rebate in per cent as applied to the selected sales price.
 * Category rebate = The category rebate in per cent as applied to the selected sales price.
 
@@ -665,13 +669,12 @@ To apply an order template while <<orders/managing-orders#200, manually creating
 == Working with delivery orders
 
 *Delivery orders* enable you to create multiple delivery orders for the items included in the main order. This way, items from the main order can be shipped individually or in parts. Thus, delivery orders allow you to immediately ship items that are in stock and ship unavailable items later. Delivery orders can be shipped using one or several shipping providers. +
-You can create delivery orders *manually*, *automatically* or using an *event procedure*. +
+You can create delivery orders *manually*, *automatically* or using an *event procedure*.
 
-[IMPORTANT]
-.Same order status
+[WARNING]
+.Transfer all order items to delivery orders
 ====
-The status of the main order is always identical to the status of the delivery order with the lowest status.
-For example, if a main order with the status *5.0* has two delivery orders, of which one changes to status *6.5*, the status of the main order is not changed to *6.5* until the second delivery order has also moved to status 6.5.
+When you create delivery orders from a main order, make sure to transfer _all_ order items into delivery orders. If you do not and leave order items on the main order, stock and warehouse errors will occur.
 ====
 
 [#310]
@@ -685,6 +688,12 @@ In general, delivery orders have the following characteristics:
 * *Address label*, *delivery note*, *pro forma invoice* and *entry certificate (Gelangensbestätigung)* can be created in the *Receipts* tab of the respective order.
 * The *invoice* and all other documents are created centrally in the main order.
 * When creating a delivery order, the stock reservation for the quantity included in the delivery order is transferred from the main order to the delivery order.
+
+[IMPORTANT]
+.Same order status
+====
+The status of the main order is always identical to the status of the delivery order with the lowest status. For example, if a main order with the status *5.0* has two delivery orders, of which one changes to status *6.5*, the status of the main order is not changed to *6.5* until the second delivery order has also moved to status 6.5.
+====
 
 [#320]
 === Carrying out basic settings for delivery orders
@@ -877,7 +886,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 [#360]
 === Editing main orders and delivery orders
 
-To open main orders, variable users have to be <<business-decisions/user-accounts-access#100, authorised>> to view all warehouses linked to the delivery orders of the main order. Check the settings in the menu *Setup» Settings » User »Accounts » Tab: Visibility* for this.
+To open main orders, variable users have to be <<business-decisions/user-accounts-access#100, authorised>> to view all warehouses linked to the delivery orders of the main order. Check the settings in the menu *Setup» Settings » User »Accounts » Tab: Rights* for this.
 
 If you want to delete a main order, the respective delivery orders have to be deleted first. Delivery orders can be deleted individually or with the group function in the order search. The main order can only be deleted after this is done. But note that as soon as tax relevant documents exist, orders cannot be deleted any more.
 
@@ -2428,7 +2437,7 @@ Click on the Payment tab to see all payments and partial payments belonging to t
 If there are payments missing in the overview, change the *Received from* filter to adjust the point of time from which on payments should be displayed.
 ====
 
-Find more detailed information about <<payment/managing-payments#, managing payments>> in the manual.
+Find more detailed information about how to <<payment/beta-managing-payments#, manage payments>> in the manual.
 
 [#1570]
 === Tab: Receipts
