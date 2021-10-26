@@ -14,11 +14,11 @@ include::{includedir}/_header.adoc[]
 Thanks to the Zalando partner programme, online sellers and manufacturers can use Zalando as an additional distribution channel for selling their high-quality products and take advantage of the well-known brand name Zalando.
 
 [#200]
-== Overview of automatic data exchange
+== About automatic data exchange
 
-Connecting to this market allows for the automatic functions listed below to take place.
+Connecting to this market allows for the following automatic functions to take place:
 
-[[data-exchange-zalando]]
+[[data-exchange]]
 [cols="1,1"]
 |====
 |Data |Interval
@@ -27,13 +27,14 @@ Connecting to this market allows for the automatic functions listed below to tak
 | plentymarkets generates an XML file with the item data once daily during the night (artikel.xml). Zalando usually retrieves this XML once per day.
 
 | Stock synchronisation
-| Every 15 minutes via API
+| Every 15 minutes, asynchronous +
+Stock for 1,000 variations is updated per minute. If the API limit set by Zalando is reached, the remaining stock details are sent once the API is unlocked after one minute.
 
 | Price synchronisation
-| Every 15 minutes via API
+| Every 15 minutes
 
 | Order import
-| Every 5 minutes via the API interface zDirect
+| Every 5 minutes
 |====
 
 [#100]
@@ -88,23 +89,18 @@ Setting up Zalando in plentymarkets:
 |Select a client (store). Zalando orders will be assigned to this client.
 
 | *Warehouse selection*
-a|Select a warehouse logic. A warehouse is assigned to each Zalando order based on this logic.
-
-* *Transfer stock quantity of distribution warehouse that currently has largest stock* = Select the distribution warehouse that currently has the largest stock of the variation. +
-* *Use the item's main warehouse* = Select the main warehouse of the item. +
-* *Transfer sum of stock quantities from all distribution warehouses* = The stock of all distribution warehouses is added up and the sum total is exported to Zalando.
+a| This setting is no longer in use since the switch to the zDirect API (27/10/2021). Instead, select the sales warehouses in the assistant *Account settings - Zalando*.
 
 2+|Advanced options
 
 | *Stock buffer*
-|Enter the stock buffer in units. The stock exported to Zalando is reduced by the value entered.
+| This setting is no longer in use since the switch to the zDirect API (27/10/2021). Instead, set a stock buffer in the assistant *Account settings - Zalando*.
 
 | *Quantity for items that are not limited to the stock*
-|Enter a stock quantity for variations that are not limited to stock. The quantity you enter will be exported to Zalando for all variations that are not limited to stock. As such, the actual quantity in stock is ignored.
+| This setting is no longer in use since the switch to the zDirect API (27/10/2021). Instead, set the quantity in the assistant *Account settings - Zalando*.
 
 | *Maximum for item upload*
-|Enter a number to set a limit for exporting variations. This number represents units per variation. The limit defines the maximum stock that will be exported to Zalando per Variation. +
-*_Example:_* The variation has a stock of 20\. You have entered a limit of 10\. As such, plentymarkets exports a stock of 10 to Zalando.
+| This setting is no longer in use since the switch to the zDirect API (27/10/2021). Instead, set the maximum stock in the assistant *Account settings - Zalando*.
 
 | *Standard tax rate*
 | Select *19%* or *7%*.
@@ -194,16 +190,16 @@ a| Select if real or test data is to be exported.
 a| Select one or more sales warehouses. The totalled net stock of these sales warehouses is exported. +
 *_Tip:_* You can also select a *Stock buffer* in this step of the assistant. The totalled net stock of the sales warehouses you selected is then reduced by the quantity you entered as the stock buffer.
 
-| How much stock should be exported at maximum?
+| *How much stock should be exported at maximum?*
 a| If a variation has a higher stock, the value you entered in the *Maximum stock* field will be exported instead.
 
-| Which stock buffer should be deducted from the exported stock?
+| *Which stock buffer should be deducted from the exported stock?*
 a| The quantity you enter in the * Stock buffer*field is deducted from the net stock of each variation before export.
 
 | *How much stock should be exported for variations without limitation to net stock that have no positive net stock?*
 a| In the field *Stock without stock limitation*, enter the stock to be exported for variations that have no positive net stock. Variations that have no positive net stock are variations with the setting *Tab: Settings, Setting: Limitation, Option: None* that have no positive net stock.
 
-| How much stock should be exported for variations without stock administration?
+| *How much stock should be exported for variations without stock administration?*
 a| In the field *Stock without stock administration*, enter the stock to be exported for variations for which no stock is administered. Variations for which no stock is administered are variations with the setting *Tab: Settings, Dropdown list: Limitation, Option: Do not administer stock for this variation*. The entered value is exported for these variations.
 
 |====
@@ -352,10 +348,10 @@ Link at least the following mandatory characteristics to export your variations 
 
 * 1. Farbcode (colour code)
 * Altersgruppe(n) (age group(s))
-* Geschlecht (gender)
+* Form of address (Geschlecht)
 * Größenregister (size list)
 * Hersteller-Code (manufacturer code)
-* Herstellerfarbe (manufacturer colour)
+* Manufacturer colour
 * Jahreszeiten-Code (Seasonal code)
 * Silhouetten-Typ (silhouette type)
 
@@ -497,10 +493,10 @@ a| As a minimum, the following mandatory characteristics need to be linked to an
 
 * 1. Farbcode (colour code)
 * Altersgruppe(n) (age group(s))
-* Geschlecht (gender)
+* Form of address (Geschlecht)
 * Größenregister (size list)
 * Hersteller-Code (manufacturer code)
-* Herstellerfarbe (manufacturer colour)
+* Manufacturer colour
 * Jahreszeiten-Code (Seasonal code)
 * Silhouetten-Typ (silhouette type)
 
@@ -528,8 +524,6 @@ The following event procedures are available for automating order processing wit
 * Automatically sending shipping confirmations (zDirect) (<<#1200, How?>>)
 * Automatically sending cancellations (zDirect) (<<#1300, How?>>)
 * Automatically sending returns (zDirect) (<<#1600, How?>>)
-
-If you still use the old API, changes to the order status are not communicated to Zalando with event procedures. (<<#850, How else?>>)
 
 [#1200]
 === Automatically sending shipping confirmations (zDirect)
@@ -647,27 +641,6 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 | *Procedure*
 | *Return > Send return to Zalando*
 |
-|====
-
-[#850]
-=== Order status changes (old API)
-
-If you still use the old API, changes to the order status are not communicated to Zalando with event procedures. Instead, Zalando automatically retrieves the order status via the interface. The order statuses *shipping confirmation*, *cancellation*, and *return* are sent to Zalando if the criteria listed in <<#table-zalando-order-status>> are met:
-
-[[table-zalando-order-status]]
-.Criteria for order statuses
-[cols="1,3a"]
-|====
-|Order status |Criteria
-
-| *Shipping confirmation*
-|The outgoing items have been booked. In addition, a return label was created and package numbers were added.
-
-| *Cancellation*
-|The order moved to *status [8.X]* or the quantity of an order item is *0*.
-
-| *Return*
-|A return was created in plentymarkets.
 |====
 
 [#1500]
