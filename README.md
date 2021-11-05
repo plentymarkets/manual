@@ -1,3 +1,3 @@
 # manual
 
-To be or not to be added
+plentymarkets user manual
