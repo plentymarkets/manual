@@ -253,7 +253,7 @@ Every market structures item data differently. As such, there are some particula
 
 [[catalogue-limango-mappings]]
 .Notes on mapping data fields
-[cols="1,3a"]
+[cols="1,4a"]
 |====
 | Marketplace data field | plentymarkets data field
 
@@ -328,16 +328,31 @@ Combine these two properties, separated by a semicolon.
 . From the drop-down list *Separator*, select the option *Semicolon*.
 --
 
-| Data fields under Material composition
-a| Material information is exported to limango using a property of the type *Text*. You need one property for each marketplace data field. Link the properties to the main variation of the item and save all components of a material mix in this property.
-Enter the material composition in the following format:
+| Material composition +
+(*Sleeve lining*; +
+*Upper 3*; +
+*Upper 2*; +
+*Upper 1*; +
+*Membrane*; +
+*Material 3* +
+etc.)
+a| Material information is exported to limango using a property of the type *Text*. Create a separate property for each marketplace data field.
 
-* *{"material1": "percentage","material2": "percentage","material3": "percentage"}* +
-*_Example:_* *{"baumwolle": "90","elasthan": "10"}*
+The names of these properties must be identical to the values that limango allows:
+
+* link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-composite-types.txt[Valid values for material composite types^]{nbsp}icon:external-link[]
+
+Link the properties to the main variation of the item and save all components of a material mix in this property. If the variations of the same item have different material mixes, deactivate the inheritance function for properties and save the material mixes separately for each variation. However, note that this deactivates the inheritance for all properties for the item. As such, you also need to manually manage all other properties for this item.
 
 Specify the individual materials in descending order based on the percentage value. As such, the first material is the one with the highest percentage value, the last one that with the lowest percentage value. The sum of all percentages must be 100. You can specify as many materials as you need.
+Enter the material composition in the following format:
 
-*_Exception:_* Variations of the same items have different material mixes? Then deactivate the inheritance function for properties and save the material mixes separately for each variation. However, note that this deactivates the inheritance for all properties for the item. As such, you also need to manually manage all other properties for this item.
+* *{"materialtype1": "percentage","materialtype2": "percentage","materialtype3": "percentage"}* +
+*_Example:_* `{"baumwolle": "90","elasthan": "10"}`
+
+The values for material types must be identical to the values that limango allows:
+
+* link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-types.txt[Valid values for material types^]{nbsp}icon:external-link[]
 
 [.collapseBox]
 .*_Example:_* Exporting material information for a blazer to limango
@@ -347,23 +362,22 @@ The following example shows you how to save material information for a blazer fo
 [.instruction]
 Mapping outer fabric and saving material mix for a variation:
 
-. Create a property of the type *Text* with the name *Material 1*.
-. Map the marketplace data field *Material 1* to the plentymarkets property *Material 1*.
-. Link the property *Material 1* to the main variation of the item.
+. Create a property of the type *Text* with the name *obermaterial*.
+. Map the marketplace data field *Upper* to the plentymarkets property *obermaterial*.
+. Link the property *obermaterial* to the main variation of the item.
 . Our blazer is made of 65% polyester, 32% rayon and 3% elastane. Enter the following into the text field of the property:
-  * {"polyester": "65","viskose": "32","elasthan": "3"}
+  * `{"polyester": "65","viskose": "32","elasthan": "3"}`
 . Save the settings.
 
 [.instruction]
 Mapping lining and saving material mix for a variation:
 
-. Create a property of the type *Text* with the name *Lining 1*.
-. Map the marketplace data field *Lining 1* to the plentymarkets property *Lining 1*.
-. Link the property *Lining 1* to the main variation of the item.
+. Create a property of the type *Text* with the name *futter*.
+. Map the marketplace data field *Lining* to the plentymarkets property *futter*.
+. Link the property *futter* to the main variation of the item.
 . The lining of the blazer is made of 100% rayon. Enter the following into the text field of the property:
-  *
+  * `{"viskose": "100"}`
 . Save the settings.
---
 --
 
 | *Colour value*
@@ -632,28 +646,46 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 [#1600]
 == Preparing delivery notes for limango
 
-The limango letterhead return instructions provided by limango must be shown on every delivery note for limango orders. Creating layout templates for order documents in plentymarkets is described in the <<auftraege/auftragsdokumente#170, Orders>> area of the manual. On this page, we only describe how to upload the PDF template and set up the document for the specific requirements of the market.
+The limango letterhead, your company data and specific return instructions must be shown on every delivery note for limango orders. Creating layout templates for order documents in plentymarkets is described in the <<auftraege/auftragsdokumente#170, Orders>> area of the manual. On this page, we only describe how to upload the PDF template and set up the delivery note document for the specific requirements of the market.
 
+* <<#16011, How to personalise the PDF template for delivery notes>>
 * <<#16001, How to upload a PDF template for delivery notes>>
 * <<#16003, How to show the limango customer number on delivery notes>>
 * <<#16002, How to enter return instructions for limango delivery notes>>
 
-[#16001]
-=== Uploading a PDF template for delivery notes
+[#160011]
+=== Personalising the PDF template for delivery notes
 
-limango delivery notes must contain the limango logo. Proceed as describes below to upload a <<orders/order-documents#170, PDF template>> for delivery notes for limango to plentymarkets.
+limango delivery notes must contain the limango logo. limango provides a PDF template for delivery notes. On this PDF template, you need to add your company data to the footer before you upload it to plentymarkets.
 
 [.instruction]
-Uploading a PDF template for delivery notes:
+Personalising the PDF template for delivery notes:
 
 . Download the PDF template for limango delivery notes and save it on your computer:
   ** link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/Lieferschein_Vorlage_limango_Marktplatz.pdf[Download PDF template]
+. Open the PDF template in a program for editing PDF files.
+. At the bottom left of the footer, insert the following company data: +
+  *[your company name]* +
+  Amtsgericht [your court of first instance] HRB [your HRB] +
+  USt.-IdNr. [your VAT no.] +
+. Save the PDF template.
+
+image::markets/assets/limango-footer.png[]
+
+[#16001]
+=== Uploading personalised PDF template for delivery notes
+
+Proceed as described below to upload the personalised <<orders/order-documents#170, PDF template>> for delivery notes to plentymarkets.
+
+[.instruction]
+Uploading personalised PDF template for delivery notes:
+
 . Go to *Setup » Client » Select client » Locations » Location: Germany » Documents » Delivery note*.
 . Click on the tab *PDF template*.
 . Click on *Add template*. +
 → The editing window *Upload new PDF template* opens.
 . From the drop-down list *Payment method*, select the option *Plugin: limango Payment*.
-. *_Optional:_* Can’t find the payment method *Plugin: limango Payment* in the drop-down list?
+. *_Tip:_* Can’t find the payment method *Plugin: limango Payment* in the drop-down list?
   .. Go to *Setup » Orders » Settings*.
   .. For the setting *Show inactive plugin payment methods*, select the option *Yes*.
   .. Save (icon:save[set=plenty]) the setting.
@@ -664,18 +696,18 @@ Uploading a PDF template for delivery notes:
 → The template is uploaded.
 
 [#16003]
-=== Showing the limango customer number on delivery notes
+=== Showing limango customer numbers on delivery notes
 
 The limango customer number must be shown on all limango delivery notes. To achieve this, adjust the template for delivery notes.
 
 [.instruction]
-Showing the limango customer number on delivery notes:
+Showing limango customer numbers on delivery notes:
 
 . Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
 . Scroll down to the area *Optional elements below stock unit table*.
 . For the setting *External customer number*, select the option *Yes* from the drop-down list.
 . Save (icon:save[set=plenty]) the settings. +
-→ The external costumer number is shown underneath the order items.
+→ The external customer number is positioned below the order items.
 
 [#16002]
 === Entering return information for limango delivery notes
