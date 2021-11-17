@@ -1,0 +1,322 @@
+= Changelog 27. Oktober 2021
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10670
+:id:
+:startWeekDate: 21. Oktober 2021
+:endWeekDate: 27. Oktober 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Zu den Auftragsdokumenten wurden neue Felder für Rabatte hinzugefügt:
+
+** Positionen: Rabatt im Artikeltext ausblenden
+** Positionen: Prozentualer Rabatt
+** Positionen: Einzelpreis ohne Rabatt (brutto + netto)
+** Summen: Rabattsumme (netto)
+
+* Im Auftragsexport bei Katalogen wurden neue Felder und Filter hinzugefügt.
+
+** Felder:
+
+*** Variante: VPE
+*** Versandpaket: Gewicht (g), Packstückart, Volumen (cm³), Paletten-ID, Tracking-URL
+
+** Filter:
+
+*** Gastbestellung
+
+* Im Menü *Daten » Import* steht nun ein neues Import-Format für Bankbuchungen zur Verfügung. Weitere Informationen sind im <<daten/daten-importieren/sync-typen/elasticSync-bankbuchungen#, Handbuch>> verfügbar.
+
+* In der Detailansicht einer Umbuchung ist ein Button zum Löschen der Umbuchung hinzugekommen. Dieser ist, wie für Nachbestellungen, nur verfügbar solange die Umbuchung noch nicht ausgelöst wurde. Zusätzlich wurden die betroffenen Terra Komponenten durch Angular Material Komponenten ersetzt.
+
+* Für die Ereignisaktionen *Stornobeleg Rechnung erzeugen* und *Stornobeleg Gutschrift erzeugen* wurde jeweils eine Option hinzugefügt, um das Datum auf dem Beleg festzulegen.
+
+** *Standard* = Wird mit aktuellem Datum und Uhrzeit erzeugt.
+** *Rechnungsdatum bzw. Gutschriftsdatum* = Wird mit dem Erstellungsdatum des zugehörigen Rechnung/Gutschrift Dokument erzeugt.
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Im letzten Schritt der Auftragsanlage sind nun die beiden Infoboxen *Auftragsrabatt* und *Gutscheinbetrag* verfügbar.
+
+* Die Texte innerhalb der Infoboxen wurden überarbeitet.
+
+* Die Infoboxen für Brutto- bzw. Nettobetrag werden nun in Grün hervorgehoben, je nachdem, ob es sich bei dem Auftrag um einen Brutto- oder Nettoauftrag handelt.
+
+* Die Spalten der Überblickstabelle im letzten Schritt der neuen Auftragsanlage sind nun sortierbar.
+
+[discrete]
+=== Warenwirtschaft
+
+* Du kannst ab jetzt die Lagerbestandseinträge von *0* in deinem Export ausblenden. Füge dazu den neuen Filter *Alle Lagerbestandseinträge von 0 ausblenden* hinzu.
++
+image:changelog/assets/wawi-warenbestand-null.png[width=640]
+
+* Im Katalogformat *Warenbestände* kannst du ab jetzt entscheiden, ob du den Bestand pro Lagerort oder pro Lager exportieren möchtest.
+
+** Füge den neuen Filter *Gruppieren nach Lager* hinzu, wenn du den Bestand pro Lager exportieren möchtest:
++
+image:changelog/assets/wawi-katalog-1.png[width=640]
++
+image:changelog/assets/wawi-katalog-2.png[width=640]
+
+** Ist der Filter *Gruppieren nach Lager* nicht aktiv, dann wirst du den Bestand pro Lagerort exportieren:
++
+image:changelog/assets/wawi-katalog-3.png[width=640]
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Bei Gutschriften werden nun auch die Ereignisse aus der Ereignisgruppe *Zahlung* den Zahlungsstatus betreffend ausgelöst. (Vollständig, Teilzahlung, Überzahlung, Anzahlung vollständig)
++
+[IMPORTANT]
+.To-Do
+======
+Bei Ereignisaktionen, die bereits auf eines dieser Ereignisse reagieren, solltest du prüfen, ob hier ein Filter für den Auftragstyp nötig ist, der verhindert, dass die Aktionen auch für Aufträge vom Typ *Gutschrift* ausgelöst werden.
+======
+
+[discrete]
+=== OTTO Market
+
+* Wenn beim Auftragsimport ein Auftragsartikel keiner Variante zugeordnet werden konnte, z.B. weil die entsprechende SKU nicht im System existiert, dann wird jetzt die SKU in eckigen Klammern als Präfix vor den Namen des Auftragsartikels gesetzt, um die Zuordnung zu erleichtern.
+
+[discrete]
+=== OTTO
+
+* Die Editorial Nodes und die daraus resultierenden Merkmal- und Attributverknüpfungen wurden auf Basis der von OTTO am 22.10.2021 bereitgestellten Datei *Merkmalstrukturen_Master* aktualisiert.
+Diese Änderung betrifft nicht OTTO Market.
++
+Die aktuelle *Merkmalstrukturen_Master-Datei* kann hier heruntergeladen werden: +
+https://forum.plentymarkets.com/t/aktuelle-merkmalsstrukturen-master-datei/532293 +
+
+[discrete]
+=== Zalando
+
+* Bisher wurden plentymarkets Bestände von Zalando über eine API abgerufen. Mit diesem Update sendet nun plentymarkets die Bestände über die neue zDirect-API an Zalando.
++
+Das Update wird alle 15 Minuten in einem asynchronen Prozess durchgeführt, um der Limitierung der zDirect-API gerecht zu werden. Im Normalfall können pro Minute 1.000 Bestände aktualisiert werden. Wird die Limitierung der API erreicht, werden die übrigen Bestände gesendet, sobald die API nach spätestens einer Minute wieder entsperrt ist.
++
+Sobald das Update live ist, erhaltet ihr in eurem System eine Notification, falls ihr einen aktiven Zalando-Account besitzt. Eure Bestands-Einstellungen im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Einstellungen* werden migriert soweit möglich.
++
+Die Einstellungen für *Bestandspuffer*, *Menge für Artikel ohne Bestandsbindung* und *Grenzwert für Artikel-Upload* werden in die neuen Optionen im Assistenten übernommen.
++
+Die Einstellung für *Lagerauswahl* wird nicht übernommen, weil diese Option nicht mehr unterstützt wird. Stattdessen könnt ihr im Assistenten genau definieren, welche Vertriebslager verwendet werden sollen. Am Anfang sind alle Vertriebslager aktiviert.
++
+Alle Log-Einträge zum Bestandsabgleich findest Du unter *Daten » Log* mit dem Referenztyp *action* und dem Referenzwert *StockUpdate*.
++
+[IMPORTANT]
+.To-Do
+======
+Im Zuge des Updates musst du folgende Schritte durchführen:
+
+Prüfe im Menü *Einrichtung » Assistenten » Omni-Channel » Kontoeinstellungen Zalando*, ob die Einstellungen zu den Beständen für deine aktiven Konten passen. Beachte dabei besonders die Lagerauswahl, da diese nicht aus der alten Einstellung übernommen werden kann. Solltest Du die Bestandseinstellungen anpassen, erfolgt automatisch mit dem nächsten Bestandsabgleich ein Vollupdate.
+======
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* Innerhalb der Ereignisaktionen konnte es passieren, dass das Ereignis *Rechnung generiert* auch ausgelöst wurde, wenn die Rechnung bereits vorhanden war.
+
+* Der Filter *Herkunft der Auftragsposition* im Elastischen Export (Format *Auftragsposition*) hatte unter Umständen nicht korrekt funktioniert.
+
+* Es konnte vorkommen, das bei der Auftragsanlage über ElasticSync der Zahlungsstatus nicht korrekt war.
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* In den Auftragsdetails des ersten Schritts der Auftragsanlage (beta) enthielt die Auswahl für die Auftragsherkunft auch Plugin-Herkünfte. Dies wurde nun behoben.
+
+* Im ersten Schritt der Auftragsanlage wurde die Liste der Zahlungsarten nur bei Suche nach einer spezifischen Zahlungsart angezeigt. Dies wurde behoben. Nun wird die autovervollständigte Liste gezeigt, wenn man in das Eingabefeld klickt.
+
+* Bei der Erstellung eines neuen Auftrags wurde der im vorherigen Auftrag gewährte Rabatt nicht zurückgesetzt. Dies wurde nun behoben.
+
+* Beim Hinzufügen einer Variante in den Warenkorb wurde eine Fehlernachricht angezeigt wenn kein gültiger Verkaufspreis für diese Variante verfügbar war. Dies wurde nun behoben.
+
+* Die Farbe der Anzeige der ungelesenen Notifications wurde von der Warenkorb-Schaltfläche beeinflusst und fälschlicherweise blau statt rot angezeigt. Dies wurde behoben.
+
+[discrete]
+=== CRM
+
+* In manchen Systemen war es nicht möglich, neue Header und Footer im EmailBuilder zu erstellen oder bestehende Header und Footer zu bearbeiten.
+Dieses Verhalten wurde behoben.
+
+* Die Variable *DHL Retoure Online QR-Code* wird nun bei einer Retoure korrekt in der E-Mail angezeigt. *_Hinweis:_* Der Fix ist aktuell für die E-Mail-Vorlagen im Menü *Einrichtung » Mandant » [Mandant wählen] » E-Mail » Vorlagen* verfügbar. Er wird in Kürze auch für die Vorlagen im EmailBuilder im Menü *CRM » EmailBuilder* zur Verfügung stehen.
+
+[discrete]
+=== Warenwirtschaft
+
+* Der Export des durchschnittlichen Verkaufs mit dem Katalogformat *Warenbestände* hat nicht funktioniert. Der Fehler wurde nun behoben.
+
+* Der Standard-Lagerort wird ab jetzt im Export mit dem Katalogformat *Warenbestände* angezeigt.
++
+image:changelog/assets/standard-lagerort-kataloge.png[width=640]
+
+[discrete]
+=== E-Mail-Vorlage
+
+* Wenn man eine E-Mail-Vorlage aus dem Auftrag im Tab *Mail* heraus versendet hat, wurde eine Erfolgsmeldung angezeigt, obwohl die Vorlage nicht versendet wurde.
++
+Dieses Verhalten wurde behoben. Anstelle der Erfolgsmeldung wird nun bei nicht erfolgreichem Versand der E-Mail-Vorlage eine Fehlermeldung angezeigt.
+
+[discrete]
+=== Amazon
+
+* Beim Import der FBA-Auftragsberichte konnte es dazu kommen, dass ein Auftrag mehrfach importiert wurde, wenn der Auftrag in mehreren Berichten auftauchte. Dies hing damit zusammen, dass zur Prüfung, ob der Auftrag bereits importiert wurde, eine Funktion genutzt wurde, die sich auf den Elasticsearch Index stützte. Kam es bei der Aktualisierung dieses Indexes zu einer Verzögerung, dann konnte es dazu kommen, dass der Auftrag nicht gefunden und deshalb erneut importiert wurde.
+Es wird jetzt eine Funktion genutzt, die nicht den Elastic Search Index nutzt.
+* Der nächtliche Backup-Cron für den Auftragsimport, welcher alle Aufträge des letzten Tages abruft, um möglichen Lücken in den Auftragsberichten entgegenzuwirken, ignorierte die Einstellung *Auftragsimport Startdatum*. Es wurden also auch Aufträge des letzten Tages importiert, wenn das Startdatum in der Zukunft lag. Dieses Fehlverhalten wurde behoben.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Zahlungsarten
+
+* Die Spalte *Zahlungsart Abonnement* wurde in der Tabellenübersicht der Zahlungsarten im Menü *Einrichtung » Aufträge » Zahlung » Zahlungsarten* hinzugefügt. Die Spalte ist optional und zeigt an, ob eine Zahlungsart für Abonnements verfügbar ist.
+
+[discrete]
+=== Ereignisaktionen
+
+* Für die Ereignisaktionen für Aufträge wurde ein neuer Filter und eine neue Aktion für Tags hinzugefügt. Diese funktionieren derzeit nur für die Auftragstypen *Nachbestellung*, *Umbuchung* und *Aboauftrag*.
+
+[discrete]
+=== Warenbestand
+
+* Ab sofort ist es möglich, Warenbestand zu einem bestimmten Datum zu exportieren. Nutze dafür den Filter *Datum*, der im Katalog-Format *Warenbestände* verfügbar ist und wähle das gewünschte Datum.
+
+[discrete]
+=== CRM
+
+* Im Kontaktdatensatz im Menü *CRM » Kontakte* wurde das Feld *Externe Nummer* hinzugefügt:
++
+image:changelog/assets/CRM-externe-nummer.png[]
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Nachbestellung
+
+* Die Filter-Komponente in der Nachbestellung wurde verbreitert.
++
+image:changelog/assets/nachbestellung-filter.png[]
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Die Zeilen in der Auftragspositionstabelle der neuen Auftragsanlage sind gesprungen, wenn man die Maus darüber bewegt hat. Dies wurde behoben.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name |Version |To-do
+
+|link:https://marketplace.plentymarkets.com/connectedretail_54742[Connected Retail^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/trackingmanager_54743[TrackingManager^]
+|1.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
+|2.1.9
+|-
+
+|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
+|1.26.9
+|-
+
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.7.1
+|-
+
+|link:https://marketplace.plentymarkets.com/addressdoctor_6106[AddressDoctor^]
+|1.2.18
+|-
+
+|link:https://marketplace.plentymarkets.com/ebics_5098[EBICS^]
+|1.1.5
+|-
+
+|link:https://marketplace.plentymarkets.com/novalnet_5231[Novalnet^]
+|2.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/uniservaddresscleansing_6869[Uniserv Address Cleansing^]
+|1.1.1
+|-
+
+|link:https://marketplace.plentymarkets.com/googletagmanagerultimate_54789[Google Tag Manager + Conversions API^]
+|1.2.3
+|Der Konfigurator muss erneut durchlaufen werden.
+Nutze beim Import im Google Tag Manager die Option "Zusammenführen", wenn du eigene Anpassungen an der Konfiguration vorgenommen hast
+Nutze die Option "Überschreiben", wenn du die Standardkonfiguration verwendest
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
+--
+
+====
