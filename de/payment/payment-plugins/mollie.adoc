@@ -92,7 +92,7 @@ include::../../_includes/textblocks/instructions/kundenklassen-und-versandprofil
 
 Ereignisaktionen sind Teil der Automatisierungen, die du in plentymarkets einrichten kannst. Dabei löst ein bestimmtes Ereignis für eine Auswahl von Aufträgen eine bestimmte Aktion aus. Grundlegendes zu Ereignisaktionen findest du auf der Handbuchseite <<automatisierung/ereignisaktionen#, Ereignisaktionen>>.
 
-Im Zusammenhang mit Zahlungsanbietern wie Mollie werden Ereignisaktionen verwendet, um wichtige Informationen von plentymarkets an den Zahlungsanbieter zu senden. Für Mollie gibt es drei notwendige und weitere optionale Ereignisaktionen. Die notwendigen Ereignisaktionen solltest du auf jeden Fall einrichten, es handelt sich dabei um den Versand der Auftragspositionen eines Auftrags, die Stornierung eines Auftrags und die Erstellung einer Gutschrift. Mollie muss informiert werden, wenn etwas davon eingeleitet wird. +
+Im Zusammenhang mit Zahlungsanbietern wie Mollie werden Ereignisaktionen verwendet, um wichtige Informationen von plentymarkets an den Zahlungsanbieter zu senden. Für Mollie gibt es drei notwendige und einige weitere optionale Ereignisaktionen. Die notwendigen Ereignisaktionen solltest du auf jeden Fall einrichten. Es handelt sich dabei um den Versand der Auftragspositionen eines Auftrags, die Stornierung eines Auftrags und die Erstellung einer Gutschrift. Mollie muss informiert werden, wenn etwas davon eingeleitet wird. Wird eine eingerichtete Ereignisaktionen ausgelöst, wird der entsprechende Call im Hintergrund direkt ausgeführt und Mollie somit innerhalb kürzester Zeit informiert. +
 Neben diesen drei erforderlichen Ereignisaktionen stehen dir noch optionale Ereignisaktionen zur Verfügung. Diese kannst du nutzen, wenn sie in deinen individuellen Arbeitsablauf passen.
 
 Im Folgenden wird eine Beispielkonfiguration und eine Erklärung zur Einrichtung für jede Ereignisaktion gegeben. Es ist jedoch wichtig, dass du die Ereignisaktion jeweils so anpasst, dass sie in deinen Arbeitsablauf passt.
@@ -100,33 +100,37 @@ Im Folgenden wird eine Beispielkonfiguration und eine Erklärung zur Einrichtung
 [#70]
 === Versand bei Mollie anmelden
 
-:table-event-procedure: <<table-procedure-mollie-shipment>>
+Nutze diese Ereignisaktion, um Mollie mitzuteilen, wenn du einen Auftrag, der mit einer Mollie-Zahlungsart bezahlt wurde, verschickt hast. Es handelt sich hier bei um eine notwendige Ereignisaktion. +
+Diese Ereignisaktion kann auch für Lieferaufträge verwendet werden. Der Lieferauftrag wird dann bei Mollie als Teilsendung angemeldet.
+
+:table-event-procedure: <<table-procedure-mollie-transmit-shipment>>
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
-[[table-procedure-mollie-shipment]]
+[[table-procedure-mollie-transmit-shipment]]
 .Ereignisaktion "Mollie | Versand anmelden"
 [cols="1,3,3"]
 |====
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Das Ereignis wählen, nach dem der Versand angemeldet werden soll.
+| Wähle das Ereignis, dass die Meldung des Versands an Mollie auslösen soll, z.B. *Warenausgang gebucht*.
 |
 
 | *Filter 1*
 | Auftrag > Zahlungsart
-| Plugin: Mollie:*
+| Wähle aus der Liste die Mollie-Zahlungsarten, die du nutzt.
 
 | *Aktion*
-| Plugin > Mollie | Versand anmelden
+| Plugin > Mollie - Versand anmelden
 |
 
 |====
 
-Diese Ereignisaktion kann auch für Lieferaufträge verwendet werden. Der Lieferauftrag wird dann bei Mollie als Teilsendung angemeldet.
-
 [#80]
 === Storno bei Mollie anmelden
+
+Nutze diese Ereignisaktion, um Mollie mitzuteilen, wenn ein Auftrag storniert wurde. Es handelt sich hier bei um eine notwendige Ereignisaktion. +
+_Beachte_, dass ein Auftrag nicht storniert werden kann, solange eine Zahlung noch im Status "pending" ist. Die Ablaufzeit für die jeweiligen Zahlungsarten werden von Mollie vorgegeben und sind link:https://docs.mollie.com/payments/status-changes#expiry-times-per-payment-method[auf dieser Seite^]{nbsp}icon:external-link[] aufgeführt.
 
 :table-event-procedure: <<table-procedure-mollie-cancellation>>
 include::../../_includes/textblocks/instructions/EA.adoc[]
@@ -138,57 +142,144 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Das Ereignis wählen, nach dem der Versand angemeldet werden soll.
-|
+| Wähle das Ereignis, dass die Meldung der Stornierung an Mollie auslösen soll, z.B. *Statuswechsel*.
+| Falls du *Statuswechsel* gewählt hast, wähle aus der Dropdown-Liste dann den <<auftraege/auftraege-verwalten#1200, Auftragsstatus>>, den du für stornierte Aufträge nutzt. Standardmäßig sind dies Status *8 - Storniert* und *8.1 - Storniert durch Kunden*.
 
 | *Filter 1*
 | Auftrag > Zahlungsart
-| Plugin: Mollie:*
+| Wähle aus der Liste die Mollie-Zahlungsarten, die du nutzt.
 
 | *Aktion*
-| Plugin > Mollie | Storno anmelden
+| Plugin > Mollie - Storno anmelden
 |
 
 |====
 
-_Beachte_, dass ein Auftrag nicht storniert werden kann, solange eine Zahlung noch im Status "pending" ist. Die Ablaufzeit für die jeweiligen Zahlungsarten werden von Mollie vorgegeben und sind link:https://docs.mollie.com/payments/status-changes#expiry-times-per-payment-method[auf dieser Seite^]{nbsp}icon:external-link[] aufgeführt.
-
 [#90]
 === Gutschrift bei Mollie anmelden
 
-Achte beim Anlegen der Gutschrift darauf, dass die Auftragspositionen, die gutgeschrieben werden sollen, auch in der Gutschrift enthalten sind. Mehr Informationen über Gutschriften allgemein findest du im Kapitel <<auftraege/auftraege-verwalten#500, Auftragstyp Gutschrift>> nutzen im Handbuch. +
-Die Ereignisaktion *Mollie | Gutschrift anmelden* kann auf Basis eines Auftrags und eines Gutschriftauftrags ausgeführt werden.
+Nutze diese Ereignisaktion, um Mollie mitzuteilen, wenn eine Gutschrift für einen Auftrag erstellt wurde. Es handelt sich hier bei um eine notwendige Ereignisaktion. Die Aktion *Mollie | Gutschrift anmelden* kann auf Basis eines Auftrags und eines Gutschriftauftrags ausgeführt werden. +
+Achte beim Anlegen der Gutschrift darauf, dass die Auftragspositionen, die gutgeschrieben werden sollen, auch in der Gutschrift enthalten sind. Mehr Informationen über Gutschriften allgemein findest du im Kapitel <<auftraege/auftraege-verwalten#500, Auftragstyp Gutschrift>> nutzen im Handbuch.
 
-:table-event-procedure: <<table-procedure-mollie-refunds>>
+:table-event-procedure: <<table-procedure-mollie-transmit-refunds>>
 include::../../_includes/textblocks/instructions/EA.adoc[]
 
-[[table-procedure-mollie-refunds]]
+[[table-procedure-mollie-transmit-refunds]]
 .Ereignisaktion "Mollie | Gutschrift anmelden"
 [cols="1,3,3"]
 |====
 |Einstellung |Option |Auswahl
 
 | *Ereignis*
-| Das Ereignis wählen, nach dem der Versand angemeldet werden soll.
+| Wähle das Ereignis, dass die Meldung der Gutschrift an Mollie auslösen soll, z.B. *Neue Gutschrift*.
 |
 
 | *Filter 1*
 | Auftrag > Zahlungsart
-| Plugin: Mollie:*
+| Wähle aus der Liste die Mollie-Zahlungsarten, die du nutzt.
 
 | *Aktion*
-| Plugin > Mollie | Gutschrift anmelden
+| Plugin > Mollie - Gutschrift anmelden
 |
 
 |====
 
 [#92]
 === Rückzahlung erfolgreich oder gescheitert
-Im Anschluss an die Aktion *Mollie | Gutschrift anmelden* stehen dir zwei weitere zusätzliche Ereignisse zur Verfügung, um den weiteren Verlauf des Auftrages abzubilden: *Mollie Rückzahlung gescheitert* und *Mollie Rückzahlung erfolgreich*. Richte optional Ereignisaktionen mit diesen Ereignissen wie oben beschrieben ein.
+
+Im Anschluss an die Aktion *Mollie | Gutschrift anmelden* stehen dir zwei weitere zusätzliche Ereignisse zur Verfügung, um den weiteren Verlauf des Auftrages abzubilden: *Mollie | Rückzahlung gescheitert* und *Mollie | Rückzahlung erfolgreich*. Es handelt sich hier bei um optionale Ereignisaktionen, die dich in der weiteren Auftragsbearbeitung unterstützen können.
+
+* *Mollie | Rückzahlung gescheitert* = Bestimme, was mit den Aufträgen passieren soll, bei denen die Rückzahlung einer Gutschrift nicht funktioniert hat.
+* *Mollie | Rückzahlung erfolgreich* = Bestimme, was mit den Aufträgen passieren soll, bei denen die Rückzahlung einer Gutschrift funktioniert hat.
+
+Richte optional Ereignisaktionen mit diesen Ereignissen ein, um zu bestimmen, wie du mit diesen Aufträgen weiter verfahren möchtest. Die folgende Ereignisaktion ist ein Beispiel. Entscheide selbst, welcher Ablauf am besten in deine Auftragsbearbeitung passt.
+
+:table-event-procedure: <<table-procedure-mollie-refunds>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-mollie-refunds]]
+.Ereignisaktionen "Mollie Rückzahlung gescheitert" und "Mollie | Rückzahlung erfolgreich"
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Mollie - Rückzahlung gescheitert*
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Wähle aus der Liste die Mollie-Zahlungsarten, die du nutzt.
+
+| *Aktion*
+| Auftrag > Status ändern
+|Wähle aus der Dropdown-Liste den Auftragsstatus aus, in den Aufträge mit Mollie-Zahlungsarten, bei denen es einen Fehler bei der Rückzahlung gab, geschoben werden sollen. Du könntest beispielsweise vorher einen eigenen <<auftraege/auftraege-verwalten#1200, Auftragsstatus>> dafür anlegen. In der Auftragsbearbeitung siehst du dann schneller die Aufträge, bei denen eine weitere Bearbeitung erforderlich ist.
+
+|====
+
+[#95]
+=== Versandanmeldung erfolgreich oder gescheitert
+
+Im Anschluss an die Aktion *Mollie | Versand anmelden* stehen dir zwei weitere zusätzliche Ereignisse zur Verfügung, um den weiteren Verlauf des Auftrages abzubilden: *Mollie | Versandanmeldung gescheitert* und *Mollie | Versandanmeldung erfolgreich*. Es handelt sich hier bei um optionale Ereignisaktionen, die dich in der weiteren Auftragsbearbeitung unterstützen können.
+
+* *Mollie | Versandanmeldung gescheitert* = Bestimme, was mit den Aufträgen passieren soll, bei denen die Meldung des Versands an Mollie nicht funktioniert hat.
+* *Mollie | Versandanmeldung erfolgreich* = Bestimme, was mit den Aufträgen passieren soll, bei denen die Meldung des Versands an Mollie funktioniert hat.
+
+Richte optional Ereignisaktionen mit diesen Ereignissen ein, um zu bestimmen, wie du mit diesen Aufträgen weiter verfahren möchtest. Die folgende Ereignisaktion ist ein Beispiel. Entscheide selbst, welcher Ablauf am besten in deine Auftragsbearbeitung passt.
+
+:table-event-procedure: <<table-procedure-mollie-shipments>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-mollie-shipments]]
+.Ereignisaktionen "Mollie | Versandanmeldung gescheitert" und "Mollie | Versandanmeldung erfolgreich"
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Mollie - Versandanmeldung gescheitert*
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Wähle aus der Liste die Mollie-Zahlungsarten, die du nutzt.
+
+| *Aktion*
+| Auftrag > Status ändern
+|Wähle aus der Dropdown-Liste den Auftragsstatus aus, in den Aufträge mit Mollie-Zahlungsarten, bei denen die Meldung des Versands an Mollie nicht erfolgen konnte, geschoben werden sollen. Du könntest beispielsweise vorher einen eigenen <<auftraege/auftraege-verwalten#1200, Auftragsstatus>> dafür anlegen. In der Auftragsbearbeitung siehst du dann schneller die Aufträge, bei denen eine weitere Bearbeitung erforderlich ist.
+
+|====
 
 [#97]
 === Zahlung gescheitert
-auch noch das Ereignis *Mollie | Zahlung gescheitert* zur Verfügung. Die Nutzung dieses Ereignisses ist optional. Du kannst es verwenden um zu bestimmen, wie mit Aufträgen verfahren werden soll, für die die Zahlung nicht erfolgen konnte.
+
+Zudem steht dir noch das Ereignis *Mollie | Zahlung gescheitert* zur Verfügung. Die Nutzung dieses Ereignisses ist optional. Du kannst es verwenden um zu bestimmen, wie mit Aufträgen verfahren werden soll, für die die Zahlung nicht erfolgen konnte. +
+Dieses Ereignis greift, wenn die Zahlung direkt nach Auftragsanlage scheitert. Dies kann zum Beispiel der Fall sein, wenn der Auftrag nicht bei Mollie abgerufen werden kann, die Session vorher gelöscht wurde oder es allgemein Probleme seitens Mollie gibt. Also immer dann, wenn eine Zahlung fehlgeschlagen ist, abgebrochen wurde oder verfallen ist.
+
+Richte optional eine Ereignisaktion mit diesem Ereignis ein, um festzulegen, wie du mit solchen Aufträgen weiter verfahren möchtest. Die folgende Ereignisaktion ist ein Beispiel. Entscheide selbst, welcher Ablauf am besten in deine Auftragsbearbeitung passt.
+
+:table-event-procedure: <<table-procedure-mollie-shipments>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-mollie-failed-payment]]
+.Ereignisaktionen "Mollie | Zahlung fehlgeschlagen"
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Mollie - Zahlung fehlgeschlagen*
+|
+
+| *Filter 1*
+| Auftrag > Zahlungsart
+| Wähle aus der Liste die Mollie-Zahlungsarten, die du nutzt.
+
+| *Aktion*
+| Auftrag > Markierung ändern
+|Wähle aus der Dropdown-Liste die Markierung aus, die Aufträge mit Mollie-Zahlungsarten, bei denen die Zahlung fehlgeschlagen ist, bekommen sollen. In der Auftragsbearbeitung siehst du dann schneller die Aufträge, bei denen eine weitere Bearbeitung erforderlich ist.
+
+|====
 
 [#100]
 == Sprachelemente anpassen
