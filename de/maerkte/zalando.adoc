@@ -14,7 +14,7 @@ include::{includedir}/_header.adoc[]
 Durch das Zalando-Partnerprogramm können Online-Händler:innen und Hersteller:innen Zalando als zusätzlichen Absatzkanal für hochwertige Produkte nutzen und von der großen Markenbekanntheit von Zalando profitieren.
 
 [#200]
-== Übersicht des automatischen Datenaustauschs
+== Informationen zum automatischen Datenaustausch
 
 Die Anbindung des Marktplatzes stellt die folgenden automatisierten Funktionen bereit:
 
@@ -27,13 +27,14 @@ Die Anbindung des Marktplatzes stellt die folgenden automatisierten Funktionen b
 | plentymarkets generiert die Artikeldaten einmal täglich nachts als XML-Datei (artikel.xml). Zalando ruft diese XML normalerweise einmal pro Tag ab.
 
 | Bestandsabgleich
-| Zalando ruft die Bestandsdaten alle 10 Minuten ab (über die XML-Datei stock.xml).
+| Alle 15 Minuten, asynchron +
+Im Normalfall werden pro Minute 1.000 Bestände aktualisiert. Wird die von Zalando vorgegebene API-Limitierung erreicht, werden die übrigen Bestände gesendet, sobald die API nach spätestens einer Minute wieder entsperrt ist.
 
 | Preisabgleich
-| Alle 15 Minuten über API
+| Alle 15 Minuten
 
 | Auftragsimport
-| Alle 5 Minuten über die API-Schnittstelle zDirect
+| Alle 5 Minuten
 |====
 
 [#100]
@@ -88,23 +89,18 @@ Zalando in plentymarkets einrichten:
 |Mandant (Shop) wählen. Zalando-Aufträge werden diesem Mandanten zugeordnet.
 
 | *Lagerauswahl*
-a|Nach welcher Logik soll Zalando-Aufträgen ein Lager zugewiesen werden?
-
-* *Übertrage die Bestandsmenge des Vertriebslagers mit dem aktuell größten Bestand* = Das Vertriebslager mit dem aktuell größtem Bestand der Variante als Lager wählen. +
-* *Verwende Hauptlager des Artikels* = Das Hauptlager des Artikels als Lager wählen. +
-* *Übertrage die Summe der Bestandsmenge aller Vertriebslager* = Die Bestände aller Vertriebslager werden addiert und die Summe an Zalando exportiert.
+a| Diese Einstellung ist seit der Umstellung auf die zDirect-API (27.10.2021) ohne Funktion. Wähle stattdessen die Vertriebslager im Assistenten *Kontoeinstellungen - Zalando*.
 
 2+|Erweiterte Optionen
 
 | *Bestandspuffer*
-|Bestandspuffer in Stück eingeben. Der Bestand, der an Zalando exportiert wird, wird um den eingegebenen Wert reduziert.
+| Diese Einstellung ist seit der Umstellung auf die zDirect-API (27.10.2021) ohne Funktion. Lege stattdessen einen Bestandspuffer im Assistenten *Kontoeinstellungen - Zalando* fest.
 
 | *Menge für Artikel ohne Bestandsbindung*
-|Menge eingeben, die für Varianten ohne Bestandsbindung bei Zalando als Bestand geführt werden soll. Die eingegebene Menge wird für alle Varianten ohne Bestandsbindung an Zalando exportiert. Der tatsächliche Bestand wird also nicht berücksichtigt.
+| Diese Einstellung ist seit der Umstellung auf die zDirect-API (27.10.2021) ohne Funktion. Lege stattdessen die Menge im Assistenten *Kontoeinstellungen - Zalando* fest.
 
 | *Grenzwert für Artikel-Upload*
-|Zahl eingeben, um einen Grenzwert für den Export in Stück pro Variante festzulegen. Der Grenzwert definiert den maximalen Bestand, der pro Variante übermittelt wird. +
-*_Beispiel:_* Die Variante hat einen Bestand von 20, aber du hast den Grenzwert 10 festgelegt. plentymarkets übermittelt dann einen Bestand von 10 an Zalando.
+| Diese Einstellung ist seit der Umstellung auf die zDirect-API (27.10.2021) ohne Funktion. Lege stattdessen den maximalen Bestand im Assistenten *Kontoeinstellungen - Zalando* fest.
 
 | *Regelsteuersatz*
 | *19 %* oder *7 %* wählen.
@@ -125,19 +121,88 @@ Mit dem Assistenten *Kontoeinstellungen - Zalando* im Menü *Einrichtung » Assi
 include::_textblocks/instructions/assistant-basic-instructions.adoc[]
 
 [.collapseBox]
-.Schritt *Artikelstatusbericht*
+.Schritt *Aufträge*
 --
 
-*Sollen für deine Artikel auf Zalando Statusberichte generiert werden?*
+[[assistant-zalando-orders]]
+[cols="1,3a"]
+|====
+|Einstellung |Erläuterung
 
-Wenn du die Option *Artikelstatusberichte generieren* aktivierst, stehen im Menü *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Verarbeitungsberichte* die folgenden Artikelstatusberichte im CSV-Format zur Verfügung:
+| *Möchtest du Zalando-Aufträge in plentymarkets importieren?*
+| Aktivieren, um Aufträge automatisch alle fünf Minuten zu importieren. +
+*_Hinweis:_* Artikeldaten und Bestandsinformationen können nur zu Zalando übertragen werden, wenn diese Option aktiviert ist.
 
-* *_ProductErrorReport_*: Enthält Varianten, die aktuell nicht auf Zalando verkauft werden können. Der Bericht enthält außerdem die ersten fünf Fehlercodes und eine Fehlerbeschreibung.
-* *_ProductLiveReport_*: Enthält Varianten, die aktuell auf Zalando verkauft werden können. Der Bericht enthält außerdem Informationen zum Bestand und Preis jeder Variante auf den Zalando-Channels (DE, FR usw.) zu dem Zeitpunkt, zu dem die Datei generiert wurde.
+| *Wähle eine Umgebung für den Auftragsimport.*
+a| Wählen, ob echte Daten oder Testdaten importiert werden sollen.
 
-Die Produkt-Status-Berichte werden von Zalando generiert. Die Berichte enthalten deshalb nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden. Beide Dateien werden automatisch einmal pro Nacht aktualisiert. Du kannst die Dateien aber auch manuell aktualisieren.
+* *Sandbox* = Von Zalando werden Testdaten importiert.
+* *Productive* = Von Zalando werden echte Auftragsdaten importiert.
 
-<<#910, So rufst du Produkt-Status-Berichte ab>>
+| *Unter welchem Mandanten möchtest du deine Artikel verkaufen?*
+|Mandant (Shop) wählen. Zalando-Aufträge werden diesem Mandanten zugeordnet.
+
+| *Sollen auch Reservierungen importiert werden?*
+|Artikel gelten als reserviert, wenn Kund:innen eine Bestellung aufgegeben haben, die Ware aber entweder noch nicht bezahlt haben oder der Auftrag noch nicht von Zalando für den Versand freigegeben wurde.
+
+|*Welcher Auftragsstatus soll Reservierungen zugewiesen werden?*
+|Entscheide, in welchen Status Aufträge verschoben werden sollen, für die eine Reservierung importiert wurde, die aber dann von Käufer:innen oder von Zalando storniert wurden. +
+*_Hinweis:_* Wähle einen Status, bei dem durch den Statuswechsel keine Ereignisaktion an Zalando ausgelöst wird. Aufträge, die vor dem Import der Reservierung von Käufer:innen storniert werden, werden nicht importiert.
+
+| *plentymarkets Retourengrund verknüpfen mit*
+a|Für jeden in plentymarkets gespeicherten Retourengrund einen Retourengrund von Zalando aus der Dropdown-Liste wählen. Die Retourengründe werden nur für den Auftragstyp *Retoure* übertragen und müssen an den Artikelpositionen der Retouren  gepflegt werden.
+
+Zalando hat zurzeit die folgenden Retourengründe:
+
+* *Unbekannter Grund*
+* *Gefällt nicht*
+* *Zu groß*
+* *Zu klein*
+* *Schlechtes Preis-Leistungs-Verhältnis*
+* *Lieferung zu spät*
+* *Artikel nicht wie erwartet*
+* *Falscher Artikel gesendet*
+* *Defekt*
+
+*_Hinweis:_* Das Übermitteln von Retourengründen an Zalando ist optional, wird aber von Zalando empfohlen.
+|====
+--
+
+[.collapseBox]
+.Schritt *Bestände*
+--
+
+[[assistant-zalando-stock]]
+[cols="1,3a"]
+|====
+|Einstellung |Erläuterung
+
+| *Möchtest du Bestandsdaten zu Zalando exportieren?*
+| *Bestandsexport aktivieren* = Option aktivieren, um alle 15 Minuten deinen Bestand zu Zalando zu exportieren.
+
+| *In welche Schnittstellenumgebung sollen die Bestandsdaten exportiert werden?*
+a| Wählen, ob echte Daten oder Testdaten exportiert werden sollen.
+
+* *Sandbox* = Testdaten werden an Zalando exportiert.
+* *Productive* = Echte Bestandsdaten werden an Zalando exportiert.
+
+| *Aus welchen Vertriebslagern sollen Bestandsdaten exportiert werden?*
+a| Ein oder mehrere Vertriebslager wählen. Die Summe des Nettobestands dieser Vertriebslager wird exportiert. +
+*_Tipp:_* Du kannst in diesem Schritt des Assistenten einen *Bestandspuffer* festlegen. Die Summe des Nettobestands der gewählten Vertriebslager wird dann um die als Bestandspuffer eingegebenen Stückzahl reduziert.
+
+| *Wie viel Bestand soll maximal exportiert werden?*
+a| Wenn eine Variante einen höheren Bestand hat, wird stattdessen der im Feld *Maximaler Bestand* eingegebene Wert exportiert.
+
+| *Welcher Bestandspuffer soll vom exportierten Bestand abgezogen werden?*
+a| Die im Feld *Bestandspuffer* eingegebene Stückzahl wird vor dem Export vom Nettowarenbestand jeder Variante abgezogen.
+
+| *Wie viel Bestand soll für Varianten ohne Beschränkung auf den Nettowarenbestand exportiert werden, wenn diese Varianten keinen positiven Nettowarenbestand haben?*
+a| In das Feld *Bestand ohne Bestandsbeschränkung* den Bestand eingeben, der für Varianten ohne Beschränkung auf den Nettowarenbestand exportiert werden soll. Varianten ohne Bestandsbeschränkung sind Varianten, bei denen im Tab *Einstellungen* der Variante für die Einstellung *Beschränkung* die Option *Keine* gewählt ist und der Nettowarenbestand nicht positiv ist.
+
+| *Wie viel Bestand soll für Varianten ohne Warenbestandsführung exportiert werden?*
+a| In das Feld *Bestand ohne Bestandsführung* den Bestand eingeben, der für Varianten ohne Warenbestandsführung exportiert werden soll. Varianten ohne Warenbestandsführung sind Varianten, bei denen im Tab *Einstellungen* für die Einstellung *Beschränkung* die Option *Keinen WB für diese Variante führen* gewählt wurde. Für diese Varianten wird der eingetragene Wert exportiert.
+
+|====
 --
 
 [.collapseBox]
@@ -185,54 +250,6 @@ Definiere bis zu drei geplante Preise. Geplante Preise geben dir mehr Sicherheit
 * *Eigenschaft für Enddatum* (optional) = Eigenschaft aus der Dropdown-Liste wählen, mit der der Endzeitpunkt des geplanten Preises an der Variante gepflegt wird. Nur Eigenschaften vom Typ *Datum* oder *Text* können gewählt werden.
 * *Preis wählen* = Verkaufspreis aus der Dropdown-Liste wählen, der als *Geplanter Preis* zu Zalando exportiert werden soll.
 
-|====
---
-
-[.collapseBox]
-.Schritt *Aufträge*
---
-
-[[assistant-zalando-orders]]
-[cols="1,3a"]
-|====
-|Einstellung |Erläuterung
-
-| *Möchtest du Zalando-Aufträge in plentymarkets importieren?*
-| Aktivieren, um Aufträge automatisch alle fünf Minuten zu importieren. +
-*_Hinweis:_* Artikeldaten und Bestandsinformationen können nur zu Zalando übertragen werden, wenn diese Option aktiviert ist.
-
-| *Wähle eine Umgebung für den Auftragsimport.*
-a| Wählen, ob echte Daten oder Testdaten importiert werden sollen.
-
-* *Sandbox* = Von Zalando werden Testdaten importiert.
-* *Productive* = Von Zalando werden echte Auftragsdaten importiert.
-
-| *Unter welchem Mandanten möchtest du deine Artikel verkaufen?*
-|Mandant (Shop) wählen. Zalando-Aufträge werden diesem Mandanten zugeordnet.
-
-| *Sollen auch Reservierungen importiert werden?*
-|Artikel gelten als reserviert, wenn Kund:innen eine Bestellung aufgegeben haben, die Ware aber entweder noch nicht bezahlt haben oder der Auftrag noch nicht von Zalando für den Versand freigegeben wurde.
-
-|*Welcher Auftragsstatus soll Reservierungen zugewiesen werden?*
-|Entscheide, in welchen Status Aufträge verschoben werden sollen, für die eine Reservierung importiert wurde, die aber dann von Käufer:innen oder von Zalando storniert wurden. +
-*_Hinweis:_* Wähle einen Status, bei dem durch den Statuswechsel keine Ereignisaktion an Zalando ausgelöst wird. Aufträge, die vor dem Import der Reservierung von Käufer:innen storniert werden, werden nicht importiert.
-
-| *plentymarkets Retourengrund verknüpfen mit*
-a|Für jeden in plentymarkets gespeicherten Retourengrund einen Retourengrund von Zalando aus der Dropdown-Liste wählen. Die Retourengründe werden nur für den Auftragstyp *Retoure* übertragen und müssen an den Artikelpositionen der Retouren  gepflegt werden.
-
-Zalando hat zurzeit die folgenden Retourengründe:
-
-* *Unbekannter Grund*
-* *Gefällt nicht*
-* *Zu groß*
-* *Zu klein*
-* *Schlechtes Preis-Leistungs-Verhältnis*
-* *Lieferung zu spät*
-* *Artikel nicht wie erwartet*
-* *Falscher Artikel gesendet*
-* *Defekt*
-
-*_Hinweis:_* Das Übermitteln von Retourengründen an Zalando ist optional, wird aber von Zalando empfohlen.
 |====
 --
 
@@ -339,7 +356,7 @@ Verknüpfe mindestens die folgenden Pflichtmerkmale, damit deine Varianten an Za
 * Silhouetten-Typ
 
 [.collapseBox]
-.*_Tipp:_* Referenzdatei mit Zalando-Artikelmerkmale exportieren
+.*_Tipp:_* Referenzdatei mit Zalando-Artikelmerkmalen exportieren
 --
 Wenn du die Zalando-Silhouetten in Merkmale konvertierst, werden mehrere hundert Merkmale in plentymarkets erstellt. Um dir die Arbeit mit diesen Merkmalen zu erleichtern, kannst du die Merkmale exportieren. So hast du schnellen Zugriff auf die IDs der Zalando-Merkmale. Zum Beispiel kannst du dann einfacher die Merkmale <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-merkmalverknuepfung#import_merkmalverknüpfungen, per Import>> mit deinen Artikeln verknüpfen.
 
@@ -429,7 +446,7 @@ include::_textblocks/instructions/link-attributes.adoc[]
 [#800]
 == Zahlungsart aktivieren
 
-:marketplace: Zalando
+:market: Zalando
 :payment-method: Zalando Payment
 
 include::_textblocks/instructions/zahlungsart_aktivieren.adoc[]
@@ -507,8 +524,6 @@ Für die automatische Auftragsabwicklung über zDirect stehen die folgenden Erei
 * Versandbestätigungen automatisch senden (zDirect) (<<#1200, Wie?>>)
 * Stornierungen automatisch senden (zDirect) (<<#1300, Wie?>>)
 * Retouren automatisch senden (zDirect) (<<#1600, Wie?>>)
-
-Wenn du noch die alte API nutzt, werden Änderungen am Auftragsstatus Zalando nicht mit Ereignisaktionen mitgeteilt. (<<#850, Wie sonst?>>)
 
 [#1200]
 === Versandbestätigungen automatisch senden (zDirect)
@@ -626,27 +641,6 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 | *Aktion*
 | *Retoure &gt; Retoure an Zalando senden*
 |
-|====
-
-[#850]
-=== Änderungen am Auftragsstatus (alte API)
-
-Wenn du noch die alte API nutzt, werden Änderungen am Auftragsstatus Zalando nicht mit Ereignisaktionen mitgeteilt. Stattdessen ruft Zalando den Auftragsstatus automatisch per Schnittstelle ab. Die Auftragsstatus *Versandbestätigung*, *Stornierung* und *Retoure* werden an Zalando gesendet, wenn die in <<#tabelle-zalando-auftragsstatus>> gezeigten Kriterien erfüllt sind:
-
-[[tabelle-zalando-auftragsstatus]]
-.Kriterien für Auftragsstatus
-[cols="1,3a"]
-|====
-|Auftragsstatus |Kriterien
-
-| *Versandbestätigung*
-|Der Warenausgang wurde gebucht. Außerdem wurde ein Retourenlabel erzeugt und Paketnummern wurden hinzugefügt.
-
-| *Stornierung*
-|Der Auftrag wurde in *Status [8.X]* verschoben oder die Menge der Auftragsposition wurde auf *0* geändert.
-
-| *Retoure*
-|In plentymarkets wurde eine Retoure erstellt.
 |====
 
 [#1500]
@@ -779,26 +773,12 @@ Export-Log herunterladen:
 |====
 
 [#910]
-=== Produkt-Status-Bericht herunterladen
+=== Produkt-Status-Berichte herunterladen
 
 Produkt-Status-Berichte enthalten Informationen zu den Artikeln, die zu Zalando exportiert wurden. Diese Berichte werden von Zalando generiert. Deshalb enthalten die Berichte nur Informationen zu Varianten, die erfolgreich zu Zalando exportiert wurden. Folgende Berichte sind verfügbar:
 
 * *_ProductErrorReport.csv_*: Enthält Varianten, die seit dem letzten Export nicht auf Zalando verkauft werden können. Der Bericht enthält außerdem die ersten fünf Fehlercodes und eine Fehlerbeschreibung. Der Bericht wird einmal pro Nacht automatisch generiert. Wenn du neuere Daten benötigst, klicke vor dem Herunterladen auf *Datei aktualisieren* (icon:cog[]), um aktuelle Daten bei Zalando abzurufen.
 * *_ProductLiveReport.csv_*: Enthält Varianten, die seit dem letzten Export auf Zalando verkauft werden können. Der Bericht enthält außerdem Informationen zum Bestand und Preis jeder Variante auf den Zalando-Channels (DE, FR usw.) zu dem Zeitpunkt, zu dem die Datei generiert wurde. Der Bericht wird einmal pro Nacht automatisch generiert. Wenn du neuere Daten benötigst, klicke vor dem Herunterladen auf *Datei aktualisieren* (icon:cog[]), um aktuelle Daten bei Zalando abzurufen.
-
-Produkt-Status-Berichte sind nur verfügbar, wenn im Assistenten *Kontoeinstellungen - Zalando* die Option *Artikelstatusberichte generieren* aktiviert wurde.
-
-[.collapseBox]
-.Artikelstatusberichte aktivieren
---
-So aktivierst du die Artikelstatusberichte:
-
-. Öffne das Menü *Einrichtung » Assistenten » Omni-Channel*.
-. Klicke auf den Assistenten *Kontoeinstellungen - Zalando*.
-. Aktiviere im Schritt *Artikelstatusbericht* die Option *Artikelstatusberichte generieren*.
-. Schließe den Assistenten wie gewohnt ab. +
-→ Die ersten Berichte werden in der folgenden Nacht generiert.
---
 
 [.instruction]
 Produkt-Status-Bericht herunterladen:
@@ -978,6 +958,19 @@ Nutze optional die in <<#tabelle-referenztypen>> aufgeführten Filter, um die Su
   ** Referenztyp » action +
   Referenzwert » PriceReporting
 | Log-Einträge zu Fehlern beim Generieren der Preis-Berichte
+
+| Bestandsabgleich
+| * Identifikator » Zalando
+* Referenzen:
+  ** Referenztyp » action +
+  Referenzwert » StockUpdate
+  ** Referenztyp » variationId
+  ** Referenztyp » ean
+  ** Referenztyp » accountId
+  ** Referenztyp » salesChannel
+  ** Referenztyp » jobUniqueId
+| Log-Einträge zu Fehlern beim Bestandsabgleich
+
 |====
 
 [#1000]
