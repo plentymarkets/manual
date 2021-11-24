@@ -6,11 +6,11 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 30. September 2021
-:endWeekDate: 06. Oktober 2021
-:nav-alias: Changelog 06. Oktober 2021
+:startWeekDate: 11. November 2021
+:endWeekDate: 17. November 2021
+:nav-alias: Changelog 17. November 2021
 
-// Hier weitermachen: https://forum.plentymarkets.com/t/fix-datumsauswahl-im-rohdaten-report/655063
+// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/zalando-seltene-ueberverkaufe-durch-umstellung-auf-neue-bestands-api-rare-oversales-due-to-switch-to-new-stock-api/660183
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,9 +31,31 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Fulfillment
+=== Aufträge
 
-* Wenn Orange Connex einen Auftrag in mehreren Paketen versendet, dann zeigen wir von nun an alle OC Auftrags-IDs kommasepariert in den Auftragsnotizen und in der Auftragseigenschaft. Außerdem speichern wir alle Paketnummern am Auftrag.
+* Für die folgenden UIs wurde die neue Suchkomponente für Filter hinzugefügt:
+** Bestellungen
+** Abonnement
+** Zahlungsverkehr
+* Wenn eine neue Nachbestellung erstellt wird, erscheint in der Infobox mit dem Wert der Nachbestellung ein Warnhinweis, wenn der Mindestbestellwert für den Lieferanten noch nicht erreicht wurde.
++
+image:changelog/nachbestellung-warnung-mindestbestellwert.png[width=640, alt=Nachbestellung mit Warnhinweis in einem Tooltip]
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Für die folgenden UIs wurde die neue Suchkomponente für Filter hinzugefügt:
+** Auftragserstellung (beta)
+
+[discrete]
+=== CRM
+
+* Wenn ein neuer Kontakt erstellt wird, wird ab sofort nicht nur der Vorname und der Nachname aus den Adressdetails in die Kontaktdetails übernommen, sondern auch die Anrede.
+
+[discrete]
+=== Kataloge
+
+* Im Auftragsexport über Katalog wurde der Filter *Hauptaufträge ausschließen, wenn Lieferaufträge existieren* hinzugefügt.
 
 '''
 
@@ -43,15 +65,23 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Abonnements
+=== Kaufland.de
 
-* Die alten Infoboxen in der Detailansicht eines Abonnements wurden ersetzt durch neue Infoboxen mit farbiger Statusanzeige.
+* Die Spalte *energy_label* wurde zu *energy_label_2021* umbenannt, da die alte Spaltenbezeichnung ignoriert wird.
++
+[IMPORTANT]
+.To-Do
+======
+Falls noch nicht erledigt, sollten Händler, die diese Spalte verwenden, auch sicherstellen, dass das erstellte Merkmal für die Spalte *energy_efficiency_class* zu *energy_efficiency_class_2021* umbenannt wurde, da beide Spalten für einen erfolgreichen Upload der Produktdaten benötigt werden.
+======
 
 [discrete]
-=== Aufträge
+=== OTTO
 
-* Die alten Infoboxen in der Detailansicht einer Nachbestellung wurden ersetzt durch neue Infoboxen mit farbiger Statusanzeige.
-* Beim Auswählen von gespeicherten Filtern im Bereich Aufträge und Zahlungen wird nun direkt die Suche ausgeführt.
+:otto-master-date: 12.11.2021
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/vj5E3kjv4CwXdtv0iXthgKgkuW0.xlsx
+
+include::../_textblocks/otto-master-file.adoc[]
 
 '''
 
@@ -61,55 +91,48 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
-=== Abonnements
-
-* In der Abonnement-UI wurden die Artikel-ID und die Varianten-ID nicht in der Filterkomponente angezeigt. Dies wurde behoben.
-
-[discrete]
 === Amazon
 
-* Der Assistent zur Erstellung eines Amazon-Katalogs konnte nicht abgeschlossen werden, wenn bisher noch keine Eigenschaftsgruppe für Amazon existierte. Der Assistent wurde im Zuge der Fehlerbehebung auf die neue interne Eigenschaftslogik umgestellt, und sollte mit diesem Update wieder wie ursprünglich vorgesehen funktionieren.
+* Bei der Übermittlung der Versandbestätigung wurde der Code des Transportservices im XML-Attribut `CarrierName` statt dem XML-Attribut `CarrierCode` übermittelt. Bei den regulären Transportservices führte dies nicht direkt zu einem Fehler, aber bei dem Transportservice *Andere* schon, weil sowohl der Code als auch die spezifische Bezeichnung des Transportservices benötigt werden. Es wurde nun so angepasst, dass generell der Code des Transportservices im XML-Attribut `CarrierCode` übermittelt wird, und im Falle von *Andere* die spezifische Bezeichnung im XML-Attribut `CarrierName`.
++
+Weitere Information dazu, wo der Transportservice für Amazon eingestellt wird, findest du auf der Handbuchseite <<amazon/amazon-einrichten#6900, Amazon einrichten>>.
+* Beim manuellen Upload der Rechnung unter *Einrichtung » Märkte » Amazon » Datenaustausch » Berichte » Tab: Rechnungen* hochladen kam es zu einem Fehler bei der Verwendung der Auftrags-ID. Die Aufträge wurden dann nicht gefunden. Dieses Verhalten ist jetzt behoben.
+* Wenn der Transportservice *Österreichische Post* in der Amazon Versandeinstellung gewählt war, kam es aufgrund des falschen `CarrierCodes` zu einem Fehler bei der Versandmeldung. Der `CarrierCode` wurde korrigiert.
 
 [discrete]
 === Aufträge
 
-* Der Enddatumsfilter in jeder auftragsbasierten Suche funktionierte nicht korrekt. Dies wurde behoben.
-* Durch das Buchen des Warenausgangs des letzten offenen Lieferauftrages eines Auftrages wird auch der Warenausgang des Hauptauftrages gebucht. Hierbei konnte es dazu kommen, dass alle Lieferaufträge des Auftrages in den Status 7 verschoben wurde, auch wenn diese bereits in einem höheren Status waren. Dies wurde behoben.
+* Die Einstellung am Artikel zur Beschränkung von Aktionsgutscheinen wurde bei der Anlage von Retouren nicht beachtet.
 
 [discrete]
-=== bol.com
+=== CRM
 
-* Bei bol.com Aufträgen kommt es vor, dass auch in einem FBR Auftrag Artikel enthalten sind, die FBB sind. Diese Auftragsartikel ignorieren wir, da wir aktuell FBB nicht anbieten. Dadurch kam es aber beim Abgleich, ob alle Positionen erfolgreich erkannt wurden, zu einem Fehler, der dafür sorgte, dass der Auftrag gar nicht importiert wurde.
+* Die Variable `$TicketHistory` in E-Mail-Vorlagen gab nicht den gesamten Ticketverlauf aus, sondern nur die letzte Nachricht. Dieses Verhalten wurde jetzt behoben.
+* Wenn ein Twig-Syntaxfehler in einem Code-Widget vorhanden war, erhielt der Benutzer keine Warnung und die Vorlage konnte nicht mehr verwendet oder bearbeitet werden. Dieses Verhalten wurde jetzt behoben. Nachdem du den Editor des Code-Widgets geschlossen hast und ein Fehler erkannt wurde, wird eine Meldung im Widget angezeigt:
 +
-Dieses Verhalten wurde nun behoben, sodass die betroffenen Aufträge jetzt importiert werden.
-Solange die Aufträge nicht manuell bei bol.com storniert oder als versendet markiert wurden, werden diese automatisch importiert.
+image:changelog/email-builder-twig-validierung-warnung.png[width=640, alt=Warnung! In diesem Widget ist ein Fehler aufgetreten. Wenn du die Vorlage speicherst, wird sie unbrauchbar.]
 
 [discrete]
-=== eBay
+=== Kataloge
 
-* Die Synchonisierung der Retouren-Gründe unter *Einrichtung » Märkte » eBay » Datenaustausch* im Tab Sonstiges war nicht mehr funktional, da der API-Call zu eBay im Hintergrund nicht mehr unterstützt wurde. Der Abruf wurde nun auf einen neuen Call umgebaut und die Synchronisierung funktioniert wieder.
-* Es konnte vorkommen, dass eBay-Retouren nicht importiert werden. Dieses Problem wurde behoben.
-
-[discrete]
-=== Eigenschaften
-
-* Die Gruppen-ID der Texteigenschaftsverknüpfungen wurde im Hintergrund nicht mitgeschickt. Das wurde nun korrigiert.
+* Die Auswahl des Barcodes für `variation.barcode` hat gefehlt. Dies wurde nun nachgereicht.
 
 [discrete]
-=== Import
+=== Plugins
 
-* Wenn ein bereits verlinktes Versandprofil per Import noch mal verknüpft wurde, gab es eine unnötige Fehlermeldung. Diese wurde jetzt entfernt.
+* Beim Aktualisieren der Zugangsdaten eines Git-Repositorys konnte es vorkommen, dass der angegebene Branch fälschlicherweise nicht akzeptiert wurde. Dieses Problem wurde behoben.
 
 [discrete]
-=== Payment
+=== Zahlungen
 
-* In der Suche innerhalb der Neue Zahlungen-UI wurden Aufrufe mehrmals ausgeführt. Dies wurde behoben.
-* Das Zurücksetzen der Filter in der Neue Zahlungen-UI führte dazu, dass die falschen Filter für die Suche verwendet wurden. Dies wurde behoben.
+* Beim Teilen von Zahlungen wurde der Skonto nicht beachtet.
 
 [discrete]
 === Zalando
 
-* Im Assistenten zur Konfiguration der Zalando-Konten wurde in den Preis-Schritten für Start- und Enddatum der geplanten Preise eine Auswahl an Eigenschaften angezeigt. Allerdings war kein Name und keine ID sichtbar. Jede Auswahl war also „leer“. Die Auswahl wird mit diesem Update korrekt mit Namen der Eigenschaften angezeigt.
+* Beim Bestandsabgleich über die API werden Bestände nur noch übertragen, wenn es zu einer Bestandsänderung kam. Dadurch konnte es vor allem bei der initialen Anlage eines Angebots kommen, dass das Angebot nicht live gehen konnte, weil der Bestand fehlte.
++
+Dies wurde nun korrigiert, sodass der Bestand für jede Variante, welche aktuell eine SKU für Zalando hat und noch kein Bestand übermittelt wurde, unabhängig von der letzten Bestandsänderung ein Update stattfindet. Selbst, wenn das zugehörige Produkt noch nicht von Zalando freigegeben ist, wird der Bestand dann für diese EAN von Zalando vorgemerkt. Dadurch sollte sich die Anzahl geblockter Artikel durch den fehlenden Bestand drastisch reduzieren.
 
 --
 
@@ -123,26 +146,15 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Kataloge
+=== CRM
 
-* Du kannst ab jetzt MHD und Charge mit dem Katalog Format Warenbewegungen exportieren. Die Felder sind im Katalog unter Aktienbewegungen verfügbar:
-+
-image:changelog/assets/warenbewegungen-mhd-charge-exportieren.png[width=640, alt=Das Datenfeld BestBeforeDate in den Datenformaten.]
-* In den Katalogen (*Daten » Kataloge*) steht nun ein Auftragsformat zur Verfügung, um Bestellungen und Auftragspositionen von Bestellungen zu exportieren. Weitere Informationen findest du auf der Handbuchseite <<daten/daten-exportieren/katalog-bestellungen#, Praxisbeipiele Kataloge für Bestellungen>>.
-* Im Auftragsexport bei Katalogen wurden einige Namen-Felder eingeführt:
-** Auftrag:
-*** Statusname
-*** Name des Mandanten
-*** Name des Standortes
-** Kontakt:
-*** Name des Kontakttyps
-** Variante:
-*** Name des Herstellers
+* Im EmailBuilder wurde die Variable *Anzahl der Pakete* in der Kategorie *Auftrag* hinzugefügt.
+* Im Bild-Widget des EmailBuilder wurde eine neue Einstellung hinzugefügt: *Bild-Link*. Wenn ein Wert ausgefüllt wird, wird dieser Wert als Link für das Bild gesetzt. +
+*_Wichtig:_* Bitte setze den Link inklusive https (Beispiel: https://www.plentymarkets.com/).
+* Im EmailBuilder wurde ein neues Einstellungsfeld hinzugefügt, mit dem die Breite der E-Mail-Vorlage auf einen bestimmten Wert begrenzt werden kann. Wenn der Wert festgelegt wird, wird die maximale Breite der E-Mail-Vorlage auf diesen Wert begrenzt. Wenn der Wert nicht festgelegt wurde, hat die Vorlage eine Breite von 100%. Der Standardwert des Felds ist 1200px. Dieser Wert wurde automatisch auf alle vorhandenen Vorlagen gesetzt.
+* Im EmailBuilder wurde die Variable *Grundpreis* in der Kategorie *Auftrag / Auftragspositionen (nur für Artikellisten-Widget)* hinzugefügt.
+* Im EmailBuilder wurde im Bereich *Einstellungen* das Feld *Benutzerdefiniertes Styling* hinzugefügt. In diesem Feld kannst du das CSS-Styling deiner Vorlagen anpassen. Zum Beispiel kannst du hier die Hintergrundfarbe (`background-color:`) oder die Schriftfarbe (*color:*) gefolgt von dem jeweiligen link:https://html-color-codes.info/webfarben_hexcodes/[HTML-Farbencode^] anpassen.
 
-+
-image:changelog/assets/auftragsexport-log-namen.png[width=640, alt=Das Datenfeld BestBeforeDate in den Datenformaten.]
-
-////
 '''
 
 [discrete]
@@ -150,7 +162,10 @@ image:changelog/assets/auftragsexport-log-namen.png[width=640, alt=Das Datenfeld
 
 Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
-////
+[discrete]
+=== Plugins
+
+* Wenn in einem Plugin-Set keine Plugins installiert sind, werden jetzt mehrere Einstiegspunkte zum Installieren von Plugins angezeigt. Du kannst entweder die Installationsansicht oder den Integrationen-Assistenten öffnen. Das bedeutet, dass du nach dem Erstellen eines neuen Plugin-Sets den Integrationen-Assistent mit einem Klick aufrufen kannst.
 
 '''
 
@@ -160,15 +175,20 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
-=== Import
+=== Aufträge
 
-* Es kam vor, dass Auswahlwerte, die durch einen Assistenten angelegt worden sind, nicht direkt importiert werden konnten. Dieses Problem wurde nun behoben.
-* Importe mit der mathematischen Berechnung und Werten, die größer als 1000 sind, liefern nun das korrekte Ergebnis.
+* Wenn der Mandant eines Auftrages geändert wird, ohne zugleich das Lager zu ändern, wird der Standard-Standort als neuer Standort genommen, da das Lager des Auftrages nicht korrekt berücksichtigt wird. Dies wurde behoben.
 
 [discrete]
-=== Kataloge
+=== CRM
 
-* Wenn man nach Varianten-ID filtern wollte, hat das Filter im Katalog Format Warenbewegungen nicht funktioniert. Der Fehler wurde nun behoben.
+* In der Firmenoberfläche auf der Detailseite und der neuen Firmenseite waren in der Standardansicht nicht alle Felder sichtbar. Dieses Verhalten wurde jetzt behoben, alle verfügbaren Felder sind in der Standardansicht enthalten.
+* Beim Versand der E-Mail-Vorlage zum Setzen eines neuen Passworts über die Gruppenfunktion im Menü *CRM » Kontakte* hat der Link zum Zurücksetzen des Passworts nicht funktioniert. Dieses Verhalten wurde nun behoben.
+
+[discrete]
+=== Prozesse
+
+* Nach dem Stornieren oder Zurücksetzen eines Versandlabels wurde im selben Prozess kein neues Versandlabel erzeugt. Dieses Verhalten wurde behoben.
 
 --
 
@@ -182,44 +202,83 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/notificationwidget_54765[Aktions- und Informationsleiste^]
-|1.1.2
-|Aufgrund von Änderungen an bestehenden Widgets müssen die ShopBuilder-Inhalte im Menü *CMS » ShopBuilder* über die Schaltfläche *Inhalte neu generieren* aktualisiert werden.
-
-|link:https://marketplace.plentymarkets.com/bulletpointwidget_54988[Artikelvorteile mit Bullet Points / Listenpunkte - Widget^]
+|link:https://marketplace.plentymarkets.com/eaporderloadbalancer_6958[Aktion für gleichmäßiges Verteilen von Aufträgen^]
 |1.0.2
 |-
 
-|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
-|5.0.40
+|link:https://marketplace.plentymarkets.com/b2bshop_6574[B2B Shop^]
+|1.6.3
 |-
 
-|link:https://marketplace.plentymarkets.com/glsshipping_6463[GLS Shipping^]
-|1.3.6
+|link:https://marketplace.plentymarkets.com/deepl_5900[DeepL - Für professionelle Übersetzungen^]
+|2.0.0
+|Da die Version 2.0.0 eine andere Datenbankstruktur hat, sind 1.x und 2.x nicht kompatibel. Um mögliche Datenverluste zu vermeiden _entfernen Sie bitte vor dem Update alle Artikel aus der Kasse oder den Statusseiten_. Wenn ein Artikel noch nicht übersetzt ist, warten Sie auf die Übersetzung des Artikels und entfernen Sie übersetzte Artikel aus dem Plugin.
+
+|link:https://marketplace.plentymarkets.com/dotsliderwidget_54878[Dot Slider - Präsentieren Sie mehrere Angebote auf Ihren Bannern^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/dpdshippinguk_5121[DPD Shipping UK^]
+|2.0.7
+|-
+
+|link:https://marketplace.plentymarkets.com/clearvat_6925[eClear – Umsatzsteuer-Automatisierung für E-Commerce in der EU^]
+|2.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
+|1.2.1
+|Entferne das Feld `WarehouseLocation.propertiesName` aus dem FormatDesigner Typ Warehouse, falls er vorhanden ist.
+
+|link:https://marketplace.plentymarkets.com/gaxsysindependent_6802[gax-Independent^]
+|1.2.2
 |-
 
 |link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.40
+|5.0.42
 |-
 
 |link:https://marketplace.plentymarkets.com/klarna_6731[Klarna^]
-|2.3.8
+|2.4.2
+|-
+
+|link:https://marketplace.plentymarkets.com/metro_6600[Metro^]
+|2.1.1
 |-
 
 |link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
-|1.1.50
+|1.1.54
 |-
 
-|link:https://marketplace.plentymarkets.com/novalnet_5231[Novalnet^]
-|2.2.0
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent Toolbox^]
+|4.6.11
 |-
 
-|link:https://marketplace.plentymarkets.com/postnl_7014[PostNL^]
-|1.0.3
+|link:https://marketplace.plentymarkets.com/ceres_4697[plentyShop LTS^]
+|5.0.42
+a|Themes und eigenes CSS müssen hinsichtlich `<span>`-Elementen überprüft werden. Wir haben alle `<span>`-Elemente, die Block-Level-Elemente enthielten, entweder entfernt oder in `<div>`-Elemente umgewandelt, um invalides HTML zu verhindern. Überprüfe, ob du in deinen Selektoren auf die betroffenen `<span>`-Elemente zugreifst und passe deine Stilanweisungen gegebenenfalls an. Folgende Dateien sind betroffen:
+
+* link:https://github.com/plentymarkets/plugin-ceres/pull/2880/files#diff-969624803dfeb696a58e16de0d95c285a458ec83a615026882d9b1e65386935b[resources/views/Customer/Components/AddressSelect/AddressSelect.twig]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/3086/files#diff-49e9a28ec33181e8fd3720d39345363b8b0614f2bf29ceb66b403ef22c18bd4d[resources/views/Checkout/OrderDetails.twig]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/3086/files#diff-1f3a9b0d80f77b92422277ac44697c3af03430626f4bbc8afc281c5b66ec0b1f[resources/views/MyAccount/Components/BankDataSelect.twig]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/3086/files#diff-b7d6f7d1aeff7c602684070225c40c435e3de1caed65ca3df51fdd554a994e33[resources/views/Widgets/Contact/ContactDetailsWidget.twig]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/3086/files#diff-82affb09026a21fd94995e057ae7214f6751cf84dfed718216f4760865567c33[resources/views/Widgets/OrderConfirmation/OrderDataWidget.twig]
+* link:https://github.com/plentymarkets/plugin-ceres/pull/3086/files#diff-2cee15b4b8add92d304d2f4cbbb5a5891a5752c533b564f1e1d152982c1e62d0[resources/views/Widgets/OrderConfirmation/PurchasedItemsWidget.twig]
+
+|link:https://marketplace.plentymarkets.com/shopbuilder-content-widgets_55026[ShopBuilder-Inhalts-Widgets^]
+|1.0.0
 |-
 
-|link:https://marketplace.plentymarkets.com/easycredit_5109[ratenkauf by easyCredit^]
-|1.3.2
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
+|2.10.1
+|-
+
+|link:https://marketplace.plentymarkets.com/trackingmanager_54743[TrackingManager^]
+|1.1.1
+|-
+
+|link:https://marketplace.plentymarkets.com/zettle_54918[Zettle by PayPal^]
+|1.0.4
 |-
 
 |===

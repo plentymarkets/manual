@@ -20,7 +20,7 @@ Alternatively, you can also contact our team of partner managers by sending an e
 After registering, you will receive login details from limango. You need these login details to set up the limango plugin in plentymarkets.
 
 [#200]
-== Overview of automatic data exchange with limango
+== About automatic data exchange
 
 After installing and setting up the plugin, the automatic processes described in <<#data-exchange-limango>> become available.
 
@@ -46,7 +46,7 @@ After installing and setting up the plugin, the automatic processes described in
 
 | Order import
 | Every 15 minutes +
-*_Note:_* Customers make their payments to limango. As such, all orders are imported with the status *[5] Paid*.
+*_Note:_* Customers make their payments to limango. Nevertheless, all orders are imported with the status *[3] Waiting for payment*.
 |====
 
 [#220]
@@ -56,7 +56,7 @@ After installing and setting up the plugin, the automatic processes described in
 * Customers place an order on limango.
 * Customers make their payments to limango.
 * → The order is imported to plentymarkets. +
-*_Note:_* Because customers make their payments to limango, orders are imported with the status *[5] Paid*.
+*_Note:_* Customers make their payments to limango. Nevertheless, orders are imported with the status *[3] Waiting for payment*.
 * When you receive the order, you ship the products (drop shipping).
 
 [#170]
@@ -68,12 +68,16 @@ To connect to limango in plentymarkets, install the link:https://marketplace.ple
 include::_textblocks/instructions/plugin-installation.adoc[]
 
 [#300]
-== Setting up limango
+== Setting up the market
 
-After you have installed the limango plugin, set up the market in the plugin settings. Keep the login details at hand that you received from limango.
+After you have installed the limango plugin, set up the market in plentymarkets.
+
+=== Carrying out the basic settings
+
+First, carry out the basic settings in the plugin settings. Keep the login details at hand that you received from limango.
 
 [.instruction]
-Setting up limango:
+Carrying out the basic settings:
 
 . Go to *Plugins » Plugin set overview*. +
 → The list of plugin sets is shown.
@@ -83,7 +87,6 @@ Setting up limango:
 → The plugin settings open.
 . Carry out the settings. Pay attention to the information given in <<#limango-setup>>.
 . Save (icon:save[set=plenty]) the settings in each area in which you made changes.
-
 
 [[limango-setup]]
 .Setting up limango
@@ -123,9 +126,6 @@ a| * *1* = The prices were exported to limango. You can check the last time the 
 
 2+| *Order status*
 
-| *Order status for orders with items that cannot be linked to items in plentymarkets (>= 5)*
-| Enter an order status of 5 or higher. This status is assigned to orders that contain one or more items that no longer exist in plentymarkets. For example, this can happen if a customer orders an item on limango that was deleted in plentymarkets after the last item export to limango.
-
 | *Order status for orders without shipping carrier mapping (> 5 - < 7)*
 | Which status is assigned to orders if the shipping service provider in the order is not linked to a shipping service provider in plentymarkets?
 
@@ -160,12 +160,18 @@ etc.
 | *Plenty ID*
 | Enter the plenty ID of a client. limango orders are imported for this client. +
 → The order documents for this client are used during order processing. +
-If you do not enter a client, the default client is used for importing orders.
+If you do not enter a client, the default client is used for importing orders. +
 *_Tip:_* The plenty ID of your clients is saved in the *Setup » Client » [Select client] » Settings » Option: Plenty ID* menu.
+
+2+| *Image source*
+
+| *Export item images when no variation images are linked*
+| _Option activated:_ If no images are linked to the variations, the first 10 images activated for the referrer limango of the item are exported. +
+*_Tip:_* Use this setting if your variations are not created using an attribute for *colours*.
 |====
 
 [#600]
-== Activating the order referrer
+=== Activating an order referrer
 
 :market: limango
 :referrer: limango
@@ -174,21 +180,119 @@ If you do not enter a client, the default client is used for importing orders.
 include::_textblocks/instructions/activate-referrer.adoc[]
 
 [#500]
-== Defining a sales price
+=== Defining a sales price
 
 :referrer-price: limango
 
 include::_textblocks/instructions/define-sales-price.adoc[]
 
 [#550]
-== Activating the referrer in shipping profiles
+=== Activating the referrer in shipping profiles
 
 :referrer: limango
 
 include::_textblocks/instructions/shipping-profile-activate.adoc[]
 
+[#prepare-variations]
+== Preparing variations
+
+Continue with preparing your variations.
+
+[#mandatory-fields]
+=== Saving mandatory variation information
+
+As a minimum, you need to save the mandatory variation information to export your item data to limango. The following table shows the marketplace data fields that are mandatory for limango and how you save the necessary information in plentymarkets.
+
+[cols="1,3a"]
+|====
+| Required | Setting in plentymarkets
+
+| Product name
+| Field *Name 1*, *Name 2*, or *Name 3* and either an attribute for colours or a property for colours
+
+| Description
+| Field *Item text*
+Special case for selling shoes: field *Item text* + Material description
+
+| Image URL +
+| Pictures can only be processed in jpg format
+
+| Material +
+(only mandatory for products consisting of at least 80 % textiles)
+| Properties of the type *Text*
+
+| RRP
+| . Link a sales price of the price type *RRP* to the variations.
+. Save a price.
+
+| Gross sales price
+| . Link a sales price with no price type to the variations. +
+. Save a price.
+
+| Category
+| plentymarkets categories
+
+| Brand
+| . Save the manufacturer names in the menu *Setup » Item » Manufacturers*. +
+. Select the manufacturer name for each variation.
+
+| Gender
+| . Create a property of the type *Selection* with the following values:
+  ** Mann (men)
+  ** Frau (women)
+  ** Unisex
+. Link the properties to a variation and select a value.
+
+| Age group
+| . Create a property with the following settings:
+  ** Name: Age group
+  ** Section: Item
+  ** Type: Selection
+  ** Selection values:
+    ** Babys (babies)
+    ** Kinder (children)
+    ** Erwachsene (adults)
+. In the menu *Item » Edit item » [Open item] » [Open variation] » Variation tab: Settings*, link the variation to the property.
+. Select the property value that suits the variation.
+
+| Colour
+| If your variations were created without an attribute for colours:
+
+. Create a property of the type *Selection* and save the necessary colours as property values.
+. Link the properties to a variation and select a value. +
+*_Tip:_* A property of the type *Selection* is a good idea if you work with recurring colour names.
+
+_or_
+
+. Create a property of the type *Text*.
+. Link the properties to the variation and enter the colour. +
+*_Tip:_* A property of the type *Text* may be more suitable if your colour range changes frequently. However, this increases the risk of typos.
+
+| Size
+| If your variations were created without an attribute for sizes:
+
+. Create a property of the type *Selection* and save the necessary sizes as
+property values.
+. Link the properties to a variation and select a value.
+
+_or_
+
+. Create a property of the type *Text*.
+. Link the properties to a variation and enter the size.
+|====
+
+[#750]
+=== Setting the variation availability
+
+:market-availability: limango
+:option-availability: limango
+
+include::_textblocks/instructions/variation-availability.adoc[]
+
+// Web API NOT required!
+
 [#900]
-== Setting up the item export
+== Setting up item data export
 
 Item data is exported to limango via a catalogue format. Go to *Data » Catalogues* to create catalogues.
 
@@ -219,7 +323,7 @@ Do you sell products in different colours but manage these different colours in 
 [#902]
 === Creating a catalogue
 
-Item data is exported to limango via catalogue using the marketplace format *limango*. Create a catalogue in the *Data » Catalogue* menu to export your items to limango. Link the limango data fields with item data saved in plentymarkets in the marketplace format afterwards.
+Item data is exported to limango via catalogue using the marketplace format *limango*. Create a catalogue in the *Data » Catalogue* menu to export your items to limango. Map the limango data fields to item data saved in plentymarkets in the marketplace format afterwards.
 
 * Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, basic concept of the plentymarkets catalogues first>>.
 
@@ -253,12 +357,16 @@ Every market structures item data differently. As such, there are some particula
 
 [[catalogue-limango-mappings]]
 .Notes on mapping data fields
-[cols="1,3a"]
+[cols="1,4a"]
 |====
 | Marketplace data field | plentymarkets data field
 
 | *Description*
-a| If you want to sell shoes on the market, all information regarding the material of your products must be exported to limango using the data field *Description*. To do this, you combine two plentymarkets data fields and export them as one filed to limango.
+a|
+[.collapseBox]
+.Special case: Selling shoes
+--
+If you want to sell shoes on the market, all information regarding the material of your products must be exported to limango using the data field *Description*. To do this, you combine two plentymarkets data fields and export them as one filed to limango.
 
 First, decide how you want to manage material information for your items. There are two ways to manage material information for limango:
 
@@ -276,6 +384,7 @@ Now, map the plentymarkets data field that you want in the catalogue:
 *_Tip:_* This is either the field *Technical data* or the property that you created for the material information.
 . To the right of the column, click on *Settings* (icon:cog[]).
 . From the drop-down list *Separator*, select the option *Space*.
+--
 
 | Measurements +
 (*Length*; +
@@ -323,16 +432,31 @@ Combine these two properties, separated by a semicolon.
 . From the drop-down list *Separator*, select the option *Semicolon*.
 --
 
-| Data fields under Material composition
-a| Material information is exported to limango using a property of the type *Text*. You need one property for each marketplace data field. Link the properties to the main variation of the item and save all components of a material mix in this property.
-Enter the material composition in the following format:
+| Material composition +
+(*Sleeve lining*; +
+*Upper 3*; +
+*Upper 2*; +
+*Upper 1*; +
+*Membrane*; +
+*Material 3* +
+etc.)
+a| Material information is exported to limango using a property of the type *Text*. Create a separate property for each marketplace data field.
 
-* *{"material1": "percentage","material2": "percentage","material3": "percentage"}* +
-*_Example:_* *{"baumwolle": "90","elasthan": "10"}*
+The names of these properties must be identical to the values that limango allows:
+
+* link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-composite-types.txt[Valid values for material composite types^]{nbsp}icon:external-link[]
+
+Link the properties to the main variation of the item and save all components of a material mix in this property. If the variations of the same item have different material mixes, deactivate the inheritance function for properties and save the material mixes separately for each variation. However, note that this deactivates the inheritance for all properties for the item. As such, you also need to manually manage all other properties for this item.
 
 Specify the individual materials in descending order based on the percentage value. As such, the first material is the one with the highest percentage value, the last one that with the lowest percentage value. The sum of all percentages must be 100. You can specify as many materials as you need.
+Enter the material composition in the following format:
 
-*_Exception:_* Variations of the same items have different material mixes? Then deactivate the inheritance function for properties and save the material mixes separately for each variation. However, note that this deactivates the inheritance for all properties for the item. As such, you also need to manually manage all other properties for this item.
+* *{"materialtype1": "percentage","materialtype2": "percentage","materialtype3": "percentage"}* +
+*_Example:_* `{"baumwolle": "90","elasthan": "10"}`
+
+The values for material types must be identical to the values that limango allows:
+
+* link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-types.txt[Valid values for material types^]{nbsp}icon:external-link[]
 
 [.collapseBox]
 .*_Example:_* Exporting material information for a blazer to limango
@@ -342,21 +466,21 @@ The following example shows you how to save material information for a blazer fo
 [.instruction]
 Mapping outer fabric and saving material mix for a variation:
 
-. Create a property of the type *Text* with the name *Material 1*.
-. Map the marketplace data field *Material 1* to the plentymarkets property *Material 1*.
-. Link the property *Material 1* to the main variation of the item.
+. Create a property of the type *Text* with the name *obermaterial*.
+. Map the marketplace data field *Upper* to the plentymarkets property *obermaterial*.
+. Link the property *obermaterial* to the main variation of the item.
 . Our blazer is made of 65% polyester, 32% rayon and 3% elastane. Enter the following into the text field of the property:
-  * {"polyester": "65","viskose": "32","elasthan": "3"}
+  * `{"polyester": "65","viskose": "32","elasthan": "3"}`
 . Save the settings.
 
 [.instruction]
 Mapping lining and saving material mix for a variation:
 
-. Create a property of the type *Text* with the name *Lining 1*.
-. Map the marketplace data field *Lining 1* to the plentymarkets property *Lining 1*.
-. Link the property *Lining 1* to the main variation of the item.
+. Create a property of the type *Text* with the name *futter*.
+. Map the marketplace data field *Lining* to the plentymarkets property *futter*.
+. Link the property *futter* to the main variation of the item.
 . The lining of the blazer is made of 100% rayon. Enter the following into the text field of the property:
-  *
+  * `{"viskose": "100"}`
 . Save the settings.
 --
 
@@ -426,17 +550,109 @@ include::_textblocks/catalogues/recommended-mappings/limango-recommended-mapping
 
 include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
 
-[#750]
-== Setting the variation availability
 
-:market-availability: limango
-:option-availability: limango
 
-include::_textblocks/instructions/variation-availability.adoc[]
+[#1600]
+== Preparing delivery notes for limango
 
-// Web API NOT required!
+The limango letterhead, your company data and specific return instructions must be shown on every delivery note for limango orders. Creating layout templates for order documents in plentymarkets is described in the <<auftraege/auftragsdokumente#170, Orders>> area of the manual. On this page, we only describe how to upload the PDF template and set up the delivery note document for the specific requirements of the market.
 
-== Automatically notify limango about cancellations
+* <<#16011, How to personalise the PDF template for delivery notes>>
+* <<#16001, How to upload the PDF template for delivery notes>>
+* <<#16003, How to show the limango customer number on delivery notes>>
+* <<#16002, How to enter return instructions for limango delivery notes>>
+
+[#160011]
+=== Personalising the PDF template for delivery notes
+
+limango delivery notes must contain the limango logo. limango provides a PDF template for delivery notes. On this PDF template, you need to add your company data to the footer before you upload it to plentymarkets.
+
+[.instruction]
+Personalising the PDF template for delivery notes:
+
+. Download the PDF template for limango delivery notes and save it on your computer:
+  ** link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/Lieferschein_Vorlage_limango_Marktplatz.pdf[Download PDF template]
+. Open the PDF template in a program for editing PDF files.
+. At the bottom left of the footer, insert the following company data: +
+  `*[your company name]*` +
+  `Amtsgericht [your court of first instance] HRB [your HRB]` +
+  `USt.-IdNr. [your VAT no.]` +
+. Save the PDF template.
+
+image::markets/assets/limango-footer.png[]
+
+[#16001]
+=== Uploading personalised PDF template for delivery notes
+
+Proceed as described below to upload the personalised <<orders/order-documents#170, PDF template>> for delivery notes to plentymarkets.
+
+[.instruction]
+Uploading personalised PDF template for delivery notes:
+
+. Go to *Setup » Client » Select client » Locations » Location: Germany » Documents » Delivery note*.
+. Click on the tab *PDF template*.
+. Click on *Add template*. +
+→ The editing window *Upload new PDF template* opens.
+. From the drop-down list *Payment method*, select the option *Plugin: limango Payment*.
+. *_Tip:_* Can’t find the payment method *Plugin: limango Payment* in the drop-down list?
+  .. Go to *Setup » Orders » Settings*.
+  .. For the setting *Show inactive plugin payment methods*, select the option *Yes*.
+  .. Save (icon:save[set=plenty]) the setting.
+. In the drop-down list *Language*, select the option *de*.
+. In the line *Template*, click on *Choose template file*.
+. Select the PDF template for limango delivery notes.
+. Click on *Upload template* (icon:save[set=plenty]). +
+→ The template is uploaded.
+
+[#16003]
+=== Showing limango customer numbers on delivery notes
+
+The limango customer number must be shown on all limango delivery notes. To achieve this, adjust the template for delivery notes.
+
+[.instruction]
+Showing limango customer numbers on delivery notes:
+
+. Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
+. Scroll down to the area *Optional elements below stock unit table*.
+. For the setting *External customer number*, select the option *Yes* from the drop-down list.
+. Save (icon:save[set=plenty]) the settings. +
+→ The external customer number is positioned below the order items.
+
+[#16002]
+=== Entering return information for limango delivery notes
+
+limango specifies a text containing return instructions that needs to be shown on all limango delivery notes. Proceed as described below to enter these return instructions for limango delivery notes.
+
+[.instruction]
+Entering return information for limango delivery notes:
+
+. Expand the info box "Text: Return instructions for limango delivery notes" below this description.
+. Copy the text to the clipboard.
+. Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
+. Scroll down to the area *Optional elements below stock unit table*, to the setting *Payment instruction*.
+. Find a field that does not contain any payment instructions.
+. From the drop-down list *Payment method* of this field, select the option *Plugin: limango Payment*.
+. Copy the limango return instructions to the field.
+. Replace the two placeholders "xxx" with the name of your company.
+. Save (icon:save[set=plenty]) the settings.
+
+[#16003]
+[.collapseBox]
+.Text: return instructions for limango delivery notes
+--
+include::_textblocks/explanations/limango-delivery-note-text.adoc[]
+--
+
+== Automating order processing
+
+Automate the following aspects of limango order processing:
+
+* Automatically notify limango about cancellations <<#cancellations, How?>>
+* Automatically inform limango when items have shipped <<#1300, How?>>
+* Return management <<#1000, How?>>
+
+[#cancellations]
+=== Automatically notify limango about cancellations
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically notify limango of cancellations.
 
@@ -466,7 +682,7 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 |===
 
 [#1300]
-== Setting up automatic shipping confirmations
+=== Setting up automatic shipping confirmations
 
 Shipping confirmations for limango must contain a tracking number. In addition, the shipping service provider of the order must be linked to the limango shipping service provider correctly in the plugin settings.
 
@@ -476,7 +692,7 @@ You need two event procedures to automatically confirm the shipping to limango:
 * Event procedure 2: Book outgoing items
 
 [#13001]
-=== Workflow for automatic order confirmations
+==== Workflow for automatic order confirmations
 
 The workflow for automated shipping confirmations depends on whether or not the order’s shipping service provider is correctly linked to the limango shipping service provider in the plugin settings.
 
@@ -507,7 +723,7 @@ The workflow for automated shipping confirmations depends on whether or not the 
 |====
 
 [#13002]
-=== Automatically sending shipping confirmations to limango
+==== Automatically sending shipping confirmations to limango
 
 For event procedure 1 for shipping confirmations, set up the <<automation/event-procedures#, event procedure>> described in <<#event-procedure-shipping-info-limango>>.
 
@@ -575,12 +791,12 @@ Go to *Plugins » Plugin set overview » [Open plugin set] » Open limango plugi
 |===
 
 [#1000]
-== Setting up return management
+=== Setting up return management
 
 Now set up the processing of returns for limango.
 
 [#1010]
-=== Workflow for returns
+==== Workflow for returns
 
 The delivery note also functions as the return form. The workflow of limango returns is as follows:
 
@@ -591,7 +807,7 @@ The delivery note also functions as the return form. The workflow of limango ret
 *_Note:_* When you notify limango that the return is completed, limango triggers a credit note and the buyer receives a refund. As such, only notify limango about completing the return after you have received and checked the returned items.
 
 [#1030]
-=== Automatically notify limango about completed returns
+==== Automatically notify limango about completed returns
 
 Set up an <<automation/event-procedures#, event procedure>> to automatically inform limango when you have completed processing a return.
 
@@ -622,64 +838,6 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 *_Note:_* The procedure *Send return notification to limango* triggers a credit note. As such, a refund will be issued to the buyer. As such, make sure the event procedure is only triggered after you have received and checked the returned items.
 |
 |====
-
-[#1600]
-== Preparing delivery notes for limango
-
-The limango letterhead return instructions provided by limango must be shown on every delivery note for limango orders.
-
-* <<#16001, How to upload a PDF template for delivery notes>>
-* <<#16001, How to enter return instructions for limango delivery notes>>
-
-[#16001]
-=== Uploading a PDF template for delivery notes
-
-limango delivery notes must contain the limango logo. Proceed as describes below to upload a <<orders/order-documents#170, PDF template>> for delivery notes for limango to plentymarkets.
-
-[.instruction]
-Uploading a PDF template for delivery notes:
-
-. Download the PDF template for limango delivery notes and save it on your computer:
-  ** link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/Lieferschein_Vorlage_limango_Marktplatz.pdf[Download PDF template]
-. Go to *Setup » Client » Select client » Locations » Location: Germany » Documents » Delivery note*.
-. Click on the tab *PDF template*.
-. Click on *Add template*. +
-→ The editing window *Upload new PDF template* opens.
-. From the drop-down list *Payment method*, select the option *Plugin: limango Payment*.
-. *_Optional:_* Can’t find the payment method *Plugin: limango Payment* in the drop-down list?
-  .. Go to *Setup » Orders » Settings*.
-  .. For the setting *Show inactive plugin payment methods*, select the option *Yes*.
-  .. Save (icon:save[set=plenty]) the setting.
-. In the drop-down list *Language*, select the option *de*.
-. In the line *Template*, click on *Choose template file*.
-. Select the PDF template for limango delivery notes.
-. Click on *Upload template* (icon:save[set=plenty]). +
-→ The template is uploaded.
-
-[#16002]
-=== Entering return information for limango delivery notes
-
-limango specifies a text containing return instructions that needs to be shown on all limango delivery notes. Proceed as described below to enter these return instructions for limango delivery notes.
-
-[.instruction]
-Entering return information for limango delivery notes:
-
-. Expand the info box "Text: Return instructions for limango delivery notes" below this description.
-. Copy the text to the clipboard.
-. Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
-. Scroll down to the area *Optional elements below stock unit table*, to the setting *Payment instruction*.
-. Find a field that does not contain any payment instructions.
-. From the drop-down list *Payment method* of this field, select the option *Plugin: limango Payment*.
-. Copy the limango return instructions to the field.
-. Replace the two placeholders "xxx" with the name of your company.
-. Save (icon:save[set=plenty]) the settings.
-
-[#16003]
-[.collapseBox]
-.Text: return instructions for limango delivery notes
---
-include::_textblocks/explanations/limango-delivery-note-text.adoc[]
---
 
 [#1100]
 == Troubleshooting: Viewing log entries
