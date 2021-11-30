@@ -1,7 +1,7 @@
 = Inventur vornehmen
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: Inventur, Bestandsinventur, Lagerinventur, Lagerbestand erfassen, Soll-Bestand, Ist-Bestand, Bestandsverzeichnis, Artikelbestände, Inventurmodus, Inventur-Modus, Warenbestand löschen, Warenbestand neu einbuchen, ElasticSync, dynamischer Export, Datenformat Stock, Testlauf, Warenbestand anpassen, physischer Bestand, Inventurmodus aktivieren, Inventurmodus deaktivieren, Warenbestand leeren, Inventurmodus aufheben
+:keywords: Inventur, Bestandsinventur, Lagerinventur, Lagerbestand erfassen, Soll-Bestand, Ist-Bestand, Bestandsverzeichnis, Artikelbestände, Inventurmodus, Warenbestand importieren, Warenbestand exportieren, Warenbestand leeren
 :position: 70
 :id: YU6LH3H
 :url: warenwirtschaft/inventur-vornehmen
@@ -12,16 +12,15 @@ Inventur bezeichnet die Erfassung des Lagerbestandes, d.h. sowohl des Soll- als 
 Diese Seite beschreibt, wie du eine Inventur durchführst. Außerdem erfährst du, wie der *Inventurmodus* funktioniert und wie du diesen Modus verwendest, wenn du deinen gesamten Warenbestand löschen und neu einbuchen möchtest.
 
 [IMPORTANT]
-.Inventur nur mit Import-Tool und Dynamischem Export
+.Inventur nur mit Import-Tool und Export-Format Warenbestände
 ====
-Die Inventur kann nur anhand des *Import-Tools* und des *Dynamischen Exports* durchgeführt werden.
-Neben dem Dynamischen Export, der die Bestände pro Lagerort liefert, kannst du auch den Elastischen Export verwenden. Dieser exportiert allerdings nur die Bestände pro Lager, d.h. alle Lagerorte werden in einer Zeile exportiert.
+Die Inventur kann nur anhand des *Import-Tools* und des Export-Formats *Warenbestände* durchgeführt werden.
 ====
 
 [#100]
 == Inventur per Export und Import erfassen
 
-Die Inventur per Datenaustausch erfolgt in mehreren Schritten. Zunächst exportierst du die aktuellen Warenbestände des Systems. In der Datei oder einer Kopie davon passt du die Bestandsmengen anschließend an den tatsächlichen Istzustand deines Lagers an und importierst die korrigierten Daten wieder in dein System.
+Die Inventur per Datenaustausch erfolgt in mehreren Schritten. Zunächst exportierst du die aktuellen Warenbestände aus dem System. In der Datei oder einer Kopie davon passt du die Bestandsmengen anschließend an den tatsächlichen Istzustand deines Lagers an und importierst die korrigierten Daten wieder in dein System.
 
 [IMPORTANT]
 .Datenformat Stock vorab kennenlernen und Testlauf durchführen
@@ -32,33 +31,35 @@ Beachte die Hinweise im Handbuch zum Datenformat <<daten/export-import/datenform
 [#200]
 === Warenbestände exportieren
 
-Im ersten Schritt exportierst du deine aktuellen Warenbestände im Menü *Daten » Dynamischer Export* mit dem Datenformat *Stock*.
+Im ersten Schritt exportierst du deine aktuellen Warenbestände im Menü *Daten » Kataloge* mit dem Export-Format *Warenbestände*.
 
 [TIP]
-.Stock-Export erfolgt nur für ein Lager
+.Export von Warenbestand erfolgt nur für ein Lager
 ====
-Mit dem Datenformat *Stock* kann nur der Bestand eines Lagers exportiert werden, deshalb muss eine Lager-ID angegeben werden. Das Lager wählst du im Tab *Filter* des Datenformats. Wenn du kein Lager angibst, wird standardmäßig der Bestand des Lagers mit der niedrigsten ID exportiert.
+Mit dem Export-Format *Warenbestände* kann nur der Bestand eines Lagers exportiert werden, weshalb eine Lager-ID angegeben werden muss. Das Lager wählst du im Tab *Filter* des Katalogs. Wenn du kein Lager angibst, wird standardmäßig der Bestand des Lagers mit der niedrigsten ID exportiert.
 ====
 
 [.instruction]
-Datenexport durchführen:
+Warenbestände exportieren:
 
-. Öffne das Menü *Daten » Dynamischer Export*. +
-→ Die Übersicht der Datenformate wird geöffnet.
-. Öffne das Untermenü des Datenformats <<daten/export-import/datenformate/stock#, Stock>>, indem du auf das Plus am linken Rand klickst. Falls noch kein Untermenü existiert, klicke auf *Neues Datenformat*, um dieses <<daten/export-import/datenformate#2-2, Datenformat>> anzulegen.
-. Hake die folgenden Datenfelder an: VariationID, LocationID, Batch (optional), BestBeforeDate (optional), PurchasePrice, Stock, WarehouseID.
-. Nimm rechts weitere Einstellungen vor, um den Export der Daten weiter einzugrenzen.
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
-. Wechsele in das Tab *Filter*.
-. Hake das Datenfeld *WarehouseID* an und wähle ein Lager aus der Dropdown-Liste. +
-→ Standardmäßig ist das Lager mit der niedrigsten LagerID (WarehouseID) eingestellt.
-. *Speichere* (icon:save[role="green"]) die Einstellungen.
-. Klicke auf *Daten exportieren* (icon:cog[]), um eine CSV-Datei zu exportieren.
+. Öffne das Menü *Daten » Kataloge*. +
+→ Die Katalog-Übersicht wird geöffnet.
+. Öffne den Katalog mit dem Export-Format *Warenbestände*, aus dem du Daten exportieren möchtest.
+. Falls noch kein Katalog existiert, <<daten/daten-exportieren/kataloge-verwalten#110, erstelle>> einen neuen Katalog.
+. Füge im Katalog die folgenden Datenfelder hinzu: *Lagerort-ID*, *Lagerortmenge*, *Varianten-ID*, *Lager-ID*, *Charge* (optional), *MHD* (optional) und *Einkaufspreis* (optional).
+. Klicke links in der Seitennavigation auf das Tab *Filter* (icon:filter_alt[set=material]). +
+→ Die Filter-Übersicht wird geöffnet.
+. Wähle den Filter *Lager* aus der Dropdown-Liste.
+. Klicke anschließend rechts auf *Filter hinzufügen* (icon:add[set=material]). +
+→ Der Filter wird hinzugefügt.
+. Wähle ein Lager aus der Dropdown-Liste.
+. *Speichere* (icon:save[set=material]) die Einstellungen.
+. Klicke auf *Daten herunterladen* (icon:file_download[set=material]), um den Export zu starten.
 
 [TIP]
-.Unterschied zwischen dem Datenfeld *WarehouseID* und dem Filter *Lager*
+.Unterschied zwischen dem Datenfeld *Lager-ID* und dem Filter *Lager*
 ====
-Mit dem Filter *Lager* wählst du, für welches Lager der Bestand exportiert wird. Das Datenfeld *WarehouseID* gibt lediglich die ID des Lagers aus. Das Datenfeld *WarehouseID* hat aber keinen Einfluss darauf, für welches Lager Bestand exportiert wird.
+Mit dem Filter *Lager* wählst du, für welches Lager der Bestand exportiert wird. Das Datenfeld *Lager-ID* gibt lediglich die ID des Lagers aus. Das Datenfeld *Lager-ID* hat aber keinen Einfluss darauf, für welches Lager Bestand exportiert wird.
 ====
 
 Du erhältst eine CSV-Datei, die du für den anschließenden Import anpassen musst.
@@ -66,15 +67,15 @@ Du erhältst eine CSV-Datei, die du für den anschließenden Import anpassen mus
 [#300]
 === Warenbestände anpassen
 
-Die Datei, die du soeben exportiert hast, passt du jetzt an. Bei einer Inventur prüfst du den physischen Bestand deiner Lager und gleichst ihn mit dem physischen Bestand ab, der im System gespeichert ist. Die Spalte *Stock* im Datenformat *Stock* enthält den physischen Bestand und ist die Spalte, die du anpassen musst.
+Die Datei, die du soeben exportiert hast, passt du jetzt an. Bei einer Inventur prüfst du den physischen Bestand deiner Lager und gleichst ihn mit dem physischen Bestand ab, der im System gespeichert ist. Die Spalte *Lagerortmenge* im Export-Format *Warenbestände* enthält den physischen Bestand und ist die Spalte, die du anpassen musst.
 
 [.instruction]
-Stock-Datei anpassen:
+Datei deines Warenbestands anpassen:
 
-. Ermittele den Istzustand deines Bestandes.
-. Öffne die exportierte Stock-Datei.
-. Trage die aktuellen physischen Bestandswerte in die Spalte *Stock* ein.
+. Öffne die exportierte Datei.
+. Trage die aktuellen physischen Bestandswerte in die Spalte *Lagerortmenge* ein.
 . Speichere die Änderungen an der Datei.
+. Importiere die Datei.
 
 [#400]
 === Warenbestände importieren
@@ -170,49 +171,8 @@ image::warenwirtschaft/assets/DE-Inventur-vornehmen-03.png[]
 [#700]
 === Warenbestand exportieren
 
-Exportiere zunächst die Bestände der Lager, in denen du eine Inventur durchführst. Nutze hierfür das Datenformat *Stock*. Du musst für jedes Lager einen Export durchführen.
-
-[.instruction]
-Bestand exportieren:
-
-. Öffne das Menü *Daten » Dynamischer Export*.
-. Öffne das Tab *Neues Datenformat*.
-. Wähle den Datenformat-Typ *Stock*.
-. Trage einen Namen für das Datenformat ein.
-. Wähle die Einstellungen gemäß Tabelle 2.  +
-→ Weitere Datenfelder und Filter sind optional.
-
-.Notwendige Datenfelder für eine Inventur
-[cols="1,3,3"]
-|====
-|Feld |Beschreibung |Importaktion
-
-|*VariationID*
-|Gibt die plenty-ID einer Variante aus und ist deshalb Pflicht für die Zuordnung des Bestands.
-|Import
-
-|*Stock*
-|Gibt die physische Bestandsmenge aus und durch die Einstellung *Import* im Datenformat wird beim Import der bisherige physische Bestand überschrieben.
-|Import
-
-|*WarehouseID*
-|Gibt die ID des Lagers aus und sorgt dafür, dass der Bestand einem Lager zugeordnet werden kann.
-|Import
-
-|*LocationID*
-|Gibt die ID des Lagerorts aus und ist notwendig, damit der Bestand einem Lagerort zugeordnet werden kann.
-|Import
-
-|*VariationString*
-|Gibt den Namen einer Variante komplett aus. Das Datenfeld hilft häufig beim Erkennen der Variante.
-|Import
-
-3+|Tab Filter des Datenformats
-
-|*WarehouseID*
-|Legt fest, von welchem Lager der Bestand exportiert wird. Ohne diesen Filter wird immer der Bestand des Lagers mit der niedrigsten ID exportiert.
-|
-|====
+Exportiere zunächst die Bestände der Lager, in denen du eine Inventur durchführen möchtest. Gehe dazu vor, wie in Kapitel <<warenwirtschaft/inventur-vornehmen#200, Warenbestände exportieren>> beschrieben. Für jedes Lager muss ein separater Export durchgeführt werden. +
+Weitere Informationen zum Export-Format *Warenbestände* findest du auf der Handbuchseite <<daten/daten-exportieren/warenbestand-exportieren#, Warenbestände exportieren>>.
 
 [#800]
 === Warenbestand im Inventurmodus leeren

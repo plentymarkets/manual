@@ -1,7 +1,7 @@
 = Payone
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: payment method, payment, payments, Payone, payone-plugin, payone, payone payment method, payone method, payone account, payone-payment, payone-account, payone-merchant-interface, merchant-interface, merchant ID, portal ID, payone-configuration, payone-setting, secure invoice, payone credit card, payone-template, payone shipping, payone refund, payone integration, payment plugin, payment method plugin, payment method integration
+:keywords: payment method, Payone, payone-plugin, payone payment method, payone method, payone account, payone-account, payone-merchant-interface, payone-configuration, payone-setting, secure invoice, payone credit card, payone-template, payone shipping, payone refund, payone integration, payment plugin, payment method plugin, payment method integration
 :description: Integration of the Payone plugin.
 :position: 90
 :url: payment/payment-plugins/payone
@@ -14,7 +14,7 @@ The explanations in this section apply after adding the plugin. You can find mor
 [IMPORTANT]
 .Requirement
 ====
-The Payone plugin has been developed for use with plentyShop (Ceres) and only works with its structure or other template plugins. The plugins Ceres and IO have to be activated so that the Payone plugin can be used.
+The Payone plugin has been developed for use with plentyShop LTS and only works with its structure or other template plugins. The plugins plentyShop LTS and IO have to be activated so that the Payone plugin can be used.
 ====
 
 [#10]
@@ -43,9 +43,9 @@ Carrying out settings in the Payone merchant interface:
 == Completing the assistant
 
 :name-assistant: Payone
-:payment-method-name: Payone
+:name-payment-method: Payone
 
-include::../_textblocks/completing-assistant.adoc[]
+include::../../_includes/textblocks/instructions/completing-assistant-payment-method.adoc[]
 
 [.collapseBox]
 .*Input fields in the account area of the assistant*
@@ -84,10 +84,12 @@ include::../_textblocks/completing-assistant.adoc[]
 
 --
 
+include::../_textblocks/completing-assistant-multi-clients.adoc[]
+
 [#30]
 == Adapting the plentyShop checkout
 
-In the next step, an adjustment to your plentyShop checkout settings is necessary. These adjustments need to be made so that customers using Payone for payment processes can enter their date of birth (for secure invoice only) correctly. There are two ways to do this. You can either use the ShopBuilder or configure the Ceres plugin accordingly. Both ways are described below.
+In the next step, an adjustment to your plentyShop checkout settings is necessary. These adjustments need to be made so that customers using Payone for payment processes can enter their date of birth (for secure invoice only) correctly. There are two ways to do this. You can either use the ShopBuilder or configure the plentyShop LTS plugin accordingly. Both ways are described below.
 
 [.tabs]
 ====
@@ -108,7 +110,7 @@ You can find additional information about the <</webshop/shop-builder#, ShopBuil
 
 --
 
-Ceres-Plugin::
+plentyShop LTS plugin::
 +
 --
 
@@ -117,7 +119,7 @@ Adapt the plentyShop checkout for Secure Invoice:
 
 . Go to *Plugins » Plugin set overview*.
 . Open the plugin set you want to edit.
-. Open the plugin *Ceres*. +
+. Open the plugin *plentyShop LTS*. +
 → The plugin detail view opens.
 . Select *Ceckout and My account* in the *Configuration* menu.
 . Set the toggle *Toggle deprecated entries* to active (green).
@@ -170,31 +172,12 @@ Linking template containers:
 [#60]
 == Customer classes and shipping profiles
 
-include::../_textblocks/customer-class-and-shipping-profile.adoc[]
+include::../../_includes/textblocks/instructions/customer-class-and-shipping-profile.adoc[]
 
 [#70]
 == Setting up event procedures
 
 Set up event procedures so that all needed data are sent to Payone. We recommend 2 event procedures for this.
-
-[.collapseBox]
-.*Setting up an event procedure*
---
-
-[.instruction]
-Setup of an event procedure:
-
-. Go to *Setup » Orders » Events*.
-. Click on *Add event procedure*. +
-→ The *Create new event procedure* window opens.
-. Enter a name.
-. Select the event as listed in tables 5 and 6.
-. *Save* (icon:save[role="green"]) the settings.
-. Carry out the settings according to tables 5 and 6
-. Activate the option *Active*.
-. *Save* (icon:save[role="green"]) the settings.
-
---
 
 [#80]
 === Sending an automatic shipping confirmation to Payone
@@ -207,6 +190,9 @@ Set up an event procedure to send an automatic shipping confirmation to Payone a
 Setting up the following event procedure is mandatory if you have selected the option *Preauthorisation* as *Authorisation method* in the basic settings. This event procedure is not necessary and cannot be used if you have selected the option *Authorisation*.
 ====
 
+:table-event-procedure: <<table-procedure-payone-shipping-confirmation>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
 [[table-procedure-payone-shipping-confirmation]]
 .Event procedure for automatically sending shipping confirmations to Payone
 [cols="1,3,3"]
@@ -218,11 +204,11 @@ Setting up the following event procedure is mandatory if you have selected the o
 |
 
 | *Filter 1*
-| Order > Payment method
-| Plugin: PAYONE
+| *Order > Payment method*
+| Select the Payone payment methods.
 
 | *Procedure*
-| Plugin > Payone | Send shipping confirmation
+| *Plugins > Send shipping confirmation to Payone*
 |
 
 |====
@@ -231,6 +217,9 @@ Setting up the following event procedure is mandatory if you have selected the o
 === Automatically refunding Payone payments
 
 Set up an event procedure to automatically refund a Payone payment.
+
+:table-event-procedure: <<table-procedure-payone-refund>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
 
 [[table-procedure-payone-refund]]
 .Event procedure for automatically refunding Payone payments
@@ -243,11 +232,11 @@ Set up an event procedure to automatically refund a Payone payment.
 |
 
 | *Filter 1*
-| Order > Payment method
-| Plugin: PAYONE
+| *Order > Payment method*
+| Select the Payone payment methods.
 
 | *Procedure*
-| Plugin > PAYONE | Send refund
+| *Plugins > Payone - Send refund*
 |
 
 |====

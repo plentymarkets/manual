@@ -15,29 +15,29 @@ In this chapter, you will learn how to transfer product data to the marketplace 
 
 ifdef::conrad[]
 [IMPORTANT]
-.What connection exists between the offer fields, the product export field and the marketplace SKU at the variation?
+.What connection exists between the offer fields, the product export field and the Marketplace SKU at the variation?
 ====
 In general, the offer fields *sku* and *product-id* are always filled with the value that has been defined for the marketplace at the variation in the field *Marketplace SKU*.
 The offer field *product-id-type* is transferred with the value *SHOP_SKU* by default.
 
-// * If *SKU* is selected, the SKU from the marketplace has to be defined as the marketplace SKU at the variation.
-// * If *EAN* is selected, the EAN of the variation has to be defined as the marketplace SKU at the variation.
-// * If *ISBN* is selected, the ISBN of the variation has to be defined as the marketplace SKU at the variation.
+// * If *SKU* is selected, the SKU from the marketplace has to be defined as Marketplace SKU at the variation.
+// * If *EAN* is selected, the EAN of the variation has to be defined as Marketplace SKU at the variation. Please do not use this function, as it is not activated for the market.
+// * If *ISBN* is selected, the ISBN of the variation has to be defined as Marketplace SKU at the variation. Please do not use this function, as it is not activated for the market.
 
 The product export field *Product-ID (of the seller)* is filled depending on the catalogue settings.
-During the first data transfer which takes place overnight, in plentymarkets, the marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the marketplace SKU can be defined via import or manually.
+During the first data transfer which takes place overnight, in plentymarkets, the Marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the Marketplace SKU can be defined via import or manually.
 ====
 endif::conrad[]
 
 ifdef::voelkner[]
 [IMPORTANT]
-.What connection exists between the offer fields, the product export field and the marketplace SKU at the variation?
+.What connection exists between the offer fields, the product export field and the Marketplace SKU at the variation?
 ====
 In general, the offer fields *sku* and *product-id* are always filled with the value that has been defined for the marketplace at the variation in the field *Marketplace SKU*.
 The offer field *product-id-type* is transferred with the value *SHOP_SKU* by default, but can also be overwritten by another value, such as *SKU*. To do so, select the property for the Product ID Type *SKU* at the variation and in the assistant step *Offer properties mapping*, map the property to the respective data field.
 The product export field *Product-ID (of the seller)* is filled depending on the mapping in the catalogue.
 
-During the first data transfer which takes place overnight, in plentymarkets, the marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the marketplace SKU can be defined via import or manually.
+During the first data transfer which takes place overnight, in plentymarkets, the Marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the Marketplace SKU can be defined via import or manually.
 ====
 
 *_Tip:_* In the catalogue, map the Marketplace SKU to the data field *Product-ID (of the seller)*. Select the *Variation ID* as fallback data field.
@@ -49,14 +49,14 @@ endif::voelkner[]
 
 The values *product-id* and *sku* are transferred as follows:
 
-* The value that is transferred as Product ID in the product data transfer has to correspond to the value of the *product-id* in the offer data transfer.
-* The value that is transferred as Product ID in the product data transfer is defined in the catalogue.
+* The value that is transferred as Product ID in the product transfer has to correspond to the value of the *product-id* in the offer transfer.
+* The value that is transferred as Product ID in the product transfer is defined in the catalogue.
 * The value specified as Marketplace SKU at the variation will be used in the offer transfer for the fields *sku* and *product-id*.
 * If no value has been defined for the Marketplace SKU at a variation, but the marketplace availabilities have been activated, the variation will be transferred without *sku* and *product-id*.
 
-This results in the following mappings for the product data transfer:
+This results in the following mappings for the product transfer:
 
-* In the catalogue, only the Variation ID is mapped to the data fields *Product-ID (of the seller)* or *Seller Product ID*. During the first product data transfer of this variation, the Variation ID is automatically saved as Marketplace SKU on the respective variation. However, this only applies if no other value was defined beforehand.
+* In the catalogue, only the Variation ID is mapped to the data fields *Product-ID (of the seller)* or *Seller Product ID*. During the first product transfer of this variation, the Variation ID is automatically saved as Marketplace SKU at the respective variation. However, this only applies if no other value was defined beforehand.
 * In the catalogue, the SKU is mapped to the data fields*Product-ID (of the seller)* or *Seller Product ID* and the Variation ID is automatically defined as fallback data field. Before the variation's first product transfer takes place, the Marketplace SKU is defined at the variation. Without this setting, the Variation ID will automatically be defined as Marketplace SKU at the variation after the first product transfer.
 ////
 
@@ -75,7 +75,7 @@ If you want to adjust one or several of the above-mentioned fields, you have to 
 Updating product data:
 
 . Go to *Setup » Settings » Properties » Configuration*.
-. Create a property of the type *Short text*.
+. Create a property of the type *Text*.
 . Enter a name, for example *Delete marketplace product*.
 . Go to *Data » Catalogues*.
 . Open the corresponding catalogue.
@@ -108,12 +108,12 @@ For these values, it is not necessary to transfer the product data. You can dire
 endif::voelkner[]
 
 [#transfer-order-data]
-=== Transferring order data
+=== Transferring offer data
 
-In this chapter, you will learn how to transfer order data to the marketplace and which requirements have to be met. The data comes from the *{assistant-name}* assistant which you already completed.
+In this chapter, you will learn how to transfer offer data to the marketplace and which requirements have to be met. The data comes from the *{assistant-name}* assistant which you already completed.
 
 
-=== Requirements for transferring order data
+=== Requirements for transferring offer data
 
 * The plugins link:{marketplace-url}[{market}^]{nbsp}icon:external-link[] and *Mirakl Connector* were purchased and downloaded from plentyMarketplace and installed in a plugin set.
 * The order referrers *{market}* and *Mirakl* were activated in the *Setup » Orders » Order referrer* menu.
@@ -121,56 +121,62 @@ In this chapter, you will learn how to transfer order data to the marketplace an
 ** *Synchronise stock* is activated in the step data exchange so that the offers are transferred correctly.
 * In the *Setup » Item » Sales prices* menu, the order referrers *Mirakl* and *{market}* have been activated on an existing price *_or_* a new sales price has been created for which the order referrers *Mirakl* and *{market}* were activated.
 
-Order data is transferred every 15 minutes. Only items that meet the following requirements are transferred:
+Offer data is transferred every 15 minutes. Only items that meet the following requirements are transferred:
 
 * The order referrers *Mirakl* and *{market}* are activated at the variation.
 * A price that was activated for *{market}*, *Mirakl* and *WEB API* is active at the variation.
 * A shipping profile that has been activated for *{market}*, *Mirakl* and *WEB API* is active at the variation.
-* A value is specified for *{market}* as marketplace SKU at the variation.
+* A value is specified for *{market}* as Marketplace SKU at the variation.
 * The stock or the price was changed at the variation within the last 15 minutes.
 ** Setting a new time stamp via the group function or batch processing also results in a transfer of the variation. Thus, the stock limitation *To net stock* or *None* has to be selected at the variation and the variation needs to have positive stock.
 
 ifdef::conrad[]
 [IMPORTANT]
-.What connection exists between the offer fields, the product export field and the marketplace SKU at the variation?
+.What connection exists between the offer fields, the product export field and the Marketplace SKU at the variation?
 ====
 In general, the offer fields *sku* and *product-id* are always filled with the value that has been defined for the marketplace at the variation in the field *Marketplace SKU*.
 The offer field *product-id-type* is transferred with the value *SHOP_SKU* by default.
 
-// * If *SKU* is selected, the SKU from the marketplace has to be defined as the marketplace SKU at the variation.
-// * If *EAN* is selected, the EAN of the variation has to be defined as the marketplace SKU at the variation.
-// * If *ISBN* is selected, the ISBN of the variation has to be defined as the marketplace SKU at the variation.
+// * If *SKU* is selected, the SKU from the marketplace has to be defined as Marketplace SKU at the variation.
+// * If *EAN* is selected, the EAN of the variation has to be defined as Marketplace SKU at the variation. Please do not use this function, as it is not activated for the market.
+// * If *ISBN* is selected, the ISBN of the variation has to be defined as Marketplace SKU at the variation. Please do not use this function, as it is not activated for the market.
 
 The product export field *Product-ID (of the seller)* is filled depending on the catalogue settings.
-During the first data transfer which takes place overnight, in plentymarkets, the marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the marketplace SKU can be defined via import or manually.
+During the first data transfer which takes place overnight, in plentymarkets, the Marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the Marketplace SKU can be defined via import or manually.
 ====
 endif::conrad[]
 
 ifdef::voelkner[]
 [IMPORTANT]
-.What connection exists between the offer fields, the product export field and the marketplace SKU at the variation?
+.What connection exists between the offer fields, the product export field and the Marketplace SKU at the variation?
 ====
 In general, the offer fields *sku* and *product-id* are always filled with the value that has been defined for the marketplace at the variation in the field *Marketplace SKU*.
 The offer field *product-id-type* is transferred with the value *SHOP_SKU* by default, but can also be overwritten by another value, such as *SKU*. To do so, select the property for the Product ID Type *SKU* at the variation and in the assistant step *Offer properties mapping*, map the property to the respective data field.
 The product export field *Product-ID (of the seller)* is filled depending on the mapping in the catalogue.
 
-During the first data transfer which takes place overnight, in plentymarkets, the marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the marketplace SKU can be defined via import or manually.
+During the first data transfer which takes place overnight, in plentymarkets, the Marketplace SKU at the variation is automatically created from the Variation ID. Alternatively, the Marketplace SKU can be defined via import or manually.
 ====
 
 *_Tip:_* In the catalogue, map the Marketplace SKU to the data field *Product-ID (of the seller)*. Select the *Variation ID* as fallback data field.
 endif::voelkner[]
 
+ifdef::voelkner[]
+=== Error reports
+
+Error reports for product and offer data transfers to Voelkner can be accessed and downloaded in the menus *Data » Voelkner Product Reports* and *Data » Voelkner Offer Reports*.
+endif::voelkner[]
+
 [discrete]
 === Further data fields that are transmitted during the offer transfer
 
-* *sku* and *product-id*: These fields are automatically filled with the value that has been specified as marketplace SKU at the variation.
+* *sku* and *product-id*: These fields are automatically filled with the value that has been specified as Marketplace SKU at the variation.
 ifdef::conrad,voelkner[]
 * *product-id-type*: This field is filled with the value *SHOP_SKU* by default.
 endif::conrad,voelkner[]
 * *price*: This field is automatically filled with the value hat has been defined at the variation for the price that was activated on the marketplace. In case several sales prices were defined at the variation that are also available for the marketplace, the price with the lowest ID will be exported.
 * *quantity*: This field will be automatically filled with the net stock or the total net stock from the warehouses that have been selected in the *{assistant-name}* assistant in the step *Warehouse Selection*.
 * *min-quantity-alert*: This field will be automatically transferred with the value *1*.
-* *state*: This field will be automatically transferred with the value *11*.
+* *state*: This field is transferred automatically with the value *11*. In the assistant step *Offer properties mapping* you can map a property in order to transfer a different value per variation.
 * *available-start-date*: This field will be automatically transferred with a timestamp.
 * *price-ranges*: In this field, one or several <<item/settings/prices#100, sales prices>> will be transferred.
 * *allow-quote-requests*: This field will be automatically transferred with the value *false*.
@@ -179,3 +185,5 @@ endif::conrad,voelkner[]
 ifdef::conrad,voelkner[]
 * *reversecharge*: This is a mandatory field, which is empty by default. In the assistant step *Offer properties mapping* you can map a property in order to transfer either `true` or `false` per variation.
 endif::conrad,voelkner[]
+* *min-order-quantity*: This field is transferred automatically with the value *Min. order quantity* saved for the variation.
+* *max-order-quantity*: This field is transferred automatically with the value *Max. order quantity* saved for the variation.

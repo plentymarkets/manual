@@ -1,8 +1,7 @@
 = Item
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: FormatDesigner, Format types, Export, Data, Data export, Export data, Exporting data, Item, Items, Variations, Item data, Variation, Variations, Variation data, Exporting, Exporting item data, Exporting variation data, Exporting items, Exporting variations, Export items, Export variations
-:description: Use the item format to export item and variation data.
+:keywords: Downloading item, Downloading items, Download item, Download items, Exporting item, Exporting items, Item exporting, Items exporting, Item export, Items export, Export item, Export items, Item-Export, Items-Export, Export-Item, Export-Items, Exporting variation, Exporting variations, Variation exporting, Variations exporting, Variation export, Variations export, Export variation, Export variations, Variation-Export, Variations-Export, Export-Variation, Export-Variations, Exporting item link, Exporting item links, Exporting product, Exporting products, Exporting goods
 :position: 10
 :url: data/exporting-data/FormatDesigner/format-types/item
 :author: team-item
@@ -203,55 +202,64 @@ free20
 
 [[table-fields-images]]
 .Fields for exporting item images
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Field |Explanation
 
 |allImages
-|URLs of all item images with positions in the format +
-url;position,url;position,etc.
+|The URLs and position numbers for all of the item's images.
+
+*_Format_*: `urlImage1;positionImage1,urlImage2;positionImage2`
+
+*_Example_*: `https://www.example.com/image1.png;1,https://www.example.com/image2.png;2`
 
 |createdAt
-|Time stamp of the creation
+|The timestamp when the image was created.
 
 |fileType
-|File format of the image (JPG, JPEG, PNG, GIF or SVG)
+|The image's file format (PNG, JPG, GIF, SVG).
+
+|hasLinkedVariations
+|Indicates whether the image has a linked variation.
+
+* 0 = No. There is no linked variation.
+* 1 = Yes. There is a linked variation.
 
 |height
-|Image height in pixels
+|The image's height in pixels.
 
 |id
-|Image ID
+|The image's ID.
 
 |md5Checksum
-|The MD5 hash value of the image file
+|The MD5 hash value of the image file.
 
 |md5ChecksumOriginal
-|The MD5 hash value of the original image file
+|The MD5 hash value of the original image file.
 
 |position
-|Position
+|The image's position number.
 
 |size
-|Image size in pixels
+|The image's size.
 
 |updatedAt
-|Time stamp of the last update
+|The timestamp when the image was last updated.
 
 |url
-|URL of the image
+|The image's URL.
 
 |urlMiddle
-|URL of the medium sized version of the image
+|The URL of the medium sized version of the image.
 
 |urlPreview
-|URL of the preview version of the image
+|The URL of the preview version of the image.
 
 |urlSecondPreview
-|URL of the second preview version of the image
+|The URL of the second preview version of the image.
 
 |width
-|Image width in pixels
+|The image's width in pixels.
 |====
 
 [#500]
@@ -304,12 +312,13 @@ url;position,url;position,etc.
 
 [[table-fields-storage-locations]]
 .Fields for exporting storage locations
-[cols="1,3"]
+[cols="1,3a"]
 |====
 |Field |Explanation
 
 |allIds
-|All linked storage location IDs are exported to one field, separated by commas.
+|All linked storage location IDs are exported to one field, separated by commas. +
+*_Note_*: The default storage location has the ID `0`.
 
 |allNames
 |All linked storage location names are exported to one field, separated by commas.
@@ -324,7 +333,8 @@ url;position,url;position,etc.
 |Quantity
 
 |StorageLocationID
-|Storage location ID
+|Storage location ID +
+*_Note_*: The default storage location has the ID `0`.
 
 |storageLocationName
 |Name of the storage location
@@ -787,9 +797,12 @@ Component:Quantity;Component:Quantity
 The field is only filled if the property is linked.
 If the property is not linked, then the field will remain empty.
 
-Also remember to tell plentymarkets which property you want information about. In other words, _assign a property_. Click on *assignment* (icon:sign-in[role="darkGrey"]) and choose the desired property from the drop-down list.
+Also remember to tell plentymarkets which property you want information about.
+In other words, _assign a property_.
+Click on *Assignment* (icon:sign-in[role="darkGrey"]) and choose the desired property from the drop-down list.
 
-The field *all* is an exception. Here you do not need to assign a specific property since you are receiving information about _all of the properties_.
+The field *all* is an exception.
+It doesn't matter which property you assign here since you receive information about _all of the properties_.
 ====
 
 [[table-fields-variation-properties]]
@@ -799,8 +812,13 @@ The field *all* is an exception. Here you do not need to assign a specific prope
 |Field |Explanation
 
 |all
-|Returns all of the properties. The information is formatted as follows: +
+|Returns all of the linked properties.
+The information is formatted as follows: +
 `name:value:language;name:value:language`
+
+*_Note_*: The language is only listed for language-specific properties, i.e. for the types HTML and Text.
+
+*_Example_*: `Length:10;Text:This is an example text:en`
 
 |cast
 a|Returns the type of the assigned property, assuming it is linked. If the assigned property is not linked, then the field will be empty.
@@ -812,29 +830,32 @@ a|Returns the type of the assigned property, assuming it is linked. If the assig
 !empty
 !None
 
-!date
-!Date
-
-!file
-!File
-
 !int
-!Int
+!Whole number
 
 !float
-!Float
-
-!longText
-!Long text
-
-!shortText
-!Short text
+!Decimal number
 
 !selection
 !Selection
 
 !multiSelection
 !Multi selection
+
+!date
+!Date
+
+!file
+!File
+
+!string
+!Character string
+
+!html
+!HTML
+
+!text
+!Text
 !===
 
 |id
@@ -1042,7 +1063,7 @@ ID, name, purchase price, link ID and company name of an individual supplier are
 Click on *assignment* (icon:sign-in[role="darkGrey"]) and select the appropriate supplier.
 
 |currencyPurchasePrice
-|Purchase price system currency
+|<<item/managing-items#310, Purchase price from account>>
 
 |deliveryTimeInDays
 |<<item/managing-items#310, Delivery time in days>>
@@ -1072,7 +1093,7 @@ Click on *assignment* (icon:sign-in[role="darkGrey"]) and select the appropriate
 |<<item/managing-items#310, Packaging unit>>
 
 |purchasePrice
-|Purchase price from account
+|<<item/managing-items#310, Purchase price system currency>>
 
 |SupplierID
 |Supplier ID

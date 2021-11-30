@@ -2,7 +2,7 @@
 :lang: en
 :description: Learn how to create and structure a warehouse.
 include::{includedir}/_header.adoc[]
-:keywords: Planning a warehouse, plan a warehouse, Setting up a warehouse, set up a warehouse, warehouse settings, dimensions, dimension, storage location, storage locations, level, levels, stock reservation, automatic stock reservation, create a warehouse, creating a warehouse, rack, box storage rack, shelf, shelves, storage building, pick list, pick path, generating a storage location, generate storage location, warehouse data, location, logistics type, warehouse type, distribution, distribution warehouse, repair, repair warehouse, priority, purpose, warehouse structure, warehouse setup, limit, limitation, delete stock, delete warehouse, label, labelling a warehouse, label warehouse, labelling warehouses, labeling a warehouse, labeling warehouses, properties, warehouse id, storage location id
+:keywords: Planning a warehouse, plan a warehouse, Setting up a warehouse, set up a warehouse, warehouse settings, create a warehouse, creating a warehouse, warehouse structure, warehouse setup
 :position: 10
 :id: 5EKUCA2
 :url: stock-management/setting-up-a-warehouse
@@ -22,18 +22,13 @@ Thus, take some time beforehand to consider how to replicate your warehouse effe
 Your plentymarkets system comes with 2 sample warehouses: one distribution warehouse (KS Sales) and one repair warehouse (KS Repair). You can either rename and continue using these warehouses or delete them and set up your own ones. To register stock and book incoming items, your system needs at least one warehouse. Consequently, you cannot manage your stock without a warehouse. Incoming orders are assigned to a warehouse according to item availability.
 ====
 
-[#100]
-== Assigning user rights for back end users
+[discrete]
+=== Assigning rights for back end users
 
-Users of the type *Back end* can only access limited areas and menus in the plentymarkets back end. Thus, their access to the system is limited. If users of the type *Back end* should be able to work with warehouses, a user of the type *Admin* has to assign the right listed in the following to users of the type *Back end*.
+:rights-purpose: work with warehouses
+:right-one: pass:quotes[*Stock > Warehouses > Edit*]
 
-[.instruction]
-Assigning user rights for back end users:
-
-. Go to *Setup » Settings » User » Rights » User*.
-. Use the search function (icon:search[role="blue"]) and open the user account that should be edited.
-. In the *Authorisations* area, activate the option *Stock > Warehouses > Edit*.
-. *Save* (icon:save[role="green"]) the settings.
+include::../_includes/textblocks/instructions/rights.adoc[]
 
 [#100]
 == Planning a warehouse
@@ -173,7 +168,7 @@ The availability symbols are displayed according to the settings made in the sec
 === Creating dimensions
 
 Create dimensions in order to divide your warehouse into basic elements. At least one dimension is needed to create storage locations. For example, a dimension can be a storeroom. You can create up to 10 dimensions for each warehouse. The dimensions are the basis for the levels of a warehouse. +
-Consider in advance which dimensions you want to create, and start with the smallest one. Create the dimensions in ascending order.
+Consider in advance which dimensions you want to create, and start with the smallest or rather most specific one (e.g. shelf). This one will receive the highest level (e.g. when creating 4 dimensions, it will have level 4). Thus, note that the dimension with the highest level will be the smallest one in the warehouse. Consequently, create the dimensions in ascending order of size (e.g. shelf (level 4) > rack (level 3) > zone (level 2) > storage building (level 1).
 
 [IMPORTANT]
 .Applying or deleting sample dimensions
@@ -229,34 +224,14 @@ New dimensions are automatically added as the biggest ones. If you add further d
 Create storage locations to indicate the actual areas for storing your items. Variations can only be booked in actual storage locations, not in dimensions. In particular, creating multiple storage locations at once is very easy. Once storage locations are created, they are sorted by pick path.
 
 [discrete]
-==== Assigning user rights for back end users
+=== Assigning rights for back end users
 
-Users of the type *Back end* can only access limited areas and menus in the plentymarkets back end. Thus, their access to the system is limited. If users of this type should be able to work with storage locations, a user of the type *Admin* has to assign at least the rights listed in <<#table-rights-storage-locations>> to users of the type *Back end*.
+:rights-purpose: work with storage locations
+:right-one: pass:quotes[*Stock > Warehouses > Warehouse location > Update*]
+:right-two: pass:quotes[*Stock > Warehouses > Warehouse location > Show*]
+:right-three: pass:quotes[*Stock > Warehouses > Warehouse location > Create*]
 
-[.instruction]
-Assigning user rights for back end users:
-
-. Go to *Setup » Settings » User » Rights » User*.
-. Use the search function (icon:search[role="blue"]) and open the user account that should be edited.
-. In the *Authorisations* area, activate the rights as listed in <<#table-rights-storage-locations>>.
-. *Save* (icon:save[role="green"]) the settings.
-
-[[table-rights-storage-locations]]
-.Assigning rights for storage locations
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-| *Stock > Warehouses > Warehouse location > Update*
-|Authorises the back end user to update storage locations.
-
-| *Stock > Warehouses > Warehouse location > Show*
-|Authorises the back end user to see storage locations.
-
-| *Stock > Warehouses > Warehouse location > Create*
-|Authorises the back end user to create storage locations.
-
-|====
+include::../_includes/textblocks/instructions/rights.adoc[]
 
 [.instruction]
 Creating storage locations:
@@ -313,7 +288,7 @@ Enter a starting position. Only numbers are allowed.
 
 | *Create storage locations from* +
 *Create storage locations to*
-a|Enter starting value and end value for storage locations. Letters, numbers and some combinations of letters and numbers are allowed. +
+a|Enter the starting value and end value for storage locations. Letters, numbers and some combinations of letters and numbers are allowed. +
 Examples for possible starting and end values:
 
 * 1 to 10
@@ -341,7 +316,8 @@ Use the purpose *Box* for link:https://knowledge.plentymarkets.com/automation/pr
 *_Note:_* The purpose does not impact on other menus yet.
 
 |[#intable-status]*Status*
-|Select a status. The default setting is Active.
+|Select a status. The default setting is Active. +
+Note that the status *Locked in status 4* is the only one with a specific functionality; all other statuses are just activated.
 
 |[#intable-notes]*Notes*
 |Here you can take notes regarding the storage location.
@@ -359,9 +335,9 @@ Use the purpose *Box* for link:https://knowledge.plentymarkets.com/automation/pr
 |====
 
 [TIP]
-.Blocking stock with status *Locked*
+.Blocking stock with status *Locked in status 4*
 ====
-Use the status *Locked* in order to block items in a storage location and to lock them for removal. If orders have stock in a locked storage location, they do not automatically switch from status 4 (In preparation for shipping) to status 5 (Cleared for shipping) anymore. To make this work, go to the *Setup » Orders » Settings* menu and activate the option *Status changes to 4 instead of 5 if stock is missing*. To ensure that orders still go into status 5, it is recommended to rebook the stock into active storage locations. +
+Use the status *Locked in status 4* in order to block items in a storage location and to lock them for removal. If orders have stock in a locked storage location, they do not automatically switch from status 4 (In preparation for shipping) to status 5 (Cleared for shipping) anymore. To make this work, go to the *Setup » Orders » Settings* menu and activate the option *Status changes to 4 instead of 5 if stock is missing*. To ensure that orders still go into status 5, it is recommended to rebook the stock into active storage locations. +
 Note that blocked stock will still be available for the marketplaces.
 ====
 
@@ -673,61 +649,22 @@ Properties are frequently occurring information that you can use to further char
 
 You can also create property groups to get a better overview in case you are working with a large number of properties.
 
-The following sub-chapters describe how to <<stock-management/setting-up-a-warehouse#900, create>>, <<stock-management/setting-up-a-warehouse#950, link>>, <<#search-property, search>>, <<#edit-property, edit>> and <<#delete-property, delete>> properties and how to <<#group-properties, group>>, <<#import-properties, import>> and <<#export-properties, export>> them.
+The following sub-chapters describe how to <<stock-management/setting-up-a-warehouse#900, create>>, <<stock-management/setting-up-a-warehouse#950, link>>, <<#group-properties, group>> and <<#search-property, search>> and how to <<#delete-property, delete>>, <<#import-properties, import>> and <<#export-properties, export>> properties.
 
 [#900]
-=== Creating properties for storage locations
+=== Creating new properties
 
 Go to *Setup » Settings » Properties » Configuration* to create properties that you will later use for characterising your storage locations.
 That way you can look for small, medium or large storage locations and all item IDs can be linked to it. Moreover, characterising your storage locations will hep you to directly place your items in the right spot. +
 Proceed as described below to create a property.
 
-[.instruction]
-Creating a property:
+:stock:
+include::../_includes/textblocks/properties/creating-new-properties.adoc[]
 
-. Go to *Setup » Settings » Properties » Configuration*. +
-→ The overview of the properties opens.
-. Click on *Add property* (icon:plus-square[role="green"]).
-. In the drop-down list *Section*, select the option *Storage location*.
-. Carry out the additional settings. Pay attention to the information given in <<#table-create-property>>.
-. *Save* (icon:save[role="green"]) the settings. +
-→ The property is created and opened for editing.
-
-[[table-create-property]]
-.Creating properties
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-| *Section*
-|Select the setting *Storage location* from the drop-drop-down list to make sure that the property can be used in this area. +
-Additionally, the areas <<item/settings/properties#500, Item>> and <<crm/managing-contacts#950, Contact>> are available.
-
-| *Property type*
-|Select the property type from the drop-down list. +
-*None* = Select this option if properties are to be used in areas other than *Item*, *Storage location* and *Contact*, e.g. for the faceted search. +
-*Selection* = This option allows to enter values and then select one of these values from a drop-down list.
-
-| *Name*
-|Enter the name for the property. +
-*_Note:_* The name of the system language is displayed by default. After the property has been created, you can save the name in further languages.
-
-| *Description*
-|Enter the description of the property. +
-*_Note:_* The description of the system language is displayed by default. After the property has been created, you can save the description in further languages.
-
-| *Group*
-|Select a property group from the drop-down list to assign the property to this group. This is optional. +
-*_Tip:_* Click on *Add property group* (icon:plus-square[role="green"]) on the right side of the line to create a group. +
-For further information about property groups, refer to the <<#group-properties, Grouping properties>> chapter.
-
-| *Position*
-|Enter the position number for the property. Properties are sorted by the position number in ascending order. +
-*_Tip:_* Count by tens when creating position numbers. This allows you to easily add new properties in between.
-|====
+:!stock:
 
 [#950]
-=== Linking properties with the storage location
+=== Linking properties with a storage location
 
 After you have created the property in the *Setup » Settings » Properties » Configuration* menu, you can link the property with the storage location. To do so, proceed as described below.
 
@@ -746,281 +683,48 @@ Linking properties with the storage location:
 . *Save* (icon:save[role="green"]) the settings. +
 → The properties are linked with the storage location.
 
-[#search-property]
-=== Searching for properties
-
-You can manage properties centrally in the *Setup » Settings » Properties » Configuration* menu. After opening the menu, start the search to display the properties. In order to search for specific properties, enter a search term in the search fields. The drop-down lists help you search for properties that share specific criteria. You can combine as many search filters as you like.
-
-[.instruction]
-Searching for a property:
-
-. Go to *Setup » Settings » Properties » Configuration*.
-. In the *Filter* view, enter the search term in the search field or set the filter options in the drop-down lists. Pay attention to the information given in <<table-filter-properties>>.
-. Click on *Search* (icon:search[role="blue"]). +
-→ The properties that correspond to the search criteria entered are displayed.
-. Click in the line of the property. +
-→ The detail view of the property opens.
-
-[[table-filter-properties]]
-.Filters for the properties
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-| *Search*
-|Click on *Search* (icon:search[role="blue"]) without selecting any filter settings to display all properties. +
-icon:map-signs[] *_Or:_* Limit the search results by using filters and click on *Search* (icon:search[role="blue"]). +
-→ The properties found are listed in the overview.
-
-| *Reset*
-|Click on icon:undo[role="orange"] to reset the filter criteria set.
-
-| *ID*
-|Each property automatically receives a consecutive and unique ID.
-
-| *Name*
-|Enter the name to search for the property with this name. It is also possible to search only for parts of the name.
-
-| *Language*
-|Select a language to only display properties for which a name has been saved in this language.
-
-| *Group*
-|Select the group to only display properties that are assigned to this group. +
-Select *Not grouped* to only display properties that are not assigned to a group. +
-Select *Grouped* to only display properties that are assigned to a group.
-
-| *Section*
-|Select the *Storage location* area to only display properties that are used in this area.
-
-| *Property type*
-|Select a property type to only display properties of this type.
-|====
-
-
-[#edit-property]
-=== Editing storage location properties
-
-The *Setup » Settings » Properties » Configuration* menu contains all properties that you have created so far. Here you change the settings described in <<table-create-properties>>.
-
-[.instruction]
-Editing a property:
-
-. Go to *Setup » Settings » Properties » Configuration*.
-. Click on *Search* (icon:search[role="blue"]) to display all properties or select filters to limit the search results. Pay attention to the information given in <<#table-filter-properties>>.
-. Click on the property that you want to edit. +
-→ The *General* tab opens.
-. Edit the settings. Pay attention to the information given in <<#table-edit-property>>.
-. *Save* (icon:save[role="green"]) the settings.
-
-[[table-create-properties]]
-.Editing properties
-[cols="1,3"]
-|====
-|Setting |Explanation
-
-2+| Tab *General* > Area *Details*
-
-| *Position*
-|Enter the new position to change the order of the properties.
-
-2+| Tab *General* > Area *Name*
-
-| *Language*
-|Select the language from the drop-down list.
-
-| *Name*; +
-*Description*
-|For multilingualism, enter name and description for other languages.
-
-2+| Tab *General* > Area *Group*
-
-| *Group*
-|Activate the option to assign one or multiple groups to the property.
-
-2+| Tab *Values*
-
-|Only visible for the property types *Selection* and *Multi-selection*
-|Enter the values that are to be displayed for your customers in the drop-down list. +
-Click on *Add* (icon:plus-square[role="green"]) to create a value. +
-*Name* = Enter a name for the property value.
-
-|====
-
-
-[#delete-property]
-=== Deleting properties
-
-You can delete only one or multiple properties at the same time.
-
-[#1350]
-==== Deleting one property
-
-Proceed as described below to irreversibly delete a property if it is no longer needed.
-
-[.instruction]
-Deleting one property:
-
-. Go to *Setup » Settings » Properties » Configuration*.
-. Click on *Search* (icon:search[role="blue"]) to display all properties or select filters to limit the search results.
-. Click on the property that you want to delete. +
-→ The property opens.
-. Click on *Delete property* (icon:minus-square[role="red"]). +
-→ A window appears and you need to confirm your decision.
-. Click on *Delete*. +
-→ The property is deleted and removed from the overview.
-
-
-[#1400]
-==== Deleting multiple properties
-
-Proceed as described below to irreversibly delete multiple properties if they are no longer needed.
-
-[.instruction]
-Deleting multiple properties:
-
-. Go to *Setup » Settings » Properties » Configuration*.
-. Click on *Search* (icon:search[role="blue"]) to display all properties or select filters to limit the search results.
-. Activate the properties that you want to delete.
-. Click on *Delete* (icon:minus-square[role="red"]). +
-→ A window appears and you need to confirm your decision.
-. Click on *Delete*. +
-→ The selected properties are deleted and removed from the overview.
-
 [#group-properties]
 === Grouping properties
 
-Create property groups to summarise multiple properties. Proceed as described below to create a property group.
+If you have lots of properties, then you can group them together so that it’s easier to keep track of them in your plentymarkets back end.
 
-[.instruction]
-Creating a property group:
+[#create-new-group]
+==== Creating a new group
 
-. Go to *Setup » Settings » Properties » Groups*.
-. Click on *Add property group* (icon:plus-square[role="green"]).
-. Carry out the settings. Pay attention to the information given in <<#table-create-property-group>>.
-. *Save* (icon:save[role="green"]) the settings. +
-→ The property group is created.
+:stock:
+include::../_includes/textblocks/properties/creating-new-groups.adoc[]
 
-[[table-create-property-group]]
-.Creating a new property group
-[cols="1,3"]
-|====
-|Setting |Explanation
+:!stock:
 
-| *Name*
-|Enter a name for the property group in your plentymarkets system’s default language. +
-*_Note:_* Once you’ve created the property group, you can save the name in further languages.
+[#work-with-properties]
+=== Working with existing properties
 
-| *Description*
-|Enter a description of the property group in your plentymarkets system’s default language. +
-*_Note:_* The description of the system language is displayed by default. Once you’ve created the property group, you can save the description in further languages.
+[#search-properties]
+==== Searching for properties
 
-| *Position*
-|Enter the position number for the property group. Properties are sorted by the position number in ascending order. When a storage location has properties from several groups, the groups are displayed in ascending order. +
-*_Tip:_* Count by tens when creating position numbers. This allows you to easily add new property groups in between.
+Previously created properties are displayed in an overview.
 
-| *Group type*
-|Select the group type from the drop-down list. +
-//This option determines how properties of the type *Empty* are displayed in the order process. +
-*None* = Properties are not grouped by default. +
-*Select* = One of the grouped properties can be selected from the drop-down list. +
-*Multiselect* = Multiple properties can be selected. +
-//*_Note:_* This option only applies for properties of the type *None* for which the *Order process* option has been activated.
-
-| *Surcharge type*
-|Do you plan on offering extra services or options for an additional fee? If so, then decide whether the surcharge should be treated as a percentage or as a fixed price, e.g. 5% or 5 EUR.
-|====
-
-[#assign-property-group]
-==== Assigning a property to a group
-
-Proceed as described below to assign one or more properties to a property group.
-
-[.instruction]
-Assigning properties to a group:
-
-. Go to *Setup » Settings » Properties » Configuration*.
-. Click on *Search* (icon:search[role="blue"]) to display all properties or select filters to limit the search results. Pay attention to the information given in <<#table-filter-properties>>.
-. Activate the properties that you want to assign to the group.
-. Click on *Assign property group* (icon:settings_transfer[set=plenty]). +
-→ A drop-down list of the available property groups appears.
-. Select the property group from the drop-down list.
-. Click on *Group function* (icon:excecute[set=plenty]). +
-→ The list is reloaded and the selected properties are assigned to the property group.
-
-[#multiple-languages-property-group]
-==== Adding multiple languages to the property group
-
-You can add multiple languages to property groups.
-
-[.instruction]
-Adding multiple languages to a property group:
-
-. Go to *Setup » Settings » Properties » Groups*. +
-→ The overview opens.
-. Select a property group. +
-→ The overview opens and all available languages are displayed.
-. Select a language.
-. Enter the name in the selected language.
-. Enter the description for the language.
-. *Save* (icon:save[role="green"]) the settings. +
-→ The language is added to the property group.
-
-
-
-[#delete-property-groups]
-=== Deleting property groups
-
-You can delete one or more property groups at the same time. Properties that are assigned to groups remain unaffected when deleting property groups.
-
-[#delete-one-property-group]
-==== Deleting one property group
-
-Proceed as described below to irreversibly delete a property group if it is no longer needed.
-
-[.instruction]
-Deleting one property group:
-
-. Go to *Setup » Settings » Properties » Groups*.
-. Click on *Search* (icon:search[role="blue"]) to display all property groups or select filters to limit the search results. Pay attention to the information given in <<#table-filter-properties>>.
-. Click on the property group that you want to delete. +
-→ The detail view of the property group opens.
-. Click on *Delete group* (icon:minus-square[role="red"]). +
-→ A window appears and you need to confirm your decision.
-. Click on *Delete*. +
-→ The property group is deleted and removed from the overview. +
-*_Note:_* When you delete a property group, the properties that are assigned to the group are _not_ deleted.
-
-[#delete-multiple-property-groups]
-==== Deleting multiple property groups
-
-Proceed as described below to irreversibly delete multiple property groups if they are no longer needed.
-
-[.instruction]
-Deleting multiple property groups:
-
-. Go to *Setup » Settings » Properties » Groups*.
-. Click on *Search* (icon:search[role="blue"]) to display all property groups or select filters to limit the search results. Pay attention to the information given in <<#table-filter-properties>>.
-. Activate the property groups that you want to delete.
-. Click on *Delete* (icon:minus-square[role="red"]). +
-→ A window appears and you need to confirm your decision.
-. Click on *Delete*. +
-→ The selected property groups are deleted and removed from the overview. +
-*_Note:_* When you delete a property group, the properties that are assigned to the group are _not_ deleted.
-
+include::../_includes/textblocks/properties/searching-for-properties.adoc[]
 
 [#import-properties]
-=== Importing properties
+==== Importing properties
 
 Use the import tool and the import type *Properties* to import properties into your plentymarkets system. The fields that you can use for mapping and matching are described on the page of the manual of the import type <<data/importing-data/sync-types/elasticSync-properties#, Properties>>.
 
 For general information about importing data into your plentymarkets system, refer to the <<data/importing-data/ElasticSync#, Using the import tool>> page of the manual.
 
 [#export-properties]
-=== Exporting properties
+==== Exporting properties
 
-Use the FormatDesigner and the format type *property* to export properties. For further information, refer to the page of the manual of the format type <<data/exporting-data/FormatDesigner/format-types/properties#, Properties>>.
+:stock:
+include::../_includes/textblocks/properties/exporting-properties.adoc[]
 
-For general information about exporting data into your plentymarkets system, refer to the <<data/exporting-data/FormatDesigner#, FormatDesigner>> page of the manual.
+:!stock:
+
+[#delete-properties]
+==== Deleting properties again
+
+include::../_includes/textblocks/properties/deleting-properties.adoc[]
 
 [#1500]
 == Where can I find my warehouse IDs and storage location IDs?

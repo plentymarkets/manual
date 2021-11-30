@@ -4,7 +4,7 @@ include::{includedir}/_header.adoc[]
 :position: 10
 :url: auftraege/grundeinstellungen
 :id: UQ3KZYP
-:keywords: Standardeinstellung, Auftragseinstellungen, Auftrags-Einstellungen, Auftragsherkunft, Auftragsstatus, Standard-Auftragsherkunft, Standard-Status, Standard-Status Retoure, Standard-Status Gutschrift, Standard-Status Reparatur, Standard-Status Sammelauftrag, Standard-Status Sammelgutschrift, Standard-Status Rückbuchung, Auftragsreservierung, Auftrag, Auftragsübersicht, Artikelpreis-Darstellung, Zuordnung des Lagers, Lagerauswahl, Warenbestand, Statuswechsel, Auftragsbearbeitung, Benutzer, Backend-Benutzer, Berechtigungen, Einstellungen Aufträge, Standardstatus
+:keywords: Auftragseinstellungen, Auftrags-Einstellungen, Standard-Auftragsherkunft, Standard-Status, Auftragsreservierung, Auftrag, Auftragsübersicht, Lagerzuordnung, Auftragslager, automatische Lagerauswahl, Auftragsbearbeitung, Aufträge, Standardstatus, Auftragsgrundlagen
 :author: team-order-payment
 
 Im Menü *Einrichtung » Aufträge » Einstellungen* wählst du die Einstellungen, die für Aufträge automatisch eingestellt werden bzw. bei bestimmten Auftragsstatus oder Bedingungen gelten sollen. Zum Beispiel wählst du Standard-Einstellungen für die Auftragsherkunft und den Status von Aufträgen.
@@ -146,8 +146,8 @@ Standardeinstellung: von *[4] In Versandvorbereitung* bis *[4] In Versandvorbere
 
 | [#intable-behaviour-after-splitting]*Verhalten des Originalauftrags nach dem Teilen*
 |Wähle aus der Dropdown-Liste aus, was mit dem Originalauftrag nach der <<auftraege/auftraege-verwalten#intable-splitting-orders, Teilung>> in zwei neue Aufträge passieren soll. +
-*Originalauftrag löschen (Standardverhalten)* = Standardverhalten ist, dass 2 neue Aufträge entstehen und Originalaufträge nach dem Teilen gelöscht werden. Zudem können nur Aufträge geteilt werden, die nicht gesperrt sind, für die kein Warenausgang gebucht wurde, für die keine Kindaufträge existieren (z.B. Retoure), für die keine steuerrelevanten Dokumente erstellt wurden und denen noch keine Zahlung zugeordnet wurde. +
-*Statuswechsel* = In dieser Option entstehen ebenfalls 2 neue Aufträge, aber der Originalauftrag bleibt erhalten und wird in einen von dir definierten Auftragsstatus verschoben. Wähle diesen Auftragsstatus aus der zweiten Dropdown-Liste aus. Wir empfehlen dafür einen Auftragsstatus im Bereich Stornierung zu verwenden, damit reservierter Bestand nicht weiterhin reserviert bleibt. Aber abhängig von deinen Prozessen in der Auftragsabwicklung kann auch ein anderer Auftragsstatus passender sein. +
+*Originalauftrag löschen (Standardverhalten)* = Standardverhalten ist, dass zwei neue Aufträge entstehen und Originalaufträge nach dem Teilen gelöscht werden. Zudem können nur Aufträge geteilt werden, die nicht gesperrt sind, für die kein Warenausgang gebucht wurde, für die keine Kindaufträge existieren (z.B. Retoure), für die keine steuerrelevanten Dokumente erstellt wurden und denen noch keine Zahlung zugeordnet wurde. +
+*Statuswechsel* = In dieser Option entstehen ebenfalls zwei neue Aufträge, aber der Originalauftrag bleibt erhalten und wird in einen von dir definierten Auftragsstatus verschoben. Wähle diesen Auftragsstatus aus der zweiten Dropdown-Liste aus. Wir empfehlen dafür einen Auftragsstatus im Bereich Stornierung zu verwenden, damit reservierter Bestand nicht weiterhin reserviert bleibt. Aber abhängig von deinen Prozessen in der Auftragsabwicklung kann auch ein anderer Auftragsstatus passender sein. +
 Mit dieser Einstellung dürfen auch Aufträge geteilt werden, denen bereits eine Zahlung zugeordnet wurde oder für die steuerrelevante Dokumente (Wichtig: Rechnung und Stornobeleg) erstellt wurden. Sowohl die zugeordnete Zahlung als auch die Dokumente bleiben für den Originalauftrag erhalten und werden nicht in die aufgeteilten Aufträge übernommen.
 
 |[#intable-order-notes-partial-orders]*Auftragsnotizen in Teilaufträge übernehmen*
@@ -160,11 +160,55 @@ Mit dieser Einstellung dürfen auch Aufträge geteilt werden, denen bereits eine
 *Statuswechsel* = In dieser Option entsteht ebenfalls 1 neuer Auftrag, aber die Originalaufträge bleiben erhalten und werden in einen von dir definierten Auftragsstatus verschoben. Wähle diesen Auftragsstatus aus der zweiten Dropdown-Liste aus. Wir empfehlen dafür einen Auftragsstatus im Bereich Stornierung zu verwenden, damit reservierter Bestand nicht weiterhin reserviert bleibt. Aber abhängig von deinen Prozessen in der Auftragsabwicklung kann auch ein anderer Auftragsstatus passender sein. +
 Mit dieser Einstellung dürfen auch Aufträge gruppiert werden, denen bereits eine Zahlung zugeordnet wurde oder für die steuerrelevante Dokumente (Wichtig: Rechnung und Stornobeleg) erstellt wurden. Sowohl die zugeordnete Zahlung als auch die Dokumente bleiben für die Originalaufträge erhalten und werden nicht in den gruppierten Auftrag übernommen.
 
+|[#intable-prefix-bundles]*Präfix für Artikelpakete*
+|Lege fest, welches Präfix in der Benennung für Artikelpakete (Bundles) verwendet werden soll. Beachte, dass ein Leerzeichen hinter dem Präfix eingefügt werden sollte. +
+Beachte, dass du zur Nutzung dieser Einstellung mindestens plentyShop LTS/IO in Version 5.0.40 benötigst.
+
+|[#intable-prefix-bundle-components]*Präfix für Artikelpaketbestandteile*
+|Lege fest, welches Präfix in der Benennung für Bestandteile von Artikelpaketen (Bundles) verwendet werden soll. Beachte, dass ein Leerzeichen hinter dem Präfix eingefügt werden sollte. +
+Beachte, dass du zur Nutzung dieser Einstellung mindestens plentyShop LTS/IO in Version 5.0.40 benötigst.
+
 |====
+
+[#250]
+== Eigenschaftskopie
+
+Du kannst festlegen, welche Auftragsinformationen (Eigenschaften eines Auftrags) in einen anderen Auftrag übernommen werden sollen. Zum Beispiel werden Eigenschaften beim Erstellen von Lieferaufträgen oder Retouren vom Hauptauftrag kopiert. Es sind Informationen, die an einem Auftrag hängen, z.B. das Versandprofil, der Zahlungsstatus oder die Dokumentensprache. Eigenschaften können am Auftrag oder an einer Auftragsposition hängen. +
+*_Beachte_*: Gemeint sind hier nicht selbst erstellte <<artikel/einstellungen/eigenschaften#500, Eigenschaften>>, wie z.B. Bestellmerkmale.
+
+[IMPORTANT]
+.Standard für kopierte Eigenschaften
+====
+Standardmäßig werden alle benötigten Eigenschaften vom einen in den jeweils anderen Auftragstyp übernommen. Du musst in diesem Menü nichts dafür einstellen. Ändere daher nur nach sorgfältiger Überlegung etwas an den kopierten Eigenschaften.
+====
+
+Bestimme im Menü *Einrichtung » Aufträge » Eigenschaftskopie*, welche Eigenschaften kopiert werden sollen. Du kannst dies individuell für verschiedene Kombinationen, z.B. von Auftrag (Quelle) zu Lieferauftrag (Ziel), festlegen. Beachte, dass nicht alle Eigenschaften zum Kopieren freigeschaltet sind. Die Tabellenspalte *Quelle* gibt wieder, woher die Eigenschaft kommt. *Intern* bedeutet, die Eigenschaft kommt vom System. *Interface* bedeutet, die Eigenschaft wurde über eine Schnittstelle wie ein Plugin oder per REST erstellt. +
+Beim Öffnen des Menüs sind bereits einige Filter vorausgewählt. Passe diese an wie folgt beschrieben an, falls die Einstellungen nicht den gewünschten entspricht.
+
+[.instruction]
+Eigenschaften fürs Kopieren aktivieren:
+
+. Öffne das Menü *Einrichtung » Aufträge » Eigenschaftskopie*.
+. Öffne die Suchfilter (icon:filter_alt[set=material]).
+. Wähle für den Filter *Auftragstyp Quelle* den Auftragstyp aus, von dem die Eigenschaften kopiert werden sollen.
+. Wähle für den Filter *Auftragstyp Ziel* den Auftragstyp, in den die Eigenschaften kopiert werden sollen.
+. Führe die Suche aus. +
+→ Die Eigenschaften werden in der Tabelle angezeigt.
+. Aktiviere oder deaktiviere in der Tabellenspalte *Auftragseigenschaft kopieren* die Eigenschaften, die kopiert werden sollen.
+. Aktiviere oder deaktiviere in der Tabellenspalte *Auftragspositionseigenschaft kopieren* die Eigenschaften, die kopiert werden sollen. +
+→ Die aktivierten Eigenschaften werden fortan kopiert.
+
+Darüber hinaus stehen dir in der Suche (icon:filter_alt[set=material]) noch folgende Filter zur Verfügung:
+
+* *Nur kopierbare Eigenschaften anzeigen* = Wähle *Ja*, wenn dir in der Tabelle nur die Eigenschaften angezeigt werden sollen, die von einem Auftragstyp zum anderen übertragen werden können. Wähle *Nein*, wenn dir in der Tabelle alle Eigenschaften, auch die nicht kopierbaren, angezeigt werden sollen.
+* *Eigenschafts-ID* = Gib eine konkrete Eigenschafts-ID ein, nach der du suchen möchtest. Es kann nur eine ID eingegeben werden.
+* *Quelle* = Wählst du nichts aus, werden die Eigenschaften aller Quellen angezeigt. Wählst du *Intern* oder *Interface* aus, werden dir jeweils nur die Eigenschaften dieser Quellen angezeigt.
+
 
 [#300]
 == Auftragsbearbeitung durch Backend-Benutzer:innen
 
 Damit Benutzer:innen vom Typ *Backend* Aufträge öffnen können, müssen hier Standardstatus für *Retouren* und *Gutschriften* gespeichert sein. In der Grundeinstellung ist kein Status voreingestellt. +
 Backend-Benutzer:innen müssen außerdem zur Bearbeitung von Aufträgen <<business-entscheidungen/benutzerkonten-zugaenge#105, berechtigt werden>>.
-Zudem müssen Backend-Benutzer:innen Aufträge der Typen *Retoure*, *Gewährleistung* und *Reparatur* anlegen können. Dafür müssen sie für die im Menü *Einrichtung » Aufträge » Einstellungen* hinterlegten Standardstatus dieser drei Auftragstypen <<business-entscheidungen/benutzerkonten-zugaenge#105, berechtigt sein>>.
+Zudem müssen Backend-Benutzer:innen Aufträge der Typen *Retoure*, *Gewährleistung* und *Reparatur* anlegen können. Dafür müssen sie für die im Menü *Einrichtung » Aufträge » Einstellungen* hinterlegten Standardstatus dieser drei Auftragstypen berechtigt sein. +
+Beachte zudem auch festzulegen, welche Benutzer:innen was im System sehen können. Lege dafür die <<business-entscheidungen/benutzerkonten-zugaenge#100, Sichtbarkeiten>> fest, z.B. für Warenhäuser und Auftragsstatus.

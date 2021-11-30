@@ -1,19 +1,17 @@
 = Setting up Kaufland.de
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: Kaufland, Kaufland.de, real.de, real, market, marketplace, Kaufland marketplace, Kaufland.de attribute, Multi-Channel Kaufland.de, real, real setup, setting up real, Kaufland setup, setting up Kaufland
+:keywords: real.de, real, kaufland.de, kaufland.de, kaufland
 :description: Multi-Channel in plentymarkets: Set up the interface to the market Kaufland.de in your plentymarkets system.
 :position: 10
 :url: markets/kaufland-de/kaufland-setup
 :id: LZKL2OG
 :author: team-multi-channel
 
-TIP: 14/4/2021: real.de becomes Kaufland.de
-
 link:https://www.Kaufland.de/[Kaufland.de^]{nbsp}icon:external-link[] is one of the largest fixed price markets in Germany. You can sell items from various product categories on Kaufland.de. Kaufland.de also processes payments for you. In other words, you are neither charged with payment costs nor do you have to worry about debt collection. +
 
 ////
-How to set up the market Kaufland.de in plentymarkets is described in this video tutorial:
+Watch this video tutorial in order to learn how to set up the market Kaufland.de in plentymarkets:
 
 .Setting up Kaufland.de in plentymarkets
 video::331004662[vimeo]
@@ -35,7 +33,7 @@ Setting up the access to Kaufland.de:
 . Go to *Setup » Markets » Kaufland.de » Settings*.
 . Open the submenu of the plentyShop that you would like to set up access for.
 . Carry out the settings. Pay attention to the explanations given in <<#kaufland-de-settings>>.
-. *Save* (icon:save[role="green"]) the settings.
+. Save (icon:save[set=plenty]) the settings.
 
 [[kaufland-de-settings]]
 .Settings for the market Kaufland.de
@@ -106,17 +104,14 @@ a| Select *Yes* or *No*. +
 
 *_Note:_* We recommend using the option *Yes* because bigger stock changes may result in errors.
 
-| *Warehouse*
-a| Select the warehouses from which stock should be transferred to Kaufland.de. Select one warehouse or *Total in all warehouses*. +
-
-* *Total in all warehouses* = The stock from all distribution warehouses is added up and transferred.
-
 | *Item quantity for items that are not limited to stock*
 |Items for which *no limitation* has been selected in the <<stock-management/managing-stocks#, Stock tab>> of an item are offered on Kaufland.de with the quantity entered here. As soon as an item has been sold, the quantity saved here is newly transmitted for sale at the next full hour.
 
 | *Minimum price*
-|Select the minimum price, i.e. the lowest price that the item should be offered for. +
-A minimum price must be saved for the item for the selected price. The minimum price must be released for the referrer Kaufland.de. +
+| Select a sales price for the minimum price to set up repricing (Tiefpreisautomatik) for Kaufland.de. +
+If other sellers offer the same product, your price is automatically reduced. Your price plus shipping is then always once cent cheaper than the prices of your competitors. As such, the minimum price is the lowest price that can be used to undercut the competition. +
+*_Note:_* For the minimum price, select a different price from the normal sales price that you <<#400, set for Kaufland.de>>. The referrer Kaufland.de must be activated for the sales price that you select as the minimum price. +
+Activate the repricing by linking the sales price that you selected as the minimum price with the variation and entering the lowest possible price. +
 *_Important:_* The minimum price does not apply to item variations which have surcharges for attributes. In this case, *deactivate* this option. If you would like to use the minimum price, then create each variation as a separate item with a defined minimum price.
 
 | *Comments on items*
@@ -128,6 +123,11 @@ A minimum price must be saved for the item for the selected price. The minimum p
 | *Linking shipping profiles*
 |This option enables you to link the Kaufland.de shipping groups to the plentymarkets shipping profiles. If an item has more than one shipping profile, the shipping profile with the lowest category and the highest priority is exported. The category and the priority of a shipping profile are configured within *Setup » Orders » Shipping » Settings » Tab: Shipping profiles* in the *Base* tab of each shipping profile. +
 *_Important:_* If the shipping groups are changed on Kaufland.de, you can update them by clicking on *Update shipping groups*.
+
+|[#intable-linking-warehouse]*Linking warehouses*
+| Warehouses located outside the EU have to be linked with a Kaufland.de warehouse. Use the setting *Linking warehouses* for this. Here, all of your warehouses of the type *Sales* are listed. Select your warehouses and link each of them to the correspondent Kaufland.de warehouse. This way, the stock of your warehouses is linked to the Kaufland.de warehouses. This setting is not relevant if your warehouses are within the EU. +
+*–* = The warehouse is linked to the Kaufland.de default warehouse. +
+*Do not export* = The stock of this warehouse is not transmitted to Kaufland.de.
 
 | *Export item availabilities*
 |Select whether item availabilities should be transferred to Kaufland.de.
@@ -152,13 +152,38 @@ Setting up Kaufland.de in plentymarkets allows for the following automatic proce
 
 * hourly stock and price synchronisation
 * daily item export (only for items which have been changed within the last 26 hours)
-* hourly order import
+* order import every 15 minutes
 * hourly transfer of the flag *Sent* to Kaufland.de +
 → *Sent* is transferred after the outgoing items have been booked.
 * export of surcharges for attribute values (item variations)
 * transfer of the description text saved in the *Texts* tab
 * transfer of the technical data selected in table 1
 * image export selected in the item's *Images* tab
+
+[#225]
+=== Deemed Supplier Model
+
+On 01/07/2021, the new EU Digital Package came into force. This package results in changes to the regulations regarding VAT in EU countries. Due to these legal changes, Kaufland.de becomes a deemed supplier and is thus partially liable for VAT. Kaufland.de has reacted to this by introducing the *Deemed Supplier* model. The model is based on the location of the company, the location of warehouses and the value of a delivery. As such, the model is relevant for the following types of deliveries:
+
+* Deliveries sent from a location in the EU to a customer in the EU, even if the seller is not located in the EU.
+* Deliveries sent from a location outside the EU to a customer in the EU if the value of the delivery does not exceed € 150.
+
+Some special rules for order processing and invoice creation apply for orders covered by the Deemed Supplier model:
+
+* During the import of Kaufland.de orders to your plentymarkets system, an automatic check determines if these orders are covered by the Deemed Supplier model. Information about these orders are provided to you by Kaufland.de via the seller portal, CSV reports and via the API.
+* In cases where not all order items of an order are subject to the model, the order is split. Both orders get an individual order ID and are simultaneously imported into your plentymarkets system. This ensures that the handling of individual orders and order items can proceed correctly.
+
+*_Important_*: Kaufland.de is obliged to withhold and pay VAT for Deemed Supplier orders. As such, Kaufland.de issues invoices for these orders. As a result, you cannot create invoices for these orders.
+
+Also note the required <<markets/kaufland-de/kaufland-setup#intable-linking-warehouse, warehouse settings>> for warehouses outside of the EU. If items are delivered from outside the EU, the corresponding warehouses have to be linked to Kaufland.de warehouses. You do this via the setting *Linking warehouses* in the *Setup » Markets » Kaufland.de » Settings* menu.
+
+[TIP]
+.Pay attention to warehouse linking for Kaufland.de
+====
+When updating offers, pay attention to linked warehouses for Kaufland.de. +
+It is not possible to assign more than one Kaufland.de warehouse to an offer on Kaufland.de. If the warehouses of a variation in plentymarkets are assigned to different warehouses on Kaufland.de, only the stock of one of those plentymarkets warehouses will be exported to Kaufland.de. Ideally, you should assign the warehouses of one variation in plentymarkets to the same warehouse on Kaufland.de. Then the sum of all plentymarkets warehouses will be shown on Kaufland.de. +
+Warehouses can be linked with the *Linking warehouses* setting in the  *Setup » Markets » Kaufland.de » Settings » [Select client]* menu.
+====
 
 [#250]
 == Activating the order referrer
@@ -217,9 +242,9 @@ Defining a barcode for Kaufland.de:
 . Go to *Setup » Item » Barcode*.
 . Open the barcode.
 . Activate the referrer *Kaufland.de*.
-. *Save* (icon:save[role="green"]) the settings.
+. Save (icon:save[set=plenty]) the settings.
 
-Afterwards, <<item/managing-items#250, link>> the barcode with the desired variations if you have not done so.
+Afterwards, <<item/settings/barcodes#300, link>> the barcode with the desired variations if you have not done so.
 
 == Preparing variations
 
@@ -235,7 +260,7 @@ If the information listed above is not saved, the variation is not exported.
 :market: Kaufland.de
 :characteristic-option: Kaufland.de
 
-include::../_textblocks/instructions/activate-characteristic.adoc[]
+include::../_textblocks/properties/instructions/activate-characteristic.adoc[]
 
 [#550]
 === Linking plentymarkets characteristics with Kaufland.de attributes
@@ -261,7 +286,7 @@ Creating a characteristic:
 → This name is used in the item overview of the plentyShop.
 . Select the *Characteristic type*.
 . Activate the option *Kaufland.de*.
-. *Save* (icon:save[role="green"]) the settings.
+. Save (icon:save[set=plenty]) the settings.
 
 For further information about linking characteristics with Kaufland.de, refer to the <<markets/kaufland-de/best-practices-kaufland-linking-characteristics#, Linking characteristics to attributes>> best practice page.
 
@@ -280,7 +305,7 @@ Linking categories:
 . Click on *Apply*. +
 → The ID and category path of the Kaufland.de category are displayed.
 . If you already know the ID of the Kaufland.de category, enter it directly into the *Market category field* to link it to your plentymarkets category.
-. *Save* (icon:save[role="green"]) the settings.
+. Save (icon:save[set=plenty]) the settings.
 
 [IMPORTANT]
 .Subcategories do not have to be linked
@@ -291,10 +316,8 @@ In some cases, your subcategories may not match the Kaufland.de subcategories. I
 [#800]
 == Activating the payment method
 
-:payment-method: real.de Payment
-:folder: DE
-:real-client:
-:real-name:
+:market: Kaufland.de
+:payment-method: Kaufland.de Payment
 
 include::../_textblocks/instructions/activate-payment-method.adoc[]
 
@@ -303,13 +326,13 @@ include::../_textblocks/instructions/activate-payment-method.adoc[]
 
 You have to modify the invoices for Kaufland.de. Two adjustments have to be made:
 
-* Enter a note for the payment method <<Activating the payment method, real.de Payment>>.
+* Enter a note for the payment method <<Activating the payment method, Kaufland.de Payment>>.
 * Your bank details must not appear on invoices for Kaufland.de.
 
 How to carry out these adjustments is described below.
 
 [#860]
-=== Entering a note for the payment method real.de Payment:
+=== Entering a note for the payment method Kaufland.de Payment
 
 The following note must appear on Kaufland.de invoices:
 
@@ -320,19 +343,19 @@ The following note must appear on Kaufland.de invoices:
 ====
 
 [.instruction]
-Entering a note for the payment method real.de Payment:
+Entering a note for the payment method Kaufland.de Payment:
 
 . Go to *Setup » Client » Standard » Locations » Germany (standard) » Documents » Invoice » Tab: Template*.
-. In the *Optional elements below stock unit table* area, enter the note given above for the *Payment instruction* option for the payment method *real.de Payment*.
-. *Save* (icon:save[role="green"]) the settings. +
-→ The note only appears on the invoices for orders with the payment method *real.de Payment*.
+. In the *Optional elements below stock unit table* area, enter the note given above for the *Payment instruction* option for the payment method *Kaufland.de Payment*.
+. Save (icon:save[set=plenty]) the settings. +
+→ The note only appears on the invoices for orders with the payment method *Kaufland.de Payment*.
 
 [#870]
 === Hiding bank details on Kaufland.de invoices
 
 The payment is processed by Kaufland.de. To prevent customers from paying money directly to you, do not enter bank details on invoices for Kaufland.de. +
 
-If you use a <<orders/order-documents#1700, PDF template>> to display your bank details on an invoice, then create another PDF template for Kaufland.de that does not contain bank details. You can also save the Kaufland.de logo for this PDF template. To save this PDF template for the payment method *real.de Payment*, go to *Setup » Client » Standard » Locations » Germany (standard) » Documents » Invoice » Tab: PDF template*. Your bank details are not displayed on invoices for Kaufland.de.
+If you use a <<orders/order-documents#1700, PDF template>> to display your bank details on an invoice, then create another PDF template for Kaufland.de that does not contain bank details. You can also save the Kaufland.de logo for this PDF template. To save this PDF template for the payment method *Kaufland.de Payment*, go to *Setup » Client » Standard » Locations » Germany (standard) » Documents » Invoice » Tab: PDF template*. Your bank details are not displayed on invoices for Kaufland.de.
 
 [[image-kaufland-logo]]
 .Kaufland.de logo

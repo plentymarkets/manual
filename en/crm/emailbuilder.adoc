@@ -1,0 +1,1990 @@
+= EmailBuilder (Test phase)
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords:
+:description: Learn how to use the EmailBuilder in plentymarkets.
+:position: 600
+:url: crm/emailbuilder-testphase
+:id: MYFLVYO
+:author: team-crm
+
+[IMPORTANT]
+.EmailBuilder is continuously being developed further
+====
+On this page, we will present you the functions of the new EmailBuilder. The EmailBuilder is continuously being developed further; more functions and features will be added. In the course of development, also this page of the user manual will be completed step-by-step.
+====
+
+All emails that are sent with plentymarkets are based on templates. You create and manage templates with the EmailBuilder in the *CRM » EmailBuilder (Test phase)* menu. The email templates in the EmailBuilder use the multipart format which has the advantage that the emails are sent in an HTML and in a text version at the same time. 
+
+The EmailBuilder is a modular construction kit for quickly creating and editing your email templates via drag-and-drop. The EmailBuilder consists of 2 views: the configuration manager and the editor. With the configuration manager, you create folders and, if needed, sub-folders, templates as well as templates for your footer and your header. With the editor, you fill your templates, headers and footers with content. You can create a template for an invoice, for example, and use this template for all invoices that are sent to your customers in the future. +
+You can then use the header and footer templates in the email templates as desired. Header and footer are globally active; changes you make to the header and footer affect the rest of all existing templates and all other templates that you will create in the future.
+
+The header, the footer and the settings in the template such as the name, the subject etc. form the framework of your email, so to say. The content of the template is formed with <<crm/emailbuilder-testphase#insert-widget, widgets>> and <<crm/emailbuilder-testphase#variables-emailbuilder, variables>>. In the emails that are sent to your customer, the variables will then be replaced with the correct content. For example: The variable `Delivery address First name and last name` will be replaced in the email with the first name and the last name of the contact from the delivery address.
+
+In case of certain events, e.g. if a new order is placed in your online shop or when a contact subscribes to a newsletter, your plentymarkets system automatically creates emails from these templates and sends them to your contacts.
+
+[#preparatory-settings]
+== Carrying out the preparatory settings
+
+The following sub-chapters describe which preparatory settings are needed so that you can work with the EmailBuilder.
+
+[#assign-rights]
+=== Assigning rights for back end users
+
+:rights-purpose: work with the EmailBuilder
+:right-one: pass:quotes[*CRM > Email > Edit automatic email*]
+:right-two: pass:quotes[*CRM > Email > Edit HTML design*]
+:right-three: pass:quotes[*CRM > Email > Edit info service*]
+:right-four: pass:quotes[*CRM > Email > Edit newsletter*]
+:right-five: pass:quotes[*CRM > Email > Edit signature*]
+:right-six: pass:quotes[*CRM > Email > Edit template*]
+:right-seven: pass:quotes[*CRM > Email > Edit access data*]
+:right-eight: pass:quotes[in the *Menu visibilities* area: *CRM > EmailBuilder*]
+
+include::../_includes/textblocks/instructions/rights.adoc[]
+
+[#email-server-login-details]
+=== Saving the email server’s login details
+
+In the *Setup »Client » [Select client] » Email » Login details* menu, you save the login details of a mailbox so that plentymarkets emails such as order or shipping confirmations can be sent from this email address.
+
+[.instruction]
+Saving the email server’s login details:
+
+. Go to *Setup » Client » [Select client] » Email » Login details*.
+. Carry out the desired settings. Note <<#table-email-server-login-details>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-email-server-login-details]]
+.Saving the email server’s login details
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Test mode*
+| Select *Active* or *Inactive*. +
+*Active* = The test mode is activated. All emails are only sent to the saved email address. This allows you to test the settings before switching to the live mode. +
+*Inactive* = The live mode is activated. +
+*_Important:_* The test mode is only applied to this online shop. The settings for additional clients (shops) are carried out in the client’s menu.
+
+| *Name of sender*
+|Enter your name or the name of the online shop. The name is displayed to the recipient. Avoid using special characters in order to allow for correct display.
+
+| *Email address*
+|Enter the email address as it is listed in the email programme.
+
+| *Outgoing mail server/SMTP server*
+|Enter the outgoing mail server as specified by the provider (usually smtp.domain.co.uk or mail.domain.co.uk). +
+*_mailbox.org:_* For mailbox.org mailboxes, enter the outgoing mail server *smtp.mailbox.org* and select the encryption method *SSL*.
+
+| *User name*
+|Enter the user name that matches the email address. +
+*_mailbox.org:_* The mailbox.org user name is the complete email address of the mailbox.org mailbox.
+
+| *Password*
+|Enter the password that matches the user name and email address.
+
+| *Port (standard port: 25)*
+|Enter the value *25*. This value is correct for nearly all providers. Otherwise, ask your provider about the correct port. +
+*_mailbox.org:_* For mailbox.org mailboxes, enter port *465* and select the encryption method *SSL*.
+
+| *Encryption*
+| Select *SSL*, *TLS* or *No encryption*.  +
+*_mailbox.org:_* For mailbox.org mailboxes, enter port *465* and select the encryption method *SSL*.
+
+|====
+
+[TIP]
+.Entering newsletter login details
+====
+Go to *Setup » Client » [Select client] » Email » Newsletter*. Enter the login details to use the newsletter service that is integrated in plentymarkets. For further information, refer to the <<crm/sending-newsletters#200, Entering newsletter login details>> chapter of the <<crm/sending-newsletters#, Newsletters>> page of the manual.
+====
+
+[#email-signature]
+=== Saving the email signature
+
+Go to *Setup» Client » [Select client] » Email » Signature* to save the signature. The signature is then automatically added to your email templates when you inserted the corresponding variable in the template.
+
+[IMPORTANT]
+.Note the priority of the signature
+====
+The signature that was saved for a user in his or her user account in the *Setup » Settings » User » Accounts* menu takes priority over the signature that is saved in the *Setup » Client » Select client » Email » Signature* menu. +
+*_This means:_* If you insert, for example, the variable `Signature in HTML format` in the template, the signature is taken from the user account. If no signature is saved in the user account, the signature that is saved in the *Setup » Client » [Select client] » Email » Signature* menu is used.
+====
+
+// If you inserted the template variable `Signature in plain text` in the email template, the signature that is saved in the *Setup » Client » [Select client] » Email » Signature* menu is always used.
+
+[#manage-folders]
+== Managing folders
+
+You can create as many folders and sub-folders as you like in the EmailBuilder. After you created a folder, you can create new sub-folders, new templates in general and new header and footer templates by clicking on icon:more_vert[set=material].
+
+Your plentymarkets system contains a folder with pre-defined default templates. These are explained further down on this page in the <<#use-default-templates, Using default templates>> chapter.
+
+[[image-emailbuilder-folder-structure]]
+.Folder structure in the EmailBuilder
+image::crm/assets/emailbuilder-folder-structure.png[width=640, height=360]
+
+[#create-folder]
+=== Creating a folder
+
+Create folders to get a better overview of your email templates at a later point in time. Proceed as described below to create a new folder.
+
+[.instruction]
+Creating a folder:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Click in the bottom left on icon:plus[role="green"] *New main folder*. +
+→ The *Create new folder* window opens.
+. Enter the name for the folder.
+. *Save* the settings. +
+→ The new folder is added to the folder list.
+
+[TIP]
+Once you have carried out all settings as described in the following – so you have created sub-folders, templates, headers and footers –, you can open the main folder by clicking on icon:chevron_right[set=material]. You will see there at a glance all sub-folders, templates, headers and footers that you created directly in the main folder.
+
+[#rename-folder]
+=== Renaming the folder
+
+You can update the folder name at any time. To do so, proceed as described below.
+
+[.instruction]
+Renaming the folder:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. In the line of the folder that you want to rename, click on icon:more_vert[set=material]. +
+→ A window opens.
+. Click on icon:edit[set=material] *Rename*. +
+→ The *Rename folder* window opens.
+. Enter an other name for the folder.
+. Click on *Update*. +
+→ The new folder name is updated and shown in the list.
+
+[#create-sub-folder]
+=== Creating a sub-folder
+
+Create sub-folders in your folders to group your email templates in even more detailed topics. You can create as many sub-folders as you like. Also the number of levels is unlimited.
+
+[TIP]
+.Create a draft for your folder structure in advance
+====
+We recommend creating a draft in advance to avoid confusing and unclear nesting levels in your folder structure. Because: The more levels you create, the more complex the structure will be.
+====
+
+[.instruction]
+Creating a sub-folder:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. In the line of the folder that you want to create a sub-folder for, click on icon:more_vert[set=material]. +
+→ A window opens.
+. Click on icon:plus[] *New sub-folder*. +
+→ The *Create new folder* window opens.
+. Enter the name for the sub-folder.
+. *Save* the settings. +
+→ The sub-folder is created within the main folder.
+
+Open the sub-folder by opening the main folder with a click on icon:chevron_right[set=material]. You can see all sub-folders that you created at a glance.
+
+[#delete-folder]
+=== Deleting a folder
+
+You can delete folders and sub-folders at any time. Note that the entire content in the folder will also be deleted.
+
+[.instruction]
+Deleting a folder:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. In the line of the folder or sub-folder that you want to delete, click on icon:more_vert[set=material]. +
+→ A window opens.
+. Click on *Delete*. +
+→ A window opens and you need to confirm your decision.
+. Click on *Delete*. +
+→ The folder with all corresponding sub-folders and templates contained in there will be deleted.
+
+[#manage-templates]
+== Managing templates
+
+Learn in the following sub-chapters how to create, search for and edit templates for <<#create-header, headers>> and <<#create-footer, footers>> and <<#create-template, general templates>>. You can also use pre-defined <<#use-default-templates, default templates>>. Moreover, you will learn everything about the available <<#insert-widget, widgets>> and how you can use these widgets.
+
+The widgets and variables that are contained in the template form the actual content of your email. Via the widgets, you can insert as many variables as you like into a template by using drag-and-drop. These variables will then be replaced with the correct content when the email is sent to your customers.
+
+To see which variables are available for your email templates, refer to the lists on the bottom of this page in the <<#variables-emailbuilder, Available variables and twig expressions for the code widget>> chapter.
+
+[#template-header-footer]
+=== Creating templates for header and footer
+
+Create templates for the header and the footer that you can later use in all of your email templates. Header and footer are globally active. This means: changes you make to the header and footer affect the rest of all existing templates and all other templates that you will create in the future.
+
+You can insert, for example, your company logo into the header and insert into the footer your signature and the general company details such as the address, links to social media, the legal structure of your company, details about your company’s executive board, and much more.
+
+Proceed as described below to create a template for the <<#create-header, header>> and the <<#create-footer, footer>>.
+
+[#create-header]
+==== Creating a header template
+
+Proceed as described below to create a template for the header of your email template.
+
+[.instruction]
+Creating a header template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. In the line of the folder or sub-folder in which you want to create a header, click on the context menu (icon:more_vert[set=material]). +
+→ A window opens.
+. Click on icon:plus[] *New header*.
+. Enter a name for the header.
+. *Save* (icon:save[set=material]) the settings. +
+→ The template is created.
+. Click on *Edit* (icon:edit[set=material]).
+. Edit the header according to your wishes and insert <<#insert-widget, widgets>> and <<#variables-emailbuilder, variables>>.
+. *Save* the settings.
+
+[#show-header-preview]
+[discrete]
+==== Showing the preview of the header
+
+Check the header by opening the preview.
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the header for which you want to show the preview.
+. Click on the header.
+. Click on *Preview* (icon:preview[set=material]).
+. Select *Preview HTML* or *Preview plain text*. +
+→ The preview opens in a separate window.
+. Check the header.
+. *Close* the window.
+
+If you are not satisfied with the result, edit the content of your header again.
+
+[#create-footer]
+==== Creating a footer template
+
+Proceed as described below to create a template for the footer of your email template.
+
+[.instruction]
+Creating a footer template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. In the line of the folder or sub-folder in which you want to create a footer, click on icon:more_vert[set=material]. +
+→ A window opens.
+. Click on icon:plus[] *New footer*. +
+→ A new view opens.
+. Enter a name for the footer.
+. *Save* (icon:save[set=material]) the settings. +
+→ The template is created.
+. Click on *Edit* (icon:edit[set=material]).
+. Edit the footer according to your wishes and insert <<#insert-widget, widgets>> and <<#variables-emailbuilder, variables>>.
+. *Save* the settings.
+
+[#show-footer-preview]
+[discrete]
+==== Showing the preview of the footer
+
+Check the footer by opening the preview.
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the footer for which you want to show the preview.
+. Click on the footer.
+. Click on *Preview* (icon:preview[set=material]).
+. Select *Preview HTML* or *Preview plain text*. +
+→ The preview opens in a separate window.
+. Check the footer.
+. *Close* the window.
+
+If you are not satisfied with the result, edit the content of your footer again.
+
+[#create-template]
+=== Creating a template
+
+Now create the template and save basic settings such as the name, the subject, CC and BCC and select the appropriate header and footer for the template. Proceed as described below to create a new template.
+
+[TIP]
+.Switching between multiple templates
+====
+If you later edit multiple templates in the editor at the same time, you can use the navigation to switch between the individual templates. By clicking on *Configuration*, you will be routed directly to the folder tree. The template that you have last edited will be opened there automatically.
+====
+
+[[image-emailbuilder-template]]
+.Creating a template in the EmailBuilder
+image::crm/assets/emailbuilder-create-new-template.png[width=640, height=360]
+
+[.instruction]
+Creating a template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. In the line of the folder or sub-folder in which you want to create a template, click on icon:more_vert[set=material]. +
+→ A window opens.
+. Click on icon:plus[] *New template*.
+. Carry out the settings. Note <<#table-emailbuilder-create-template>> and <<#image-emailbuilder-template>>.
+. *Save* (icon:save[set=material]) the settings.
+
+[TIP]
+.Email templates are sent in multipart format
+====
+The email templates in the EmailBuilder use the multipart format. This means that the emails are sent in an HTML and in a text version at the same time.  +
+This ensures that your emails can be read by all recipients, even if their email client restricts or completely disables the display of HTML in emails. On the other hand, the HTML versions of your emails designed by you are displayed for the recipients whose email client allows the display of HTML. The advantage for you is that you only have to maintain one template.
+====
+
+[[table-emailbuilder-create-template]]
+.Creating a template in the EmailBuilder
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Save*
+|Saves the settings.
+
+// | *Preview*
+// |Shows a preview of the template. +
+// Select whether you want to see the preview in HTML format or in plain text.
+// Depending on which preview type you select, a window with the content of the email template opens in HTML format or in plain text.
+
+2+| *Name*
+
+|[#intable-template-settings-name]*Name*
+|What’s the name of the template? Enter a descriptive name so you can easily find the template at a later point in time. +
+*_Note:_* This field is a mandatory field.
+
+2+|[#intable-template-settings-content]*Content*
+2+| Click on icon:edit[set=material] to edit the content of the template and to use <<#insert-widget, widgets>> and <<#variables-emailbuilder, variables>>. +
+The editor area opens and you can edit the content of the template by clicking on the widgets. +
+The email templates use the multipart format. This means that the emails are sent in an HTML and in a text version at the same time.
+
+|[#intable-template-settings-default-template]*Build from default template*
+|Expand the area (icon:caret-down[]) to select one of the <<#use-default-templates, default templates>> and to link it with the new template.
+
+2+| *Settings*
+
+|[#intable-template-settings-header]*Header*
+|Which header do you want to show in this template? Select a header from the drop-down list (icon:caret-down[]). +
+The list contains all <<#create-header, headers>> that you have already created.
+
+|[#intable-template-settings-footer]*Footer*
+|Which footer do you want to show in this template? Select a footer from the drop-down list (icon:caret-down[]). +
+The list contains all <<#create-footer, footers>> that you have already created.
+
+//| *Type*
+//|In which area should the email template be available? Select a type from the drop-down list.
+
+|[#intable-template-settings-static-attachments]*Select static attachments*
+|This drop-down list provides all attachments that you uploaded before in the *CMS » Documents* menu. These are, for example, installation guides or product data sheets. Select (icon:check-square[role="blue"]) up to 3 static attachments from the drop-down list.
+
+|[#intable-template-settings-dynamic-attachments]*Select dynamic attachments*
+|This drop-down list provides all <<orders/order-documents#100, location-based documents>> that you set up in the *Setup » Client » [Select client] » Locations » [Select location] » Documents* menu. Select (icon:check-square[role="blue"]) up to 3 dynamic attachments from the drop-down list.
+
+|[#intable-template-settings-subject]*Subject*
+|What’s the subject of your email?
+
+//| *From*
+//|This is the sender of the email just as it is saved in the email settings of your plentymarkets system.
+
+|[#intable-template-settings-reply-to]*Reply to*
+|Who is the recipient of this email? Enter the email address(es). +
+*_Note:_* When you enter several email addresses, separate them with a comma each.
+
+|[#intable-template-settings-cc]*CC*
+|To whom do you want to send a copy of this email? Enter the email address(es). +
+*_Note:_* When you enter several email addresses, separate them with a comma each.
+
+|[#intable-template-settings-bcc]*BCC*
+|To whom do you want to send a blind copy of this email? Enter the email address(es). +
+*_Note:_* When you enter several email addresses, separate them with a comma each.
+
+|[#intable-template-settings-maximum-width]*Maximum width (px)*
+|Here, you can determine the width of the email template to a certain value in px. +
+*_Note:_* The default value is 1200px and corresponds to a width of 100 %. If you determine a value, the template width will be adjusted accordingly.
+
+|[#intable-template-settings-custom-styles]*Custom styles*
+|Here, you can adjust the CSS styling of your template. In the following list, you can find some common examples: +
+*_Background colour:_* Enter `background-color:` in this field followed by the desired link:https://htmlcolorcodes.com/[HTML colour code^]{nbsp}icon:external-link[], e.g. `background-color:&#35;A9F5D0;`. +
+*_Font colour:_* Enter `color:` in this field followed by the desired link:https://htmlcolorcodes.com/[HTML colour code^]{nbsp}icon:external-link[], e.g. `color:&#35;A0A1B;`. +
+*_Font size:_* Enter `font-size:` in this field followed by the desired font size in pixel, e.g. `font-size:20px;`. +
+*_Font weight:_* Enter `font-weight:` in this field followed by the desired font weight, e.g. `font-weight:700;`. +
+*_Text alignment:_* Enter `text-align:center;` in this field if the text should be placed in the middle. Enter `text-align:right;` if the text should be aligned on the right. +
+*_Background image:_* Enter `background-image: url(_link_to_image_)` in this field and replace `_link_to_image_` with the corresponding image link to show a background image in your template. +
+*_Text frame:_* Enter e.g. `border: 1px solid blue;` in this field to insert a blue frame with 1px around the text. +
+*_Inner margin:_* Enter `padding:10px;` in this field if the margin should be 10px on all sides. Enter `padding: 10px 20px;` if the margin should be 10px on the top and bottom and 20px on the left and right sides. +
+*_Note:_* If you want to save multiple CSS stylings for the template, enter all values one behind the other, separated by a semicolon. +
+*_Tip:_* Use the *Preview HTML* (icon:preview[set=material] in the EmailBuilder to check your entries and to make further adjustments, if needed.
+
+|====
+
+Now structure the content of your email by inserting variables via the widgets. How to proceed is described in the following chapter <<insert-widget#, Inserting a widget into a template>>.
+
+[#insert-widget]
+=== Inserting a widget into a template
+
+In the editor, you can find a selection of widgets whose contents are already pre-configured for you. For example, you will find in the *Order items* widget a pre-defined list with the most important variables around the ordered item such as item name, the number of ordered items, the prices, the shipping costs and the total invoice amount. You can, however, customise the content anytime and add more column names and single positions. <<#image-emailbuilder-widget-order-items>> shows the editing mode of the pre-defined *Order items* widget.
+
+[[image-emailbuilder-widget-order-items]]
+.Editing mode of the pre-defined widget *Order items*
+image::crm/assets/emailbuilder-editing-mode-order-items.png[width=640, height=360]
+
+<<#table-available-widgets-emailbuilder>> lists all widgets that are available in the EmailBuilder as well as an explanation how you can use the widgets.
+
+[[table-available-widgets-emailbuilder]]
+.Available widgets in the EmailBuilder
+[cols="1,3"]
+|====
+|Widget |Explanation
+
+|[#intable-widget-two-column-layout]*Two-column layout*
+a|Allows to display text in a two-column layout. Click on icon:settings[set=material] to open the settings. You can also determine the relation how the fields are displayed. The following values are available:
+
+* 50% / 50% (standard)
+* 30% / 70%
+* 70% / 30%
+
+You can insert further widgets in this widget by dragging them to one of the two columns. Insert, for example, an <<#intable-widget-image, image widget>>.
+
+Click on *Close settings* (icon:times[]) to close the settings. Click on *Delete widget* (icon:delete[set=material]) to remove the widget.
+
+|[#intable-widget-three-column-layout]*Three-column layout*
+a|Allows to display text in a three-column layout. 
+
+You can insert further widgets in this widget by dragging them to one of the three columns. Insert, for example, an <<#intable-widget-image, image widget>>.
+
+Click on icon:settings[set=material] to open the settings. Here, you can remove the widget by clicking on *Delete widget* (icon:delete[set=material]). Further settings cannot be carried out in this area. Click on *Close settings* (icon:times[]) to close the settings.
+
+|[#intable-widget-text]*Text*
+|In this widget, you can enter text and use variables. You can also format the text you entered. To do so, double-click on the word that you want to format.
+
+Click on icon:edit[set=material] to open the list with the variables on the left side of the screen. Use the search function to find the variables or find the appropriate variables by expanding the individual areas (icon:chevron_right[set=material]). Click on the variable that you want to insert. Enter additional text in the widget, if needed.
+
+Click on icon:settings[set=material] to open the settings. Here, you can remove the widget by clicking on *Delete widget* (icon:delete[set=material]). Further settings cannot be carried out in this area. Click on *Close settings* (icon:times[]) to close the settings.
+
+|[#intable-widget-code]*Code*
+|In this widget, you can insert text in HTML format. To do so, some basic HTML skills are needed.
+
+Click on icon:code[role="darkGrey"] to open the view.
+
+Click on icon:settings[set=material] to open the settings. Here, you can remove the widget by clicking on *Delete widget* (icon:delete[set=material]). Further settings cannot be carried out in this area. Click on *Close settings* (icon:times[]) to close the settings.
+
+|[#intable-widget-contact-address]*Contact address*
+|This widget contains sample data of the contact address. The layout of the address depends on the settings that you saved in the *Setup » CRM » Address layout* menu. This means: The layout in the EmailBuilder is displayed in the same way as the address layout that you defined as the standard address layout in the *Setup » CRM » Address layout* menu.
+
+Click on icon:settings[set=material] to open the settings. Select the address type *Invoice address* or *Delivery address* from the drop-down list.
+
+Click on *Close settings* (icon:times[]) to close the settings. Click on *Delete widget* (icon:delete[set=material]) to remove the widget.
+
+|[#intable-widget-order-address]*Order address*
+|This widget contains sample data of the order address. The layout of the address depends on the settings that you saved in the *Setup » CRM » Address layout* menu. This means: The layout in the EmailBuilder is displayed in the same way as the address layout that you defined as the standard address layout in the *Setup » CRM » Address layout* menu.
+
+Click on icon:settings[set=material] to open the settings. Select the address type *Invoice address* or *Delivery address* from the drop-down list.
+
+Click on *Close settings* (icon:times[]) to close the settings. Click on *Delete widget* (icon:delete[set=material]) to remove the widget.
+
+|[#intable-widget-order-items]*Order items*
+|This widget contains an already pre-defined layout for the order items with sample data. The sample data will then be replaced with the correct values in the email. <<#image-emailbuilder-widget-order-items>> shows the standard widget with further settings options. 
+
+Click on icon:settings[set=material] to open the settings. Here you can select from the drop-down lists which contents should be shown. By clicking on *Add new entry* (icon:plus-square[role="green"]) in the settings, you can add further columns. By clicking on *Remove entry* (icon:minus-square[role="red"]), the columns are deleted from the overview.
+
+|[#intable-widget-item-list]*Item list*
+|In this widget, you can enter text and use variables. Note that you can only use variables from the sub-category <<#variables-order-order-items, Order / Order items>> in this widget.
+
+Click on icon:edit[set=material] to open the list with the variables on the left side of the screen. Use the search function to find the variables or find the appropriate variables by expanding the individual areas (icon:chevron_right[set=material]). Click on the variable that you want to insert. Enter additional text in the widget, if needed.
+
+Click on icon:settings[set=material] to open the settings. Here, you can remove the widget by clicking on *Delete widget* (icon:delete[set=material]). Further settings cannot be carried out in this area. Click on *Close settings* (icon:times[]) to close the settings.
+
+|[#intable-widget-image]*Image*
+| Use this widget to upload images such as your company logo to show it in your email templates. Click on icon:settings[set=material] to open the settings. +
+You can upload the image, enter the width and height of the image in px or %, enter an alternative text, adjust the styling in CSS format and save the image link. +
+*_Note:_* Always use `https` for the image link. +
+*_Tip:_* If you want to place the image to a certain position, you can adjust the CSS styling in the field *Custom styling*, e.g. `margin-left: auto; margin-right: 0; display: block;` or `float:right;display:block;`. Further information can be found link:https://www.w3schools.com/css/css3_images.asp[here^]{nbsp}icon:external-link[] and link:https://www.caniemail.com/[here^]{nbsp}icon:external-link[].
+
+Click on *Close settings* (icon:times[]) to close the settings. Click on *Delete widget* (icon:delete[set=material]) to remove the widget.
+
+|====
+
+Proceed as described in the following to insert a widget into a template.
+
+[.instruction]
+Inserting a widget into a template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the template you want to edit.
+. Click on the template.
+. Click on *Edit* (icon:edit[set=material]). +
+→ The editor opens and the widgets are loaded.
+. Click on the widget on the left side and drag-and-drop it to the shaded area.
+. Click on icon:edit[set=material] or on icon:settings[set=material] and carry out the settings.
+. *Save* (icon:save[set=material]) the settings.
+
+[#show-widget-preview]
+[discrete]
+==== Showing the preview of the widget
+
+Check the widget by opening the preview.
+
+[TIP]
+.Email templates are sent in multipart format
+====
+The email templates in the EmailBuilder use the multipart format. This means that the emails are sent in an HTML and in a text version at the same time.  +
+This ensures that your emails can be read by all recipients, even if their email client restricts or completely disables the display of HTML in emails. On the other hand, the HTML versions of your emails designed by you are displayed for the recipients whose email client allows the display of HTML. The advantage for you is that you only have to maintain one template.
+====
+
+[.instruction]
+Showing the preview:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the template for which you want to show the preview.
+. Click on the template.
+. Click on *Preview* (icon:preview[set=material]).
+. Select *Preview HTML* or *Preview plain text*. +
+→ The preview opens in a separate window.
+. Check the widget.
+. *Close* the window.
+
+If you are not satisfied with the result, <<#edit-widget, edit>> the widget.
+
+[#edit-widget]
+=== Editing the widget
+
+You can edit the content of the widgets at any time. To do so, proceed as described below.
+
+[.instruction]
+Editing a widget:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the template you want to edit.
+. Click on the template.
+. Click on *Edit* (icon:edit[set=material]). +
+→ The editor opens and the widgets are loaded.
+. Click on icon:settings[set=material]. +
+→ The widget settings open – if they are available.
+. Click on icon:edit[set=material] - if available. +
+→ The variables open on the left side.
+. Use the search function to find the variables or find the appropriate variables by expanding the individual areas (icon:chevron_right[set=material]).
+. Click on the variable that you want to show in the widget. +
+→ The variable is taken to the widget.
+. *Save* the settings.
+
+[#use-default-templates]
+=== Using default templates
+
+Before you <<#create-folder, created a new folder>>, you might have recognised the folders *Standardvorlagen* and *Default templates*? These folders contain pre-defined templates in German and English language. You can use the templates as they are or adjust the contents just as you like.
+
+Besides the content of the email, the name of the template as well as the subject are already filled in in a default template. This means that you only have to select the header and footer and fill the fields *Reply to* and, if needed, also *CC* and *BCC*.
+
+[TIP]
+.Switching between multiple templates
+====
+If you later edit multiple templates in the editor at the same time, you can use the navigation to switch between the individual templates. By clicking on *Configuration*, you will be routed directly to the folder tree. The template that you have last edited will be opened there automatically.
+====
+
+[[image-emailbuilder-example-default-template]]
+.Example: Default template *Order: Shipping confirmation*
+image::crm/assets/emailbuilder-example-default-template-shipping-confirmation.png[width=640, height=360]
+
+Would you like to know which default templates are already available in the EmailBuilder and how their subjects are? Simply expand the following area by clicking on icon:expand_more[set=material].
+
+[#default-templates-name-and-subject]
+[.collapseBox]
+.Default templates in the EmailBuilder and their subjects
+--
+
+*German default templates in the EmailBuilder and their subjects*
+
+[[table-default-templates-german]]
+.German default templates in the EmailBuilder and their subjects
+[cols="2,2"]
+|====
+|German template |Subject
+
+|Auftrag: Änderung
+|Auftragsänderung Ihrer Bestellung mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|Auftrag: Teilzahlung erhalten
+|Teilzahlung für Auftrags-ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; erhalten
+
+|Auftrag: Versandbestätigung
+|Versandbestätigung für Ihre Bestellung mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|Auftrag: Zahlungseingang vollständig
+|Zahlung für Auftrag &#123;&#8288;&#123;order.id&#125;&#8288;&#125; vollständig erhalten
+
+|eBay: Disput / Storno, keine Zahlung
+|Ihre Bestellung mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; wurde storniert
+
+|eBay: Eingangsbestätigung Bestellung
+|eBay-Auktion gewonnen: Auftrags-ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|eBay: Eingangsbestätigung mit Bankdaten ohne Checkout
+|Eingangsbestätigung zum eBay-Auftrag mit der ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|Shop: Neues Passwort
+|Ihre angeforderten Zugangsdaten zu unserem Webshop
+
+|Shop: Newsletter-Anmeldung
+|Bestätigung zur Newsletter-Anmeldung
+
+|Shop: Eingangsbestätigung Bestellung
+|Auftragsbestätigung für Auftrags-ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|====
+
+*English default templates in the EmailBuilder and their subjects*
+
+[[table-default-templates-english]]
+.English default templates in the EmailBuilder and their subjects
+[cols="2,2"]
+|====
+|English template |Subject
+
+|Order: Changes
+|Change to your order with ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|Order: Partial payment received
+|Partial payment for order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; received
+
+|Order: Shipping confirmation
+|Shipping confirmation for your order with ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|Order: Payment complete
+|Payment for order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; fully received
+
+|eBay: dispute / cancellation, no payment
+|Your order with the ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125; was cancelled
+
+|eBay: Order confirmation
+|eBay auction won: Order ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|eBay: Order confirmation with bank details without checkout
+|Order confirmation for your eBay order with the ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|Shop: New password
+|Your requested login details for our online shop
+
+|Shop: Newsletter registration
+|Confirmation of newsletter registration
+
+|Shop: Order confirmation
+|Order confirmation for your order with ID &#123;&#8288;&#123;order.id&#125;&#8288;&#125;
+
+|====
+
+--
+
+[#template-show-preview]
+=== Showing the preview of the template
+
+Check the email template by opening the preview.
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the template for which you want to show the preview.
+. Click on the template.
+. Click on *Preview* (icon:preview[set=material]).
+. Select *Preview HTML* or *Preview plain text*. +
+→ The preview opens in a separate window.
+. Check the template.
+. *Close* the window.
+
+If you are not satisfied with the result, <<#edit-template, edit>> the content of your template.
+
+[#search-templates]
+=== Searching for a template
+
+The following instructions describes how to search for templates in general. The procedure is thus identical for searching for all templates, i.e. also searching for the templates that you created for the header and the footer.
+
+[.instruction]
+Searching for a template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Select the language and/or client from the drop-down lists. +
+→ The templates that correspond to the search criteria entered are shown.
+. Click on the template to open it.
+
+[#edit-template]
+=== Editing a template
+
+The following instruction describes how to edit templates in general. The procedure is thus identical for editing all templates, i.e. also editing the templates that you created for the header and the footer.
+
+[TIP]
+.Switching between multiple templates
+====
+If you later edit multiple templates in the editor at the same time, you can use the navigation to switch between the individual templates. By clicking on *Configuration*, you will be routed directly to the folder tree. The template that you have last edited will be opened there automatically.
+====
+
+[.instruction]
+Editing a template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the template you want to edit.
+. Click on the template.
+. Carry out the changes. Note <<#table-emailbuilder-create-template>>.
+. *Save* (icon:save[set=material]) the settings.
+
+[#delete-template]
+=== Deleting a template
+
+Proceed as described below to delete templates. Only the assembled template will be deleted but _not_ the components contained in it such as the header and footer.
+
+[.instruction]
+Deleting a template:
+
+. Go to *CRM » EmailBuilder (Test phase)*.
+. Expand the folder (icon:chevron_right[set=material]) that contains the template you want to delete.
+. In the line of the template that you want to delete, click on icon:more_vert[set=material]. +
+→ A window opens.
+. Click on *Delete*. +
+→ A window opens and you need to confirm your decision.
+. Click on *Delete*. +
+→ The template is deleted.
+
+[#variables-emailbuilder]
+== Available variables and twig expressions for the code widget and the subject line
+
+Learn in the following sub-chapters which variables are available and which twig expressions you can use in the code widget and in the template’s subject line.
+
+[#available-variables]
+[discrete]
+=== Available variables
+
+The available variables for the EmailBuilder are grouped into different categories and sub-categories:
+
+* Order
+
+** General order variables
+** Delivery address
+** Invoice address
+** Order items (only for item list widget)
+** Shipping
+
+* Contact
+
+** General contact variables
+** Delivery address
+** Invoice address
+** Options
+
+* Global
+
+* Newsletter
+
+Do you want to know which variables are available for the individual categories and sub-categories and how the twig expressions are called that you can use in the code widget in the template’s subject line? Simply expand the corresponding areas below by clicking on icon:expand_more[set=material].
+
+[#twig-introduction]
+[discrete]
+=== Twig expressions for the code widget and the subject line
+
+In the following expandable areas you find besides the variables also the twig expressions that you can use in the code widget and in a template’s subject line.
+
+[#twig-subject]
+[discrete]
+==== Twig expression in the subject line
+
+If you want to use a twig expression in the template’s subject line, this expression has to be surrounded by double curly brackets.
+
+*_Example:_* If you want to display the shipping service provider in your template’s subject line, open the expandable area *Order / Shipping*, search for the variable *Shipping service provider* and insert the corresponding twig expression in the subject line of your template as follows: `&#123;&#8288;&#123;order.formattedShipping.providerName&#125;&#8288;&#125;`.
+
+[#twig-code-widget]
+[discrete]
+==== Twig expression in the code widget
+
+If you use link:https://twig.symfony.com/doc/3.x/tags/if.html[if queries^]{nbsp}icon:external-link[] in your code widget, for example, there is no need to insert double curly brackets in the if query itself, but in the body text. For further information about twig, refer to the link:https://twig.symfony.com/doc/3.x/[Twig Documentation^]{nbsp}icon:external-link[].
+
+In the <<#code-examples-code-widget, Code examples for the code widget>> chapter, you can find some if queries that you can simply copy to your code widget.
+
+Do you want to know which variables are available for the individual categories and sub-categories and how the twig expressions are called that you can use in the code widget? Simply expand the following areas by clicking on icon:expand_more[set=material].
+
+[#variables-order]
+[.collapseBox]
+.Variables in the *Order* category
+--
+
+[cols="2,4,3"]
+|====
+|Name of the variable |Explanation |Twig expression
+
+| `Access order in the online shop`
+|Opens the URL to the order in your online shop.
+| `order.access_key`
+
+| `Barcode ID`
+|
+| `order.formattedGeneral.barcodeOrderID`
+
+| `Plenty ID`
+|The ID is automatically assigned by the system and cannot be changed. You can find the ID in the *Setup » Client » [Select client] » Settings* menu.
+| `order.plentyId`
+
+| `Coupon value`
+|
+| `order.formattedGeneral.couponValue`
+
+| `Currency code`
+|Currency code, e.g. *EUR* or *USD*.
+| `order.formattedSubtotals.currencyCode`
+
+| `Currency symbol`
+|Currency symbol, e.g. *€* or *$*.
+| `order.formattedSubtotals.currencySymbol`
+
+| `Customer sign`
+|
+| `order.formattedProperties.customerSign`
+
+| `Customer wish`
+|During the checkout via the online shop, the contact can enter a wish regarding the items they ordered. This wish is saved as order note in the order data.
+| `order.formattedComments.customerSpecialWishes`
+
+| `DHL Retoure Online QR code`
+|Sends your customers a QR code for DHL Retoure Online. If your customers want to send back an item, they have to show the QR code on their smartphone to one of the employees in the post office and they will print the return label and attach it to the parcel. Thus, your customers do no longer need a printer at home and you do no longer have to send the return label attached as PDF. +
+The QR code is shown as an URL in the email of your customers. After clicking on the URL, the QR code appears in a separate window.
+| `order.formattedGeneral.DHLRetoureOnlineQRCodeURL`
+
+| `Date and time of incoming order`
+|Date and time of the incoming order as saved in the order.
+| `order.formattedDates.createdOn ? (order.formattedDates.createdOn \| date('m-d-Y H:i:s')) : ''`
+
+| `Date of the incoming order`
+|Date of the incoming order as saved in the order.
+| `order.formattedDates.createdOn ? (order.formattedDates.createdOn \| date('m-d-Y')) : ''`
+
+| `Date of incoming payment`
+|Date and time of the incoming payment as saved in the order.
+| `order.formattedDates.paidOn`
+
+| `Delivery address VAT number`
+|VAT number from the delivery address as saved in the order.
+| `order.formattedAddresses.deliveryAddress.formattedOptions.VATNumber`
+
+| `External order ID`
+|
+| `order.formattedProperties.externalOrderId`
+
+| `Flag`
+|Flag that was selected in the order.
+| `order.formattedProperties.flag`
+
+| `Invoice address VAT number`
+|VAT number from the invoice address as saved in the order.
+| `order.formattedAddresses.invoiceAddress.formattedOptions.VATNumber`
+
+| `Invoice date`
+|
+| `order.formattedDocuments.invoiceDate`
+
+| `Invoice number ID`
+|
+| `order.formattedDocuments.invoice`
+
+| `Number of packages`
+|Returns the number of packages contained in the order.
+| `order.package`
+
+| `Total invoice amount, net`
+|
+| `order.formattedGeneral.invoiceTotalNet`
+
+| `Net total order`
+|
+| `order.formattedGeneral.totalNet`
+
+| `Open amount`
+|
+| `order.formattedGeneral.openAmount`
+
+| `Order ID`
+|
+| `order.id`
+
+| `ID of the order type`
+|ID of the order type, e.g. `1` for order, `4` for credit note and `6` for repair order. +
+*_Note:_* To see the entire list of the order types and their IDs, refer to this <<data/internal-IDs#80, page of the manual>>.
+| `order.typeId`
+
+| `Order type name`
+|Name of the order type, e.g. `Order`, `Credit note` and `Repair order`. +
+*_Note:_* To see the entire list of the order types and their IDs, refer to this <<data/internal-IDs#80, page of the manual>>.
+| `order.formattedGeneral.orderTypeName`
+
+| `Order warehouse ID`
+|
+| `order.formattedProperties.warehouse`
+
+| `Main order ID`
+|ID of the highest preceding order. Usually, this is a normal order. +
+*_Example:_* In case of a credit note C1 coming from a return R1 from the order O1, the `Parent Order ID` returns the ID of R1 and `$OriginOrderID` returns the ID of O1.
+| `order.formattedOriginOrder.originOrderId`
+
+| `Overpaid amount`
+|
+| `order.formattedGeneral.overpaidAmount`
+
+| `Amount paid`
+|
+| `order.formattedGeneral.paidAmount`
+
+| `Parent order ID`
+|ID of the direct preceding order +
+*_Example:_* In case of a credit note, this could be the ID of the return or of the order from which the credit note was generated.
+| `order.parent_order_id`
+
+| `Payment method`
+|Name of the payment method as saved in the *Setup » Orders » Payment » Payment methods* menu.
+| `order.formattedGeneral.methodOfPaymentName`
+
+| `Payment method ID`
+|The ID is automatically assigned by the system. The IDs are listed in the *Setup » Orders » Payment » Payment methods* menu.
+| `order.formattedProperties.paymentMethod`
+
+| `Referrer`
+|Name of the order referrer as it is saved in the *Setup » Orders » Referrers* menu.
+| `order.formattedReferrer.name`
+
+| `Referrer ID`
+|ID of the order referrer as it is saved in the *Setup » Orders » Referrers* menu.
+| `order.formattedReferrer.id`
+
+| `Reorder ID`
+|
+| `order.formattedReorder.id`
+
+| `Seller account`
+|
+| `order.formattedProperties.sellerAccount`
+
+| `Status ID`
+|ID of the order status as it is saved in the *Setup » Orders » Statuses* menu.
+| `order.statusId`
+
+| `Status`
+|Name of the order status as it is saved in the *Setup » Orders » Statuses* menu.
+| `order.statusName`
+
+| `Total invoice amount`
+|*_Example:_* 1.234,00
+| `order.formattedGeneral.invoiceTotal \| number_format(2, ',', '.')`
+
+| `Total invoice amount, separated by a full stop`
+|*_Example:_* 1234.00
+| `order.formattedGeneral.invoiceTotal \| number_format(2, '.', '')`
+
+| `VAT total`
+|
+| `order.formattedGeneral.totalVat`
+
+| `Value of the items`
+|
+| `order.formattedGeneral.valueOfItems`
+
+| `eBay payment ID`
+|
+| `order.formattedProperties.ebayUniquePaymentID`
+
+|====
+
+--
+
+[#variables-order-delivery-address]
+[.collapseBox]
+.Variables in the *Order / Delivery address* sub-category
+--
+
+[cols="1,3"]
+|====
+|Name of the variable |Twig expression
+
+| `Delivery address Additional address information`
+| `order.formattedAddresses.deliveryAddress.address3`
+
+| `Delivery address Company name`
+| `order.formattedAddresses.deliveryAddress.name1`
+
+| `Delivery address Contact person`
+| `order.formattedAddresses.deliveryAddress.formattedOptions.contactPerson`
+
+| `Delivery address Country`
+| `order.formattedAddresses.deliveryAddress.country.name`
+
+| `Delivery address Country ID`
+| `order.formattedAddresses.deliveryAddress.country.id`
+
+| `Delivery address Country ISO code 2`
+| `order.formattedAddresses.deliveryAddress.country.isoCode2`
+
+| `Delivery address Country ISO code 3`
+| `order.formattedAddresses.deliveryAddress.country.isoCode3`
+
+| `Delivery address First name`
+| `order.formattedAddresses.deliveryAddress.name2`
+
+| `Delivery address First name and last name`
+| `order.formattedAddresses.deliveryAddress.name2 ~ ' ' ~ order.formattedAddresses.deliveryAddress.name3`
+
+| `Delivery address Last name`
+| `order.formattedAddresses.deliveryAddress.name3`
+
+| `Delivery address Telephone`
+| `order.formattedAddresses.deliveryAddress.formattedOptions.telephone`
+
+| `Delivery address Postcode`
+| `order.formattedAddresses.deliveryAddress.postalCode`
+
+| `Delivery address Postcode and town`
+| `order.formattedAddresses.deliveryAddress.postalCode ~ ' ' ~ order.formattedAddresses.deliveryAddress.town`
+
+| `Delivery address State`
+| `order.formattedAddresses.deliveryAddress.state.name`
+
+| `Delivery address Street`
+| `order.formattedAddresses.deliveryAddress.address1`
+
+| `Delivery address House number`
+| `order.formattedAddresses.deliveryAddress.address2`
+
+| `Delivery address Town`
+| `order.formattedAddresses.deliveryAddress.town`
+
+|====
+
+--
+
+[#variables-order-invoice-address]
+[.collapseBox]
+.Variables in the *Order / Invoice address* sub-category
+--
+
+[cols="1,3"]
+|====
+|Name of the variable |Twig expression
+
+| `Invoice address Additional address information`
+| `order.formattedAddresses.invoiceAddress.address3`
+
+| `Invoice address Company name`
+| `order.formattedAddresses.invoiceAddress.name1`
+
+| `Invoice address Contact person`
+| `order.formattedAddresses.invoiceAddress.formattedOptions.contactPerson`
+
+| `Invoice address Country`
+| `order.formattedAddresses.invoiceAddress.country.name`
+
+| `Invoice address Country ID`
+| `order.formattedAddresses.invoiceAddress.country.id`
+
+| `Invoice address Country ISO code 2`
+| `order.formattedAddresses.invoiceAddress.country.isoCode2`
+
+| `Invoice address Country ISO code 3`
+| `order.formattedAddresses.invoiceAddress.country.isoCode3`
+
+| `Invoice address First name`
+| `order.formattedAddresses.invoiceAddress.name2`
+
+| `Invoice address First name and last name`
+| `order.formattedAddresses.invoiceAddress.name2 ~ ' ' ~ order.formattedAddresses.invoiceAddress.name3`
+
+| `Invoice address Last name`
+| `order.formattedAddresses.invoiceAddress.name3`
+
+| `Invoice address Telephone`
+| `order.formattedAddresses.invoiceAddress.formattedOptions.telephone`
+
+| `Invoice address Postcode`
+| `order.formattedAddresses.invoiceAddress.postalCode`
+
+| `Invoice address Postcode and town`
+| `order.formattedAddresses.invoiceAddress.postalCode ~ ' ' ~ order.formattedAddresses.invoiceAddress.town`
+
+| `Invoice address State`
+| `order.formattedAddresses.invoiceAddress.state.name`
+
+| `Invoice address Street`
+| `order.formattedAddresses.invoiceAddress.address1`
+
+| `Invoice address House number`
+| `order.formattedAddresses.invoiceAddress.address2`
+
+| `Invoice address Town`
+| `order.formattedAddresses.invoiceAddress.town`
+
+|====
+
+--
+
+[#variables-order-order-items]
+[.collapseBox]
+.Variables in the *Order / Order items (only for item list widget)* sub-category
+--
+
+[cols="2,4,3"]
+|====
+|Name of the variable |Explanation |Twig expression
+
+| `ASIN`
+|Amazon Standard Ident Number (ASIN) of the item
+| `orderItem.formattedBarcodes.ASIN`
+
+| `Attribute values`
+|
+| `orderItem.attributeValues`
+
+| `Availability ID`
+|ID of the item availability of the net stock
+| `orderItem.formattedAvailability.availabilityId`
+
+| `Availability ID physical stock`
+|ID of the item availability of the physical stock
+| `orderItem.formattedAvailability.availabilityPhysicalStockId`
+
+| `Availability text`
+|Name of the item availability of the net stock
+| `orderItem.formattedAvailability.availabilityName`
+
+| `Availability text physical stock`
+|Name of the item availability of the physical stock
+| `orderItem.formattedAvailability.availabilityPhysicalStockName`
+
+| `Codes of a coupon`
+|
+| `orderItem.formattedVoucherCodes`
+
+| `Content`
+|
+| `orderItem.formattedUnit.unitContent`
+
+| `Discount per order item`
+|
+| `orderItem.formattedAmounts.discount`
+
+| `External item ID`
+|
+| `orderItem.variation.item.external_article_id`
+
+| `External token ID`
+|
+| `orderItem.formattedExternalTokenId`
+
+| `External variation ID`
+|
+| `orderItem.variation.externalId`
+
+| `Free text field 1`
+|Free text fields for the items as they are saved in the *Setup » Items » Free text fields* menu. +
+*_Example:_* `Free text field 3` displays the text that is saved in *Field 3*.
+| `orderItem.variation.item.free1`
+
+| `Free text field 2`
+|
+| `orderItem.variation.item.free2`
+
+| `Free text field 3`
+|
+| `orderItem.variation.item.free3`
+
+| `Free text field 4`
+|
+| `orderItem.variation.item.free4`
+
+| `Free text field 5`
+|
+| `orderItem.variation.item.free5`
+
+| `Free text field 6`
+|
+| `orderItem.variation.item.free6`
+
+| `Free text field 7`
+|
+| `orderItem.variation.item.free7`
+
+| `Free text field 8`
+|
+| `orderItem.variation.item.free8`
+
+| `Free text field 9`
+|
+| `orderItem.variation.item.free9`
+
+| `Free text field 10`
+|
+| `orderItem.variation.item.free10`
+
+| `Free text field 11`
+|
+| `orderItem.variation.item.free11`
+
+| `Free text field 12`
+|
+| `orderItem.variation.item.free12`
+
+| `Free text field 13`
+|
+| `orderItem.variation.item.free13`
+
+| `Free text field 14`
+|
+| `orderItem.variation.item.free14`
+
+| `Free text field 15`
+|
+| `orderItem.variation.item.free15`
+
+| `Free text field 16`
+|
+| `orderItem.variation.item.free16`
+
+| `Free text field 17`
+|
+| `orderItem.variation.item.free17`
+
+| `Free text field 18`
+|
+| `orderItem.variation.item.free18`
+
+| `Free text field 19`
+|
+| `orderItem.variation.item.free19`
+
+| `Free text field 20`
+|
+| `orderItem.variation.item.free20`
+
+| `GTIN`
+|Global Trade Item Number (GTIN) of the item
+| `orderItem.formattedBarcodes.GTIN`
+
+| `ISBN`
+|ISBN code of the item
+| `orderItem.formattedBarcodes.ISBN`
+
+| `Item ID`
+|
+| `orderItem.variation.itemId`
+
+| `URL to the item`
+|Returns the URL to the item in the online shop.
+| `orderItem.formattedLink`
+
+| `Item name`
+|
+| `orderItem.orderItemName`
+
+| `Item type`
+|Returns the item types as saved in the item’s *Global* tab. Possible values: stocked item, production item, colli, special order item.
+| `orderItem.formattedStockType`
+
+| `Item number`
+|
+| `orderItem.variation.item.ArtNo`
+
+| `Gross price`
+|
+| `orderItem.formattedAmounts.grossPrice`
+
+| `Item properties`
+|
+| `orderItem.formattedProperties.all`
+
+| `Item quantity`
+|
+| `orderItem.quantity`
+
+| `Manufacturer name`
+|
+| `orderItem.variation.item.producer`
+
+| `Model`
+|Model name of the item
+| `orderItem.variation.model`
+
+| `Net price`
+|
+| `orderItem.formattedAmounts.netPrice`
+
+| `Referrer`
+|
+| `orderItem.formattedReferrer.referrerName`
+
+| `Release date`
+|
+| `orderItem.variation.releasedAt`
+
+| `Return comment`
+|
+| `orderItem.formattedReturn.comment`
+
+| `Status ID of the returned item`
+|
+| `orderItem.formattedReturn.statusId`
+
+| `Name of the returned item`
+|
+| `orderItem.formattedReturn.statusLabel`
+
+| `ID of return reason`
+|ID of the return reason as it is saved in the *Setup » Orders » Order types » Return* menu.
+| `orderItem.formattedReturn.reasonId`
+
+| `Return reason`
+|Name of the return reason as it is saved in the *Setup » Orders » Order types » Return* menu.
+| `orderItem.formattedReturn.reasonLabel`
+
+| `Value of the return in percent`
+|
+| `orderItem.formattedReturn.percentage`
+
+| `Customs tariff number`
+|
+| `orderItem.variation.customsTariffNumber`
+
+| `Total price (unit price x quantity)`
+|
+| `orderItem.formattedAmounts.totalPrice`
+
+| `Unit price`
+|
+| `orderItem.formattedUnit.unitPrice`
+
+| `URL to variation image`
+|Returns the URL to the variation image.
+| `orderItem.formattedImageUrl`
+
+| `Unit`
+|
+| `orderItem.formattedUnit.unitName`
+
+| `VAT rate`
+|
+| `orderItem.vatRate`
+
+| `Variation ID`
+|
+| `orderItem.variation.id`
+
+| `Variation name`
+|
+| `orderItem.variation.name`
+
+| `Variation number`
+|
+| `orderItem.variation.number`
+
+| `Warehouse ID`
+|
+| `orderItem.warehouseId`
+
+|====
+
+--
+
+[#variables-order-shipping]
+[.collapseBox]
+.Variables in the *Order / Shipping* sub-category
+--
+
+[cols="2,4,3"]
+|====
+|Name of the variable |Explanation |Twig expression
+
+| `Delivery note ID`
+|
+| `order.formattedDocuments.deliveryNote`
+
+| `Estimated delivery date`
+|
+| `order.formattedDates.estimatedDeliveryDate`
+
+| `Estimated shipping date`
+|
+| `order.formattedDates.estimatedShippingDate`
+
+| `Package number list`
+|Package numbers/tracking numbers are saved in the orders *Settings* tab at the shipping service provider after the order was successfully registered.
+| `order.formattedShipping.packageNumberList`
+
+| `Package weight`
+|Package weight and unit as saved in the *Orders » Shipping centre* menu in the *Shipping packages* area.
+| `order.formattedShipping.packageWeight`
+
+| `Possible delivery date`
+|
+| `order.formattedDates.earliestDeliveryDate`
+
+| `Reorder Delivery date`
+|
+| `order.formattedReorder.estimatedDeliveryDate`
+
+| `Date when the return was received`
+|
+| `order.formattedDates.returnDate`
+
+| `Return package number`
+|
+| `order.returns_code`
+
+| `Total shipping costs`
+|
+| `order.formattedGeneral.shippingCosts`
+
+| `Shipping profile`
+| Name of the shipping profile as it is saved in the *Setup » Orders » Shipping » Settings* menu in the *Shipping profiles* tab.
+| `order.formattedShipping.profileName`
+
+| `Shipping profile ID`
+|Is automatically saved by the system. You can find the ID of the shipping profile in the *Setup » Orders » Shipping » Settings* menu in the *Shipping profiles* tab.
+| `order.formattedShipping.profileId`
+
+| `Shipping service provider`
+|Name of the shipping service provider as it is saved in the *Setup » Orders » Shipping » Settings* menu in the *Shipping service provider* tab.
+| `order.formattedShipping.providerName`
+
+| `Shipping service provider ID`
+|Is automatically saved by the system. You can find the ID of the shipping service provider in the *Setup » Orders » Shipping » Settings* menu in the *Shipping service provider* tab.
+| `order.formattedShipping.providerId`
+
+| `Tracking URL`
+|The tracking URL is used to track shipments. The URL is saved in the *Setup » Orders » Shipping » Settings* menu in the *Shipping service provider* tab.
+| `order.formattedShipping.trackingURL`
+
+|====
+
+--
+
+[#variables-contact]
+[.collapseBox]
+.Variables in the *Contact* category
+--
+
+[cols="2,4,3"]
+|====
+|Name of the variable |Explanation |Twig expression
+
+| `Account holder (contact)`
+|Account holder as saved in the contact data record.
+| `contact.formattedBanks.accountOwner`
+
+| `BIC of the contact`
+|BIC as saved in the contact data record.
+| `contact.formattedBanks.bic`
+
+| `Bank name of the contact`
+|Bank name as saved in the contact data record.
+| `contact.formattedBanks.bankName`
+
+| `Class`
+| Class that is assigned to the contact. Classes are created in the *Setup » CRM » Customer classes* menu.
+| `contact.formattedClass.name`
+
+| `Company name`
+|
+| `contact.formattedAccounts.companyName`
+
+| `Contact ID`
+|
+| `contact.id`
+
+| `First name`
+|
+| `contact.firstName`
+
+| `First and last name of the system user`
+|First name and last name of the system user who is saved as owner in the contact data record.
+| `contact.formattedUser.realName`
+
+| `Full name`
+|
+| `contact.fullName`
+
+| `Gender`
+|If gender is male, *male* is shown. +
+If gender is female, *female* is shown. +
+If gender is diverse, an empty option is shown.
+| `contact.gender is same as ('diverse') ? '' : contact.gender`
+
+| `IBAN of the contact`
+|IBAN as saved in the contact data record.
+| `contact.formattedBanks.iban`
+
+| `Language`
+|Language as saved in the contact data record. If you created an email template in the selected language, the email templates are sent to the contact in this language.
+| `contact.lang`
+
+| `Last name`
+|
+| `contact.lastName`
+
+| `Newsletter: Confirmation by contact`
+|Date when the contact has confirmed the newsletter receipt. +
+Date format in the email: `mm-dd-yyyy`. +
+In the contact data record, the timestamp in the format `00:00:00` is also saved in addition to the date in the format `dd-mm-yyyy`.
+| `contact.newsletterAllowanceAt`
+
+| `Number`
+|Additional number for the contact.
+| `contact.number`
+
+| `Number of orders`
+|
+| `contact.formattedOrdersCount`
+
+| `Salutation business`
+|
+| `contact.formattedOptions.salutationWork`
+
+| `Form of address`
+|
+| `contact.formattedSalutation.label`
+
+| `Salutation private`
+|
+| `contact.formattedOptions.salutationPrivate`
+
+| `Signature of the system user`
+|Signature of the system user who is saved as owner in the contact data record, in text format.
+| `contact.formattedUser.signatureNoHtml`
+
+| `Signature of the system user in HTML format`
+|Signature of the system user who is saved as owner in the contact data record (in HTML format).
+| `contact.formattedUser.signatureHtml`
+
+| `Title`
+|
+| `contact.title`
+
+|====
+
+--
+
+[#variables-contact-delivery-address]
+[.collapseBox]
+.Variables in the *Contact / Delivery address* sub-category
+--
+
+[cols="1,3"]
+|====
+|Name of the variable |Twig expression
+
+| `Delivery address Additional address information`
+| `contact.formattedAddresses.deliveryAddress.address3 ~ ' ' ~ contact.formattedAddresses.deliveryAddress.address4`
+
+| `Delivery address Company name`
+| `contact.formattedAddresses.deliveryAddress.name1`
+
+| `Delivery address Country`
+| `contact.formattedAddresses.deliveryAddress.country.name`
+
+| `Delivery address Country ID`
+| `contact.formattedAddresses.deliveryAddress.country.id`
+
+| `Delivery address Country ISO code 2`
+| `contact.formattedAddresses.deliveryAddress.country.isoCode2`
+
+| `Delivery address Country ISO code 3`
+| `contact.formattedAddresses.deliveryAddress.country.isoCode3`
+
+| `Delivery address First name`
+| `contact.formattedAddresses.deliveryAddress.name2`
+
+| `Delivery address First name and last name`
+| `contact.formattedAddresses.deliveryAddress.name2 ~ ' ' ~ contact.formattedAddresses.deliveryAddress.name3`
+
+| `Delivery address Last name`
+| `contact.formattedAddresses.deliveryAddress.name3`
+
+| `Delivery address Telephone`
+| `contact.formattedAddresses.deliveryAddress.formattedOptions.telephone`
+
+| `Delivery address Postcode`
+| `contact.formattedAddresses.deliveryAddress.postalCode`
+
+| `Delivery address Postcode and town`
+| `contact.formattedAddresses.deliveryAddress.postalCode ~ ' ' ~ contact.formattedAddresses.deliveryAddress.town`
+
+| `Delivery address State`
+| `contact.formattedAddresses.deliveryAddress.state.name`
+
+| `Delivery address Street`
+| `contact.formattedAddresses.deliveryAddress.address1 ~ ' ' ~ contact.formattedAddresses.deliveryAddress.address2`
+
+| `Delivery address House number`
+| `contact.formattedAddresses.deliveryAddress.address2`
+
+| `Delivery address Town`
+| `contact.formattedAddresses.deliveryAddress.town`
+
+|====
+
+--
+
+[#variables-contact-invoice-address]
+[.collapseBox]
+.Variables in the *Contact / Invoice address* sub-category
+--
+
+[cols="1,3"]
+|====
+|Name of the variable |Twig expression
+
+| `Invoice address Additional address information`
+| `contact.formattedAddresses.invoiceAddress.address3 ~ ' ' ~ contact.formattedAddresses.invoiceAddress.address4`
+
+| `Invoice address Company name`
+| `contact.formattedAddresses.invoiceAddress.name1`
+
+| `Invoice address Country`
+| `contact.formattedAddresses.invoiceAddress.country.name`
+
+| `Invoice address Country ID`
+| `contact.formattedAddresses.invoiceAddress.country.id`
+
+| `Invoice address Country ISO code 2`
+| `contact.formattedAddresses.invoiceAddress.country.isoCode2`
+
+| `Invoice address Country ISO code 3`
+| `contact.formattedAddresses.invoiceAddress.country.isoCode3`
+
+| `Invoice address First name`
+| `contact.formattedAddresses.invoiceAddress.name2`
+
+| `Invoice address First name and last name`
+| `contact.formattedAddresses.invoiceAddress.name2 ~ ' ' ~ contact.formattedAddresses.invoiceAddress.name3`
+
+| `Invoice address Last name`
+| `contact.formattedAddresses.invoiceAddress.name3`
+
+| `Invoice address Telephone`
+| `contact.formattedAddresses.invoiceAddress.formattedOptions.telephone`
+
+| `Invoice address Postcode`
+| `contact.formattedAddresses.invoiceAddress.postalCode`
+
+| `Invoice address Postcode and town`
+| `contact.formattedAddresses.invoiceAddress.postalCode ~ ' ' ~ contact.formattedAddresses.invoiceAddress.town`
+
+| `Invoice address State`
+| `contact.formattedAddresses.invoiceAddress.state.name`
+
+| `Invoice address Street`
+| `contact.formattedAddresses.invoiceAddress.address1 ~ ' ' ~ contact.formattedAddresses.invoiceAddress.address2`
+
+| `Invoice address House number`
+| `contact.formattedAddresses.invoiceAddress.address2`
+
+| `Invoice address Town`
+| `contact.formattedAddresses.invoiceAddress.town`
+
+|====
+
+--
+
+[.collapseBox]
+.Variables in the *Contact / Options* sub-category
+--
+
+[cols="1,3"]
+|====
+|Name of the variable |Twig expression
+
+| `Additional contact person`
+| `contact.formattedOptions.additionalContactPerson`
+
+| `Email business`
+| `contact.formattedOptions.emailWork`
+
+| `PayPal email address`
+| `contact.formattedOptions.emailPayPal`
+
+| `Email private`
+| `contact.formattedOptions.emailPrivate`
+
+| `Fax business`
+| `contact.formattedOptions.telefaxWork`
+
+| `Fax private`
+| `contact.formattedOptions.telefaxPrivate`
+
+| `Mobile business`
+| `contact.formattedOptions.telephoneMobileWork`
+
+| `Mobile private`
+| `contact.formattedOptions.telephoneMobilePrivate`
+
+| `Phone business`
+| `contact.formattedOptions.telephoneWork`
+
+| `Phone private`
+| `contact.formattedOptions.telephonePrivate`
+
+| `eBay name`
+| `contact.formattedOptions.marketplaceEbay`
+
+|====
+
+--
+
+[#variables-global]
+[.collapseBox]
+.Variables in the *Global* category
+--
+
+[cols="2,5,2"]
+|====
+|Name of the variable |Explanation |Twig expression
+
+| `Account holder (master data)`
+|Account holder from the master data of your plentymarkets system. Is saved in the *Basics* assistant in the *Bank details* step. You can find the assistant in the *Setup » Assistants » Basic settings* menu. +
+As an alternative, you can find the account holder in the *Setup » Settings » Bank* menu.
+| `globals.bank.owner`
+
+| `BIC (master data)`
+|BIC from the master data of your plentymarkets system. Is saved in the *Basics* assistant in the *Bank details* step. You can find the assistant in the *Setup » Assistants » Basic settings* menu. +
+As an alternative, you can find the saved BIC in the *Setup » Settings » Bank* menu.
+| `globals.bank.bic`
+
+| `Bank name (master data)`
+|Bank name from the master data of your plentymarkets system. Is saved in the *Basics* assistant in the *Bank details* step. You can find the assistant in the *Setup » Assistants » Basic settings* menu. +
+As an alternative, you can find the saved bank name in the *Setup » Settings » Bank* menu.
+| `globals.bank.name`
+
+| `Cancellation rights in HTML format`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Cancellation rights* tab and save the text in the *HTML* tab.
+| `globals.legalInformation.cancellationRights.html`
+
+| `Cancellation rights in plain text`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Cancellation rights* tab and save the text in the *Text* tab.
+| `globals.legalInformation.cancellationRights.plain`
+
+
+| `Coupon code (1)`
+|Coupon codes are generated in the campaign in the *Orders » Coupons* menu. A coupon code can always be assigned to only one campaign to send this coupon code from the campaign in an email template.
+| `globals.coupons.couponCode1`
+
+| `Coupon code (2)`
+|
+| `globals.coupons.couponCode2`
+
+| `Coupon code (3)`
+|
+| `globals.coupons.couponCode3`
+
+| `Coupon code (4)`
+|
+| `globals.coupons.couponCode4`
+
+| `Coupon code (5)`
+|
+| `globals.coupons.couponCode5`
+
+| `Coupon code (6)`
+|
+| `globals.coupons.couponCode6`
+
+| `Coupon code (7)`
+|
+| `globals.coupons.couponCode7`
+
+| `Coupon code (8)`
+|
+| `globals.coupons.couponCode8`
+
+| `Coupon code (9)`
+|
+| `globals.coupons.couponCode9`
+
+| `Coupon code (10)`
+|
+| `globals.coupons.couponCode10`
+
+| `EORI number`
+|Unique identification number that is required for customs-related procedures.
+| `globals.account.EORINumber`
+
+| `IBAN (master data)`
+|IBAN from the master data of your plentymarkets system. Is saved in the *Basics* assistant in the *Bank details* step. You can find the assistant in the *Setup » Assistants » Basic settings* menu. +
+As an alternative, you can find the saved IBAN in the *Setup » Settings » Bank* menu.
+| `globals.bank.iban`
+
+| `Legal disclosure in HTML format`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Legal disclosure* tab and save the text in the *HTML* tab.
+| `globals.legalInformation.withdrawalForm.html`
+
+| `Legal disclosure in plain text`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Legal disclosure* tab and save the text in the *Text* tab.
+| `globals.legalInformation.legalDisclosure.plain`
+
+| `Privacy policy in HTML format`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Privacy policy* tab and save the text in the *HTML* tab.
+| `globals.legalInformation.privacyPolicy.html`
+
+| `Privacy policy in plain text`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Privacy policy* tab and save the text in the *Text* tab.
+| `globals.legalInformation.privacyPolicy.plain`
+
+| `Signature in HTML format`
+|The signature is saved in the *Setup » Client » [Select client] » Email » Signature* menu in the *HTML signature* area.
+| `globals.account.signatureHTML`
+
+| `Signature in plain text`
+|The signature is saved in the *Setup » Client » [Select client] » Email » Signature* menu in the *Plain text signature* area.
+| `globals.account.signatureText`
+
+| `Today’s date`
+|Returns today’s date in the format `dd-mm-yyyy`.
+| `"now"\|date("d-m-Y")`
+
+| `URL to basket`
+|Returns the URL to the basket in the online shop.
+| `globals.links.linkBasket`
+
+| `URL to change password`
+|Returns the URL for the *Change password* area in the online shop. The contact can enter a new password.
+| `globals.links.linkChangePassword`
+
+| `URL to checkout`
+|Returns the URL to the checkout area of the order in the online shop.
+| `globals.links.linkCheckout`
+
+| `URL to confirm email address`
+|Returns the URL to confirm the email address change of the contact.
+| `globals.account.newCustomerEmail`
+
+| `URL to new password`
+|Returns the URL to a form that allows to create a new password. The contact enters their email address in this form.
+| `globals.links.linkNewPassword`
+
+| `URL to online shop`
+|Returns the URL of the online shop.
+| `globals.links.linkWebstore`
+
+| `URL to Terms and Conditions`
+|Returns the URL for the terms and conditions.
+| `globals.links.linkTermsConditions`
+
+| `Cancellation form in HTML format`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Cancellation form* tab and save the text in the *HTML *tab.
+| `globals.legalInformation.withdrawalForm.html`
+
+| `Cancellation form in plain text`
+|Go to *Setup » Client » [Select client] » Online store » Legal » [Expand language]*. Click on the *Cancellation form* and save the text in the *Text* tab.
+| `globals.legalInformation.withdrawalForm.plain`
+
+|====
+
+--
+
+[#variables-newsletter]
+[.collapseBox]
+.Variables in the *Newsletter* category
+--
+
+[cols="2,5,2"]
+|====
+|Name of the variable |Explanation |Twig expression
+
+| `Newsletter first name`
+|First name of the person who has subscribed for the newsletter.
+| `newsletter.firstName`
+
+| `Newsletter last name`
+|Last name of the person who has subscribed for the newsletter.
+| `newsletter.lastName`
+
+| `URL for confirming the newsletter receipt`
+|Returns the URL to confirm the newsletter subscription.
+| `newsletter.formattedConfirmUrl`
+
+|====
+
+--
+
+[#automate-email-despatch]
+== Automating the email despatch
+
+You have multiple options in plentymarkets to automate the email despatch to your customers.
+
+=== Setting up automatic emails
+
+The *Setup» Client » [Select client] » Email » Automatic* menu contains various events that can be linked with a template. Select from the drop-down list the template that you <<#create-template, created>> before in the *CRM » EmailBuilder (Test phase)* menu. This ensures that the email template is sent to your contacts once the event occurs.
+
+[IMPORTANT]
+.Removing the link before deleting the email template
+====
+Deleting an email template that is linked with an event in the *Automatic email* area may lead to undesired effects. Therefore, first go to *Setup » Client » [Select client] » Email » Automatic* and remove the link by selecting the option *Do not send* from the drop-down list in the line of the event. Afterwards, delete the template in the *CRM » EmailBuilder (Test phase)* menu.
+====
+
+[.instruction]
+Setting up the automatic email despatch:
+
+. Go to *Setup » Client » [Select client] » Email » Automatic*.
+. Select a template from the drop-down list in the line of the event. Note <<#table-events-automatic-email-despatch>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-events-automatic-email-despatch]]
+.Explanations about some events for the automatic despatch
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *New order from online store*
+|The contacts receive an email including the order confirmation after the purchase has been completed in the online shop. +
+*_Note:_* If your customers should be able to access the order processing in your online shop with this email to see the order status, you have to insert the variable `URL to checkout` in the template that you select for this automatic event.
+
+| *Send customer email to change password*
+|The contacts receive an email with a link to the new password. The link has to be actively confirmed. The variable `URL to change password` has to be contained in the template.
+
+| *Newsletter opt-in*
+|The contacts receive an email when they have registered for the newsletter. The template should include the confirmation link that the contacts have to click in order to complete the newsletter registration process: `URL to confirm newsletter subscription`.
+
+| *Newsletter opt-in confirmation*
+|The contacts receive a confirmation email once they have activated the confirmation link that was sent with the email template for the *Newsletter opt-in* event.
+
+| *Email when item becomes available*
+|The contacts receive an email containing the information that a certain item is available again. Requirement: The contacts have entered their email address in the online shop directly next to the item that could not be delivered at that time.
+
+|====
+
+[#set-up-event-procedures]
+=== Setting up event procedures
+
+It is also possible to set up event procedures in the *Setup » Orders » Events* menu. Define an event, activate one or more filters and decide which procedures your plentymarkets system should carry out automatically when the event occurs.
+
+For example, you can use filters to trigger a procedure once a contact has placed a certain number of orders. The procedure could send an email that includes a coupon. For further information, refer to the <<automation/event-procedures#, Event procedures>> page.
+
+[#email-despatch-to-multiple-email-addresses]
+=== Email despatch to multiple email addresses
+
+Go to *Setup » Orders » Events* to set up an <<automation/event-procedures#, event procedure>> that will send an email to your customers and employees when the event that you determined occurs.
+
+Add in the event procedure the procedure *Customer > Send email* and select the appropriate template as well as the recipients to send the email to multiple recipients at the same time once the selected event occurs.
+
+The following recipients are available:
+
+* Customer
+* Warehouse
+* Invoice address from order
+* Invoice address from order
+* Contact email business
+* Contact email private
+* Contact email PayPal
+* available owners
+
+You can either send the same template to all recipients or select a separate template each.
+
+[#code-examples-code-widget]
+== Code examples for the code widget
+
+Use if queries in your email templates to display specific information on a case-by-case basis. In the following, you find some if queries that you can simply copy to your code widget.
+
+[#code-example-shipping-profile]
+=== Code example: Shipping profile
+
+Insert a code that causes a note regarding the freight-forwarding company and contacting to only be displayed in the email to your customers if the shipping service provider in the shipping profile is a freight-forwarding company. In our example the shipping profile with the freight-forwarding company has the ID `6`.
+
+Click on link:https://raw.githubusercontent.com/plentymarkets/manual/master/en/crm/assets/emailbuilder-code-example-shipping-profile.txt[this link^]{nbsp}icon:external-link[] to see the code example.
+
+[#code-example-bank-details]
+=== Code example: Bank details
+
+Insert a code that causes bank details to only be displayed in the email to your customers if *Cash in advance* (ID `0`) was selected as payment method in your plentyShop.
+
+Click on link:https://raw.githubusercontent.com/plentymarkets/manual/master/en/crm/assets/emailbuilder-code-example-bank-details.txt[this link^]{nbsp}icon:external-link[] to see the code example.
+
+[#code-example-order-items]
+=== Code example: Order items
+
+Insert a code that causes the order items with the variation IDs, the item names, the item quantity and the price to be shown in a table.
+
+Click on link:https://raw.githubusercontent.com/plentymarkets/manual/master/en/crm/assets/emailbuilder-code-example-order-items.txt[this link^]{nbsp}icon:external-link[] to see the code example.
