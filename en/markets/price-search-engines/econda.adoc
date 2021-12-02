@@ -2,14 +2,17 @@
 :lang: en
 include::{includedir}/_header.adoc[]
 :author: team-multi-channel
-:keywords: econda, econda
+:keywords: econda, econda, econda.de, econda.de
 :description: Multi-Channel in plentymarkets: Set up the item data export to econda in your plentymarkets system.
 :position: 35
 :url: markets/price-search-engines/econda
 :id: CX7Y6D2
 
-:price-search-engine: econda
-:plugin-name: econda
+:econda:
+:market: econda
+
+:price-search-engine: Twenga
+:plugin-name: EcondaDE-Plugin
 :plugin-link: https://marketplace.plentymarkets.com/en/plugins/channels/preisportale/elasticexportecondade_4774
 
 include::../_textblocks/explanations/plugin-download.adoc[]
@@ -17,13 +20,17 @@ include::../_textblocks/explanations/plugin-download.adoc[]
 [#100]
 == Registering with econda.de
 
-econda offers a controlling solution for analysing and improving online shops comprehensively.
+econda offers a controlling solution for analyzing and improving online stores comprehensively.
+
+[#old-export]
+== _Alternative 1:_ Export format EcondaDE-Plugin _(deprecated)_
+
+NOTE: No new features are planned for the Elastic Export and the export formats. As such, we recommend that you <<#catalogue-export, create catalogues instead>>.
 
 [#200]
-== Setting up the data format EcondaDE-Plugin in plentymarkets
+=== Setting up the data format EcondaDE-Plugin in plentymarkets
 
 :export-format: EcondaDE-Plugin
-:price-search-engine: econda
 :table-price-search-engine: <<#export-format>>
 :file-format: pass:quotes[*.csv* or *.txt*]
 
@@ -72,7 +79,7 @@ include::../../markets/_textblocks/instructions/download_export-file.adoc[]
 |The sales price of the price type RRP of the variation
 
 |New
-|The value from Condition for API of the variation. *[0] New* will be exported as *New*. Every other option will be exported as used.
+|The value from Condition for API of the variation. *[0] New* will be exported as *New*. All other options will be exported as *used*.
 
 |Stock
 |The stock of the variation based on the limitation. The maximum value is 999.
@@ -86,15 +93,110 @@ include::../../markets/_textblocks/instructions/download_export-file.adoc[]
 |ProductCategory
 |The category path of the standard category for the client configured in the format settings
 
-|Grundpreis
+|Unit price
 |The unit price information in the format `price / unit` +
 *_Example:_* 10.00 EUR / kilogram
 
 |====
 
-[#400]
-== License
+[#catalogue-export]
+== _Alternative 2:_ Catalogue export _(recommended)_
 
-:license-link: https://github.com/plentymarkets/plugin-elastic-export-econda-de/blob/master/LICENSE.md
+Catalogue formats provide you with a long-term and flexible way to export your item data to {market}.
 
-include::../_textblocks/explanations/plugin-license.adoc[]
+[#catalogue-creation]
+=== Creating a catalogue
+
+Item data is exported using a marketplace format. To export your items to a price search engine, create a catalogue in the *Data » Catalogue* menu. Link the data fields in the catalogue with item data saved in plentymarkets in the marketplace format afterwards.
+
+* Is this your first time working with catalogues? Then read up on the <<en/data/exporting-data/managing-catalogues, basic concept of the plentymarkets catalogues first>>.
+
+:catalogue-template-name: billiger.de
+:format-item-new:
+
+include::../_textblocks/catalogues/instructions/catalogue-creation.adoc[]
+
+[#filter-export]
+=== _Optional:_ Exporting specific items
+
+:market: billiger.de
+
+include::../_textblocks/catalogues/instructions/catalogue-filters.adoc[]
+
+[#data-field-mappings]
+=== Mapping data fields in the catalogue
+
+Now, map the data fields in the catalogue to the item data saved in plentymarkets.
+
+include::../_textblocks/catalogues/instructions/catalogue-mapping.adoc[]
+
+[#recommended-mappings]
+=== Recommendations for data field mappings
+
+include::../_textblocks/catalogues/recommended-mappings/recommendation-text.adoc[]
+
+[.collapseBox]
+.List of recommended data field mappings
+--
+include::../_textblocks/catalogues/recommended-mappings/econda-recommended-mappings.adoc[]
+--
+
+include::../_textblocks/catalogues/instructions/catalogue-change-from-elastic-export.adoc[]
+
+[[elastic-export-catalogue-mappings]]
+[cols="1,1"]
+|====
+|Column in elastic export |Data field in catalogue
+
+| Id
+| Variation ID
+
+| Product name
+| Item name
+
+| description
+| Produktbeschreibung
+
+| ProductURL
+| Product URL
+
+| ImageURL
+| Bild-URL
+
+| Price
+| Price
+
+| MSRP
+| Recommended retail price (RRP)
+
+| New
+| Condition
+
+| Stock
+| Stock
+
+| EAN
+| Barcode
+
+| Brand
+| Manufacturer
+
+| ProductCategory
+| Category path
+
+| Unit price
+| Unit price
+|====
+
+[#catalogue-activation]
+==== Activating the catalogue
+
+:interval:
+:market: billiger.de
+
+include::../_textblocks/catalogues/instructions/catalogue-activation.adoc[]
+
+[#catalogue-url]
+=== Exporting catalogue data to {market}
+
+include::../_textblocks/catalogues/instructions/catalogue-url.adoc[]
