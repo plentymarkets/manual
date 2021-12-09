@@ -1,0 +1,288 @@
+= plentymarkets Changelog
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10840
+:startWeekDate: 25. November 2021
+:endWeekDate: 01. Dezember 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^]{nbsp}icon:external-link[].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Versand-Center
+
+* Wir haben im Menü Aufträge » Versand-Center 2.0 (Testphase) eine komplett neue Bedienoberfläche auf Basis von Angular entwickelt und gleichzeitig viele Änderungen im Backend vorgenommen. Die neue Bedienoberfläche des Versand-Centers 2.0 folgt damit dem neuen, einheitlichen UI-Konzept. Das Versand-Center 2.0 bringt im Vergleich zum alten Versand-Center die folgenden Neuerungen mit:
+** Bei der Auftragsanmeldung kann nun jeweils ein Auftragsstatus für den Erfolgsfall und für den Fehlerfall gewählt werden, in dem die Aufträge nach der erfolgreichen bzw. fehlgeschlagenen Anmeldungen landen sollen.
+** Es gibt eine Gruppenfunktion zum Zurücksetzen von Aufträgen.
+** Es gibt eine Gruppenfunktion zum Herunterladen von Retourenlabels.
+** Es gibt eine Checkbox zum automatischen Download der Versandlabels beim Anmelden der Aufträge.
+** Eine Spalte mit angemeldeten Retouren kann in der Übersicht angezeigt werden.
+** Die Filter Auftragsdatum von / bis, Auftragstyp und Land wurden hinzugefügt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Zalando
+
+* Beim Bestands- und Preisupdate, die alle 15 Minuten laufen, wird nach Varianten gesucht, die sich seit dem letzten Prozesslauf in Preis oder Bestand verändert haben. Dazu wird der letzte Startzeitpunkt nach Abschluss des Prozesses gespeichert, um diesem im nächsten Lauf als Referenz zu verwenden. Die Information, ob und wann es eine Preis- oder Bestandsänderung gab, wird technisch aus einem ES-Index gewonnen, der asynchron aktualisiert wird. Im Normalfall sollte dieser Index aber nur mit einer Verzögerung von einer Minute aktualisiert werden. Dadurch, dass es aber zu Verzögerungen größer 5 Minuten kam, konnte es dazu kommen, dass Preis- und Bestandsänderungen verloren gingen. Um diesem Verhalten entgegenzuwirken, wurde der bereits vorhandene Puffer von 5 Minuten, um welche das geprüfte Intervall vergrößert wird, auf 30 Minuten angehoben. Dies sorgt dafür, dass Bestände und Preise mehrmals hintereinander geschickt werden, wir denken aber, dass dies die bessere Alternative im Vergleich mit verlorenen Updates ist.
+* An Merkmalen, die bei der Konvertierung der Silhouetten mit einer unsichtbaren Verknüpfung für Zalando erstellt wurden, ist diese Verknüpfung jetzt sichtbar, aber gesperrt. Die Verknüpfung kann weiterhin nicht selbst gesetzt oder entfernt werden. Nur der Konvertierungsprozess kann Merkmale mit dieser Verknüpfung generieren.
+* Wenn bei der Konvertierung der Silhouetten keine Silhouetten gewählt wurden, werden nicht mehr alle Silhouetten konvertiert, sondern keine Silhouetten, um ein versehentliches Konvertieren auszuschließen.
+* Die Konvertierung der Silhouetten kann nur noch von Benutzer:innen mit Berechtigungen zum Erstellen und Bearbeiten von Merkmalen, Merkmal-Gruppen und Marktplatzmerkmalen ausgeführt werden.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Abonnement
+
+* Der Filter Kontakt-ID hat bisher auch Zeichenketten akzeptiert, wenn in der Abo-Übersicht nach der Kontakt-ID gefiltert wurde. Dies wurde behoben und der Filter akzeptiert jetzt ausschließlich numerische Werte.
+* Der Name des Filters Kontakt wurde in Kontakt-ID geändert.
+* Eine neue Spalte namens Kontakt-ID wurde zur Abo-Übersichtstabelle hinzugefügt.
+
+[discrete]
+=== Amazon
+
+* Bei der Übermittlung der Versandbestätigung kam es zu einem Fehler, wenn an einem der Aufträge kein Versandprofil bzw. ein Versandprofil, das nicht mehr existiert, zugeordnet war. Dies wurde nun behoben. Sollte kein Versandprofil zugeordnet sein, dann wird als Fallbackwert der Transportservice „Andere“ eingetragen.
+
+[discrete]
+=== Aufträge
+
+* Bei der Auswahl eines neuen Kontaktes für die Erstellung eines neuen Auftrags wurden die voreingetragenen Daten aus diesem Kontakt nicht in den ersten Schritt der Auftragsanlage übernommen. Dies ist nun behoben.
+* Bei der Nutzung einer Auftragsvorlage wurden die Variationen dieser Vorlage nicht dem Warenkorb hinzugefügt, wenn die Variationen nicht in der Artikelliste angezeigt wurden. Dies ist nun behoben, die Variationen der Auftragsvorlage werden über eine separate Route abgerufen.
+* Es konnte vorkommen, dass bei Auftragsdokumenten falsche Namen für Attribute ausgegeben wurden.
+* Wenn der Betrag einer Zahlung exakt auf Aufträge mit Skonto aufgeteilt wird, konnte es dazu kommen das eine unzugeordnete Zahlung mit einem Restbetrag von 0 angelegt wurde. Dies wurde behoben.
+* Beim Hinzufügen eines Artikels zu einer Nachbestellung wurden die Verpackungseinheiten nicht korrekt dargestellt. Dies ist jetzt behoben.
+* In der Statistik der Retourengründe wurde die Versandkostenposition bisher als „unknown“ ausgegeben und wird zukünftig korrekt ausgeschlossen.
+* Durch eine Anpassung hatte sich eine erhöhte Anlagedauer bei Auftragsdokumenten ergeben. Das wurde nun behoben.
+
+[discrete]
+=== Payment
+* Der Button zum Neuladen (im Kontextmenü des Tabs zu finden) hat in der Zahlungen-UI, Abo-UI, Neue Auftrags-UI und Nachbestellungen-UI nicht korrekt funktioniert. Dies wurde behoben.
+* Beim Löschen von Zahlungen über die Gruppenfunktion enthielten die Mitteilungen die falschen Zahlungen. Dies ist behoben, die Mitteilungen listen nun die gelöschten Zahlungen.
+* In der Ansicht Zahlung teilen wurde in der Rechnungsspalte nicht die letzte gültige Rechnungsnummer angezeigt. Dies ist behoben, die richtige Rechnungsnummer wird nun angezeigt.
+* In der Ansicht Zahlung teilen wurde jedes Mal ein Call zum Abrufen der Kontaktinformationen für jeden aufgelisteten Auftrag ausgeführt. Dies ist behoben.
+* In der Zuordnungstabelle einer Zahlung waren die Spalten mit Nummern und Zahlen nicht rechts-, sonder linksbündig angezeigt. Dies wurde behoben.
+* Die alten Terra-Schaltflächen wurden durch die neuen Material-Schaltflächen ersetzt.
+* In der Zuordnungstabelle einer Zahlung ist die Schaltfläche zum Konfigurieren der Tabelle nun rechtsbündig.
+* Alle Tabellen nutzen nun die neuesten Tabellencontainer.
+* Beim Lösen oder Zuordnung einer Zahlung in der Detailansicht enthielt die Tabelle nicht die neuesten benötigten Informationen. Dies ist behoben.
+
+[discrete]
+=== Prozesse 
+* Ein neues Format für die SEPA Lastschriften (008.001.002) innerhalb der Prozesse steht euch bereits zur Verfügung. Dort konnte noch ein Fehler beim validieren auftreten. Diesen haben wir behoben, damit ihr das Format korrekt bei euren Banken verwenden könnt.
+
+[discrete]
+=== Warenwirtschaft
+
+* Der Filter nach Hersteller hat nicht richtig funktioniert. Der Fehler wurde nun behoben.
+
+[discrete]
+=== Zalando
+
+* Beim Speichern eines Merkmals, das durch die Konvertierung der Silhouetten erstellt wurde, wurde die unsichtbare Verknüpfung für Zalando im Hintergrund entfernt. Dieses Verhalten wurde behoben.
+* Bei der Konvertierung der Silhouetten zu Merkmalen konnte es vorkommen, dass Gruppen und Merkmale mehrfach erstellt wurden. Davon betroffen waren Merkmal-Gruppen, deren ursprünglicher Name länger als 64 Zeichen war und der durch die Zeichenlimitierung der Datenbank gekürzt wurde. Dieses Verhalten wird jetzt verhindert.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Es ist jetzt möglich zu konfigurieren, welche Auftragseigenschaften beim Erstellen von Kindaufträgen kopiert werden sollen. Die Einstellung befindet sich unter Einrichtung » Aufträge » Eigenschaftskopie.
+
+[discrete]
+=== Warenwirtschaft
+
+* Wenn man alle Lagerorte einer Eltern Dimension löschen wird, wird auch diese übergeordnete Dimension automatisch gelöscht. Das bedeutet für dich, dass du die Dimensionen eines Lagers nicht mehr händisch löschen musst, wenn diese Dimensionen keine Lagerorte mehr enthalten. _Hinweis:_ Diese Funktionalität wirkt nicht rückwirkend auf die Lagerdimensionen, die zur Zeit keine Lagerorte enthalten.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Durch mehrfaches Klicken auf den „Auftrag erstellen“ Button werden nun nicht mehr mehrfach Aufträge angelegt.
+* Ein Fehler in der Konsole beim Öffnen der UI wurde behoben.
+
+[discrete]
+=== CRM
+
+* Das Auswählen von dynamischen Vorlagen im EmailBuilder war nicht möglich. Es öffnete sich keine Dropdown-Liste. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Import
+
+* Es war möglich, dass per Import ein Kategoriename leer importiert werden konnte. Das führte zu einer fehlerhaften Anzeige im Backend. Dieses Verhalten wurde nun angepasst und es ist nicht mehr möglich, einen leeren Namen zu importieren.
+
+[discrete]
+=== Payment
+
+* In der Zahlungsverkehr-UI haben die Filter für Transaktions-ID und Transaktionscode nicht korrekt funktioniert. Dies wurde nun behoben.
+
+[discrete]
+=== Prozesse
+
+* In der Aktion Auftragssuche (Lagerort) wurden zwei Fehlermeldungen angezeigt, wenn kein Auftrag gefunden wurde. Dieses Verhalten wurde behoben.
+* Der Filter Zahlung in den Prozessen hat nicht korrekt funktioniert. Dieses Verhalten wurde behoben.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name |Version |To-do
+
+|link:hhttps://marketplace.plentymarkets.com/addphonetoorderwidget_54796[Abfrage der Telefonnummer nach Bestellabschluss - Widget^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/adcelltracking_6493[ADCELL Conversion Tracking^]
+|2.0.9
+|-
+
+|link:https://marketplace.plentymarkets.com/magiczoomplus_6092[Artikelbilder - Magic Zoom Plus^]
+|3.1.5
+|-
+
+|link:https://marketplace.plentymarkets.com/billigerdetracking_6126[billiger.de Conversion Tracking^]
+|2.0.9
+|-
+
+|link:https://marketplace.plentymarkets.com/customcontainercontent_6232[25x Custom TWIG/JS/CSS Container^]
+|1.0.7
+|-
+
+|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
+|2.1.11
+|-
+
+|link:https://marketplace.plentymarkets.com/filterdrop_6603[FilterDrop^]
+|4.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/itemgridwidget_55036[Flexible Artikel-Darstellung^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/gaxsysindependent_6802[gax-Independent^]
+|1.2.3
+|-
+
+|link:https://marketplace.plentymarkets.com/googleanalyticsrefunder_6657[Google Analytics Rückerstattung^]
+|1.0.8
+|-
+
+|link:https://marketplace.plentymarkets.com/googletagmanagerultimate_54789[Google Tag Manager + Conversions API 17 Tools in einem^]
+|1.2.7
+|-
+
+|link:https://marketplace.plentymarkets.com/wartungsmodus_5812[Individueller Wartungsmodus^]
+|1.0.9
+|-
+
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.43
+|-
+
+|link:https://marketplace.plentymarkets.com/categorywidgets_55035[Kategorie Widgets^]
+|1.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/marketingwidgets_55037[3 Marketing Shopbuilder-Widgets^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/sales/marktplaetze/marketplaceconnectionmoebel24-26707_55034[Marktplatz Anbindung Moebel24^]
+|2.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent Toolbox^]
+|4.6.12
+|-
+
+|link:https://marketplace.plentymarkets.com/mobilenavigation_55038[Optimierte mobile Navigation^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/wishlistwidgets_55040[Optimierte Wunschliste + Widget^]
+|1.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/payone_5434[PAYONE^]
+|2.3.0
+|-
+
+|link:https://marketplace.plentymarkets.com/ceres_4697[plentyShop LTS^]
+|5.0.43
+|-
+
+|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
+|1.26.11
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/fulfillment-stock/order-warehouse-management/sageconnector-31410_6922[Sage Connector^]
+|2
+|-
+
+|link:https://marketplace.plentymarkets.com/serversidetesting_55039[Server-seitiges A/B Testing-Tool^]
+|1.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/cytitemavailabilitynotification_6906[Verfügbarkeitsbenachrichtigung mit Statistik^]
+|1.4.3
+|-
+
+|link:https://marketplace.plentymarkets.com/conditionwidget_54782[WENN/DANN Shopbuilder-Widget^]
+|1.1.5
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^]{nbsp}icon:external-link[].
+
+--
+
+====
