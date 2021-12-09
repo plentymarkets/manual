@@ -9,19 +9,19 @@ include::{includedir}/_header.adoc[]
 :author: team-item
 
 ////
-zuletzt bearbeitet 08.12.2021
+zuletzt bearbeitet 09.12.2021
 ////
 
 ////
 ToDo - change position number to 10
 ToDo - remove info boxes that the page is being created
 ToDo - add missing descriptions
+ToDo - search for << and make sure the links are set, especially in the collapse box in the FAQ section
 ToDo - test all the export data fields to make sure the descriptions are correct - example: 0 and 1
 ToDo - english translation
-Questions for Marvin - figure out if there's a bug when multiple data fields have the same export key - e.g. id for the item id and variation id
+ToDo - figure out if it's a possible workaround to download a JSON file instead of a CSV, as a fix for the "Array" problem
+ToDo - check where you wrote CSV because the type of file is flexible
 Questions for Marvin - change "Variante > Ceres Produkt-URL" to "plentyShop Produkt-URL"
-Questions for Marvin - what is the standard category path? Maybe is it canonical?
-Questions for Marvin - standardkategory - really just the standard one? Can't the seller export all the linked categories? Shouldn't the category data (metadaten usw) be part of a category type, rather than the item type?
 ////
 
 [IMPORTANT]
@@ -74,17 +74,6 @@ Schau bitte in ein paar Tagen wieder vorbei, nachdem die Seite veröffentlicht w
 ====
 
 Dieses Kapitel enthält eine Liste aller Artikel-Datenfelder, die mit dem Katalog-Tool exportiert werden können.
-
-[discrete]
-==== "Comparative value" ist ohne Funktion
-
-Wenn du ein Datenfeld hinzufügst, wirst du die Option "Comparative value" sehen.
-Diese Option wird hier versehentlich angezeigt.
-Sie ist nicht für Standardformate gedacht, sondern für andere Anwendungsfälle.
-Dies ist ein bekannter Fehler, der in Zukunft behoben wird.
-Bis dahin kannst du die Option "Comparative value" einfach leer lassen, da sie keine Auswirkung auf das Standardformat hat.
-
-image::daten/daten-exportieren/kataloge-verwalten/katalog-formate/assets/comparative-value.png[]
 
 :catalogue:
 
@@ -584,8 +573,8 @@ include::../../../../artikel/_textblocks/verzeichnis/variante/einstellungen/verf
 |#Text#
 
 | *Mehrwertsteuersatz*
-|#Text#
-//ist vermutlich die Datei _textblocks/verzeichnis/variante/einstellungen/kosten/umsatzsteuer.adoc - but in this file you first need to add ifdef catalogue and figure out how it will work with ids and names
+|
+include::../../../../artikel/_textblocks/verzeichnis/variante/einstellungen/kosten/umsatzsteuer.adoc[]
 
 | *Verfügbarkeits-ID*
 |
@@ -703,7 +692,7 @@ image::daten/daten-exportieren/kataloge-verwalten/katalog-formate/assets/eigensc
 === Bild
 
 [discrete]
-==== Ordner
+==== Ordner-Ebene
 
 [cols="1,3a"]
 |====
@@ -721,7 +710,7 @@ image::daten/daten-exportieren/kataloge-verwalten/katalog-formate/assets/eigensc
 |====
 
 [discrete]
-==== Felder
+==== Datenfeld-Ebene
 
 [cols="1,3a"]
 |====
@@ -814,28 +803,35 @@ Beispiel: `11,12,13`
 | *Variante ist aktiv*
 |Beschränkt den Export auf Varianten, die entweder <<artikel/artikel-verwalten#intable-aktiv, aktiv oder inaktiv>> sind.
 
-| *Für mindestens einen Marktplatz sichtbar*
+|[#intable-marktplatz-oder]*Für mindestens einen Marktplatz sichtbar*
 |Wähle einen oder mehrere Marktplätze aus der Dropdown-Liste aus.
 Beschränkt den Export auf Artikel, die für _mindestens einen_ dieser Marktplätze <<artikel/artikel-verwalten#350, verfügbar>> sind.
 
-*_Hinweis_*:
-Dies ist ein "oder"-Filter.
-Wenn du zum Beispiel die Märkte eBay, Amazon und Zalando wählst, dann enthält die Exportdatei Artikel, die auf eBay ODER Amazon ODER Zalando verfügbar sind.
+[.collapseBox]
+.*Dies ist ein "oder"-Filter*
+--
+
+*_Beispiel_*: Wenn du die Märkte eBay, Amazon und Zalando wählst, dann enthält die Exportdatei Artikel, die auf eBay ODER Amazon ODER Zalando verfügbar sind.
 
 *_Abgrenzung_*:
-Es gibt auch einen "und"-Filter. <<Weitere Informationen>>.
+Es gibt auch einen "und"-Filter. <<daten/daten-exportieren/katalog-artikel#intable-marktplatz-und, Weitere Informationen>>.
 
-| *Hat Tags*
+--
+
+|[#intable-tags-und]*Hat Tags*
 |Wähle ein oder mehrere Tags aus der Dropdown-Liste aus.
 Beschränkt den Export auf Artikel, die mit _allen_ der gewählten <<artikel/einstellungen/markierungen#600, Tags>> verknüpft sind.
 
-*_Hinweis_*:
-Dies ist ein "und"-Filter.
-Wenn du zum Beispiel die Tags "Signiertes Exemplar", "Sammlerstück" und "Antiquität" wählst, dann enthält die Exportdatei Artikel mit dem Tag "Signiertes Exemplar" UND "Sammlerstück" UND "Antiquität".
+[.collapseBox]
+.*Dies ist ein "und"-Filter.*
+--
+
+*_Beispiel_*: Wenn du die Tags "Signiertes Exemplar", "Sammlerstück" und "Antiquität" wählst, dann enthält die Exportdatei Artikel mit dem Tag "Signiertes Exemplar" UND "Sammlerstück" UND "Antiquität".
 
 *_Abgrenzung_*:
-Es gibt auch einen "oder"-Filter. <<Weitere Informationen>>.
+Es gibt auch einen "oder"-Filter. <<daten/daten-exportieren/katalog-artikel#intable-tags-oder, Weitere Informationen>>.
 
+--
 
 | *Mit mindestens einem Auswahleigenschaftswert verknüpft*
 |#Text#
@@ -1110,18 +1106,23 @@ Es werden nur die Varianten exportiert, die _an oder vor_ diesem Datum geändert
 //überarbeiten - und, was ist der Unterschied zu oben?
 
 | *Artikel hat Hersteller*
-|#Text# Beschränkt den Export auf Artikel, die <<artikel/artikel-verwalten#_grundeinstellungen, von einer bestimmten Firma hergestellt>> werden.
+|Wähle eine oder mehrere Hersteller aus der Dropdown-Liste aus.
+Beschränkt den Export auf Artikel, die <<artikel/artikel-verwalten#_grundeinstellungen, von einem dieser Firmen hergestellt>> wurden.
 
-| *Für Marktplätze sichtbar*
+|[#intable-marktplatz-und]*Für Marktplätze sichtbar*
 |Wähle einen oder mehrere Marktplätze aus der Dropdown-Liste aus.
 Beschränkt den Export auf Artikel, die für _alle_ diese Marktplätze <<artikel/artikel-verwalten#350, verfügbar>> sind.
 
-*_Hinweis_*:
-Dies ist ein "und"-Filter.
-Wenn du zum Beispiel die Märkte eBay, Amazon und Zalando wählst, dann enthält die Exportdatei Artikel, die auf eBay UND Amazon UND Zalando verfügbar sind.
+[.collapseBox]
+.*Dies ist ein "und"-Filter*
+--
+
+*_Beispiel_*: Wenn du die Märkte eBay, Amazon und Zalando wählst, dann enthält die Exportdatei Artikel, die auf eBay UND Amazon UND Zalando verfügbar sind.
 
 *_Abgrenzung_*:
-Es gibt auch einen "oder"-Filter. <<Weitere Informationen>>.
+Es gibt auch einen "oder"-Filter. <<daten/daten-exportieren/katalog-artikel#intable-marktplatz-oder, Weitere Informationen>>.
+
+--
 
 | *Paket-Typ*
 |#Text# Beschränkt den Export auf Standard-Artikel, <<artikel/anwendungsfaelle/multipacks-pakete-sets#2000, Artikelpakete>> und Paketbestandteile.
@@ -1137,18 +1138,88 @@ Es gibt auch einen "oder"-Filter. <<Weitere Informationen>>.
 | *Mit Auswahleigenschaftswerten verknüpft*
 |#Text#
 
-| *Hat mindestens einen Tag*
+|[#intable-tags-oder]*Hat mindestens einen Tag*
 |Wähle ein oder mehrere Tags aus der Dropdown-Liste aus.
 Beschränkt den Export auf Artikel, die mit _mindestens einem_ der gewählten <<artikel/einstellungen/markierungen#600, Tags>> verknüpft sind.
 
-*_Hinweis_*:
-Dies ist ein "oder"-Filter.
-Wenn du zum Beispiel die Tags "Signiertes Exemplar", "Sammlerstück" und "Antiquität" wählst, dann enthält die Exportdatei Artikel mit dem Tag "Signiertes Exemplar" ODER "Sammlerstück" ODER "Antiquität".
+[.collapseBox]
+.*Dies ist ein "oder"-Filter*
+--
+
+*_Beispiel_*: Wenn du die Tags "Signiertes Exemplar", "Sammlerstück" und "Antiquität" wählst, dann enthält die Exportdatei Artikel mit dem Tag "Signiertes Exemplar" ODER "Sammlerstück" ODER "Antiquität".
 
 *_Abgrenzung_*:
-Es gibt auch einen "und"-Filter. <<Weitere Informationen>>.
+Es gibt auch einen "und"-Filter. <<daten/daten-exportieren/katalog-artikel#intable-tags-und, Weitere Informationen>>.
+
+--
 
 | *Variante hat Kindvarianten*
 |#Text#
 
 |====
+
+[#210]
+== Fragen und Antworten
+
+[.collapseBox]
+.*Was bedeutet "Comparative value"?*
+--
+
+Wenn du ein Datenfeld hinzufügst, wirst du die Option "Comparative value" sehen.
+Diese Option wird hier versehentlich angezeigt.
+Sie ist nicht für Standardformate gedacht, sondern für andere Anwendungsfälle.
+Dies ist ein bekannter Fehler, der in Zukunft behoben wird.
+Bis dahin kannst du die Option "Comparative value" einfach leer lassen, da sie keine Auswirkung auf das Standardformat hat.
+
+image::daten/daten-exportieren/kataloge-verwalten/katalog-formate/assets/comparative-value.png[]
+
+--
+
+[.collapseBox]
+.*Wie exportiere ich die Datei?*
+--
+
+. Klicke auf icon:file_download[set=material] in der Symbolleiste oben. +
+→ Der Export wird gestartet und läuft im Hintergrund.
+Du kannst während des Exportvorgangs weiter arbeiten.
+. Nach einiger Zeit (ca. 30-60 Minuten) erscheint eine Benachrichtigung (icon:notifications_none[set=material]) im Notification-Center.
+. Klicke in der Notification auf icon:link[set=material] Herunterladen.
+
+image::daten/daten-exportieren/kataloge-verwalten/katalog-formate/assets/katalog-export.gif[]
+
+* <<daten/daten-exportieren/kataloge-verwalten#260, Weitere Informationen>>
+* <<daten/daten-exportieren/kataloge-verwalten#255, Alternativ: Vorschau exportieren>>
+
+--
+
+[.collapseBox]
+.*In meiner Exportdatei fehlt eine Spalte. Warum?*
+--
+
+Möglicherweise hast du Datenfelder mit demselben "Export Key".
+Jeder "Export Key" muss eindeutig sein.
+
+* *_Negatives Beispiel_*: Du verwendest die Datenfelder <<Artikel-ID>> und <<Varianten-ID>>.
+Du gibst beiden "Export Keys" den Namen "id".
+Dies führt dazu, dass die Exportdatei nur eine der beiden IDs enthält.
+In der Exportdatei fehlt eine Spalte.
+* *_Positives Beispiel_*: Du verwendest die Datenfelder <<Artikel-ID>> und <<Varianten-ID>>.
+Du gibst einem "Export Key" den Namen "VariationID" und einem den Namen "ItemID".
+
+#BILD#
+
+--
+
+[.collapseBox]
+.*Es wird nur das Wort "Array" exportiert. Warum?*
+--
+
+
+--
+
+[.collapseBox]
+.*Wie kann ich die überarbeitete Datei wieder importieren?*
+--
+
+
+--
