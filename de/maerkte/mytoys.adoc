@@ -37,7 +37,7 @@ Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datena
 
 | Artikelexport
 | täglich +
-*_Hinweis:_* Der Artikelexport wird ein bis zwei Mal pro Tag durchgeführt. Er beinhaltet auch den Preisabgleich für die enthaltenen Artikel.
+*_Hinweis:_* Artikel werden ein bis zwei Mal pro Tag exportiert. Der Export beinhaltet auch den Preisabgleich für die enthaltenen Varianten.
 
 | Bestandsabgleich
 | alle 15 Minuten
@@ -46,7 +46,7 @@ Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datena
 
 | Auftragsimport
 | alle 15 Minuten +
-*_Hinweis:_* Kund:innen zahlen an myToys. Deshalb werden alle Aufträge mit dem Status *[5] Bezahlt* importiert. Sollte kein Bestand vorhanden sein oder die SKU-Zuordnung fehlen, verbleibt der Auftrag in Auftragsstatus *[4] In Versandvorbereitung*.
+*_Hinweis:_* Kund:innen zahlen an myToys. Deshalb werden alle Aufträge mit dem Status *[5] Bezahlt* importiert. Wenn kein Bestand vorhanden ist oder keine SKU zugerdnet ist, bleibt der Auftrag in Auftragsstatus *[4] In Versandvorbereitung*.
 
 |====
 
@@ -98,8 +98,8 @@ Datenaustausch mit myToys einrichten:
 
 2+| Schritt *API-Einstellungen*
 
-| *Händlernummer*, +
-*Benutzername*, +
+| *Kontonummer*; +
+*Benutzername*; +
 *Passwort*
 | Diese Zugangsdaten erhältst du von myToys.
 
@@ -111,19 +111,33 @@ Datenaustausch mit myToys einrichten:
 | *Port*
 | Port `22` eingeben.
 
-| *Benutzername*, +
+| *Benutzername*; +
 *Passwort*
 | Diese Zugangsdaten erhältst du von myToys.
 
 2+| Schritt *Cron-Einstellungen*
 
-| *Cron für Auftragsimport*; +
-*Cron für Produktexport*; +
-*Cron für Warenbestandsexport*
-| Aktiviere hier die Crons, die für den automatischen Datenaustausch mit der myToys-Schnittstelle benötigt werden. Weitere Informationen zu den einzelnen Crons sind in <<mytoys-data-exchange-setup>> verfügbar.
+| *Cron für Auftragsimport*
+| Aktivieren, um den Auftragsimport zu aktivieren. Aufträge werden alle 15 Minuten importiert.
+
+| *Cron für Produktexport*
+| Aktivieren, um den Artikelexport zu aktivieren. +
+*_Hinweis:_* Artikel werden ein bis zwei Mal pro Tag exportiert. Der Export beinhaltet auch den Preisabgleich für die enthaltenen Varianten.
+
+| *Cron für Warenbestandsexport*
+| Aktivieren, um den Warenbestandsexport zu aktivieren. Der Bestand wird alle 15 Minuten exportiert.
+
+2+| Schritt *Versandprofilverknüpfung*
 
 | Schritt *Versandprofilverknüpfung*
-| Verknüpfe in diesem Schritt ein in plentymarkets vorhandenes Versandprofil mit dem Versanddienstleister myToys. Klicke auf icon:plus-square[role="green"], wähle das gesuchte Versandprofil aus der Dropdown-Liste aus und füge im zweiten Feld myToys als Versanddienstleister hinzu. Verknüpfe auf diese Weise alle Versandprofile, die mit myToys verknüpft werden sollen. Weitere Informationen zu Versandprofilen findest du auf der Handbuchseite <<fulfillment/versand-vorbereiten#1000#, Versand vorbereiten>>.
+| Welche Versanddienstleister möchtest du Kund:innen für myToys-Aufträge anbieten?
+
+Alle externen Versanddienstleister mit plentymarkets <<fulfillment/versand-vorbereiten#1000#, Versandprofilen>> verknüpfen, die für myToys-Aufträge möglich sein sollen:
+
+. Auf icon:plus-square[role="green"] klicken.
+. plentymarkets Versandprofil aus der Dropdown-Liste *Internes Versandprofil* wählen.
+. Passenden Versanddienstleister aus der Dropdown-Liste *Externer Versanddienstleister* wählen.
+.
 
 | Schritt *Lagerauswahl*
 | Wähle ein oder mehrere in plentymarkets vorhandene Lager aus, in denen sich die Artikel befinden, die du auf myToys verkaufen möchtest. Dadurch wird der Bestand mit myToys synchronisiert.
@@ -274,7 +288,7 @@ Die Zeichenlimitierung für Bullet Points beträgt 255 Zeichen, danach wird der 
 | Der eingegebene Wert wird in Gramm übertragen.
 
 | *Altersempfehlung*
-| Die Altersempfehlung verwendet myToys, um zu entscheiden, in welchem Shop der Artikel angeboten wird:
+| Die Altersempfehlung wird verwendet, um automatisch zu entscheiden, in welchem Shop der Artikel angeboten wird:
 
 * Produkte mit einer Altersempfehlung *bis 16 Jahre* werden in myToys eingestellt.
 * Produkte mit einer Altersempfehlung *ab 18 Jahre* werden bei mirapodo/yomonda eingestellt.
@@ -286,6 +300,24 @@ Die folgenden Werte sind erlaubt:
 * *mini* = 2-8 Jahre +
 * *teen* = 8-16 Jahre +
 * *adult* = 18-99 Jahre
+
+[.collapseBox]
+.Eigenschaft für *Altersempfehlung* erstellen
+--
+
+. Eigenschaft mit den folgenden Einstellungen erstellen:
+  ** Name: Altersgruppe
+  ** Bereich: Artikel
+  ** Typ: Auswahl
+  ** Auswahlwerte:
+    ** *new born*
+    ** *baby*
+    ** *mini*
+    ** *teen*
+    ** *adult*
+. Variante im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Hauptvariante öffnen] » Varianten-Tab: Eigenschaften* mit der Eigenschaft verknüpfen.
+. Für die Variante passenden Eigenschaftswert wählen.
+--
 
 |====
 
