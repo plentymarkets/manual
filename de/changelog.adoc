@@ -6,11 +6,11 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 25. November 2021
-:endWeekDate: 01. Dezember 2021
-:nav-alias: Changelog 01. Dezember 2021
+:startWeekDate: 09. Dezember 2021
+:endWeekDate: 15. Dezember 2021
+:nav-alias: Changelog 15. Dezember 2021
 
-// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/auftraege-falsche-daten-im-suchindex-orders-wrong-data-in-search-index/661765
+// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/amazon-vcs-fehlendes-update-der-transaktions-id-auf-microservice-missing-update-of-transaction-id-on-microservice/663664
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,15 +31,14 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Versand-Center
+=== Ereignisaktionen
 
-* Wir haben im Menü Aufträge » Versand-Center 2.0 (Testphase) eine komplett neue Bedienoberfläche auf Basis von Angular entwickelt und gleichzeitig viele Änderungen im Backend vorgenommen. Die neue Bedienoberfläche des Versand-Centers 2.0 folgt damit dem neuen, einheitlichen UI-Konzept. Das Versand-Center 2.0 bringt im Vergleich zum alten Versand-Center die folgenden Neuerungen mit:
-** Bei der Auftragsanmeldung kann nun jeweils ein Auftragsstatus für den Erfolgsfall und für den Fehlerfall gewählt werden, in dem die Aufträge nach der erfolgreichen bzw. fehlgeschlagenen Anmeldungen landen sollen.
-** Es gibt eine Gruppenfunktion zum Zurücksetzen von Aufträgen.
-** Es gibt eine Gruppenfunktion zum Herunterladen von Retourenlabels.
-** Es gibt eine Checkbox zum automatischen Download der Versandlabels beim Anmelden der Aufträge.
-** Eine Spalte mit angemeldeten Retouren kann in der Übersicht angezeigt werden.
-** Die Filter Auftragsdatum von / bis, Auftragstyp und Land wurden hinzugefügt.
+* Es wurde eine neue Ereignisaktion hinzugefügt, mit welcher der *Abhol-/Lieferschein* erzeugt werden kann.
+
+discrete]
+=== Kataloge
+
+* Du kannst ab jetzt die *Einkaufspreise* der Artikel, die in der Warenbewegungen angezeigt werden, und die *Tags* mit dem Katalog Format *Warenbewegungen* exportieren.
 
 '''
 
@@ -49,12 +48,23 @@ Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Zalando
+=== Cdiscount
 
-* Beim Bestands- und Preisupdate, die alle 15 Minuten laufen, wird nach Varianten gesucht, die sich seit dem letzten Prozesslauf in Preis oder Bestand verändert haben. Dazu wird der letzte Startzeitpunkt nach Abschluss des Prozesses gespeichert, um diesem im nächsten Lauf als Referenz zu verwenden. Die Information, ob und wann es eine Preis- oder Bestandsänderung gab, wird technisch aus einem ES-Index gewonnen, der asynchron aktualisiert wird. Im Normalfall sollte dieser Index aber nur mit einer Verzögerung von einer Minute aktualisiert werden. Dadurch, dass es aber zu Verzögerungen größer 5 Minuten kam, konnte es dazu kommen, dass Preis- und Bestandsänderungen verloren gingen. Um diesem Verhalten entgegenzuwirken, wurde der bereits vorhandene Puffer von 5 Minuten, um welche das geprüfte Intervall vergrößert wird, auf 30 Minuten angehoben. Dies sorgt dafür, dass Bestände und Preise mehrmals hintereinander geschickt werden, wir denken aber, dass dies die bessere Alternative im Vergleich mit verlorenen Updates ist.
-* An Merkmalen, die bei der Konvertierung der Silhouetten mit einer unsichtbaren Verknüpfung für Zalando erstellt wurden, ist diese Verknüpfung jetzt sichtbar, aber gesperrt. Die Verknüpfung kann weiterhin nicht selbst gesetzt oder entfernt werden. Nur der Konvertierungsprozess kann Merkmale mit dieser Verknüpfung generieren.
-* Wenn bei der Konvertierung der Silhouetten keine Silhouetten gewählt wurden, werden nicht mehr alle Silhouetten konvertiert, sondern keine Silhouetten, um ein versehentliches Konvertieren auszuschließen.
-* Die Konvertierung der Silhouetten kann nur noch von Benutzer:innen mit Berechtigungen zum Erstellen und Bearbeiten von Merkmalen, Merkmal-Gruppen und Marktplatzmerkmalen ausgeführt werden.
+* Die Log-Einträge für die Meldung von Gutschriften an Cdiscount wurde vom *Daten » API-Log* zu *Daten » Log* überführt. Die Log-Einträge können mit den folgenden Filtern gefunden werden:
+
+** *Identifikator*: `Cdiscount`
+** *Referenztyp*: `action`
+** *Referenzwert*: `orderRefund`
+
++
+Zusätzlich können die Einträge nach den Referenztypen orderId und externalOrderId durchsucht werden. Im Gegensatz zu vorher wird die gesamte Antwort von Cdiscount als Zusatzinfo beim Öffnen des Eintrags angezeigt, um die Fehlersuche für den Support zu vereinfachen.
+
+[discrete]
+=== Payment
+
+* Eine neue Infobox wurde zum Menü *Zahlung teilen* hinzugefügt. Sie zeigt den Wert des Restbetrags an. Die Infobox wird angezeigt, nachdem eine Zahlung für die Aufteilung ausgewählt wurde.
+* Die Infoboxen werden jetzt in einer Zeile angezeigt.
+* Dem Menü wurde eine neue Symbolleiste oben hinzugefügt.
 
 '''
 
@@ -64,54 +74,32 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
-=== Abonnement
-
-* Der Filter Kontakt-ID hat bisher auch Zeichenketten akzeptiert, wenn in der Abo-Übersicht nach der Kontakt-ID gefiltert wurde. Dies wurde behoben und der Filter akzeptiert jetzt ausschließlich numerische Werte.
-* Der Name des Filters Kontakt wurde in Kontakt-ID geändert.
-* Eine neue Spalte namens Kontakt-ID wurde zur Abo-Übersichtstabelle hinzugefügt.
-
-[discrete]
-=== Amazon
-
-* Bei der Übermittlung der Versandbestätigung kam es zu einem Fehler, wenn an einem der Aufträge kein Versandprofil bzw. ein Versandprofil, das nicht mehr existiert, zugeordnet war. Dies wurde nun behoben. Sollte kein Versandprofil zugeordnet sein, dann wird als Fallbackwert der Transportservice „Andere“ eingetragen.
-
-[discrete]
 === Aufträge
 
-* Bei der Auswahl eines neuen Kontaktes für die Erstellung eines neuen Auftrags wurden die voreingetragenen Daten aus diesem Kontakt nicht in den ersten Schritt der Auftragsanlage übernommen. Dies ist nun behoben.
-* Bei der Nutzung einer Auftragsvorlage wurden die Variationen dieser Vorlage nicht dem Warenkorb hinzugefügt, wenn die Variationen nicht in der Artikelliste angezeigt wurden. Dies ist nun behoben, die Variationen der Auftragsvorlage werden über eine separate Route abgerufen.
-* Es konnte vorkommen, dass bei Auftragsdokumenten falsche Namen für Attribute ausgegeben wurden.
-* Wenn der Betrag einer Zahlung exakt auf Aufträge mit Skonto aufgeteilt wird, konnte es dazu kommen das eine unzugeordnete Zahlung mit einem Restbetrag von 0 angelegt wurde. Dies wurde behoben.
-* Beim Hinzufügen eines Artikels zu einer Nachbestellung wurden die Verpackungseinheiten nicht korrekt dargestellt. Dies ist jetzt behoben.
-* In der Statistik der Retourengründe wurde die Versandkostenposition bisher als „unknown“ ausgegeben und wird zukünftig korrekt ausgeschlossen.
-* Durch eine Anpassung hatte sich eine erhöhte Anlagedauer bei Auftragsdokumenten ergeben. Das wurde nun behoben.
+* Es konnte in seltenen Fällen dazu kommen, dass im Suchindex für Aufträge nicht aktuelle Daten waren.
+
+[discrete]
+=== Cdiscount
+
+* Dies ist eine Anpassung zu link:https://forum.plentymarkets.com/t/cdiscount-attribute-in-produktnamen-attributes-in-product-name/653209[einer bereits durchgeführten Korrektur^]. Wir haben neue Informationen erhalten, auf Basis derer der Export so angepasst wird, dass die Attribute nur bei Varianten an den Produktnamen angehängt werden, welche bei Cdiscount als Einzelartikel gelistet werden, während die Attribute weiterhin nicht bei Varianten angehängt werden, welche als Variantenartikel auf Cdiscount gelistet werden.
++
+*Zusatzinformation: Unterscheidung Varianten- und Einzelartikel auf Cdiscount* - Auf Cdiscount können nur ganz bestimmte Produkttypen (meistens Kleidung) als Variantenartikel gelistet werden. Deswegen exportieren wir standardmäßig jede Variante als Einzelartikel außer:
+
+. Die Attribute der Variante wurden über die Attributverknüpfung als Kleidungsfarbe oder Kleidungsgröße definiert oder
+. Ein Merkmal vom Typ „Kein“ mit der Cdiscount-Verknüpfung „Variantenartikel“ wurde am Artikel hinterlegt.
+
++
+Falls man das gleiche Attribut für Varianten und Einzelartikel auf Cdiscount verwendet, dann kann man ebenfalls über ein Merkmal vom Typ „Kein“ mit der Cdiscount-Verknüpfung „kein Variantenartikel“ den Artikel explizit als Einzelartikel deklarieren.
+
+[discrete]
+=== EmailBuilder
+
+* Vorlagen, die im EmailBuilder erstellt wurden und aus der Vorschau im Auftrag versendet wurden, wurden zwar versendet, jedoch wurden sie nicht im Ordner Gesendete E-Mails im Auftrag angezeigt. Dieses Verhalten wurde behoben.
 
 [discrete]
 === Payment
-* Der Button zum Neuladen (im Kontextmenü des Tabs zu finden) hat in der Zahlungen-UI, Abo-UI, Neue Auftrags-UI und Nachbestellungen-UI nicht korrekt funktioniert. Dies wurde behoben.
-* Beim Löschen von Zahlungen über die Gruppenfunktion enthielten die Mitteilungen die falschen Zahlungen. Dies ist behoben, die Mitteilungen listen nun die gelöschten Zahlungen.
-* In der Ansicht Zahlung teilen wurde in der Rechnungsspalte nicht die letzte gültige Rechnungsnummer angezeigt. Dies ist behoben, die richtige Rechnungsnummer wird nun angezeigt.
-* In der Ansicht Zahlung teilen wurde jedes Mal ein Call zum Abrufen der Kontaktinformationen für jeden aufgelisteten Auftrag ausgeführt. Dies ist behoben.
-* In der Zuordnungstabelle einer Zahlung waren die Spalten mit Nummern und Zahlen nicht rechts-, sonder linksbündig angezeigt. Dies wurde behoben.
-* Die alten Terra-Schaltflächen wurden durch die neuen Material-Schaltflächen ersetzt.
-* In der Zuordnungstabelle einer Zahlung ist die Schaltfläche zum Konfigurieren der Tabelle nun rechtsbündig.
-* Alle Tabellen nutzen nun die neuesten Tabellencontainer.
-* Beim Lösen oder Zuordnung einer Zahlung in der Detailansicht enthielt die Tabelle nicht die neuesten benötigten Informationen. Dies ist behoben.
 
-[discrete]
-=== Prozesse 
-* Ein neues Format für die SEPA Lastschriften (008.001.002) innerhalb der Prozesse steht euch bereits zur Verfügung. Dort konnte noch ein Fehler beim validieren auftreten. Diesen haben wir behoben, damit ihr das Format korrekt bei euren Banken verwenden könnt.
-
-[discrete]
-=== Warenwirtschaft
-
-* Der Filter nach Hersteller hat nicht richtig funktioniert. Der Fehler wurde nun behoben.
-
-[discrete]
-=== Zalando
-
-* Beim Speichern eines Merkmals, das durch die Konvertierung der Silhouetten erstellt wurde, wurde die unsichtbare Verknüpfung für Zalando im Hintergrund entfernt. Dieses Verhalten wurde behoben.
-* Bei der Konvertierung der Silhouetten zu Merkmalen konnte es vorkommen, dass Gruppen und Merkmale mehrfach erstellt wurden. Davon betroffen waren Merkmal-Gruppen, deren ursprünglicher Name länger als 64 Zeichen war und der durch die Zeichenlimitierung der Datenbank gekürzt wurde. Dieses Verhalten wird jetzt verhindert.
+* Nach dem Benutzen einer Gruppenfunktion in der Zahlungsverkehr-UI werden die Filter nun nicht mehr zurückgesetzt.
 
 --
 
@@ -125,14 +113,42 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Aufträge
+=== Ereignisaktionen
 
-* Es ist jetzt möglich zu konfigurieren, welche Auftragseigenschaften beim Erstellen von Kindaufträgen kopiert werden sollen. Die Einstellung befindet sich unter Einrichtung » Aufträge » Eigenschaftskopie.
+* Wir haben in den Ereignisaktionen im Menü *Einrichtung » Aufträge » Ereignisse* im Bereich *Auftrag* den Filter *Auftrag mit Retourenpaketnummer* mit der Auswahl *Ja* / *Nein* hinzugefügt. Somit kannst du deine Aufträge gezielt danach filtern, ob diese eine Retourenpaketnummer haben oder nicht und die Aufträge dann z.B. über eine Aktion in einen anderen Auftragsstatus verschieben.
 
 [discrete]
-=== Warenwirtschaft
+=== Kataloge
 
-* Wenn man alle Lagerorte einer Eltern Dimension löschen wird, wird auch diese übergeordnete Dimension automatisch gelöscht. Das bedeutet für dich, dass du die Dimensionen eines Lagers nicht mehr händisch löschen musst, wenn diese Dimensionen keine Lagerorte mehr enthalten. _Hinweis:_ Diese Funktionalität wirkt nicht rückwirkend auf die Lagerdimensionen, die zur Zeit keine Lagerorte enthalten.
+* Du kannst ab jetzt Warenbewegungen aus einem bestimmten Datumsbereich (max. Bereich 3 Monate) exportieren.
+
+[discrete]
+=== Payment
+
+* In der neuen Zahlungsverkehr-UI wurde ein Link zum Kontakt in die Zuordnungs-Tabelle eingefügt.
+* In der neuen Zahlungsverkehr-UI wurde ein Ankerpunkt für die Infoboxen in die Seitennavigation hinzugefügt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Dashboard
+
+* Das neue plentyBI Dashboard wird in Zukunft das alte ersetzen und damit standardmäßig geöffnet, wenn sich Nutzer in das System einloggen. Das alte Dashboard wird nicht abgeschaltet und wird weiterhin verfügbar sein.
+
+[discrete]
+=== Payment
+
+* Die folgenden Anpassungen wurden für die Zahlungshistorie in der Detailansicht einer Zahlung vorgenommen:
+
+** Die Tabellenspalten und deren Reihenfolge wurde angepasst.
+** Die Spalte *Benutzer/Quelle* gibt genauer wieder, von wem oder wo die Änderung vorgenommen wurde (z.B. eine Benutzer:in oder ein Plugin).
+** Die Spalten *Aktion* und *Wert* geben genau wieder, welche Änderung an der Zahlung vorgenommen wurde.
+** Die Tabelleneintragungen wurden erweitert, so dass mehr Informationen für Zahlungen zur Verfügung stehen.
 
 '''
 
@@ -144,29 +160,18 @@ Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 [discrete]
 === Aufträge
 
-* Durch mehrfaches Klicken auf den „Auftrag erstellen“ Button werden nun nicht mehr mehrfach Aufträge angelegt.
-* Ein Fehler in der Konsole beim Öffnen der UI wurde behoben.
+* Beim erneuten Speichern einer Nachbestellung nach einem Währungswechsel ist ein Fehler aufgetreten. Dies ist nun behoben, die Nachbestellung kann wieder erfolgreich gespeichert werden.
 
 [discrete]
-=== CRM
+=== Kataloge
 
-* Das Auswählen von dynamischen Vorlagen im EmailBuilder war nicht möglich. Es öffnete sich keine Dropdown-Liste. Dieses Verhalten wurde behoben.
-
-[discrete]
-=== Import
-
-* Es war möglich, dass per Import ein Kategoriename leer importiert werden konnte. Das führte zu einer fehlerhaften Anzeige im Backend. Dieses Verhalten wurde nun angepasst und es ist nicht mehr möglich, einen leeren Namen zu importieren.
-
-[discrete]
-=== Payment
-
-* In der Zahlungsverkehr-UI haben die Filter für Transaktions-ID und Transaktionscode nicht korrekt funktioniert. Dies wurde nun behoben.
+* Es konnten nur 50.000 statt der erlaubten 60.000 Aufträge im Katalog exportiert werden.
+* Wenn man den Bestand für einen gewissen Tag exportieren wollte, wurde der Bestand des vorherigen Tages angezeigt. Der Fehler wurde nun behoben.
 
 [discrete]
 === Prozesse
 
-* In der Aktion Auftragssuche (Lagerort) wurden zwei Fehlermeldungen angezeigt, wenn kein Auftrag gefunden wurde. Dieses Verhalten wurde behoben.
-* Der Filter Zahlung in den Prozessen hat nicht korrekt funktioniert. Dieses Verhalten wurde behoben.
+* Bei einem Fehler in der Aktion *Warenausgang* buchen wurde die Aktion für den Fehlerfall nicht ausgeführt. Dieses Verhalten wurde behoben.
 
 --
 
@@ -180,108 +185,77 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:hhttps://marketplace.plentymarkets.com/addphonetoorderwidget_54796[Abfrage der Telefonnummer nach Bestellabschluss - Widget^]
-|1.0.4
-|-
-
 |link:https://marketplace.plentymarkets.com/adcelltracking_6493[ADCELL Conversion Tracking^]
-|2.0.9
+|2.0.12
 |-
 
-|link:https://marketplace.plentymarkets.com/magiczoomplus_6092[Artikelbilder - Magic Zoom Plus^]
-|3.1.5
+|link:https://marketplace.plentymarkets.com/magiczoomplus_6092[Artikelbilder Zoom - Magic Zoom Plus^]
+|3.1.8
+|-
+
+|link:https://marketplace.plentymarkets.com/bulletpointwidget_54988[Artikelvorteile mit Bullet Points / Listenpunkte - Widget^]
+|1.0.3
 |-
 
 |link:https://marketplace.plentymarkets.com/billigerdetracking_6126[billiger.de Conversion Tracking^]
-|2.0.9
-|-
-
-|link:https://marketplace.plentymarkets.com/customcontainercontent_6232[25x Custom TWIG/JS/CSS Container^]
-|1.0.7
-|-
-
-|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
-|2.1.11
+|2.0.11
 |-
 
 |link:https://marketplace.plentymarkets.com/filterdrop_6603[FilterDrop^]
-|4.0.0
+|4.0.1
 |-
 
-|link:https://marketplace.plentymarkets.com/itemgridwidget_55036[Flexible Artikel-Darstellung^]
-|1.0.3
-|-
-
-|link:https://marketplace.plentymarkets.com/gaxsysindependent_6802[gax-Independent^]
-|1.2.3
+|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com^]
+|1.3.1
 |-
 
 |link:https://marketplace.plentymarkets.com/googleanalyticsrefunder_6657[Google Analytics Rückerstattung^]
-|1.0.8
-|-
-
-|link:https://marketplace.plentymarkets.com/googletagmanagerultimate_54789[Google Tag Manager + Conversions API | 17 Tools in einem^]
-|1.2.7
+|1.0.10
 |-
 
 |link:https://marketplace.plentymarkets.com/wartungsmodus_5812[Individueller Wartungsmodus^]
-|1.0.9
+|1.0.11
 |-
 
-|link:https://marketplace.plentymarkets.com/io_4696[IO^]
-|5.0.43
+|link:https://marketplace.plentymarkets.com/matrixvarianten_6620[Mehrere Varianten gleichzeitig in den Warenkorb legen^]
+|1.3.2
 |-
 
-|link:https://marketplace.plentymarkets.com/categorywidgets_55035[Kategorie Widgets^]
-|1.0.2
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.57
 |-
 
-|link:https://marketplace.plentymarkets.com/marketingwidgets_55037[3 Marketing Shopbuilder-Widgets^]
-|1.0.3
-|-
-
-|link:https://marketplace.plentymarkets.com/plugins/sales/marktplaetze/marketplaceconnectionmoebel24-26707_55034[Marktplatz Anbindung Moebel24^]
-|2.0.0
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
+|2.8.1
 |-
 
 |link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent Toolbox^]
-|4.6.12
+|4.6.13
 |-
 
-|link:https://marketplace.plentymarkets.com/mobilenavigation_55038[Optimierte mobile Navigation^]
-|1.0.3
-|-
-
-|link:https://marketplace.plentymarkets.com/wishlistwidgets_55040[Optimierte Wunschliste + Widget^]
-|1.0.2
-|-
-
-|link:https://marketplace.plentymarkets.com/payone_5434[PAYONE^]
-|2.3.0
-|-
-
-|link:https://marketplace.plentymarkets.com/ceres_4697[plentyShop LTS^]
-|5.0.43
+|link:https://marketplace.plentymarkets.com/novalnet_5231[Novalnet^]
+|2.2.2
 |-
 
 |link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.26.11
+|1.26.13
 |-
 
-|link:https://marketplace.plentymarkets.com/plugins/fulfillment-stock/order-warehouse-management/sageconnector-31410_6922[Sage Connector^]
-|2
+|link:https://marketplace.plentymarkets.com/plentybase_5053[plentyBase^]
+|1.8.1
+a| * Für macOS wird keine separate Java-Installation mehr benötigt. plentyBase für macOS beinhaltet diese jetzt wieder fest.
+* Linux Distributionen mit Gnome3 Desktop zeigen keine Tray-Icons unter Java an, stattdessen wird jetzt die plentyBase-Konfiguration direkt beim Start geöffnet. Über die Taskleiste lässt sich diese dann auch jederzeit wieder öffnen.
+
+|link:https://marketplace.plentymarkets.com/schufa_6360[Schufa Bonitätsprüfung^]
+|2.0.8
 |-
 
-|link:https://marketplace.plentymarkets.com/serversidetesting_55039[Server-seitiges A/B Testing-Tool^]
-|1.0.2
+|link:https://marketplace.plentymarkets.com/trackingmanager_54743[TrackingManager^]
+|1.1.2
 |-
 
-|link:https://marketplace.plentymarkets.com/cytitemavailabilitynotification_6906[Verfügbarkeitsbenachrichtigung mit Statistik^]
-|1.4.3
-|-
-
-|link:https://marketplace.plentymarkets.com/conditionwidget_54782[WENN/DANN Shopbuilder-Widget^]
-|1.1.5
+|link:https://marketplace.plentymarkets.com/conditionwidget_54782[WENN / DANN Shopbuilder-Widget^]
+|1.1.7
 |-
 
 |===
