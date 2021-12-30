@@ -285,7 +285,7 @@ The following rules apply to product names:
 
 * Enter the item name in German.
 * There is no character limit for product names. However, do not use too many characters because {market} will automatically cut off products name that are too long. Thus, keep the product name as short as possible.
-* Manufacturers or brand names do not have to be included in the product name, This information is displayed separately above the product name on {market}.
+* You do not need to mention the manufacturer or any own brands in the product name. This information is shown separately above the item name on {market}.
 * Colours, sizes, gender information or repetitions are not allowed as part of product names.
 
 | *Brand*
@@ -357,15 +357,52 @@ RRP are shown based on the following logic:
 | Map the values of a plentymarkets property to each pattern. +
 *_Tip:_* For variations that do not have a pattern, save the property value that you mapped to the {market} value *uni* in the catalogue.
 
-| *Material composition*
+| Material composition
 | You need to specify the material composition to list products in some categories. This is particularly relevant for textiles and shoes.
 
-Of the five fields available, at least one field has to be linked. This is a multi-dimensional mapping: +
-In step 1, link the material type (complex mapping), such as "upper material". +
-In step 2, Enter the material composition of “upper material” in the following format: +
-{"material1": "percentage","material2": "percentage","material3": "percentage"} +
-*_Example:_* {"WO": "90","EL": "10"} +
-*_Note:_* Refer to link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/myToys/myToys_Materialien_sortiert.pdf[this document] to access a full list of all material types accepted my {market}.
+Two marketplace data fields are combined to export material composition information:
+
+* *General Components > Textile composition - 1. material composition textile* is used to export the composition in percent.
+* *Textile component 1* specifies the part of the variation to which the percentages relate. For example, this could be the lining or the cuffs.
+
+As a minimum, you need to map *1\. material composition textile* and *Textile component 1*. The data fields for materials 2 to 5 are optional.
+
+[cols="1,3a"]
+!===
+! *General Components >* +
+
+*Textile composition - 1. Material composition textile* +
+
+to +
+
+*Textile composition - 5. Material composition textile*
+! These marketplace data fields are used to specify the material composition in percent.
+
+Use a property to specify material compositions in percent:
+
+. Create a property of the type *Text*.
+. Links the property with the variation.
+. Enter the material composition in the text field of the property. Use the following format:
+
+  * *{"material1": "percentage","material2": "percentage","material3": "percentage"}* +
+  *_Important:_* The values for material types you enter must be identical to the
+  link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/myToys/myToys_Materialien_sortiert.pdf[values that {market} uses^]{nbsp}icon:external-link[].
+  * *_Example:_* `{"WO": "90","EL": "10"}`
+
+! *Textile component 1*
+! As described above, the marketplace data field *General Components > Textile composition - 1. Material composition textile* is used to specify the material composition of a variation in percent. However, {market} does not know which part of the variation these percentages relate to. As such, the marketplace data field *Textile component 1* specifies to {market} which component of a variation the percentages relate to.
+
+Examples of textile components are Obermaterial (upper), Außenjacke (outer jacket), Beinfutter (leg lining), or Bündchen (cuffs). You can find a complete list of the textile components {market} uses link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/mytoys-textilkomponenten.txt[here^]{nbsp}icon:external-link[].
+
+Use a property to specify the textile components:
+
+. Create a property of the type *Selection*.
+. Save all components that you need for your variation as selection values.
+. In the catalogue, map the selection values of the property to the different {market} textile components.
+. Links the property with the variation.
+. Select a suitable property value.
+
+!===
 
 | *Item weight*
 | The entered value is transmitted in grams.
@@ -500,7 +537,7 @@ Uploading a PDF template for return slips:
   .. Save (icon:save[set=plenty]) the setting.
 . In the drop-down list *Language*, select the option *de*.
 . In the line *Template*, click on *Choose template file*.
-. Select the PDF template for {market} delivery notes.
+. Select the PDF template for {market} return slips.
 . Click on *Upload template* (icon:save[set=plenty]). +
 → The template is uploaded.
 
@@ -690,4 +727,4 @@ Find variations with missing mandatory fields:
 . Click on *Search* (icon:search[role="blue"]). +
 → All variations with missing mandatory fields are listed.
 . Click on the entry to see details. +
-→ Under *requiredFields: Object*, the missing mandatory fields are listed.
+→ The missing mandatory fields are listed in the section *requiredFields: Object*.
