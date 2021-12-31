@@ -10,7 +10,9 @@ include::{includedir}/_header.adoc[]
 include::_textblocks/hinweis-voraussetzungen.adoc[]
 include::_textblocks/hinweis-offene-beta.adoc[]
 
-Eine Inventur kannst du nicht nur <<warenwirtschaft/inventur-vornehmen#, im plentymarkets Backend>>, sondern auch mit der plentyWarehouse App durchführen. Auf dieser Handbuchseite findest du alle Informationen zu notwendigen Einstellungen im Vorfeld sowie zum Ablauf der Inventur in plentyWarehouse.
+Eine Inventur kannst du nicht nur <<warenwirtschaft/inventur-vornehmen#, im plentymarkets Backend>>, sondern auch mit der plentyWarehouse App durchführen. Auf dieser Handbuchseite findest du alle Informationen zu notwendigen Einstellungen im Vorfeld sowie zum Ablauf der Inventur mit plentyWarehouse.
+
+Für Inventuren, die mit plentyWarehouse durchgeführt wurden, können außerdem im Nachhinein Zählprotokolle im plentymarkets Backend erzeugt und exportiert werden. Weitere Informationen dazu findest du im Kapitel <<#600, Inventur dokumentieren>>.
 
 [IMPORTANT]
 .Labels für Lagerorte verwenden
@@ -22,7 +24,20 @@ Du hast noch keine Labels für Lagerorte erstellt? Die passende Anleitung findes
 [#100]
 == Bestand prüfen
 
-Wenn du nach der Inventur alle Bestandsabweichungen auf einmal prüfen möchtest, nutze den <<daten/daten-exportieren/elastischer-export#, elastischen Export>>. Dazu exportierst du im plentymarkets Backend den Bestand über das Datenformat <<daten/export-import/datenformate/stock#, Stock>>, bevor du die Inventur mit der plentyWarehouse App durchführst. Nach Abschluss der Inventur erstellst du einen weiteren Export und vergleichst die Bestandsdaten.
+Möchtest du nach der Inventur alle Bestandsabweichungen auf einmal prüfen? Dann nutze zunächst das <<warenwirtschaft/inventur-vornehmen#200, Export-Format *Warenbestände*>>, um deine aktuellen Warenbestände zu exportieren.
+
+Nachdem du die Inventur mit der plentyWarehouse App durchgeführt hast, erstellst du über das <<warenwirtschaft/inventur-vornehmen#400, Import-Tool einen Datenimport>>. Im Anschluss kannst du alle Bestandsabweichungen pro Artikel im *Tab: Bestand » Tab: Warenbewegung* des Artikels einsehen. Der Import wird außerdem im Menü *Waren » Wareneingänge* als Eintrag aufgelistet. Die geänderten Warenbestände kannst du in diesem Eintrag nachvollziehen.
+
+[#150]
+== Rechte für die Inventur vergeben
+
+Bevor du eine Inventur mit plentyWarehouse durchführst, muss sichergestellt sein, dass alle Benutzer:innen über die entsprechenden Berechtigungen verfügen. Nur so können die gezählten Bestände erfasst und sowohl in plentyWarehouse als auch im plentymarkets Backend korrekt gespeichert werden.
+
+:rights-purpose: Inventuren durchführen kölnnen
+:right-one: pass:quotes[*Warenbestände > Lager > Lagerort > Anzeigen*]
+:right-two: pass:quotes[*Warenbestände > Lager > Lagerort > Lagerortebene > Erstellen*]
+
+include::../../_includes/textblocks/instructions/rechte.adoc[]
 
 [#200]
 == Einstellungen zur Inventur vornehmen
@@ -99,9 +114,10 @@ Einstellungen zur Inventur vornehmen:
 2+| Bereich *Artikelerfassung*
 
 | [#option-itemscan]*Verpflichtender Artikel-Scan*
-|Verwende diese Option, um festzulegen, welche Regeln für das Erfassen von Artikeln für das Verräumen gelten sollen. +
-*Aktiviert* (icon:toggle-on[role="green"]) = Alle Artikel _müssen_ über ihr Etikett gescannt werden, um für das Verräumen erfasst zu werden. Eine manuelle Auswahl von Artikeln über die Suche ist nicht möglich. +
-*Deaktiviert* (icon:toggle-off[role="darkGrey"]) = Artikel können entweder per Scan oder per manueller Auswahl hinzugefügt werden.
+|Verwende diese Option, um festzulegen, welche Regeln für das Erfassen von Artikeln für die Inventur gelten sollen. +
+*Keine Einschränkungen* = Artikel können entweder durch Scannen des Barcodes oder per manueller Auswahl hinzugefügt werden. +
+*Artikelsuche einschränken* = Artikel ohne Barcode können über die Artikelsuche erfasst werden. Artikel mit Barcode _müssen_ durch Scannen des Barcodes auf dem Artikeletikett erfasst werden. +
+*Verpflichtender Artikel-Scan* = Alle Artikel _müssen_ durch Scannen des Barcodes auf dem Artikeletikett erfasst werden. Eine manuelle Auswahl von Artikeln über die Suche ist nicht möglich.
 
 |====
 
@@ -158,3 +174,95 @@ Gezählte Stückzahl eingeben:
 → Der gezählte Bestand wird gespeichert. +
 → Der gezählte Bestand wird im Menü *Waren » Lagerort-Verwaltung* des plentymarkets Backend angezeigt. +
 → Der Bestand wird im Menü *Artikel » Artikel verwalten* an der Variante gespeichert.
+
+[#600]
+== Inventur dokumentieren
+
+Nach dem <<#100, Import und Export von Beständen>> und der eigentlichen <<#300, Durchführung der Inventur mit der plentyWarehouse App>> folgt ein dritter zentraler Schritt: Die rechtskonforme Protokollierung der Ergebnisse. Dazu steht dir im Bereich *Waren » Inventur* das Menü *Zählprotokoll-Export* zur Verfügung. Je nach den gewählten Filtern kannst du die Inhalte des Zählprotokolls nach deinen Anforderungen sortieren.
+
+Falls notwendig, vergib zuerst die notwendigen Rechte an die Personen innerhalb deines Unternehmens, die ein Zählprotokoll erstellen sollen, aber nicht über die Rolle *Admin* verfügen.
+
+[discrete]
+=== Rechte für Backend-Benutzer:innen vergeben
+
+:rights-purpose: Zählprotokolle exportieren können
+:right-one: pass:quotes[*Waren > Inventur > Zählprotokoll-Export*]
+
+include::../../_includes/textblocks/instructions/rechte.adoc[]
+
+[#700]
+=== Zählprotokoll exportieren
+
+[.instruction]
+Zählprotokoll exportieren:
+
+. Öffne das Menü *Waren » Inventur » Zählprotokoll-Export*.
+. Nimm die gewünschten Filtereinstellungen vor. Beachte die Informationen in <<table-inventory-log-filters>>.
+. Klicke auf *PDF generieren* oder *CSV generieren*. +
+*_Tipp:_* <<#900, Weiter unten findest du eine Einscheidungshilfe zur Wahl des passenden Dateiformats>>. +
+→ Das Zählprotokoll wird erstellt und automatisch heruntergeladen.
+
+[[table-inventory-log-filters]]
+.Verfügbare Filter für den Export des Zählprotokolls
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+| *Benutzer*
+|Wähle den Benutzer aus, von dem die Inventur durchgeführt wurde, zu der du ein Zählprotokoll exportieren möchtest.
+
+| *Lager*
+|Wähle das Lager, in dem die Inventur durchgeführt wurde, zu der du ein Zählprotokoll exportieren möchtest.
+
+| *Lagerort*
+|Gib in diesem Feld den Namen der gewünschten <<warenwirtschaft/lager-einrichten#400, Dimension>> ein, um ein Zählprotokoll zu den dort enthaltenen Lagerorten zu exportieren.
+
+| *Datum von*
+|Wähle ein Startdatum für den Zeitraum aus, in dem die Inventur stattgefunden hat, zu der du ein Zählprotokoll exportieren möchtest.
+
+| *Datum bis*
+|Wähle ein Enddatum für den Zeitraum aus, in dem die Inventur stattgefunden hat, zu der du ein Zählprotokoll exportieren möchtest.
+
+| *Sortieren nach*
+|Wie sollen die Einträge im Zählprotokoll-Export sortiert werden? Wähle eine der Optionen *Lagerort*, *Datum* oder *Benutzer*, um die Einträge entsprechend zu sortieren. 
+
+| *Einkaufspreise ausgeben*
+|Sollen die Einkaufspreise der gezählten Varianten im Zählprotokoll-Export mit ausgegeben werden? +
+*Aktiviert* (icon:toggle-on[role="green"]) = Der Export wird um zwei Spalten erweitert, die jeweils den Einkaufspreis und den gleitenden Durchschnitss-Einkaufspreis der Variante beinhalten. Hintergrundinformationen zu diesen zwei Arten von Einkaufspreisen findest du auf der Handbuchseite <<warenwirtschaft/wareneingaenge-verwalten#250, Wareneingänge verwalten>>. +
+*Deaktiviert* (icon:toggle-off[role="darkGrey"]) = Die Einkaufspreise der Varianten werden im Export nicht mit ausgegeben.
+
+| *Nur aktuellste Zählergebnisse berücksichtigen*
+|Welche Zählergebnisse sollen im Zählprotokoll-Export erscheinen, wenn beispielsweise für einen Lagerort im eingestellten Zeitraum mehr als eine Inventur vorgenommen wurde? +
+*Aktiviert* (icon:toggle-on[role="green"]) = Nur das aktuellste Zählergebnis wird ausgegeben. +
+*Deaktiviert* (icon:toggle-off[role="darkGrey"]) = Bei mehrfachen Zählungen wird jedes Zählergebnis einzeln ausgegeben. Somit können mehrere Einträge für den selben Lagerort entstehen. Verwende diese Einstellung nur mit Bedacht, da sie zu unklaren Daten im Zählprotokoll-Export führen kann.
+
+|====
+
+[#800]
+[discrete]
+=== Verschiedene Formate für Zählprotokolle verwenden
+
+Das Zählprotokoll kannst du in den Formaten CSV und PDF herunterladen. Entscheide dich je nach Anwendungsfall für das passende Dateiformat.
+
+[.tabs]
+====
+CSV-Datei:: 
++
+--
+* Die CSV-Datei lässt sich nachträglich bearbeiten. Sie bietet sich an, falls du die Datei manuell mit weiteren Informationen anreichern möchtest. Auch wenn du die Daten in ein weiteres Buchhaltungs-Tool oder sonstige Software importieren möchtest, solltest du dieses Format wählen.
+--
+
+PDF-Datei:: 
++
+--
+* Die PDF-Datei ist nicht ohne Weiteres anpassbar. Sie dient daher als Beleg, den du als Nachweis für deine:n Steuerberater:in und deine eigene Buchführung aufbewahrst.
+
++
+[IMPORTANT]
+.Wartezeit bei der Generierung von PDF-Dateien
+======
+Je nachdem, welche Filter du für den Export des Zählprotokoll auswählst, kann die Generierung von PDF-Dateien bei großen Datenmengen aktuell sehr lange dauern. Dies ist zum Beispiel der Fall, wenn gleichzeitig sehr viele Lagerorte in den Filtern angegeben wurden. Wähle im Zweifel andere Filtereinstellungen, um mehrere kleine Exporte zu erzeugen. Wir arbeiten daran, dieses Verhalten zu beheben, sodass in Zukunft eine schnellere Generierung möglich ist.
+======
++
+--
+====

@@ -6,11 +6,11 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 09. Dezember 2021
-:endWeekDate: 15. Dezember 2021
-:nav-alias: Changelog 15. Dezember 2021
+:startWeekDate: 23. Dezember 2021
+:endWeekDate: 29. Dezember 2021
+:nav-alias: Changelog 29. Dezember 2021
 
-// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/amazon-vcs-fehlendes-update-der-transaktions-id-auf-microservice-missing-update-of-transaction-id-on-microservice/663664
+// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/versand-center-2-0-auftragsdetails-wurden-nicht-fuer-gastbestellungen-angezeigt-shipping-centre-2-0-order-details-were-not-shown-for-guest-orders/664791
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -31,40 +31,23 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Ereignisaktionen
+=== Aufträge
 
-* Es wurde eine neue Ereignisaktion hinzugefügt, mit welcher der *Abhol-/Lieferschein* erzeugt werden kann.
+* Es wurden neue Ereignisaktionen hinzugefügt, mit denen ein Angebot oder eine Gelangensbestätigung erzeugt werden können.
 
-discrete]
-=== Kataloge
-
-* Du kannst ab jetzt die *Einkaufspreise* der Artikel, die in der Warenbewegungen angezeigt werden, und die *Tags* mit dem Katalog Format *Warenbewegungen* exportieren.
-
-'''
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+* In der Zahlungsübersicht im Menü *Aufträge » Zahlungsverkehr* wurde die Spalte *Eltern-ID* hinzugefügt.
 
 [discrete]
 === Cdiscount
 
-* Die Log-Einträge für die Meldung von Gutschriften an Cdiscount wurde vom *Daten » API-Log* zu *Daten » Log* überführt. Die Log-Einträge können mit den folgenden Filtern gefunden werden:
+* Unter *Einrichtung » Märkte » Cdiscount.com » Tab: Einstellungen » Bereich: Auftragseinstellungen* steht jetzt die Option *Mandant* zur Verfügung. Diese erlaubt es euch einzustellen, unter welchem Mandanten Aufträge importiert werden. Der Standardmandant ist vorausgewählt.
 
-** *Identifikator*: `Cdiscount`
-** *Referenztyp*: `action`
-** *Referenzwert*: `orderRefund`
-
-+
-Zusätzlich können die Einträge nach den Referenztypen orderId und externalOrderId durchsucht werden. Im Gegensatz zu vorher wird die gesamte Antwort von Cdiscount als Zusatzinfo beim Öffnen des Eintrags angezeigt, um die Fehlersuche für den Support zu vereinfachen.
+* Unter *Einrichtung » Märkte » Cdiscount.com » Tab: Einstellungen » Bereich: Artikeleinstellungen* ist nun die Option *Streichpreise exportieren* verfügbar. Damit können Sie den Export von gestrichenen Preisen aktivieren. Sobald diese Option aktiviert ist, werden die Verkaufspreise vom Typ UVP, die mit der Cdiscount-Herkunft verknüpft sind, als Streichpreise exportiert, wenn sie zu den Varianten hinzugefügt wurden.
 
 [discrete]
-=== Payment
+=== Kataloge
 
-* Eine neue Infobox wurde zum Menü *Zahlung teilen* hinzugefügt. Sie zeigt den Wert des Restbetrags an. Die Infobox wird angezeigt, nachdem eine Zahlung für die Aufteilung ausgewählt wurde.
-* Die Infoboxen werden jetzt in einer Zeile angezeigt.
-* Dem Menü wurde eine neue Symbolleiste oben hinzugefügt.
+* Die mathematischen Berechnungen in einigen Standardformaten des Katalogs wurden erweitert. Dort kannst du nun auch Zuweisungen für die Datenfelder vornehmen. So kannst du z.B. wählen, welche Sprache exportiert werden soll. Ob für ein Datenfeld Zuweisungen erforderlich ist, erkennst du an den drei Punkten. Eine Zahl zeigt an, wie viele Zuweisungen vorgenommen werden müssen. Mehr erfährst du im link:https://knowledge.plentymarkets.com/daten/daten-exportieren/kataloge-verwalten#mathematische-berechnungen[plentymarkets Handbuch^].
 
 '''
 
@@ -74,32 +57,51 @@ Zusätzlich können die Einträge nach den Referenztypen orderId und externalOrd
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Amazon FBA
+
+* Beim Abgleich der FBA-Bestände wurden die zusätzlichen SKU nicht für die Zuordnung zu einer Variante berücksichtigt. Dies wurde jetzt korrigiert.
+
+[discrete]
 === Aufträge
 
-* Es konnte in seltenen Fällen dazu kommen, dass im Suchindex für Aufträge nicht aktuelle Daten waren.
+* Beim Erstellen eines neuen Auftrags wurden bereits eingegebene Daten nicht gespeichert, wenn man während der Auftragserstellung den Tab gewechselt hat. Dies ist nun behoben, alle Daten werden auch bei Tabwechsel gespeichert.
 
 [discrete]
-=== Cdiscount
+=== CRM
 
-* Dies ist eine Anpassung zu link:https://forum.plentymarkets.com/t/cdiscount-attribute-in-produktnamen-attributes-in-product-name/653209[einer bereits durchgeführten Korrektur^]. Wir haben neue Informationen erhalten, auf Basis derer der Export so angepasst wird, dass die Attribute nur bei Varianten an den Produktnamen angehängt werden, welche bei Cdiscount als Einzelartikel gelistet werden, während die Attribute weiterhin nicht bei Varianten angehängt werden, welche als Variantenartikel auf Cdiscount gelistet werden.
-+
-*Zusatzinformation: Unterscheidung Varianten- und Einzelartikel auf Cdiscount* - Auf Cdiscount können nur ganz bestimmte Produkttypen (meistens Kleidung) als Variantenartikel gelistet werden. Deswegen exportieren wir standardmäßig jede Variante als Einzelartikel außer:
-
-. Die Attribute der Variante wurden über die Attributverknüpfung als Kleidungsfarbe oder Kleidungsgröße definiert oder
-. Ein Merkmal vom Typ „Kein“ mit der Cdiscount-Verknüpfung „Variantenartikel“ wurde am Artikel hinterlegt.
-
-+
-Falls man das gleiche Attribut für Varianten und Einzelartikel auf Cdiscount verwendet, dann kann man ebenfalls über ein Merkmal vom Typ „Kein“ mit der Cdiscount-Verknüpfung „kein Variantenartikel“ den Artikel explizit als Einzelartikel deklarieren.
+* Im Messenger-Modul wurde beim Anzeigen einer Nachricht im Safari-Browser anstelle des Datums der Nachricht die Fehlermeldung „Ungültiges Datum“ angezeigt. Dieses Verhalten wurde behoben.
 
 [discrete]
-=== EmailBuilder
+=== Hosting
 
-* Vorlagen, die im EmailBuilder erstellt wurden und aus der Vorschau im Auftrag versendet wurden, wurden zwar versendet, jedoch wurden sie nicht im Ordner Gesendete E-Mails im Auftrag angezeigt. Dieses Verhalten wurde behoben.
+* Im Menü *Einrichtung » Einstellungen » Hosting » Bereinigung* ist das Feld *Löschung der Historie* auf 365 Tage begrenzt. Wenn man eine Zahl größer als 365 eingegeben hat, erschien eine unverständliche Fehlermeldung. Dieses Verhalten wurde behoben und eine klare, verständliche Fehlermeldung wird ab sofort angezeigt:
++
+image:changelog/assets/hosting-historie.png[width=640]
+
+[discrete]
+=== OTTO Market
+
+* Bei Teilgutschriften von OTTO Market wurde der Gesamtbetrag des Auftragsartikels in der Gutschrift hinzugefügt, statt der Teilbetrag. Dies wurde behoben. Bei Händlern, welche sich seit der folgenden Anpassung zum Import der Gutschriften gemeldet haben, werden wir automatisch die importierten Gutschriften nochmal prüfen.
+
+* Bei der automatischen Anlage der Gutschriften wurden Auftragspositionen für Rabatte nicht mit übernommen und entsprechende Auftragspositionen auch nicht an manuell angelegten Gutschriften ergänzt, wenn diese fehlten. Außerdem wurde teilweise, wenn die Rabattposition bei einer manuell angelegten Gutschrift vorlag, stattdessen eine neue Gutschrift ohne Rabattposition angelegt. Dies wurde nun korrigiert. Zudem wird selbige Korrektur auch für den Fall angewendet, dass Versandkosten fehlen.
+
+* Bei Aufträgen mit mehr als einer Auftragsposition und mehr als einer Paketnummer konnte es dazu kommen, dass die externen Rechnungen mehrfach importiert wurden. Grund dafür war, dass die Versandmeldung an OTTO pro Lieferung erfolgt, und im Anschluss pro Versandmeldung ein Import der externen Belege angestoßen wurde. Dieser Import von externen Belegen konnte dann zeitgleich erfolgen und importierte jeweils alle vorliegenden Belege gleichzeitig. Also z.B. wenn es zwei Lieferungen gab und dadurch zwei Belege bei OTTO Market generiert wurden, dann wurden zeitgleich zweimal zwei Belege importiert.
+Dies wurde jetzt korrigiert, sodass beim Import der Belege geprüft wird, dass nur Belege für Auftragspositionen importiert werden, welche mit der zugrundeliegenden Versandmeldung zusammenhängen.
 
 [discrete]
 === Payment
 
-* Nach dem Benutzen einer Gruppenfunktion in der Zahlungsverkehr-UI werden die Filter nun nicht mehr zurückgesetzt.
+* In der Zahlungshistorie am Auftrag wurden nicht alle Einträge angezeigt. Dies wurde korrigiert, sodass nun wieder alle Einträge korrekt angezeigt werden.
+
+[discrete]
+=== Warenwirtschaft
+
+* Die Seitennummerierung der Warenbewegungen in der UI der Warenbewegungen hat nicht mehr richtig funktioniert. Man konnte auch nicht mehr alle Warenbewegungen per REST-API erhalten. Der Fehler wurde nun behoben.
+
+[discrete]
+=== Zalando
+
+* Wir erhalten bei Anfragen zum Bestandsupdate an Zalando pro gesendeter EAN in der Antwort einen Statuscode. Wenn dieser `102` lautet, dann ist davon auszugehen, dass es zu einem internen Fehler bei Zalando kommt. Bisher wurde immer, wenn dieses Verhalten beobachtet wurde, dann bei allen EANs aus einer Anfrage dieser Statuscode übermittelt. Aus diesem Grund haben wir uns dazu entschieden, statt wie bisher mit den nächsten ausstehenden Bestandsupdates weiterzumachen, die Anfrage ein weiteres Mal an Zalando zu schicken, da es sich meist um ein temporäres Problem handelt. Und andere Versuche gezeigt haben, dass die Anfrage bei erneuter Übermittlung korrekt verarbeitet wird.
 
 --
 
@@ -108,70 +110,20 @@ early::
 --
 
 [discrete]
-== Neu
-
-Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
-
-[discrete]
-=== Ereignisaktionen
-
-* Wir haben in den Ereignisaktionen im Menü *Einrichtung » Aufträge » Ereignisse* im Bereich *Auftrag* den Filter *Auftrag mit Retourenpaketnummer* mit der Auswahl *Ja* / *Nein* hinzugefügt. Somit kannst du deine Aufträge gezielt danach filtern, ob diese eine Retourenpaketnummer haben oder nicht und die Aufträge dann z.B. über eine Aktion in einen anderen Auftragsstatus verschieben.
-
-[discrete]
-=== Kataloge
-
-* Du kannst ab jetzt Warenbewegungen aus einem bestimmten Datumsbereich (max. Bereich 3 Monate) exportieren.
-
-[discrete]
-=== Payment
-
-* In der neuen Zahlungsverkehr-UI wurde ein Link zum Kontakt in die Zuordnungs-Tabelle eingefügt.
-* In der neuen Zahlungsverkehr-UI wurde ein Ankerpunkt für die Infoboxen in die Seitennavigation hinzugefügt.
-
-'''
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
-
-[discrete]
-=== Dashboard
-
-* Das neue plentyBI Dashboard wird in Zukunft das alte ersetzen und damit standardmäßig geöffnet, wenn sich Nutzer in das System einloggen. Das alte Dashboard wird nicht abgeschaltet und wird weiterhin verfügbar sein.
-
-[discrete]
-=== Payment
-
-* Die folgenden Anpassungen wurden für die Zahlungshistorie in der Detailansicht einer Zahlung vorgenommen:
-
-** Die Tabellenspalten und deren Reihenfolge wurde angepasst.
-** Die Spalte *Benutzer/Quelle* gibt genauer wieder, von wem oder wo die Änderung vorgenommen wurde (z.B. eine Benutzer:in oder ein Plugin).
-** Die Spalten *Aktion* und *Wert* geben genau wieder, welche Änderung an der Zahlung vorgenommen wurde.
-** Die Tabelleneintragungen wurden erweitert, so dass mehr Informationen für Zahlungen zur Verfügung stehen.
-
-'''
-
-[discrete]
 == Behoben
 
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
-=== Aufträge
+=== Versand-Center 2.0
 
-* Beim erneuten Speichern einer Nachbestellung nach einem Währungswechsel ist ein Fehler aufgetreten. Dies ist nun behoben, die Nachbestellung kann wieder erfolgreich gespeichert werden.
+* Bisher wurde der allgemeine Firmenname, der im Kontaktdatensatz gespeichert wurde, in der Übersicht des Versand-Centers 2.0 in der Spalte *Empfängername* angezeigt. Dieses Verhalten wurde behoben:
 
-[discrete]
-=== Kataloge
+** Ab sofort wird der Firmenname aus der Lieferadresse in der Spalte *Empfängername* in der Übersicht angezeigt.
+** Wenn in der Lieferadresse kein Firmenname vorhanden ist, wird der Firmenname aus der Rechnungsadresse übernommen.
+** Wenn auch in der Rechnungsadresse kein Firmenname vorhanden ist, wird in der Spalte *Empfängername* in der Übersicht der Name des Empfängers angezeigt.
 
-* Es konnten nur 50.000 statt der erlaubten 60.000 Aufträge im Katalog exportiert werden.
-* Wenn man den Bestand für einen gewissen Tag exportieren wollte, wurde der Bestand des vorherigen Tages angezeigt. Der Fehler wurde nun behoben.
-
-[discrete]
-=== Prozesse
-
-* Bei einem Fehler in der Aktion *Warenausgang* buchen wurde die Aktion für den Fehlerfall nicht ausgeführt. Dieses Verhalten wurde behoben.
+* Bei Gastbestellungen wurden die Auftragsdetails im Versand-Center 2.0 nicht angezeigt. Dieses Verhalten wurde behoben. Die Auftragsdetails werden nun auch für Gastbestellungen korrekt angezeigt.
 
 --
 
@@ -185,77 +137,25 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/adcelltracking_6493[ADCELL Conversion Tracking^]
-|2.0.12
+|link:https://marketplace.plentymarkets.com/zettle_54918[Zettle by PayPal^]
+|1.0.5
 |-
 
-|link:https://marketplace.plentymarkets.com/magiczoomplus_6092[Artikelbilder Zoom - Magic Zoom Plus^]
-|3.1.8
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.44
 |-
 
-|link:https://marketplace.plentymarkets.com/bulletpointwidget_54988[Artikelvorteile mit Bullet Points / Listenpunkte - Widget^]
-|1.0.3
+|link:https://marketplace.plentymarkets.com/ceres_4697[plentyShop LTS^]
+|5.0.44
+a| * Die Einstellung *Preisinformation in der Warenkorbvorschau anzeigen* im Menü *Plugins » plentyShop LTS » Warenkorb* greift nun wieder. Überprüfe, ob du die dort angehakten Preisinformationen in der Warenkorbvorschau anzeigen willst. Passe die Einstellungen gegebenenfalls an.
+* Aufgrund von Änderungen am CookieBar Widget müssen die betroffenen ShopBuilder-Inhalte im Menü *CMS » ShopBuilder* über die Schaltfläche *Inhalte neu generieren* aktualisiert werden.
+
+|link:https://marketplace.plentymarkets.com/cytitemavailabilitynotification_6906[Verfügbarkeitsbenachrichtigung mit Statistik^]
+|1.4.4
 |-
 
-|link:https://marketplace.plentymarkets.com/billigerdetracking_6126[billiger.de Conversion Tracking^]
-|2.0.11
-|-
-
-|link:https://marketplace.plentymarkets.com/filterdrop_6603[FilterDrop^]
-|4.0.1
-|-
-
-|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com^]
-|1.3.1
-|-
-
-|link:https://marketplace.plentymarkets.com/googleanalyticsrefunder_6657[Google Analytics Rückerstattung^]
-|1.0.10
-|-
-
-|link:https://marketplace.plentymarkets.com/wartungsmodus_5812[Individueller Wartungsmodus^]
-|1.0.11
-|-
-
-|link:https://marketplace.plentymarkets.com/matrixvarianten_6620[Mehrere Varianten gleichzeitig in den Warenkorb legen^]
-|1.3.2
-|-
-
-|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
-|1.1.57
-|-
-
-|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie^]
-|2.8.1
-|-
-
-|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent Toolbox^]
-|4.6.13
-|-
-
-|link:https://marketplace.plentymarkets.com/novalnet_5231[Novalnet^]
-|2.2.2
-|-
-
-|link:https://marketplace.plentymarkets.com/rewe_5901[REWE^]
-|1.26.13
-|-
-
-|link:https://marketplace.plentymarkets.com/plentybase_5053[plentyBase^]
-|1.8.1
-a| * Für macOS wird keine separate Java-Installation mehr benötigt. plentyBase für macOS beinhaltet diese jetzt wieder fest.
-* Linux Distributionen mit Gnome3 Desktop zeigen keine Tray-Icons unter Java an, stattdessen wird jetzt die plentyBase-Konfiguration direkt beim Start geöffnet. Über die Taskleiste lässt sich diese dann auch jederzeit wieder öffnen.
-
-|link:https://marketplace.plentymarkets.com/schufa_6360[Schufa Bonitätsprüfung^]
-|2.0.8
-|-
-
-|link:https://marketplace.plentymarkets.com/trackingmanager_54743[TrackingManager^]
-|1.1.2
-|-
-
-|link:https://marketplace.plentymarkets.com/conditionwidget_54782[WENN / DANN Shopbuilder-Widget^]
-|1.1.7
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.7.5
 |-
 
 |===
