@@ -21,9 +21,43 @@ include::{includedir}/_header.adoc[]
 :referrer-name: pass:quotes[Herkunft *Voelkner*]
 :category-example: VHS Kassetten
 
+
+Auf dieser Seite erfährst du, wie du die Schnittstelle zu {market} in plentymarkets einrichtest. Auf Voelkner werden Artikel aus den Bereichen Elektrotechnik, Werkzeug, IT und Haushalt angeboten.
+
 include::_textblocks/mirakl/mirakl-first-steps.adoc[]
 
-include::_textblocks/mirakl/mirakl-market-setup.adoc[]
+[#api-schluessel]
+== API-Schlüssel erzeugen
+
+include::_textblocks/mirakl/mirakl-api-key.adoc[]
+
+[#auftragsherkunft]
+== Auftragsherkunft aktivieren
+
+:market: {market}
+:referrer: {market}
+:referrer-option: {referrer-name}
+:mirakl-auftragsherkunft:
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#verkaufspreis]
+== Verkaufspreis festlegen
+
+:referrer-price: {market}
+:mirakl-verkaufspreis:
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#eigenschaften-erstellen]
+== Eigenschaften erstellen
+
+include::_textblocks/mirakl/mirakl-creating-properties.adoc[]
+
+[#marktplatz-assistent-durchlaufen]
+== {market} Assistent durchlaufen
+
+include::_textblocks/mirakl/mirakl-market-assistant.adoc[]
 
 [#allgemeine-informationen]
 == Informationen zum automatischen Datenaustausch
@@ -97,11 +131,6 @@ Für beide Datenfelder gibt es keine Liste von gültigen Werten. Wir empfehlen j
 ====
 ////
 
-[#weitere-eigenschaften]
-=== Weitere Eigenschaften erstellen
-
-include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-additional-properties.adoc[]
-
 ////
 Prüfen, wo Inhalt hingehört, wenn einkommentiert wird.
 
@@ -164,17 +193,48 @@ include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-product-data-expo
 
 include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
 
-:EP-shipping-confirmation:
-:EP-cancellation:
-:EP-refund:
-:EP-send-invoice:
+[#auftragsabwicklung-automatisieren]
+== Auftragsabwicklung automatisieren
 
-include::_textblocks/mirakl/mirakl-EP/mirakl-EP-intro.adoc[]
+Aufträge, die auf Voelkner erzeugt wurden, werden alle 15 Minuten in dein plentymarkets System importiert.
+
+So läuft die Auftragsabwicklung bei Voelkner ab:
+
+* Voelkner akzeptiert den Auftrag und zieht die Zahlung ein. 
+* Mit der Zahlungszusicherung werden die Rechnungs- und Lieferadresse am Auftrag in deinem plentymarkets System aktualisiert.
+* Über eine Ereignisaktion werden Versanddienstleister und Paketnummer am Auftrag in Mirakl aktualisiert. 
+* Im nächsten Schritt wird Voelkner über eine weitere Ereignisaktion über den Versand informiert.
+* Die von Voelkner erstellte Rechnung wird zum Auftrag in dein plentymarkets System importiert.
+* Über eine Ereignisaktion wird eine Rechnung an Voelkner gesendet.
+
+Die folgenden Schritte der Auftragsabwicklung kannst du automatisieren, indem du Ereignisaktionen einrichtest:
+
+* Informiere Voelkner darüber, dass der Versand bestätigt wurde. <<#versandbestaetigung-voelkner, Wie?>>
+
+* Informiere Voelkner darüber, dass der Auftrag storniert wurde. <<#auftragsstornierung-voelkner, Wie?>>
+
+* Informiere Voelkner darüber, dass eine Erstattung für den Auftrag gezahlt wurde. <<#rueckerstattung-voelkner, Wie?>>
+
+* Sende die Rechnung an Voelkner. <<#rechnung-voelkner, Wie?>>
+
+include::_textblocks/mirakl/mirakl-EP/mirakl-further-EPs.adoc[]
+
+[#versandbestaetigung-voelkner]
+=== Versandbestätigung an Voelkner melden
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-shipping-confirmation.adoc[]
 
+[#auftragsstornierung-voelkner]
+=== Auftragsstornierung an Voelkner melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-cancellation.adoc[]
 
+[#rueckerstattung-voelkner]
+=== Rückerstattung an Voelkner melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-refund.adoc[]
+
+[#rechnung-voelkner]
+=== Rechnung an Voelkner senden
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-send-invoice.adoc[]

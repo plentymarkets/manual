@@ -21,9 +21,42 @@ include::{includedir}/_header.adoc[]
 :category-example: VHS Kassetten
 
 
+Auf dieser Seite erfährst du, wie du die Schnittstelle zu {market} in plentymarkets einrichtest. Conrad ist ein B2B-Marktplatz, auf dem ein Produktsortiment von Elektronik über Multimedia bis hin zu Haushalts- und Freizeitprodukten angeboten wird.
+
 include::_textblocks/mirakl/mirakl-first-steps.adoc[]
 
-include::_textblocks/mirakl/mirakl-market-setup.adoc[]
+[#api-schluessel]
+== API-Schlüssel erzeugen
+
+include::_textblocks/mirakl/mirakl-api-key.adoc[]
+
+[#auftragsherkunft]
+== Auftragsherkunft aktivieren
+
+:market: {market}
+:referrer: {market}
+:referrer-option: {referrer-name}
+:mirakl-auftragsherkunft:
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#verkaufspreis]
+== Verkaufspreis festlegen
+
+:referrer-price: {market}
+:mirakl-verkaufspreis:
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#eigenschaften-erstellen]
+== Eigenschaften erstellen
+
+include::_textblocks/mirakl/mirakl-creating-properties.adoc[]
+
+[#marktplatz-assistent-durchlaufen]
+== {market} Assistent durchlaufen
+
+include::_textblocks/mirakl/mirakl-market-assistant.adoc[]
 
 [#allgemeine-informationen]
 == Informationen zum automatischen Datenaustausch
@@ -90,11 +123,6 @@ Für beide Datenfelder gibt es keine Liste von gültigen Werten. Wir empfehlen j
 ====
 ////
 
-[#weitere-eigenschaften]
-=== Weitere Eigenschaften erstellen
-
-include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-additional-properties.adoc[]
-
 ////
 Prüfen, wo Inhalt hingehört, wenn einkommentiert wird.
 
@@ -153,22 +181,58 @@ include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-product-data-expo
 
 include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
 
-:EP-order-confirmation:
-:EP-order-rejection:
-:EP-shipping-confirmation:
-:EP-cancellation:
-:EP-refund:
+[#auftragsabwicklung-automatisieren]
+== Auftragsabwicklung automatisieren
 
-include::_textblocks/mirakl/mirakl-EP/mirakl-EP-intro.adoc[]
+Aufträge, die auf Conrad erzeugt wurden, werden alle 15 Minuten in dein plentymarkets System importiert. 
+
+So läuft die Auftragsabwicklung bei Conrad ab:
+
+* Der Händler akzeptiert den Auftrag über eine Ereignisaktion. 
+* Die Zahlung wird von Conrad eingezogen. 
+* Mit der Zahlungszusicherung werden die Rechnungs- und Lieferadresse am Auftrag in deinem plentymarkets System aktualisiert. 
+* Über eine Ereignisaktion werden Versanddienstleister und Paketnummer am Auftrag in Mirakl aktualisiert. 
+* Im nächsten Schritt wird Conrad über eine weitere Ereignisaktion über den Versand informiert.
+* Die von Conrad erstellte Rechnung wird zum Auftrag in dein plentymarkets System importiert.
+
+Die folgenden Schritte der Auftragsabwicklung kannst du automatisieren, indem du Ereignisaktionen einrichtest:
+
+* Informiere Conrad automatisch darüber, dass der Auftrag bestätigt wurde. <<#auftragsbestaetigung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass der Auftrag abgelehnt wurde. <<#auftragsablehnung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass der Versand bestätigt wurde. <<#versandbestaetigung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass der Auftrag storniert wurde. <<#auftragsstornierung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass eine Erstattung für den Auftrag gezahlt wurde. <<#rueckerstattung-conrad, Wie?>>
+
+include::_textblocks/mirakl/mirakl-EP/mirakl-further-EPs.adoc[]
+
+[#auftragsbestaetigung-conrad]
+=== Auftragsbestätigung an Conrad melden
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-order-confirmation.adoc[]
 
+[#auftragsablehnung-conrad]
+=== Auftragsablehnung an Conrad melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-order-rejection.adoc[]
+
+[#versandbestaetigung-conrad]
+=== Versandbestätigung an Conrad melden
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-shipping-confirmation.adoc[]
 
+[#auftragsstornierung-conrad]
+=== Auftragsstornierung an Conrad melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-cancellation.adoc[]
 
+[#rueckerstattung-conrad]
+=== Rückerstattung an Conrad melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-refund.adoc[]
+
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-archive-unconfirmed-orders.adoc[]
