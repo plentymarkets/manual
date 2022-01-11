@@ -1,0 +1,105 @@
+= Neue Buchungen importieren
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Buchungsimport, Bankbuchungsimport, Zahlungsimport, Bankbuchung
+:position: 25
+:url: daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-buchungen
+:id: 8X2XPH8
+:author: team-order-payment
+
+Zahlungsvorgänge der Zahlungsart Vorkasse und sonstige Überweisungen fallen als Bankbuchungen an. Dabei gehen die Zahlungen auf deinem Konto ein. Um sie weiter bearbeiten zu können, musst du sie nach Zahlungseingang in dein plentymarkets System importieren. Nach dem Import von Buchungen in dein System kannst du die Zahlungen dann zum Beispiel Aufträgen zuordnen.
+
+Du kannst den Import-Typ *Buchungen* nutzen, um neue Buchungen in dein System zu importieren. Du kannst den Import-Typ auch zur Aktualisierung von bereits bestehenden Buchungen nutzen. Auf dieser Seite wird der Import von Buchungen erklärt. Grundkenntnisse über das <<daten/daten-importieren/ElasticSync#, Import-Tool>> sind hilfreich beim Erstellen deines Buchungs-Imports. In diesem Best Practice wird dennoch Schritt für Schritt erklärt, wie du vorgehen solltest.
+
+[#10]
+== Importdatei vorbereiten
+
+Daten werden in plentymarkets immer mithilfe einer CSV-Datei importiert. Deswegen musst du als erstes diese CSV-Datei vorbereiten. Die CSV-Datei sollte alle wichtigen Informationen über die Buchungen enthalten. Die Buchungen werden nach dem Import im System als Zahlungen angelegt. Informationen, die du in die CSV-Datei eingibst, werden nach dem Import der neu angelegten Zahlung zugeordnet. Stelle daher sicher, dass deine CSV-Datei keine Lücken aufweist. Die Handbuchseite <<daten/daten-importieren/sync-typen/elasticSync-bankbuchungen#20, Buchungen>> listet die Daten auf, die importiert werden können. An diesen Zuordnungsfeldern kannst du dich beim Erstellen deiner CSV-Datei orientieren. Die <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-buchungen#40, Erstellung der Zuordnung>> wird dann weiter unten in diesem Best Practice erklärt.
+
+Wie du Spalten in deiner CSV-Datei benennst oder welche Reihenfolge die Spalten haben, kannst du selbst bestimmen. Wichtig ist, das die Benennungen für dich eindeutig sind, so dass du sie für den Import den richtigen plentymarkets Datenfeldern zuordnen kannst. Einfach gesagt solltest du immer erkennen können, was wohin gehört. +
+Speichere die CSV-Datei lokal auf deinem Computer.
+
+Eine CSV-Datei könnte zum Beispiel so aussehen:
+
+image::daten/daten-importieren/assets/bp-buchungsimport-csv.png[]
+
+Beachte, dass dies Beispieldaten sind. Deine CSV-Datei kann mehr Spalten und auch mehr Daten enthalten, die anders aussehen. Die Benennung und Reihenfolge der Spalten deiner CSV-Datei kann auch anders sein.
+
+Wenn du deine CSV-Datei vorbereitet hast, folgt nun im nächsten Schritt das Anlegen deines Imports.
+
+[#20]
+== Import erstellen
+
+1) Um einen neuen Import zu erstellen, musst du zuerst zum entsprechenden Menü. Gehe daher in das Menü *Daten » Import*.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-menue.png[]
+
+2) In diesem Menü legst du einen neuen Import an und wählst dann auch die Einstellungen des Imports. Lege einen neuen Import an, indem du auf *Import hinzufügen* (icon:plus-square[role="green"]) klickst.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-erstellen.png[]
+
+3) Nach dem Klicken auf *Import hinzufügen* gelangst du in die Grundeinstellungen deines neuen Imports. Lege zuerst die passenden *Grunddaten* im linken Bereich des Menüs fest.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-grunddaten.png[]
+
+Treffe dafür folgende Einstellungen:
+
+* *Name*: Vergib einen Namen für deinen neuen Buchungsimport. Der Beispielname auf dem Screenshot oben ist _Best Practice Buchungsimport_. Lege einen eigenen Namen fest. +
+* *Typ*: Wähle aus der Dropdown-Liste den Typ des Imports. Für diesen Import musst du den Typ *Buchungen* wählen. +
+* *Intervall*: Wähle aus der Dropdown-Liste *Inaktiv* aus. Für diesen Import-Typ lässt sich kein Intervall einstellen.
+
+4) Lege dann die Einstellungen für den *Import*, die *Trennzeichen* und die *Quelle* im rechten Bereich des Menüs fest.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-importeinstellungen.png[]
+
+Treffe dafür folgende Einstellungen:
+
+* *Import*: Du kannst die voreingestellten Werte so lassen. Diese entsprechen auch den Werten auf dem Screenshot. +
+* *Trennzeichen*: Auch hier kannst du die voreingestellten Werte so lassen. Möchtest du ein anderes Trennzeichen als Anführungszeichen verwenden, kannst du es hier aus der Dropdown-Liste auswählen. +
+* *Quelle*: In diesem Bereich wählst du deine vorbereitete CSV-Datei aus. Klicke auf *Datei wählen* und lade deine lokal gespeicherte CSV-Datei hoch. Hast du die richtige Datei ausgewählt, erscheint der Name der Datei im Feld *Dateiname*.
+
+Klicke auf *Import speichern* (icon:save[role="green"]) links über den *Grunddaten*. Der Import wird gespeichert und du wirst zu den weiteren Einstellungen weitergeleitet.
+
+[#30]
+=== Abgleicheinstellungen wählen
+
+Nach den grundlegenden Einstellungen folgen nun die Einstellungen für den *Abgleich*.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-abgleich.png[]
+
+Das Abgleichfeld dient dazu, bereits vorhandene Datensätze im System zu erkennen. Anhand des gewählten Abgleichfeldes werden die Daten daher aktualisiert. +
+Beim Import von noch nicht im System existierenden Buchungen wird kein Abgleichfeld benötigt. Du kannst deswegen die gleichen Einstellungen wie im Screenshot treffen. +
+Auch die vorausgewählten Einstellungen im Bereich *Import Optionen* können wie auf dem Screenshot bleiben. Beachte allerdings, dass die *Dezimalzahl* und das *Datumsformat* dem entsprechen sollten, was du in deiner CSV-Datei verwendet hast. +
+Speichere (icon:save[role="green"]) die Einstellungen für den Abgleich.
+
+[#40]
+=== Zuordnung erstellen
+
+1) Nach den Abgleicheinstellungen folgt nun die Erstellung der *Zuordnung*. Klicke dafür auf *Zuordnung hinzufügen* und vergib einen *Namen* für die Zuordnung.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-zuordnung.png[]
+
+2) Nach dem Speichern wirst du direkt zur Zuordnung weitergeleitet. In der Zuordnung legst du fest, welche Spalte deiner CSV-Datei welchem Datenfeld in deinem System entspricht.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-zuordnung-felder.png[]
+
+Im linken Bereich sind die *Importdaten*. Dort sind die Spalten deiner CSV-Datei jeweils als *Quelle* aufgelistet. +
+Im rechten Bereich sind die *plentymarkets Datenfelder*. Dort wählst du als *Ziel* jeweils aus, wo die Informationen der CSV-Spalten in deinem System landen sollen. Wähle das passende Datenfeld aus der Dropdown-Liste aus. Welche Datenfelder dir zur Verfügung stehen, ist auf der Handbuchseite <<daten/daten-importieren/sync-typen/elasticSync-bankbuchungen#20, Buchungen>> aufgelistet.
+
+3) Aktiviere alle Zeilen, die du importieren möchtest. Klicke dafür auf *Zeile aktivieren* links neben der jeweiligen Quelle. So kannst du zum Beispiel eine Spalte deiner CSV-Datei vom Import ausschließen, solltest du diese Daten doch nicht importieren wollen. +
+Hast du alle Zuordnungen festgelegt, klicke auf *Speichern* (icon:save[role="green"]).
+
+In diesem Beispiel werden der Buchungstag, der Buchungsbetrag, die Währung, der Verwendungszweck, der Name des Senders sowie die IBAN des Senders importiert. Das bedeutet, dass im Menü *Aufträge » Zahlungsverkehr* Zahlungen mit diesen Informationen angelegt werden. Damit dies passiert, muss der Import aber erst durchgeführt werden.
+
+[#50]
+== Import testen und ausführen
+
+Um zu überprüfen, ob Einstellungen und Zuordnung passen, solltest du den Import erst testen.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-testen.png[]
+
+Beim Testen werden jeweils die ersten 10 Zeilen des Imports verarbeitet und es wird kein Cache verwendet. Prüfe anschließend, ob Fehlermeldungen aufgetreten sind, indem du das Menü *Daten » Status* aufrufst, oder überprüfe die importierten Daten. Wenn es keine Fehler oder Probleme zu beheben gibt, kannst du den Import ausführen.
+
+image::daten/daten-importieren/assets/bp-buchungsimport-ausfuehren.png[]
+
+Nach Klicken auf *Import ausführen* werden die Daten werden in dein System importiert. Die Buchungen werden als Zahlungen angelegt und sind im Menü *Aufträge » Zahlungsverkehr* verfügbar. In diesem Menü kannst du die <<payment/beta-zahlungen-verwalten#, Zahlungen verwalten>> und mit der Bearbeitung fortfahren.
