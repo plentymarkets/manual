@@ -71,7 +71,8 @@ Der Zahlungseingang als Ereignis spielt in der Auftragsbearbeitung eine wichtige
 [#bankbuchungsimport]
 === Bankbuchungen importieren
 
-Zahlungsvorgänge bei der Zahlungsart Vorkasse und sonstigen Überweisungen fallen in Form von Bankbuchungen an. Bei diesen Zahlungsarten müssen die auf deinem Konto gebuchten Zahlungen an das System gemeldet und den Aufträgen korrekt zugeordnet werden. Nutze den Import-Typ <<daten/daten-importieren/sync-typen/elasticSync-bankbuchungen#, Bankbuchung>>, um deine Bankbuchungen in dein plentymarkets System zu importieren. Nach dem Import werden die Bankbuchungen wie andere Zahlungen auch automatisch Aufträgen zugeordnet und können wie gewohnt im Menü *Aufträge » Zahlungsverkehr* bearbeitet werden.
+Zahlungsvorgänge bei der Zahlungsart Vorkasse und sonstigen Überweisungen fallen in Form von Bankbuchungen an. Bei diesen Zahlungsarten müssen die auf deinem Konto gebuchten Zahlungen an das System gemeldet und den Aufträgen korrekt zugeordnet werden. Nutze den Import-Typ <<daten/daten-importieren/sync-typen/elasticSync-bankbuchungen#, Bankbuchung>>, um deine Bankbuchungen in dein plentymarkets System zu importieren. Ein Best Practice für den Buchungsimport findest du auf der Handbuchseite <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-buchungen#, Neue Buchungen importieren>>. +
+Nach dem Import werden die Bankbuchungen wie andere Zahlungen auch automatisch Aufträgen zugeordnet und können wie gewohnt im Menü *Aufträge » Zahlungsverkehr* bearbeitet werden.
 
 [#20]
 === Zahlungen suchen
@@ -347,7 +348,24 @@ Sobald du eine Zahlung zugeordnet hast, wird in dieser Tabelle nur noch diese Zu
 
 Einem Auftrag können mehrere Zahlungen zugeordnet werden. Dies kann z.B. vorkommen, wenn mit der ersten Zahlung nicht der gesamte Betrag abgedeckt wurde. Sind einem Auftrag bereits Zahlungen zugeordnet und du möchtest eine weitere zuordnen, muss dies in einer Abfrage bestätigt werden.
 
-Diese Tabelle ist anpassbar. Das bedeutet, dass du selbst entscheiden kannst, welche Informationen dir in den Tabellenspalten angezeigt werden. Gehe dafür folgendermaßen vor:
+[.collapseBox]
+.*Zuordnungstabelle individualisieren*
+--
+
+Diese Tabelle lässt sich individuell anpassen. Du kannst wählen, welche Tabellenspalten dir in welcher Reihenfolge in der Tabelle angezeigt werden sollen. Standardmäßig werden dir beim Öffnen des Menüs folgende Tabellenspalten angezeigt:
+
+* Übereinstimmungsrate
+* Auftrags-ID
+* Betrag
+* Aktion
+
+Die folgenden Tabellenspalten können ausgewählt werden, werden aber nicht standardmäßig angezeigt:
+
+* Kontakt-ID
+* Name des Kontaktes
+* Rechnungsnummer
+
+Passe die Tabelle deinen Bedürfnissen und deinem Arbeitsablauf an. Wenn du die Tabelle angepasst hast, wird diese Auswahl gespeichert und bei jedem Öffnen des Menüs so dargestellt. Die Tabelle ist jederzeit anpassbar.
 
 [.instruction]
 Tabelle individualisieren:
@@ -357,6 +375,9 @@ Tabelle individualisieren:
 . Wähle aus, welche Spalten angezeigt werden sollen.
 . Verschiebe (icon:sort[set=material]) die Spalten, so dass sie in der Reihenfolge angezeigt werden, in der du sie brauchst.
 . Klicke auf *Bestätigen*, um deine Auswahl zu speichern.
+→ Deine Auswahl ist gespeichert und wird angewendet.
+
+--
 
 [#15]
 === Zahlungen im Auftrag manuell buchen
@@ -493,7 +514,7 @@ Möchtest du den Namen des Portlets ändern, dann gib im Feld *Titel* den gewün
 [#60]
 == Zahlungen löschen
 
-Du kannst eine Zahlung nur löschen, wenn sie keinem Auftrag zugeordnet ist. Das Löschen kann entweder direkt in der Übersicht oder in der Detailansicht des Zahlung vorgenommen werden. Um eine Zahlung aus der Übersicht zu löschen, gehe wie im Folgenden beschrieben vor.
+Du kannst eine Zahlung nur löschen, wenn sie keinem Auftrag zugeordnet ist und keine untergeordneten Zahlungen existieren, die aus dem Teilen der Zahlung entstanden sind. Das Löschen kann entweder direkt in der Übersicht oder in der Detailansicht des Zahlung vorgenommen werden. Um eine Zahlung aus der Übersicht zu löschen, gehe wie im Folgenden beschrieben vor.
 
 [.instruction]
 Zahlung aus der Übersicht löschen:
@@ -516,6 +537,15 @@ Zahlung aus der Detailansicht heraus löschen:
 → Die Abfrage *Zahlung löschen* wird geöffnet.
 . Klicke in der Abfrage auf *Ja*. +
 → Die Zahlung wird gelöscht und du wirst zur aktualisierten Übersicht zurückgeleitet.
+
+[.collapseBox]
+.*Was mache ich, wenn ich eine Zahlung löschen möchte, das Löschen aber deaktiviert ist?*
+--
+Zahlungen können nur gelöscht werden, wenn sie keinem Auftrag zugeordnet sind und keine untergeordneten Zahlungen existieren, die aus dem Teilen einer Zahlung entstanden sind. Trifft etwas davon zu, ist die Funktion *Zahlung löschen* (icon:delete[set=material]) nicht verfügbar. Möchtest du die Zahlung dennoch löschen, musst du dafür sorgen, dass sie weder zugeordnet ist, noch zugehörige Teilzahlungen existieren. Gehe dafür folgendermaßen vor:
+
+* Zahlung ist einem Auftrag zugeordnet: <<payment/beta-zahlungen-verwalten#40, Löse>> die Zahlung vom Auftrag. Prüfe vorher aber genau, ob das Lösen der Zahlung vom Auftrag ohne Bedenken durchgeführt werden kann. Die Zahlung kann nun gelöscht werden.
+* Zahlung wurde geteilt und Teilzahlungen existieren: Du musst zuerst die Teilzahlungen löschen. Dies geht nur, wenn sie keinem Auftrag zugeordnet sind. Sind sie zugeordnet, musst du die Zahlungen erst vom jeweiligen Auftrag <<payment/beta-zahlungen-verwalten#40, lösen>>. Prüfe vorher aber genau, ob das Lösen der Zahlung vom Auftrag ohne Bedenken durchgeführt werden kann. Lösche danach die Teilzahlungen. Die ursprüngliche Zahlung kann nun gelöscht werden.
+--
 
 [#70]
 == Gruppenfunktion nutzen
