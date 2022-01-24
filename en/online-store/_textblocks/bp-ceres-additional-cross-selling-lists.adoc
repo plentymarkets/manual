@@ -1,0 +1,77 @@
+= Displaying further cross-selling item lists
+:lang: en
+:keywords: online store, client, Ceres, plugin, HowTo, setting, context classes, contexts, cross-selling, item lists, item
+:position: 80
+:author: team-webshop
+
+Since Ceres only displays one cross-selling item list, this Best Practice informs you about which adjustments are necessary in order to use multiple cross-selling item lists in your plentyShop. This guide is primarily for experienced users, since the implementation of multiple cross-selling lists has to be done via a customised theme plugin.
+
+[NOTE]
+====
+Please note that you have to assign a position number to your theme plugin that lies between that of *IO* and that of *Ceres*. You do this in the actions column of the *Plugins » Plugin overview* menu.
+====
+
+== Creating a context class
+
+The implementation of cross-selling lists is done via extending the SingleItem context class. Therefore, you first need to create a PHP context class in your theme.
+
+First, create a *Contexts* folder in the *src* folder of your theme. In the contexts folder you now create a PHP file for your own context class, e.g. MyThemeContext.php.
+
+Now include the following code in this file. The first cross-selling item list you will create is of the accessory type.
+
+[source,plenty]
+----
+include::../assets/contexts-MyThemeContext.txt[]
+
+----
+
+
+Save the file. Now you adapt the Provider of your theme in 2 steps. Open the file of the provider, located at */src/Providers/MythemesServiceProvider.php*.
+
+Add `use Theme\Contexts\MyThemeContext.php;` at the top of the file, so that the newly created context is read by the ServiceProvider.
+
+Furthermore, you need to add the following code in the *boot* function:
+
+[source,plenty]
+----
+include::../assets/contexts-boot-funktion.txt[]
+
+----
+
+Save the file. This concludes the preparations for your context class.
+
+== Adapting the SingleItemView.twig
+
+In order to display the cross-selling item lists in the single item view, you now have to adjust the *<single-item>component* in your theme. In the file structure of the unaltered Ceres template, the file is located at */resources/views/item/SingleItemView.twig*; this has to be overwritten by your theme, so that the changes you make are not lost whenever you update IO or Ceres.
+
+Add the following code before the closing *</single-item>* tag in the component:
+
+[source,plenty]
+----
+include::../assets/contexts-single-item-code.twig[]
+
+----
+
+Change the heading, if necessary. After you have defined the slot for the cross-selling list, you can incorporate it via `<slot name=“CrossSellingAccessory“></slot>` in the desired component (/resources/views/Item/Components/). The location in which you need to include the code snippet depends on where you want to display the cross-selling list in the single item view.
+
+As soon as the plugin set has been saved and deployed again, the cross-selling item list of the type accessory should be displayed in the selected place.
+
+== Including additional cross-selling lists
+
+In order to display additional cross-selling lists in Ceres, the context class you created needs to be extended.
+
+[source,plenty]
+----
+include::../assets/contexts-MyThemeContext-extended.txt[]
+
+----
+
+Here, `public $similar;` has been added below `public $accessory;`. If you want to include a cross-selling list of the type *Replacement part*, add `public $replacementPart` instead.
+
+Furthermore, an additional code block has been added below `$this->accessory = $result[0]['documents'];`, in which `"relation" => "Accessory”` has been replaced by `"relation" => “Similar”`. For lists of the type *Replacement part*, use `"relation" => "ReplacementPart”` instead.
+
+As described above, you now create a new slot in the *<single-item>* component and call it at the desired place in the code.
+
+
+___
+Thanks to Jens Volke for contributing this HowTo. Read the original post in our link:https://forum.plentymarkets.com/t/howto-weitere-cross-selling-listen-anzeigen-aehnliche-artikel-zubehoer-ersatzteil/495795[forum^]{nbsp}icon:external-link[].
