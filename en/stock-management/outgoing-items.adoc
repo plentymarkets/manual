@@ -1,7 +1,7 @@
 = Booking items out
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: outgoing stock, outgoing items, book items out, book stock out, stock withdrawals, cancellation, return, warranty, warranties, book outgoing items, outgoing items booked, status 7, reverse outgoing items, return reason, reason for return
+:keywords: outgoing items, book items out, deliver variations, stock withdrawals, cancellation, return, warranty, warranties, book outgoing items, status change, status 7, reverse outgoing items, package number, return reason, reason for return, credit note, manually book outgoing items
 :position: 80
 :id: JTRIWSB
 :url: stock-management/outgoing-items
@@ -10,8 +10,9 @@ include::{includedir}/_header.adoc[]
 Booking out stock is the second event of central importance for your stock management. The stock calculated by the system only matches the actual stock in your warehouses if your stock is correctly booked in and out.  +
 The main reason to book out stock is that the variations are delivered to customers, but other stock withdrawals - that occur for any reason - need to be registered correctly as well. Furthermore, special events such as cancellations, returns and warranties require special attention as these might cause systematic stock shortfall in your warehouses.  +
 You can book out stock manually or automatically. Manually booking each order requires extremely high individual effort and bears the risk that this important step will not be carried out systematically. However, if you wish to automate the outgoing items step, you need to identify a trigger event that occurs directly before the variations should be booked out.
-Do you enter the package number before you book stock out? If so, you can use the fact that package numbers were entered as a trigger to book out stock. How to book out stock manually will be explained at the end of this page. The manual booking process may be necessary in rare individual cases. One case could be that a customer picks up his or her order directly and in such a case you will not enter any package number. This is one case that may require manual booking for individual orders.
+Do you enter the package number before you book stock out? If so, you can use the fact that package numbers were entered as a trigger to book out stock. How to book out stock manually will be explained at the end of this page. The manual booking process may be necessary in rare individual cases. If a customer for example directly picks up an order, there is no package number and thus the trigger is missing. In such a case, manual booking may be required for individual orders.
 
+[#10]
 == Dependencies when booking out stock
 
 Two points are particularly important when you want to understand how your system works:
@@ -23,14 +24,15 @@ Two points are particularly important when you want to understand how your syste
 The difference between the procedure and the status for booking out stock
 
 When delivering orders, you have to book the outgoing items in order to correctly reduce the stock.
-Booking out stock is a procedure and not just a status change. The procedure **Book outgoing items** causes the stock to be reduced and then changes the status of an order to status 7 – **Outgoing items booked**. If only the status of an order changes to status 7 – **Outgoing items booked**, then this does not actually cause the procedure to be carried out and this means that the stock will not be reduced. If the stock is not reduced, your entire stock management may become incorrect.
+Booking out stock is a procedure and not just a status change. The procedure **Book outgoing items** causes the stock to be reduced and then changes the status of an order to status 7 – **Outgoing items booked**. If only the status of an order changes to status 7 – **Outgoing items booked**, this does not actually cause the procedure to be carried out and this means that the stock will not be reduced. If the stock is not reduced, your entire stock management may become incorrect.
 
 [.subhead]
 Status range 7 is final
 
-If an order has a status between 7.0 and 7.9 and its outgoing items have already been booked, then the order cannot be reset to a status lower than 7.0. +
-Reverse outgoing items: However, if you reverse the booking of outgoing items, then this will enable a status change below 7. At the same time, you will be given the option to delete the order, which allows you to create a new or corrected order. If an invoice or any other document exists, you cannot delete the order. You need to cancel the document first and then you can correct your information or cancel the entire order. The original document and the cancellation document are proof of conformity with financial regulations.
+If an order has a status between 7.0 and 7.9 and its outgoing items have already been booked, the order cannot be reset to a status lower than 7.0. +
+However, if you reverse the booking of outgoing items, a status change below 7 is possible. At the same time, you will be given the option to delete the order, which allows you to create a new or corrected order. If an invoice or any other document exists, you cannot delete the order. You need to cancel the document first and then you can correct your information or cancel the entire order. The original document and the cancellation document are proof of conformity with financial regulations.
 
+[#20]
 == Automatically booking outgoing items
 
 It is best to execute routine tasks such as booking out items automatically to ensure that the day-to-day routine of your online business runs smoothly and efficiently.
@@ -45,11 +47,12 @@ If you start to book the outgoing items for an order that has not yet reached th
 Depending on the number of orders that were in line in front of the order that you booked manually, the automatic booking may cause errors for weeks or even months.
 ====
 
+[#30]
 === Using the package number to book outgoing items automatically
 
 The advantage of using the package number when booking out stock is that package numbers are usually generated with shipping labels at the end of the fulfilment process. This ensures that all orders that have a shipping label witch a package number are actually about to be shipped.
 
-You can use an event procedure to automate the booking of outgoing items. In addition, you can use the same event procedure to send the shipping confirmation via email to your customer.
+You can use an event procedure to automate the booking of outgoing items. In addition, you can use the same event procedure to send the shipping confirmation via email to the customer.
 The email can also be send with a separate event procedure. After setting up the event procedure you will learn how to scan the package numbers.
 
 [.collapseBox]
@@ -99,13 +102,14 @@ Scanning package numbers:
 . Continue with the next order.
 . **Save** (icon:save[role="green"]) the settings.
 
-plentymarkets adds the package number to the order data. This will trigger the event procedure that books out the stock and sends the order confirmation email to your customer.
+plentymarkets now adds the package number to the order data. This will trigger the event procedure that books out the stock and sends the order confirmation email to the customer.
 The order status will automatically change when the stock is booked out. The new status will be **Outgoing items booked**.
 This behaviour is implemented in the system and cannot be disabled.
 You can use this status to check whether or not the outgoing items have been booked after the import.
 
 Another possibility to import the package numbers is to import a <<fulfilment/generating-documents#package-numbers-csv-file, CSV file>>.
 
+[#40]
 === Booking outgoing items automatically when creating an invoice
 
 Automatically booking out outgoing items will only work correctly if you are not sending any items before you have generated an invoice. However, the fact that an invoice was generated cannot guarantee that outgoing items were booked and that a package was sent. When the payment method payment in advance was selected, it may be the case that the invoice is generated before the outgoing items are booked. Another possible case is that the variation was damaged and your employee saw the defect while picking orders. In this case the invoice may have been generated but the outgoing items will not be delivered.
@@ -148,15 +152,18 @@ An event procedure is used for automatically booking out items when an invoice i
 |
 |====
 
+[#50]
 == Booking outgoing items for cancellations, returns or warranties
 
 This last section gives some information about special cases such as **cancellations**, **returns** and **warranties** as well as their influence on the stock management.
 
+[#60]
 === Cancellations
 
 If an order is cancelled before the outgoing items have been booked, then manually set it to status 8 – **cancelled**. If an order is cancelled, the stock quantity reserved for that order will be cancelled as well. An order can be cancelled as long as no outgoing items have been booked.  +
 To find out more about stock reservations and when stock is reserved, read the **<<stock-management/managing-stocks#, Managing stock>>** manual page.
 
+[#70]
 === Returns
 
 You need a **return** if the outgoing items are already booked in your system and you still want to cancel the order, or if the customer is not satisfied with the item and returns it. In this case, create a return for the order.  +
@@ -169,12 +176,14 @@ This means that you will have to check the items and manually book them back int
 image::stock-management/assets/EN-booking-items-out-01.png[]
 How to create a return and how to book in returned variations is explained in detail on the **<<orders/managing-orders#400, Return>>** manual page.
 
+[#80]
 === Warranties
 
-The steps required for a warranty are very similar to the steps required for a return. In both cases, variations that have been booked out from an order will be returned. The difference is that in case of a warranty the variations are usually damaged. In case of a warranty the customer may still want the item and that means you need to send a replacement item or you need to pay back the invoice amount for the returned items. Usually the variation returned in case of a warranty is not rebooked into stock because it is damaged. However, a second delivery with an extra order ID and stock movement is often required.
+The steps required for a warranty are very similar to the steps required for a return. In both cases, variations that have been booked out from an order will be returned. The difference is that in case of a warranty the variations are usually damaged. In case of a warranty, the customer may still want the item, which means that you need to send a replacement item or to pay back the invoice amount for the returned items (credit note). Usually, a variation that has been returned in case of a warranty is not rebooked into stock because it is damaged. However, a second delivery with an extra order ID and stock movement is often required.
 
 How to create a warranty is explained more in detail on the **<<orders/managing-orders#600, warranty>>** manual page.
 
+[#90]
 == Manually booking outgoing items
 
 The manual booking of outgoing items has to be carried out separately for every single order and therefore is very time-consuming. There are two ways to manually book outgoing items. Even though you can book outgoing items manually, automating this process will save you a lot of time.
@@ -188,6 +197,7 @@ If you start to book the outgoing items for an order that has not yet reached th
 Depending on the number of orders that were in line in front of the order that you booked manually, the automatic booking may cause errors for weeks or even months.
 ====
 
+[#100]
 === Booking outgoing items in the order overview
 
 As long as you have not yet booked the outgoing items you will see an icon for booking outgoing items for orders in the order overview. The icon is displayed separately for each order (image 4).
