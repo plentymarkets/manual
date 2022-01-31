@@ -1,7 +1,7 @@
 = Cdiscount
 :lang: de
 include::{includedir}/_header.adoc[]
-:author: team-multi-channel
+:author: team-plenty-channel
 :keywords: Cdiscount, Cdiscount, Cdisount, C discount, Cdicount, Cdiscaunt
 :description: Multi-Channel in plentymarkets: Richte die Schnittstelle zum Marktplatz Cdiscount in deinem plentymarkets System ein.
 :position: 40
@@ -141,6 +141,35 @@ Die Anbindung des Marktplatzes stellt folgende automatisierten Funktionen bereit
 
 Beim stündlichen Auftragsimport werden zunächst keine Rechnungs- und Lieferdaten von Cdiscount übermittelt. Der Auftrag bleibt solange in Status [3]. Es kann bis zu 48 Stunden dauern, bis die Rechnungs- und Lieferdaten übermittelt werden, da Cdiscount in dieser Zeit eine Bonitätsprüfung für Endkund:innen durchführt.
 
+[#einzelartikel-variantenartikel]
+== Unterscheidung von Einzelartikeln und Variantenartikeln
+
+Auf Cdiscount können nur bestimmte Produkttypen, darunter zum Beispiel Kleidung, als Variantenartikel angeboten werden. Deswegen werden alle Varianten standardmäßig als Einzelartikel zu Cdiscount exportiert.
+
+Varianten können bei Cdiscount nur als Variantenartikel eingestellt werden, wenn die folgenden Einstellungen vorgenommen wurden:
+
+* Die Variante ist mit <<#600, Attributen>> für Kleidungsgröße oder Kleidungsfarbe verknüpft.
+* Der Artikel ist mit einem <<#700, Merkmal>> des Typs *Kein* mit der Cdiscount.com-Merkmal-Verknüpfung *Variantenartikel* verknüpft.
+
+Wenn du auf Cdiscount das gleiche Attribut für Einzelartikel und Varianten verwendest, kannst du mit einem Merkmal des Typs *Kein* mit der Cdiscount.com-Merkmal-Verknüpfung *kein Variantenartikel* den Artikel als Einzelartikel einstellen.
+
+[discrete]
+=== Produktnamen bei Einzelartikeln
+
+Bei Varianten, die auf Cdiscount als Einzelartikel eingestellt sind, werden Attribute an den Produktnamen angehängt. Die Attribute werden auf Cdiscount in eckigen Klammern hinter dem Produktnamen angezeigt. +
+Bei Varianten, die auf Cdiscount als Variantenartikel eingestellt sind, werden Attribute nicht an den Produktnamen angehängt.
+
+[[produktnamen-cdiscount]]
+.Beispiel für Produktnamen auf Cdiscount
+[cols="2,2,2"]
+|====
+| Name des Einzelartikels | Name des Attributs | Produktname auf Cdiscount
+
+| Damenfahrrad, 28 Zoll, Mountainbike
+| blau
+| Damenfahrrad, 28 Zoll, Mountainbike [blau]
+|====
+
 [#250]
 == Auftragsherkunft aktivieren
 
@@ -227,6 +256,8 @@ Wenn du <<artikel/einstellungen/attribute#, Attribute>> im plentymarkets System 
 :enter-attribute-values:
 
 include::_textblocks/instructions/link-attributes.adoc[]
+
+*_Hinweis:_* Attribute werden bei Varianten, die als Einzelartikel gelistet sind, an den Produktnamen auf Cdiscount angehängt. Weitere Informationen dazu findest du im Kapitel <<#einzelartikel-variantenartikel, Unterscheidung von Einzelartikeln und Variantenartikeln>>.
 
 [#700]
 == Merkmale erstellen
@@ -413,6 +444,14 @@ Wenn du deinen Artikelkatalog über eine CSV-Datei an Cdiscount übermittelst, m
 == Retouren automatisch senden
 
 Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um Retouren automatisch an Cdiscount zu senden.
+
+[IMPORTANT]
+.Gutschriften bei Retouren immer für die Gesamtsumme einer Auftragsposition 
+====
+Wenn ein Cdiscount-Auftrag mehrere Auftragspositionen hat und Kund:innen nur eine Teilmenge einer Auftragsposition retournieren, wird bei Cdiscount immer der Betrag der Gesamtmenge dieser Auftragsposition erstattet. Dies ist aufgrund einer Limitierung bei Cdiscount nicht anders möglich. +
+*_Beispiel:_*
+Ein:e Kund:in bestellt zwei Pullover für je 30€ und eine Jacke für 50€ und retourniert einen der Pullover. Bei Cdiscount wird eine Gutschrift für die Gesamtmenge dieser Auftragsposition erstellt, also in diesem Fall für 60€.
+====
 
 :table-event-procedure: <<#ereignisaktion-retouren-cdiscount>>
 
