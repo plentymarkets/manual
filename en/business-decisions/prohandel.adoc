@@ -9,11 +9,18 @@ include::{includedir}/_header.adoc[]
 :author: gretchen-bates
 
 ////
-zuletzt bearbeitet 14.09.2020
+zuletzt bearbeitet 03.02.2022
 ////
 
 //ToDo - change position to 60 once it should appear in the navigation
-//ToDo - fix last issues in the GoogleDoc with David Bohla
+
+////
+offene Fragen:
+-bei "Optionen für den Artikelimport > Gruppierungsschema > Beispiel supplierNumber-categoryNumber-supplierArticleNumber": Hier wäre es schön, wenn es eine Liste mit den möglichen Datenfeldern gäbe, die man eingeben kann. Zudem wäre eine Info zur Syntax nicht schlecht. Team Prohandel müsste uns diese Infos liefern.
+-bei "Optionen für den Artikelimport > Verhalten von Artikeln mit einem bestimmten Wert > Hinweis patternNumber Kunden können uns kontaktieren": Hier könnte man ergänzen, welcher Kontaktweg wir bevorzügen (Telefonnummer, Email, Forum). Team Prohandel müsste uns diese Infos liefern.
+-bei "Neu importierte Artikeldaten öffnen": Klären, ob das so bleiben wird (also, dass die Versandprofile nicht automatisch aktiviert werden, weil die API per REST arbeitet). Falls ja, dann ein Hinweis hier in diesem Kapitel einbauen, dass der Händler seine Versandprofile prüfen und aktivieren soll.
+https://forum.plentymarkets.com/t/api-prohandel-versandprofil-e-bei-neuen-artikeln-aktivieren/652140/7
+////
 
 Prohandel and plentymarkets – a winning combination.
 Do you already use Prohandel as an inventory management tool for retail fashion?
@@ -238,23 +245,6 @@ In this step, you’ll decide which item data should be transmitted from Prohand
 [cols="1,3a"]
 |====
 |Setting |Explanation
-
-2+| *Import type*
-
-| icon:toggle-on[role="blue"] *Full import*
-|Do you want to import all of your items or only those items that were recently modified?
-
-* icon:toggle-on[role="blue"] = All items will be imported.
-* icon:toggle-off[role="grey"] = Only those items that were modified yesterday will be imported.
-
-*_Recommendation_*:
-Activate the toggle button (icon:toggle-on[role="blue"]) at first, so that all of your items are initially transmitted from Prohandel to plentymarkets.
-Then deactivate the toggle button (icon:toggle-off[role="grey"]) after the first import.
-As a result, only new data records will be taken into account for future imports.
-Such a workflow saves resources.
-
-*_Note_*:
-When you deactivate the toggle button, the field *From date* automatically disappears.
 
 2+| *Item filter*
 
@@ -590,13 +580,17 @@ In this step, you’ll activate the cron jobs that should run automatically (ico
 |====
 |Cron |Interval |Explanation
 
-|Item import
+| *Item import*
 |Daily
-|The import is based on the previously selected <<business-decisions/prohandel#70, import settings>>.
-Only new items are imported and new variations on existing items.
+|
+* Once you have completed the assistant, _all_ of your items will initially be transmitted from Prohandel to plentymarkets.
+This initial, full import can take a few days to finish, depending on the number of products.
+* Afterwards, only a sub-set of items will be imported, based on the previously selected <<business-decisions/prohandel#70, import settings>>.
+* Only new items are imported and new variations on existing items.
 Existing items are not updated with this cron.
+* The item import starts at the end of the day, or rather during the night.
 
-|Item update
+| *Item update*
 |Hourly
 |Existing items and variations are updated.
 This cron updates the following data:
@@ -606,11 +600,11 @@ This cron updates the following data:
 * Manufacturers (assuming that the manufacturer is imported)
 * EAN
 
-|Price update
+| *Price update*
 |Hourly
 |
 
-|Stock update
+| *Stock update*
 |Every 15 minutes
 |
 |====
