@@ -6,12 +6,19 @@ include::{includedir}/_header.adoc[]
 :position: 10150
 :url: changelog
 :id:
-:startWeekDate: 20. Januar 2022
-:endWeekDate: 26. Januar 2022
-:nav-alias: Changelog 26. Januar 2022
+:startWeekDate: 03. Februar 2022
+:endWeekDate: 09. Februar 2022
+:nav-alias: Changelog 09. Februar 2022
 
-// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/update-der-editor-version-in-plentymarkets-update-of-the-editor-version-in-plentymarkets/667783
-// Für 02. Februar: https://forum.plentymarkets.com/t/kataloge-auftragsherkunft-catalogs-order-referrer/667409
+// Ab dem Eintrag weitermachen: https://forum.plentymarkets.com/t/ebay-listing-import-neue-option-fuer-den-abgleich-externe-varianten-id/669521
+// Diese Einträge für early im kommenden Changelog berücksichtigen: 
+
+// https://forum.plentymarkets.com/t/gutschrift-neu-berechnen-bei-steueraenderung-credit-note-recalculation-on-vat-change/669487
+// https://forum.plentymarkets.com/t/fehler-in-der-auftragssuche-durch-kundennummer-behoben-fixed-error-when-searching-for-orders-by-customer-number/669509 
+// https://forum.plentymarkets.com/t/fehler-beim-entfernen-von-auftraegen-aus-den-prozessen-behoben-fixed-errors-when-removing-orders-from-processes/669515
+
+// diesen Eintrag prüfen: https://forum.plentymarkets.com/t/neue-ebay-einstellungen-zur-erweiterten-herstellerverantwortung-new-ebay-settings-for-extended-producer-responsibility-epr/669525
+
 
 Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
 
@@ -32,39 +39,52 @@ stable::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== Allgemein
+=== Aufträge
 
-* Es ist nun möglich, einen Filter als Standard festzulegen. Dies ermöglicht Dir folgender Button im Menü der Filter-Bookmarks:
+* Für die neuen Bestelleigenschaften haben wir eine neue Variable `$OrderItemOrderPropertyValue` für die E-Mail Vorlagen eingeführt (nur unter `$ItemListPlain` bzw. `$ItemListHTML` verfügbar), die den Wert der Bestelleigenschaft ausgibt. Da die neuen Bestelleigenschaften als Auftragspositionen behandelt werden, wurde bisher nur der Name der Bestelleigenschaft aber nicht deren Wert ausgegeben.
+* Es ist nun möglich unter *Einrichtung » Aufträge » Auftragstypen » Reparatur* den Status der Reparatur und den Artikelzustand mehrsprachig zu hinterlegen. Ebenfalls besteht diese Möglichkeit für die Retourengründe unter *Einrichtung » Aufträge » Auftragstypen » Retoure*.
+* In der Übersichtstabelle der Nachbestellungen und Umbuchungen werden jetzt Tags angezeigt.
+* Ein Filter für Tags wurde hinzugefügt.
+* In der Artikelsuche wird jetzt die neue Filterkomponente verwendet.
+
+[discrete]
+=== CRM
+
+* In EmailBuilder wurde das Feld *Wert der Bestelleigenschaft* eingeführt.
+
+[discrete]
+=== Eigenschaften
+
+* Du kannst ab jetzt Eigenschaftsgruppen per Gruppenfunktion ver- und entknüpfen.
 +
-image:changelog/assets/filter-lesezeichen.png[width=640, alt=Sternsymbol bei geöffnetem Filter]
-+
-Hast Du einen Filter als Standard festgelegt, wird dieser auf die Suche angewendet, sobald die jeweilige Tabelle geöffnet wird. Beachte: Es kann nur ein Filter als Standard festgelegt werden.
+image:changelog/assets/eigenschaftsgruppen.png[width=640]
 
 [discrete]
 === Kataloge
 
-* Die Bezugskosten einer Nachbestellung lassen sich nun als `purchaseOrder.properties` mit den entsprechenden Typen exportieren.
-* Es wurde ein neuer Datumsfilter *Zahlungsziel* für die Formate *Aufträge* und *Bestellungen* eingeführt.
-* Bei Exporten mit dem Format Warenwirtschaft kannst du ab jetzt alles exportieren, das unterhalb einer bestimmten Dimensionsebene vorhanden ist.
+* Du kannst ab jetzt nach Artikelpaketen, Bestandteilen und Varianten-IDs, die in Artikelpaketen nicht enthalten werden, filtern. Der Filter heißt *Artikelpaket* und ist im Katalog-Format *Warenbestände* verfügbar. Mehrfachauswahl ist möglich. Man kann also z.B. nach *nicht Teil eines Pakets* und *Teil eines Pakets* gleichzeitig filtern.
+* Ab sofort kannst du Artikeldaten mit einem Katalog an die unten aufgelisteten Preisportale exportieren. Die Marktplatz-Formate für die Preisportale findest du jetzt im Menü *Daten » Kataloge*. Der Katalogexport ist jetzt für die folgenden Preisportale verfügbar:
 
-[discrete]
-=== Neckermann.at
+** BeezUp
+** billiger.de
+** Criteo
+** econda
+** guenstiger.de
+** Shopping.com
+** Twenga
 
-* Unter *Artikel » Artikel Bearbeiten » Artikel öffnen » Tab: Multi-Channel » Bereich: Neckermann.at Enterprise* wurden neue Provisionsmodelle ergänzt:
-
-** 299A
-
-[discrete]
-=== Plugins
-
-* Du kannst ab jetzt in einer Übersicht sehen, welche Container-Verknüpfungen in einem Plugin gesetzt sind. Das bedeutet für dich, dass du nicht mehr durch einzelne Datenanbieter klicken musst, um die Verknüpfungen einzusehen. Es ist auch möglich, bestehende Verknüpfungen direkt in der Übersicht zu entfernen.
 +
-image:changelog/assets/aktive-container-verknuepfungen.png[width=640, alt=Separate Liste aller aktiven Container-Verknüpfungen]
+Bisher war der Export von Artikeldaten an diese Preisportale nur über den Elastischen Export möglich. Beim Wechsel auf den Artikeldatenexport mit Katalogen solltest du deshalb Folgendes beachten:
 
-[discrete]
-=== Zahlungen
+** Merkmale und Freitextfelder können für den Katalogexport nicht mehr verwendet werden. Prüfe deshalb, welche Merkmale du aktuell für das Preisportal verwendest. Erstelle Eigenschaften für alle Merkmale, die du weiterhin benötigst.
+** Beim Wechsel solltest du deinen alten Elastischen Export exakt in dem neuen Katalog nachbauen, damit der Artikelexport weiterhin funktioniert. Ordne also alle Datenfelder so zu, wie sie auch im Elastischen Export an das Preisportal übertragen wurden. Wenn du bestimmte Datenfelder anders als bisher zuordnest, werden möglicherweise beim Export neue Artikel erstellt.
+** Wie du einen Katalog für das Preisportal einrichtest, erfährst du auf den Handbuchseiten der entsprechenden Preisportale im plentymarkets Handbuch.
 
-* In der Detailansicht einer Zahlung im Menü *Aufträge » Zahlungsverkehr* ist es nun möglich in der Zuordnungstabelle die Spalte *Rechnungsnummer* der gefundenen Aufträge anzeigen zu lassen.
++
+[NOTE]
+======
+Der Elastische Export und die Exportformate werden nicht mehr weiterentwickelt. Wir empfehlen dir deshalb, schon jetzt Kataloge für deine Preisportale zu erstellen.
+======
 
 '''
 
@@ -74,42 +94,19 @@ image:changelog/assets/aktive-container-verknuepfungen.png[width=640, alt=Separa
 Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
 
 [discrete]
-=== eBay
+=== Amazon
 
-* Beim Einstellen der eBay-Rahmenbedingungen in plentymarkets unter *Einrichtung » Märkte » eBay » Rahmenbedingungen* konnten früher die eBay-Plattformen *BEFR* (Belgien/Französisch), *BENL* (Belgien/Niederländisch) und *CAFR* (Kanada/Französisch) ausgewählt werden. Jetzt gibt es in den Einstellungen für die eBay-Rahmenbedingungen in plentymarkets nur noch zwei Optionen:
-
-** *BE* für Belgien
-** *CA* für Kanada
-
-+
-_Hintergrund:_ Aufgrund einer Umstellung bei eBay werden die Plattformen *BEFR*, *BENL* und *CAFR* in Zukunft nicht mehr unterstützt. Zurzeit können beim Erstellen von Rahmenbedingungen direkt auf eBay die Plattformen *BEFR*, *BENL* und *CAFR* aber noch gewählt werden.
+* Die kategoriespezifsche Lagerbestandsdateivorlagen der Kategorie *HomeImprovement* (benutzt für den Artikeldatenexport) wurden für alle europäischen Verkaufsplattformen aktualisiert.
 
 +
 [IMPORTANT]
-.Wichtig!
 ======
-Die neuen Rahmenbedingungen für *BE* sind identisch mit den alten Rahmenbedingungen für *BENL*. Deine bereits erstellten Rahmenbedingungen für *BENL* sind jetzt also unter den Rahmenbedingungen für *BE* gespeichert.
-Rahmenbedingungen für *BEFR* werden in plentymarkets nicht mehr unterstützt.
-
-_Hinweis:_ Beim Erstellen eines neuen Listings in plentymarkets können weiterhin die eBay-Plattformen *Belgien (FR)*, *Belgien (NL)* und *Kanada (FR)* ausgewählt werden. Im Versandprofil, das mit dem Listing verknüpft ist, sind jedoch die Rahmenbedingungen für die Plattformen *BE* und *CA* gespeichert.
+Bitte legt ein besonderes Augenmerk auf die Änderung der Felder *bullet_point1* bis *bullet_point5* (zuvor) zu *bullet_point1* bis *bullet_point10* (jetzt).
 ======
-
-[discrete]
-=== Prozesse
-
-* plentyBase 1.8.2 ist ab sofort als Mindestversion notwendig, um die Prozesse zu nutzen.
-
-[discrete]
-=== Mercateo
-
-* Bisher war der Dateityp für Bilder auf JPG beschränkt. Dies wurde jetzt um PNG und GIF erweitert.
-
-[discrete]
-=== Zalando
-
-* Bisher wurden beim Aufruf des Assistenten für die Zalando Kontoeinstellungen über einen API-Abruf geprüft, welche Verkaufskanäle für den Händler verfügbar sind und für diese dann entsprechende Auswahlmöglichkeiten und Schritte im Assistenten angezeigt. Durch ein neues API Limit auf diesem Endpunkt, kann es durch mehrmaliges Aufrufen des Assistenten hintereinander zu Fehlern kommen, weil das API-Limit erreicht ist. Um diesem entgegenzuwirken, werden die verfügbaren Verkaufskanäle jetzt über einen stündlichen Prozess geprüft und aktualisiert, sodass der Assistent selber nur noch eine direkte Anfrage über die API von Zalando schickt, wenn dieser Prozess noch nicht gelaufen ist, nachdem das Konto durch uns mit dem zDirect-Konto verknüpft wurde.
 +
-Die einzige Auswirkung der Änderung ist, dass sollte ein neuer Verkaufskanal für euch freigeschaltet werden, kann es dann bis zu einer Stunde dauern, bis dieser in plenty eingestellt werden kann.
+
+Die neu hinzugefügten Felder *bullet_point6* bis *bullet_point10* werden, wie auch zuvor für *bullet_point1* bis *bullet_point5*, standardmäßig aus den technischen Details des Artikels in den Export übernommen (falls vorhanden/gepflegt). Es ist natürlich weiterhin möglich, diese Werte über link:https://knowledge.plentymarkets.com/maerkte/amazon/varianten-vorbereiten#1390[Eigenschaften^]{nbsp}icon:external-link[] oder über link:https://knowledge.plentymarkets.com/maerkte/amazon/varianten-vorbereiten#1400[Merkmale^]{nbsp}icon:external-link[] zu überschreiben.
+
 
 '''
 
@@ -119,40 +116,26 @@ Die einzige Auswirkung der Änderung ist, dass sollte ein neuer Verkaufskanal f�
 Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
 
 [discrete]
+=== Amazon
+
+* Es konnte dazu kommen, dass Eigenschaften bei dem Artikeldatenexport nicht gezogen wurden. Dieses Verhalten ist nun behoben.
+
+[discrete]
 === Aufträge
 
-* Wenn die Artikeltabelle einer Nachbestellung mehr als eine Seite hatte, führte eine Mengenänderung oder das Erstellen einer Teillieferung auf einer anderen Tabellenseite als der ersten dazu, dass die Tabelle erneut geladen wurde und die Ansicht zur ersten Seite der Tabelle zurücksprang. Dies ist nun behoben.
-* Bei Gastbestellungen mit unterschiedlicher Rechnungs- und Lieferadresse hat das Ändern der Adressdaten bei nicht gesperrten Aufträgen keine Neuermittlung der Steuersätze geführt. Dies wurde behoben.
-* Bei Nachbestellung wurde im Bereich *Warenbewegungen* bei klicken auf eine Buchungs-ID nur in die UI von *Wareneingänge* verlinkt, jetzt wird der entsprechende Wareneingang direkt geöffnet.
-* Unter den Warenbewegungen in einer Nachbestellung wurden seit kurzem keine Vorschläge mehr für den Lagerort vorgeschlagen. Dies wurde behoben.
-* Beim Löschen eines Artikels in der Tabelle Warenbewegungen wurde zwar die Bestätigungsmeldung angezeigt, der Artikel wurde aber nicht gelöscht. Dies ist nun behoben.
-* Man konnte keine Lieferaufträge mit Mengen mit Dezimalwerten anlegen, die Menge wurde auf die nächst kleinere Zahl gerundet. Dies wurde behoben.
+* Bei Anlage einer Gewährleistung für alle Positionen über eine Retoure kam es zu einem Anzeigefehler in der UI.
+
+* Während der Erstellung eines Auftrags konnten die Preise in einigen bestimmten Fällen nicht aktualisiert werden. Dies ist nun behoben.
+
+* Bei Bestelleigenschaften vom Typ Mehrfachauswahl und Auswahl wurden die ausgewählten Werte nicht korrekt auf der Packliste angezeigt. Auch wurden nicht alle Namen der Bestelleigenschaften korrekt angezeigt. Dies wurde behoben.
 
 [discrete]
-=== CRM
+=== Kataloge
 
-* In einigen CRM-Menüs war die Anzeige des Eignernamens nicht konsistent; einmal wurde der Benutzername angezeigt, in anderen UIs der reale Name. Wir haben die Anzeige des Eignernamens in den CRM-Menüs vereinheitlicht. Ab sofort wird in den folgenden Menüs der reale Name statt des Benutzernamens angezeigt:
+* Man konnte bisher nur die Herkunft der Auftragspositionen exportieren, denn durch einen Fehler war das Feld für die Auftragsherkunft nicht sichtbar und somit nicht auswählbar. Dies wurde behoben.
 
-** im Filterbereich der Schnellsuche
-** im Filterbereich der Kontakt-UI
-** beim Anlegen eines neuen Kontakts
-** in der Detailansicht des Kontakts
-
-[discrete]
-=== Dokumente
-
-* Die Namen der POS Zahlungsarten (Barzahlung (ID 4), Kartenzahlung (ID 11), Gutscheine (ID 1700)) die über das Plugin *plentyPOS Zahlungsarten* angepasst werden konnten wurden nicht auf Dokumenten (Rechnung) dargestellt. Dies wurde behoben.
-* In der Auswahl der Zahlungsarten für die PDF-Vorlagen wurden die inaktiven Zahlungsarten nicht mehr angezeigt, auch wenn in den Einstellungen *Inaktive Plugin-Zahlungsarten anzeigen* gesetzt war. Dies wurde behoben.
-
-[discrete]
-=== OTTO Market
-
-* OTTO beschränkt die Anzahl der Zeichen auf 180 je Aufzählungspunkt (Bullet Point). Um einen Status-Update-Fehler zu umgehen, kürzen wir zu lange Aufzählungspunkte bereits im Export für dich. Wenn Umlaute verwendet wurden, wurde die Kürzung bereits ab weniger Zeichen vorgenommen, da die Umlaute nicht korrekt gezählt wurden. Dieses Verhalten wurde nun behoben.
-
-[discrete]
-=== Versand
-
-* Bei mehr als einem Versandpaket im Auftrag wurden die Labels mehrfach in der PDF-Datei angezeigt, wenn man das Retourenlabel im Versand-Center 2.0 über die Übersicht heruntergeladen hat. Dieses Verhalten wurde behoben.
+* Wenn man den Filter nach Datum im Katalogformat *Warenbestände* benutzt hat, wurden nicht alle Varianten-IDs angezeigt.
+Der Fehler wurde nun behoben.
 
 --
 
@@ -166,35 +149,27 @@ early::
 Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 
 [discrete]
-=== Payment
+=== eBay
 
-* Bei der Zahlungszuordnung in der Detailansicht für Zahlungen ist es jetzt über ein Kontextmenü möglich, Zahlungen direkt einem Auftrag zuzuordnen und Aufträge zu suchen.
+* Du kannst jetzt beim eBay-Listing-Import die Lagerhaltungsnummer(SKU) von eBay auch mit der externen Varianten-ID vergleichen und die Listings entsprechend darüber zuordnen. Die Option dafür nennt sich *Lagerhaltungsnummer (SKU) mit der externen Varianten-ID vergleichen*.
 
 [discrete]
-=== Plugins
+=== Kataloge
 
-* Du kannst ab jetzt in jedem Plugin-Set eine Beschreibung hinterlegen. Die Beschreibung wird zusätzlich in der Plugin-Set-Übersicht als Tooltip angezeigt. Das bedeutet für dich, dass du jetzt wichtige Notizen direkt am Plugin-Set hinterlegen kannst.
+* In den Exporteinstellungen der Kataloge findest du ab sofort die Schaltfläche *Verbindung testen*. Damit kannst du testen, ob mit den eingegebenen Servereinstellungen eine Exportdatei gespeichert werden kann. Dabei wird getestet, ob ein Dateiexport möglich ist. Es wird nicht geprüft, ob eine Verbindung zu einem Marktplatz hergestellt werden kann. Neugierig? link:https://knowledge.plentymarkets.com/daten/daten-exportieren/dateiexport#export-settings[Im Handbuch^]{nbsp}icon:external-link[] erfährst du mehr.
+
+[discrete]
+=== Prozesse
+
+* * Innerhalb der Subaktion *Versandpakete* wird nun der Fokus automatisch auf das Gewichtsfeld gelegt, sodass dort direkt ohne vorher zu klicken das Gewicht eingetragen werden kann.
+
+[discrete]
+=== Warenwirtschaft
+
+* Bis jetzt wurde das Lieferdatum der Nachbestellung im Zulauf der Varianteneinstellungen angezeigt. Ab jetzt wird das Lieferdatum der Varianten-ID ausgestellt. Wenn das Lieferdatum der Variante fehlt, wird weiterhin das Lieferdatum der Nachbestellung als Fallback angezeigt.
 +
-image:changelog/assets/plugin-set-beschreibung.png[width=640, alt=Textfeld für Beschreibungen]
+image:changelog/assets/lieferdatum-zulauf.png[width=640]
 
-[discrete]
-=== Versand
-
-* Im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Lieferländer* wurde die Sprache Finnisch hinzugefügt.
-* Im Menü *Einrichtung » Aufträge » Versand » Optionen* im Tab *Versanddienstleister* wurden im Bereich Filter die Sprachen Finnisch und Schwedisch hinzugefügt.
-* Ab sofort wird das Gewicht der Artikel-Sets beim Erstellen des Pakets im Versand-Center berücksichtigt.
-
-'''
-
-[discrete]
-== Geändert
-
-Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
-
-[discrete]
-=== bol.com
-
-* Die von plenty verwendeten API Endpunkte von bol.com wurden auf die Version 6 angepasst. Davon ausgeschlossen sind alleine die API Endpunkte für die Produkterstellung und -aktualisierung (nicht zu verwechseln mit den Angeboten). Diese werden zu einem späteren Zeitpunkt von der Version 5 auf die Version 6 angehoben, da dort größere Anpassung durch eine Änderung in der Produktstruktur notwendig ist.
 
 '''
 
@@ -204,24 +179,50 @@ Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
 Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
 
 [discrete]
+=== Abonnement
+
+* Die Zeilen in der Warenkorbtabelle sind gesprungen, wenn die Schaltfläche zum Aktualisieren sichtbar geschaltet wurde. Dies wurde behoben.
+
+[discrete]
 === Aufträge
 
-* Bei Verwendung der Filter Anzahl Auftragspositionen und Anzahl Gesamt-Artikelmenge im Arbeitsschritt Auftragsabwicklung kam es in Kombination mit Bestelleigenschaften zu falschen Zählergebnissen. Dieses Verhalten wurde behoben, sodass die Artikelpositionen bzw. deren Gesamtmenge wieder richtig gezählt werden.
+* Bei der Suche nach Bestellungen wurde das Händlerzeichen nicht mehr im Suchergebnis angezeigt. Dies wurde behoben.
+
+* Bei neuen Systemen und gelöschten Standard-Testaufträgen und oder bei Löschung des Standard-Testlagers konnte man keine Vorschau der Adressetiketten öffnen, es kam immer eine Fehlermeldung. Dies wurde behoben.
+
+* In den *Bestellungen* wurde eine neue Infobox hinzugefügt, die die ID des Auftrags anzeigt. Außerdem wurde der Titel der Infobox *Gesamtsumme Warenbezugskosten* zu *Warenbezug gesamt* geändert. Die Übersichtstabelle wurde auf die volle Bildschirmhöhe erweitert und am Rand ist der Abstand geändert worden.
+
+* In den Warenbewegungen von Nachbestellungen wurden das Mindesthaltbarkeitsdatum und die Charge als Links angezeigt, obwohl diese nirgends geführt haben (keine Reaktion beim Klick auf den Links). Deshalb wurden die Links entfernt. Ausserdem wird nun das MHD mit dem aktiven Locale formatiert.
++
+image:changelog/assets/nachbestellung-links.png[width=640]
 
 [discrete]
-=== CRM
+=== Payment
 
-* Beim Import von Kontaktdaten wurde für das Feld *Externe Nummer* der Wert immer in Kleinbuchstaben gespeichert und angezeigt. Dieses Verhalten wurde behoben, sodass nun auch Großbuchstaben gespeichert werden.
-
-[discrete]
-=== POS
-
-* Beim Laden eines Bestandskunden, an dem eine Adresse außerhalb Deutschlands hinterlegt war, wurde diese fälschlicherweise auch als Lieferadresse für den Auftrag übernommen. Dieses Verhalten wurde behoben. Nun wird korrekterweise die Adresse des für die Kasse hinterlegten Standardkunden für Kassenaufträge als Lieferadresse für solche Aufträge verwendet.
+* Über das Menü *Zahlungsverkehr* war es nicht möglich eine Zahlung einem Auftrag zuzuordnen, der schon Zahlungen verknüpft hatte.
 
 [discrete]
 === Prozesse
 
-* Wurde die Subaktion Auftragsnotizen hinzufügen im Fehlerfall benutzt, wurden die Notizen an allen Aufträgen anstatt nur an fehlerhaften Aufträgen hinterlegt. Dieses Verhalten wurde behoben.
+* Innerhalb der Aktion *Artikelerfassung* konnte es zu einem Verhalten kommen, bei dem fälschlicherweise versucht wurde, eine bereits geschlossene Pickliste erneut zu schließen. Dabei wurde eine Fehlermeldung angezeigt. Dieses Verhalten wurde behoben.
+
+--
+
+Handbuch::
++
+--
+
+Version 7.6 der *technischen Systembeschreibung* (Vorlage für die Erstellung der unternehmensinternen Verfahrensdokumentation) für plentymarkets ist nun verfügbar. Das Dokument kann link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/plentymarkets_Rechtliches/Verfahrensdokumentation_V7.6.pdf[hier^]{nbsp}icon:external-link[] direkt heruntergeladen werden.
+
+Folgende Änderungen wurden vorgenommen:
+
+* Der Bereich Warenwirtschaft wurde überarbeitet und um Informationen zur plentyWarehouse App und zum Zählprotokoll erweitert.
+* Der Bereich Webshop wurde überarbeitet. Der Begriff „Ceres“ wurde durch „plentyShop LTS“ ersetzt.
+* Der Bereich Multi-Channel wurde überarbeitet. Der Begriff „Multi-Channel“ wurde durch „plentyChannel“ ersetzt.
+* Der Bereich E-Mail-Versand wurde überarbeitet.
+* Der Anhang zu den REST-Berechtigungen wurde aktualisiert.
+
+Weitere allgemeine Informationen zur technischen Systembeschreibung und ein permanenter Download-Link sind auf link:https://knowledge.plentymarkets.com/business-entscheidungen/rechtliches/verfahrensdokumentation[dieser Handbuchseite^]{nbsp}icon:external-link[] zu finden.
 
 --
 
@@ -235,48 +236,28 @@ Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plenty
 |===
 |Plugin-Name |Version |To-do
 
-|link:https://marketplace.plentymarkets.com/addressdoctor_6106[AddressDoctor^]
-|1.2.21
+|link:https://marketplace.plentymarkets.com/fruugo_6875[Fruugo.com^]
+|1.3.3
 |-
 
-|link:https://marketplace.plentymarkets.com/itemgridwidget_55036[Artikel-Listen Raster, Slider oder Einzeldarstellung^]
-|1.0.6
+|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de^]
+|3.3.22
 |-
 
-|link:https://marketplace.plentymarkets.com/d2gpmpluginchangeorderwarehouse_54968[Auftragslagerwechsel Plugin^]
-|1.1.0
+|link:https://marketplace.plentymarkets.com/plugins/individualisierung/artikel-inhalte/gs1germanygmbh-52973_55106[GS1 Germany GmbH^]
+|3
 |-
 
-|link:https://marketplace.plentymarkets.com/cytcookielesstracking_7059[Ceres Google Tracking - 100% Datenqualität, DSGVO konform^]
-|1.1.0
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.7.7
 |-
 
-|link:https://marketplace.plentymarkets.com/deepl_5900[DeepL - Für professionelle Übersetzungen^]
-|2.0.2
+|link:https://marketplace.plentymarkets.com/schufa_6360[Schufa Bonitätsprüfung^]
+|2.0.11
 |-
 
-|link:https://marketplace.plentymarkets.com/infinityscroller_6660[Endlos-Scrollen in Artikellisten^]
-|1.4.3
-|-
-
-|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
-|1.0.22
-|-
-
-|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
-|1.1.61
-|-
-
-|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent Toolbox^]
-|4.6.14
-|-
-
-|link:https://marketplace.plentymarkets.com/cytcustomitemlistpages_54920[Quick & Easy Artikelliste für Newsletter Kampagnen, Aktionen, Direktvertrieb u.v.m.^]
-|1.0.3
-|-
-
-|link:https://marketplace.plentymarkets.com/woocommerce_5102[woocommerce.com^]
-|3.0.2
+|link:https://marketplace.plentymarkets.com/trackingmanager_54743[Tracking Manager^]
+|1.1.7
 |-
 
 |===
