@@ -66,8 +66,19 @@ a| * *Ja* = Schnittstelle zu Kaufland.de aktivieren. +
 |Diese Einstellung greift für den Auftragsimport. Aufträge werden als bezahlt oder nicht bezahlt importiert. Unabhängig von dieser Einstellung werden Artikel bei ausreichend Bestand sofort für den Versand freigegeben. Mit der Option *offen* könntest du bei tatsächlichem Zahlungseingang von Kaufland.de den Auftrag auf bezahlt setzen und somit eine Kontrolle von Kaufland.de durchführen.
 
 | *Versanddienstleister verknüpfen*
-|Diese Einstellung ist ausschließlich dafür bestimmt, dass Kaufland.de nach Bestätigung des Versands mit Hilfe der richtigen Paketnummer den korrekten Tracking-Link an Kund:innen per E-Mail versenden kann. +
+|Diese Einstellung ist erforderlich, damit Kaufland.de nach Bestätigung des Versands mit Hilfe der richtigen Paketnummer den korrekten Tracking-Link an Kund:innen per E-Mail versenden kann. +
 *_Wichtig:_* Du musst jeden deiner Dienstleister mit einem Dienstleister aus der Dropdown-Liste verknüpfen.
+
+| *XXX*
+| In welchen Status sollen Aufträge verschoben werden, für die keine Versandbestätigung an Kaufland.de gesendet werden konnte?
+
+Anforderungen an den gewählten Status:
+
+* größer als 5
+* kleiner als 7
+* kleiner als der Status, der die Ereignisaktion <<#shipping-confirmation, Versandbestätigung an Kaufland.de melden>> auslöst
+
+*_Hintergrund:_* Mit der Ereignisaktion <<#shipping-confirmation, Versandbestätigung an Kaufland.de melden>> informierst du {market} automatisch darüber, dass die Artikel eines Auftrags versendet wurden. Wenn die Ereignisaktion nicht ausgeführt werden kann, wird der Auftrag in den Status geschoben, den du für die Einstellung *XXX* gewählt hast.
 
 2+| Artikeleinstellungen
 
@@ -178,10 +189,6 @@ Nachdem du {market} in plentymarkets eingerichtet hast, stehen die in <<#data-ex
 
 | Auftragsimport
 | alle 15 Minuten
-
-| Markierung *Versendet*
-| stündlich +
-*_Hinweis:_* Die Markierung *Versendet* wird nach Buchung des Warenausgangs an {market} übermittelt.
 
 | Weitere Daten
 | * Export von Aufpreisen für Attributwerte (Variantenartikel)
@@ -447,6 +454,40 @@ Richte <<automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um {market} 
 * Rechnung bei Kaufland.de hochladen (<<#895, Wie?>>)
 * Stornierung an Kaufland.de senden (<<#900, Wie?>>)
 
+[#shipping-confirmation]
+=== NEU: Versandbestätigung senden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um {market} darüber zu informieren, dass die Artikel eines Auftrags versendet wurden.
+
+:table-event-procedure: <<#shipping-confirmation-kaufland>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[shipping-confirmation-kaufland]]
+.Ereignisaktion, um Versand an {market} zu melden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Statuswechsel*
+| Status wählen, zum Beispiel *[7] Warenausgang gebucht*
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *Kaufland.de*
+
+| *Aktion*
+| *Auftrag*
+| *Versandbestätigung an Kaufland.de melden* +
+*_Hinweis:_* Aufträge, für die keine Versandbestätigung an {market} gesendet werden konnten, werden in den Status verschoben, den du im Menü *Einrichtung » Märkte » Kaufland.de » Einstellungen » Option: xy* gewählt hast. +
+<<#no-shipping-confirmation, So behandelst du Aufträge in diesem Status.>>
+|====
+
 [#890]
 === Rechnungen automatisch erstellen
 
@@ -619,3 +660,23 @@ a| Wähle einen Referenzwert, um nach bestimmten Ereignissen zu suchen.
 |
 
 |====
+
+[#faq]
+== FAQ und Fehlerbehebung
+
+Hier findest du Antworten auf häufig gestellte Fragen.
+
+[#no-shipping-confirmation]
+[.collapseBox]
+.Es wurde keine Versandbestätigung gesendet. Was nun?
+--
+
+Mit der Ereignisaktion <<#shipping-confirmation, Versandbestätigung an Kaufland.de melden>> informierst du {market} automatisch darüber, dass die Artikel eines Auftrags versendet wurden. Wenn die Ereignisaktion nicht ausgeführt werden kann, wird der Auftrag in den Status geschoben, den du für die Einstellung *XXX* gewählt hast.
+
+Prüfe Aufträge mit diesem Status:
+
+* Ist der Versanddienstleister korrekt verknüpft?
+* Ist eine Sendungsnummer an dem Auftrag gespeichert?
+
+Verschiebe Aufträge nach der Korrektur zurück in den Status, der die Ereignisaktion <<#shipping-confirmation, Versandbestätigung an Kaufland.de melden>> auslöst.
+--
