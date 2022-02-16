@@ -69,6 +69,15 @@ a| * *Yes* = Activate the interface to Kaufland.de. +
 |After the shipment has been confirmed, this option allows Kaufland.de to use the package number in order to send the customer an email with the correct tracking link. +
 *_Important:_* You have to assign each of your service providers to one of the service providers from the drop-down list.
 
+
+The selected status must be:
+
+* Greater than 5
+* Less than 7
+* smaller than the status that triggers the event procedure <<<<#shipping-confirmation, Send shipping confirmation to Kaufland.de>>
+
+*_Background:_* The event procedure <<#shipping-confirmation, Send shipping confirmation to Kaufland.de>> automatically informs {market} that the items of an order have shipped. If the event procedure cannot be completed, the order is moved to the status that you selected for the setting *xxx*.
+
 2+| Item settings
 
 | *Activate item export*
@@ -178,10 +187,6 @@ After setting up {market} in plentymarkets, the automatic processes described in
 
 | Order import
 | every 15 minutes
-
-| Information *Sent*
-| Hourly +
-*_Note:_* The flag *Sent* is transferred to {market} after the outgoing items have been booked.
 
 | Additional data
 | * export of surcharges for attribute values (item variations)
@@ -447,6 +452,40 @@ Set up <<automation/event-procedures#, event procedures>> to automatically infor
 * Upload invoice to Kaufland.de (<<#895, How?>>)
 * Send cancellation to Kaufland.de (<<#900, How?>>)
 
+[#shipping-confirmation]
+=== NEW: Send shipping confirmation
+
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform {market} when you have shipped the items of an order.
+
+:table-event-procedure: <<#shipping-confirmation-kaufland>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[shipping-confirmation-kaufland]]
+.Event procedure to send shipping confirmations to {market}
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Status change*
+| Select an event, for example *[7] Shipped*.
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Filter 2*
+| *Order > Referrer*
+| *Kaufland.de*
+
+| *Procedure*
+| *Order*
+| *Send shipping confirmation to Kaufland.de* +
+*_Note:_* If no shipping confirmation could be sent to {market}, the order is moved to the status that you selected in the menu *Setup » Markets » Kaufland.de » Settings » Option: xxx*. +
+<<#no-shipping-confirmation, How to deal with orders in this status>>
+|====
+
 [#890]
 === Automatically creating invoices
 
@@ -619,3 +658,23 @@ a| Select a reference type to filter for specific events.
 |
 
 |====
+
+[#faq]
+== FAQ and troubleshooting
+
+This chapter contains answers to frequently asked questions.
+
+[#no-shipping-confirmation]
+[.collapseBox]
+.No shipping confirmation was sent. What now?
+--
+
+The event procedure <<#shipping-confirmation, Send shipping confirmation to Kaufland.de>> automatically informs {market} that the items of an order have shipped. If the event procedure cannot be completed, the order is moved to the status that you selected for the setting *xxx*.
+
+Check orders in this status:
+
+* Is the shipping service provider linked correctly?
+* Is a tracking number saved for the order?
+
+After correcting the order, move the order to the status that triggers the event procedure <<#shipping-confirmation, Send shipping confirmation to Kaufland.de>>.
+--
