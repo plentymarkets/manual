@@ -1600,6 +1600,81 @@ Note the information about the shipments that you later register for DPD Cloud W
 The currently valid, known tracking URL for DPD is: +
 *+https://tracking.dpd.de/status/de_DE/parcel/[PaketNr]+*
 
+
+[#dpd-cloud-webservice-log-entries]
+[.collapseBox]
+.DPD Cloud Webservice log entries
+--
+This box provides information about the log entries in the *Data » API log (deprecated)* menu that relate to DPD Cloud Webservice. Click on the **Shipping centre API log** tab and select the **DPDCloudWebservice** process.
+
+*CLOUD_USERDATA_NOACCESS*
+
+This entry is recorded in the log when access is denied.
+
+[cols="1,3"]
+|====
+|Message |Explanation
+
+| **CLOUD_USERDATA_NOACCESS_SHIPMENTSERVICE**
+|No access rights to the shipping service.
+
+| **CLOUD_USERDATA_NOACCESS_COD**
+|No access rights to the shipping service **Cash on delivery**.
+
+| **CLOUD_USERDATA_NOACCESS_PREDICT**
+|No access rights to the shipping service **Predict**.
+|====
+
+*CLOUD_ADDRESS*
+
+This entry is recorded in the log when address data is missing or incorrect. It is also possible that a parameter exceeded the maximum character length. The table lists several examples. However, the list is not exhaustive.
+
+[cols="1,3"]
+|====
+|Message |Explanation
+
+| **CLOUD_ADDRESS_PHONE**
+|The telephone number is missing or incorrect. Format: 5 to 20 characters.
+
+| **CLOUD_ADDRESS_NEEDMAIL**
+|The email address is missing. You are required to specify the recipient's email address.
+
+| **CLOUD_STATE_STATESHORT**
+|The country in ISO3166-2 format: exactly 2 characters.
+
+| **CLOUD_ADDRESS_COMPANYANDNAMEEMPTY**
+|Company or name required.
+
+| **CLOUD_API_ORDER_WEIGHT**
+|Maximum weight exceeded. 31.5 kg can be shipped at maximum.
+|====
+
+*CLOUD_API_ORDER*
+
+This entry is recorded in the log when errors occur while registering shipping orders.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **CLOUD_API_ORDER_MAXORDERS**
+|The maximum number of registered shipping orders was exceeded. It is not possible to register multiple shipments at the same time.
+
+| **CLOUD_API_ORDER_SHIPSERVICE**
+|Invalid shipping service.
+
+| **CLOUD_API_ORDER_CODAMOUNT**
+|Invalid cash on delivery amount. This must be between 1.00 and 5000.00 Euro.
+
+| **CLOUD_API_ORDER_EXPRESS_DEU_COUNTRY**
+|The selected express option is only available for Germany.
+
+| **CLOUD_API_ORDER_CODPURPOSE**
+|The cash on delivery reference contains too many characters. No more than 14 characters are allowed.
+|====
+
+--
+
 [#3600]
 === DPD Print
 
@@ -2512,6 +2587,147 @@ Afterwards select the region *Germany*, the shipping product for national or int
 In order to send your items nationally and internationally with DHL Fulfillment, when you are located in the United Kingdom, you have to create the <<fulfilment/preparing-the-shipment#800, shipping service provider>> as well as to set up the <<fulfilment/preparing-the-shipment#1000, shipping profile>> and the <<fulfilment/preparing-the-shipment#1500, table of shipping charges>>. <<fulfilment/preparing-the-shipment#100, Countries of delivery>> have to be activated and <<fulfilment/preparing-the-shipment#400, regions>> have to be created beforehand.
 
 Afterwards select the region *United Kingdom*, the shipping product for national or international shipment and activate the shipping services in the table of shipping charges. These services are only visible in the table of shipping charges after you saved the settings in the shipping profile. Make sure that the shipping profile is <<fulfilment/preparing-the-shipment#1800, activated>> for the item.
+
+[#dhl-fulfillment-log-entries]
+[.collapseBox]
+.DHL Fulfillment log entries
+--
+*DHL Fulfillment log entries*
+
+This box provides information about all of the log entries in the *Data » API log (deprecated)* menu that relate to DHL Fulfillment. Information is transferred to DHL Fulfillment when some processes are carried out. There are 3 events for the entries that relate to such processes. There are also processes that query information from DHL Fulfillment. There is one event for such processes.
+
+*DHLFulfillment ItemMaster*
+
+This entry is recorded in the log when item master data is registered. The entry itself does not indicate whether the items were successfully transferred or not. There are 3 possible events for this entry. The events provide information about the exact status of the data transfer.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Successfully transmitted ItemMaster**
+|The item master data was transferred. A separate event indicates how many orders were correctly registered.
+
+| **Could not transmit ItemMaster**
+|The item master data was not transferred.
+
+| **Count ItemMaster: xxx entries done and xxx errors!**
+|Indicates the number of items that were transferred and the number of items that were not transferred.
+|====
+
+*DHLFulfillment DeliveryAdvice*
+
+This entry is recorded in the log when information is transferred. This information relates to reordered items that will be delivered soon. The entry itself does not indicate whether the information was successfully transferred or not. There are 3 possible events for this entry. The events provide information about the exact status of the data transfer. The Parameter column lists the reorder IDs.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Successfully transmitted DeliveryAdvices!**
+|The reorders were transferred. A separate event indicates how many reorders were correctly registered.
+
+| **Could not transmit DeliveryAdvices**
+|The reorders were not transferred.
+
+| **Count DeliveryAdvice: xxx entries done and xxx errors!**
+|Indicates the number of reorders that were registered and the number of reorders that were not registered.
+|====
+
+*DHLFulfillment DeliveryReceipt*
+
+This entry is recorded in the log when reorders are marked as delivered. There is 1 possible event for this entry. The event indicates how many reorders were marked as delivered. However, the information does not indicate whether the reorder was delivered in full. The reorder itself indicates which items were delivered.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **DHLFulfillment Delivery Receipt! Count Entries: xxx**
+|The number of reorders that were marked as delivered.
+|====
+
+*DHLFulfillment StockAdjustment*
+
+This entry is recorded in the log when stock is adjusted. There is 1 possible event for this entry. The event indicates how many stock adjustments were made.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Processed StockAdjustment! Count Entries: xxx**
+|Number of stock adjustments.
+|====
+
+*DHLFulfillment Inventory*
+
+This entry is recorded in the log when the current stock is queried, i.e. when inventory is taken. There is 1 possible event for this entry. The event indicates how many stocks were synchronized.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Processed Inventory! Count Entries: xxx**
+|The number of items for which stock was synchronized.
+|====
+
+*DHLFulfillment Order*
+
+This entry is recorded in the log when orders are registered. There are 3 possible events for this entry. The events provide information about the exact status of the registration. The Parameter column lists the order IDs.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Successfully transmitted Order!**
+|The orders were transferred. A separate event indicates how many orders were correctly registered.
+
+| **Could not transmit Orders**
+|The orders were not transferred.
+
+| **Count Order: xxx entries done and xxx errors!**
+|Indicates the number of orders that were registered and the number of orders that were not registered.
+|====
+
+If it was not possible to register an order and the registration process was carried out again, then plentymarkets will automatically change the order ID when the order is registered. This is because DHL Fulfillment only accepts an order ID once, even if the registration was not successful. Nonetheless, the Parameter column lists the correct order ID in plentymarkets. However, the file that is displayed in the Process column contains the ID that was used when registering the order with DHL Fulfillment.
+
+*DHLFulfillment Transport*
+
+This entry is recorded in the log when orders are sent. There is 1 possible event for this entry. The event indicates whether or not the order was sent. In some cases, an order is split into several delivery orders. This is the case if some items can be sent earlier than others or if an order is always shipped in multiple packages. The Parameter column lists the order IDs and delivery order IDs. If delivery orders were created, then a slash (/) is used to separate the delivery order from the order. For example, 1957/1956 means that a delivery order with the ID 1957 was created for an order with the ID 1956.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Processed Transport! Count Entries: xxx, Count Errors: xxx**
+| **Count Entries** = The number of orders that were sent. +
+**Count Errors** = The number of sent orders that could not be assigned to an order. There are several different reasons why this can happen. For example, if the order was not found in the system or if only some of the items were sent, i.e. if the order was not shipped in full. If only some of the items were shipped with DHL Fulfillment, then a delivery order will be created for the items that were already shipped.
+|====
+
+*DHLFulfillment OrderReturned*
+
+This entry is recorded in the log when returns are queried. There is 1 possible event for this entry. The event provides information about the returns that were queried. The Parameter column lists order IDs. These are the orders for which returns were created.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Processed OrderReturned! Count Entries: xxx, Count Errors: xxx**
+| **Count Entries** = The number of returns that were created in plentymarkets. +
+**Count Errors** = The number of queried DHL Fulfillment returns for which it was not possible to create a return in your system. There are many reasons why this can happen. For example, it may not have been possible to find the main order that the return was supposed to be created for. This could be because the main order was deleted, etc.
+|====
+
+*DHLFulfillment OrderCanceled*
+
+This entry is recorded in the log when cancellations are queried, i.e. when DHL Fulfillment cancels the order. There are many reasons why DHL Fulfillment may cancel an order. For example, if the items are incorrect. There is 1 possible event for this entry. The event provides information about the cancellations that were queried. The Parameter column lists order IDs. These are the orders for which cancellations were created in your system.
+
+[cols="1,3"]
+|====
+|Event |Explanation
+
+| **Processed OrderCanceled! Count Entries: xxx, Count Errors: xxx**
+| **Count Entries** = The number of cancellations that were created in plentymarkets. +
+**Count Errors** = The number of queried DHL Fulfillment cancellations for which it was not possible to create a cancellation in your system. There are many reasons why this can happen. For example, it may not have been possible to find the main order that the cancellation was supposed to be created for. This could be because the main order was deleted, etc.
+|====
+
+--
 
 [#5550]
 === eBay Fulfillment by Orange Connex
