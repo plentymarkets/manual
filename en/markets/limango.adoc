@@ -33,19 +33,16 @@ After installing and setting up the plugin, the automatic processes described in
 |====
 |Data |Interval
 
-2+| Item data
-
 | Item export
 | once a day
 
 | Stock synchronisation
 | Hourly +
-*_Tip:_* For technical reasons, shorter stock update intervals are not possible. Set a <<#300, stock buffer>> to prevent overselling.
+*_Tip:_* Shorter stock update intervals are not possible due to technical reasons. If necessary, set a <<#300, stock buffer>> to prevent overselling. +
+*_Note:_* Only whole numbers can be exported. Stock with decimal numbers (for example `0,5`) are invalid.
 
 | Price synchronisation
 | Hourly
-
-2+| Order data
 
 | Order import
 | Every 15 minutes +
@@ -65,7 +62,7 @@ After installing and setting up the plugin, the automatic processes described in
 [#170]
 == Installing the plugin
 
-To connect to limango in plentymarkets, install the link:https://marketplace.plentymarkets.com/en/limango_7023[limango plugin^] in your plentymarkets system. You can download this and other plugins in the link:https://marketplace.plentymarkets.com/en[plentyMarketplace^]{nbsp}icon:external-link[].
+To connect to limango in plentymarkets, first install the link:https://marketplace.plentymarkets.com/en/limango_7023[limango plugin^] in your plentymarkets system. You can download this and other plugins in the link:https://marketplace.plentymarkets.com/en[plentyMarketplace^]{nbsp}icon:external-link[].
 
 :plugin: limango
 include::_textblocks/instructions/plugin-installation.adoc[]
@@ -105,15 +102,23 @@ Carrying out the basic settings:
 | *Port*
 | Enter port `22`.
 
-| *User name* +
+| *User name*; +
 *Password*
 | You will receive these credentials from limango.
 
 2+| *Stock export*
 
 | *Stock buffer*
-| The stock of all warehouses is exported to limango. Enter a whole number to reduce the exported stock information by the entered amount. +
+| By default, the stock of all warehouses for which you entered for the option *Warehouse IDs (comma separated)* is added up and exported to limango. Enter a whole number to reduce the exported stock quantity by the entered amount. +
 *_Note:_* Stock information is exported to limango once per hour. For technical reasons, shorter stock update intervals are not possible. Use the stock buffer to prevent overselling.
+
+| *Time of last successful stock export*
+| The timestamp of the last successful stock export
+
+| *Warehouse IDs (separated by commas)*
+| Enter the ID of the warehouses from which you want to export stock details to {market}. Enter several ID separated by commas. +
+*_Note:_* The virtual warehouse has the ID `-1`. If you enter this ID, the stock of all sales warehouses is added up. This total is exported.
+*_Tip:_* You can find the ID of a warehouse in the menu *Setup » Stock » Warehouse » [Open warehouse] » Settings*.
 
 2+| *Information*
 
@@ -121,8 +126,8 @@ Carrying out the basic settings:
 | The ID of the order referrer *limango* that is created automatically when you install the plugin. The ID is filled in automatically.
 
 | *Status of last price export*
-a| * *1* = The prices were exported to limango. You can check the last time the export was successful *Timestamp of last successful price export*.
-* *2* = The last price export failed.
+a| * *1*/*success* = The prices were exported to limango. You can check the last time the export was successful *Timestamp of last successful price export*.
+* *2*/*failed* = The last price export failed.
 
 | *Time of last successful price export*
 | The timestamp of the last successful price export.
@@ -155,8 +160,9 @@ After correcting the shipping carrier mapping, move orders with this status into
 *Hermes*; +
 *UPS* +
 etc.
-| For each shipping service provider that you want to offer for limango orders, enter the ID of the shipping service provider in plentymarkets. +
-*_Tip:_* Go to *Setup » Orders » Shipping » Settings » Tab: Shipping service provider* to find the ID of your shipping service providers in the column *ID*.
+| For each shipping service provider that you want to offer for limango orders, enter the plentymarkets ID of the shipping service provider in plentymarkets. +
+*_Tip:_* Go to *Setup » Orders » Shipping » Settings » Tab: Shipping service provider* to find the ID of your shipping service providers in the column *ID*. +
+*_Note:_* The shipping costs are defined in your contract with limango. limango then saves it in the limango backend. This is why you enter the ID of the shipping service provider, _not_ the ID of a shipping profile.
 
 2+| *Client selection*
 
@@ -212,16 +218,33 @@ As a minimum, you need to save the mandatory variation information to export you
 | Product name
 | Field *Name 1*, *Name 2*, or *Name 3* and either an attribute for colours or a property for colours
 
+The following rules apply to product names:
+
+* Enter the item name in German.
+* Product names can have a maximum of 80 character but should be as short as possible.
+* Do not mention the manufacturer or any own brands in the product name. This information is shown separately on limango.
+* Sizes, gender information or repetitions are not allowed as part of product names.
+* The colour must be part of the product name based on the pattern *Product name \+ in + Colour*.
+* *_Example:_* `T-Shirt in Blau`
+
 | Description
-| Field *Item text*
-Special case for selling shoes: field *Item text* + Material description
+| Feld *Item text* + additional product information in a property of the type *Text* for some categories. +
+*_Example:_* For shoes, you need the field *Item text* + a material description.
 
-| Image URL +
-| Pictures can only be processed in jpg format
+The following rules apply to descriptions:
 
-| Material +
-(only mandatory for products consisting of at least 80 % textiles)
-| Properties of the type *Text*
+* The item description can be up to 10,000 characters long. Longer text is truncated after 10,000 characters.
+* {market} cannot process HTML tags. As such, HTML tags are removed during the export. As such, check your item texts. If you use a lot of HTML tags, you might want to create a property in which you save item descriptions without HTML tags.
+* For some categories, limango expects additional product information. Depending on the category, this could for example be technical data or the scope of delivery. There is no default variation input field for this information. As such, we recommend that you save this product information in a property of the type *Text*. You could name this property `Additional product information limango`. +
+*_Tip:_* Before your integration starts, limango will provide you with category-specific guidelines. Use these guidelines to make sure your descriptions comply with the legal and market-specific requirements.
+
+| Image URL
+| Pictures can only be processed in jpg format.
+
+| Material
+| If textile fibres make up at least 80% of the weight of a product, you need to specify the material composition.
+
+Properties of the type *Text*
 //TODO: Add details from below
 
 | RRP
@@ -239,49 +262,51 @@ Special case for selling shoes: field *Item text* + Material description
 | . Save the manufacturer names in the menu *Setup » Item » Manufacturers*. +
 . Select the manufacturer name for each variation.
 
+*_Tip:_* Contact the limango partner management if you wan to list a new brand.
+
 | Gender
 | . Create a property of the type *Selection* with the following values:
-  ** Mann (men)
-  ** Frau (women)
-  ** Unisex
+  ** `Mann`
+  ** `Frau` (woman)
+  ** `Unisex`
 . Link the properties to a variation and select a value.
 
-| Age group
+| Altersgruppe
 | . Create a property with the following settings:
-  ** Name: Age group
-  ** Section: Item
-  ** Type: Selection
-  ** Selection values:
-    ** Babys (babies)
-    ** Kinder (children)
-    ** Erwachsene (adults)
+* Name: Age group
+* Section: Item
+* Type: Selection
+* Selection values:
+  ** `Babys` (babies) = Children ≤ 1 year old
+  ** `Kinder` (children) = Children > 1 year old
+  ** `Erwachsene` (adults)
 . In the menu *Item » Edit item » [Open item] » [Open variation] » Variation tab: Settings*, link the variation to the property.
 . Select the property value that suits the variation.
 
 | Colour
-| If your variations were created without an attribute for colours:
+| The colour is used to create a unique product. As such, the colour must be a unique value, for example the manufacturer colour. To create the item number, the colour is added to the SKU.
+
+If your variations were created without an attribute for colours, you need a property:
 
 . Create a property of the type *Selection* and save the necessary colours as property values.
-. Link the properties to a variation and select a value. +
+. Link the property to a variation and select one of the values. +
 *_Tip:_* A property of the type *Selection* is a good idea if you work with recurring colour names.
 
 _or_
 
 . Create a property of the type *Text*.
-. Link the properties to the variation and enter the colour. +
+. Link the property to a variation and enter the colour as the value. +
 *_Tip:_* A property of the type *Text* may be more suitable if your colour range changes frequently. However, this increases the risk of typos.
 
 | Size
-| If your variations were created without an attribute for sizes:
+| If your variations were created without an attribute for sizes, you need a property.
 
-. Create a property of the type *Selection* and save the necessary sizes as property values.
-. Link the properties to a variation and select a value. +
-*_Tip:_* A property of the type *Selection* is a good idea if you work with recurring size names.
+*_Note:_* Products without a size have the size value `onesize` on limango. Products without a size are single size products. These are products that are only available in one size. The size is not used to create variations. +
+*_Example furniture:_* A chair is available in several colours but only in one colour. The size value `onesize` must be exported.
 
-_or_
-
-. Create a property of the type *Text*.
-. Link the properties to a variation and enter the size.
+. Create a property of the type *Selection* and save the necessary sizes as property values. +
+*_Tip:_* Do not forget to save the property value `onesize` for products that do not have a size.
+. Link the property to a variation and select one of the values.
 |====
 
 [#750]
@@ -375,11 +400,25 @@ Every market structures item data differently. <<#catalogue-mappings>> contains 
 |====
 | Marketplace data field | plentymarkets data field
 
+| *Merchant product ID*
+| The merchant product ID is automatically created from *Parent SKU* + *Colour*.
+
 | *Description*
-a|
+a| For some categories, limango expects additional product information. Depending on the category, this could for example be technical data or the scope of delivery. There is no default variation input field for this information. As such, we recommend that you save this product information in a property of the type *Text*. You could name this property `Additional product information limango`. In the catalogue, map the plentymarkets data field *Item text* combined with the property for the additional product information to the marketplace data field *Description*. +
+*_Tip:_* Before your integration starts, limango will provide you with category-specific guidelines. Use these guidelines to make sure your descriptions comply with the legal and market-specific requirements.
+
 [.collapseBox]
 .Special case: Selling shoes
 --
+The materials for shoes must be specified in the following order:
+
+* upper material
+* lining
+* insole
+* outer sole
+
+Only the following material values are allowed: `Leder` (leather), `beschichtetes Leder` (coated leather), `Textil` (textile) and `sonstiges Material` (other material)
+
 If you want to sell shoes on the market, all information regarding the material of your products must be exported to limango using the data field *Description*. To do this, you combine two plentymarkets data fields and export them as one filed to limango.
 
 First, decide how you want to manage material information for your items. There are two ways to manage material information for limango:
@@ -408,7 +447,10 @@ Now, map the plentymarkets data field that you want in the catalogue:
 *Diameter*; +
 *Weight* +
 etc.)
-a| Measurements must be exported to limango with the format *[numeric value];[unit]*. Due to the limango product structure, the normal plentymarkets data fields for measurements cannot be mapped. Instead, create two properties:
+a| Only specify measurements for products with no size variations, i.e. for single size products such as furniture. +
+*_Background:_* In the limango shop, the measurements can only be shown at the product level. No measurements are shown at the variation level.
+
+Measurements must be exported to limango with the format *[numeric value];[unit]*. Due to the limango product structure, the normal plentymarkets data fields for measurements cannot be mapped. Instead, create two properties:
 
 * One property of the type *Decimal number* for the numerical value.
 * One property of the type *Selection* for the unit with the following selection values:
@@ -440,6 +482,9 @@ Combine these two properties, separated by a semicolon.
 [.collapseBox]
 .*_Example:_* Exporting the volume to limango
 --
+
+Imagine that you want to export the volume of variations to {market}. To do so, proceed like this:
+
 . Create a property of the type *Decimal number* with the name *Volume*.
 . Create a property of the type *Selection* with the name *Volume unit*.
 . Add the units you need to the property *Volume unit* as property values. +
@@ -453,6 +498,13 @@ Combine these two properties, separated by a semicolon.
 . From the drop-down list *Separator*, select the option *Semicolon*.
 --
 
+| RRP
+| The following rules apply for specifying the RRP:
+
+* The RRP cannot be lower than the gross sales price.
+* If the RRP is higher than the sales price, a strikethrough price is shown on limango.
+* You do not have any RRP, for example because you are the manufacturer? Then assign the same sales price as for the marketplace data field *Net sales price*. This way, no strikethrough price will be displayed on {market}.
+
 | Material composition +
 (*Sleeve lining*; +
 *Upper 3*; +
@@ -461,19 +513,21 @@ Combine these two properties, separated by a semicolon.
 *Membrane*; +
 *Material 3* +
 etc.)
-a| Material information is exported to limango using a property of the type *Text*. Create a separate property for each marketplace data field.
+a| If textile fibres make up at least 80% of the weight of a product, you need to specify the material composition.
+
+Material information is exported to limango using a property of the type *Text*. Create a separate property for each marketplace data field.
 
 The names of these properties must be identical to the values that limango allows:
 
 * link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-composite-types.txt[Valid values for material composite types^]{nbsp}icon:external-link[]
 
-Link the properties to the main variation of the item and save all components of a material mix in this property. If the variations of the same item have different material mixes, deactivate the inheritance function for properties and save the material mixes separately for each variation. However, note that this deactivates the inheritance for all properties for the item. As such, you also need to manually manage all other properties for this item.
+Link the properties to the main variation of the item and save all components of a material mix in this property. If the variations of the same item have different material mixes, deactivate the inheritance function for properties and save the material mixes separately for each variation. However, note that this deactivates the inheritance for all properties for the item. As such, you also need to manually manage all other properties for each variation.
 
 Specify the individual materials in descending order based on the percentage value. As such, the first material is the one with the highest percentage value, the last one that with the lowest percentage value. The sum of all percentages must be 100. You can specify as many materials as you need.
 Enter the material composition in the following format:
 
-* *{"materialtype1": "percentage","materialtype2": "percentage","materialtype3": "percentage"}* +
-*_Example:_* `{"baumwolle": "90","elasthan": "10"}`
+* *{"materialtype1":"percentage","materialtype2":"percentage","materialtype3":"percentage"}* +
+*`Example:_* {"baumwolle":"90","elasthan": "10"}_
 
 The values for material types must be identical to the values that limango allows:
 
@@ -491,7 +545,7 @@ Mapping outer fabric and saving material mix for a variation:
 . Map the marketplace data field *Upper* to the plentymarkets property *obermaterial*.
 . Link the property *obermaterial* to the main variation of the item.
 . Our blazer is made of 65% polyester, 32% rayon and 3% elastane. Enter the following into the text field of the property:
-  * `{"polyester": "65","viskose": "32","elasthan": "3"}`
+  * `{"polyester":"65","viskose":"32","elasthan":"3"}`
 . Save the settings.
 
 [.instruction]
@@ -506,26 +560,26 @@ Mapping lining and saving material mix for a variation:
 --
 
 | *Colour value*
-| limango distinguishes by colours but not by shades. For example, if you offer a dress in both light and dark green, both are presented if customers search for green dresses on the market.
+| The colour value is equivalent to the colour filter of the limango shop. However, limango only distinguishes by colour, not by colour shades. For example, if you offer a dress in both light and dark green, both are presented if customers search for green dresses on the market.
 
 To ensure that different products are created for variations in different shades of the same colour, the colour value saved in plentymarkets is exported as part of the merchant product ID and the product name instead of the limango colour value.
 
 [.collapseBox]
 .*_Example:_* Mapping different shades of green to the colour value *green*
 --
-This example shows you how to map different shades of green to the colour value *green*.
+Imagine that you want to map your own shades of green to the limango colour *green*.
 
 [.instruction]
-Assumed scenario:
+*_Assumed scenario:_*
 
 You want to map all your shades of green to the limango colour value *green*.
 
-The following shades of green are saved as values of the attribute *Colour*:
+Some shades of green are saved as values of the attribute *Colour*:
 
 * Light green
 * Dark green
 
-The following shades of green are saved as property values:
+Other shades of green are saved as property values:
 
 * Lime green
 * Coriander
@@ -536,8 +590,8 @@ Mapping different shades of green to the colour value "green":
 . Open the limango catalogue.
 . Navigate to the area *Colour*.
 . Map the marketplace data field *Colour* to the following plentymarkets data fields: +
-*_Data field:_* Field *Value name* of the attribute for *Colour* +
-*_Fallback data fields:_* Property for *Colour*
+  * *_Data field:_* Field *Value name* of the attribute for *Colour* +
+  * *_Fallback data field:_* Property for *Colour*
 . Navigate to the area *Colour value*.
 . Map the marketplace data field *Colour value: green* to the plentymarkets attribute value *Light green*.
 . Click on *+ Add fallback data field*.
@@ -550,12 +604,17 @@ Mapping different shades of green to the colour value "green":
 → On limango, all products are listed with the colour Green. +
 *_Tip:_* The order for mapping the different shades described here is random. You can map the values in any order.
 --
+
+| *Energy label URL*
+| Lamps and luminaires with light sources not intended to be removed by the end-user must be labelled. As such, a URL of the energy label must be exported for these products.
+
+*_Recommendation:_* Create a property of the type *Text* in which you save the URL to the energy label of a variation.
 |====
 
 [#906]
 ==== Recommendations for limango data field mapping
 
-To help you with mapping your data fields for the limango catalogue, we have created a list of recommended data field mappings for limango. Note that these mappings are recommendations only. Depending on how you manage your item data, other mappings may be more appropriate than the recommendation given here.
+include::_textblocks/catalogues/recommended-mappings/recommendation-text.adoc[]
 
 [.collapseBox]
 .List of recommended data field mappings for limango
@@ -570,17 +629,23 @@ include::_textblocks/catalogues/recommended-mappings/limango-recommended-mapping
 
 include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
 
-
-
 [#1600]
 == Preparing delivery notes for limango
 
-The limango letterhead, your company data and specific return instructions must be shown on every delivery note for limango orders. Creating layout templates for order documents in plentymarkets is described in the <<auftraege/auftragsdokumente#170, Orders>> area of the manual. On this page, we only describe how to upload the PDF template and set up the delivery note document for the specific requirements of the market.
+Delivery notes for limango orders also serve as return slips. Delivery notes for {market} orders must contain the following information:
 
-* <<#16011, How to personalise the PDF template for delivery notes>>
-* <<#16001, How to upload the PDF template for delivery notes>>
-* <<#16003, How to show the limango customer number on delivery notes>>
-* <<#16002, How to enter return instructions for limango delivery notes>>
+* {market} letterhead
+* Your company details
+* Return note required by limango
+* {market} customer number
+* {market} order number
+
+Creating layout templates for order documents in plentymarkets is described in the <<auftraege/auftragsdokumente#170, Orders>> area of the manual. On this page, we only describe how to upload the PDF template and set up the delivery note document for the specific requirements of the market:
+
+* <<#160011, Personalise the PDF template for delivery notes>>
+* <<#16001, Upload a PDF template for delivery notes>>
+* <#16003, Show {market} customer number and order number on delivery notes>>
+* <<#16002, Entering return information for limango delivery notes>>
 
 [#160011]
 === Personalising the PDF template for delivery notes
@@ -604,7 +669,7 @@ image::markets/assets/limango-footer.png[]
 [#16001]
 === Uploading personalised PDF template for delivery notes
 
-Proceed as described below to upload the personalised <<orders/order-documents#170, PDF template>> for delivery notes to plentymarkets.
+Proceed as described below to upload the personalised PDF template for delivery notes to plentymarkets.
 
 [.instruction]
 Uploading personalised PDF template for delivery notes:
@@ -625,18 +690,20 @@ Uploading personalised PDF template for delivery notes:
 → The template is uploaded.
 
 [#16003]
-=== Showing limango customer numbers on delivery notes
+=== Showing {market} customer number and order number on delivery notes
 
-The limango customer number must be shown on all limango delivery notes. To achieve this, adjust the template for delivery notes.
+The {market} customer number and the {market} order number must be shown on all {market} delivery notes. To achieve this, adjust the template for delivery notes.
 
 [.instruction]
-Showing limango customer numbers on delivery notes:
+Show {market} customer number and order number on delivery notes:
 
 . Go to *Setup » Client » Standard » Locations » Germany » Documents » Invoice » Tab: Template*.
 . Scroll down to the area *Optional elements below stock unit table*.
 . For the setting *External customer number*, select the option *Yes* from the drop-down list.
+. For the setting *External customer number*, select the option *Yes* from the drop-down list.
 . Save (icon:save[set=plenty]) the settings. +
-→ The external customer number is positioned below the order items.
+→ The external customer number is positioned below the order items. +
+*_Tip:_* Also add the <<#16002, return note>> in this menu now.
 
 [#16002]
 === Entering return information for limango delivery notes
@@ -656,7 +723,7 @@ Entering return information for limango delivery notes:
 . Replace the two placeholders "xxx" with the name of your company.
 . Save (icon:save[set=plenty]) the settings.
 
-[#16003]
+[#16003-1]
 [.collapseBox]
 .Text: return instructions for limango delivery notes
 --
@@ -668,9 +735,9 @@ include::_textblocks/explanations/limango-delivery-note-text.adoc[]
 
 Automate the following aspects of limango order processing:
 
-* Automatically notify limango about cancellations <<#cancellations, How?>>
-* Automatically inform limango when items have shipped <<#1300, How?>>
-* Return management <<#1000, How?>>
+* Automatically notify limango about cancellations (<<#cancellations, How?>>)
+* Automatically inform limango when items have shipped (<<#1300, How?>>)
+* Return management )
 
 [#cancellations]
 === Automatically sending cancellations
@@ -707,10 +774,10 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 
 Shipping confirmations for limango must contain a tracking number. In addition, the shipping service provider of the order must be linked to the limango shipping service provider correctly in the plugin settings.
 
-You need two event procedures to automatically confirm the shipping to limango:
+Create two event procedures to automatically confirm the shipping to limango:
 
-* Event procedure 1: Send shipping confirmation to limango
-* Event procedure 2: Book outgoing items
+* Event procedure 1: Send shipping confirmation to limango (<<#13002, How?>>)
+* Event procedure 2: Book outgoing items (<<#13002, How?>>)
 
 [#13001]
 ==== Workflow for automatic order confirmations
@@ -859,6 +926,10 @@ include::../_includes/textblocks/instructions/EA.adoc[]
 *_Note:_* The procedure *Send return notification to limango* triggers a credit note. This means that customers will receive a refund. Thus, make sure the event procedure is only triggered after you have received and checked the returned items.
 |
 |====
+
+== Shipping costs
+
+The shipping costs are defined in your contract with limango. limango then saves it in the limango backend. As such, you need to contact your limango partner manager if you want to change the shipping costs. As such, there are no settings for the shipping costs in plentymarkets.
 
 [#1100]
 == Troubleshooting: Viewing log entries
