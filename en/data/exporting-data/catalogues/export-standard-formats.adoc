@@ -1,0 +1,892 @@
+= Using standard formats
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords:
+:description: Create standard formats for exporting plentymarkets data
+:position: 60
+:url: data/exporting-data/file-export
+:id: Z14A1MY
+:author: team-plenty-channel
+
+Use catalogue standard formats to export data from your plentymarkets system to a file. You can create export files in the formats CSV, JSON, TXT or XML.
+
+TIP: This page is new and we always want to improve. Couldn't find what you are looking for? Or think something could be explained better? Then let us know by using the feedback function. The more details you provide, the more we can improve this page.
+
+Which standard format you choose depends on the type of data you want to export:
+
+* For example, to export stock information, use the standard format <<data/exporting-data/catalogues-stocks, Stocks>>.
+* To export item data, the standard format <<data/exporting-data/catalogues-item#, Item>> is available.
+
+NOTE: However, not all types of data can currently be exported using catalogues. Until standard formats are available for all types of data, you can still use the <<exporting-data/FormatDesigner#, Formatdesigner>>.
+
+[#catalogue-menu]
+== First introduction: menu structure
+
+image::data/exporting-data/assets/menu-structure-standard-format.png[]
+_Menu structure of a catalogue with standard format_
+
+[cols="1,3a"]
+|====
+
+| *Navigation*
+| When you open a catalogue, the view *Mapping* is shown by default. Use the navigation to switch to other views of the catalogue.
+
+[cols="1,5a"]
+!===
+
+! icon:search[role="darkGrey"] *Overview*
+! Go back to the catalogue overview, that is to the list of catalogues.
+
+! *icon:plus[role="darkGrey"] Create catalogue*
+! Create a new catalogue.
+
+! _List of opened catalogues_
+! The navigation shows all catalogues that you accessed during your current session. This allows you to quickly switch between the catalogues you are currently working on. The catalogue that is currently on view is shown in blue. The names of the other catalogues are shown in grey. +
+*_Tip:_* If the list gets too long or you find it distracting, point your cursor to a catalogue in the list. An X is shown. Click on that X to close the catalogue.
+
+! icon:cog[role="darkGrey"] Settings
+! Open the catalogue settings. +
+
+* Basic settings = Name and format type of the catalogue. You enter this information to create a catalogue.
+* Format settings = Settings for the export file structure
+* Export settings = Settings for automatic export
+* Download settings = Settings for the URL that is used to access the export file
+
+! icon:order_return_create_edit[set=plenty] *Data fields*
+! Shown when you open the catalogue. In this view, you select the data fields that you want to export.
+
+! icon:filter_alt[set=material] Filter
+! Add filters to only export specific records.
+
+! (icon:order_return_create_edit[set=plenty]) Own data fields
+! Own data fields are currently not available for most exports.
+!===
+
+| *Toolbar*
+| The toolbar provides actions for the catalogue.
+
+[cols="1,5a"]
+!===
+! icon:save[role="darkGrey"]
+! Saves the catalogue settings.
+
+! icon:preview[set=material]
+! Creates a preview of the export data. The preview contains the first 5 data rows of the export file.
+
+! icon:download[set=plenty, role="darkGrey"]
+! Starts the manual download of the catalogue data.
+
+! icon:more_vert[set=material]
+! Show additional actions.
+
+* icon:restore[role="darkGrey"] = Restores an earlier version of the catalogue.
+* icon:delete[set=material] = Deletes the catalogue.
+!===
+
+| *plentymarkets data fields*
+| To the right of the navigation, all plentymarkets data fields that you can export are listed in groups. To add a data field to the export, click on the Plus icon to the light of the data field.
+
+*_Tips:_*
+
+* Use the field *Search data field* to quickly find and add data fields.
+* In addition to the data fields listed, you can also add own values to the export. The same value is then exported for each record.
+* Add the option *Formula* to recalculate numerical values during the export. For example, you could update all exported variation prices during the export.
+
+| *Selected data fields*
+| To the right, the data fields that you can add to the export are shown.
+Before you select a data field, you can see the message “No data fields were selected”. In the screenshot, a few the fields are already selected.
+
+*_Tips:_*
+
+* You can move the data fields using drag-and-drop. This will change the order in which the data fields are exported.
+* You can change the export key. The “Export Keys” are the names of the column headers, as they will appear in your export file. Every “Export Key” needs to be unique.
+* You can add fallback data fields. If the data field is empty or invalid, the first fallback data field is checked and the value of that fallback data field is exported instead.
+
+|====
+
+
+[#create-catalogue]
+== Creating catalogues
+
+You have taken a first look at the catalogue menu. Now let’s get started: It’s time to create your first catalogue!
+
+[.instruction]
+Creating a catalogue:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Click on *Create catalogue* (icon:add[set=material]). +
+→ A new view opens.
+. Carry out the settings. Pay attention to the explanations given in <<#table-basic-settings-standard>>.
+. *Save* (icon:save[set=material]) the settings. +
+→ The catalogue is created. +
+→ The tab *Settings* (icon:settings[set=material]) opens.
+
+[[table-basic-settings-standard]]
+.Creating a catalogue
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+|*Name* +
+(mandatory)
+| Enter a name for the catalogue.
+
+| *Export type* +
+(mandatory)
+| Select the option *Standard format*.
+
+| *Format type* +
+(mandatory)
+| Select a format type from the drop-down list. Use the format type to specify which type of data is exported. +
+ *_Note_*: At the moment, the formats <<data/exporting-data/manufacturer#, Manufacturers>>, *Newsletter recipients*, <<data/exporting-data/exporting-stocks#, Stocks>>, <<data/exporting-data/exporting-stock-movements#, Stock movements>>, <<data/exporting-data/catalogues-orders#, Order>> and <<data/exporting-data/catalogues-purchase-orders#, Purchase order>> are available.
+
+|*Format* +
+(mandatory)
+| Select a format from the drop-down list. +
+*_Note:_* There is currently just one format type for each format. So just select the one available option from the drop-down list.
+|====
+
+[#catalogue-settings]
+== Setting up catalogue export
+
+Now, customise the catalogue to your individual needs. This is how the information in this chapter is structured:
+
+* <<#140, Carrying out the format settings>>
+* <<#150, Carrying out the export settings>>
+* <<#290, Generating a URL for the download>>
+
+[#format-settings]
+=== Carrying out the format settings
+
+The format settings are used to specify the file format in which the data is exported and how the export file is formatted.
+
+[.instruction]
+Configuring the settings:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Click on the catalogue. +
+→ The catalogue opens.
+. In the navigation on the left, click on the tab *Settings* (icon:settings[set=material]). +
+→ The different settings options are shown.
+. Navigate to the section *Format settings*.
+. Carry out the settings. Pay attention to the explanations given in <<#table-format-settings-standard>>.
+. Save (icon:save[set=material]) the settings.
+
+[[table-format-settings-standard]]
+.Carrying out the format settings
+[cols="1,3a"]
+|====
+|Setting |Explanation
+
+//tag::table-format-settings[]
+| *File name*
+a| Enter a file name. The exported file is saved with this name. +
+*_Tip:_* The file extension is automatically added during the export.
+As such, enter the file name without a file extension.
+File extensions are for example `.csv` and `.txt`.
+
+*_Tip:_* Use placeholders to automatically add further information to the file name during the export.
+
+[.collapseBox]
+.List of available placeholders
+--
+
+The following placeholders are available:
+
+[cols="1,3"]
+!===
+! *$$name*
+! The catalogue name is added to the file name.
+
+! *$type*
+! The export type is added to the file name.
+
+! *$format*
+! The format type is added to the file name.
+
+! *$timestamp*
+! The time stamp of the export is added to the file name.
+
+! *$datetime*
+! The date and time of the export is added to the file name.
+
+! *$year*
+! The year of the export is added to the file name.
+
+! *$month*
+! The month of the export is added to the file name.
+
+! *$day*
+! The day of the export is added to the file name.
+
+! *$hour*
+! The hour of the export is added to the file name.
+
+! *$minute*
+! The minute of the export is added to the file name.
+
+! *$second*
+! The second of the export is added to the file name.
+!===
+--
+
+*_Examples for using placeholders:_*
+
+* Input 1: `item-export_$year_$month_$day`
+* Result 1: `item-export_2022_01_02.csv`
+
+'''
+
+* Input 2: `$type_$format_$year_$month_$day`
+* Result 2:
+  ** `order_order_2022_01_02.csv` +
+  ** `check23_offer_2020_10_25.csv`
+
+| *Format*
+| Select the file format for the export.
+
+*_Possible values:_*
+
+* CSV
+* TXT
+* JSON
+* XML
+
+| *Field separator*
+| Which field delimiter should separate the individual records from each other?
+
+*_Possible values:_*
+
+* Comma = ,
+* Semicolon = &#x3B;
+* Pipe = &#x007C;
+* Tabulator = &#9225;
+
+| *Text delimiter*
+| Which text delimiter should separate the individual records from each other?
+
+*_Possible values:_*
+
+* "
+* '
+
+| *Decimal separator*
+| Select the character that is used for decimal values.
+
+*_Possible values:_*
+
+* Comma = Default in German speaking countries, for example `20,00 Euro`
+* Dot = Default in English speaking countries, for example `20.00 Euro`
+
+| *Line break*
+| How do you want to handle line brakes in the export file?
+
+*_Possible values:_*
+
+* Carriage return
+* Line feed
+* Carriage return an line feed
+
+| *Header is included*
+| Activate the option if you want the export file to contain a header line.
+The export keys are used as headings for the columns.
+//end::table-format-settings[]
+|====
+
+[#export-settings]
+=== Carrying out the export settings
+
+The export settings determine where your export file is saved.
+
+[.instruction]
+Carrying out the export settings:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Click on the catalogue for which you want to carry out the export settings. +
+→ The catalogue opens.
+. In the navigation on the left, click on the tab *Settings* (icon:settings[set=material]). +
+→ The different settings options are shown.
+. Navigate to the section *Export settings*.
+. Carry out the settings. Pay attention to the explanations given in <<#table-export-settings-standard>>.
+. *Save* (icon:save[set=material]) the settings.
+
+[[table-export-settings-standard]]
+.Carrying out the export settings
+[cols="1,3a"]
+|====
+|Setting |Explanation
+
+//tag::table-export-settings[]
+| *Limit*
+| Do you want to limit the number of records that is exported?
+
+| *Provisioning*
+| Where do you want to save the export? +
+*_Important:_* This setting does not export data to markets.
+
+[cols="1,3a"]
+!===
+! *None*
+! The export is not saved.
+
+! *FTP*
+! The export is saved on an FTP server.
+
+! *SFTP*
+! The export is saved on an SFTP server.
+
+! *FTPS*
+! The export is saved on an FTPS server.
+
+! *Admin area* +
+(coming soon)
+! Remains to be seen.
+!===
+
+| *Server* +
+(for FTP, SFTP, FTPS)
+| Enter the server where you want to save the export. +
+*_Recommendation:_* Do not enter al protocol prefix.
+Some examples for protocol prefixes are `ftp://` and `ftps://`.
+
+| *Port* +
+(for FTP, SFTP, FTPS)
+| Enter a port or use the default setting. +
+
+*_Recommended port settings:_*
+
+* For FTP and FTPS = Port 21
+* For SFTP = Port 22
+
+| *User name* +
+(for FTP, SFTP, FTPS)
+| Enter the user name for the server.
+
+| *Password* +
+(for FTP, SFTP, FTPS)
+| Enter the password for the server.
+
+| *Path* +
+(for FTP, SFTP, FTPS)
+| Where should the export be saved? Enter the path to a storage location. +
+*_Note_*: If you use SFTP, enter the complete path.
+
+| *Test connection* +
+(for FTP, SFTP, FTPS)
+| Tests the server settings that you entered:
+
+* Can plentymarkets connect to the server?
+* Can an export file be saved at the storage location? +
+*_Tipp:_* To test this, a test file is saved to the path you specified. This file is called `plentymarkets_ConnectionTestFile.txt`.
+
+ifdef::marketplace-export[*_Note:_* The option checks if a file export is possible with the current export settings. The option does _not_ test if a connection to a market can be established.]
+
+| *Transfer*
+| When do you want to start the export?
+
+[cols="1,3"]
+!===
+! *Never*
+! No data is exported.
+
+! *Every 20 minutes*; +
+*Hourly*; +
+*Daily* +
+! Current data is exported in the selected interval.
+
+! *Schedule*
+! The option *Schedule* is shown.
+!===
+
+| *Schedule* +
+(for option *Schedule*)
+| Click into the field. In the drop-down list shown, select one or more points in time. The export starts at these times.
+//end::table-export-settings[]
+
+|====
+
+[#download-settings]
+=== Setting up the download
+
+In the *Download settings* of the catalogue you can generate a URL. This URL gives you direct access to the export file.
+
+* The admin link only allows you to access the exported file if you are currently logged into your plentymarkets system as an admin.
+
+* You can protect public links from inappropriate access by adding a hash and/or token.
+
+NOTE: The export file can only be accessed after the first export. In addition, the catalogue must be active to create an export file.
+
+[.instruction]
+Setting up the download:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Select the catalogue. +
+→ The catalogue opens.
+. In the navigation on the left, click on *Settings* (icon:settings[set=material]).
+. Navigate to the area *Download settings*.
+. Carry out the settings. Pay attention to the explanations given in <<#table-generate-url>>.
+. Save the settings. +
+→ The URL for downloading the file is shown. The export can be accessed using this URL after the first export is completed. +
+→ The menu always shows the URL of the last exported file.
+. Click on the URL or copy the URL (icon:content_copy[set=material]) to use it.
+
+[[table-generate-url]]
+.Generate URL
+[cols="1,3a"]
+|====
+|Setting |Explanation
+
+| *Shop URL*
+| Select the client to be used for creating the URL.
+
+| *Receive notifications*
+| Activate to get a notification at the top right of the system once the export is completed.
+
+image:daten/assets/catalogue-export.png[]
+
+2+^| *Options for admin link*
+
+| *Use hash*
+|Select whether a hash should be used.
+
+[cols="1,5"]
+!===
+! icon:toggle-off[role="darkGrey"]
+! No hash is used.
+
+! icon:toggle-on[role="darkGrey"]
+! Every time you make a change to the catalogue, a new URL with a hash key is created. As such, the hash represents all settings that are relevant for the catalogue export. If these settings change, the hash changes and all future URL will include the new hash. Older URL will be valid for 15 days from the last export with that hash. +
+*_Tip:_* Do not activate this option if you always want to access the most current export file using the same URL.
+!===
+
+2+^| *Options for admin link*
+
+| *Admin link*
+| An admin link is automatically created for each file. This admin link only allows you to access the exported file if you are currently logged into your plentymarkets system as an admin.
+
+*_Tip:_* Click on the icon to the right (icon:content_copy[set=material]) to copy the URL to your clipboard.
+
+2+^| *Options for public link*
+
+| *Activate options*
+|
+
+[cols="1,5"]
+!===
+! icon:toggle-off[role="darkGrey"]
+! No public link is created. The options *Use hash* and *Use token* cannot be selected.
+
+! icon:toggle-on[role="darkGrey"]
+! A public link is created. After the first export, the file can be accessed by anyone who knows this link.
+!===
+
+*_Tip:_* In the row *Public link*, click on the icon to the very right (icon:content_copy[set=material]) to copy the URL to your clipboard.
+
+| *Use hash*
+//Adjust naming Use individual URL per export file / New URL when changing export settings
+| Select whether a hash should be used.
+
+[cols="1,5"]
+!===
+! icon:toggle-off[role="darkGrey"]
+! No hash is used.
+
+! icon:toggle-on[role="darkGrey"]
+! Every time you make a change to the catalogue, a new URL with a hash key is created. As such, the hash represents all settings that are relevant for the catalogue export. If these settings change, the hash changes and all future URL will include the new hash. Older URL will be valid for 15 days from the last export with that hash. +
+*_Tip:_* Do not activate this option if you always want to access the most current export file using the same URL.
+!===
+
+| *Use token*
+|
+
+[cols="1,5"]
+!===
+! icon:toggle-off[role="darkGrey"]
+! No token is generated.
+
+! icon:toggle-on[role="darkGrey"]
+! A token is added to the download URL. The file is then only accessible if the token is known.
+!===
+
+| *Security token*
+| Click on the symbol on the right (icon:rotate-left[]) to generate a new token.
+
+*_Tip:_* The token is added to the URL of the public link. So when you copy the URL, you copy the token at the same time. When you generate a new token, the URL also changes.
+
+| *Public link*
+| Shows the public link. After the first export, the file can be accessed by anyone who knows this link.
+
+*_Tip:_* In the row *Public link*, click on the icon to the very right (icon:content_copy[set=material]) to copy the URL to your clipboard.
+|====
+
+[#data-export]
+== Selecting data for export
+
+Now decide what plentymarkets data you want to export with this catalogue.
+
+This is how the information in this chapter is structured:
+
+* <<#add-fields, Adding data fields for export>>
+* <<#delete-fields, Removing data fields from the export>>
+* <<#filter-data, Filtering export data>>
+
+[#add-fields]
+=== Adding data fields to export
+
+Now it’s time to decide which data fields you want to export from plentymarkets with this catalogue. In addition, you can also select one or more fallback data fields for each data field. However, this is optional. If a value does not exist in the system, the value of the fallback data field is exported instead.
+
+[.instruction]
+Adding data fields to the export:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Click on the catalogue. +
+→ The *Data fields* tab (icon:order_return_create_edit[set=plenty[) opens. +
+→ The available plentymarkets data fields are listed in groups.
+. Expand a group to show the available data fields. +
+→ The data fields are shown.
+. Next to the data field you want to select, click on the plus. +
+*_Tip:_* Alternatively, enter the name of the data field into the search field. Select the data field from the search results. +
+→ The data field is added to the export. +
+. Check if the export key suits your needs. +
+  ** *_What is an export key?_* +
+  The Export Key is the name of the column header that will be shown in your export file. Every “Export Key” needs to be unique. Export keys cannot contain any spaces. +
+  *_Important:_* If several data fields have the same export key, only one data field is exported.
+. Add all data fields that you need.
+. *Save* (icon:save[set=material]) the settings. +
+→ The data fields are exported. +
+*_Tip:_* Check the info boxes below this description to find out about more complex export options.
+
+[.collapseBox]
+._Optional:_ Adding fallback data fields
+--
+
+Fallback data fields are used like this:
+
+* I want the selected plentymarkets data field to be exported.
+* If this data field is empty or invalid for a record, the first fallback data field is checked and the value of that fallback data field is exported instead.
+* If the first fallback data field is also empty or invalid, the second fallback data field is checked and the value of that fallback data field is exported instead and so on.
+
+[.instruction]
+Adding fallback data fields:
+
+* *_Initial situation:_* +
+→ You added a data field to the export. For this data field, you want to specify an alternative in case the data field is empty or invalid for one or more records.
+
+. Below the data fields, click on *+ Add fallback data field*. +
+→ The editing mode opens.
+. On the right, click on a group to expand the associated plentymarkets data fields. +
+→ The plentymarkets data fields are shown.
+. Click on the plus to the right of the plentymarkets data field you want to select. +
+→ The plentymarkets data field is added as a fallback data field to the field on the right. +
+→ The fallback data field is exported when the first data field does not exist or is empty.
+
+*Note the following logic for fallback data fields:*
+
+* Even if you assign one or more fallback data fields, the value of only one field is exported.
+* For each record, the plentymarkets data fields are checked in the order in which you mapped them. This means that if the first data field does not provide a value, the first fallback data field is exported etc.
+* *_Tip:_* You can also add *Own value* as a fallback data field.
+
+The following GIF shows the standard format *Manufacturer*. The data field *Manufacturer > External name* is to be exported. However, if no external name is saved for one or more manufacturers, you want to export the *Internal name* instead.
+
+image::daten/assets/gif-standardformats-fallback.gif[width=600]
+--
+
+[.collapseBox]
+._Optional:_ Exporting an own value
+--
+
+The data field *Own value* is used like this:
+
+* For a column of your export file, the same value is exported for all records of the catalogue.
+
+[.instruction]
+Exporting an own value:
+
+. In the list of the data fields, click on *Own value*. +
+→ The data field for an own value is added to the export.
+. Check the export key. Own values are automatically assigned the export key *own-value*. As such, make sure that you adjust the export key, especially when you want to export more than one own value. +
+*_Important:_* If several data fields have the same export key, only one data field is exported.
+. Enter a value into the input field *Value*. +
+→ This value is exported for all records.
+
+The following GIF shows the standard format *Stocks*.
+
+* You want the export file to include a column with your company name.
+
+image::daten/assets/gif-standardformate-own-value.gif[width=600]
+
+Result in the export file:
+
+* Every exported record has a cell that contains your company name:
+
+image::daten/assets/result-export-companyname.png[]
+
+--
+
+[.collapseBox]
+._Optional:_ Combining data fields
+--
+
+When you combine data fields, the following logic is applied:
+
+* The data fields are to be combined during the export.
+* The values of the data fields are added to the same column of the export file.
+* The character between the values is specified with the option *Separator*.
+
+[.instruction]
+Combining data fields:
+
+* *_Initial situation:_* +
+You already added a data field to the export. You want to combine this data field with another data field.
+
+. Next to the marketplace data field, click on *+ Add data field* (icon:link[rotate=90]). +
+→ The editing mode opens.
+. Click on the plus to the right of the data field you want to select. +
+→ The data field is added to the right of the first data field.
+. Click on *Confirm*. +
+. To the right of the column, click on *Settings* (icon:cog[]).
+. Select a separator from the drop-down list *Separator* or specify a custom separator.
+. Click on *Save*.
+. Save (icon:save[set=plenty]) the catalogue. +
+→ The settings are saved. +
+The content of these data fields is combined in the same column.
+
+The following GIF shows the standard format *Manufacturer*.
+
+* Instead of exporting the data fields *Street* and *House number* in two separate columns, these data fields are combined into one column.
+* Select a space as the separator.
+
+image::daten/assets/gif-standardformats-combination.gif[width=600]
+
+Result in the export file:
+
+image::daten/assets/result-export-street.png[]
+--
+
+[.collapseBox]
+._Optional:_ Changing the data field order
+--
+
+In the export file, the data fields are sorted in the same order as in the catalogue list. As such, the first column of a CSV file contains the data of the data field that is at the very top of the catalogue and so on.
+
+To change the order of data in the export file, you can either move individual data fields or whole rows:
+
+* To move a single data field: Point your mouse at the data field and drag and drop it to the new position.
+* To move a whole column: Click on the symbol (icon:drag_indicator[set=material]) on the left side and drag and drop the row to the new position.
+--
+
+[.collapseBox]
+._Optional:_ Recalculating numerical values during export
+--
+
+Mathematical calculations allow you to change values automatically during the export.
+
+* This function only works for data fields that contain numerical values.
+* This function is new and has not been implemented for all formats yet.
+
+[.instruction]
+Recalculating numerical values during export:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Open the catalogue. +
+→ The tab *Data fields* opens.
+. In the list of data fields, click on the plus next to *Formula* (icon:calculate[set=material]). +
+→ The field *Formula* is added to the view on the right.
+. Click on the field *Formula*. +
+→ The *Modify value* window opens.
+. Select a decimal separator from the drop-down list.
+. At the bottom right of the window, select a data field to add it to the calculation (icon:add[set=material]). +
+*_Tip:_* Use the search function to find data fields quickly. +
+→ The data field is added to the calculation.
+. *_Optional:_* If the symbol icon:more_vert[set=material] is shown in the data field, select the correct assignment for the data field. +
+*_Tip:_* A number tells you how many assignments are necessary for the data field.
+    .. Click on the symbol icon:more_vert[set=material]. +
+    .. In the window shown, select the assignments from the drop-down list.
+    .. *Save* the settings.
+. Enter numbers and mathematical operators with the on-screen calculator or the keyboard.
+. *Save* the settings. +
+→ The entered formula is displayed in the overview. +
+*_Tip:_* If a preview is available for the format, check the result by using the preview function (icon:preview[set=material]). +
+→ The calculation will be carried out in the next export.
+--
+
+[#delete-fields]
+=== Removing data fields from export
+
+In the *Mapping* tab of a catalogue with a standard format you can remove individual or several data fields at once.
+
+[.instruction]
+Removing data fields from export:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Open a catalogue with standard format. +
+→ The *Data fields* tab (icon:order_return_create_edit[set=plenty[) with all available data fields opens.
+. Click on the further actions (icon:more_vert[set=material]) on the right of the data field that you want to remove.
+. Click on *Delete data field* (icon:delete[set=material]). +
+→ The data field is removed. +
+*_Or_*: If you want to remove a complete row, click on *Delete data row* (icon:delete[set=material]) on the right. +
+→ The complete row is removed. +
+*_Or_*: Tick the box on the left for all rows containing data fields that you want to remove. Then, click on *Delete selected data fields* (icon:delete[set=material]) at the top right. +
+→ All selected data fields are removed.
+
+[#filter-data]
+=== Filtering export data
+
+You can use filters to limit the data that should be exported.
+
+* Different filters are available for different standard formats. The available filters are explained on the manual pages of each standard format.
+
+[.instruction]
+Adding a filter:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Open the catalogue.
+. In the navigation to the left, click on *Filter* (icon:filter_alt[set=material]). +
+→ The filter overview opens.
+. Select a filter from the drop-down list. +
+*_Tip:_* Different filters are available for different standard formats.
+. Click on *Add filter* (icon:add[set=material]) on the right. +
+→ The filter is added.
+. If an operator is available for this filter:
+  * Select an operator from the drop-down list.
+  * Enter a value into field next to it.
+. Save (icon:save[set=material]) the settings. +
+→ The filter is saved.
+. Add additional filters as necessary. +
+→ Only data that meets the filter criteria is exported.
+
+[#export-data]
+== Exporting catalogue data
+
+There are several ways to export the catalogue data:
+
+* <<#preview, Export a preview of the first 5 data rows>>
+* <<#activate-catalogue, Automatically export data in regular intervals>>
+* <<#manual-export, Manually starting a one-time export>>
+
+[#preview]
+=== Creating an export preview
+
+After you have selected data fields for export, you can test the catalogue export using the preview function. This preview function allows you to download the first 5 data rows of the export.
+
+* A preview function is not available for all catalogue formats.
+
+[.tabs]
+====
+Create a preview in the catalogue::
++
+--
+
+[.instruction]
+Creating a preview in the catalogue:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Open the catalogue.
+. In the toolbar at the top, click on *Preview* (icon:preview[set=material]). +
+→ A preview of the first 5 data rows of the export is shown in the *Preview* window.
+. *_Optional_*: Click on *Download data* (icon:file_download[set=material]). +
+→ A CSV file with the first 5 data rows can be saved on your computer.
+
+--
+ 
+Create a preview from the catalogue list::
++
+--
+
+You can also create a preview from the list of catalogues.
+
+[.instruction]
+Creating a preview from the catalogue list:
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Navigate to the catalogue.
+. In the row of the catalogue, open the further actions (icon:ellipsis-v[]).
+. Click on *Preview* (icon:preview[set=material]). +
+→ A preview of the first 5 data rows of the export is shown in the *Preview* window.
+. *_Optional_*: Click on *Download data* (icon:file_download[set=material]). +
+→ A CSV file with the first 5 data rows can be saved on your computer.
+
+--
+====
+
+[#activate-catalogue]
+=== Activating automatic catalogue export
+
+You have added all data fields that you want to export? Then activate the export now.
+
+* Make sure that you have carried out all necessary export settings. Otherwise, no data is exported.
+
+[.instruction]
+Activating automatic catalogue export:
+
+. Go to *Data » Catalogues*. +
+→ The catalogues are listed.
+. Scroll to the catalogue.
+. In the *Active/Inactive* column, move the toggle button (icon:toggle-on[role="green"]) to the right. +
+→ The catalogue is active. +
+→ The data is exported to the storage location and at the intervals you selected in the catalogue settings.
+
+[#manual-export]
+=== Starting a manual export in the catalogue
+
+Have you added at least one data field to the export? You can then start a manual export of the export. Once the export is completed, you can download the export file from the Notifications.
+
+The format in which the data is exported depends on the format settings of the catalogue. You can export data in CSV, TXT, JSON and XML files.
+
+NOTE: The export process is started when you click on *Download data*. However, there will be _no_ window for downloading the file straight away. When the export is completed, you can download the export file from the Notifications.
+
+[.tabs]
+====
+Start manual export from catalogue::
++
+--
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. Open the catalogue.
+. In the toolbar at the top, click on *Download data* (icon:file_download[set=material]). +
+→ The export starts. +
+*_Important:_* The export runs in the background. Note that there will be _no_ window for downloading the file straight away. Even exporting small amounts of data will take around 30 minutes.
+. Once the export is finished, you will be notified (icon:notifications_none[set=material]) that the export file can be downloaded.
+. In the notification, click on *Download*.
+. Save the file on your computer.
+
+--
+ 
+Start manual export from catalogue list::
++
+--
+
+. Go to *Data » Catalogues*. +
+→ The catalogue overview opens.
+. In the row of the catalogue, click on the further actions (icon:more_vert[set=material]).
+. Click on *Download data* (icon:file_download[set=material]). +
+→ The export starts. +
+*_Important:_* The export runs in the background. Note that there will be _no_ window for downloading the file straight away. Even exporting small amounts of data will take around 30 minutes.
+. Once the export is finished, you will be notified (icon:notifications_none[set=material]) that the export file can be downloaded.
+. In the notification, click on *Download*.
+. Save the file on your computer.
+--
+====
+
+image::data/exporting-data/catalogues/catalogue-formats/assets/catalogue-export.gif[]
+
+[#faq]
+== FAQ
+
+include::../_textblocks/catalogues/catalogues-faq.adoc[]
+
+[#manage-catalogues]
+== Managing catalogues: how to delete, copy, etc.
+
+include::../_textblocks/catalogues/catalogues-manage.adoc[]
