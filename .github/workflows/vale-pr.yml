@@ -1,54 +1,20 @@
-name: Vale-PRs
+name: Lint docs
 
-# Triggers the workflow on pull request events for the master branch
 on:
   pull_request:
     branches: [ master ]
 
 jobs:
-  vale-pr:
-    runs-on: ubuntu-latest
+  prose:
+    runs-on: ubuntu-20.04
 
     steps:
-    # Checks out repository under $GITHUB_WORKSPACE
-    - uses: actions/checkout@v2
-    
-    # Enables Homebrew
-    - name: GitHub Action for Homebrew
-      uses: artemnovichkov/action-homebrew@0.1.0
-    
-    # Installs Vale
-    - name: Install vale
-      run: brew install vale
-    
-    # Sets up Ruby
-    - name: Setup Ruby, JRuby and TruffleRuby
-      uses: ruby/setup-ruby@v1.38.0
-      with:
-        ruby-version: 2.3.7
-    
-    # Installs asciidoctor
-    - name: Install asciidoctor
-      run: gem install asciidoctor
-    
-    # Gets files from PR
-    - name: Get changed files
-      id: files
-      uses: jitterbit/get-changed-files@v1
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    # Checks the changed files with Vale
-    - name: Checks files
-      run: |
-        echo "Das Prüfen des Pull Requests hatte folgendes Ergebnis: " >> vale_results.txt
-        for changed_file in ${{ steps.files.outputs.all }}; do
-          vale --output=line ${changed_file} >> vale_results.txt
-        done
-        
-    # Posts output to a PR comment
-    - name: Comments PR
-      uses: machine-learning-apps/pr-comment@1.0.0
-      env:
-        GITHUB_TOKEN: ${{ SECRETS.GITHUB_TOKEN }}
-      with:
-        # file path
-        path: vale_results.txt
+      - uses: errata-ai/vale-action@master
+        with:
+          files: __onlyModified
+          onlyAnnotateModifiedLines: true
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

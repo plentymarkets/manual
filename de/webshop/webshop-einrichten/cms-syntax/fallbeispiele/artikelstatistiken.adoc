@@ -1,0 +1,121 @@
+= Artikelstatistiken
+:lang: de
+// include::{includedir}/_header.adoc[]
+:keywords: Google Analytics, orderconfirmationitemslist, Artikelstatistik
+:description: Artikelstatistik mit Google Analytics
+:position: 0
+
+== Artikel aus Bestellbestätigungen mit Google Analytics verfolgen
+
+Um deinen Webshop optimal an die Anforderungen deiner Kunden anzupassen und Produkte gezielt zu platzieren, ist es sinnvoll, Analysetechniken einzusetzen. Analysetechnologien wie Google Analytics erstellen z.B. anonyme Besucherstatistiken über das Nutzungsverhalten und geben Aufschluss darüber, welche Artikel sich gut verkaufen. +
+In diesem Fallbeispiel wird eine Liste der bestellten Artikel im Template der Bestellbestätigung geladen und die einzelnen Artikel an Google Analytics gesendet.
+
+== Voraussetzungen
+
+Für dieses Fallbeispiel wird Folgendes vorausgesetzt:
+
+* Account bei <<webshop/extras/conversion-tracking/universal-analytics#, Google Universal Analytics>>
+* Aktivierte link:https://support.google.com/analytics/answer/1009612[E-Commerce-Funktion^] in Google Analytics
+
+== Artikeldaten an Google Analytics senden
+
+Um Statistiken über den Bestellvorgang zu ermöglichen, füge das link:https://support.google.com/analytics/answer/1008080[Tracking-Snippet^], das von Google generiert wurde, in ein Template ein, z.B. *CMS » Webdesign » Layout » PageDesign » PageDesignCheckout*. Nachdem das Tracking-Snippet eingefügt wurde, können Daten an Google Analytics gesendet werden.
+
+=== Transaktion registrieren
+
+Damit Google Analytics Artikeldaten einer Transaktion zuordnen kann, muss die Transaktion bei Google Analytics registiert werden. Dazu werden die Transaktions-ID und optional weitere Daten des Warenkorbs an Google Analytics gesendet. +
+Die folgende Tabelle enthält die Transaktionsdaten, die an Google Analytics übertragen werden können.
+
+.Transaktionsdaten
+[cols="1,3,3"]
+|====
+|Parameter |Erforderlich? |Erläuterung
+
+| *id*
+|Ja
+|Transaktions-ID
+
+| *affiliation*
+|Nein
+|Zugehörigkeit, d.h. der Shop, in dem die Transaktion erfolgt.
+
+| *revenue*
+|Nein
+|Umsatz der Transaktion
+
+| *shipping*
+|Nein
+|Versandkosten der Transaktion
+
+| *tax*
+|Nein
+|Steuern der Transaktion
+|====
+
+
+Unten findest du ein Beispiel für einen Code, mit dem Transaktionen bei Google Analytics registriert werden.
+
+[.instruction]
+Beispiel-Code in Design einbinden:
+
+. Passe  den Beispiel-Code unten an deine Anforderungen an.
+. Öffne das Menü *CMS » Webdesign* und dort *Layout » PageDesign » PageDesignCheckout*.
+. Wähle das Tab *PageDesignCheckoutMainFrame*.
+. Füge das Code-Beispiel an geeigneter Stelle in das Template ein.
+
+[source,plenty]
+----
+include::assets/EX-DE-Transaktion-registrieren.html[]
+
+----
+
+=== Artikelliste abrufen und Artikeldaten an Google Analytics senden
+
+Wenn die Transaktion bei Google Analytics registriert wurde, können der Transaktion Informationen zu den darin enthaltenen Artikeln mit zusätzlichen Parametern hinzugefügt werden. Diese Artikeldaten werden für alle Artikel, die im Warenkorb abgelegt wurden, übergeben. Hierfür werden die folgenden Parameter benötigt:
+
+.Artikeldaten
+[cols="1,3,3"]
+|====
+|Parameter |Erforderlich? |Erläuterung
+
+| *id*
+|Ja
+|Transaktions-ID
+
+| *name*
+|Ja
+|Name des Artikels
+
+| *SKU*
+|Nein
+|Artikelnummer des Artikels
+
+| *category*
+|Nein
+|Kategorie, zu der der Artikel gehört.
+
+| *price*
+|Nein
+|Stückpreis des Artikels
+
+| *quantity*
+|Nein
+|Anzahl der gekauften Artikel
+|====
+
+
+Um Transaktionen und die dazugehörigen Artikel zu verfolgen, verwendest du im Bereich *CMS » Webdesign » Bestellvorgang » Bestellbestätigung » Tracking* den REST-Call <<webshop/webshop-einrichten/cms-syntax#fallbeispiele-artikelstatistiken/orderconfirmationitemslist, /rest/checkout/orderconfirmationitemslist/>>. Dieser Aufruf gibt eine Liste der bestellten Artikel aus. Unten findest du ein Code-Beispiel, mit dem die Artikelliste einer Transaktion über diesen REST-Call abgerufen wird. Außerdem werden die einzelnen Artikeldaten an Google Analytics gesendet.
+
+[.instruction]
+Beispiel-Code in Design einbinden:
+
+. Passe  den Beispiel-Code unten an deine Anforderungen an.
+. Öffne das Menü *CMS » Webdesign* und dort *Bestellvorgang » Bestellbestätigung*.
+. Wähle das Tab *Tracking*.
+. Füge das Code-Beispiel an geeigneter Stelle in das Template ein.
+
+[source,plenty]
+----
+include::assets/EX-DE-Einzelne-Artikeldaten.html[]
+
+----

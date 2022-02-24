@@ -1,0 +1,189 @@
+Bei {market} erfolgt der Listingprozess in zwei Schritten: Zuerst werden Produkte erstellt und nach Freigabe der Produktdaten vom Marktplatz können Angebote zu den erstellten Produkten aktiviert werden. Beide Exportprozesse, deren Voraussetzungen sowie Übertragungsoptionen werden in den folgenden Unterkapiteln beschrieben.
+
+[#produktdaten-ubertragen]
+=== Produktdaten übertragen
+
+In diesem Kapitel erfährst du, wie du Produktdaten an den Marktplatz überträgst und welche Voraussetzungen erfüllt werden müssen. Diese Daten kommen aus dem von dir erstellten Katalog *{assistant-name} Catalog*.
+
+=== Voraussetzungen für die Produktdatenübertragung
+
+* Die Plugins link:{marketplace-url}[{market}^] sowie *Mirakl Connector* wurden im plentyMarketplace gekauft, heruntergeladen und in einem Plugin-Set installiert und bereitgestellt.
+* Im Menü *Einrichtung » Aufträge » Auftragsherkunft* wurden die Auftragsherkünfte {market} und Mirakl aktiviert.
+* Im Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen] » {assistant-name}* wurde die Grundeinrichtung vorgenommen. Für die Produktübertragung muss die Option *Produkte exportieren* im Schritt Datenaustausch aktiv sein.
+* Im Menü *Einrichtung » Artikel » Verkaufspreise* wurden die Auftragsherkünfte *Mirakl* sowie *{assistant-name}* an einem bestehenden Preis aktiviert *_oder_* es wurde ein neuer Verkaufspreis erstellt, bei dem die Auftragsherkünfte *Mirakl* und *{assistant-name}*  aktiviert wurden.
+* Du hast bereits einen <<daten/daten-exportieren/marktplatzexport#, Katalog>> für die Übertragung der Daten erstellt.
+
+ifdef::conrad[]
+[IMPORTANT]
+.Wie hängen die Angebotsfelder, das Produktexportfeld und die Marktplatz-SKU an der Variante zusammen?
+====
+Die Angebotsfelder *sku* und *product-id* werden grundsätzlich immer mit dem Wert gefüllt, der an der Variante im Feld *Marktplatz-SKU* für den Marktplatz definiert wurde.
+Das Angebotsfeld *product-id-type* wird standardmäßig mit dem Wert *SHOP_SKU* übertragen.
+
+// * Wenn *SKU* gewählt wird, muss die SKU vom Marktplatz als Marktplatz-SKU an der Variante definiert werden.
+// * Wenn *EAN* gewählt wird, muss die EAN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+// * Wenn *ISBN* gewählt wird, muss die ISBN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+
+Das Produktexportfeld *Produkt-ID (Artikelnr. des Verkäufers)* wird je nach Einstellung im Katalog gefüllt.
+Bei der ersten Übertragung, die über Nacht stattfindet, wird die Marktplatz-SKU an der Variante in plentymarkets automatisch aus der Varianten-ID gebildet. Die Marktplatz-SKU kann alternativ per Import oder manuell definiert werden.
+====
+endif::conrad[]
+
+ifdef::voelkner[]
+[IMPORTANT]
+.Wie hängen die Angebotsfelder, das Produktexportfeld und die Marktplatz-SKU an der Variante zusammen?
+====
+Die Angebotsfelder *sku* und *product-id* werden grundsätzlich immer mit dem Wert gefüllt, der an der Variante im Feld *Marktplatz-SKU* für den Marktplatz definiert wurde.
+Das Angebotsfeld *product-id-type* wird standardmäßig mit dem Wert *SHOP_SKU* übertragen, kann aber mit einem anderen Wert überschrieben werden, z.B. *SKU*. Wähle dazu an der Variante die Eigenschaft für Product ID Type *SKU* und ordne die Eigenschaft im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* dem entsprechende Datenfeld zu.
+Das Produktexportfeld *Die eindeutige Nummer (ID) des Artikels im System des Sellers* wird je nach Zuordnung im Katalog gefüllt.
+
+Bei der ersten Übertragung, die über Nacht stattfindet, wird die Marktplatz-SKU an der Variante in plentymarkets automatisch aus der Varianten-ID gebildet. Die Marktplatz-SKU kann alternativ per Import oder manuell definiert werden.
+====
+
+*_Tipp:_* Ordne im Katalog dem Datenfeld *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die Marktplatz-SKU zu. Wähle als Ausweich-Datenfeld die *Varianten-ID*.
+endif::voelkner[]
+
+////
+//TODO: Prüfen, ob das sichtbar sein sollte.
+=== Werte für die Übertragung an den Marktplatz definieren
+
+Die Werte *product-id* und *sku* werden wie folgt übertragen:
+
+* Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, muss mit dem Wert der *product-id* in der Angebotsübertragung übereinstimmen.
+* Der Wert, der als Produkt-ID bei der Produktübertragung übertragen wird, wird im Katalog definiert.
+* Der Wert, der als Marktplatz-SKU an der Variante hinterlegt wird, wird für die Felder *sku* und *product-id* bei der Angebotsübertragung verwendet.
+* Wenn du keinen Wert für die Marktplatz-SKU an einer Variante definiert hast, aber die Marktplatzverfügbarkeiten aktiviert wurden, wird die Variante in der Angebotsübertragung ohne *sku* und *product-id* übertragen.
+
+Daraus ergeben sich die folgenden Zuordnungen für die Produktübertragung:
+
+* Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* nur die Varianten-ID zugeordnet. Bei der ersten Produktübertragung von dieser Variante wird automatisch (wenn sonst kein Wert vorher definiert wurde) die Varianten-ID als Marktplatz-SKU an der entsprechenden Variante gespeichert.
+* Im Katalog wird den Datenfeldern *Produkt-ID (Artikelnr. des Verkäufers)*, *Seller Product ID* bzw. *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die SKU zugeordnet und die Varianten-ID als Ausweich-Datenfeld definiert. Vor der ersten Produktübertragung der Variante wird die Marktplatz-SKU an der Variante definiert. Nimmst du diese Einstellung nicht vor,  wird die Varianten-ID nach der ersten Produktübertragung automatisch als Marktplatz-SKU an der Variante hinterlegt.
+////
+
+ifdef::conrad,voelkner[]
+=== Produktdaten aktualisieren
+
+Du kannst zu jeder Zeit eine Aktualisierung der Produktdaten vornehmen. Ausgeschlossen davon sind jedoch die folgenden Produktdaten:
+
+* Verpackungseinheiten
+* Hersteller-Teilenummer
+* Artikelnummer des Verkäufers
+
+Wenn du eines oder mehrere der o.g. Felder ändern möchtest, musst du das Produkt zuerst löschen und dann neu übertragen. Gehe dazu vor wie folgt:
+
+[.instruction]
+Produktdaten aktualisieren:
+
+. Öffne das Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration*.
+. Erstelle eine Eigenschaft des Typs *Text*.
+. Gib einen Namen ein, zum Beispiel *Marktplatz-Produkt löschen*.
+. Öffne das Menü *Daten » Kataloge*.
+. Öffne den entsprechenden Katalog.
+. Ordne dem Datenfeld *Product Invalidierungs Markierung* bzw. *InvalidationFlag* die Eigenschaft zum Löschen des Produkts, die du gerade erstellt hast, zu.
+. Öffne den Assistenten.
+. Gehe in den Schritt *Zuordnung der Angebots- Eigenschaften*.
+. Ordne der Eigenschaft *{market} Update-Delete* das Datenfeld *update-delete* zu.
+. Wähle an der zu löschenden Variante den Auswahlwert *delete*. +
+*_Hinweis:_* Eine Bestands- oder Preisänderung der Variante kann einige Zeit dauern. Alternativ kannst du diese Änderung manuell vornehmen.
+. Warte bis zur nächsten Angebotsübertragung. +
+→ Dies kann bis zu 15 Minuten dauern.
+. Deaktivere die Marktplatzverfügbarkeit für den Marktplatz und Mirakl an der Variante.
+. Entferne die Eigenschaft für die Katalogverknüpfung an der Variante.
+. Lösche das Angebot zu dem Produkt manuell im Backend des Marktplatzes.
+. Aktiviere an der entsprechenden Variante die Eigenschaft, die du für das Löschen des Produkts erstellt hast, und hinterlege den Wert *kill*.
+. Aktiviere die Eigenschaft für die Katalogverknüpfung an der Variante.
+. Warte bis zur nächsten Übertragung der Produkte. +
+→  Diese findet über Nacht statt.
+. Nachdem du das Produkt gelöscht hast, musst du 24 bis 48 Stunden warten, bis du die gleiche Produkt-ID wieder verwenden darfst.
+. Entferne nach der Wartezeit die Eigenschaft, die du für das Löschen des Produkts erstellt hast, von der Variante.
+. Aktiviere an der Variante die Marktplatzverfügbarkeit für den Marktplatz und Mirakl erneut.
+endif::conrad,voelkner[]
+
+ifdef::voelkner[]
+[#eans-abgleichen]
+=== EANs abgleichen
+
+Voelkner bietet einen EAN-Abgleich an. Bitte dein:e Ansprechpartner:in vom Marktplatz, eine Liste deiner EANs zur Verfügung zu stellen. Falls deine EANs bereits auf Voelkner gelistet werden, bekommst du anschließend eine Tabelle mit den EANs und den dazugehörigen SKUs.
+Für diese Werte ist es nicht notwendig, die Produktdaten zu übertragen. Über die zur Verfügung gestellten SKUs kannst du direkt ein Angebot erstellen. Die SKU muss als Marktplatz-SKU an der Variante importiert werden und als *product-id-type* muss an der Variante *sku* gewählt werden. Achte darauf, dass du keinen Eigenschaftswert für die Eigenschaft *Voelkner Kategoriegruppe* an diesen Varianten definierst.
+endif::voelkner[]
+
+[#angebotsdaten-uebertragen]
+=== Angebotsdaten übertragen
+
+In diesem Kapitel erfährst du, wie du Angebotsdaten an den Marktplatz überträgst und welche Voraussetzungen erfüllt werden müssen. Diese Daten kommen aus dem Assistenten *{assistant-name}*, den du bereits durchlaufen hast.
+
+
+=== Voraussetzungen für die Angebotsdatenübertragung
+
+* Die Plugins link:{marketplace-url}[{market}^] sowie *Mirakl Connector* wurden im plentyMarketplace gekauft, heruntergeladen und in einem Plugin-Set installiert und bereitgestellt.
+* Im Menü *Einrichtung » Aufträge » Auftragsherkunft* wurden die Auftragsherkünfte *{market}* und *Mirakl* aktiviert.
+* Im Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen] » {assistant-name}* wurde die Grundeinrichtung vorgenommen.
+** *Bestand synchronisieren* ist im Datenaustausch-Schritt aktiviert, damit die Angebote korrekt übertragen werden.
+* Im Menü *Einrichtung » Artikel » Verkaufspreise* sind an einem bestehenden Preis die Auftragsherkünfte *Mirakl* und *{market}* aktiviert *_oder_* ein neuer Verkaufspreis ist erstellt, in dem die Auftragsherkünfte *Mirakl* und *{market}* aktiviert wurden.
+
+Die Angebotsübertragung findet alle 15 Minuten statt. Es werden nur Artikel übertragen, die die folgenden Voraussetzungen erfüllen:
+
+* An der Variante sind die Auftragsherkünfte *Mirakl* und *{market}* aktiviert.
+* An der Variante ist ein Preis aktiv, der für *{market}*, *Mirakl* und *WEB-API* aktiviert wurde.
+* An dem Artikel (bzw. an der Variante) ist ein Versandprofil aktiv, das für *{market}*, *Mirakl* und *WEB-API* wurde.
+* An der Variante ist ein Wert als Marktplatz-SKU für *{market}* hinterlegt.
+* An der Variante hat in den letzten 15 Minuten eine Änderung an dem Bestand oder Preis stattgefunden
+** Das Setzen eines neuen Zeitstempels über die Gruppenfunktion oder Stapelverarbeitung führt auch zu einer Übertragung der Variante. Somit muss an der Variante die Warenbestandsbeschränkung *Auf Netto-WB* oder *Keine* gewählt sein und die Variante muss positiven Bestand haben.
+
+ifdef::conrad[]
+[IMPORTANT]
+.Wie hängen die Angebotsfelder, das Produktexportfeld und die Marktplatz-SKU an der Variante zusammen?
+====
+Die Angebotsfelder *sku* und *product-id* werden grundsätzlich immer mit dem Wert gefüllt, der an der Variante im Feld *Marktplatz-SKU* für den Marktplatz definiert wurde.
+Das Angebotsfeld *product-id-type* wird standardmäßig mit dem Wert *SHOP_SKU* übertragen.
+
+// * Wenn *SKU* gewählt wird, muss die SKU vom Marktplatz als Marktplatz-SKU an der Variante definiert werden.
+// * Wenn *EAN* gewählt wird, muss die EAN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+// * Wenn *ISBN* gewählt wird, muss die ISBN der Variante als Marktplatz-SKU an der Variante definiert werden. Bitte nicht verwenden, diese Funktion ist noch nicht im Marktplatz aktiv
+
+Das Produktexportfeld *Produkt-ID (Artikelnr. des Verkäufers)* wird je nach Einstellung im Katalog gefüllt.
+Bei der ersten Übertragung, die über Nacht stattfindet, wird die Marktplatz-SKU an der Variante in plentymarkets automatisch aus der Varianten-ID gebildet. Die Marktplatz-SKU kann alternativ per Import oder manuell definiert werden.
+====
+endif::conrad[]
+
+ifdef::voelkner[]
+[IMPORTANT]
+.Wie hängen die Angebotsfelder, das Produktexportfeld und die Marktplatz-SKU an der Variante zusammen?
+====
+Die Angebotsfelder *sku* und *product-id* werden grundsätzlich immer mit dem Wert gefüllt, der an der Variante im Feld *Marktplatz-SKU* für den Marktplatz definiert wurde.
+Das Angebotsfeld *product-id-type* wird standardmäßig mit dem Wert *SHOP_SKU* übertragen, kann aber mit einem anderen Wert überschrieben werden, z.B. *SKU*. Wähle dazu an der Variante die Eigenschaft für Product ID Type *SKU* und ordne die Eigenschaft im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* dem entsprechende Datenfeld zu.
+Das Produktexportfeld *Die eindeutige Nummer (ID) des Artikels im System des Sellers* wird je nach Zuordnung im Katalog gefüllt.
+
+Bei der ersten Übertragung, die über Nacht stattfindet, wird die Marktplatz-SKU an der Variante in plentymarkets automatisch aus der Varianten-ID gebildet. Die Marktplatz-SKU kann alternativ per Import oder manuell definiert werden.
+====
+
+*_Tipp:_* Ordne im Katalog dem Datenfeld *Die eindeutige Nummer (ID) des Artikels im System des Sellers* die Marktplatz-SKU zu. Wähle als Ausweich-Datenfeld die *Varianten-ID*.
+endif::voelkner[]
+
+ifdef::voelkner[]
+=== Fehlerberichte
+
+Berichte zu Produkt- und Angebotsübertragungen an Voelkner kannst du über die Menüs *Daten » Voelkner Artikelexport-Berichte* und *Daten » Voelkner Angebotsexport-Berichte* einsehen und herunterladen.
+endif::voelkner[]
+
+[discrete]
+=== Weitere Datenfelder, die bei der Angebotsübertragung übermittelt werden
+
+* *sku* und *product-id*: Diese Felder werden automatisch mit dem Wert befüllt, der als Marktplatz-SKU an der Variante hinterlegt wurde.
+ifdef::conrad,voelkner[]
+* *product-id-type*: Dieses Feld wird standardmäßig mit dem Wert *SHOP_SKU* befüllt.
+endif::conrad,voelkner[]
+* *price*: Dieses Feld wird automatisch mit dem Wert befüllt, der an der Variante für den am Marktplatz aktivierten Preis definiert wurde. Wurden mehrere Verkaufspreise an der Variante definiert, die ebenfalls für den Marktplatz freigegeben sind, wird der Preis mit der niedrigsten ID exportiert.
+* *quantity*: Dieses Feld wird automatisch mit dem Nettobestand oder den summierten Nettobeständen aus den Lagern befüllt, die im Assistent *{assistant-name}* im Schritt *Lagerauswahl* gewählt wurden.
+* *min-quantity-alert*: Dieses Feld wird automatisch mit dem Wert *1* übertragen.
+* *state*: Dieses Feld wird standardmäßig mit dem Wert *11* übertragen. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen anderen Wert zu übertragen.
+* *available-start-date*: Dieses Feld wird automatisch mit einem Zeitstempel übertragen.
+* *price-ranges*: In diesem Feld werden ein oder mehrere <<artikel/einstellungen/preise#100, Verkaufspreise>> übertragen.
+* *allow-quote-requests*: Dieses Feld wird automatisch mit dem Wert *false* übertragen.
+* *logistic-class*: Dieses Feld ist standardmäßig nicht befüllt. Wenn kein Wert übertragen wird, wird die Variante mit dem kostenlosen Versandprofil *{profile-free-shipping}* verknüpft. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen anderen Wert zu übertragen. Die gültigen Versandprofilcodes findest du im {market} Backend unter *{market-backend-shipping}*. Die Codes werden in Klammern dargestellt.
+* *leadtime-to-ship*: Dieses Feld ist ein Pflichtfeld und ist standardmäßig nicht befüllt. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante einen Wert zu übertragen. Hier sind nur ganze Zahlen zwischen 1 und 45 gültig.
+ifdef::conrad,voelkner[]
+* *reversecharge*: Dieses Feld ist ein Pflichtfeld und ist standardmäßig nicht befüllt. Im Assistentenschritt *Zuordnung der Angebots-Eigenschaften* kannst du eine Eigenschaft zuordnen, um pro Variante entweder `true` oder `false` zu übertragen.
+endif::conrad,voelkner[]
+* *min-order-quantity*: Dieses Feld wird automatisch mit dem Wert *Min. Bestellmenge*, der an der Variante gespeichert ist, übertragen.
+* *max-order-quantity*: Dieses Feld wird automatisch mit dem Wert *Max. Bestellmenge*, der an der Variante gespeichert ist, übertragen.

@@ -1,0 +1,309 @@
+= CLC
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: CLC, China Logistic Center
+:description: Learn how to set up CLC in plentymarkets.
+:position: 37
+:url: fulfilment/clc
+:id: 0PI6NSM
+:author: team-fulfillment
+
+[IMPORTANT]
+.Download the CLC plugin
+====
+You need a plugin to link plentymarkets to CLC. Visit the link:https://marketplace.plentymarkets.com/en/clc_7017[plentyMarketplace^] to download the CLC plugin.
+====
+
+[#register-with-clc]
+== Registering with CLC
+
+In order to set up the interface for CLC in your plentymarkets system, you have to be registered with link:https://www.tietjegroup.com/en/kontakt/[CLC^]. Simply write an email to mailto:email[kontakt@clc.tietjegroup.com].
+
+You receive the data from CLC that you need for the settings in plentymarkets.
+
+[#set-up-clc]
+== Setting up CLC in plentymarkets
+
+Proceed as described below to set up the CLC interface in plentymarkets.
+
+Once you have <<plugins/installing-added-plugins#installing-plugins, installed the plugin in a plugin set>>, the plugin is visible in the *Plugins » Plugin set overview* menu.
+
+[discrete]
+=== Importing stock
+
+[IMPORTANT]
+.Importing stock
+====
+Stock is automatically imported. The import is carried out by cron jobs. Cron jobs are processes that run automatically at a specific time interval.
+
+There are 2 import types of stock:
+
+* Full stock import
+* Stock correction import
+
+The full stock import is executed on a daily basis every day and overwrites the stock with an absolute value for all variations given.
+
+The stock correction import on the other hand executes a relative correction of the linked variations.
+
+Both processes are importing CSV files from an FTP server. Therefore, it is mandatory that a stable connection to this FTP server is established to make sure that the processes can be carried out successfully. Enter the login details in the *Plugins » Plugin set overview » [Select plugin set] » CLC » Configuration » Login details* menu.
+
+The cron jobs run automatically once you have installed the plugin and saved and deployed it in a plugin set. Manually triggering the processes is therefore _not_ necessary. The only requirement is the successful connection with the FTP server using valid FTP data.
+====
+
+[discrete]
+=== Item export
+
+[IMPORTANT]
+.Item export
+====
+In order that all your item data can be exported from plentymarkets to CLC, the following conditions have to be met:
+
+* the first barcode that is saved in the variation has to be of the type *GTIN 13*
+* in the *Availability* tab of the variation in the *Markets* area, the same markets need to be selected that are also activated in the plugin settings for the referrer
+* the date of the last update of the variation must not be more than 25 hours in the past
+====
+
+[#connection-ftp-server]
+=== Establishing the connection to the FTP server
+
+In order to establish a connection between the plugin and the FTP server provided by CLC, you have to fill in all fields in the *Login details* menu of the plugin.
+
+[.instruction]
+Establishing the connection to the FTP server:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the CLC plugin.
+. Click on *CLC*.
+. Click on *Configuration > Login details*.
+. Carry out the settings. Note <<#table-save-login-details>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-save-login-details]]
+.Saving the login details
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Host*
+|Enter the FTP address (does not contain the port). +
+*_Example:_* `ftp.clc.example.com`
+
+| *Port*
+|Enter the FTP port that is used in combination with the host to correctly set up the connection address. +
+*_Example:_* `990`
+
+| *User name*
+|Enter the user name for the FTP account.
+
+| *Password*
+|Enter the password for the FTP account.
+
+|====
+
+[#general-settings]
+=== Carrying out general settings
+
+Now carry out some general settings for the plugin. To do so, proceed as described below.
+
+[.instruction]
+Carrying out general settings:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the CLC plugin.
+. Click on *CLC*.
+. Click on *Configuration > Plugin settings*.
+. Carry out the settings. Note <<#table-general-settings>>.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-general-settings]]
+.Carrying out general settings
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Barcode ID*
+|Enter the ID of the barcode that should be transmitted to CLC when exporting the item data. Barcodes can be created in the *Setup » Items » Barcode* menu. Every barcode has a unique ID and can be used by the plugin. +
+For further information, refer to the <<item/settings/barcodes#100, Barcodes and labels>> page of the manual.
+
+| *Warehouse ID*
+|Enter the ID of the warehouse that should be used by CLC for transferring the stock.
+
+| *Referrer*
+|Enter the ID of the referrer that identifies the orders for CLC.
+
+|====
+
+[#event-procedure-transmission-orders]
+=== Setting up an event procedure for transferring the orders to CLC
+
+Set up an event procedure for transferring the orders to CLC. To do so, proceed as described below.
+
+[.instruction]
+Setting up an event procedure for transferring the orders to CLC:
+
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]).
+. Enter a *name* for the event procedure, e.g. `Transfer CLC`.
+. From the *Event* drop-down list, select the option *Order change > Status change*. +
+*_Note:_* We recommend using the event *Status change*. You can, however, use any other event as long as it as order-related event.
+. *Save* (icon:save[role="green"]) the settings.
+. Click on *Add procedure* (icon:plus-square[role="green"]).
+. Select the setting *Plugins > CLC Shipping Order Export*.
+. Select the setting *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#document-export]
+=== Preparing the document export
+
+The CSV files contain additional shipping information such as the shipping service provider and the order ID and are exported to an FTP server. The export is done via an event procedure.
+
+Not only can you export CSV files but also PDF documents such as invoices and shipping labels. In the *Document export* area, save the IDs of the order referrers for which you want to export in addition the invoice, the delivery note and the shipping label.
+
+[.instruction]
+Preparing the document export:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the CLC plugin.
+. Click on *CLC*.
+. Click on *Configuration > Document export*.
+. If needed, enter the IDs of the order referrers for the invoice export, delivery note export and shipping label export. +
+*_Note:_* If you enter `-1`, the respective document type will be exported regardless of the order referrer.
+. *Save* (icon:save[role="green"]) the settings.
+
+You can automate this process by setting up an event procedure. How to proceed is described in the following. When the event procedure is triggered, the documents are exported for orders with the referrers that you saved in your plentymarkets system.
+If the system cannot find allowed referrers, the documents are not exported. This also effects the order export.
+
+[#event-procedure-document-export]
+==== Setting up an event procedure for the document export
+
+Set up an event procedure to export the documents containing additional shipping details. To do so, proceed as follows.
+
+[.instruction]
+Setting up an event procedure:
+
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]). +
+→ An editing window opens.
+. Enter a *name* for the event procedure, e.g. `CLC Additional Shipping Details`.
+. Select the order event *Order change > Status change*. +
+*_Note:_* We recommend using the event *Status change*. You can, however, use any other event as long as it as order-related event.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#link-event-procedure-with-plugin]
+==== Linking the event procedure with the plugin
+
+In order that the CLC plugin can react to the event procedure, you have to link the event procedure with the plugin. To do so, proceed as described below.
+
+[.instruction]
+Linking the event procedure with the CLC plugin:
+
+. Go to *Setup » Orders » Events*.
+. Click on the event procedure for the additional shipping details that you have just created.
+. Click on the right side on *Add procedure* (icon:plus-square[role="green"]).
+. Select the setting *Plugins > CLC Additional Shipping Details Export*.
+. Click on *Add*.
+. Select in the upper area of the event procedure the setting *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#create-link-item-property]
+=== Creating an item property and linking it with the plugin
+
+Create an item property in the plentymarkets back end and link the property with the CLC plugin to make sure that the order export works correctly. To do so, proceed as described below.
+
+[TIP]
+.No item property? Variation number is transferred to CLC
+====
+If you do not create an item property and link it with the plugin, your plentymarkets system will transfer the variation number as package code to CLC.
+====
+
+[#create-item-property]
+==== Creating an item property
+
+Go to *Setup » Settings » Properties » Configuration* in your plentymarkets back end and create a property for the *Item* area of the property type *Text*. All other settings in this menu are optional.
+For further information, refer to the <<item/settings/properties#500, Characteristics and properties>> page in the item area.
+
+Afterwards, you have to link the property ID to make sure that the orders are exported correctly.
+
+[#link-item-property]
+==== Linking the item property with the plugin
+
+The field *Property ID for package code* is used for order items in the order export.
+
+[.instruction]
+Linking the item property:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the CLC plugin.
+. Click on *CLC*.
+. Click on *Configuration > Item properties*.
+. Enter the *Property ID for package code* that you have just created in the *Setup » Settings » Properties » Configuration* menu.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#order-properties]
+=== Order properties
+
+If you are using, for example, the program *Prime by Seller*, this information is saved in the order property of the order. This property is transferred to CLC so CLC knows that this is a Prime order.
+
+The field *Property ID for loyalty program* is used for determining the loyalty program. This field is automatically filled. The following values are available:
+
+* DEFAULT
+* ebay_plus
+* Amazon_NextDay
+* Amazon_SecondDay
+* Amazon_Prime
+* Amazon_Prime_NextDay
+* Amazon_Prime_SecondDay
+* Amazon_SameDay
+* Amazon_Prime_SameDay
+
+[#status-ready-for-dispatch]
+=== Status “Ready for dispatch”
+
+The cron job *Ready for dispatch* executes a data import from the FTP server on a daily basis. This cron job imports the Amazon properties ASN and ARN. You only have to save the IDs of the properties in the *Status “Ready for dispatch”* menu.
+
+*_Note:_* You do _not_ have to enter the IDs if you only want to carry out a simple import that does not contain any ASN and ARN values. 
+
+[IMPORTANT]
+.Property for Shipment ID
+====
+The field *Property for Shipment ID* is filled automatically after the plugin was successfully installed. It is _not_ recommended to change the value of this property. If the *Property for Shipment ID* is not set correctly, this may cause the *Ready for Dispatch* cron job to not provide successful results.
+====
+
+[#status-outgoing-items]
+=== Saving the status for outgoing items
+
+The *status ID* is a mandatory field. The ID is used to set the status of the orders. Once CLC fulfilled the order, the order is automatically set to the status that you saved in this menu.
+
+[.instruction]
+Saving the status for outgoing items:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the CLC plugin.
+. Click on *CLC*.
+. Click on *Configuration > Status for outgoing items*.
+. Enter the status ID.
+. *Save* (icon:save[role="green"]) the settings.
+
+As a rule, the status that you save here should be equal to or greater than 7, e.g. _[7.1] Shipment CLC_. If you want to create a separate status for CLC orders, go to *Setup » Orders » Statuses*.
+
+For further information about the order status, refer to the <<orders/managing-orders#1200, Managing orders>> page of the manual.
+
+[discrete]
+==== Setting up an event procedure to automatically book outgoing items
+
+If you want that the outgoing items are booked automatically once an order is in status _[7.1] Shipment CLC_, set up an event procedure for this.
+
+[.instruction]
+Setting up an event procedure to automatically book outgoing items:
+
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]) to create a new event procedure. +
+→ An editing window opens.
+. Enter a *name* for the event procedure, e.g. `CLC book outgoing items`.
+. Select the order event *Order change > Status change*.
+. Select the appropriate status from the drop-down list, e.g. _[7.1] Shipment CLC_.
+. Click on *Add procedure* (icon:plus-square[role="green"]).
+. Select the procedure *Order > Book outgoing items*.
+. Click on *Add*.
+. Select the setting *Active* to activate the event procedure.
+. *Save* (icon:save[role="green"]) the settings.

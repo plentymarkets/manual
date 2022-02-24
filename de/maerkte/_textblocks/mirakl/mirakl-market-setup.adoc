@@ -1,0 +1,229 @@
+Auf dieser Seite erfährst du, wie du die Schnittstelle zu {market} einrichtest. Vorab musst du einige vorbereitende Einstellungen in deinem plentymarkets System vornehmen.
+
+[#auftragsherkunft]
+== Auftragsherkunft aktivieren
+
+:market: {market}
+:referrer: {market}
+:referrer-option: {referrer-name}
+:mirakl-auftragsherkunft:
+
+include::../instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#verkaufspreis]
+== Verkaufspreis festlegen
+
+:referrer-price: {market}
+:mirakl-verkaufspreis:
+
+include::../instructions/verkaufspreis-festlegen.adoc[]
+
+[#eigenschaften-erstellen]
+== Eigenschaften erstellen
+
+Eigenschaften werden verwendet, um Felder an den Marktplatz zu übergeben, die in plentymarkets standardmäßig nicht definiert sind.
+ifdef::mediamarkt[]
+Im Menü *Einrichtung » Einstellungen » Eigenschaften » Konfiguration* erstellst du die Eigenschaften, die Mediamarkt vorgibt.
+endif::mediamarkt[]
+Weitere Informationen zu Eigenschaften findest du auf der Seite <<artikel/einstellungen/eigenschaften#500, Merkmale und Eigenschaften>>.
+
+ifdef::conrad,voelkner[]
+Die folgenden Eigenschaften sind automatisch in deinem plentymarkts System vorhanden und werden im Assistenten zugeordnet:
+endif::conrad,voelkner[]
+
+ifdef::mediamarkt[]
+Du benötigst die folgenden Eigenschaften für Mediamarkt:
+endif::mediamarkt[]
+
+* Logistikklasse
+** Es handelt sich hier um das Verknüpfen einer Variante mit einem bestimmten Marktplatz-Versandprofil. Die Marktplatz-Versandprofile können im Marktplatz-Backend unter *Plattformeinstellungen > Versand* eingesehen werden. Der Wert in Klammern ist der Wert, der übertragen werden muss.
+* Versandvorlaufzeit
+** Es handelt sich hier um das sogenannte _leadtime-to-ship_, also die Zeit, die ein:e Händler:in von der Auftragsannahme bis zur Versandmeldung benötigt. Hier muss eine ganze Zahl übermittelt werden, die zwischen 1 und 45 liegt.
+ifdef::conrad,voelkner[]
+* Abzugsverfahren
+** Es handelt sich hier um das so genannte _Reverse-Charge-Verfahren_. Es kann entweder `true` oder `false` übertragen werden.
+endif::conrad,voelkner[]
+* update-delete
+** Die Option, ein Angebot löschen zu können. Wenn an der Variante nichts gewählt wird, wird standardmäßig `update` vom Marktplatz verwendet.
+
+ifdef::mediamarkt[]
+[discrete]
+=== Eigenschaft Logistikklasse erstellen
+
+Für jede Variante muss ein Versandprofil-Code an {market} exportiert werden. Versandprofile konfigurierst du im Mirakl-Backend. Die Liste der Versandprofile wird im Mirakl-Backend im Bereich *Plattformeinstellungen > Versand* angezeigt. Der Code wird in der Spalte *Logistikklasse* in Klammern hinter dem Namen der Logistikklasse angezeigt.
+
+:property: Logistikklasse
+
+include::../properties/instructions/properties-creation.adoc[]
+
+
+:property: Logistikklasse
+:property-area: Artikel
+:property-type: Text
+:property-name: {market} Logistikklasse
+
+include::../properties/instructions/properties-creation-table.adoc[]
+endif::mediamarkt[]
+
+ifdef::mediamarkt[]
+[discrete]
+=== Eigenschaft Versandvorlaufzeit erstellen
+
+Du kannst für jede Variante die Versandvorlaufzeit übermitteln. Die Versandvorlaufzeit ist die Zeit in Tagen, die ein:e Händler:in von der Auftragsannahme bis zur Versandanmeldung benötigt. Du kannst hier eine ganze Zahl zwischen 1 und 45 übermitteln.
+
+:property: Versandvorlaufzeit
+
+include::../properties/instructions/properties-creation.adoc[]
+
+:property: Versandvorlaufzeit
+:property-area: Artikel
+:property-type: Ganze Zahl
+:property-name: {market} Versandvorlaufzeit
+
+include::../properties/instructions/properties-creation-table.adoc[]
+endif::mediamarkt[]
+
+[#api-schluessel]
+== API-Schlüssel erzeugen
+
+Um die Verbindung für {market} zwischen plentymarkets und Mirakl herzustellen, benötigst du einen API-Schlüssel. Um den API-Schlüssel zu erzeugen, gehe wie folgt vor:
+
+[.instruction]
+API-Schlüssel erzeugen:
+
+. Öffne das Backend von Mirakl.
+. Klicke auf das Benutzersymbol (icon:user-circle[]).
+. Öffne das Tab *API-Schlüssel*.
+. Generiere einen neuen API-Schlüssel für {market}.
+. Kopiere den API-Schlüssel in die Zwischenablage. Du benötigst den Schlüssel, um dein {market}-Konto in plentymarkets einzurichten.
+
+[#marktplatz-assistent-durchlaufen]
+== {market} Assistent durchlaufen
+
+Mit dem Assistenten *{assistant-name}* im Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]* richtest du dein {market}-Konto in plentymarkets ein.
+
+:menu-path: pass:quotes[*Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*]
+:number-of-boxes: Info-Box
+include::../instructions/assistant-basic-instructions.adoc[]
+
+[.collapseBox]
+.Erläuterungen zu den Optionen des Assistenten
+--
+[[table-{market}-basic-settings-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Einstellung |Erläuterung
+
+2+^| Schritt *Authentifizierung*
+
+| API Environment
+a| Wähle eine API-Umgebung aus der Dropdown-Liste. Welche API-Umgebung du wählen solltest, erfährst du von deinen Ansprechpartner:innen bei {market}. +
+*_Hinweis:_* Wenn du die API-Umgebung wechselst, also z.B. vom Test-Modus in den Produktiv-Modus wechselst, musst du einen neuen <<#api-schluessel, API-Schlüssel>> erzeugen.
+
+| API Key
+| Trage den <<#api-schluessel, API-Schlüssel>> ein, den du erzeugt hast. +
+*_Hinweis:_* Wenn du die API-Umgebung wechselst, also z.B. vom Test-Modus in den Produktiv-Modus wechselst, musst du einen neuen <<#api-schluessel, API-Schlüssel>> erzeugen.
+
+| Mandantenauswahl
+| Wähle den Mandanten, dem die Aufträge zugeordnet werden sollen.
+
+2+^| Schritt *Datenaustausch*
+
+| Datenaustausch
+| Wähle die Prozesse, für die du den Datenaustausch zwischen plentymarkets und Mirakl einrichten möchtest. +
+
+ifdef::mediamarkt[]
+*_Wichtig:_* Der Import und der Export für Auftragsrechnungen darf _nicht_ aktiviert werden.
+endif::mediamarkt[]
+
+2+^| Schritt *Zuordnung der Rückerstattung*
+
+|Zuordnung der Rückerstattung
+a|
+ifdef::conrad,voelkner[]
+Hier ordnest du den Rückerstattungsgründen von {market} plentymarkets Auftragsstatus zu.
+
+. Klicke auf *Neuen Eintrag hinzufügen*. +
+→ Eine Zeile wird eingefügt.
+. Wähle aus der Dropdown-Liste links den plentymarkets Status.
+. Wähle aus der Dropdown-Liste rechts einen der Gründe für die Rückerstattung von {market} ein. +
+Die folgenden Gründe können an {market} übertragen werden: +
+
+* `15` = Artikel nicht mehr lieferbar
+* `16` = Artikel vom Kunden storniert
+* `17` = Artikel wurde zurückgeschickt
+* `18` = Kunde hat Artikel nicht erhalten
+* `19` = Sonstige Vereinbarung getroffen
+endif::conrad,voelkner[]
+
+ifdef::mediamarkt[]
+Diese Einstellung hat bei {market} keine Auswirkungen.
+endif::mediamarkt[]
+
+2+^| Schritt *Zuordnung der Stornierung*
+
+| Zuordnung der Stornierung
+a|
+. Klicke auf *Neuen Eintrag hinzufügen*. +
+→ Eine Zeile wird eingefügt.
+. Wähle aus der Dropdown-Liste links den plentymarkets Status.
+. Wähle aus der Dropdown-Liste rechts einen Grund für die Stornierung von {market}. +
+Die folgenden Gründe können an {market} übertragen werden: +
+
+ifdef::mediamarkt[]
+* `34` = Vor Versand vom Kunden storniert
+endif::mediamarkt[]
+
+ifdef::conrad,voelkner[]
+* `34` = Stornierung: Fehlbestellung
+* `35` = Stornierung: Unerwünschte Zahlungsbedingung
+* `37` = Stornierung: Zu lange Lieferzeit
+* `39` = Vereinbarung zwischen Käufer und Verkäufer getroffen
+endif::conrad,voelkner[]
+
+2+^| Schritt *Lagerauswahl*
+
+| Lagerauswahl
+| Wähle das Lager, das für den Bestandsexport verwendet werden soll.
+ifdef::voelkner[]
+Gib für jedes Versandlager, aus dem versendet wird, die Adresse im folgenden Format an: +
+`Name des Versandlagers, Teststraße 1, 12345 Musterstadt`.
+endif::voelkner[]
+
+2+^| Schritt *Zuordnung des Versandprofils*
+
+| Zuordnung des Versandprofils
+| Trage für die Versandprofile in plentymarkets die entsprechenden Kürzel der Versanddienstleister ein. Die Kürzel findest du auf Mirakl im Menü *{mirakl-menu-shipping}*.
+
+2+^| Schritt *Zuordnung der Angebots-Eigenschaften*
+
+| Zuordnung der Angebots-Eigenschaften
+a| Wähle aus der Dropdown-Liste *Logistikklasse* die Eigenschaft *{market} Logistikklasse*. +
+Die Eigenschaften für *Abzugsverfahren* und *Versandvorlaufzeit* sind bereits vorausgewählt.
+
+* *Abzugsverfahren*: Es handelt sich hier um das so genannte _Reverse-Charge-Verfahren_. Es kann entweder `true` oder `false` übertragen werden.
+
+* *Versandvorlaufzeit*: Es handelt sich hier um das sogenannte _leadtime-to-ship_, also die Zeit, die ein:e Händler:in von der Auftragsannahme bis zur Versandmeldung benötigt. Hier muss eine ganze Zahl übermittelt werden, die zwischen 1 und 45 liegt.
+
+* *Logistikklasse*: Hier handelt es sich um das Verbinden einer Variante mit einem bestimmten Marktplatz-Versandprofil. Die Versandprofile des Marktplatzes sind im Backend unter *{mirakl-menu-shipping}* aufgeführt. Der Wert in Klammern ist der zu übertragende Wert.
+
+* *update-delete*: Hier handelt es sich um die Option, ein Angebot löschen zu können. Ist dieses Feld nicht befüllt, wird automatisch *update* verwendet.
+
+ifdef::conrad,voelkner[]
+* *product-id-type*: Dieses Feld muss nicht definiert werden. Standardmäßig wird hier *SHOP_SKU* übertragen.
+endif::conrad,voelkner[]
+
+ifdef::voelkner[]
+* *Brutto-Inhaltsmenge für Grundpreisangabe*: Hier kannst du die Brutto-Inhaltsmenge für die Grundpreisangabe an der Variante definieren.
+
+* *Einheit der Grundpreisangabe*: Hier kannst du die Einheit der Grundpreisangabe an der Variante definieren. Gültige Werte sind `KG`, `L`, `M`, `M2` oder `M3`.
+endif::voelkner[]
+
+2+^| Schritt *Optionen für Angebots-Export*
+
+| Optionen für Angebots-Export
+| Hier kannst du eine Bestandsmenge für Varianten ohne Netto-Warenbestandsbeschränkung oder für Varianten, bei denen kein Warenbestand geführt wird, speichern und für den Export festlegen. Die Angebotsübermittlung dieser Varianten erfolgt einmal pro Nacht.
+
+|======
+--

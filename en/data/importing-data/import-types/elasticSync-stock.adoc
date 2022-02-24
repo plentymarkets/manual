@@ -1,20 +1,25 @@
 = Stock
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, stock, import, sync, sync type, stock import, import stock, stock data
+:keywords: sync type, sync type stock, stock import, import stock, stock data
 :position: 140
 :url: data/importing-data/sync-types/elasticSync-stock
 :id: BA1OBE6
 :author: team-stock
 
-With syncs of the type *Stock*, you import new stock data. +
+:intro-data: pass:quotes[stock]
+:intro-extra-info: pass:quotes[]
+:matching-table: <<table-matching-fields-stock>>
+:matching-data: pass:quotes[stock]
+:mapping-data: pass:quotes[stock]
+:mapping-default: pass:quotes[your stock]
 
-This page serves purely as a reference and it assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, ElasticSync tool>>.
+include::./_textblocks/intro.adoc[]
 
 [#100]
-== Fields for matching stock
+== Matching fields
 
-<<table-matching-fields-stock>> explains the fields that are available for matching stock data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+include::./_textblocks/matching.adoc[]
 
 [[table-matching-fields-stock]]
 .Matching fields for stock
@@ -22,54 +27,183 @@ This page serves purely as a reference and it assumes that you already have a ba
 |====
 |Matching field |Explanation
 
-| *Variation ID*
+|*Item ID*
+|ID of the item
+
+|*Variation ID*
 |ID of the variation
 
-| *Barcode*
-|Barcode +
-*_Note_*: Make sure that under *Item » Edit item* in the *Settings* tab, the code of the barcode is entered. Moreover, in the matching of the sync, the barcode name (e.g. GTIN 13) has to be selected in the *Barcode* matching field on the right.
-
-| *Variation number*
+|*Variation number*
 |Variation number
 
-| *Item ID*
-|ID of the item
+|*Barcode*
+|Barcode +
+*_Note_*: Make sure that you have entered the code for the barcode in the *Settings* tab of the *Item » Edit item* menu. Moreover, in the matching of the import, the name of the barcode (e.g. GTIN 13) has to be selected in the *Barcode* matching field on the right.
 |====
 
 
 [#200]
-== Fields for mapping stock
+== Mapping fields
 
-<<table-mapping-fields-stock>> explains the fields that are available for mapping stock data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+include::./_textblocks/mapping.adoc[]
 
-[[table-mapping-fields-stock]]
-.Mapping fields for importing stock
-[cols="1,1,2"]
+[#210]
+==== Warehouse ID
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the ID of the warehouse that contains the stock into your CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu <<stock-management/setting-up-a-warehouse#1500, Stock » Incoming items » [perform search] » [select incoming items data record] » tab: Item>>.
+
+'''
+
+[#220]
+==== Quantity
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the quantity of the stock into your CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu <<stock-management/managing-incoming-items#500, Stock » Incoming items » [perform search] » [select incoming items data record] » tab: Item>>.
+
+'''
+
+[#230]
+==== Storage location ID
+
+icon:warning[role="red"] [red]#Required field#
+
+Enter the ID of the storage location that contains the stock into your CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu <<stock-management/setting-up-a-warehouse#1500, Stock » Incoming items » [perform search] » [select incoming items data record] » tab: Item>>.
+
+'''
+
+[#240]
+==== Best before
+
+Enter the best before date of the item into your CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Date in the format dd.mm.yyyy
+
+You can find the result of the import in the back end menu <<stock-management/managing-bbd-batch#100, Stock » Incoming items » [perform search] » [select incoming items data record] » tab: Item>>.
+
+'''
+
+[#250]
+==== Batch
+
+Enter the batch of the stock into your CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu <<stock-management/managing-bbd-batch#100, Stock » Incoming items » [perform search] » [select incoming items data record] » tab: Item>>.
+
+'''
+
+[#260]
+==== Purchase price
+
+Enter the purchase price of the stock into your CSV file. +
+*_Note_*: When importing negative stock, the purchase price is not overwritten.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric; use the same decimal notation as in the <<data/importing-data/ElasticSync#1300, import options>>.
+
+You can find the result of the import in the back end menu *Item » Edit item » [open item] » tab: Stock » tab: Item movement*.
+
+'''
+
+[#270]
+==== Reason for stock correction
+
+Enter the reason for the stock correction.
+
+*_Default value_*: 300
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu *Item » Edit item » [open item] » tab: Stock » tab: Item movement*.
+
+'''
+
+[[table-mapping-reason-stock-correction]]
+[cols="1,3"]
 |====
-|Mapping field |Permitted import values |Explanation
+|Permitted import values in CSV file |Reason for stock correction
 
-| *Warehouse ID (mandatory field)*
-|Numeric
-|ID of the warehouse
+|`301`
+|Stock correction because of BBD
 
-| *Quantity (mandatory field)*
-|Numeric
-|Quantity
+|`302`
+|Stock correction because of stocktaking
 
-| *Storage location ID (mandatory field)*
-|Numeric
-|ID of the storage location
+|`304`
+|Stock correction because of manufacturer error
 
-| *Best before*
-|Date +
-(DD.MM.YYYY)
-|Expiration date
+|`305`
+|Stock correction because of maculature
 
-| *Batch*
-|Numeric
-|Batch
+|`306`
+|Stock corrector because of packing error
 
-| *Purchase price*
-|Numeric
-|Purchase price
-|====
+|`307`
+|Stock correction because of damage
+
+|`309`
+|Stock correction (internal offset)
+
+|`317`
+|Stock correction because of BBD
+
+|`318`
+|Stock correction because of shipping items to FBA
+
+|`319`
+|Stock correction because of shipping items to fulfilment service provider
+
+|`320`
+|Stock correction because of sample for interested parties
+
+|`321`
+|Stock correction because of sample for customers
+
+|`322`
+|Stock correction because of sample
+
+|`323`
+|Stock correction because quality models are booked in
+
+|`324`
+|Stock correction because quality models are booked out
+
+|`325`
+|Stock correction because of gift
+
+|`326`
+|Stock correction because of malfunction (without return)
+
+|`327`
+|Stock correction because of loss
+
+|`330`
+|Stock correction because of own use
+|===

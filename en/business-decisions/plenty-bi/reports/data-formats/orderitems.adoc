@@ -1,0 +1,158 @@
+= orderItems
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: orderItems, report, raw data
+:position: 110
+:url: business-decisions/plenty-bi/reports/data-formats/orderitems
+:id: JCVCGKZ
+:author: team-order-payment
+
+:dataFormat: pass:quotes[*orderItems*]
+:data: order items
+:specifications: <<table-specifications-orderitems>>
+:dataColumns: <<table-data-columns-orderitems>>
+
+include::./_textblocks/einleitung-en_gb.adoc[]
+
+== Technical specifications
+
+include::./_textblocks/spezifikationen-en_gb.adoc[]
+
+[[table-specifications-orderitems]]
+.Technical specifications of the format *orderItems*
+[cols=4]
+|====
+|Property |Meaning |Value |Explanation
+
+|dataName
+|Name
+|orderItems
+|Name of the creator process and prefix of the created file. +
+File name: *orderItems-xxx.csv.gz*
+
+|fileFormat
+|File format
+|CSV, GZIP
+|The data is provided as a GZIP-compressed CSV file (RFC 1952).
+
+|limitPage
+|Lines per request
+|up to 8,000
+|The maximum number of data rows that is written into a single file.
+
+|limitDay
+|Lines per day
+|up to 640,000
+|The maximum number of data rows that is written on one day in total.
+
+|earliestPossibleDataDate
+|Earliest point in time
+|2020-01-01
+|Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
+
+|filterType
+|Filter type
+|lastUpdate
+|Data are filtered based on the last update.
+
+|dataUpdatedAtColumnName
+|Column header
+|oi_updated_at
+|Name of the column that contains the time stamp of the last data update.
+
+|defaultActive
+|Activated by default
+|yes
+|As standard, the export runs automatically in the background.
+
+|interval
+|Interval
+|daily
+|With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
+
+|storableFromPlan
+|Storage starting from edition
+|plentyBI XS
+|Minimum fee plan required for saving the data in cloud storage and making it available via REST.
+
+|processableFromPlan
+|Usage starting from edition
+|plentyBI L
+|Minimum fee plan required for making the data available in plentyBI Data Warehouse, i.e. for using, filtering and processing key figures.
+|====
+
+== Data columns
+
+include::./_textblocks/datenspalten-en_gb.adoc[]
+
+[[table-data-columns-orderitems]]
+.Data columns of the format *orderItems*
+[cols="1,3,3,3"]
+|====
+|Column name |Data type |Full name |Explanation
+
+|plenty_id
+|INTEGER NOT NULL
+|plenty id
+|ID of the plentymarkets system
+
+| *oi_id (Primary key)*
+|VARCHAR NOT NULL
+|order item ID
+|Order item ID
+
+|o_id
+|VARCHAR NOT NULL
+|order ID
+|ID of the order
+
+|iv_id
+|VARCHAR
+|item variation id
+|Variation ID of the order item
+
+|i_id
+|VARCHAR
+|item id
+|Item ID of the order item
+
+|oi_quantity
+|NUMERIC(8,2) NOT NULL
+|order item quantity
+|Quantity of the order items contained in the order
+
+|oi_type_id
+|INTEGER NOT NULL
+|order item type ID
+|Order item type ID. +
+Possible values: +
+1 = Variation +
+2 = Item bundle +
+3 = Bundle component +
+4 = Promotional coupon +
+5 = Gift card +
+6 = Shipping costs +
+7 = Surcharge (depending on the payment method) +
+8 = Gift wrap +
+9 = Unassigned variation +
+10 = Deposit +
+11 = Order (e.g. as part of multi-orders)
+
+|smw_id
+|VARCHAR NOT NULL
+|stock management warehouse ID
+|ID of the warehouse that is assigned to the order item
+
+| *oi_updated_at*
+|TIMESTAMPTZ NOT NULL
+|order item updated at
+|Time stamp of the last update +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|o_created_at
+|TIMESTAMPZ
+|order created at
+|Time stamp of the creation +
+Date format: MM/DD/YY HH:MI:SS TZ
+
+|====

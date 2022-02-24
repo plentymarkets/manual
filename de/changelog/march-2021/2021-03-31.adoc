@@ -1,0 +1,315 @@
+= Changelog 31. März 2021
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10720
+:startWeekDate: 25. März 2021
+:endWeekDate: 31. März 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Kataloge
+
+* Hat ein Marktplatz Änderungen an einem Template vorgenommen, konnte es vorkommen, dass bereits gemappte Datenfelder nicht mehr übertragen wurden. Wir haben ein Schutzschild eingebaut, das diese Änderungen ab sofort abfängt und die Daten dennoch überträgt.
+
+[discrete]
+=== Kontakte
+
+* Der Bereich *Konto* im Kontaktdatensatz wurde überarbeitet und in Angular implementiert. Folgende Anpassungen und Verbesserungen wurden dabei durchgeführt:
+** Die bisherige Kopfzeile über der Tabelle wurde durch Infoboxen ersetzt. Diese fassen die Kontodaten des Kontaktes zusammen.
+** Neue Tabellenspalten wurden hinzugefügt. Zum Beispiel wird der Zahlungsstatus eines Auftrags nun farblich durch einen Statusbalken dargestellt. Optional kann man in einer weiteren Spalte den *Zahlungsstatus* zusätzlich ausgeben lassen.
+** In der Tabellenspalte *Dokumentennr.* wird das aktuelle Hauptdokument des Auftrags angezeigt. Existieren Zahlungen am Auftrag, jedoch kein Dokument, wird nun ein Warnhinweise angezeigt.
+** Das *Zahlungsziel* wird rot dargestellt, wenn ein Auftrag noch nicht beglichen wurde und das als Zahlungsziel angegebene Datum bereits überschritten ist.
+** Es gibt nun eine Weiterleitung zur *OP-Liste*.
+** Für die Suche wurde eine neue Komponente implementiert. Es lassen sich nun mehrere Filter miteinander kombinieren.
+** Der neue Filter *Dokumentennr.* wurde hinzugefügt.
+
+[discrete]
+=== Amazon
+
+* Für Amazon FBA gibt es nun die Option *Lager für unverkäuflichen Bestand* bzw. *Möchtest du unverkäuflichen Bestand aus Amazon-Lagern in plentymarkets importieren?*.
+Über diese Einstellung legst du optional fest, in welches Lager unverkäuflicher FBA-Bestand importiert wird. Der unverkäufliche Bestand ist die Anzahl der Einheiten einer SKU, die sich in Amazon-Logistikzentren befinden und den Zustand „nicht verkaufbar“ haben. Im Bericht „Lagerbestand mit Versand durch Amazon“ entspricht dieser Bestand der Menge in der Spalte *afn-unsellable-quantity*.
+** Im Einrichtungsmenü:
+*Einrichtung » Märkte » Amazon » Einstellungen » Tab: Versand durch Amazon (FBA)*
+** Im Assistenten:
+*Einrichtung » Assistenten » Omni-Channel » Assistent: Grundeinstellungen - Amazon » Schritt: Versand durch Amazon (FBA)*
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Bei der ursprünglichen internen Umstellung der Auftragslogik 6 kam es bei einigen Plugins zu Problemen.
+Diese Plugins wurden daher, übergangsweise, auf die bisherige Logik zurückgestellt bis neue Plugin-Versionen veröffentlicht werden konnten. Die interne Umstellung der Auftragslogik gilt zukünftig nun auch für folgende Plugins:
+** Groupon
+** Allegro
+** Crowdfox
+** Spartoo
+** Priceminister (Rakuten.fr)
+** AvocadoStore
+** Wayfair
+
++
+[IMPORTANT]
+.To-Do
+======
+Es sollte geprüft werden, ob die aktuellste Version der Plugins installiert ist.
+
+Es sollten nach der Umstellung Plugins auf Fehlverhalten geprüft werden.
+======
+* Die neue Einstellung *Verwendeter Warenkorbtyp in der Auftragserstellung* wurde zu den Standardeinstellungen der neuen Auftragsanlage (Beta) hinzugefügt. Damit kannst du entscheiden, welchen Warenkorbtyp du nutzen möchtest. Der Side cart ist standardmäßig ausgewählt, du kannst aber auch die Warenkorbtabelle wählen.
+
+[discrete]
+=== Dokumente
+
+* Die Ausgabe von Barcodes (als Zeichenfolge und als Strichcode) an den Auftragspositionen wurde für alle Auftragsdokumente (Angebot, Gutschrift, Rücksendeschein usw.) aktiviert. Bisher standen Barcodes nur für Rechnung und Lieferscheine zur Verfügung.
+
+[discrete]
+=== Zalando
+
+* Die bestandsführenden XML-Dateien, die von Zalando abgerufen werden, werden ab jetzt vor der Übertragung auf S3 gespeichert. Dies ermöglicht es unserem Support, über die Dateihistorie auf S3 den Inhalt spezifisch pro Abruf einzusehen. Diese Informationen stehen Händler:innen nicht zur Verfügung, sondern nur unseren Mitarbeiter:innen, um gezielt z.B. die Ursache von Überverkäufen nachvollziehen zu können.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* In den Einstellungen für den Auftragsstatus konnte es vorkommen, dass die Status IDs vorangestellt wurden, obwohl diese Einstellung nicht aktiv war. Dieses Problem hat nur die Ansicht in den Einstellungen betroffen.
+* Eine Adresse wurde nicht gespeichert, wenn sie in einem Abonnement angepasst wurde. Dies ist nun behoben.
+* Eine neue Adresse für einen Kontakt anzulegen während die Abonnement UI geöffnet war führte dazu, dass nur die neu angelegte Adresse im Abonnement angezeigt wurde. Dies ist nun behoben. Nach dem Wechsel zum Abonnement werden alle Rechnungs- und Lieferadressen des Kontakts gelistet.
+* In der Auftragsdetailansicht konnte es bei der Liste der zugehörigen Gutschriften dazu kommen, dass dort die Gutschriften nicht angezeigt wurden. Das Verhalten konnte auftreten, wenn der Auftrag ursprünglich aus einem Angebot erstellt wurde. Dies wurde behoben.
+* Bei der Ermittlung der Versandkosten, wurden die Limits an den Versandprofilen nicht in die aktuellen ausgewählten Währung umgerechnet. Das Verhalten wurde behoben.
+* Beim Anlegen eines neuen Abonnements wurde aufgrund der Rechnungsadresse ein Fehler ausgelöst. Dies ist nun behoben.
+* Der Filter `shippingProfileId` hatte bei der REST Auftragssuche nicht funktioniert.
+* Der PDF steuerliche Hinweis 1 und 2 wird nur ausgegeben, wenn kein Umsatzsteuersatz des Ziellandes benutzt wird. Das war bei Stornobelegen nicht da Fall, da wurde fälschlicherweise der Hinweis ausgegeben. Dies wurde behoben.
+
+[discrete]
+=== Dokumente
+
+* Der steuerliche Hinweis 1 und 2 wird nur ausgegeben, wenn kein Umsatzsteuersatz des Ziellandes benutzt wird. Das war bei Stornobelegen nicht da Fall, da wurde fälschlicherweise der Hinweis ausgegeben. Dies wurde behoben.
+
+[discrete]
+=== Lagerverwaltung
+
+* Die Symbole für Gruppenfunktion und Aufbau anpassen wurden versehentlich vertauscht.
+* Man konnte den Zweck und den Status eines Lagerortes von der Struktur nicht ändern. Der Fehler wurde nun behoben.
+
+[discrete]
+=== Daten-Log
+
+* Beim Artikelexport wurde im Menü *Daten » Log* nach der Fehlermeldung `SKU nicht gespeichert` immer direkt danach die Fehlermeldung `Kein Produktname` ausgegeben, unabhängig davon, ob der Produktname vorhanden ist oder nicht. Dieses Verhalten wurde nun korrigiert.
+
+[discrete]
+=== Nachbestellung
+
+* Wenn in einer Auftragspositionstabelle mit mehr als einer Seite mit der Material Navigation zu einer bestimmten Tabellenseite navigiert wurde, änderte die Seite sich nicht sondern wurde immer wieder auf die zuletzt gewählte Seite gesetzt. Dies ist nun behoben.
+* Die Transaktionen einer Nachbestellung wurden nicht in der Detailansicht der Nachbestellung aufgeführt. Dies ist nun behoben. Wenn du eine Nachbestellung öffnest, sind alle Transaktionen in der Warenbewegungstabelle aufgeführt.
+* Wenn das Abschlussdatum durch klicken auf die Schaltfläche gesetzt werden sollte, wurde das gleiche Datum wie bei Bestellung auslösen gesetzt. Dies ist nun behoben. Wenn das Abschlussdatum leer ist und du auf die Schaltfläche klickst, wird das aktuelle Datum als Abschlussdatum gesetzt.
+
+
+[discrete]
+=== Amazon
+
+* Beim Aktualisieren (dem Update) von ausstehenden Amazon-Aufträgen ohne die Verwendung einer der VCS-Varianten (Umsatzsteuerberechnungsservice) über die regulären Auftragsberichte konnten die Umsatzsteuernummern von Kund:innen bisher nicht importiert werden.
+Mit diesem Update ist es nun möglich, ohne die Verwendung von VCS beim Import von ausstehenden Aufträgen (unvollständige Auftragsdaten) Umsatzsteuernummern der Kund:innen zu importieren, wenn in denAmazon-Berichten in der Seller Central die erforderlichen Spalten aktiviert sind. +
+Leider ist ein nachträglicher Import der Umsatzsteuernummern für bereits importierte Aufträge nicht möglich.
+* Beim Import von Rechnungsdokumenten aus den USA waren die bisherigen Filterkritieren nicht ausreichend, um zu erkennen, ob die Rechnung im Bericht von der Händler:in oder von Amazon stammt.
+Deswegen wird jetzt auch die Spalte *Tax Type* geprüft und die Rechnung nur importiert, wenn diese Spalte den Wert *VAT* enthält.
+
+[discrete]
+=== Zalando
+
+* Beim Abrufen der Produkt-Datei durch Zalando konnte es vorkommen, dass vorher nicht alle Bestände in der XML-Datei aktualisiert wurden. Dieses Verhalten wurde nun behoben.
+
+'''
+
+[discrete]
+== Gelöscht
+
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *stable* entfernt.
+
+[discrete]
+=== Aufträge
+
+* In der Auftragsdetailansicht wurden einige Funktionen für die Auftragstypen Sammelauftrag und Sammelgutschrift entfernt. Sammelaufträge können nun nicht mehr kopiert werden und der Eintrag wurde entfernt einen Mahnungsbeleg für Sammelaufträge zu generieren. Für Sammelgutschriften wurde die Möglichkeit entfernt Positionen hinzuzufügen oder zu bearbeiten, ebenso wie die Funktionalität Versandprofile und Versandkosten zu setzten. Damit stellen Sammelaufträge und Sammelgutschriften den gleichen Funktionsumfang in der UI bereit.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Die Artikelbeschreibung in der Artikeltabelle im letzten Schritt der Auftragsanlage (Beta) ist nun anpassbar. Durch Klicken in das Eingabefeld können Änderungen an der Artikelbeschreibung für diesen Auftrag vorgenommen werden.
+* In der Artikelsuche der neuen Auftragsanlage (Beta) wurde die alte Filterkomponente durch eine neue ersetzt. Zusätzlich zu den bereits bestehenden Filtern wurden zwei neue hinzugefügt: *Hersteller* und *Tag Artikel*. Die neue Komponente ermöglicht es, verschiedene Filter zu kombinieren.
+
+[discrete]
+=== Kataloge
+
+* Ab sofort sind in der UI Exportfilter verfügbar (je nach Verfügbarkeit).
+* Wir haben den asynchronen Download technisch verbessert.
+* Das Standardformat *Hersteller* wurde im Katalog hinzugefügt.
+Dieses Format wurde aus dem Elastischen Export migriert.
+
+[discrete]
+=== Prozesse
+
+* In der Aktion *Retoure anlegen/bearbeiten* wurde eine neue Option namens *Größere Artikelbildvorschau anzeigen* hinzugefügt. Bei Aktivierung dieser Option wird beim Durchlaufen der Aktion ein größeres Artikelvorschaubild angezeigt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Es wurde beim Kopieren eines Auftrags der Status übertragen, statt wie vorher den Standard-Status für den neuen Auftrag zu verwenden.
+* Zahlungsbedingungen können nun auch auf Dokumenten ausgegeben werden, wenn es sich bei der Zahlungsart des Auftrags um *Vorkasse* handelt. <<auftraege/auftraege-verwalten#intable-zahlungsbedingungen-auftrag, Weitere Informationen>>.
+* Während der Auftragsanlage konnten Artikel nicht aus der Warenkorbtabelle gelöscht werden. Dies ist nun behoben. Artikel können wieder gelöscht werden.
+* Wenn ein neuer Auftragsstatus erstellt wurde, wurde die Seite nicht neu geladen und auch nicht zum neu erstellen Auftragsstatus weitergeleitet. Dies ist nun behoben.
+* Wenn versucht wurde einen Auftragsstatus zu erstellen, dieser aber bereits existiert, wurde ein Fehler angezeigt und nicht zum bereits existierenden Status weitergeleitet. Dies ist nun behoben.
+
+[discrete]
+=== Amazon
+
+* Die Auftragskorrektur ist jetzt in der Lage am Auftrag Versandkosten hinzuzufügen, sollten diese fehlen.
+Des Weiteren wurde ein Fehler behoben, durch den es zur Anzeige der Umsatzsteuernummer des falschen Landes kommen konnte. Dies geschah, wenn das Land und die zugehörigen Steuersätze am Auftrag korrigiert wurde. Dabei wurde bisher an den Auftragspositionen die sogenannten CountryVatID nicht angepasst, was zu diesem Verhalten führte.
+
+[discrete]
+=== Git
+
+* Es ist wieder möglich, die Zugangsdaten von Git-Repositorys zu aktualisieren.
+
+[discrete]
+=== Lagerverwaltung
+
+* Wenn man etwas in der Struktur des Lagers änderte (Beispiel: Position Nr. eines Lagerorts), wurde die Lagerstruktur nach Speichern zusammengebrochen.
+Das Verhalten wurde nun behoben.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name |Version |To-do
+
+|link:https://marketplace.plentymarkets.com/enderecoaddressautocomplete_6622[Endereco Address Autocomplete]
+|1.1.3
+|-
+
+|link:https://marketplace.plentymarkets.com/wesioautoreorder_6557[Automatische Nachbestellung mit individueller Berechnung]
+|1.2.3
+|-
+
+|link:https://marketplace.plentymarkets.com/rewe_5901[REWE]
+|1.24.9
+|-
+
+|link:https://marketplace.plentymarkets.com/ebayfiege_6018[eBay Fulfillment]
+|1.1.31
+|-
+
+|link:https://marketplace.plentymarkets.com/cookiebar_4809[CookieBar]
+|2.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/feedback_5115[Kunden-Feedback]
+|3.6.3
+|Zur Nutzung des Feedback-Plugins muss Ceres in Version 5.0 oder höher installiert sein.
+
+Nach dem Update auf Version 3.6.3 müssen Widgets im Menü *CMS » ShopBuilder* durch Klick auf *Inhalte neu generieren* aktualisiert werden.
+
+|link:https://marketplace.plentymarkets.com/plentybaseitemcachepos_6313[plentyBase ItemCachePOS]
+|1.0.5
+|-
+
+|link:https://marketplace.plentymarkets.com/adcelltracking_6493[ADCELL Conversion Tracking + Retargeting]
+|2.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/billigerdetracking_6126[billiger.de Tracking]
+|2.0.5
+|-
+
+|link:https://marketplace.plentymarkets.com/customcontainercontent_6232[25x individueller Inhalt inkl. TWIG!]
+|1.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/googleanalyticsrefunder_6657[GoogleAnalyticsRefunder]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/magiczoomplus_6092[Moderne Bildergalerie - Magic Zoom Plus]
+|3.0.6
+|-
+
+|link:https://marketplace.plentymarkets.com/wartungsmodus_5812[Individueller Wartungsmodus]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/cytitemavailabilitynotification_6906[Verfügbarkeitsbenachrichtigung mit Statistik]
+|1.3.2
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportcheck24de_4730[CHECK24]
+|1.2.7
+|-
+
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent-Widget]
+|4.5.1
+|-
+
+|link:https://marketplace.plentymarkets.com/energylabel_6160[Energie Label]
+|1.4.7
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+
+--
+
+====

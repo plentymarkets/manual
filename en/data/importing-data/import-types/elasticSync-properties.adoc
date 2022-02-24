@@ -1,14 +1,17 @@
 = Properties
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, import, properties
+:keywords: Importing property, Importing properties, Property importing, Properties importing, Property import, Properties import, Import property, Import properties, Property-Import, Properties-Import, Import-Property, Import-Properties
 :position: 40
 :url: data/importing-data/sync-types/elasticSync-properties
 :id: KKVLRL6
 :author: team-item
-//zuletzt aktualisiert am 19.08.2020
 
-//optional - add extra sentences between the brackets in einleitung-weitere-info if you want to have further info in your introduction
+////
+zuletzt aktualisiert am 28.06.2021
+////
+
+//optional - add extra sentences between the brackets in intro-extra-info if you want to have further info in your introduction
 :intro-data: pass:quotes[properties and property groups]
 :intro-extra-info: pass:quotes[]
 :matching-table: <<table-matching-fields-properties>>
@@ -35,16 +38,21 @@ include::./_textblocks/matching.adoc[]
 *_Background info_*: Every new property automatically receives an ID, which can not be changed. The ID is used to uniquely identify the property. Because the ID is unique, it’s a good way to check whether the imported data record already exists in plentymarkets.
 
 | *Property name*
-|Which column of your CSV file contains the property name? Choose this column here. This option is useful if you want to _create new properties_.
+|Which column of your CSV file contains the property name?
+Choose this column here.
+Then select the name's language from the second drop-down list.
+This option is useful if you want to _create new properties_.
 
 | *Property group ID*
 |Which column of your CSV file lists the group IDs? Choose this column here. This option is useful if you want to _update existing property groups_.
 
 *_Background info_*: Every new property group automatically receives an ID, which can not be changed. The ID is used to uniquely identify the group. Because the ID is unique, it’s a good way to check whether the imported data record already exists in plentymarkets.
 
-
 | *Property group name*
-|Which column of your CSV file contains the property group name? Choose this column here. This option is useful if you want to _create new property groups_.
+|Which column of your CSV file contains the property group name?
+Choose this column here.
+Then select the name's language from the second drop-down list.
+This option is useful if you want to _create new property groups_.
 |====
 
 [#20]
@@ -97,7 +105,6 @@ Enter the corresponding section in the CSV file.
 
 *_Default value_*: No default value
 
-[[table-mapping-categories-type]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Options in the drop-down list in the back end
@@ -125,7 +132,6 @@ Enter the corresponding type in the CSV file.
 
 *_Default value_*: No default value
 
-[[table-mapping-categories-type]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Options in the drop-down list in the back end
@@ -140,22 +146,48 @@ Enter the corresponding type in the CSV file.
 |File
 
 |`int`
-|Int
+|Whole number
 
 |`float`
-|Float
+|Decimal number
 
-|`longText`
-|Long text
+|`html`
+|HTML
 
-|`shortText`
-|Short text
+|`string`
+|Character string
+
+|`text`
+|Text
 
 |`selection`
 |Selection
+
+|`multiselection`
+|Multi selection
 |====
 
 You can find the result of the import in the back end menu: <<item/settings/properties#600, Setup » Settings » Properties » Configuration » Drop-down list: Property type>>
+
+'''
+[#75]
+==== Group id
+
+icon:warning[role="red"] [red]#Specifying a group is mandatory#.
+However, you can either specify the group with the mapping field *Group id* or *Assign to groups*.
+
+Every property must belong to at least one group.
+Enter the group’s ID in the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric (internal group ID)
+
+*_Input format_*: `ID`
+
+*_Example_*: `12`
+
+You can find the result of the import in the back end menu: <<item/settings/properties#700, Setup » Settings » Properties » Configuration » Drop-down list: Group>>
 
 '''
 [#80]
@@ -165,7 +197,6 @@ Do you want to delete the property?
 
 *_Default value_*: `0`
 
-[[table-mapping-categories-delete-category]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Result in the back end
@@ -194,8 +225,12 @@ You can find the result of the import in the back end menu: <<item/settings/prop
 [#100]
 ==== Assign to groups
 
-Do you want to sort the property into an existing group?
-Enter the group’s ID in the CSV file.
+icon:warning[role="red"] [red]#Specifying a group is mandatory#.
+However, you can either specify the group with the mapping field *Group id* or *Assign to groups*.
+
+Every property must belong to at least one group.
+Enter the IDs of all the groups in the CSV file.
+Use commas to separate multiple group IDs.
 
 Existing groups will not be overwritten.
 In other words, if the property already belongs to a group and you import a second group, then the property will belong to both groups.
@@ -203,7 +238,11 @@ Use the field <<data/importing-data/sync-types/elasticSync-properties#90, Remove
 
 *_Default value_*: No default value
 
-*_Permitted import values_*: Numeric (internal group ID)
+*_Permitted import values_*: Numeric (internal group IDs)
+
+*_Input format_*: `ID,ID,ID`
+
+*_Example_*: `12,7,32`
 
 You can find the result of the import in the back end menu: <<item/settings/properties#700, Setup » Settings » Properties » Configuration » Drop-down list: Group>>
 
@@ -214,11 +253,12 @@ You can find the result of the import in the back end menu: <<item/settings/prop
 [#120]
 ==== Delete all values
 
+icon:info-circle[role="blue"] Not recommended. Instead, use the import type <<data/importing-data/sync-types/elasticSync-properties-selection-values#, Properties: Selection values>>.
+
 Do you want to delete all of the values that were saved for a property of the type “Selection”?
 
 *_Default value_*: `0`
 
-[[table-mapping-categories-delete-category]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Result in the back end
@@ -236,6 +276,8 @@ You can find the result of the import in the back end menu: <<item/settings/prop
 [#130]
 ==== Delete one value
 
+icon:info-circle[role="blue"] Not recommended. Instead, use the import type <<data/importing-data/sync-types/elasticSync-properties-selection-values#, Properties: Selection values>>.
+
 Do you want to delete a value from a property of the type “Selection”?
 
 *_Default value_*: No default value
@@ -247,6 +289,8 @@ You can find the result of the import in the back end menu: <<item/settings/prop
 '''
 [#140]
 ==== Add value(s)
+
+icon:info-circle[role="blue"] Not recommended. Instead, use the import type <<data/importing-data/sync-types/elasticSync-properties-selection-values#, Properties: Selection values>>.
 
 Do you want to add a value to a property of the type “Selection”?
 Enter the name of the value in the CSV file.
@@ -279,9 +323,10 @@ Also use the drop-down list to select the language.
 
 You can find the result of the import in the back end menu: <<item/settings/properties#700, Setup » Settings » Properties » Configuration » Entry field: Name>>
 
+////
 '''
 [#170]
-==== Description
+==== Beschreibung
 
 Enter a description of the property into the CSV file.
 If you want to save the description in multiple languages, then add the field once per language.
@@ -294,10 +339,11 @@ If you want to save the description in multiple languages, then add the field on
 Also use the drop-down list to select the language.
 
 You can find the result of the import in the back end menu: <<item/settings/properties#700, Setup » Settings » Properties » Configuration » Entry field: Description>>
+////
 
 '''
 [#180]
-=== Property group
+=== Group
 
 [#190]
 ==== Position
@@ -340,7 +386,6 @@ Do you want to delete the property group?
 
 *_Default value_*: `0`
 
-[[table-mapping-categories-delete-category]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Result in the back end
@@ -362,7 +407,6 @@ Do you want to remove the properties from the group?
 
 *_Default value_*: `0`
 
-[[table-mapping-categories-delete-category]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Result in the back end
@@ -389,7 +433,7 @@ Enter the property ID into the CSV file.
 
 '''
 [#240]
-=== Variation Property Group Name
+=== Group name
 
 [#250]
 ==== Name
@@ -426,7 +470,7 @@ You can find the result of the import in the back end menu: <<item/settings/prop
 
 '''
 [#270]
-=== Property Group Option
+=== Group option
 
 [#280]
 ==== Group type
@@ -436,7 +480,6 @@ Enter the corresponding type in the CSV file.
 
 *_Default value_*: `none`
 
-[[table-mapping-categories-type]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Options in the drop-down list in the back end
@@ -459,15 +502,11 @@ You can find the result of the import in the back end menu: <<item/settings/prop
 
 Do you plan on offering extra services or options for an additional fee? If so, then specify whether the surcharge should be treated as a percentage or as a fixed price, e.g. 5% or 5 EUR.
 
-*_Default value_*: `none`
+*_Default value_*: No default value
 
-[[table-mapping-categories-type]]
 [cols="1,1"]
 |====
 |Permitted import values in CSV file |Options in the drop-down list in the back end
-
-|`none`
-|None
 
 |`flat`
 |Flat
@@ -477,3 +516,92 @@ Do you plan on offering extra services or options for an additional fee? If so, 
 |====
 
 You can find the result of the import in the back end menu: <<item/settings/properties#1250, Setup » Settings » Properties » Groups » Drop-down list: Surcharge type>>
+
+'''
+[#300]
+=== Amazon
+
+The following chapter contains information about the available fields for linking properties with Amazon via the import.
+
+[#310]
+==== Category
+
+icon:warning[role="red"] [red]#Required field# for linking properties with Amazon
+
+Enter the category name into the CSV file.
+
+*_Default value_*: `none`
+
+*_Permitted import values_*: Alpha-numeric
+
+You can find the result of the import in the back end menu <<markets/amazon/preparing-variations#1395, Setup » Settings » Properties » Configuration » tab: Amazon>>.
+
+'''
+[#320]
+==== Field
+
+icon:warning[role="red"] [red]#Required field# for linking properties with Amazon
+
+Enter the field name into the CSV file.
+
+*_Default value_*: `none`
+
+*_Permitted import values_*: Alpha-numeric
+
+You can find the result of the import in the back end menu <<markets/amazon/preparing-variations#1395, Setup » Settings » Properties » Configuration » tab: Amazon>>.
+
+'''
+[#330]
+==== Platform
+
+icon:warning[role="red"] [red]#Required field# for linking properties with Amazon
+
+Enter the Amazon platform into the CSV file.
+
+*_Default value_*: `none`
+
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Options in the drop-down list in the back end
+
+|`de`
+|Amazon.de
+
+|`uk`
+|Amazon.co.uk
+
+|`us`
+|Amazon.com
+
+|`fr`
+|Amazon.fr
+
+|`it`
+|Amazon.it
+
+|`es`
+|Amazon.es
+
+|`ca`
+|Amazon.ca
+
+|`mx`
+|Amazon.com.mx
+
+|`nl`
+|Amazon.nl
+
+|`pl`
+|Amazon.pl
+
+|`se`
+|Amazon.se
+
+|`tr`
+|Amazon.tr
+
+|`ae`
+|Amazon.ae
+|====
+
+You can find the result of the import in the back end menu <<markets/amazon/preparing-variations#1395, Setup » Settings » Properties » Configuration » tab: Amazon>>.

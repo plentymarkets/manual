@@ -1,0 +1,189 @@
+= Scalerion
+:lang: en
+include::{includedir}/_header.adoc[]
+:author: team-plenty-channel
+:keywords: scalerion, scalerion
+:description: Multi-Channel in plentymarkets: Set up the interface to the market solution Scalerion in your plentymarkets system.
+:position: 0
+:url: markets/scalerion
+:id: EYIGFAS
+
+[IMPORTANT]
+.Download the Scalerion plugin
+====
+You need a plugin to link plentymarkets to Scalerion. Visit the link:https://marketplace.plentymarkets.com/en/scalerion_6926[plentyMarketplace^] to download the Scalerion plugin.
+====
+
+[#register-with-scalerion]
+== Registering with Scalerion
+
+In order to set up the interface for Scalerion in your plentymarkets system, you have to be registered with link:https://account.scalerion.com/register[Scalerion^]. You receive the data from Scalerion that you need for the settings in plentymarkets.
+
+[#set-up-scalerion]
+== Setting up Scalerion in plentymarkets
+
+Proceed as follows to set up the interface to Scalerion in plentymarkets.
+
+[#set-up-interface]
+=== Setting up the interface
+
+Once you have <<plugins/installing-added-plugins#installing-plugins, installed the plugin in a plugin set>>, the plugin is visible in the plugin set in the *Plugins » Plugin set overview* menu.
+
+[#api-login-details]
+==== Saving the API login details
+
+Enter your login details. To do so, proceed as described below.
+
+[.instruction]
+Saving the API login details:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the Scalerion plugin by clicking on the table row.
+. Click on the table row of the Scalerion plugin. +
+→ The menu *Configuration > Settings* automatically opens.
+. Enter your email address, password and the base URL. +
+*_Note:_* The referrer ID will be filled automatically by the system after you saved the settings in this menu.
+. Save (icon:save[set=plenty]) the settings.
+
+[IMPORTANT]
+.Note regarding the order import
+====
+The orders are automatically imported in your plentymarkets system. This is done by a cron job that is set to run every 15 minutes. You don’t need to carry out any further settings. This process will be activated automatically after you have successfully installed the plugin and deployed it in a plugin set.
+====
+
+[#map-attributes]
+==== Mapping attributes
+
+To ensure that the plentymarkets attributes are correctly mapped with the Scalerion attributes, you have to save the IDs of the corresponding attributes that are saved in your plentymarkets system in the settings of the Scalerion plugin.
+
+[.instruction]
+Mapping attributes:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set that contains the Scalerion plugin by clicking on the table row.
+. Click on the table row of the Scalerion plugin. +
+→ The menu *Configuration > Settings* automatically opens.
+. Expand (icon:angle-down[]) the *Attribute mapping* menu.
+. Enter the corresponding ID for the attributes _size_ and _colour_. +
+→ You can find the attribute IDs in the *Setup » Item » Attribute* menu.
+. Save (icon:save[set=plenty]) the settings.
+
+[#assign-sales-price]
+==== Assigning the sales price
+
+To ensure that the sales prices for Scalerion are correctly assigned, you have to activate the referrer *Scalerion* in the corresponding sales prices.
+
+[.instruction]
+Assigning the sales price:
+
+. Go to *Setup » Item » Sales price*.
+. Click on the sales price.
+. Activate the option *Scalerion* in the *Referrer* area.
+. Save (icon:save[set=plenty]) the settings.
+
+For further information about sales prices, refer to the <<item/settings/prices#100, Sales prices and price calculation>> page.
+
+[#activate-order-referrer]
+==== Activating the order referrer
+
+As soon as you have <<plugins/installing-added-plugins#installing-plugins, installed>> the plugin in a plugin set, the order referrer *Scalerion* is automatically available in the *Setup » Orders » Order referrer* menu. You simply need to activate the order referrer.
+
+[.instruction]
+Activating an order referrer:
+
+. Go to *Setup » Orders » Order referrer*.
+. Search for *Scalerion*.
+. Select the option by placing a check mark.
+. Save (icon:save[set=plenty]) the settings.
+
+
+[#event-procedure-shipping-confirmation]
+==== Setting up an event procedure for the shipping confirmation
+
+You need to set up an event procedure at the order level for the shipping confirmation. Proceed as follows to create an event procedure.
+
+[.instruction]
+Setting up an event procedure for the shipping confirmation:
+
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]) to set up a new event procedure. +
+→ An editing window opens.
+. Enter a name for the event procedure, e.g. `Scalerion shipping confirmation`.
+. Select the order event *Status change*. +
+*_Note:_* We recommend using the event *Status change*. You can, however, use any other event as long as it as order-related event.
+. Click on *Add filter* (icon:plus-square[role="green"]).
+. Select the filter *Order > Referrer*.
+. Click on *Add*.
+. Activate the option *Scalerion*.
+. Save (icon:save[set=plenty]) the settings. +
+→ The event procedure is created and is available in the *Order change > Status change* sub-category.
+
+In order that the Scalerion plugin is able to react to the event procedure, you now need to link the event procedure to the plugin. To do so, proceed as described below.
+
+[.instruction]
+Linking the event procedure to the Scalerion plugin:
+
+. Go to *Setup » Orders » Events*.
+. Click on the event procedure for the Scalerion shipping confirmation that you have just created.
+. Click on *Add procedure* (icon:plus-square[role="green"]). +
+→ A new window opens.
+. Click on *Plugins*.
+. Select the option *ScalerionShippingConfirmation*.
+. Click on *Add*.
+. In the upper area of the event procedure, select the option *Active* to activate the event procedure.
+. Save (icon:save[set=plenty]) the settings. +
+→ From now on, the event procedure applies these settings to the selected orders.
+
+////
+[#event-procedure-return-process]
+==== Setting up an event procedure for the return process
+
+In order that the Scalerion return process works correctly, you need to set up an event procedures. When the event procedure changes the order status, Scalerion will be informed about the status change. To do so, proceed as described below.
+
+[.instruction]
+Setting up an event procedure for the return process:
+
+. Go to *Setup » Orders » Events*.
+. Click on *Add event procedure* (icon:plus-square[role="green"]) to set up a new event procedure. +
+→ An editing window opens.
+. Enter a name for the event procedure, e.g. `Scalerion return process`.
+. Select the order event *New return*. +
+*_Note:_* We recommend using the event *Status change*. You can, however, use any other event as long as it as order-related event.
+. Save (icon:save[set=plenty]) the settings. +
+→ The event procedure is created and is available in the *Order change > Status change* sub-category.
+
+In order that the Scalerion plugin is able to react to the event procedure, you now need to link the event procedure to the plugin. To do so, proceed as described below.
+
+[.instruction]
+Linking the event procedure to the Scalerion plugin:
+
+. Go to *Setup » Orders » Events*.
+. Click on the event procedure for the Scalerion return process that you have just created.
+. Click on *Add procedure* (icon:plus-square[role="green"]). +
+→ A new window opens.
+. Click on *Plugins*.
+. Select the option *RMA supplier response*.
+. Click on *Add*.
+. In the upper area of the event procedure, select the option *Active* to activate the event procedure.
+. Save (icon:save[set=plenty]) the settings. +
+→ From now on, the event procedure applies these settings to the selected orders.
+////
+
+[#export-format]
+=== Creating an elastic export format
+
+Proceed as follows to create an elastic export format.
+
+[.instruction]
+Creating an elastic export format:
+
+. Go to *Data » Elastic export*.
+. Click on *New export*. +
+→ A new tab will open.
+. Enter a name for the new export format, e.g. `Scalerion Export`.
+. Select *Item* from the drop-down list *Type*.
+. Select *Scalerion* from the drop-down list *Format*.
+. In the *Item filters* area, click on the plus icon to add item filters from the drop-down list one after the other.
+. Save (icon:save[set=plenty]) the settings.
+
+For further information on how to create an export format and on the settings that you can carry out additionally for the format, refer to the <<data/exporting-data/elastic-export#300, Elastic export>> page of the manual.

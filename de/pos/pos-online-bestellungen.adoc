@@ -1,0 +1,231 @@
+= Online-Bestellungen mit plentyPOS abwickeln
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: team-mobile
+:keywords: POS Click und Collect, POS Click & Collect, Selbstabholung, POS Online-Bestellung, POS Online-Auftrag, Abholung im Ladengeschäft, plenty POS
+:position: 15
+:url: pos/pos-online-bestellungen
+:id: DB9REIS
+
+Online-Aufträge (auch unter dem Begriff *Click & Collect* bekannt) können über deinen Webshop, Marktplätze oder aus anderen Herkünften in dein System gelangen. Diese Aufträge kannst du auf zwei Wegen mit plentyPOS verarbeiten. Kund:innen bestellen die Ware online und bezahlen sie entweder online oder in deinem Ladengeschäft. Die Abholung erfolgt dann in deinem Ladengeschäft. Befolge die unten beschriebenen Schritte, um dein plentyPOS für Click & Collect vorzubereiten.
+
+[IMPORTANT]
+.Vorausgesetzte App-Version
+====
+Um Online-Aufträge über plentyPOS abwickeln zu können, muss mindestens Version 1.9 der plentymarkets App <<willkommen/schnelleinstieg/systemvoraussetzungen#500, auf der passenden Hardware>> installiert sein.
+====
+
+[#100]
+== Abholung und Bezahlung von Online-Aufträgen vorbereiten
+
+Die folgenden Vorbereitungen sind für plentyPOS notwendig, wenn du deinen Kund:innen anbieten möchtest, Online-Aufträge im Ladengeschäft abzuwickeln.
+
+* Aufträge können nur anhand der Auftrags-ID in die Kasse geladen werden. +
+Stelle deshalb sicher, dass Auftragsbestätigungen die Auftrags-ID enthalten. Weise deine Kund:innen explizit darauf hin, dass diese Auftrags-ID benötigt wird, um den Auftrag im Laden zu bearbeiten.
+
+* Erkläre deinen Kassenkräften, wie sie die Identität von Personen prüfen, die bezahlte Ware im Ladengeschäft abholen. Sonst kann es passieren, dass Kassenkräfte die Ware an Unbefugte aushändigen.
+
+* Nutzt du Prozesse und/oder Ereignisaktionen, um Aufträge zu bearbeiten, die über den Webshop oder Marktplätze in dein plentymarkets System gelangen? Prüfe diese Ereignisaktionen und Prozesse, bevor du eine Abholung im Laden anbietest. Stelle sicher, dass Aufträge erst in den Status *Warenausgang gebucht* gesetzt werden, wenn die Ware im Laden abgeholt wurde.
+
+[IMPORTANT]
+.Warenausgang am Auftrag prüfen
+====
+plentyPOS zeigt an, dass die Ware übergeben wurde, wenn in plentymarkets ein Warenausgang für den Auftrag gebucht wurde. Falls Probleme auftreten und jemand darauf besteht, die Ware noch nicht erhalten zu haben, prüfe den Auftrag im plentymarkets Backend. Möglicherweise wurde der Warenausgang zu früh automatisch gebucht.
+====
+
+[#150]
+== Wichtige Hinweise zu Online-Aufträgen
+
+Im Umgang mit Online-Aufträgen gibt es einige Besonderheiten im Vergleich zu regulären Kassenaufträgen. Beachte daher die folgenden Hinweise und Einschränkungen beim Abholen und Bezahlen von Online-Aufträgen im Laden:
+
+* Online-Aufträge und die dazugehörigen Daten können an der Kasse nicht bearbeitet werden. Das Kassenpersonal kann nur Zahlungen erstellen und Notizen zum Auftrag speichern.
+
+* Ab App-Version 1.9.10 wird für Online-Aufträge automatisch eine Rechnung erstellt, sobald in plentyPOS eine Zahlung zum jeweiligen Auftrag gebucht wird. Die Rechnung wird auch erzeugt, wenn für den Auftrag noch kein Warenausgang gebucht wurde. Dieses Verhalten ist aus Gründen der Rechtssicherheit standardmäßig vorgegeben, da es in plentyPOS keine Zahlungen ohne Belege geben darf.
+
+* Online-Aufträge können an der Kasse erst ab App-Version 1.9.2 mit Mehrzweckgutscheinen bezahlt werden. Voraussetzung ist, dass für den Auftrag noch keine Zahlung durchgeführt wurde und noch kein Rechnungsdokument für den Auftrag erstellt wurde.
+
+* Zahlungen, die an der Kasse getätigt werden, um einen Online-Auftrag zu bezahlen, sind für die Kasse umsatzneutral. Im Kassenjournal werden Zahlungen, die nicht umsatzrelevant für die Kasse sind, als Kassenvorfall des Typs *Zahlung* gespeichert.
+
+* Für Online-Aufträge ist an der Kasse keine An- oder Teilzahlung möglich. Somit müssen Kund:innen diese Aufträge immer vollständig bezahlen.
+
+* Über die Option *Externer Auftrag: Warenausgang automatisch buchen* in den Kasseneinstellungen legst du fest, ob nach der Bezahlung an der Kasse die Ware automatisch aus dem Lager ausgebucht wird. Diese Option ist bei Kassen, die ab 05.03.2019 erstellt werden, standardmäßig aktiviert. Wenn du die Funktion deaktivierst, erkläre deinen Kassenkräften, in welchen Fällen sie den Warenausgang manuell buchen sollen.
+
+* Online-Aufträge dürfen nicht über plentyPOS, sondern nur im plentymarkets Backend storniert werden. Gehe zum Menü *Aufträge » Aufträge bearbeiten* und öffne den Auftrag. Ändere dann manuell den Auftragsstatus auf *[8] Storniert*.
+
+[#200]
+== Vorbereitende Einstellungen für Online-Aufträge
+
+Click & Collect bedeutet, dass Ware online bestellt und im Laden abgeholt werden kann. Der Auftrag wird in plentyPOS geladen und an der Kasse abgeschlossen. In der Kasse können die folgenden Fälle auftreten:
+
+* Der Auftrag wurde online bestellt und bezahlt. Die Ware wird im Laden abgeholt.
+* Der Auftrag wurde online bestellt. Die Ware wird im Laden bezahlt und abgeholt.
+
+In den folgenden Abschnitten erfährst du, welche Vorbereitungen du treffen musst, um Online-Aufträge an der Kasse abzuschließen.
+
+[#300]
+=== Versandeinstellungen
+
+Wenn du schon eine Kasse nutzt, hast du bereits einen Versanddienstleister *Selbstabholung* und ein Versandprofil *Selbstabholung* eingerichtet. Wir empfehlen dir jedoch, für Click & Collect einen eigenen Versanddienstleister und ein eigenes Versandprofil zu erstellen.
+
+[#400]
+==== Versanddienstleister für Abholung in der Filiale erstellen
+
+Gehe wie unten beschrieben vor, um einen <<fulfillment/versand-vorbereiten#800, Versanddienstleister>> für die Abholung in der Filiale zu erstellen. Im folgenden Beispiel nennen wir diesen Versanddienstleister *Abholung in der Filiale*. Natürlich kannst du auch einen anderen Namen verwenden.
+
+[.instruction]
+Versanddienstleister für Abholung in der Filiale erstellen:
+
+. Öffne das Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versanddienstleister*.
+. Klicke auf *Neu* (icon:plus-square[role="green"]). +
+→ Ganz unten wird eine neue Zeile hinzugefügt.
+. Gib in die Spalte *Namen (de)* den Namen *Abholung in der Filiale* ein.
+. Gib in die Spalte *Namen (Backend)* den Namen *Abholung in der Filiale* ein.
+. Wähle in der Spalte *Versanddienstleister* die Option *Selbstabholer* aus der Dropdown-Liste.
+. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen.
+
+[#500]
+==== Versandprofil für Abholung in der Filiale erstellen
+
+Erstelle als nächstes ein <<fulfillment/versand-vorbereiten#1000, Versandprofil>> für die Abholung in der Filiale. In diesem Beispiel nennen wir dieses Versandprofil *Abholung in der Filiale*. Natürlich kannst du auch einen anderen Namen verwenden.
+
+[.instruction]
+Versandprofil für Abholung in der Filiale erstellen:
+
+. Öffne das Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versandprofile*.
+. Klicke auf *Neu* (icon:plus-square[role="green"]).
+. Wähle den Versanddienstleister *Abholung in der Filiale* aus der Dropdown-Liste, den du gerade erstellt hast.
+. Gib für die Option *Namen (de)* den Namen *Abholung in der Filiale* ein.
+. Gib für die Option *Namen (Backend)* den Namen *Abholung in der Filiale* ein.
+. Aktiviere den *Mandanten (Shop)*, für den du die Abholung in der Filiale anbieten möchtest.
+. Aktiviere die *Auftragsherkunft*. Wir empfehlen die Herkünfte *0 Manuelle Eingabe* und den *Mandanten (Shop)*.
+. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen. +
+→ Das Tab *Portotabelle* wird angezeigt. +
+*_Hinweis:_* Die Abholung in der Filiale ist in der Regel versandkostenfrei. Daher werden in diesem Beispiel keine Versandkosten gespeichert.
+. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen des Tabs *Portotabelle* ohne Änderungen.
+
+[#600]
+==== Versandprofil für Abholung in der Filiale am Artikel aktivieren
+
+Aktiviere nun das Versandprofil *Abholung in der Filiale* bei den Artikeln, die online bestellt und im Laden abgeholt werden können.
+
+[.instruction]
+Versandprofil für Abholung in der Filiale am Artikel aktivieren:
+
+. Öffne das Menü *Artikel » Artikel bearbeiten*.
+. Öffne den Artikel.
+. Wechsele in das Tab *Global*.
+. Aktiviere das Versandprofil *Selbstabholung*.
+. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen.
+
+[TIP]
+.Versandprofil für mehrere Artikeln aktivieren
+====
+Du möchtest das Versandprofil für eine größere Anzahl an Artikeln gleichzeitig aktivieren? Dann nutze die <<artikel/artikel-verwalten#155, Artikel-Gruppenfunktion>>.
+====
+
+[#700]
+=== Zahlungsart für Zahlung im Laden aktivieren
+
+Aktiviere nun die Zahlungsart *Barzahlung*, damit Online-Aufträge auch im Laden bezahlt werden können.
+
+* Stelle das Plugin link:https://marketplace.plentymarkets.com/plugins/payment/PayUponPickup_4757[Barzahlung] für den Mandanten bereit. Standardmäßig wird im Webshop der Name der Zahlungsart, also "Barzahlung" angezeigt. Ändere optional den Namen der Zahlungsart, zum Beispiel zu "Bezahlung in der Filiale".
+
+[#800]
+=== Warenbewegungen festlegen
+
+Zum Schluss legst du fest, wie der Warenbestand von online bestellten Artikeln behandelt werden soll, die im Ladengeschäft abgeholt werden.
+
+[.instruction]
+Warenbewegungen für Online-Aufträge festlegen:
+
+. Öffne das Menü *Einrichtung » Mandant » [Mandant wählen] » POS*.
+. Öffne die Kasse. +
+→ Das Tab *Grundeinstellungen* öffnet sich.
+. Die Option *Externer Auftrag: Warenausgang automatisch buchen* ist vorausgewählt. Der Warenausgang wird also nach der Bezahlung immer automatisch gebucht. Deaktiviere die Option, wenn der Warenausgang nur gebucht werden soll, wenn das Kassenpersonal auf *Warenausgang buchen* tippt. +
+*_Tipp:_* Deaktiviere die Option nur, wenn du eine separate Warenausgabe hast, also die Waren nach der Bezahlung nicht direkt an der Kasse aushändigst. Schule außerdem das Kassenpersonal, in welchen Fällen die Schaltfläche betätigt werden soll.
+. Wenn die Ware aus dem Vertriebslager der Kasse ausgebucht werden soll, aktiviere die Option *Warenausgang von externen Aufträgen: Ware aus POS-Vertriebslager buchen*. +
+Wenn du die Option nicht aktivierst, wird die Ware aus dem Lager ausgebucht, das dem Auftrag bei der Erstellung zugewiesen wurde.
+. *Speichere* (icon:save[role="darkGrey"]) die Einstellungen.
+
+Bietest du Click & Collect über deinen Webshop an, aktiviere zusätzlich die Auftragsherkünfte *Manuelle Eingabe*, *Webshop* und, falls zutreffend, die Auftragsherkunft des für Click & Collect genutzten Marktplatzes.
+
+[#900]
+== Online-Aufträge abschließen
+
+Je nachdem, zu welchem Zeitpunkt und auf welche Weise Kund:innen den Online-Auftrag bezahlen, ergeben sich verschiedene Abläufe für die Abwicklung in plentyPOS.
+
+Klicke auf das passende Tab, um Anleitungen für die verschiedenen Vorgehensweisen zu sehen.
+
+[.tabs]
+====
+Bezahlte Ware aushändigen::
++
+--
+
+* Jemand hat online Artikel bestellt und online bezahlt. Die Person kommt in den Laden, um die Ware abzuholen. Die Ware ist bereits vollständig bezahlt.
+
+[IMPORTANT]
+.Identität prüfen
+======
+Erkundige dich, welche Richtlinien es in deinem Ladengeschäft gibt, um sicherzustellen, dass Ware, die online bestellt und bezahlt wurde, auch wirklich an die richtige Person ausgehändigt wird.
+======
+
+[.instruction]
+Bezahlte Ware aushändigen:
+
+. <<pos/pos-kassenbenutzer#500, Finde den Auftrag>>. +
+→ Die Auftragsdaten werden in die Kasse geladen. +
+*_Wichtig:_* Vergewissere dich, dass die Person die Ware wirklich bestellt und bezahlt hat. +
+. Händige die Ware aus.
+. Tippe auf *Warenausgang buchen*. +
+→ Die Ware wird aus dem Lager ausgebucht. +
+*_Tipp:_* Um den Auftrag zu verlassen, ohne ihn abzuschließen, tippe auf *Neuer Auftrag*.
+
+--
+Zahlung für Online-Auftrag buchen::
++
+--
+
+* Jemand hat online Artikel bestellt. Die Person kommt in den Laden, um die Ware abzuholen und vor Ort zu bezahlen.
+
+[.instruction]
+Zahlung für Online-Auftrag buchen:
+
+. <<pos/pos-kassenbenutzer#500, Finde den Auftrag>>. +
+→ Die Auftragsdaten werden in die Kasse geladen. +
+*_Wichtig:_* Vergewissere dich, dass die Person die Ware wirklich bestellt hat. +
+*_Tipp:_* Um den Auftrag zu verlassen, ohne ihn abzuschließen, tippe oben rechts auf das Dreipunktmenü und dann auf *Neuer Auftrag* oder oben links auf *Zurück*.
+. Nimm wie gewohnt die Zahlung entgegen. +
+*_Hinweis:_* Ab App-Version 1.9.2 können bestimmte Online-Aufträge auch mit Mehrzweckgutscheinen bezahlt werden. +
+*_Hinweis:_* Die Auftragsdaten können nicht geändert werden. Du kannst nur die Zahlung entgegennehmen und optional eine Auftragsnotiz speichern.
+. Händige die Ware aus. +
+→ Die Ware wird aus dem Lager ausgebucht. +
+*_Hinweis:_* Wenn nach der Zahlung die Schaltfläche *Warenausgang buchen* angezeigt wird, wird die Ware nur ausgebucht, wenn du auf diese Schaltfläche tippst. +
+→ Erkundige dich bei deiner Vorgesetzten, in welchen Fällen die Ware aus dem Lager ausgebucht werden soll.
+. Tippe auf *Neuer Auftrag*, um mit dem nächsten Kassiervorgang fortzufahren.
+
+--
+Rechnung an der Kasse bezahlen::
++
+--
+
+* Jemand hat Artikel entweder im Laden oder online auf Rechnung gekauft. Die Person hat die Ware bereits erhalten. Nun möchte sie die Rechnung vor Ort im Laden bezahlen.
+
+[.instruction]
+Rechnung an der Kasse bezahlen:
+
+. <<pos/pos-kassenbenutzer#500, Finde den Auftrag>>. +
+→ Die Auftragsdaten werden in die Kasse geladen. +
+*_Hinweis:_* Der Auftrag kann nicht mehr geändert werden. +
+*_Tipp:_* Um den Auftrag zu verlassen, ohne ihn abzuschließen, tippe oben rechts auf das Dreipunktmenü und dann auf *Neuer Auftrag* oder oben links auf *Zurück*.
+. Nimm wie gewohnt die Barzahlung und/oder Kartenzahlung entgegen. +
+→ Die Ansicht *Auftrag aktualisiert* wird angezeigt. +
+. Nimm wie gewohnt die Zahlung entgegen. +
+*_Hinweis:_* Ab App-Version 1.9.2 können bestimmte Online-Aufträge auch mit Mehrzweckgutscheinen bezahlt werden. +
+→ Der Auftrag wird aktualisiert. +
+→ Ein Zahlungsbeleg wird gedruckt. Anderenfalls tippe auf *Beleg drucken*, um den Beleg zu drucken. +
+*_Tipp:_* Über die Schaltfläche *Auftrag anzeigen* rufst du die Auftragsdaten auf.
+. Tippe auf *Neuer Auftrag*, um mit dem nächsten Kassiervorgang fortzufahren.
+
+--
+====

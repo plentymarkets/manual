@@ -1,70 +1,60 @@
 = SSL certificates
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: SSL, SSL certificate, SSL certificates, SSL certification, Trusted Shops, Certificate Authority, Certification Authority, CA, AlwaysOn, DigiCert, Let’s Encrypt, Let's_Encrypt, let's_enrypt, Lets_Encrypt, lets_encrypt, COMODO, comodo, Primary domain, Main domain, DNS, DNS settings, AutoScaling, CNAME, CNAME entry, Hostmaster, Wildcard, challengeSolved, https
+:keywords: SSL, SSL, SSL, SSL certificate, SSL certificate, SSL certificate, SSL certificates, SSL certification, SSL-certificate, SSL-certificates, SSL-certification, Certificate Authority, Certification Authority, CA, AlwaysOn, DigiCert, CertCenter, Comodo, DV, OV, EV, https
 :position: 50
 :url: business-decisions/system-administration/ssl-certificate
 :id: LAF1PEI
 :author: team-cloud
-//zuletzt aktualisiert am 18.08.2020
 
-An SSL certificate is used to encrypt your website. It provides a secure connection to your website and your online store. An SSL certificate is required for certain markets and for receiving the Trusted Shops certification. You know you’re using an SSL certificate if your website is accessed via _https_.
+////
+zuletzt aktualisiert am 16.07.2021
+////
+
+An SSL certificate is used to encrypt your website. It provides a secure connection to your website and your online store.
+An SSL certificate is required for certain markets and for receiving the Trusted Shops certification.
+You know you’re using an SSL certificate if your website is accessed via _https_.
+
+plentymarkets includes an assistant that helps you order and manage manage your SSL certificate.
+Please note that such tasks are usually completed by a _system administrator_.
+This page is quite technical since it serves as a reference for system administrators and helps them complete their administrative tasks in plentymarkets.
 
 [#100]
 == Which SSL certificates are available?
 
-SSL certificates are offered by independent certificate providers. plentymarkets offers different types of SSL certificates:
+SSL certificates are issued by independent certification authorities.
+plentymarkets offers different types of SSL certificates:
 
-[cols="1,4"]
+[cols="1,4a"]
 |====
 |Type |Explanation
 
-|link:https://www.websecurity.digicert.com/de/de/security-topics/always-on-ssl[AlwaysOn]{nbsp}icon:external-link[] +
-(DV)
-a|* cheapest SSL certification model
+|DV
+|
+* DV = Domain Validation.
+** DV certificates are very common.
+** They are verified by the domain name only.
+* cheapest SSL certification model
 * issued by DigiCert
-* Length of validity:
-** 6 months
-* Order it:
-** In the setup menu
-* Renewal:
-** not automatically renewed
-** <<business-decisions/system-administration/ssl-certificate#1300, should be renewed>> after 5 months.
 
-|link:https://comodosslstore.com/[COMODO]{nbsp}icon:external-link[] +
-(DV)
-a|* globally recognised and trusted certification authority.
-* the certification authority is liable in the event of misuse or loss of data.
-* Length of validity:
-** 1 year
-** for newly ordered certificates, the validity period begins when the certification authority confirms the order.
-** remaining validity cannot be transferred from the previous certificate.
-* Order it:
-** In the setup menu
-* Renewal:
-** not automatically renewed
-** <<business-decisions/system-administration/ssl-certificate#1300, should be renewed>> at the end of the validity period.
-** A reminder email is sent to the hostmaster address 14 days before the certificate officially expires.
-** It’s also possible to receive email reminders. The link:https://letsmonitor.org/[LetsMonitor.org]{nbsp}icon:external-link[] service is a free option.
-
-|link:https://sectigo.com/[Sectigo]{nbsp}icon:external-link[] +
-(OV/EV)
-a|OV and EV certificates entail a more comprehensive verification process, but they also provide more trust.
-
+|OV
+|
 * OV = Organizational Validation
+** OV certificates entail a more comprehensive verification process, but they also provide more trust.
 ** The certificate authority verifies the company.
 In doing so, details such as the company name, location and address are compared with information from the commercial register.
+* mid-range certification model
+* issued by CertCenter
+//zukünftig werden OV und EV auch über DigiCert laufen, d.h. es wird auch möglich sein, sie automatisch zu verlängern (siehe Kapitel Bestellung)
+
+|EV
+|
 * EV = Extended Validation
-** Considered to be the most secure and trustworthy solution.
-** The certificate authority completes a validation process specified by link:https://cabforum.org/extended-validation/[CA/Browser Forum]{nbsp}icon:external-link[].
-//**
-* Length of validity:
-** 1 year
-* Order it:
-** With an assistant
-* Renewal:
-** Renewal is not currently possible.
-The certificate needs to be renewed in the assistant at the end of the validity period.
+** EV certificates entail the most comprehensive verification process, but they’re also considered to be the most secure and trustworthy solution.
+** The certificate authority completes a validation process specified by link:https://cabforum.org/extended-validation/[CA/Browser Forum^].
+* most secure and trustworthy certification model
+* issued by CertCenter
+//zukünftig werden OV und EV auch über DigiCert laufen, d.h. es wird auch möglich sein, sie automatisch zu verlängern (siehe Kapitel Bestellung)
 |====
 
 [#200]
@@ -74,20 +64,20 @@ The certificate needs to be renewed in the assistant at the end of the validity 
 [cols="2,1,1,1,1", options="header"]
 |====
 |
-^|AlwaysOn +
-DV
-^|COMODO +
-DV
-^|Sectigo +
+^|Comodo InstantSSL +
 OV
-^|Sectigo +
+^|Comodo Positive +
 EV
+^|AlwaysOnSSL +
+DV
+^|RapidSSL Standard +
+DV
 
 |Validity period
-^|6 months
-^|1 year
-^|1 year
-^|1 year
+^|12 months
+^|12 months
+^|3 months
+^|12 months
 
 |Monthly fee
 ^|€2
@@ -96,16 +86,16 @@ EV
 ^|€2
 
 |Cost of the SSL certificate
-^|€0
-^|€35.70
 ^|€118.80
 ^|€348
+^|€0
+^|€35.70
 
 |One-time setup fee
-^|€0
-^|€0
 ^|€29
 ^|€99
+^|€0
+^|€0
 |====
 [.small]#All prices are listed in net.#
 
@@ -132,9 +122,12 @@ image::business-decisions/system-administration/assets/external-domain.png[]
 [#500]
 === Active autoscaling
 
-A few systems have not been switched to link:https://aws.amazon.com/autoscaling/[autoscaling]{nbsp}icon:external-link[] (AS).
-In most cases, this is because the domain is not hosted by plentymarkets. As such, the domain owner must adjust the DNS settings manually.
-Another cause might be that the domain was added to a client for the first time. These clients are not automatically switched to autoscaling. The plentymarkets support team needs to manually activate autoscaling.
+A few systems have not been switched to link:https://aws.amazon.com/autoscaling/[autoscaling^] (AS).
+In most cases, this is because the domain is not hosted by plentymarkets.
+As such, the domain owner must adjust the DNS settings manually.
+Another cause might be that the domain was added to a client for the first time.
+These clients are not automatically switched to autoscaling.
+The plentymarkets support team needs to manually activate autoscaling.
 
 [#600]
 [discrete]
@@ -146,11 +139,12 @@ Look at the DNS settings in the domain assistant to see whether AS is activated 
 Checking the autoscaling status:
 
 . <<business-decisions/system-administration/domains#50, Open the domain assistant>> and navigate to the step *Current DNS Settings*. +
-*_Note:_* This step only appears if you selected *Add a new domain, hosted externally* in the step <<business-decisions/system-administration/domains#100, Domain type>>.
+*_Note_*: This step only appears if you selected *Add a new domain, hosted externally* in the step <<business-decisions/system-administration/domains#100, Domain type>>.
 . In the column *DNS Record Type*, check if a CNAME entry exists for the domain. +
-→ If a CNAME entry exists, autoscaling is active. An SSL certificate can be ordered. +
+→ If a CNAME entry exists, autoscaling is active.
+An SSL certificate can be ordered. +
 → If no CNAME entry exists, but rather two A records, autoscaling is not active.
-. If autoscaling is not active, contact the plentymarkets support via the link:https://forum.plentymarkets.com/t/46996/[plentymarkets Forum]{nbsp}icon:external-link[] and ask them to activate autoscaling. The thread is in German, but the support staff can also speak English.
+. If autoscaling is not active, contact the plentymarkets support via the link:https://forum.plentymarkets.com/t/46996/[plentymarkets Forum^] and ask them to activate autoscaling. The thread is in German, but the support staff can also speak English.
 
 Example of the DNS settings shown for a system on AS:
 
@@ -159,10 +153,12 @@ image::business-decisions/system-administration/assets/current-dns-settings.png[
 [#700]
 === For subdomains: Existing parent domain
 
-If you want to order an SSL certificate for a subdomain, then the parent domain must also exist in the assistant. The relationship between the domain and subdomain must also be entered correctly in the assistant.
+If you want to order an SSL certificate for a subdomain, then the parent domain must also exist in the assistant.
+The relationship between the domain and subdomain must also be entered correctly in the assistant.
 <<business-decisions/system-administration/domains#50, Check the settings in the assistant>>.
 
-If the parent domain was deleted from the assistant, then create the parent domain again. If you do not want this parent domain to point to plentymarkets, but rather e.g. to Showare, then save an external A record for the parent domain by <<business-decisions/system-administration/domains#210a, creating a system link>>.
+If the parent domain was deleted from the assistant, then create the parent domain again.
+If you do not want this parent domain to point to plentymarkets, but rather e.g. to Showare, then save an external A record for the parent domain by <<business-decisions/system-administration/domains#210a, creating a system link>>.
 
 [#800]
 === For external domains: DNS settings
@@ -174,7 +170,7 @@ This means that the domain for which the certificate is to be ordered must be ac
 → Check the settings in the service area of your domain provider.
 * The domain that the SSL certificate is being ordered for must not have an IPv6 entry (AAAA record). +
 → Check the settings in the service area of your domain provider.
-* Any existing link:https://en.wikipedia.org/wiki/DNS_Certification_Authority_Authorization[CAA records]{nbsp}icon:external-link[] must allow the certificate to be ordered for the chosen domain. +
+* Any existing link:https://en.wikipedia.org/wiki/DNS_Certification_Authority_Authorization[CAA records^] must allow the certificate to be ordered for the chosen domain. +
 → Check the settings in the service area of your domain provider.
 The necessary CAA record is as follows:
 
@@ -190,6 +186,7 @@ The necessary CAA record is as follows:
 
 [#900]
 === Remove 301 redirects for '/'
+
 Open the domain assistant for the particular domain and make sure there is <<business-decisions/system-administration/domains#domain-mailserver, no 301 redirect for the homepage>>, as shown in the following example:
 
 `/;Target-URL;301;L`
@@ -200,6 +197,7 @@ Open the domain assistant for the particular domain and make sure there is <<bus
 
 [#1000]
 === No manually created sub-domain for www.
+
 A manually created sub-domain for `www.yourDomain.tld` prevents the SSL certificate from being issued, since it would create a duplicate DNS entry for `www`.
 If you manually created such a sub-domain, you will need to delete it.
 
@@ -227,66 +225,73 @@ Work through this checklist to make sure that you’ve met all of the <<business
 Once you’ve met all of the <<business-decisions/system-administration/ssl-certificate#300, requirements>>, you can order an SSL certificate.
 plentymarkets orders the SSL certificate on your behalf and bills you for the one-off purchase price and the monthly fee.
 
-Depending on <<business-decisions/system-administration/ssl-certificate#100, which type of certificate>> you want to order, you’ll either complete the purchase in the Setup menu or in the assistant.
-
-[IMPORTANT]
+[WARNING]
 .Only one SSL certificate for the domain
 ====
 A domain can only have one SSL certificate.
-If your domain already has an SSL certificate in the Setup menu, and then e.g. you order a new certificate in the assistant, then the new certificate will overwrite the existing one.
-====
-
-[#1220]
-=== With the assistant
-
-Only OV and EV certificates (Sectigo) are ordered in the assistant.
-If you want to order a DV certificate (AlwaysOn und COMODO), then you need to do this <<business-decisions/system-administration/ssl-certificate#1280, in the Setup menu>>.
-
-[TIP]
-.Why don't I see the assistant?
-====
-OV and EV certificates are very new.
-They are currently being tested with a small group of select sellers.
-Do you want to order an OV or EV certificate?
-link:https://forum.plentymarkets.com/c/core[Then write to us in the forum!]{nbsp}icon:external-link[]
+Example: If your domain already has an SSL certificate and you order a new one, then the new certificate will overwrite the existing one.
 ====
 
 [#1240]
-==== Completing the assistant
+=== Completing the SSL assistant
 
 . Go to *Setup » Assistants » Basic setup*.
 . Click on the *SSL management* assistant. +
-→ If you’ve already configured SSL certificates, then you’ll see them listed here.
-. Click on an existing SSL certificate to open its settings. Or click on *New configuration* (icon:plus[role="green"]).
-. Complete each step of the assistant. Note <<table-setps-ssl-assistant>>.
-. Once you’ve placed the order in the assistant, you’ll still need to <<business-decisions/system-administration/ssl-certificate#1260, complete the validation process with Sectigo>>.
+→ Your SSL configurations are displayed here.
+. Click on an SSL configuration to open its settings.
+. Complete each step of the assistant.
+Note <<table-setps-ssl-assistant>>.
+. *_OV and EV certificates_*: Once you’ve placed the order in the assistant, you’ll still need to <<business-decisions/system-administration/ssl-certificate#1260, complete a validation process>>.
+
+image::business-decisions/system-administration/assets/ssl-assistant.png[]
 
 .Steps of the SSL assistant
 [[table-setps-ssl-assistant]]
 [cols="1,4"]
 |====
-|Step |Explanation
+|Setting |Explanation
 
-| *SSL type*
+2+^| *Step: Certificate*
+
+| *Current SSL*
+|This area is purely informative.
+Here you can see e.g. which certificate you’re currently using and when it expires.
+
+| *Select a certificate*
 |Choose <<business-decisions/system-administration/ssl-certificate#100, the desired SSL certificate>>.
 
-| *Contact data*
-a|Enter information about your company and about a contact person.
+| *Automatic renewal*
+|Activate this option (icon:toggle-on[role="blue"]) if you want the SSL certificate to automatically be renewed at the end of its term.
 
-* *_Contact person_*: this person must be authorised to complete the validation process, e.g. CIO or CEO.
-* *_Company contact_*: the company data must match the information in the commercial register.
+*_Note_*: OV and EV certificates cannot be renewed automatically.
+Shortly before your certificate expires, you will receive a notification, which reminds you to order a new certificate.
 
-| *Confirmation*
+2+^| *Step: Contact data*
+
+| *Contact person*
+|Enter information about a contact person.
+This person must be authorised to complete the validation process, e.g. CIO or CEO.
+
+| *Company contact*
+|Enter information about your company.
+The company data must match the information in the commercial register.
+
+2+^| *Step: Confirmation*
+
+|
 |Read a summary of the service options that you chose.
 By completing the assistant, you confirm that you want to book these paid services.
 
-| *Summary*
+2+^| *Step: Summary*
+
+|
 |This step is purely informative.
 |====
 
 [#1260]
-==== Validation process after ordering
+==== OV and EV certificates: Validation process after ordering
 
+OV and EV certificates entail a more comprehensive verification process.
 Once you’ve placed the order, you’ll receive a confirmation email (SSL Subscriber Agreement) from Sectigo.
 Follow the instructions in the email to complete the validation process.
 
@@ -310,89 +315,137 @@ The validation process must be completed by an authorised person, e.g. CIO or CE
 During the process, legally binding documents need to be signed by someone with signatory rights.
 ====
 
-[#1280]
-=== In the setup menu
-
-Only DV certificates (AlwaysOn and COMODO) are ordered in the Setup menu.
-If you want to order an OV or EV certificate (Sectigo), then you need to do this <<business-decisions/system-administration/ssl-certificate#1220, in the assistant>>.
-
-[.instruction]
-Ordering an SSL certificate in the Setup menu:
-
-. Go to *Setup » Client » Select client » SSL*. +
-→ The domain’s certificates are displayed.
-. In the row *Order new SSL for domain: [domain name]*, click on the down arrow to the right. +
-→ The SSL certificates that are available for the domain are displayed.
-. Check the available SSL certificates.
-. Click on icon:shopping-cart[role="darkGrey"] *Order SSL certificate* in the line of the SSL certificate that you want to book. +
-→ The SSL certificate is ordered. +
-*_Note:_* It can take up to 2 hours for the SSL certificate to be activated.
-. Delete the browser cache.
-. *_Optional:_* Delete the DNS cache.
-  .. Click the shortcut key *Windows key + R*.
-  .. Enter `CMD` and press *Enter*.
-  .. Enter the command `ipconfig /flushdns`. +
-    → The DNS cache is cleared.
-
-[TIP]
-.When is the order complete?
-====
-The order process is only finished when the status in the backend says "Complete". Any messages that include the word "challenge..." mean that the order is still being processed. <<business-decisions/system-administration/ssl-certificate#1400, Refer to the FAQ>> if the order status is stuck in "challengeSolved".
-====
-
 [#1300]
 == Renewing an SSL certificate
 
-SSL certificates must be renewed, i.e. reordered, before they expire.
-Even if you already have an SSL certificate, you will still need to order a new certificate before it expires.
-You will need to select a certificate provider and duration every time you order an SSL certificate.
+You will be notified shortly before your SSL certificate expires.
+The notification includes further information and instructions.
+But you can always see for yourself when your SSL certificate expires and if your certificate will be renewed automatically.
+
+image::business-decisions/system-administration/assets/assistant-summary.png[]
 
 [.instruction]
-Checking the expiration date of an AlwaysOn or COMODO SSL certificate:
+Checking the expiration date:
 
-. Go to *Setup » Client » Select client » SSL*. +
-→ You will see a table with the domain’s certificates. +
-. The column *Valid until* shows you when the certificate expires.
+. Go to *Setup » Assistants » Basic setup*.
+. Click on the *SSL management* assistant. +
+→ Your SSL configurations are displayed here.
+. Click on an SSL configuration to open its settings.
+. Navigate to the step *Summary*.
+. Expand the field *Certificate* (icon:chevron-down[role="darkGrey"]).
+. The line *Active until* shows you when the certificate expires.
+. The line *Automatically renew certificate* includes the information *Yes* or *No*.
+. <<business-decisions/system-administration/ssl-certificate#1200, Re-order the certificate if needed>>.
 
 [#1400]
-== Frequently Asked Questions (FAQ)
+== FAQ
 
-[qanda]
-*Which domain should I order the SSL certificate for?*::
-.. You order the SSL certificate for your main domain, i.e. the domain that is listed as the primary domain in the menu *Setup » Assistants » Basic setup » Domain assistant*.
+[.collapseBox]
+.*Which domain should I order the SSL certificate for?*
+--
+
+You order the SSL certificate for your main domain, i.e. the domain that is listed as the primary domain in the menu *Setup » Assistants » Basic setup » Domain assistant*.
 If you want to set up an SSL certificate for a different domain, you will have to <<business-decisions/system-administration/domains#210a, set this domain as your main domain>> first.
-.. You can continue to have a domain hosted externally and <<business-decisions/system-administration/domains#160, save the DNS settings with this external provider>>. However, the SSL certificate needs to be saved close to the system. This means that even if the domain is hosted externally, the actual encoding is done directly in the system after the domain forwarding via IP address is carried out. As such, it is not possible to use an external SSL certificate. The SSL certificate needs to be ordered from plentymarkets.
-.. You cannot order SSL certificates for cancelled domains, start-up domains and test domains, i.e. domains with names that contain _plenty-testdrive.eu_, _plentymarkets-x1.com_ etc.
 
-*What will happen if I change the primary domain?*::
-.. SSL certificates are linked to a domain. This means, for example, that if the main domain is changed, then the current certificate will be deactivated, because there is a new main domain without a certificate.
+You can continue to have a domain hosted externally and <<business-decisions/system-administration/domains#160, save the DNS settings with this external provider>>.
+However, the SSL certificate needs to be saved close to the system. This means that even if the domain is hosted externally, the actual encoding is done directly in the system after the domain forwarding via IP address is carried out.
+As such, it is not possible to use an external SSL certificate. The SSL certificate needs to be ordered from plentymarkets.
+
+You cannot order SSL certificates for cancelled domains, start-up domains and test domains, i.e. domains with names that contain _plenty-testdrive.eu_, _plentymarkets-x1.com_ etc.
+
+--
+
+[.collapseBox]
+.*What will happen if I change the primary domain?*
+--
+
+SSL certificates are linked to a domain.
+This means, for example, that if the main domain is changed, then the current certificate will be deactivated, because there is a new main domain without a certificate.
 Deactivated doesn’t mean deleted. If you switch the main domain back to whichever domain already had an SSL certificate, then it can be re-activated, assuming that the SSL certificate hasn’t expired.
 
-*Can I take the SSL certificate with me if I move my domain?*::
-.. You *cannot* take an SSL certificate with you when moving your domain to plentymarkets. Due to technical limitations, it’s only possible to order within our link:https://en.wikipedia.org/wiki/Public_key_infrastructure[public key infrastructure]{nbsp}icon:external-link[].
-This applies to *_both directions_*. It’s true when moving from *_external to plentymarkets_* or from *_plentymarkets to external_*. An SSL certificate that you booked with plentymarkets needs to be saved *_close to the system_*. Therefore, you cannot take it with you when moving your domain. It is *not* possible to export the certificate data (secret private key). It is also not possible to “transfer” an SSL certificate from one domain (ID) to another.
+--
 
-*Do I need a hostmaster mailbox?*::
-.. No, you do not need a `hostmaster@yourDomain.tld` mailbox to purchase an SSL certificate.
+[.collapseBox]
+.*Can I take the SSL certificate with me if I move my domain?*
+--
 
-*Can wildcard SSL certificates be issued?*::
-.. No, so-called wildcard SSL certificates cannot be issued in our infrastructure.
+You *cannot* take an SSL certificate with you when moving your domain to plentymarkets.
+Due to technical limitations, it’s only possible to order within our link:https://en.wikipedia.org/wiki/Public_key_infrastructure[public key infrastructure^].
+This applies to *_both directions_*.
+It’s true when moving from *_external to plentymarkets_* or from *_plentymarkets to external_*.
+An SSL certificate that you booked with plentymarkets needs to be saved *_close to the system_*. Therefore, you cannot take it with you when moving your domain.
+It is *not* possible to export the certificate data (secret private key).
+It is also not possible to “transfer” an SSL certificate from one domain (ID) to another.
 
-*How long does it take for the AlwaysOn or COMODO SSL certificate to be activated?*::
-.. Once you’ve ordered a new certificate, it will need to be published during a regularly scheduled *system process*. *This can take up to 120 minutes.*
-.. In rare cases, the certification authority performs a quality control before they activate the SSL certificate. Therefore, check the confirmation message displayed on the screen. Normally, quality control takes up to 24 hours. If the status in the back end is not “Complete” after 24 hours, then contact the support team in the forum and specify which domain is affected.
+--
 
-*I ordered my AlwaysOn or COMODO certificate several hours ago, but my website still isn’t classified as secure. What can I do?*::
-.. *Option 1:* Once the order has received the status “Complete” in the back end, the local browser cache must be deleted in order to update the certificate.
-.. *Option 2:* There might be a problem with your domain's availability and therefore the certificate cannot be issued correctly. You can check whether it's possible to install LetsEncrypt for your domain on the following page: link:https://letsdebug.net/[https://letsdebug.net/]{nbsp}icon:external-link[] +
+[.collapseBox]
+.*Do I need a hostmaster mailbox?*
+--
+
+No, you do not need a `hostmaster@yourDomain.tld` mailbox to purchase an SSL certificate.
+
+--
+
+[.collapseBox]
+.*Can wildcard SSL certificates be issued?*
+--
+
+No, so-called wildcard SSL certificates cannot be issued in our infrastructure.
+
+--
+
+[.collapseBox]
+.*How long does it take for my SSL certificate to be issued?*
+--
+
+If your SSL certificate was successfully ordered, then you’ll see a success message.
+DV certificates are activated within approximately 2-3 minutes.
+
+--
+
+[.collapseBox]
+.*My SSL certificate wasn’t issued or I got an error message in the assistant. What should I do?*
+--
+
+If your DV certificate wasn’t issued within approximately 2-3 minutes, then:
+
+* open the notification centre (icon:bell[role="darkGrey"]) in the plentymarkets back end.
+In some situations, you’ll receive a message that tells you the source of the problem.
+For example, that you forgot to enter a telephone number.
+* If you cannot solve the problem yourself or if you get an error message in the assistant, then contact the link:https://forum.plentymarkets.com/c/core[plenty-Core team in the forum^].
+
+--
+
+////
+[.collapseBox]
+.*Ich habe mein AlwaysOn oder COMODO Zertifikat bereits vor mehreren Stunden bestellt, meine Seite wird aber noch immer nicht als sicher eingestuft - Was kann ich machen?*
+--
+
+*Option 1:* Once the order has received the status “Complete” in the back end, the local browser cache must be deleted in order to update the certificate.
+
+*Option 2:* There might be a problem with your domain's availability and therefore the certificate cannot be issued correctly.
+You can check whether it's possible to install LetsEncrypt for your domain on the following page: link:https://letsdebug.net/[https://letsdebug.net/] +
 *Validation method: HTTP-01*. If an error message is displayed there, you can report it to us in the forum so that we can check the situation.
 
-*I want to switch from COMODO to AlwaysOn. What should I keep in mind?*::
-.. If you order AlwaysOn while you already have an active SSL certificate from COMODO (aka RapidSSL), then the COMODO certificate will be replaced by the AlwaysOn certificate.
+--
+
+[.collapseBox]
+.*I want to switch from COMODO to AlwaysOn. What should I keep in mind?*
+--
+
+If you order AlwaysOn while you already have an active SSL certificate from COMODO (aka RapidSSL), then the COMODO certificate will be replaced by the AlwaysOn certificate.
 The “old” certificate will not be deleted, but rather deactivated.
-The link:https://forum.plentymarkets.com/c/core[plenty-Core team]{nbsp}icon:external-link[] can re-activate the certificate, assuming it has not expired.
+The link:https://forum.plentymarkets.com/c/core[plenty-Core team] can re-activate the certificate, assuming it has not expired.
 The domain might be classified as "not secure" for a maximum of one hour if the AlwaysOn certificate was just ordered, since it needs to be requested, generated and installed after the order is placed. Once the order has received the status “Complete” in the back end, the local browser cache must be deleted in order to update the certificate.
 
-*The order status is stuck in “challengeSolved”. How can I fix this problem?*::
-.. Check whether you’ve met <<business-decisions/system-administration/ssl-certificate#300, all of the requirements>> for successfully ordering an SSL certificate.
-If you’ve met all of the requirements, but the status is still stuck in "challengeSolved", then contact link:https://forum.plentymarkets.com/c/core[the plenty-Core team in the forum]{nbsp}icon:external-link[].
+--
+
+[.collapseBox]
+.*The order status is stuck in “challengeSolved”. How can I fix this problem?*
+--
+
+Check whether you’ve met <<business-decisions/system-administration/ssl-certificate#300, all of the requirements>> for successfully ordering an SSL certificate.
+If you’ve met all of the requirements, but the status is still stuck in "challengeSolved", then contact link:https://forum.plentymarkets.com/c/core[the plenty-Core team in the forum].
+
+--

@@ -1,0 +1,96 @@
+= Practical example: Correcting/Transferring/Deleting stock
+:lang: en
+include::{includedir}/_header.adoc[]
+:description: Find out how to completely transfer stock of one warehouse to another one.
+:keywords: Best Practices, practical example, Stocktaking, transfer stock, correct stock, transfer warehouse, delete stock
+:position: 90
+:id: GUYCYAG
+:url: stock-management/best-practices
+:author: team-stock
+
+With the data format *Stock* it is possible to change the stock of all variations at once. This is for example helpful, if you want to enter all current stocks into the system after a stocktaking.
+
+Further application possibilities are the redistribution of stock to a new storage location in the same warehouse or into a new warehouse.
+
+== Which steps are necessary in advance for redistributing and correcting stock?
+
+* The warehouse has to be set up.
+* If you’re not only working with the standard storage location, the storage locations have to be set up.
+
+For further information about setting up warehouses and storage locations, refer to the manual page <<stock-management/setting-up-a-warehouse#, warehouse>> and the subordinate pages.
+
+== Examples of use
+In order to better understand the process, we will give you three concrete examples. The first example shows the necessary steps for correcting the stock. However, the stock remains in the same warehouse as before.
+In the second example, the whole stock is transferred into another warehouse. The third example shows how to delete stock and demonstrates what needs to be considered when doing so.
+The data format Stock is used for all of the above mentioned examples and the following parameters must be included:
+
+.Storage and rounding settings
+[cols="1,1,2"]
+|====
+|Parameter| Import settings| Explanation
+
+|VariationID
+|Import
+|Contains the plenty ID of a variation and thus is obligatory for the mapping of the stock.
+
+|Stock
+|Import
+|Contains the stock figure and the import procedure setting Import ensures that the previous stock figure will be overwritten when importing the file. Therefore, the parameter is obligatory.
+
+|WarehouseID
+|Import
+|Contains the warehouse ID and is obligatory, so the stock can be assigned to a warehouse.
+
+|LocationID
+|Import
+|Contains the storage location ID and is obligatory, so the the stock can be assigned to a storage location.
+
+|VariationString
+|Import
+|Contains the full name of a variation. The parameter is optional, but often helps recognising the variation.
+|====
+
+=== Correcting stock
+
+In order to carry out stock corrections, proceed as follows.
+
+[.instruction]
+Correcting stock:
+
+. Export the data format *Stock*.
+. Enter the current stock into the column *Stock*.
+. Save the file.
+. Upload the file in plentymarkets.
+
+=== Transferring the entire stock into a new warehouse
+
+In the described procedure, for a short period of time there is more stock booked in the system than there actually exists. You should especially pay attention to this when having a small stock in which the existing stock is already completely reserved and therefore there may currently be no listing active etc. Due to the additional stock, automated actions such as sending emails or starting listings could be triggered. Basically, the stock in the old warehouse can also be set to zero first, but in that case, listings or other offers that are connected with the stock automatism, may be closed.
+
+[.instruction]
+Transferring stock into a new warehouse:
+
+. Export the data format Stock.
+. Save the file twice.
+. Open one file.
+. Enter the ID of the new warehouse into the column *WarehouseID*.
+. Enter the ID of the new storage location into the column *LocationID*
+. Save the file.
+. Upload the file in plentymarkets.
+. Carry out exemplary tests on two or three items in the stock movements and check, whether stock was booked for the new warehouse
+. Open the second, still un unprocessed file.
+. In the *Stock* column, enter 0 for all stocks.
+. Upload the file in plentymarkets.
+. Carry out exemplary tests on two or three items in the stock movements and check, whether the stock for the old warehouse was set to zero.
+
+=== Deleting stock
+
+When deleting stock you should ensure legally compliant working. Currently, it is possible to delete stock. As this leads to the loss of stock movements, this is not GoBD compliant (German regulation), which is why we advise against doing so. Instead, we recommend using the following procedure.
+
+[.instruction]
+Deleting stock:
+
+. Export the stock via dynamic export.
+. Adapt the CSV file by setting the stocks to zero.
+. Reimport them afterwards.
+
+By doing so, the stock movements aren’t lost and legally compliant working is guaranteed. Deleting a warehouse also leads to the deletion of stock movements, which can’t be recreated. Thus, this isn’t GoDB compliant either.

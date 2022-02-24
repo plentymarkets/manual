@@ -1,0 +1,272 @@
+= Mollie
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: payment method, Mollie, mollie-plugin, mollie-assistant, mollie-account, mollie account, mollie-payment, mollie payment methods, mollie event procedure, mollie-shipping, mollie shipping, mollie-cancellation, mollie cancellation, mollie credit note, mollie configuration, mollie settings, mollie setup, mollie-setup, mollie-settings, mollie integration, payment-plugin, payment plugin
+:description: Integration des Mollie-Plugins
+:position: 70
+:url: payment/payment-plugins/mollie
+:id: U2UV0PY
+:author: team-order-payment
+
+With the Mollie plugin, you integrate the Mollie payment methods in your online shop and make them available to your customers. To do so, download the Mollie plugin from the link:https://marketplace.plentymarkets.com/en/mollie_6272[plentyMarketplace^]. Setup of the payment method is done with an assistant. You also have to carry out a few basic settings in your plentymarkets system so that the payment method is activated in your system. +
+The explanations in this section apply after adding the plugin. You can find more information on adding and installing plugins in the <<plugins#, Plugins>> section of the manual.
+
+[#10]
+== Requirement: Registering with Mollie
+
+To use Mollie, you need a Mollie account and the login data. Without these, the plugin cannot be set up and is not usable. If you don’t have a Mollie account yet, link:https://www.mollie.com/dashboard/signup/5543454?lang=de[register first^] .
+
+[TIP]
+.Currencies supported by Mollie
+====
+There are some parameters set by payment providers, among them usually also supported currencies. Which currencies are supported by Mollie can be found in the Mollie documentation on the page link:https://docs.mollie.com/payments/multicurrency[Multicurrency^].
+====
+
+[#20]
+== Completing the assistant
+
+:name-assistant: Mollie
+:payment-method-name: Mollie
+
+include::../../_includes/textblocks/instructions/completing-assistant-payment-method.adoc[]
+
+[IMPORTANT]
+.Completing the assistant again
+====
+In some cases, you have to complete the assistant again. If you deactivate a Mollie payment method, which is activated in your plentymarkets system, directly via the dashboard in your Mollie account after you have already completed the assistant, you have to complete it again. If you run it again, the settings will match and cannot lead to a misconfiguration.
+====
+
+[.collapseBox]
+.*Single-click payments*
+--
+
+With the function Single-click payments, your customers can save their credit card details directly with Mollie by creating a Mollie customer account. This way, they don't have to enter their payment details every time they buy something and payment processing is faster. If you want to make this function available to your customers, you have to activate it in the assistant. +
+If you have activated Single-click payments, you can see which of your customers use this function. In this case, a unique ID assigned by Mollie is saved in the corresponding contact data record in plentymarkets. In addition, the customers who use Single-click payments are also listed in your Mollie account.
+
+--
+
+include::../_textblocks/completing-assistant-multi-clients.adoc[]
+
+[#30]
+== Linking template containers
+
+The containers needed by default on your online shop are automatically linked during setup with the Mollie assistant.
+
+[#50]
+== Customer classes and shipping profiles
+
+include::../../_includes/textblocks/instructions/customer-class-and-shipping-profile.adoc[]
+
+[#60]
+== Setting up event procedures
+
+Event procedures are part of automations you can set up in plentymarkets. When you use event procedures, a specific event triggers an action for a selection of orders. For further information, refer to the <<automation/event-procedures#, Event procedures>> page of the manual.
+
+In connection to payment providers such as Mollie, event procedures are also used to transmit important information to the payment provider. Regarding Mollie, there are three necessary and a few optional event procedures. The necessary event procedures should be set up in any case. These are registering the shipment of the order items of an order, registering the cancellation of an order and when a refund is created. Mollie needs to be informed if these are initiated. If a set up event procedure is triggered, the corresponding call is directly executed in the background so that Mollie is informed within a very short time. +
+Optional event procedures are available to you next to these three necessary ones. You can use these if they fit into your individual workflow.
+
+In the following chapters, an example configuration and an explanation to each event procedure are given. But it is important to configure every event procedure so that it meets your individual requirements.
+
+[#70]
+=== Registering shipment with Mollie
+
+Use this event procedure to inform Mollie when you shipped an order that was paid with a Mollie payment method. This is a necessary event procedure. +
+This event procedure can also be used for delivery orders. The delivery order is then registered with Mollie as a partial shipment.
+
+:table-event-procedure: <<table-procedure-mollie-transmit-shipment>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-mollie-transmit-shipment]]
+.Event procedure: “Mollie | Register shipment”
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select the event that is to trigger informing Mollie about the shipment, e.g. *Outgoing items booked*.
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Mollie payment methods you are using from the list.
+
+| *Procedure*
+| *Plugin > Mollie - Register shipment*
+|
+
+|====
+
+[#80]
+=== Registering cancellations with Mollie
+
+Use this event procedure to inform Mollie about the cancellation of an order. This is a necessary event procedure. +
+_Note_ that an order cannot be cancelled as long as a payment is pending. The expiry times for the different payment methods are determined by Mollie and can be found link:https://docs.mollie.com/payments/status-changes#expiry-times-per-payment-method[on this page^].
+
+:table-event-procedure: <<table-procedure-mollie-cancellation>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-mollie-cancellation]]
+.Event procedure: “Mollie | Register cancellation”
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select the event that is to trigger informing Mollie about the cancellation, e.g. *Status change*.
+| If you selected *Status change*, then select the <<orders/managing-orders#1200, order status>> you are using for cancelled orders from the drop-down list. By default, these are *8 - Cancelled* and *8.1 - Cancelled by customer*.
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Mollie payment methods you are using from the list.
+
+| *Procedure*
+| *Plugin > Mollie - Register cancellation*
+|
+
+|====
+
+[#90]
+=== Registering refunds with Mollie
+
+Use this event procedure to inform Mollie about the creation of a credit note. This is a necessary event procedure. The procedure *Mollie | Register refund* can be executed based on an order or a credit note order. +
+Make sure that the order items which are to be refunded are contained in the credit note order. You can find more information about credit note orders in general in the chapter <<orders/managing-orders#500, Working with credit note orders>> of the manual.
+
+:table-event-procedure: <<table-procedure-mollie-transmit-refunds>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-mollie-transmit-refunds]]
+.Event procedure: "Mollie | Register refund”
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select the event that is to trigger informing Mollie about the refund, e.g. *New credit note*.
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Mollie payment methods you are using from the list.
+
+| *Procedure*
+| *Plugin > Mollie - Register refund*
+|
+
+|====
+
+[#92]
+=== Refund failed or successful
+
+Following the procedure *Mollie | Register refund*, two additional events are available to illustrate the further process of the order: *Mollie refund failed* and *Mollie refund successful*. These are two optional event procedures that can help you with the further order processing.
+
+* *Mollie | Refund failed* = Determine what should happen with those orders for which a refund could not be executed.
+* *Mollie | Refund successful* = Determine what should happen with those orders for which a refund could be executed.
+
+You can optionally create event procedures with these events to define how to proceed with these orders. The following event procedure is an example. You decide which process fits best into your workflow of order processing.
+
+:table-event-procedure: <<table-events-mollie-refunds>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-events-mollie-refunds]]
+.Event procedures “Mollie | Refund failed” and “Mollie | Refund successful”
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Mollie - Refund failed*
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Mollie payment methods you are using from the list.
+
+| *Procedure*
+| *Order > Change status*
+|Select the order status from the drop-down list that should be assigned to orders with Mollie payment methods for which an error occurred in the refund process. For example, you could create an own <<orders/managing-orders#1200, order status>> for this. This way, you detect the orders which require further processing faster.
+
+|====
+
+[#95]
+=== Shipment failed or successful
+
+Following the procedure *Mollie | Register shipment*, two additional events are available to illustrate the further process of the order: *Mollie | Shipment failed* and *Mollie | Shipment successful*. These are two optional event procedures that can help you with the further order processing.
+
+* *Mollie | Shipment failed* = Determine what should happen with those orders for which the shipment could not be registered with Mollie.
+* *Mollie | Shipment successful* = Determine what should happen with those orders for which the shipment could be registered with Mollie.
+
+You can optionally create event procedures with these events to define how to proceed with these orders. The following event procedure is an example. You decide which process fits best into your workflow of order processing.
+
+:table-event-procedure: <<table-events-mollie-shipments>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-events-mollie-shipments]]
+.Event procedures “Mollie | Shipment failed” and “Mollie | Shipment successful”
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Mollie - Shipment failed*
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Mollie payment methods you are using from the list.
+
+| *Procedure*
+| *Order > Change status*
+|Select the order status from the drop-down list that should be assigned to orders with Mollie payment methods for which the shipment could not be registered with Mollie. For example, you could create an own <<orders/managing-orders#1200, order status>> for this. This way, you detect the orders which require further processing faster.
+
+|====
+
+[#97]
+=== Payment failed
+
+In addition, the event *Mollie | Payment failed* is also available. Using this event is optional. You can use it to determine what should happen with those orders for which the payment has failed. +
+This event takes effect if a payment fails directly after order creation. This could happen, for example, when an order cannot be retrieved from Mollie, the session was deleted or Mollie has a global problem. So, whenever a payment failed, was cancelled or is expired.
+
+You can optionally create event procedures with this event to define how to proceed with these orders. The following event procedure is an example. You decide which process fits best into your workflow of order processing.
+
+:table-event-procedure: <<table-event-mollie-failed-payment>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-event-mollie-failed-payment]]
+.Event procedure “Mollie | Payment failed”
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Mollie - Payment failed*
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Mollie payment methods you are using from the list.
+
+| *Procedure*
+| *Order > Change flag*
+|Select the flag from the drop-down list that should be assigned to the orders with Mollie payment methods, for which a payment failed. This way, you detect the orders which require further processing faster.
+
+|====
+
+[#100]
+== Editing text elements
+
+You can edit texts of the plugin in the *CMS » Multilingualism* menu. The texts can be adapted into all available system languages. To do so, proceed as described below.
+
+[.instruction]
+Adapting language files:
+
+. Go to *CMS » Multilingualism*.
+. On the left side, select the *Source language* from the drop-down list.
+. On the right side, select the *Target language* from the drop-down list.
+. Expand the sections *messages* and *payment methods* in the *Mollie* area.
+. Enter the text for the individual text elements in the area of the target language.
+. Save (icon:save[role="green"]) the settings.
+. Deploy the plugin set again to apply these changes.
+
+By selecting *German* as the *Target language*, you can adapt the German labels for your online shop. The selected labels are then also applied in the back end, only the addition _Plugin: Mollie_ remains. This way, it remains traceable where a payment method comes from. Reload the back end to see the changes.
+
+Find more information on how to edit online shop texts on the manual page <<online-store/setting-up-ceres#231, Editing online store texts>>.

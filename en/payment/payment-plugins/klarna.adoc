@@ -1,0 +1,217 @@
+= Klarna
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: payment method, Klarna, Klarna-plugin, Klarna business account, klarna account, Klarna-account, klarna registration, klarna-registration, klarna event procedure, Klarna Payments, Klarna-Checkout, Klarna pay later, Klarna-module, klarna module, klarna shipping, klarna shipment, Klarna-cancellation, klarna cancellation, klarna-refund, klarna refund, klarna-configuration, klarna configuration, klarna-integration, klarna integration, payment plugin, payment integration, klarna-setup
+:description: Integration of the Klarna plugin.
+:position: 60
+:url: payment/payment-plugins/klarna
+:id: 3SGDQQB
+:author: team-order-payment
+
+With the Klarna plugin, you integrate the Klarna payment methods in your online shop and make them available to your customers. To do so, download the Klarna plugin from the link:https://marketplace.plentymarkets.com/en/klarna_6731[plentyMarketplace^]. Setup of the payment method is done with an assistant. You also have to carry out a few basic settings in your plentymarkets system so that the payment methods are activated in your system. +
+The explanations in this section apply after adding the plugin. You can find more information on adding and installing plugins in the <<plugins#, Plugins>> section of the manual.
+
+[#10]
+== Requirement: Opening a Klarna business account
+
+To work with Klarna, you first need a link:https://www.klarna.com/uk/business/[Klarna business account^]. You get information as well as login details when you open the account. Without these, the plugin cannot be set up and is not usable. In case you have not registered with Klarna yet or your Klarna customer ID does not start with Kxxxxx, send an email to vertrieb@klarna.com.
+
+[#20]
+== Completing the assistant
+
+:name-assistant: Klarna
+:name-payment-method: Klarna
+
+include::../../_includes/textblocks/instructions/completing-assistant-payment-method.adoc[]
+
+include::../_textblocks/completing-assistant-multi-clients.adoc[]
+
+[#40]
+== Customer classes and shipping profiles
+
+include::../../_includes/textblocks/instructions/customer-class-and-shipping-profile.adoc[]
+
+[#50]
+== Setting up event procedures
+
+Set up event procedures so that all needed data are sent to Klarna. 5 event procedures are required for this.
+
+[#60]
+=== Automatically sending shipping confirmations
+
+In order for the payment to be activated with Klarna, a shipping confirmation has to be sent. For this, we recommend the following configuration.
+
+:table-event-procedure: <<table-procedure-klarna-shipping-confirmation>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-klarna-shipping-confirmation]]
+.Event procedure: Send shipping confirmation to Klarna
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Outgoing items booked*
+|
+
+| *Filter 2*
+| *Order > Payment method*
+| Select all payment methods of the Klarna plugin.
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Procedure*
+| *Plugins > Plugin: Send shipping confirmation to Klarna*
+|
+
+|====
+
+[#70]
+=== Automatically sending cancellations
+
+If an order is cancelled, Klarna has to be informed. For this, we recommend the following configuration.
+
+:table-event-procedure: <<table-procedure-klarna-cancellation>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-klarna-cancellation]]
+.Event procedure: Send cancellation to Klarna
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Status change*
+| Select a status from the return range.
+
+| *Filter 2*
+| *Order > Payment method*
+| Select all payment methods of the Klarna plugin.
+
+| *Filter 1*
+| *Order Order type*
+| *Order*
+
+| *Procedure*
+| *Plugins > Plugin: Send cancellation notification to Klarna*
+|
+
+|====
+
+[#80]
+=== Automatically sending refund information to Klarna
+
+If a refund is issued, Klarna has to be informed. For this, we recommend the following configuration.
+
+:table-event-procedure: <<table-procedure-klarna-refund>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-klarna-refund]]
+.Event procedure: Send refund to Klarna
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *New credit note*
+|
+
+| *Filter 2*
+| *Order > Payment method*
+| Select all payment methods of the Klarna plugin.
+
+| *Filter 1*
+| *Order > Order type*
+|*Credit note*
+
+| *Procedure*
+| *Plugins > Plugin: Send refund to Klarna*
+|
+
+|====
+
+[#90]
+=== Automatically sending address changes
+
+If the address given for an order is changed between the order creation and shipping, Klarna has to be informed. For this, we recommend the following configuration.
+
+:table-event-procedure: <<table-procedure-klarna-address-change>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-klarna-address-change]]
+.Event procedure: Send address change to Klarna
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Status change*
+|
+
+| *Filter 2*
+| *Order > Payment method*
+| Select all payment methods of the Klarna plugin.
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Procedure*
+| *Plugins > Plugin: Send address change to Klarna*
+|
+
+|====
+
+[#100]
+=== Automatically send order item changes
+
+If the the order items are changed between the order creation and shipping, For this, we recommend the following configuration.
+
+:table-event-procedure: <<table-procedure-klarna-change-items>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-klarna-change-items]]
+.Event procedure: Send order item changes to Klarna
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| *Status change*
+|Select the status, for which this event is to be activated.
+
+| *Filter 2*
+| *Order > Payment method*
+| Select all payment methods of the Klarna plugin.
+
+| *Filter 1*
+| *Order > Order type*
+|*Order*
+
+| *Procedure*
+| *Plugins > Plugin:  Send order item changes to Klarna*
+|
+
+|====
+
+[#110]
+== Editing text elements
+
+You can edit texts of the plugin in the *CMS » Multilingualism* menu. The texts can be adapted into all available system languages. To do so, proceed as described below.
+
+[.instruction]
+Adapting language files:
+
+. Go to *CMS » Multilingualism*.
+. On the left side, select the *Source language* from the drop-down list.
+. On the right side, select the *Target language* from the drop-down list.
+. Expand the section *payment method* in the *Klarna* area.
+. Enter the text for the individual text elements in the area of the target language.
+. Save (icon:save[role="green"]) the settings.
+. Deploy the plugin set again to apply these changes.
+
+By selecting *German* as the *Target language*, you can adapt the German labels for your online shop. The selected labels are then also applied in the back end, only the addition _Plugin: Klarna_ remains. This way, it remains traceable where a payment method comes from. Reload the back end to see the changes.
+
+Find more information on how to edit online shop texts on the manual page <<online-store/setting-up-ceres#231, Editing online store texts>>.

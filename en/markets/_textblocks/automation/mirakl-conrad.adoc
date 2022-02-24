@@ -1,0 +1,286 @@
+// tag::summary[]
+* Report order confirmation to {marketplace}
+* Report order rejection to {marketplace}
+* Report shipping confirmation to {marketplace}
+* Report order cancellation to {marketplace}
+* Report refund to {marketplace}
+// end::summary[]
+
+// tag::instructions[]
+[#1000]
+=== Report order confirmation to {marketplace}
+
+:table-event-procedure: <<#{marketplace}-event-procedure-order-confirmation>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#table-{marketplace}-event-procedure-order-confirmation]
+.Event procedure to send an order confirmation to {marketplace}
+[cols="1,2,2"]
+|===
+| *Setting*
+| *Option*
+| *Selection*
+
+| *Event*
+| *Status change*
+| Select an event, for example [3] *Waiting for payment*.
+
+| *Filter*
+| *Order > Referrer*
+| *{marketplace}*
+
+| *Procedure*
+| *Plugins > {marketplace}: Accept order*
+|
+|===
+
+[#1005]
+=== Report order rejection to {marketplace}
+
+:table-event-procedure: <<#{marketplace}-event-procedure-order-rejection>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{marketplace}-event-procedure-order-rejection]
+.Event procedure to send an order rejection to {marketplace}
+[cols="1,2,2"]
+|===
+| *Setting*
+| *Option*
+| *Selection*
+
+| *Event*
+| *Status change*
+| Select an event, e.g. *[8] Cancelled*.
+
+| *Filter*
+| *Order > Referrer*
+| *{marketplace}*
+
+| *Procedure*
+| *Plugins > {marketplace}: Cancel order*
+|
+|===
+
+[#1010]
+=== Report shipping confirmation to {marketplace}
+
+:table-event-procedure: <<#{marketplace}-event-procedure-shipping-confirmation>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{marketplace}-event-procedure-shipping-confirmation]
+.Event procedure to send shipping confirmations to {marketplace}
+[cols="1,2,2"]
+|===
+| *Setting*
+| *Option*
+| *Selection*
+
+| *Event*
+| *Status change*
+| Select an event, for example [7] *Outgoing items booked*.
+
+| *Filter*
+| *Order > Referrer*
+| *{marketplace}*
+
+| *Procedure 1*
+| *Plugins: {marketplace}: Update the carrier tracking information for a payment*
+|
+
+| *Procedure 2*
+| *Plugins > {marketplace}: Validate shipping*
+|
+|===
+
+[#1020]
+=== Report order cancellation to {marketplace}
+
+:table-event-procedure: <<#{marketplace}-event-procedure-order-cancellation>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{marketplace}-event-procedure-order-cancellation]
+.Event procedure to send a cancellation to {marketplace}
+[cols="1,2,2"]
+|===
+| *Setting*
+| *Option*
+| *Selection*
+
+| *Event*
+| *Status change*
+| Select an event, e.g. *[8] Cancelled*.
+
+| *Filter*
+| *Order > Referrer*
+| *{marketplace}*
+
+| *Procedure*
+| *Plugins > {marketplace}: Cancel the order item*
+|
+|===
+
+[#1030]
+=== Report refund to {marketplace}
+
+:table-event-procedure: <<#{marketplace}-event-procedure-refund>>
+
+include::../../../_includes/textblocks/instructions/EA.adoc[]
+
+[#{marketplace}-event-procedure-refund]
+.Event procedure to send refunds to {marketplace}
+[cols="1,2,2"]
+|===
+| *Setting*
+| *Option*
+| *Selection*
+
+| *Event*
+| *Status change*
+| Select an event, e.g. *[11] Credit note*.
+
+| *Filter*
+| *Order > Referrer*
+| *{marketplace}*
+
+| *Procedure*
+| *Plugins > {marketplace}: Refund order lines*
+|
+|===
+
+[#1100]
+== Archiving unconfirmed orders
+
+When an order was rejected or cancelled, or there’s a credit note for an order, you should archive the order. You can do this automatically by using the procedure manager.
+
+You have to create a separate procedure for each status.
+
+[#1110]
+=== Archiving rejected orders
+
+[.collapseBox]
+.Setting up a procedure:
+--
+[.instruction]
+Setting up a procedure:
+
+. Go to *Setup » Orders » Procedures*.
+. Click on the *New action* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-rejected-orders}>>.
+. Click on the *Filter* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-rejected-orders}>>.
+. Click on the *Procedure* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-rejected-orders}>>.
+. Save (icon:save[set=plenty]) the settings. +
+→ The procedure is created.
+
+--
+
+[[#marketplace-procedure-manager-rejected-orders]]
+.Procedure manager settings
+[cols="1,3a"]
+|===
+|Tab |Setting
+
+| *Status*
+| Activate the option *Active*. +
+Select when the procedure should be carried out each day. +
+Enter a name.
+
+| *Order type*
+| From the *Status* drop-down list, select the option *[7] Outgoing items booked*. +
+From the *Last status change* drop-down list, select the option *Enter the days*. Enter the value `2` in the new text field. +
+From the *Order referrer* list, select the option {marketplace}.
+
+| *Procedure*
+| Select a final status from the *Change order status* drop-down list, for example 7.99.
+
+|===
+
+[#1120]
+=== Archiving cancelled orders
+
+[.collapseBox]
+.Setting up a procedure:
+--
+[.instruction]
+Setting up a procedure:
+
+. Go to *Setup » Orders » Procedures*.
+. Click on the *New action* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-cancelled-orders}>>.
+. Click on the *Filter* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-cancelled-orders}>>.
+. Click on the *Procedure* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-cancelled-orders}>>.
+. Save (icon:save[set=plenty]) the settings. +
+→ The procedure is created.
+
+--
+
+[[#marketplace-procedure-manager-cancelled-orders]]
+.Procedure manager settings
+[cols="1,3a"]
+|===
+|Tab |Setting
+
+| *Status*
+| Activate the option *Active*. +
+Select when the procedure should be carried out each day. +
+Enter a name.
+
+| *Order type*
+| From the *Status* drop-down list, select the option *[8] Cancelled*. +
+From the *Last status change* drop-down list, select the option *Enter the days*. Enter the value `2` in the new text field. +
+From the *Order referrer* list, select the option {marketplace}.
+
+| *Procedure*
+| Select a final status from the *Change order status* drop-down list, for example 8.99.
+
+|===
+
+[#1130]
+=== Archiving order with credit notes
+
+[.collapseBox]
+.Setting up a procedure:
+--
+[.instruction]
+Setting up a procedure:
+
+. Go to *Setup » Orders » Procedures*.
+. Click on the *New action* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-credit-notes}>>.
+. Click on the *Filter* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-credit-notes}>>.
+. Click on the *Procedure* tab.
+. Carry out the desired settings according to <<{marketplace-procedure-manager-credit-notes}>>.
+. Save (icon:save[set=plenty]) the settings. +
+→ The procedure is created.
+
+--
+
+[[#{marketplace}-procedure-manager-credit-notes]]
+.Procedure manager settings
+[cols="1,3a"]
+|===
+|Tab |Setting
+
+| *Status*
+| Activate the option *Active*. +
+Select when the procedure should be carried out each day. +
+Enter a name.
+
+| *Order type*
+| From the *Status* drop-down list, select the option *[11] Credit note*. +
+From the *Last status change* drop-down list, select the option *Enter the days*. Enter the value `2` in the new text field. +
+From the *Order referrer* list, select the option {marketplace}.
+
+| *Procedure*
+| Select a final status from the *Change order status* drop-down list, for example 11.99.
+
+|===
+// end::instructions[]

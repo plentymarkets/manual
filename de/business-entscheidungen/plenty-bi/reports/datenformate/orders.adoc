@@ -1,0 +1,272 @@
+= orders
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: orders, Report, Rohdaten
+:position: 140
+:url: business-entscheidungen/plenty-bi/reports/datenformate/orders
+:id: KGCWSW7
+:author: team-order-payment
+
+:datenformat: pass:quotes[*orders*]
+:daten: Aufträge
+:spezifikationen: <<tabelle-spezifikationen-orders>>
+:datenspalten: <<tabelle-datenspalten-orders>>
+
+include::./_textblocks/einleitung.adoc[]
+
+== Technische Spezifikationen
+
+include::./_textblocks/spezifikationen.adoc[]
+
+[[tabelle-spezifikationen-orders]]
+.Technische Spezifikationen des Formats *orders*
+[cols=4]
+|====
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|orders
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *orders-xxx.csv.gz*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 5.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 500.000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2020-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|o_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|ja
+|Der Export läuft standardmäßig automatisch im Hintergrund.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|storableFromPlan
+|Speicherung ab Edition
+|plentyBI XS
+|Edition, ab der die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
+
+|processableFromPlan
+|Nutzung ab Edition
+|plentyBI L
+|Edition, ab der die Daten an plentyBI Data Warehouse überführt werden, also zur Nutzung, Filterung und Berechnung von Kennzahlen zur Verfügung stehen.
+|====
+
+== Datenspalten
+
+include::./_textblocks/datenspalten.adoc[]
+
+[[tabelle-datenspalten-orders]]
+.Datenspalten des Formats *orders*
+[cols="1,3,3,3"]
+|====
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
+
+|plenty_id
+|INTEGER NOT NULL
+|plenty ID
+|ID des plentymarkets Systems
+
+| *o_id (Primary key)*
+|VARCHAR NOT NULL
+|order ID
+|ID des Auftrags
+
+|o_plenty_id
+|INTEGER NOT NULL
+|order plenty ID
+|ID des plentymarkets Systems oder Mandanten, über die der Auftrag angelegt wurde
+
+|o_origin_order_ID
+|VARCHAR
+|order origin order ID
+|ID des übergeordneten Hauptauftrags. Diese ID wird nur bei Auftragstypen ausgegeben, die einem sogenannten Hauptauftrag untergeordnet ist (beispielsweise Gutschriften, Retouren und Lieferaufträge).
+
+|os_id
+|NUMERIC(6,4) NOT NULL
+|order status
+|Status des Auftrags im Dezimalformat. Je nach den im System eingerichteten Status werden Zahlen mit bis zu 4 Nachkommastellen ausgegeben. Die IDs der Standardstatus finden Sie auf der Handbuchseite <<daten/interne-IDs#120, Interne IDs in plentymarkets>>.
+
+|o_referrer
+|NUMERIC(5,2)
+|order referrer
+|Herkunft des Auftrags. +
+Mögliche Werte: +
+0 = Manuelle Eingabe +
+1 = Mandant (Shop) +
+2 = eBay +
+4 = Amazon +
+5 = Yatego +
+6 = Kelkoo +
+7 = Google Shopping +
+9 = Wish +
+101 = ricardo +
+102 = Kaufland.de (früher real.de) +
+Weitere mögliche Werte für Auftragsherkünfte finden Sie auf der Handbuchseite <<daten/interne-IDs#90, Interne IDs in plentymarkets>>.
+
+|o_global_referrer
+|NUMERIC(5,2)
+|order global referrer
+|Globale Herkunft des Auftrags
+
+|o_type
+|VARCHAR NOT NULL
+|order type
+|Auftragstyp +
+Mögliche Werte: +
+order = Auftrag +
+delivery order = Lieferauftrag +
+return = Retoure +
+credit note = Gutschrift +
+warranty = Gewährleistung +
+repair = Reparaturauftrag +
+offer = Angebot +
+advance order = Vorbestellung +
+multi-order = Sammelauftrag +
+multi credit note = Sammelgutschrift
+
+|o_is_main_order
+|SMALLINT NOT NULL
+|order is main order
+|Gibt an, ob der Auftrag ein Hauptauftrag ist. +
+1 = Ja +
+0 = Nein
+
+|o_is_net
+|SMALLINT NOT NULL
+|order is net
+|Gibt an, ob der Auftrag netto oder brutto abgerechnet wurde. +
+1 = Netto +
+0 = Brutto
+
+|o_is_b2b
+|SMALLINT NOT NULL
+|order is b2b
+|Gibt an, ob es sich um einen B2B-Auftrag handelt. +
+1 = Ja +
+0 = Nein
+
+|ac_id
+|VARCHAR NOT NULL
+|account contact id
+|ID des Kontakts, der dem Auftrag zugeordnet ist
+
+|o_payment_status
+|SMALLINT NOT NULL
+|order payment status
+|Zahlungsstatus des Auftrags
+
+|o_invoice_postal_code
+|VARCHAR
+|order invoice postal code
+|Postleitzahl der Rechnungsanschrift
+
+|o_invoice_town
+|VARCHAR
+|order invoice town
+|Stadt der Rechnungsanschrift
+
+|o_invoice_country
+|VARCHAR
+|order invoice country
+|Land der Rechnungsanschrift (ISO2 Code)
+
+|o_delivery_postal_code
+|VARCHAR
+|order delivery postal code
+|Postleitzahl der Lieferanschrift
+
+|o_delivery_town
+|VARCHAR
+|order delivery town
+|Stadt der Lieferanschrift
+
+|o_delivery_country
+|VARCHAR
+|order delivery country
+|Land der Lieferanschrift (ISO2 Code)
+
+|o_shipping_profile
+|INTEGER NOT NULL
+|order shipping profile
+|ID des Versandprofil des Auftrags
+
+|o_parcel_service
+|INTEGER NOT NULL
+|order parcel service
+|Versanddienstleister des Auftrags
+
+|smw_id
+|VARCHAR
+|stock management warehouse id
+|ID des Lagers, das dem Auftrag zugeordnet ist
+
+|smw_country
+|VARCHAR
+|stock management warehouse country
+|Land des Lagers, das dem Auftrag zugeordnet ist
+
+|smw_postal_code
+|VARCHAR
+|stock management warehouse postal code
+|Postleitzahl des Lagers, das dem Auftrag zugeordnet ist
+
+|o_entry_at
+|TIMESTAMPTZ NOT NULL
+|order entry at
+|Zeitstempel des Auftragseingangs. Dieses Datum ist über die Benutzeroberfläche im Backend editierbar. Sofern keine Änderung vorgenommen wurde, ist dieses Feld mit dem bereits bestehenden Feld *o_created_at* identisch (Zeitpunkt der Speicherung des Auftrags in der Datenbank).
+
+|o_created_at
+|TIMESTAMPTZ NOT NULL
+|order created at
+|Zeitstempel der Auftragsanlage +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|o_goods_issue_at
+|TIMESTAMPTZ
+|order goods issue at
+|Zeitstempel der Buchung des Warenausgangs +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|o_paid_at
+|TIMESTAMPTZ
+|order paid at
+|Zeitstempel der Buchung des Zahlungseingangs +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+| *o_updated_at*
+|TIMESTAMPTZ NOT NULL
+|order updated at
+|Zeitstempel der letzten Aktualisierung des Auftrags +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|====

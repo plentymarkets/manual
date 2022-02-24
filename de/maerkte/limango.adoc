@@ -1,0 +1,885 @@
+= limango
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: team-plenty-channel
+:keywords: limango, limango, limango.de, limango.de
+:description: Multi-Channel in plentymarkets: Richte die Schnittstelle zum Marktplatz limango in deinem plentymarkets System ein.
+:position: 0
+:url: maerkte/limango
+:id: ZG3WRBH
+
+:market: limango
+:limango:
+
+limango ist die Nr. 1 Plattform in Deutschland für junge Familien und ein Unternehmen der Otto-Group. Neben der geschlossenen Onlineshopping-Community betreibt limango auch den offenen link:https://www.limango.de/shop[Shop^]. Seit dem Launch des Marktplatzes im Jahr 2017 profitieren Endkunden auch von einem breiten, dauerhaft verfügbaren Sortiment, hinter dem inzwischen mehr als 300 Partner stehen.
+
+[#150]
+== Partner:in bei limango werden
+
+Tritt der Nr. 1 Plattform für Familienshopping bei und klicke link:https://entdecke.limango.de/marktplatz-partnerprogramm[hier^], um mehr über den limango Marktplatz und das Partnerprogramm zu erfahren und deine Registrierungsanfrage abzusenden.
+
+Wende dich zur Registrierung alternativ gern auch direkt an das Team des Partnermanagements unter marketplace@limango.de. Ein:e Partnermanager:in wird sich bald mit dir in Verbindung setzen und mit dir gemeinsam das Potenzial auf link:https://www.limango.de[limango.de^] evaluieren und die nächsten Schritte besprechen.
+
+Nach der Registrierung erhältst du Zugangsdaten für limango. Diese Zugangsdaten benötigst du, um limango in plentymarkets einzurichten.
+
+[#200]
+== Informationen zum automatischen Datenaustausch
+
+Nachdem du das Plugin installiert und eingerichtet hast, stehen die in <<#datenaustausch-limango>> gelisteten automatisierten Abläufe bereit.
+
+[[datenaustausch-limango]]
+.Häufigkeit des Datenaustauschs
+[cols="1,3a"]
+|====
+|Daten |Intervall
+
+| Artikelexport
+| einmal täglich
+
+| Bestandsabgleich
+| stündlich +
+*_Tipp:_* Kürzere Abstände sind aus technischen Gründen nicht möglich. Lege wenn nötig einen <<#300, Bestandspuffer>> fest, um Überverkäufe zu verhindern. +
+*_Hinweis:_* Nur ganze Zahlen können exportiert werden. Bestände mit Dezimalstellen (zum Beispiel `0,5`) sind ungültig.
+
+| Preisabgleich
+| stündlich
+
+| Auftragsimport
+| viertelstündlich +
+*_Hinweis:_* Kund:innen zahlen an limango. Trotzdem werden alle Aufträge mit dem Status *[3] Warten auf Zahlung* importiert.
+|====
+
+[#220]
+== Ablauf einer Bestellung bei limango
+
+* Deine Produkte werden im limango Marktplatz gelistet. Der Name deines Unternehmens wird an deinen Produkten angezeigt.
+* Kund:innen geben eine Bestellung auf limango auf.
+* Kund:innen zahlen an limango.
+* Der Auftrag wird in plentymarkets importiert. +
+*_Hinweis:_* Kund:innen zahlen an limango. Trotzdem werden Aufträge mit dem Status *[3] Warten auf Zahlung* importiert.
+* Bei Eingang der Bestellung versendest du die Ware (Dropshipping).
+
+[#170]
+== Plugin installieren
+
+Um limango in plentymarkets nutzen zu können, installiere zuerst das link:https://marketplace.plentymarkets.com/limango_7023[limango-Plugin^] in deinem plentymarkets System. Dieses und andere Plugins findest du im link:https://marketplace.plentymarkets.com/[plentyMarketplace^].
+
+:plugin: limango
+include::_textblocks/instructions/plugin-installation.adoc[]
+
+[#300]
+== Marktplatz in plentymarkets einrichten
+
+Nachdem du das limango-Plugin installiert hast, richtest du den Marktplatz in plentymarkets ein.
+
+=== Grundeinstellungen vornehmen
+
+Nimm zunächt die Grundeinstellungen in den Plugin-Einstellungen ein. Halte dazu die Zugangsdaten bereit, die du von limango erhalten hast.
+
+[.instruction]
+Grundeinstellungen vornehmen:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*. +
+→ Die Liste der Plugin-Sets wird geöffnet.
+. Klicke auf das Plugin-Set, in dem du das limango-Plugin installiert hast. +
+→ Das Plugin-Set wird geöffnet.
+. Klicke auf das Plugin *limango*. +
+→ Die Plugin-Einstellungen werden geöffnet.
+. Nimm die Einstellungen vor. Beachte die Hinweise in <<#limango-setup>>.
+. Speichere (icon:save[set=plenty]) die Einstellungen in jedem Bereich, in dem du Einstellungen vornimmst.
+
+[[limango-setup]]
+.limango einrichten
+[cols="1,2a"]
+|====
+|Einstellung |Erläuterung
+
+2+^| *SFTP-Zugangsdaten*
+
+| *Host*
+| `ftp-partner.limango.de` eingeben.
+
+| *Port*
+| Port `22` eingeben.
+
+| *Benutzername*; +
+*Passwort*
+| Diese Zugangsdaten erhältst du von limango.
+
+2+^| *Bestandsexport*
+
+| *Bestandspuffer*
+| Standardmäßig wird die Bestandssumme aller für die Option *Lager-IDs (kommasepariert)* eingegebenen Lager zu limango exportiert. Eine ganze Zahl eingeben, um die übertragene Bestandsmenge um diese Anzahl zu reduzieren. +
+*_Hinweis:_* Bestandsdaten werden einmal stündlich zu limango exportiert. Aus technischen Gründen sind kürzere Abstände nicht möglich. Der Bestandspuffer hilft dir, Überverkäufe zu verhindern.
+
+| *Zeitpunkt des letzten erfolgreichen Bestandsexports*
+| Der Zeitstempel des letzten erfolgreichen Bestandsexports
+
+| *Lager-IDs (kommasepariert)*
+| ID der Lager eingeben, aus denen Bestandsdaten an {market} exportiert werden sollen. Mehrere ID können kommagetrennt eingegeben werden. +
+*_Hinweis:_* Das virtuelle Gesamtlager hat die ID `-1`. Wenn du diese ID eingibst, wird die Summe der Bestände aller Vertriebslager exportiert.
+*_Tipp:_* Die ID eines Lagers findest du im Menü *Einrichtung » Waren » Lager » [Lager öffnen] » Einstellungen*.
+
+2+^| *Informationen*
+
+| *Durch Plugin erstellte Auftragsherkunft-ID*
+| Die ID der Auftragsherkunft *limango*, die automatisch beim Installieren des Plugins erstellt wird. Diese ID wird automatisch eingetragen.
+
+| *Status des letzten Preisexports*
+a| * *1*/*success* = Die Preise wurden erfolgreich zu limango exportiert. Der Zeitpunkt des Exports wird unter *Zeitpunkt des letzten erfolgreichen Preisexports* angezeigt.
+* *2*/*failed* = Der letzte Preisexport ist fehlgeschlagen.
+
+| *Zeitpunkt des letzten erfolgreichen Preisexports*
+| Der Zeitstempel des letzten erfolgreichen Preisexports.
+
+2+^| *Auftragsstatus*
+
+| *Auftragsstatus für Aufträge ohne Versanddienstleister (> 5 - < 7)*
+| Welcher Status soll Aufträgen zugewiesen werden, wenn der Versanddienstleister im Auftrag nicht mit einem Versanddienstleister in plentymarkets verknüpft ist?
+
+*_Anforderungen an den gewählten Status:_*
+
+* größer als 5
+* kleiner als 7
+* kleiner als der Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)*
+
+Verschiebe Aufträge mit diesem Status nach der Korrektur in den Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)*.
+
+| *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)*
+| Welcher Status soll Aufträgen zugewiesen werden, wenn der Versanddienstleister im Auftrag mit einem Versanddienstleister in plentymarkets verknüpft ist?
+
+*_Anforderungen an den gewählten Status:_*
+
+* größer als 5
+* kleiner als 7
+* größer als der Status für *Auftragsstatus für Aufträge ohne Versanddienstleister (> 5 - < 7)*
+
+2+^| *Versanddienstleister*
+
+| *DHL*; +
+*Hermes*; +
+*UPS* +
+etc.
+| Für jeden Versanddienstleister, den du für limango-Aufträge anbieten möchtest, die plentymarkets-ID des Versanddienstleisters eingeben. +
+*_Tipp:_* Die ID der Versanddienstleister findest du im Menü *Einrichtung » Aufträge » Versand » Optionen » Tab: Versanddienstleister* in der Spalte *ID*. +
+*_Hinweis:_* Die Versandkosten werden in deinem Vertrag mit limango festgelegt. limango speichert sie im limango-Backend. Deshalb gibst du hier die ID des Versanddienstleisters ein, _nicht_ die ID eines Versandprofils.
+
+2+^| *Mandantenauswahl*
+
+| *Plenty ID*
+| Gib die plenty-ID des Mandanten ein, für den limango-Aufträge importiert werden sollen. +
+→ Bei der Auftragsabwicklung werden die für diesen Mandanten erstellten Auftragsdokumente gewählt. +
+Wenn du keinen Mandanten eingibst, werden limango-Aufträge für den Standard-Mandanten importiert. +
+*_Tipp:_* Die plenty-ID deiner Mandanten findest du im Menü *Einrichtung » Mandant » [Mandant wählen] » Einstellungen » Option: Plenty ID*.
+
+2+^| *Bildquelle*
+
+| *Artikelbilder exportieren, wenn keine Variantenbilder verknüpft sind*
+| _Option aktiviert:_ Wenn keine Bilder auf Variantenebene verknüpft sind, werden die ersten 10 Bilder mit der Marktplatzverfügbarkeit limango des Artikels exportiert. +
+*_Tipp:_* Nutze diese Einstellung, wenn deine Varianten nicht über ein Attribut *Farbe* gebildet werden.
+|====
+
+[#600]
+=== Auftragsherkunft aktivieren
+
+:referrer: limango
+:referrer-option: pass:quotes[Option *limango*]
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#500]
+=== Verkaufspreis festlegen
+
+:referrer-price: limango
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#550]
+=== Herkunft in Versandprofilen aktivieren
+
+:referrer: limango
+
+include::_textblocks/instructions/shipping-profile-activate.adoc[]
+
+[#prepare-variations]
+== Varianten vorbereiten
+
+Bereite nun deine Varianten vor.
+
+[#750]
+=== Variantenverfügbarkeit einstellen
+
+:market-availability: limango
+:option-availability: limango
+
+include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
+
+// Web-API NICHT erforderlich!
+
+[#mandatory-fields]
+=== Pflichtangaben an Varianten speichern
+
+An deinen Varianten müssen mindestens die Pflichtangaben gepflegt werden, damit deine Artikeldaten zu limango exportiert werden können. Die folgende Tabelle zeigt die Pflichtfelder, die limango vorgibt, und welche Felder du dafür in plentymarkets pflegst.
+
+[cols="1,4a"]
+|====
+| Pflichtfeld | Einstellung in plentymarkets/Erläuterung
+
+| Produktname
+| Feld *Name 1*, *Name 2* oder *Name 3* und entweder ein Attribut für Farben oder eine Eigenschaft für Farben
+
+Für Produktnamen gelten die folgenden Regeln:
+
+* Gib den Produktnamen auf Deutsch an.
+* Produktnamen dürfen maximal 80 Zeichen haben und sollten so kurz wie möglich sein.
+* Hersteller oder Eigenmarken dürfen nicht im Produktnamen erwähnt werden. Diese Informationen werden bei limango separat angezeigt.
+* Größen, Geschlechterangaben und Wiederholungen dürfen nicht im Produktnamen genannt werden.
+* Die Farbe muss im Produktnamen angegeben werden nach dem Schema *Produktbezeichnung + in + Farbe*. +
+*_Beispiel:_* `T-Shirt in Blau`
+
+| Beschreibung
+| plentymarkets Datenfeld *Artikeltext* + bei bestimmten Kategorien zusätzliche Produktinformationen in einer Eigenschaft des Typs *Text*. +
+*_Beispiel:_* Bei Schuhen benötigst du das Feld *Artikeltext* + eine Materialbeschreibung.
+
+*_Hintergrund:_* Für bestimmte Kategorien erwartet limango besondere Produktinformationen. Je nach Kategorie sind das zum Beispiel technische Daten oder der Lieferumfang. Für solche Informationen gibt es standardmäßig kein Feld an den Varianten. Wir empfehlen dir deshalb, diese Produktinformationen in einer Eigenschaft des Typs *Text* zu speichern. Nenne diese Eigenschaft zum Beispiel `Zusätzliche Produktinformationen limango`. Im Katalog ordnest du dem Marktplatz-Datenfeld *Beschreibung* dann das plentymarkets Datenfeld *Artikeltext* und die Eigenschaft für zusätzliche Produktinformationen kombiniert zu. +
+*_Tipp:_* Vor Integrationsstart erhältst du von limango kategorienspezifische Richtlinien, damit du die Beschreibung an die rechtlichen und inhaltlichen Anforderungen anpassen kannst.
+
+*_Für Beschreibungen gelten die folgenden Regeln:_*
+
+* Die Artikelbeschreibung darf maximal 10.000 Zeichen lang sein. Längerer Text wird nach 10.000 Zeichen auf der Produktdetailseite abgeschnitten.
+* {market} kann keine HTML-Tags verarbeiten. Deshalb werden HTML-Tags beim Export entfernt. Prüfe also deine Artikeltexte. Wenn du viele HTML-Tags verwendest, kann es sinnvoll sein, eine Eigenschaft zu verwenden, in der du die Artikelbeschreibungen ohne HTML-Formatierung speicherst.
+* Für bestimmte Kategorien erwartet limango besondere Produktinformationen. Je nach Kategorie sind das zum Beispiel technische Daten oder der Lieferumfang. Für solche Informationen gibt es standardmäßig kein Feld an den Varianten. Wir empfehlen dir deshalb, diese Produktinformationen in einer Eigenschaft des Typs *Text* zu speichern. Nenne diese Eigenschaft zum Beispiel `Zusätzliche Produktinformationen limango`. +
+*_Tipp:_* Vor Integrationsstart erhältst du von limango kategorienspezifische Richtlinien, damit du die Beschreibung an die rechtlichen und inhaltlichen Anforderungen anpassen kannst.
+
+[.collapseBox]
+.Sonderfall Schuhverkauf
+--
+Die Schuhmaterialien müssen für alle Schuhe in der folgenden Reihenfolge angegeben werden:
+
+* Obermaterial
+* Futter
+* Decksohle
+* Laufsohle
+
+Dabei dürfen nur die folgenden Materialwerte verwendet werden: `Leder`, `beschichtetes Leder`, `Textil` und `sonstiges Material`
+
+Wenn du Schuhe auf dem limango-Marktplatz verkaufen möchtest, müssen Informationen zum Material über das Feld *Beschreibung* an limango exportiert werden. Dazu kombinierst du zwei plentymarkets Datenfelder und exportierst sie als ein Feld an limango.
+
+Entscheide zuerst, wie du die Materialangaben am Artikel pflegen möchtest. Materialangaben kannst du auf zwei Arten an die Beschreibung anhängen:
+
+* Du nutzt das Datenfeld *Technische Daten* des Artikels für Materialangaben.
+
+_oder_
+
+* Du erstellst eine Eigenschaft des Typs *Text*. Diese Eigenschaft verknüpfst du mit der Hauptvariante des Artikels und pflegst die Materialangaben in dieser Eigenschaft.
+
+Nun ordnest du das plentymarkets Datenfeld im Katalog zu, für das du dich entschieden hast:
+
+. Ordne dem Marktplatz-Datenfeld *Beschreibung* das plentymarkets Datenfeld zu, das die Artikelbeschreibung enthält.
+. Klicke rechts neben diesem Datenfeld auf *Datenfeld hinzufügen* (icon:link[rotate=90]).
+. Ordne das plentymarkets Datenfeld zu, das die Materialangaben enthält. +
+*_Tipp:_* Also entweder das Feld *Technische Daten* oder die Eigenschaft, die du für die Materialangaben erstellt hast.
+. Klicke ganz rechts in der Zeile auf *Einstellungen* (icon:cog[]).
+. Wähle aus der Dropdown-Liste *Trennzeichen* die Option *Leerzeichen*.
+--
+
+| Bild URL
+| Bilder können nur im jpg-Format verarbeitet werden.
+
+| Materialzusammensetzung +
+(*Ärmelfutter*; +
+*Obermaterial 3*; +
+*Obermaterial 2*; +
+*Obermaterial 1*; +
+*Membran*; +
+*Material 3* +
+etc.)
+| Für alle Textilerzeugnisse mit einem Gewichtsanteil an Textilfasern von mindestens 80 % ist die Materialangabe in Prozent rechtlich verpflichtend.
+
+Materialangaben werden mit Eigenschaften des Typs *Text* zu limango exportiert. Erstelle für jedes Marktplatz-Datenfeld eine eigene Eigenschaft.
+
+Der Name dieser Eigenschaften muss mit den von limango erlaubten Werten für die Materialkomponenten übereinstimmen:
+
+* link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-composite-types.txt[Gültige Werte für Materialkomponenten^]{nbsp}icon:external-link[]
+
+Die Eigenschaften verknüpfst du mit der Hauptvariante des Artikels und speicherst alle Bestandteile eines Materialmix in dieser Eigenschaft. Wenn die Varianten desselben Artikels unterschiedliche Materialzusammensetzungen haben, deaktiviere die Vererbung für Eigenschaften und pflege die Materialzusammensetzungen pro Variante. Beachte jedoch, dass dadurch die Vererbung für alle Eigenschaften des Artikels deaktiviert werden. Du musst also auch alle anderen Eigenschaften pro Variante pflegen.
+
+Die einzelnen Materialien werden mit absteigender Prozentangabe eingetragen. An erster Stelle steht also das Material mit dem höchsten Prozentanteil, an letzter Stelle das Material mit dem niedrigsten Prozentanteil. Die Summe aller Prozentangaben muss 100 ergeben. Du kannst beliebig viele Materialien angeben.
+Die Materialzusammensetzung gibst du also im folgenden Format ein:
+
+* *{"materialtyp1": "prozentwert","materialtyp2":"prozentwert","materialtyp3":"prozentwert"}* +
+*_Beispiel:_* `{"baumwolle":"90","elasthan":"10"}`
+
+Die Werte für die Materialtypen müssen mit den von limango erlaubten Werten übereinstimmen:
+
+* link:https://raw.githubusercontent.com/plentymarkets/manual/master/de/maerkte/assets/limango-material-types.txt[Gültige Werte für Materialtypen^]{nbsp}icon:external-link[]
+
+[.collapseBox]
+.*_Beispiel:_* Materialangaben für einen Damenblazer an limango exportieren
+--
+Als Beispiel wird hier beschrieben, wie du die Materialangaben für einen Blazer für den Export zu limango speicherst.
+
+[.instruction]
+Oberstoff zuordnen und an der Variante speichern:
+
+. Erstelle eine Eigenschaft des Typs *Text* mit dem Namen *obermaterial*.
+. Ordne dem Marktplatz-Datenfeld *Obermaterial* die plentymarkets Eigenschaft *obermaterial* zu.
+. Verknüpfe die Eigenschaft *obermaterial* mit der Hauptvariante des Artikels.
+. Unser Beispielblazer besteht aus 65% Polyester, 32% Viskose und 3% Elastan. In das Eingabefeld der Eigenschaft gibst du also ein:
+  * `{"polyester":"65","viskose":"32","elasthan":"3"}`
+. Speichere die Einstellungen.
+
+[.instruction]
+Futterstoff zuordnen und an der Variante speichern:
+
+. Erstelle eine Eigenschaft des Typs *Text* mit dem Namen *futter*.
+. Ordne dem Marktplatz-Datenfeld *Futter* die plentymarkets Eigenschaft *futter* zu.
+. Verknüpfe die Eigenschaft *futter* mit der Hauptvariante des Artikels.
+. Das Futter unseres Beispielblazers besteht aus 100% Viskose. In das Eingabefeld der Eigenschaft gibst du also ein:
+  * `{"viskose": "100"}`
+. Speichere die Einstellungen.
+--
+
+| UVP
+| . Verkaufspreis des Preistyps *UVP* mit den Varianten verknüpfen.
+. Preis speichern.
+
+*_Für die Angabe des UVP gelten die folgenden Regeln:_*
+
+* Der UVP darf nicht niedriger sein als der Brutto-Verkaufspreis.
+* Wenn der UVP höher ist als der Verkaufspreis, wird im limango-Shop ein Streichpreis angezeigt.
+* Du hast keinen UVP, zum Beispiel weil du selbst Hersteller:in bist? Dann ordne denselben Verkaufspreis wie für das Marktplatz-Datenfeld *Brutto-Verkaufspreis* zu. Bei {market} wird dann kein durchgestrichener Preis angezeigt.
+
+| Bruttoverkaufspreis
+| . Verkaufspreis ohne Preistyp mit den Varianten verknüpfen. +
+. Preis speichern.
+
+| Kategorie
+| plentymarkets Kategorien
+
+| Marke
+| . Herstellernamen im Menü *Einrichtung » Artikel » Hersteller* speichern. +
+. Herstellername an den Varianten wählen.
+
+*_Tipp:_* Wende dich an das limango-Partnermanagement, wenn du neue Marken listen möchtest.
+
+| Geschlecht
+| . Eigenschaft des Typs *Auswahl* mit den folgenden Werten erstellen:
+  ** `Mann`
+  ** `Frau`
+  ** `Unisex`
+. Varianten mit der Eigenschaft verknüpfen und einen der Werte wählen.
+
+image::maerkte/assets/limango-gender-variation.png[]
+
+| Altersgruppe
+| . Eigenschaft mit den folgenden Einstellungen erstellen:
+* Name: Altersgruppe
+* Bereich: Artikel
+* Typ: Auswahl
+* Auswahlwerte:
+  ** `Babys` = Kinder ≤ 1 Jahr
+  ** `Kinder` = Kinder > 1 Jahr
+  ** `Erwachsene`
+. Variante im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Hauptvariante öffnen] » Varianten-Tab: Eigenschaften* mit der Eigenschaft verknüpfen.
+. Für die Variante passenden Eigenschaftswert wählen.
+
+image::maerkte/assets/limango-age-variation.png[]
+
+| Farbe
+| Die Farbe wird für die eindeutige Produktbildung herangezogen. Die Farbe muss also ein eindeutiger Wert sein, zum Beispiel die Herstellerfarbe. Zum Bilden der Artikelnummer wird die Farbe an die SKU gehängt.
+
+Wenn die Varianten ohne Attribute für Farben erstellt wurden, benötigst du eine Eigenschaft:
+
+. Erstelle eine Eigenschaft des Typs *Auswahl* mit den benötigten Farben als Werte.
+. Verknüpfe die Varianten mit der Eigenschaft und wähle einen der Werte. +
+*_Tipp:_* Eine Eigenschaft des Typs *Auswahl* bietet sich an, wenn du häufig wiederkehrende Farbnamen hast.
+
+_oder_
+
+. Erstelle eine Eigenschaft des Typs *Text*.
+. Verknüpfe die Varianten mit der Eigenschaft und gib als Wert die Farbe ein. +
+*_Tipp:_* Eine Eigenschaft des Typs *Text* bietet sich an, wenn die Namen der Farben sehr individuell sind. Hier besteht aber das Risiko, dass sich beim Eingeben des Farbwerts Tippfehler einschleichen.
+
+| Größe
+| Wenn die Varianten ohne Attribute für Größen erstellt wurden, benötigst du eine Eigenschaft.
+
+*_Hinweis:_* Produkte ohne Größe haben bei limango den Größenwert `onesize`. Produkte ohne Größe sind Single-Size-Produkte. Das sind Produkte, die es nur in einer Größe gibt und bei denen die Größenangabe nicht variantenbildend ist. +
+*_Beispiel Möbel:_* Einen Sessel gibt es in verschiedenen Farben, aber nur in einer Größe. Der Größenwert `onesize` muss exportiert werden.
+
+. Erstelle eine Eigenschaft des Typs *Auswahl* mit den benötigten Größen als Werte. +
+*_Tipp:_* Vergiss nicht, den Eigenschaftswert `onesize` für Produkte ohne Größe zu speichern.
+. Verknüpfe die Varianten mit der Eigenschaft und wähle einen der Werte.
+
+| Maßangaben +
+(*Länge*; +
+*Breite*; +
+*Höhe*; +
+*Volumen*; +
+*Durchmesser*; +
+*Gewicht* +
+etc.)
+a| Maße dürfen nur für Produkte ohne Größenvarianten angegeben werden, also für Single-Size-Produkte wie zum Beispiel Möbel.
+
+*_Hintergrund:_* Die Maße können im limango-Shop nur auf Produktebene angezeigt werden. Auf der Variantenebene werden keine Maße angezeigt.
+
+Maßangaben müssen im Format *[Zahlenwert];[Einheit]* zu limango exportiert werden. Wegen der limango Produktstruktur können aber die normalen plentymarkets Datenfelder für Maße nicht zugeordnet werden. Stattdessen erstellst du zwei Eigenschaften:
+
+* Eine Eigenschaft des Typs *Kommazahl* für den Zahlenwert.
+* Eine Eigenschaft des Typs *Auswahl* für die Einheit mit den folgenden Auswahlwerten:
+  ** ml
+  ** l
+  ** mm
+  ** cm
+  ** m
+  ** g
+  ** kg
+
+Diese beiden Eigenschaften kombinierst du mit einem Semikolon als Trennzeichen.
+
+[.collapseBox]
+.*_Beispiel:_* Länge an limango exportieren
+--
+. Erstelle eine Eigenschaft des Typs *Kommazahl* mit dem Namen *Länge*.
+. Erstelle eine Eigenschaft des Typs *Auswahl* mit dem Namen *Länge Einheit*.
+. Füge zur Eigenschaft *Länge Einheit* alle Einheiten als Eigenschaftswerte hinzu, die du benötigst.
+. Öffne den limango Katalog.
+. Ordne dem Marktplatz-Datenfeld *Länge* die plentymarkets Eigenschaft *Länge* zu.
+. Klicke rechts neben diesem Datenfeld auf *Datenfeld hinzufügen* (icon:link[rotate=90]).
+. Ordne die Eigenschaft *Länge Einheit* zu. +
+*_Tipp:_* Wenn du dir sicher bist, dass du für alle deine Varianten nur eine einzige Einheit benötigst, kannst du die Einheit auch als eigenen Wert eingeben. Ordne dazu statt der Eigenschaft *Länge Einheit* das Feld *Eigener Wert* zu und gib eine Einheit in das Feld ein.
+. Klicke ganz rechts in der Zeile auf *Einstellungen* (icon:cog[]).
+. Wähle aus der Dropdown-Liste *Trennzeichen* die Option *Semikolon*.
+--
+
+[.collapseBox]
+.*_Beispiel:_* Volumen an limango exportieren
+--
+
+Stell dir vor, du möchtest Angaben zum Volumen von Varianten an {market} exportieren. Dazu gehst du so vor:
+
+. Erstelle eine Eigenschaft des Typs *Kommazahl* mit dem Namen *Volumen*.
+. Erstelle eine Eigenschaft des Typs *Auswahl* mit dem Namen *Volumen Einheit*.
+. Füge zur Eigenschaft *Volumen Einheit* alle Einheiten als Eigenschaftswerte hinzu, die du benötigst. +
+*_Hinweis:_* Nur die Einheiten ML und L können übertragen werden.
+. Öffne den limango Katalog.
+. Ordne dem Marktplatz-Datenfeld *Volumen* die plentymarkets Eigenschaft *Volumen* zu.
+. Klicke rechts neben diesem Datenfeld auf *Datenfeld hinzufügen* (icon:link[rotate=90]).
+. Ordne die Eigenschaft *Volumen Einheit* zu. +
+*_Tipp:_* Wenn du dir sicher bist, dass du für alle deine Varianten nur eine einzige Einheit benötigst, kannst du die Einheit auch als eigenen Wert eingeben. Ordne dazu statt der Eigenschaft *Volumen Einheit* das Feld *Eigener Wert* zu und gib eine Einheit in das Feld ein.
+. Klicke ganz rechts in der Zeile auf *Einstellungen* (icon:cog[]).
+. Wähle aus der Dropdown-Liste *Trennzeichen* die Option *Semikolon*.
+--
+
+| *Energielabel-URL*
+| Lampen und Leuchten mit nicht zerstörungsfrei herausnehmbarem Leuchtmittel sind kennzeichnungspflichtig. Deshalb muss für diese Produkte die URL zum Energielabel exportiert werden.
+
+*_Empfehlung:_* Erstelle eine Eigenschaft des Typs *Text*, in der du die URL des Energielabels an der Variante speicherst.
+
+| *Energieldatenblatt-URL*
+| Für energiekennzeichnungspflichtige Produkte ist ein Energiedatenblatt verpflichtend. Deshalb muss für diese Produkte die URL zum Energieldatenblatt exportiert werden.
+
+*_Empfehlung:_* Erstelle eine Eigenschaft des Typs *Text*, in der du die URL des Energieldatenblatts an der Variante speicherst.
+|====
+
+[#900]
+== Artikeldatenexport einrichten
+
+Artikeldaten werden über ein Katalog-Format zu limango exportiert. Kataloge erstellst du im Menü *Daten » Kataloge*.
+
+include::_textblocks/catalogues/instructions/catalogue-new-to-text.adoc[]
+
+Damit du deine Artikel zu limango exportieren kannst, musst du einen Katalog erstellen. Verknüpfe anschließend im Marktplatz-Format die von limango vorgegebenen Felder mit den in plentymarkets gespeicherten Artikeldaten. Die Katalogdaten werden automatisch in regelmäßigen Abständen zu limango exportiert, wenn du den Katalog aktivierst.
+
+[#901]
+=== Besonderheiten der limango-Artikeldatenstruktur
+
+Die Struktur der Artikeldaten von limango unterscheidet sich von der Struktur in plentymarkets. Die limango Artikeldatenstruktur gliedert sich in drei Ebenen:
+
+[cols="1,3a"]
+|====
+|Ebene |Erläuterung
+
+| *Produktgruppe*
+| Alle Produkte, die zum gleichen Modell gehören, aber in verschiedenen Farben erhältlich sind. +
+*_Tipp:_* Wenn es ein Produkt in nur einer Ausprägung gibt, dann sind die Produktgruppe und die Variante identisch.
+
+| *Produkt*
+| Eine Farbvariation des Produkts. Jede Produktgruppe hat also immer so viele verschiedene Produkte, wie es Farben gibt.
+
+| *Variante*
+| Variation auf Ebene der Größe/EAN/SKU +
+*_Wichtig:_* Jedes Produkt muss mindestens eine Variante haben. +
+*_Tipp:_* Wenn es das Produkt nur in einer Größe gibt, muss die Größe *Onesize* angegeben werden.
+|====
+
+[IMPORTANT]
+.Parent-SKU nutzen
+====
+Du bietest Produkte in verschiedenen Farben an, pflegst die verschiedenen Farben aber in getrennten Artikeln? Dann nutze die Parent-SKU, um zwischen diesen Artikeln eine Beziehung herzustellen. Parent-SKUs können sowohl für Artikel als auch für einzelne Varianten gespeichert werden. Die manuelle SKU-Pflege erlaubt es, für Varianten eines Artikels die Parent-SKU komplett anderer Artikelvarianten zu vergeben.
+
+* Für einen Artikel mit fünf Varianten kann fünfmal die Parent-SKU einer Variante vergeben werden, die einem ganz anderen Artikel angehört. Diese Varianten werden auf limango als Varianten des Artikels gelistet, mit dessen Parent-SKU sie verknüpft sind. +
+* Wird bei einer Variante eine andere Parent-SKU vergeben als bei den restlichen Varianten eines Artikels, werden auf limango zwei verschiedene Artikel gelistet. In plentymarkets muss dafür nur ein Artikel gepflegt werden.
+====
+
+[#902]
+=== Katalog erstellen
+
+Artikeldaten werden über das Marktplatz-Format *limango* zu limango exportiert. Um deine Artikel zu limango zu übertragen, erstellst du im Menü *Daten » Kataloge* einen Katalog. Ordne dann im Marktplatz-Format die von limango vorgegebenen Felder den in plentymarkets gespeicherten Artikeldaten zu.
+
+include::_textblocks/catalogues/instructions/catalogue-new-to-text.adoc[]
+
+TIP: Du kannst für limango nur einen Katalog erstellen. Mehrere Kataloge werden für limango nicht unterstützt.
+
+:catalogue-template-name: limango
+:catalogue-plugin:
+
+include::_textblocks/catalogues/instructions/catalogue-creation.adoc[]
+
+[#903]
+=== Katalogzuordnungen vornehmen
+
+Nachdem du einen Katalog erstellt hast, ordnest du die Datenfelder des Marktplatzes den in plentymarkets gespeicherten Artikeldaten zu. In diesem Kapitel erfährst du, wie du Datenfelder zuordnest und welche Besonderheiten es bei limango gibt. Außerdem findest du hier Empfehlungen für eine korrekte Zuordnung. Die Informationen sind wie folgt aufgebaut:
+
+* <<#907, Datenfelder im Katalog zuordnen>>
+* <<#906, Empfehlungen für limango Datenfeld-Zuordnungen>>
+
+[#907]
+==== Datenfelder im Katalog zuordnen
+
+Ordne nun die Datenfelder von limango den in plentymarkets gespeicherten Artikeldaten zu.
+
+include::_textblocks/catalogues/instructions/catalogue-mapping.adoc[]
+
+[#906]
+==== Empfehlungen für limango Datenfeld-Zuordnungen
+
+include::_textblocks/catalogues/recommended-mappings/recommendation-text.adoc[]
+
+include::_textblocks/catalogues/recommended-mappings/limango-recommended-mappings.adoc[]
+
+[#904]
+=== Katalog aktivieren
+
+:interval: einmal täglich nachts
+
+include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
+
+[#1600]
+== Lieferscheine für limango vorbereiten
+
+Lieferscheine sind bei limango gleichzeitig Retourenscheine. Lieferscheine für {market}-Aufträge müssen die folgenden Angaben enthalten:
+
+* {market}-Briefkopf
+* Deine Firmendaten
+* Von limango vorgegebener Retourenhinweis
+* {market}-Kundennummer
+* {market}-Bestellnummer
+
+Wie du Layout-Vorlagen für Auftragsdokumente in plentymarkets erstellst, wird im Handbuchbereich <<auftraege/auftragsdokumente#170, Aufträge>> beschrieben. Hier auf dieser Seite erfährst du, wie du die PDF-Vorlage hochlädst und die Besonderheiten für den Marktplatz auf deinen Lieferscheinen anzeigst:
+
+* <<#160011, PDF-Vorlage für Lieferscheine personalisieren>>
+* <<#16001, PDF-Vorlage für Lieferscheine hochladen>>
+* <<#16003, Kundennummer und Bestellnummer von limango auf Lieferscheinen ausgeben>>
+* <<#16002, Retourenhinweis für limango-Lieferscheine eingeben>>
+
+[#160011]
+=== PDF-Vorlage für Lieferscheine personalisieren
+
+limango-Lieferscheine müssen das Logo von limango verwenden. limango stellt eine PDF-Vorlage zur Verfügung. Auf dieser PDF-Vorlage ergänzt du noch deine Firmendaten in der Fußzeile, bevor du die Datei in plentymarkets hochlädst.
+
+[.instruction]
+PDF-Vorlage für Lieferscheine personalisieren:
+
+. Lade die PDF-Vorlage für Lieferscheine von limango herunter und speichere sie auf deinem Rechner:
+  ** link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/Lieferschein_Vorlage_limango_Marktplatz.pdf[PDF-Vorlage herunterladen]
+. Öffne die PDF-Vorlage in einem Programm, mit dem du PDF-Dateien bearbeiten kannst.
+. Füge links unten in der Fußzeile die folgenden Firmendaten ein: +
+  `*[dein Firmenname]*` +
+  `Amtsgericht [dein Amtsgericht] HRB [deine HRB]` +
+  `USt.-IdNr. [deine USt.-IdNr.]` +
+. Speichere die PDF-Vorlage.
+
+image::maerkte/assets/limango-footer.png[]
+
+[#16001]
+=== Personalisierte PDF-Vorlage für Lieferscheine hochladen
+
+Gehe wie unten beschrieben vor, um die personalisierte PDF-Vorlage für Lieferscheine in plentymarkets hochzuladen.
+
+[.instruction]
+Personalisierte PDF-Vorlage für Lieferscheine hochladen:
+
+. Öffne das Menü *Einrichtung » Mandant » [Mandant wählen] » Standorte » Standort: Deutschland » Dokumente » Lieferschein*.
+. Wechsele in das Tab *PDF-Vorlage*.
+. Klicke auf *Vorlage hinzufügen*. +
+→ Das Bearbeitungsfenster *Neue PDF-Vorlage hochladen* wird geöffnet.
+. Wähle aus der Dropdown-Liste *Zahlungsart* die Option *Plugin: limango Payment*.
+. *_Tipp:_* Die Zahlungsart *Plugin: limango Payment* wird nicht in der Dropdown-Liste angezeigt?
+  .. Öffne das Menü *Einrichtung » Aufträge » Einstellungen*.
+  .. Wähle für die Einstellung *Inaktive Plugin-Zahlungsarten anzeigen* die Option *Ja*.
+  .. Speichere (icon:save[set=plenty]) die Einstellung.
+. Wähle in der Dropdown-Liste *Sprache* die Option *de*.
+. Klicke in der Zeile *Vorlage* auf *Vorlage auswählen*.
+. Wähle die PDF-Vorlage für Lieferscheine von limango.
+. Klicke auf *Vorlage hochladen* (icon:save[set=plenty]). +
+→ Die Vorlage wird hochgeladen.
+
+[#16003]
+=== Kundennummer und Bestellnummer von {market} auf Lieferscheinen anzeigen
+
+Auf allen {market}-Lieferscheinen müssen die {market}-Kundennummer und die {market}-Bestellnummer erscheinen. Dazu passt du die Vorlage für Lieferscheine an.
+
+[.instruction]
+Kundennummer und Bestellnummer von {market} auf Lieferscheinen anzeigen:
+
+. Öffne das Menü *Einrichtung » Mandant » Standard » Standorte » Deutschland » Dokumente » Lieferschein » Tab: Vorlage*.
+. Scrolle zum Bereich *Optionale Elemente unter Artikelpositionstabelle*.
+. Wähle für die Einstellung *Externe Auftragsnummer* aus der Dropdown-Liste die Option *Ja*.
+. Wähle für die Einstellung *Externe Kundennummer* aus der Dropdown-Liste die Option *Ja*.
+. Speichere (icon:save[set=plenty]) die Einstellungen. +
+→ Die externe Kundennummer wird unterhalb der Artikelpositionen positioniert. +
+*_Tipp:_* Füge in diesem Menü gleich auch den <<#16002, Retourenhinweis>> hinzu.
+
+[#16002]
+=== Retourenhinweis für limango-Lieferscheine eingeben
+
+Auf allen limango-Lieferscheinen muss ein von limango vorgegebener Retourenhinweis erscheinen. Gehe wie unten beschrieben vor, um diesen Retourenhinweis auf Lieferscheinen für limango einzugeben.
+
+[.instruction]
+Hinweis für limango-Lieferscheine eingeben:
+
+. Klappe die Info-Box "Textvorlage: Retourenhinweis für limango-Lieferscheine" unterhalb dieser Beschreibung auf.
+. Kopiere den Text in die Zwischenablage.
+. Öffne das Menü *Einrichtung » Mandant » Standard » Standorte » Deutschland » Dokumente » Lieferschein » Tab: Vorlage*.
+. Navigiere im Bereich *Optionale Elemente unter Artikelpositionstabelle* zu der Einstellung *Zahlungshinweis*.
+. Gehe zu einem Eingabefeld, das noch keine Zahlungshinweise enthält.
+. Wähle aus der Dropdown-Liste *Zahlungsart: bitte wählen* dieses Eingabefelds die Option *Plugin: limango Payment*.
+. Kopiere den Retourenhinweis von limango in das Eingabefeld.
+. Ersetze die beiden Platzhalter "xxx" durch den Namen deines Unternehmens.
+. Speichere (icon:save[set=plenty]) die Einstellungen.
+
+[#16003-1]
+[.collapseBox]
+.Textvorlage: Retourenhinweis für limango-Lieferscheine
+--
+include::_textblocks/explanations/limango-delivery-note-text.adoc[]
+--
+
+[#order-processing]
+== Auftragsabwicklung automatisieren
+
+Automatisiere die folgenden Aspekte der Auftragsabwicklung:
+
+* Melde Stornierungen automatisch an limango (<<#cancellations, Wie?>>)
+* Informiere limango automatisch darüber, dass die Ware versendet wurde (<<#1300, Wie?>>)
+* Retourenverwaltung (<<#1000, Wie?>>)
+
+[#cancellations]
+=== Stornierungen automatisch melden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um limango automatisch über Stornierungen zu informieren.
+
+:table-event-procedure: <<#ereignisaktion-stornierung-limango>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[ereignisaktion-stornierung-limango]]
+.Ereignisaktion, um Stornierungen an limango zu melden
+[cols="1,2,2"]
+|===
+| *Einstellung*
+| *Option*
+| *Auswahl*
+
+| *Ereignis*
+| *Statuswechsel*
+| Ereignis wählen, zum Beispiel *[8] Storniert*.
+
+| *Filter*
+| *Auftrag > Herkunft*
+| *limango*
+
+| *Aktion*
+| *Plugins > limango: Auftragsstornierung an limango melden*
+|
+|===
+
+[#1300]
+=== Automatische Versandbestätigungen einrichten
+
+Versandbestätigungen an limango müssen eine Sendungsverfolgungsnummer enthalten. Außerdem muss der Versanddienstleister im Auftrag in den Plugin-Einstellungen korrekt mit dem limango-Versanddienstleister verknüpft sein.
+
+Um limango automatisch über den Versand zu informieren, erstellst du zwei Ereignisaktionen:
+
+* Ereignisaktion 1: Versandinformation an limango melden (<<#13002, Wie?>>)
+* Ereignisaktion 2: Warenausgang buchen  (<<#13002, Wie?>>)
+
+[#13001]
+==== Ablauf von automatischen Versandbestätigungen
+
+Der Ablauf von automatischen Versandbestätigungen ist abhängig davon, ob der plentymarkets-Versanddienstleister in den Plugin-Einstellungen korrekt mit dem Versanddienstleister von limango verknüpft ist.
+
+[cols="1,3a"]
+|====
+|Fall |Ablauf
+
+| Versanddienstleister korrekt verknüpft
+| * Für den Auftrag wird eine Paketnummer gespeichert.
+* Die Ereignisaktion *Versandinformation an limango melden* prüft, ob der Versanddienstleister korrekt verknüpft ist.
+* Die Aktion *Versandinformation an limango melden* wird ausgelöst: Eine Versandbestätigung wird an limango gesendet.
+* Der Auftrag wird in den Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)* verschoben.
+* Nur Aktion 1 der Ereignisaktion *Warenausgang buchen* wird ausgelöst. +
+→ Der Warenausgang wird gebucht. +
+→ Eine zweite Versandbestätigung wird _nicht_ an limango gesendet.
+
+| Versanddienstleister nicht korrekt verknüpft
+| * Für den Auftrag wird eine Paketnummer gespeichert.
+* Die Ereignisaktion *Versandinformation an limango melden* prüft, ob der Versanddienstleister korrekt verknüpft ist.
+* Der Auftrag wird in den Status für *Auftragsstatus für Aufträge ohne Versanddienstleister (> 5 - < 7)* verschoben.
+* Du prüfst und korrigierst die Verknüpfung des Versanddienstleisters in den Plugin-Einstellungen. +
+*_Tipp:_* Die Verknüpfung korrigierst du im Menü *Plugins » Plugin-Set-Übersicht » [Plugin-Set öffnen] » [limango-Plugin öffnen] » Versanddienstleister*.
+* Nach der Korrektur schiebst du den Auftrag in den Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)*.
+* Aktion 1 der Ereignisaktion *Warenausgang buchen* wird ausgelöst. +
+→ Der Warenausgang wird gebucht.
+* Aktion 2 der Ereignisaktion *Warenausgang buchen* wird ausgelöst. +
+→ Eine Versandbestätigung wird an limango gesendet.
+|====
+
+[#13002]
+==== Versandbestätigungen automatisch an limango senden
+
+Richte als Ereignisaktion 1 für Versandbestätigungen die in <<#ereignisaktion-versandinfo-limango>> gezeigte <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein.
+
+:table-event-procedure: <<#ereignisaktion-versandinfo-limango>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[ereignisaktion-versandinfo-limango]]
+.Ereignisaktion 1 für Versandbestätigungen
+[cols="1,2,2"]
+|===
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Auftragsänderung > Paketnummer*
+|
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Auftrag* +
+*Lieferauftrag*
+
+| *Filter 2*
+| *Auftrag > Herkunft*
+| *limango*
+
+| *Aktion*
+| *Plugin*
+| *Versandinformation an limango melden*
+|===
+
+Richte als Ereignisaktion 2 für Versandbestätigungen die in <<#ereignisaktion-warenausgang-limango>> gezeigte <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein.
+
+:table-event-procedure: <<#ereignisaktion-warenausgang-limango>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[ereignisaktion-warenausgang-limango]]
+.Ereignisaktion 2 für Versandbestätigungen
+[cols="1,2,2"]
+|===
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Statuswechsel*
+| Status für *Auftragsstatus für Aufträge mit Versanddienstleister (> 5 - < 7)* wählen. +
+Diesen Status legst du im Menü *Plugins » Plugin-Set-Übersicht » [Plugin-Set öffnen] » limango-Plugin öffnen] » Auftragsstatus* fest.
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Auftrag* +
+*Lieferauftrag*
+
+| *Filter 2*
+| *Auftrag > Herkunft*
+| *limango*
+
+| *Aktion 1*
+| *Auftrag*
+| *Warenausgang buchen*
+
+| *Aktion 2*
+| *Plugin*
+| *Versandinformation an limango melden*
+|===
+
+[#1000]
+=== Retourenverwaltung einrichten
+
+Richte nun die Verwaltung von Retouren für limango ein.
+
+[#1010]
+==== Ablauf von Retouren
+
+Der Lieferschein ist gleichzeitig Retourenschein. Eine Retoure läuft bei limango wie folgt ab:
+
+. Kund:innen senden die Ware an dich zurück.
+. Du führst die Retoure in plentymarkets aus.
+. Du informierst limango darüber, dass du die Ware erhalten hast.
+. limango erstattet Käufer:innen den Kaufpreis zurück. +
+*_Hinweis:_* Wenn du limango mitteilst, dass die Retoure abgeschlossen ist, wird bei limango eine Gutschrift ausgelöst und Endkund:innen erhalten eine Rückerstattung. Achte deshalb darauf, dass du limango erst über den Abschluss der Retoure informierst, nachdem du die Ware erhalten und geprüft hast.
+
+[#1030]
+==== Retourenabschluss automatisch an limango melden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um limango automatisch darüber zu informieren, dass eine Retoure abgeschlossen wurde.
+
+:table-event-procedure: <<#ereignisaktion-retouren-limango>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[ereignisaktion-retouren-limango]]
+.Ereignisaktion zum automatischen Melden von Retouren an limango
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Neue Retoure*
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Retoure*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *limango*
+
+| *Aktion*
+| *Plugins &gt; Retoure an limango melden* +
+*_Hinweis:_* Durch die Aktion *Retoure an limango melden* wird bei limango eine Gutschrift ausgelöst. Endkund:innen erhalten also eine Rückerstattung. Achte deshalb darauf, dass die Ereignisaktion erst ausgelöst wird, nachdem du die retournierte Ware erhalten und geprüft hast.
+|
+|====
+
+== Versandkosten
+
+Die Versandkosten werden in deinem Vertrag mit limango festgelegt. limango speichert sie im limango-Backend. Versandkosten kannst du deshalb nur in Absprache mit dem limango-Partnermanagement anpassen. In plentymarkets gibt es deshalb keine Einstellungen für die Versandkosten.
+
+[#1100]
+== Fehlersuche: Log-Einträge abrufen
+
+NOTE: Deine Varianten wurden nicht zu limango exportiert? Wenn mindestens eine Variante die Anforderungen von limango nicht erfüllt, werden keine Variantendaten exportiert. Deine Varianten werden also schon bei einer einzigen ungültigen Variante nicht zu limango exportiert. Um den Fehler zu finden, prüfe die Einträge im Daten-Log.
+
+include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-intro]
+
+* *Integration* » *limango*
+* *Referenztyp* » *variationId*
+
+include::_textblocks/instructions/logs_abrufen.adoc[tag=data-log-config]
+
+[#faq]
+== FAQ
+
+include::_textblocks/limango/limango-faq.adoc[]

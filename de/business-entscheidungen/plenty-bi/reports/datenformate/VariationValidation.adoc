@@ -1,0 +1,171 @@
+= variationValidation
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: variationValidation, Variantenexport validieren, Marktplatzexport validieren, Marktplatzexport prüfen
+:position: 300
+:url: business-entscheidungen/plenty-bi/reports/datenformate/marketplacevariationvalidation
+:id: 63SM45X
+:author: team-plenty-channel
+
+:datenformat: pass:quotes[*variationValidation*]
+:daten: prüfen, ob Varianten wichtige Anforderungen bestimmter Marktplätze erfüllen. Die Ergebnisse der Validierung kannst du
+:spezifikationen: <<tabelle-spezifikationen-variationValidation>>
+:datenspalten: <<tabelle-datenspalten-variationValidation>>
+
+include::./_textblocks/einleitung.adoc[]
+
+Aktuell sind Validierungen für die folgenden Marktplätze möglich:
+
+* Amazon:
+  ** Flatfile 2020.1109-1_Clothing_DE
+  ** Flatfile 2020.1109-1_ConsumerElectronics_DE
+
+== Technische Spezifikationen
+
+include::./_textblocks/spezifikationen.adoc[]
+
+[[tabelle-spezifikationen-variationValidation]]
+.Technische Spezifikationen des Formats *variationValidation*
+[cols="1,1,1,3"]
+|====
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|variationValidation
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *variationValidation-xxx.csv.gz*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 500
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 10.000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2020-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|createdAt
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|ja
+|Der Export läuft standardmäßig automatisch im Hintergrund.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|storableFromPlan
+|Speicherung ab Edition
+|plentyBI S
+|Edition, ab der die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
+
+|processableFromPlan
+|Nutzung ab Edition
+|plentyBI L
+|Edition, ab der die Daten an plentyBI Data Warehouse überführt werden, also zur Nutzung, Filterung und Berechnung von Kennzahlen zur Verfügung stehen.
+|====
+
+== Datenspalten
+
+include::./_textblocks/datenspalten.adoc[]
+
+[[tabelle-datenspalten-variationValidation]]
+.Datenspalten des Formats *variationValidation*
+[cols="1,1,1,3"]
+|====
+|Spaltenname |Datentyp |Deutsche Bezeichnung |Erläuterung
+
+| plentyId
+| INTEGER NOT NULL
+| plenty ID
+| Die eindeutige ID des plentymarkets Systems
+
+| *id (primary key)*
+| VARCHAR NOT NULL
+| ID
+| Interne ID für den technischen Hintergrund
+
+| processId
+| VARCHAR NOT NULL
+| Prozess-ID
+| Eindeutige ID des Validierungsprozesses
+
+| originId
+| VARCHAR NOT NULL
+| Ursprung-ID
+| Die ID des Katalogs, für den die Validierung durchgeführt wurde.
+
+| originType
+| VARCHAR NOT NULL
+| Ursprungstyp
+| Der Ursprung ist immer *Katalog*.
+
+| identifierType
+| VARCHAR NOT NULL
+| Kennzeichentyp
+| Anhand des Kennzeichentyps kann der Datensatz identifiziert werden. Ein Beispiel für den Kennzeichentyp ist die *ASIN*. +
+
+| identifierValue
+| VARCHAR NOT NULL
+| Kennzeichenwert
+| Kennzeichenwert des Datensatzes +
+Der Wert für den Kennzeichentyp, anhand dessen der Datensatz identifiziert werden kann. Ist der Kennzeichentyp zum Beispiel *ASIN*, enthält die Spalte *identifierValue* die ASIN der Variante.
+
+| variationId
+| INTEGER NOT NULL
+| Varianten-ID
+| Die eindeutige ID der Variante
+
+| referrerId
+| NUMERIC(5,2)
+| Herkunfts-ID
+| ID der Auftragsherkunft des Marktplatzes +
+*_Hinweis:_* Zurzeit werden nur Varianten für bestimmte Plattformen des Marktplatzes Amazon gespeichert.
+
+| errorType
+| VARCHAR NOT NULL
+| Fehlertyp
+| Fehlertyp +
+Mögliche Fehlertypen: +
+MISSING = Der Wert fehlt. +
+INVALID = Der Wert ist ungültig.
+
+| key
+| VARCHAR NOT NULL
+| Schlüsselfeld
+| Das plentymarkets Datenfeld, in dem der Fehler gefunden wurde
+
+| meta
+| JSON NOT NULL
+| Meta
+| Diese Spalte ist zurzeit leer.
+
+| *createdAt*
+| TIMESTAMP NOT NULL
+| Erstellt am
+| Der Zeitpunkt, zu dem die Validierung der Variante stattfand. +
+Format des Zeitstempels: `MM/DD/YYYY HH:MI:SS TZ`
+
+|====

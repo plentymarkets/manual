@@ -1,0 +1,132 @@
+= messageTagRelations
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: messageTagRelations, Report, Rohdaten
+:position: 77
+:url: business-entscheidungen/plenty-bi/reports/datenformate/messageTagRelations
+:id: 3TRRPOW
+:author: team-crm
+
+:datenformat: pass:quotes[*messageTagRelations*]
+:daten: Verknüpfungen zwischen Nachrichten und Tags
+:spezifikationen: <<tabelle-spezifikationen-messageTagRelations>>
+:datenspalten: <<tabelle-datenspalten-messageTagRelations>>
+
+include::./_textblocks/einleitung.adoc[]
+
+== Technische Spezifikationen
+
+include::./_textblocks/spezifikationen.adoc[]
+
+[[tabelle-spezifikationen-messageTagRelations]]
+.Technische Spezifikationen des Formats *messageTagRelations*
+[cols=4]
+|====
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|messageTagRelations
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *messageTagRelations-xxx.csv.gz*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 8.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 320.000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2020-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|tr_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|nein
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Einrichtung » Einstellungen » Report » Rohdaten* aktiviert wurde.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|storableFromPlan
+|Speicherung ab Edition
+|plentyBI S
+|Edition, ab der die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
+
+|processableFromPlan
+|Nutzung ab Edition
+|plentyBI L
+|Edition, ab der die Daten an plentyBI Data Warehouse überführt werden, also zur Nutzung, Filterung und Berechnung von Kennzahlen zur Verfügung stehen.
+
+|====
+
+== Datenspalten
+
+include::./_textblocks/datenspalten.adoc[]
+
+[[tabelle-datenspalten-messageTagRelations]]
+.Datenspalten des Formats *messageTagRelations*
+[cols="1,3,3,3"]
+|====
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
+
+| *tr_id (Primary key)*
+|VARCHAR NOT NULL
+|tag relation id
+|ID der Tag-Verknüpfung
+
+|plenty_id
+|INTEGER NOT NULL
+|plenty id
+|ID des plentymarkets Systems
+
+|t_id
+|VARCHAR NOT NULL
+|tag id
+|ID des Tags
+
+|tr_type
+|VARCHAR NOT NULL
+|tag relation type
+|Typ der Tag-Verknüpfung
+
+|tr_value
+|VARCHAR NOT NULL
+|tag relation value
+|Wert der Tag-Verknüpfung
+
+|tr_created_at
+|TIMESTAMPTZ NOT NULL
+|tag relation created at
+|Zeitstempel der Erstellung +
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
+
+| *tr_updated_at*
+|TIMESTAMPTZ NOT NULL
+|tag relation updated at
+|Zeitstempel der letzten Aktualisierung +
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
+
+|====

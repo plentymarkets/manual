@@ -1,0 +1,246 @@
+= Payone
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: payment method, Payone, payone-plugin, payone payment method, payone method, payone account, payone-account, payone-merchant-interface, payone-configuration, payone-setting, secure invoice, payone credit card, payone-template, payone shipping, payone refund, payone integration, payment plugin, payment method plugin, payment method integration
+:description: Integration of the Payone plugin.
+:position: 90
+:url: payment/payment-plugins/payone
+:id: SKISHNV
+:author: team-order-payment
+
+With the Payone plugin, you integrate the Payone payment methods in your online shop and make them available to your customers. To do so, download the Payone plugin from the link:https://marketplace.plentymarkets.com/en/payone_5434[plentyMarketplace^]. Setup of the payment method is done with an assistant. You also have to carry out a few basic settings in your plentymarkets system so that the payment methods are activated in your system. +
+The explanations in this section apply after adding the plugin. You can find more information on adding and installing plugins in the <<plugins#, Plugins>> section of the manual.
+
+[IMPORTANT]
+.Requirement
+====
+The Payone plugin has been developed for use with plentyShop LTS and only works with its structure or other template plugins. The plugins plentyShop LTS and IO have to be activated so that the Payone plugin can be used.
+====
+
+[#10]
+== Requirement: Opening a Payone account
+
+In order to use Payone, you need a Payone account. You get information as well as login details when you open the account. Without these, the plugin cannot be set up and is not usable. If your don’t have a Payone account yet, use this link:https://www.psg-projektmanagement.de/payone-plentymarkets/[registration form^] or contact: +
+PSG Projektmanagement GmbH +
+Meergässle 4 +
+89180 Berghülen +
+Telephone: 00497344-9592588 +
+Email: plenty@psg-projektmanagement.de +
+Internet: http://www.psg-projektmanagement.de
+
+Upon receipt of your access data, log into the PAYONE merchant interface and carry out the following settings.
+
+[.instruction]
+Carrying out settings in the Payone merchant interface:
+
+. Open the *Configuration » Payment portals* menu.
+. Open the *Extended Tab* of the payment portal of your online shop.
+. In the field *TransactionStatusURL*, enter a URL following the pattern *DOMAIN/payment/payone/status*. Replace *DOMAIN* with the URL of your online shop.
+. For the procedure *Method hash calculation*, select the option *md5 or sha2-384 (during migration)*.
+. *Save* (icon:save[role="green"]) the settings.
+
+[#20]
+== Completing the assistant
+
+:name-assistant: Payone
+:name-payment-method: Payone
+
+include::../../_includes/textblocks/instructions/completing-assistant-payment-method.adoc[]
+
+[.collapseBox]
+.*Input fields in the account area of the assistant*
+--
+
+[[table-payone-account-settings]]
+.Account setup
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Merchant ID*
+|Enter your Merchant ID. You can get this in the Payone Merchant Interface after opening the Payone account. Go to the menu *Configuration » payment method* in the Merchant Interface.
+
+| *Portal ID*
+|Enter your Portal ID. You can get this in the Payone Merchant Interface after opening the Payone account. Go to the menu *Configuration » payment method* in the Merchant Interface.
+
+| *Account ID*
+|Enter your Account ID. You can get this in the Payone Merchant Interface after opening the Payone account. Go to the menu *Configuration » payment method* in the Merchant Interface.
+
+| *Key*
+|Enter the key. You can get this in the Payone Merchant Interface after opening the Payone account. Go to the menu *Configuration » payment method* in the Merchant Interface.
+
+| *Mode*
+|Select one of the modes *Testing* or *Productive*.
+
+| *Authorisation method*
+|Select the method of authorisation. +
+*Preauthorisation*: Select this option if payment collection should only be prepared for the customer. The definite collection of payment has to be effected by an <<#80, event procedure>> that should be triggered by booking outgoing items. +
+*Authorisation*: Select this option if the payment should be collected from the customer immediately. Incoming payment is then booked directly after the customer has completed the checkout process in the online shop.
+
+|*User ID for notes*
+|Enter the ID of the user who should be the owner of the order notes.
+
+|====
+
+--
+
+include::../_textblocks/completing-assistant-multi-clients.adoc[]
+
+[#30]
+== Adapting the plentyShop checkout
+
+Adaptations in your plentyShop checkout settings are needed so that customers can select their preferred Payone payment method. The following is required:
+
+* Secure invoice: Customers have to enter their date of birth
+* Klarna: Customers have to enter their phone number
+
+There are two ways to do adapt the checkout so that customers can enter these data. You can either use the ShopBuilder or configure the plentyShop LTS plugin accordingly. Both ways are described below.
+
+[.tabs]
+====
+ShopBuilder::
++
+--
+
+[.instruction]
+Adapting the ShopBuilder for the checkout:
+
+. Select the widget category *Customer data* on your checkout ShopBuilder page.
+. Select the widget *Address selection*.
+. Click on the *Settings* (icon:cog[]) of this widget.
+. Select all the needed address fields for *Display input fields for invoice and delivery address*.
+. *Save* (icon:save[role="green"]) the settings.
+
+You can find additional information about the <</webshop/shop-builder#, ShopBuilder>> in general as well as the widget category <<webshop/shop-builder#85, Customer data>> in the Online store section of the manual.
+
+--
+
+plentyShop LTS plugin::
++
+--
+
+[.instruction]
+Adapt the plentyShop checkout for Secure Invoice:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set you want to edit.
+. Open the plugin *plentyShop LTS*. +
+→ The plugin detail view opens.
+. Select *Checkout and My account* in the *Configuration* menu.
+. Open the section *Show invoice address fields in address form (DE)*.
+. Activate the needed options by selecting the checkbox, e.g. *Date of birth* and *Phone number*.
+. *Save* (icon:save[role="green"]) the settings.
+
+A field for entering the date of birth is now displayed for your customers in the checkout area.
+
+[TIP]
+.Input errors
+======
+Make sure to carefully carry out these settings. Otherwise, your customers will not be able to complete the payment process using Payone in your online shop.
+======
+--
+====
+
+[#40]
+== Linking template containers
+
+The containers needed by default are automatically linked to your online shop during the setup with the Payone assistant. In the Plugin settings of the Payone plugin, template containers can also be set manually, if required. To do so, proceed as follows.
+
+[.instruction]
+Linking template containers:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set you want to edit.
+. Open the plugin *Payone*. +
+→ The plugin detail view opens.
+. Click on *Container links*.
+. From the drop-down list, select the data provider you want to link.
+. Select the container you want to link to the data provider to. → Pay attention to the information provided in <<table-payone-template-container>>.
+. Repeat steps 5 and 6 for all data providers you want to link to containers.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-payone-template-container]]
+.Linking template containers
+[cols="1,3"]
+|====
+|Content |Explanation
+
+| *Payone Order Confirmation Page Payment Data*
+|Link this content to the container Order confirmation: Additional payment information to display the Payone payment methods on the order confirmation page in the online shop.
+
+| *Payone Checkout JS*
+|Link this content to the container Script loader: After script loaded to display the Payone payment methods during the checkout process in the online shop.
+
+|====
+
+[#60]
+== Customer classes and shipping profiles
+
+include::../../_includes/textblocks/instructions/customer-class-and-shipping-profile.adoc[]
+
+[#70]
+== Setting up event procedures
+
+Set up event procedures so that all needed data are sent to Payone. We recommend 2 event procedures for this.
+
+[#80]
+=== Sending an automatic shipping confirmation to Payone
+
+Set up an event procedure to send an automatic shipping confirmation to Payone as soon as you have shipped the order.
+
+[IMPORTANT]
+.Event procedure and Authorisation method
+====
+Setting up the following event procedure is mandatory if you have selected the option *Preauthorisation* as *Authorisation method* in the basic settings. This event procedure is not necessary and cannot be used if you have selected the option *Authorisation*.
+====
+
+:table-event-procedure: <<table-procedure-payone-shipping-confirmation>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-payone-shipping-confirmation]]
+.Event procedure for automatically sending shipping confirmations to Payone
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select the event after which an automatic shipping confirmation should be sent, e.g. *Order change > Outgoing items booked*.
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Payone payment methods.
+
+| *Procedure*
+| *Plugins > Send shipping confirmation to Payone*
+|
+
+|====
+
+[#90]
+=== Automatically refunding Payone payments
+
+Set up an event procedure to automatically refund a Payone payment.
+
+:table-event-procedure: <<table-procedure-payone-refund>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-payone-refund]]
+.Event procedure for automatically refunding Payone payments
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select the event that will trigger a refund.
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| Select the Payone payment methods.
+
+| *Procedure*
+| *Plugins > Payone - Send refund*
+|
+
+|====

@@ -1,36 +1,498 @@
-= Change history
+= Tracking changes
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: change history, history, data history
-:description: Learn more about the change history in plentymarkets.
+:keywords: Item change, Item changes, Order change, Order changes, Change history, History, Data history, Obligation to retain records, Keep records, Retaining records, Archive, Data archive, Audit-Log, Audit log, Audit-Trail, Audit trail, Audit-Protocol, Audit protocol, Change record, Record of change, Record of changes, 10 years, 11 years, Log file, Log files, GoBD, GoBD-compliant, GoBD-compliance, IDW PS 880, CRM Change History, CRM History
+:description: plentymarkets lets you track the entire life cycle of an item or an order.
 :position: 62
 :url: data/change-history
 :id: B499GID
-:author: team-crm
+:author: team-crm, team-item
 
-Via the change history in the *Data » Change history* menu, you can track which user changed data of a data record in your system at which time.
+////
+zuletzt bearbeitet 17.03.2021
+TODO: plentyBI Video ergänzen
+////
 
-Proceed as follows to display the change history.
+Curious who made changes to a specific item, price, order, etc.?
+With the tools in plentymarkets, you can track changes to various data records.
+For example, changes to:
 
-[.instruction]
-Displaying the change history:
-
-. Go to *Data » Change history*.
-. Select an option from the drop-down list *Reference type*.
-. Enter the reference ID.
-. Click on *Search* (icon:search[role="blue"]). +
-→ A list of changes with the old and new values, the change date as well as the name and ID of the user who did the changes appears.
-
-By clicking on the line, a window opens which contains further information.
+* <<data/change-history#100, Items and variations>>
+* <<data/change-history#100, Prices>>
+* <<data/change-history#100, Orders>>
+* <<data/change-history#1300, Customer data>>
+* <<data/change-history#1300, ShopBooster data>>
+* <<data/change-history#1300, Data cleansing configuration>>
 
 [TIP]
-.Currently available reference types
+.GoBD compliance
 ====
-The following reference types are currently available in the change history:
+plentymarkets helps sellers comply with GoBD regulations as defined by the IDW PS 880 certification.
+One aspect of GoBD compliance is the ability to retain documents that have financial or tax relevance over a long period of time.
+To fulfil this requirement, you have to <<data/change-history#1200, activate the change history and archive>>.
+This may result in <<data/change-history#1200, costs>>.
+====
 
-* Contact
-* Address
-* Company
-* Configuration of data cleansing
-* ShopBooster
+[#100]
+== Change history
+
+//tag::history[]
+
+plentymarkets lets you track the entire life cycle of a data record, such as an item or an order.
+This is particularly important with regards to the obligation to retain records.
+The change history is composed of the following parts:
+
+* <<data/change-history#200, Search>>: Change records that are less than six months old can be searched live.
+* <<data/change-history#1000, Archive>>: After six months, the data is moved to an archive.
+The data is still accessible there, but it can no longer be searched.
+The changes are archived for 11 years.
+
+[TIP]
+.Protection against tampering
 ====
+The change history is tamper-proof and trustworthy in the sense that users cannot modify or delete the entries.
+Changes can only be retrieved and searched.
+====
+
+[#200]
+=== Searching for recent changes
+
+[#300]
+==== Setting search filters
+
+. Go to *Data » Change history*.
+. Choose search filters in the middle column. Note <<table-change-history-search-filters>>.
+. Click on *Search* (icon:search[role="blue"]). +
+→ The search results are displayed in an overview on the right.
+
+[TIP]
+.How do the search filters work?
+====
+* *_Auto-complete_*:
+Simply enter the first few letters of a keyword into the search field and you will see matching results.
+* *_Multiple selection_*:
+You can enter multiple keywords into a field.
+The keywords are displayed as so-called “chips”.
+* *_Dynamic filter values_*:
+The drop-down list only displays values that are relevant for the selected time period.
+For example, the value “Barcode” will only be displayed in the “Data record” filter if a barcode was actually modified during the selected time period.
+====
+
+image::data/assets/History-SearchFilters.gif[]
+
+[[table-change-history-search-filters]]
+.Available search filters
+[cols="1,4"]
+|====
+|Search filter |Explanation
+
+| *From/To* +
+[red]#(Mandatory fields)#
+|Choose an interval.
+The changes made during this time period will be retrieved.
+
+| *Data record*
+|What type of data do you want to retrieve?
+Enter a keyword into this field, e.g. item, order, barcode, sales price etc.
+
+*_Tip_*: Simply enter the first few letters of the keyword and then use the auto-complete function.
+
+| *Unique IDs*
+a|This field is used to uniquely identify the data record.
+
+. First, enter a keyword into the field.
+The keyword specifies the _type of ID_, e.g. a sales price ID, variation ID or language ID.
+. Then enter the actual ID into the field further below.
+
+*_Note_*:
+A data record may only become unique by combining two or more IDs.
+For example, you could enter the variation ID 1234 and the sales price ID 567.
+The results show you when sales price 567 was modified for variation 1234.
+
+| *User*
+|Do you want to search for changes that were made by a specific plentymarkets user account?
+Enter the first few letters of the user name and then use the auto-complete function.
+
+| icon:chevron-down[role="darkGrey"] *Advanced filters*
+a|Click on this option to show advanced filters.
+
+[cols="1,4a"]
+!===
+!Search filter !Explanation
+
+! *Correlation*
+!This field specifies which item, order, language etc. the data record belongs to.
+
+. First, enter a keyword into the field.
+The keyword specifies the _type of ID_, e.g. a sales price ID, variation ID or language ID.
+. Then enter the actual ID into the field further below.
+
+! *Type of change*
+!Limits the search results to data records that were created, modified or deleted.
+
+! *Source*
+!Do you want to search for changes that originate from a specific source?
+Enter the first few letters of the source name and then use the auto-complete function.
+
+*_Examples_*:
+Changes that resulted from a cron-job, changes that were made manually in the back end or changes that can be traced back to the REST-API interface.
+
+*_Note_*:
+Define the source even further by combining it with tags.
+
+! *Tags*
+!Tags define the source even further.
+
+*_Example_*:
+A tag could be the ID of an import process.
+You can use this ID to limit the search results to changes that were made during the import process.
+!===
+|====
+
+[#400]
+==== Working with the search results
+
+Once you’ve <<data/change-history#300, searched for changes>>, you’ll see the results in an overview on the right.
+Expand a line in the overview (icon:chevron-right[role="darkGrey"]) to see more detailed information.
+Each entry in the table answers the following questions:
+
+* Who changed the data record?
+* When was the data record changed?
+* What was changed?
+** Was the data record created, modified or deleted?
+** Which value did the data record have before and after the change?
+** Was the data changed manually or by a system process (e.g. import or REST-API)?
+
+image::data/assets/History-Results.gif[]
+
+[TIP]
+.Should I group the results?
+====
+Imagine an employee opened an item data record, entered new transportation costs, new storage costs and then saved the changes.
+
+* icon:toggle-on[role="blue"] *Group the results* = The table only includes one entry for the save.
+Once you expand the line icon:chevron-right[role="darkGrey"] you will see that both the transportation costs and the storage costs were changed.
+* icon:toggle-off[role="darkGrey"] *Group the results* = The table includes two separate entries for the save.
+The table shows you which data fields were changed.
+====
+
+[#500]
+==== Examples of use
+
+[#600]
+[discrete]
+===== Item was sold for the wrong price
+
+Imagine you sold an item for 59 EUR a few days ago.
+But that can’t be right!
+The item’s purchase price is 82 EUR.
+Now you want to find out what went wrong.
+
+The variation sold for the wrong price has the ID 123.
+You could set the search filters as follows:
+
+[[table-change-history-example-price]]
+[cols="1,1"]
+|====
+|Search filter |Selected setting
+
+|Data record
+|Sales price of the variation
+
+|Unique IDs
+|Variation ID 123
+|====
+
+The search results show various times when the sales price of variation 123 was changed.
+Expand a line in the results (icon:chevron-right[role="darkGrey"]) to see more detailed information.
+For example:
+
+* which user changed the price
+* if the price was accidentally changed, e.g. via the REST-API or while importing a CSV file.
+* what the price was before the change
+
+[#700]
+[discrete]
+===== Checking the work of a new employee
+
+Imagine you’re training a new employee.
+Today you gave him the task of updating several old product descriptions.
+At the end of the day, you want to make sure he did the job correctly and you want to fix any potential mistakes.
+
+The new employee has a user account with the ID 17.
+You could set the search filters as follows:
+
+[[table-change-history-example-employee]]
+[cols="1,1"]
+|====
+|Search filter |Selected setting
+
+|From/To
+|Today
+
+|User
+|New employee (ID 17)
+|====
+
+The search results list all of the changes that the employee made today.
+Expand a line in the results (icon:chevron-right[role="darkGrey"]) to see more detailed information.
+For example:
+
+* what was the text before and after the change?
+* did the employee make a mistake?
+Simply click on the link to open the item data record and directly fix the problem.
+
+[#800]
+=== Exporting change files
+
+[#900]
+==== Downloading daily changes
+
+Each day a summary of the changes is created.
+The file is available to download for 45 days.
+
+. Go to *Data » Change history*.
+. Click on icon:download[set=plenty, role="darkGrey"] *Daily changes*.
+. Click on icon:cloud-download[role="darkGrey"] next to the desired file. +
+→ The file is exported in CSV format.
+
+[TIP]
+.How long are files available in this menu?
+====
+Files are available to download in this menu for 45 days.
+So you can download information about changes that were made within the last 45 days.
+Older changes are not available in this menu.
+====
+
+[#1000]
+==== Requesting and downloading an archive file
+
+Change records that are more than six months old are moved to an archive.
+The data is accessible there, but it can not be searched.
+
+. Go to *Data » Change history*.
+. Click on icon:receipt_archive[set=plenty, role="darkGrey"] *Archive*.
+. Optionally, click on icon:filter[set=plenty, role="darkGrey"] and select a month and year.
+. Start the search. +
+→ Files that match the search criteria are displayed.
+. Click on icon:send_email[set=plenty, role="darkGrey"] and confirm that you want to request the file. +
+*_Note_*:
+This is subject to a fee.
+It can take up to 24 hours for the file to be made available.
+Afterwards, the file is available for download for approximately 2 days. It can be downloaded as often as needed.
+. Click on icon:cloud-download[role="darkGrey"] next to the desired file. +
+→ The file is exported in TAR.BZ2 format.
+
+[TIP]
+.How long are files available in this menu?
+====
+Files are available to download in this menu for 11 years.
+So you can download information about changes that were made within the last 11 years.
+====
+
+[IMPORTANT]
+.Results in costs
+====
+It costs money to request an archive file.
+Each request costs 1 euro.
+<<data/change-history#1200, More about costs>>.
+====
+
+[#1100]
+=== Configurability
+
+You can customise the settings to meet your needs.
+Do you want to turn the archive on or off?
+Do you want to decide which data fields should be logged?
+Carefully weigh the pros and cons of your actions because archiving and logging data are necessary for GoBD compliance.
+
+. Go to *Data » Change history*.
+. Click on icon:cog[role="darkGrey"] *Settings* and customise the options to meet your needs.
+.. Turn the option *Activate the archive* on (icon:toggle-on[role="blue"]) or off (icon:toggle-off[role="darkGrey"]).
+.. Select the data fields that should be logged (icon:check-square[role="blue"]). +
+. *Save* (icon:save[role="darkGrey"]) the settings.
+This may result in <<data/change-history#1200, costs>>.
+
+[TIP]
+.Activate all of the GoBD settings at once
+====
+Click on the upper button to simultaneously activate all of the settings necessary for GoBD compliance.
+This button activates the archive and all of the data fields marked with an asterisk.
+====
+
+[#1150]
+=== Viewing your usage
+
+You can see up-to-date information about your usage, i.e. your actual costs, any time.
+Simply:
+
+* set up a key figure.
+* display the data in the plentyBI dashboard.
+
+////
+video
+////
+
+[discrete]
+===== Setting up a key figure for usage
+
+. Go to *Setup » plentyBI » Key figures*.
+. Click on *Add key figure configuration* (icon:plus[role="darkGrey"]).
+. Enter a unique name.
+. Select the key figure *Usage*.
+. Configure <<business-decisions/plenty-bi/key-figures/usage#, the remaining settings>> as needed.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+[discrete]
+===== Displaying usage data in the dashboard
+
+. Go to *plentymarkets logo (Start) » Dashboard (Beta)*.
+. Set up the dashboard as needed. For example:
+.. <<business-decisions/plenty-bi/myview-dashboard#407, Create a new view>>.
+.. <<business-decisions/plenty-bi/myview-dashboard#410, Add elements to the dashboard>>.
+.. <<business-decisions/plenty-bi/myview-dashboard#300, Decide which user accounts or user roles should be able to see the key figures>>.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+
+[#1200]
+=== Frequently Asked Questions (FAQ)
+
+[.collapseBox]
+.*I want to comply with GoBD regulations. Which data should be logged?*
+--
+
+plentymarkets helps sellers comply with GoBD regulations as defined by the IDW PS 880 certification.
+One aspect of GoBD compliance is the ability to retain documents that have financial or tax relevance over a long period of time.
+
+To meet this requirement:
+
+. Go to *Data » Change history*.
+. Click on icon:cog[role="darkGrey"] *Settings*.
+. Click on the upper button to simultaneously activate all of the settings necessary for GoBD compliance.
+This button activates the archive and all of the data fields marked with an asterisk.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+This may result in <<data/change-history#1200, costs>>.
+
+--
+
+[.collapseBox]
+.*What costs can be incurred?*
+--
+
+The following costs are incurred depending on usage:
+
+* 15 cents per 10,000 logged changes.
+* 15 cents per 10,000 archived changes.
+* 1 euro for requesting a file from the archive.
+
+So if you want to use plentymarkets in compliance with GoBD regulations - i.e. if you want to store relevant changes in plentymarkets for up to 11 years - then you will be charged 30 cents for every 10,000 changes.
+The cost of a data package is only billed in the month in which it was logged.
+
+[discrete]
+===== Example
+
+On average, a system makes 177,000 loggable changes during one month.
+This corresponds to an average of 18 packages (177,000 / 10,000 rounded up).
+If the change history and archive are both activated, then the average cost per month is 18 * 0.15 * 2 = €5.40.
+
+--
+
+[.collapseBox]
+.*Can I view my usage?*
+--
+
+Yes.
+You can see up-to-date information about your usage, i.e. your actual costs, any time.
+<<data/change-history#1150, Further information>>.
+
+--
+
+[.collapseBox]
+.*Why don’t I see the menu?*
+--
+
+People with <<business-decisions/user-accounts-access#10, back end access rights>> can only see this menu if an admin gave them access.
+
+. Find someone who has administrator rights for the plentymarkets system.
+. This person will need to open the menu *Setup » Settings » User » Rights » User*.
+. Then he or she will open your user account and activate the necessary rights.
+. *Save* (icon:save[role="green"]) the settings.
+. If the problem continues to exist, contact our link:https://forum.plentymarkets.com/c/aenderungshistorie/604[supporters in the forum^].
+
+[discrete]
+===== Menu visibilities
+
+This area represents the menu structure in plentymarkets.
+Select the menus (icon:check-square[role="blue"]) that should be visible to the user.
+When you select a menu here, the corresponding REST rights will also automatically be selected under *Authorisations*.
+
+[cols="1,1"]
+|====
+|Right |Explanation
+
+| *Data > Change history > Search*
+|The right to see and use the <<data/change-history#200, live search>>.
+
+| *Data > Change history > Daily changes*
+|The right to see and use the <<data/change-history#900, daily changes>>.
+
+| *Data > Change history > Archive*
+|The right to see the <<data/change-history#1000, archive>> and to request or download archive files for a fee.
+
+| *Data > Change history > Settings*
+|The right to see and modify the <<data/change-history#1100, change history's settings>>.
+|====
+
+[discrete]
+===== Authorisations
+
+The REST rights that are needed for specific actions.
+When you select a menu under *Menu visibilities*, the corresponding REST rights are also automatically selected here.
+
+[cols="1,1"]
+|====
+|Right |Explanation
+
+| *Data > Change history > Archive > Request*
+|The right to request or download <<data/change-history#1000, archive files>> for a fee.
+
+| *Data > Change history > Archive > Show*
+|The right to see the <<data/change-history#1000, archive>>.
+
+| *Data > Change history > Settings > Update*
+|The right to modify the <<data/change-history#1100, change history's settings>>.
+
+| *Data > Change history > Settings > Show*
+|The right to see the <<data/change-history#1100, change history's settings>>.
+
+| *Data > Change history > Search > Show*
+|The right to see and use the <<data/change-history#200, live search>>.
+
+| *Data > Change history > Daily changes > Show*
+|The right to see and use the <<data/change-history#900, daily changes>>.
+|====
+
+--
+
+//end::history[]
+
+[#1300]
+== CRM Change History
+
+//tag::crm[]
+
+Use the change history in the menu *Data » CRM Change History* to track changes made to customer data, ShopBooster data or configurations for data cleansing.
+Data is stored in this menu for 1 year.
+
+[.instruction]
+Displaying changes:
+
+. Go to *Data » CRM Change History*.
+. Select a reference type, e.g. the address.
+. Enter the unique reference ID, e.g. the address ID. +
+*_Tip_*: You need to know the ID in order to track changes to the data record.
+. Click on *Search* (icon:search[role="blue"]). +
+→ A list of changes with the old and new values, the change date as well as the name and ID of the user who did the changes appears.
+. Click on the line to see further information.
+
+//end::crm[]

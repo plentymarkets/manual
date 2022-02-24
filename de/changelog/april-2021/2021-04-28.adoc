@@ -1,0 +1,248 @@
+= Changelog 28. April 2021
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10690
+:startWeekDate: 22. April 2021
+:endWeekDate: 28. April 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Die Navigation ohne Maus funktioniert nun in der gesamten Benutzeroberfläche der Auftragsanlage (beta) nach den Aktualisierungen der Angular Material Tabellen.
+* Die Standardeinstellung für vorausgewählte Filter in der Artikelsuche eines neuen Auftrags in der Auftragsanlage (beta) wurde entfernt, da die Einstellung aufgrund der neuen Filterkomponente obsolet ist.
+* In allen Tabellen der Auftragsanlage (beta) wird der Textinhalt eines editierbaren Elements beim Anklicken des Textplatzhalters ausgewählt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Es wurde das Verhalten beim Gruppieren und Teilen von Aufträgen geändert. Zudem wurde die Validierung, ob gruppiert oder geteilt werden darf, überarbeitet.
+
+** Gruppieren: Es werden die urspünglichen Aufträge gelöscht und ein neuer Auftrag angelegt. Die Versandkosten werden neu ermittelt.
+** Teilen: Der ursprüngliche Auftrag wird gelöscht und es werden zwei neue Aufträge angelegt. Die Versandkosten der zwei neuen Aufträge werden neu ermittelt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* Der Filter für Variantennummern in der Artikelsuche der Auftragsanlage (Beta) hat bisher nur die Eingabe von numerischen Werten erlaubt. Dies wurde behoben, es können nun sowohl numerische als auch Textwerte eingegeben werden.
+* Im Rahmen der automatisierten Zahlungszuordnung, konnte es zu dem Verhalten kommen, dass bei gleichzeitig manueller Bearbeitung, diese Zahlung doppelt dem Auftrag zugeordnet wurde. Dieses Verhalten wurde behoben.
+* Bei der direkten Zuordnung von Zahlungen zu Aufträgen in dem Zeitraum vom 21.04 bis 22.04 konnte es dazu kommen, dass der bezahlte Betrag am Auftrag nicht korrekt gesetzt wurde, wodurch auch der Zahlungsstatus nicht aktualisiert wurde. Dies wurde behoben.
++
+[IMPORTANT]
+.To-Do
+======
+Sollten Aufträge eine zugeordnete Zahlung haben aber keinen bezahlten Betrag, so kann der Auftrag wie folgt korrigiert werden:
+
+. Zahlung vom Auftrag lösen
+. Im Tab *Einstellungen* des Auftrages die Zahlung zurücksetzen
+. Zahlung dem Auftrag neu zuordnen
+======
+* Es wurden die Auftragssummen beim Ändern oder Bearbeiten einer Adresse eines Auftrags nicht neu berechnet.
+* War ein Aktionsgutschein (mit prozentualem Rabatt) im Auftrag vorhanden, so wurden bisher bei Retourenerstellung die Preise der für den Gutschein gültigen Artikel in der Retoure anteilig reduziert. Dafür musste der Gutschein für die Retoure nicht ausgewählt werden. Bei Auswahl wurde der Gutschein zusätzlich noch einmal in die Retoure als eigene Position aufgenommen.
++
+Durch eine Anpassung war es dann aber notwendig, den Gutschein auszuwählen, damit die Preise anteilig reduziert wurden. Der Gutschein wurde dann nicht in die Retoure als Position übernommen.
++
+Es wurde nun das alte Verhalten wiederhergestellt.
+* Bei Auftragsimporten konnte es dazu kommen das das Zahlungseingangsdatum am Auftrag gesetzt wurde. Diese wurde behoben.
+* Das automatische Teilen in Lieferaufträge konnte dazu führen, dass in der Status-Historie zwei Einträge geschrieben wurden. Einmal dass das Lager des Auftrages auf `-1` und wieder auf das ursprüngliche Lager zurück geändert wurde. Dieses Verhalten trat nur auf wenn keine Lieferaufträge anhand der eingestellten Option des Teilens erstellt werden konnten / nötig waren. Dies wurde behoben.
+
+[discrete]
+=== Cdiscount
+
+* Bei dem Import von Cdiscount-Aufträgen mit Versandkosten von 0 konnte es dazu kommen, dass die Versandkosten auf Basis des Versandprofil neu ermittelt und dadurch überschrieben wurden. Dies wurde behoben.
+* Bei dem Import von Cdiscount Aufträgen konnte es dazu kommen das das Versandprofil nicht korrekt ermittelt wurde. Dies wurde behoben.
+
+[discrete]
+=== Mollie
+
+* Bei der Zuordnung von Zahlungen zu Aufträgen mit der Zahlungsart Mollie konnte es dazu kommen, dass der bezahlte Betrag am Auftrag nicht korrekt gesetzt wurde, wodurch auch der Zahlungsstatus nicht aktualisiert wurde. Dies wurde behoben.
+
+[discrete]
+=== PayPal
+
+* Beim automatischen Abruf der PayPal Zahlungen wurde für manche Zahlungen, die durch Mollie getätigt wurden, die Einstellung das diese ignoriert werden sollen, nicht korrekt behandelt. Diese Fälle wurden nun ergänzt, sodass diese Zahlungen beim automatischen Import der PayPal Schnittstelle ignoriert werden.
+
+[discrete]
+=== Standorte
+
+* Wurde eine existierende Standort-Konfiguration über den Assistenten gespeichert, kam es zu einem Fehler, da der Standard-Umsatzsteuersatz des Standortes nicht gespeichert werden konnte (nur Änderung am *Ungültig ab*-Datum sind möglich). Dies wurde behoben, der Standard-Umsatzsteuersatz wird nicht erneut abgespeichert.
+
+[discrete]
+=== Warenwirtschaft
+
+* Das Löschen der Lagerorte mit negativem Bestand verursachte das Entstehen der *unbekannten Lagerorte* in der UI. Das Löschen dieser Lagerorte ist jetzt nicht mehr möglich und es wird auch eine entsprechende Fehlermeldung ausgegeben.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* In allen Tabellen im Bereich Bestellung sind die Spaltenüberschriften von rechtsbündigen Spalten für Preise nun ebenfalls rechtsbündig.
+* In allen Tabellen im Bereich Bestellung sind bearbeitbare Felder nun sichtbar wenn die Maus über die Tabellenzeilen bewegt wird.
+* In allen Tabellen im Bereich Bestellung wird der Textinhalt eines editierbaren Elements durch Anklicken des Textplatzhalters ausgewählt.
+* Wenn in der Artikelpositionstabelle einer Nachbestellung die Eingabe des Einkaufspreises geöffnet war, wurde die Nachbestellung gespeichert, auch wenn der Preis nicht geändert wurde. Dies wurde behoben.
+* Die Bestellmenge in der Artikelpositionstabelle einer Umbuchung blieb wegen eines Fehlers leer. Dies wurde nun behoben.
+* Der Filter Varianten-ID wurde zur Artikelsuche in der Auftragsanlage (beta) hinzugefügt.
+* Eine neue Grundeinstellung wurde für die Nachbestellung und die Umbuchung hinzugefügt. Im Menü *Einrichtung » Waren » Bestellwesen* kannst du nun entscheiden, wie hinzugefügte Artikel im Warenkorb dargestellt werden sollen. Entweder als eine Auftragsposition mit angepassten Mengen (Standardeinstellung) oder als separate Auftragspositionen in separaten Zeilen. Entscheide separat für Nachbestellungen und Umbuchungen.
+
+[discrete]
+=== Warenwirtschaft
+
+* Du kannst ab jetzt die externe Auftragsnummer auf die Packliste eingeben.
++
+image:changelog/assets/warenwirtschaft-packliste-externe-auftragsnummer.png[width=640, alt=Externe Auftragsnummer im Warenausgang]
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== DHL Fulfillment
+
+* Bisher war es verpflichtend, dass für Outbound-Aufträge, die an DHL Fulfillment gesendet werden, immer eine Rechnung existiert. Dieses Verhalten wurde geändert. Jetzt ist das Erstellen einer Rechnung keine Pflicht mehr für Aufträge, die in EU-Mitgliedsstaaten gesendet werden. Das Erstellen einer Rechnung bleibt jedoch verpflichtend für Aufträge, deren Lieferadressen sich in einem Nicht-EU-Mitgliedsstaat befinden.
+
+[discrete]
+=== Import
+
+* Das Verhalten beim Import der Paketnummern wurde folgendermaßen geändert:
+** Wenn Pakete eines Auftrags ohne Paket-ID importiert werden, aber in der Datenbank Pakete ohne Paketnummern vorhanden sind, werden die Pakete aktualisiert.
+** Wenn Pakete eines Auftrags ohne Paket-ID importiert werden, aber in der Datenbank befindet sich kein Paket ohne Paketnummer, dann wird ein neues Paket mit Paketnummer erstellt.
+** Wenn Pakete eines Auftrags mit Paket-ID importiert werden, dann werden nur die Pakete mit der bestimmten ID aktualisiert.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Amazon
+
+* Ein Anzeigefehler im Log für den Identifikator `AmazonMFNReturnsSend` wurde behoben.
+
+[discrete]
+=== Aufträge
+
+* Die Sortierung nach Lieferantennummer in der Artikelpositionstabelle hat weder in der Nachbestellung noch der Umbuchung funktioniert. Dies ist nun behoben.
+* Wenn das Lieferdatum geändert wird, öffnet sich ein Bestätigungsfenster. Für dieses wurde der Text korrigiert.
+* Beim Erstellen einer neuen Nachbestellung wurde die Tabellenspalte Preis in der Artikeltabelle sowie der Warenkorbtabelle nicht angezeigt. Darüber hinaus war die Schaltfläche zum Bearbeiten der Artikeltabelle deaktiviert, wenn eine neue Nachbestellung gespeichert wurde. Beide Probleme wurden behoben.
+
+[discrete]
+=== Import
+
+* Das Importieren des Feldes `In Artikelauflistung unsichtbar` aktualisiert nun wieder den Artikelindex.
+
+[discrete]
+=== Warenwirtschaft
+
+* Bei der Auswahl des Lagerort-Typs *mittel*, *groß* oder *Europalette* wurde trotzdem der Lagerort als *klein* angelegt. Der Fehler wurde nun behoben.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name |Version |To-do
+
+|link:https://marketplace.plentymarkets.com/vehiclesearch_54559[Autoteile Manager Lite^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/cfourcereselectronic5_6861[Ceres Electronic 5^]
+|5.0.6
+|-
+
+|link:https://marketplace.plentymarkets.com/crefopay_6757[Crefopay^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/deepl_5900[DeepL - Für professionelle Übersetzungen^]
+|1.2.0
+|-
+
+|link:https://marketplace.plentymarkets.com/energylabel_6160[Energie Label^]
+|1.4.8
+|-
+
+|link:https://marketplace.plentymarkets.com/edon_6618[FairGeben^]
+|1.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/findologic_6390[Findologic - Search & Navigation Platform^]
+|3.5.3
+|-
+
+|link:https://marketplace.plentymarkets.com/formatdesigner_6483[FormatDesigner^]
+|1.0.44
+|-
+
+|link:https://marketplace.plentymarkets.com/hermesshippinginterface_5437[Hermes^]
+|1.0.15
+|-
+
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
+|2.8.2
+|-
+
+|link:https://marketplace.plentymarkets.com/d2gpmpluginshippingicons_6756[Versand Icons Widget^]
+|1.0.1
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+
+--
+
+====

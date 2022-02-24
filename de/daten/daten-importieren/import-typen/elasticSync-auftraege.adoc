@@ -1,199 +1,478 @@
 = Aufträge
 :lang: de
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, Import, Aufträge, Sync, Sync-Typ, Auftragsimport
+:keywords: Auftragsimport, Aufträge importieren, Auftragsposition importieren, Auftragspositionsimport
 :position: 30
 :url: daten/daten-importieren/sync-typen/elasticSync-auftraege
 :id: ZSCPDPE
 :author: team-order-payment
 
-Mit einem Sync des Typs *Aufträge* importieren Sie Auftragsdaten.
+//optional - add extra sentences between the brackets in einleitung-weitere-info if you want to have further info in your introduction
+:einleitung-daten: pass:quotes[Aufträgen]
+:einleitung-weitere-info: pass:quotes[]
+:abgleich-tabelle: <<table-matching-fields-order]>>
+:abgleich-daten: pass:quotes[]
+:zuordnung-daten: pass:quotes[Auftragsdaten]
+:zuordnung-standardwert: pass:quotes[dein Auftrag]
+
+include::./_textblocks/einleitung.adoc[]
+
+[TIP]
+.Praxisbeispiel: Auftragspositionen
+====
+Auf der Praxisbeispiel-Seite <<daten/daten-importieren/elasticsync-best-practices/best-practices-elasticsync-auftragspositionen#, Auftragspositionen>> findest du weitere Informationen zum Import und der Aktualisierung von Auftragspositionen.
+====
 
 [#2010]
 == Felder für den Auftragsabgleich
 
-In <<tabelle-abgleichfelder-auftrag>> werden Felder erläutert, die für den Abgleich von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
+In <<table-matching-fields-order>> werden Felder erläutert, die für den Abgleich von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist.
 
-[[tabelle-abgleichfelder-auftrag]]
+[[table-matching-fields-order]]
 .Abgleichfelder für Auftragsimport
 [cols="1,3"]
 |====
 |Einstellung |Erläuterung
 
-|Aufträge
-| *Auftrags-ID* +
-*Externe Auftrags-ID*
+|*Aufträge*
+|In welcher Spalte deiner CSV-Datei werden die Auftrags-IDs aufgelistet? Wähle diese Spalte hier. Du kannst optional zusätzlich abstufen, ob es sich um eine plenty *Auftrags-ID* oder eine *Externe Auftrags-ID* handelt. +
+Diese Einstellung ist sinnvoll, wenn du _bestehende Aufträge aktualisieren_ möchtest. +
 
-|Paket
-| *Paket-ID* +
-Hier ist die ID des Versandpakets gemeint.
+_Hintergrund-Info_: Jeder neu angelegte Auftrag erhält automatisch eine ID, die nicht geändert werden kann. Die ID dient zur eindeutigen Kennzeichnung des Auftrags. Da die ID eindeutig ist, lässt sich damit gut prüfen, ob der importierte Auftrag bereits in plentymarkets vorhanden ist.
 
-|Auftragsposition
-| *Auftragspositions-ID* +
-*Externe Artikel ID* +
-*Externe Token ID*
+|*Paket*
+|In welcher Spalte deiner CSV-Datei werden die IDs der Versandpakete aufgelistet? Wähle diese Spalte hier.
 
-|Variante
-| *Varianten-ID* +
-*Marktplatz SKU* +
-*Externe Varianten ID* +
-*Variantennummer* +
-*Hersteller-Variantennummer* +
-*Barcode: EAN*
+|*Auftragsposition*
+| In welcher Spalte deiner CSV-Datei werden die Auftragspositionen aufgelistet? Wähle diese Spalte hier. Wähle anschließend aus, worum es sich genau handelt. Zur Verfügung stehen dir *Auftragspositions-ID*, *Externe Artikel ID* oder *Externe Token ID*.
 |====
+
+[[table-supplement-data]]
+.Daten ergänzen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+|*Variante*
+| In welcher Spalte deiner CSV-Datei werden die Varianten-IDs aufgelistet? Wähle diese Spalte hier. Wähle anschließend aus, worum es sich genau handelt. Zur Verfügung stehen dir *Marktplatz SKU*, *Externe Varianten ID*, *Variantennummer*, *Hersteller-Variantennummer*, *Barcode: GTIN 13*, *Barcode: GTIN 128*, *Barcode: UPC* oder *Barcode: ISBN*. +
+Wählst du dieses Abgleichfeld, werden die im System hinterlegten Informationen der Varianten geladen und dem Auftrag hinzugefügt. Auf diese Art, Daten werden ergänzt.
+|====
+
+[TIP]
+.Neue Aufträge über Import anlegen und Pflichtfelder in der Zuordnung
+====
+Wenn du über den Import neue Aufträge anlegen möchtest, lasse die Felder im Bereich *Abgleich* leer. Beachte aber die markierten Pflichtfelder im Bereich *Zuordnung*. Diese gelten nur für das Anlegen neuer Aufträge. Möchtest du bestehende Aufträge aktualisieren, müssen nicht alle Pflichtfelder im Bereich Zuordnung ausgefüllt sein.
+====
 
 [#2020]
 == Felder für die Auftragszuordnung
 
-In <<tabelle-zuordnungsfelder-auftrag>> werden Felder erläutert, die für die Zuordnung von Auftragsdaten zur Verfügung stehen. Anhand des gewählten Abgleichsfelds wird geprüft, ob der importierte Datensatz in plentymarkets vorhanden ist. +
+include::./_textblocks/zuordnung.adoc[]
 
-[WARNING]
-.Pflichtfelder für die Auftragszuordnung
-====
-Beachten Sie die mit *Pflichtfeld* gekennzeichneten Felder in <<tabelle-zuordnungsfelder-auftrag>>. Wenn Sie diese Pflichtfelder nicht aktivieren, wird die Auftragszuordnung nicht korrekt durchgeführt.
-====
+[#2030]
+=== Auftrag
 
-[[tabelle-zuordnungsfelder-auftrag]]
-.Zuordnungsfelder für Auftragsimport
-[cols="1,1,2"]
-|====
-|Zuordnungsfeld |Zulässige Importwerte |Erläuterung
+[#2040]
+==== ID des Typs
 
-3+| *Auftrag*
+icon:warning[role="red"] [red]#Pflichtwert#
 
-|ID des Typs +
-*Pflichtfeld*
-|Numerisch
-a|Auftragstypen bilden verschiedene Geschäftsvorfälle ab. Folgende Typen stehen zur Verfügung:
+Um was für einen Auftrag handelt es sich? Gib die entsprechende ID in deine CSV-Datei ein. +
+In plentymarkets gibt es verschiedene Auftragstypen, die im Import numerisch über eine ID abgebildet werden. Mit Eingabe der ID weiß das System, um welchen Auftragstyp es sich handelt.
 
-* Auftrag = 1
-* Lieferauftrag = 2
-* Retoure = 3
-* Gutschrift = 4
-* Garantie = 5
-* Reparaturauftrag = 6
-* Angebot = 7
-* Vorbestellung = 8
-* Sammelauftrag = 9
-* Sammelgutschrift = 10
+*_Standardwert_*: Kein Standardwert
 
-|ID des Status
-|Numerisch
-|ID des Status. Die IDs vergeben Sie selbst im Bereich von 1,0000 bis 18,9999. Die Status finden Sie im Menü *Einrichtung » Aufträge » Status*.
+*_Zulässige Importwerte_*: Numerisch
 
-|ID des Eigners
-|Numerisch
-|ID des Eigners. Ein Eigner ist ein Benutzer, der als Eigner zugeordnet wurde. Die ID des Eigners entspricht also der ID des Benutzers. Die Benutzer-ID finden Sie im Menü *Einrichtung » Einstellungen » Benutzer » Konten*. Aufträge können einem Eigner zugeordnet werden, müssen aber nicht.
+[[table-mapping-ordertype]]
+[cols="1,1"]
+|===
 
-|PlentyID +
-*Pflichtfeld*
-|Numerisch
-|ID des Mandanten. Die PlentyID finden Sie im Menü *Einrichtung » Mandant » Mandant wählen » Einstellungen*.
+|Zulässige Importwerte in CSV-Datei |Ergebnis im Backend
 
-|ID des Standortes
-|Numerisch
-|ID des Standorts. Standorte finden Sie im Menü *Einrichtung » Mandant » Mandant wählen » Standorte*.
+|`1`
+|Auftrag
 
-3+| *Auftragsposition*
+|`2`
+|Lieferauftrag
 
-|Typ +
-*Pflichtfeld*
-|Numerisch
-a|Die Auftragspositionstypen bilden verschiedene Kostenposten eines Auftrags ab. Die mit den Posten verbundenen Kosten können sowohl negativ als auch positiv sein. Standardmäßig wird hier die ID des Auftragspositionstyps erwartet. Die Typen, die zur Verfügung stehen, sind hier mit Typ-ID aufgelistet. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
+|`3`
+|Retoure
 
-* Variante = 1
-* Artikelpaket = 2
-* Paketbestandteil = 3
-* Aktionsgutschein = 4
-* Geschenkgutschein = 5
-* Versandkosten = 6
-* Zahlungsaufschlag = 7
-* Geschenkverpackung = 8
-* Unzugeordnete Variante = 9
-* Pfand = 10
-* Auftrag = 11
+|`4`
+|Gutschrift
 
-Der Typ *Auftrag* kommt z.B. in Sammelaufträgen vor.
+|`5`
+|Garantie
 
-|Herkunft
-|Numerisch
-|Standardmäßig wird hier die ID der Herkunft erwartet. Die IDs finden Sie im Menü *Einrichtung » Aufträge » Auftragsherkunft*. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
+|`6`
+|Reparaturauftrag
 
-|Name +
-*Pflichtfeld*
-|Alphanumerisch
-|Spalte wählen, die den Namen der Auftragsposition enthält. Standardmäßig wird davon ausgegangen, dass die Namen in der Systemsprache angegeben sind.
+|`7`
+|Angebot
 
-|Attributwert
-|Alphanumerisch
-|Spalte wählen, die den Namen des Attributwertes enthält. Der Name wird in Systemsprache erwartet.
+|`8`
+|Vorbestellung
 
-|Umsatzsteuersatz
-|Numerisch
-|Standardmäßig wird hier der Prozentwert des Steuersatzes erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+|`9`
+|Sammelauftrag
 
-|Umsatzsteuerbetrag
-|Numerisch
-|Spalte wählen, die den Steuerbetrag enthält. Standardmäßig wird der Umsatzsteuerbetrag für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+|`10`
+|Sammelgutschrift
 
-|Menge +
-*Pflichtfeld*
-|Numerisch
-|Spalte wählen, die die Anzahl einer Auftragsposition enthält.
+|`11`
+|Umbuchung
 
-|Varianten-ID
-|Numerisch
-|Standardmäßig wird hier die ID der Variante erwartet. Die IDs finden Sie im Menü *Artikel » Artikel bearbeiten*. Wenn Ihre Spalte nicht die IDs enthält, nehmen Sie eine eigene Zuordnung vor.
+|`12`
+|Nachbestellung
 
-|Position
-|Numerisch
-|Spalte wählen, die die Position der Auftragspositionen enthält. Die Position dient der Sortierung innerhalb des Auftrages. Sie wird jedoch bisher noch nicht beachtet.
+|===
 
-|Währung +
-*Pflichtfeld*
-|Alphanumerisch
-|Standardmäßig wird der ISO-Code einer Währung erwartet, z.B. EUR für Euro.
+[#2050]
+==== ID des Status
 
-|Wechselkurs
-|Numerisch
-|Spalte wählen, die den Wechselkurs enthält. Der Wechselkurs muss den Umrechnungskurs von der Auftragswährung in die Systemwährung enthalten. Ihre Systemwährung finden Sie im Menü *Einrichtung » Aufträge » Zahlung » Währungen*. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+Welchen Status möchtest du dem Auftrag zuweisen? Gib diesen in deine CSV-Datei ein. +
+28 Auftragsstatus sind im System vorangelegt, du kannst aber auch selbst Status definieren. Dafür stehen dir 19 Status mit je 4 Nachkommastellen zur Verfügung. Im Menü *Einrichtung » Aufträge » Status* kannst du deine Status bearbeiten. Beachte dazu den Handbuchabschnitt <<auftraege/auftraege-verwalten#1200, Auftragsstatus nutzen>>.
 
-|Einkaufspreis
-|Numerisch
-|Spalte wählen, die den Einkaufspreis enthält. Standardmäßig wird der Einkaufspreis für die Menge 1 der Auftragsposition erwartet. Der Einkaufspreis wird im Auftrag nicht direkt angezeigt. Er ermöglicht aber das Errechnen und Anzeigen der Gewinnspanne. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+*_Standardwert_*: Kein Standardwert
 
-|Bruttopreis
-|Numerisch
-|Spalte wählen, die den Bruttopreis enthält. Standardmäßig wird der Bruttopreis für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+*_Zulässige Importwerte_*: Numerisch
 
-|Nettopreis
-|Numerisch
-|Spalte wählen, die den Nettopreis enthält. Standardmäßig wird der Nettopreis für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Status* sowie in der Auftragsübersicht.
 
-|Preisaufschlag
-|Numerisch
-|Spalte wählen, die den Preisaufschlag enthält. Standardmäßig wird der Preisaufschlag für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+[#2060]
+==== ID des Eigners
 
-|Rabatt
-|Numerisch
-|Spalte wählen, die den Rabatt enthält. Standardmäßig wird der Rabatt für die Menge 1 der Auftragsposition erwartet. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+Welchem Eigner soll der Auftrag zugewiesen sein? Gib die ID des Eigners in deine CSV-Datei ein. +
+Die IDs von Eignern findest du im Backend im Menü *Einrichtung » Einstellungen » Benutzer » Konten*. Stelle sicher, dass der zugewiesene Eigner die benötigten Rechte für den Bereich *Aufträge* hat.
 
-|Prozentualer Rabatt
-|Numerisch
-|Spalte wählen, die den Prozentsatz für den Rabatt enthält. Ob die Zahl kommasepariert oder punktsepariert erwartet wird, hängt von Ihren Importoptionen ab. Die Importoptionen stellen Sie im Bereich *Abgleich* ein.
+*_Standardwert_*: Kein Standardwert
 
-3+| *Auftragspositionseigenschaften*
+*_Zulässige Importwerte_*: Numerisch
 
-|Wert
-|Alphanumerisch
-a|Eigenschaftstyp wählen und anschließend die Spalte wählen, in der die Eigenschaft enthalten ist. Standardmäßig stehen folgende Eigenschaften für Auftragspositionen zur Verfügung: +
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Eigner* sowie in der Auftragsübersicht.
+
+[#2070]
+==== Referrer-ID
+
+Welche Herkunft soll dem Auftrag zugeordnet werden? Gib die ID der Herkunft in deine CSV-Datei ein. +
+Herkünfte sind im System mit IDs hinterlegt. Einige Herkünfte sind nicht veränderbar. Du kannst manuell Herkünfte hinzufügen. Herkünfte findest du im Menü *Einrichtung » Aufträge » Auftragsherkunft*.
+
+*_Standardwert_*: Eingestellte Standardherkunft für Auftragseinstellungen
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Herkunft* sowie in der Auftragsübersicht.
+
+[#2080]
+==== PlentyID
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+Welcher Mandant gilt für den Auftrag? Gib die plentyID des Mandanten in deine CSV-Datei ein. +
+Du findest die plentyID deines Mandanten im Menü *Einrichtung » Mandant » [Mandant wählen] » Einstellungen*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2090]
+==== ID des Standorts
+
+Welcher Standort gilt für den Auftrag? Gib die ID des Standortes in deine CSV-Datei ein. +
+Du findest die Standort-IDs im Menü *Einrichtung » Mandant » [Mandant wählen] »Standorte*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Standort* sowie in der Auftragsübersicht.
+
+[#2120]
+==== ID des Elternauftrags
+
+Importierst oder aktualisierst du Aufträge, die einen übergeordneten Auftrag haben? Dann gib die ID dieses Elternauftrages in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend unter anderem in der Auftragsübersicht im Menü *Aufträge » Aufträge bearbeiten*. Dort werden die IDs von Elternaufträgen mit einem Pfeil gekennzeichnet.
+
+[#2130]
+=== Auftragsposition
+
+[#2140]
+==== Typ
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+Welchem Typ entspricht die Auftragsposition? Gib die ID des Auftragspositionstyps in deine CSV-Datei ein. +
+Die Auftragspositionstypen bilden verschiedene Kostenposten eines Auftrags ab. Die mit den Posten verbundenen Kosten können sowohl negativ als auch positiv sein. Wenn deine Spalte nicht die IDs enthält, kannst du eine eigene Zuordnung vornehmen.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[[table-mapping-orderitemtype]]
+[cols="1,1"]
+|===
+
+|Zulässige Importwerte in CSV-Datei |Ergebnis im Backend
+
+|`1`
+|Variante
+
+|`2`
+|Artikelpaket
+
+|`3`
+|Paketbestandteil
+
+|`4`
+|Aktionsgutschein
+
+|`5`
+|Geschenkgutschein
+
+|`6`
+|Versandkosten
+
+|`7`
+|Zahlungsaufschlag
+
+|`8`
+|Geschenkverpackung
+
+|`9`
+|Unzugeordnete Variante
+
+|`10`
+|Pfand
+
+|`11`
+|Auftrag +
+Dieser Auftragspositionstyp kommt zum Beispiel in Sammelaufträgen vor.
+
+|`12`
+|Nachbestellung
+
+|===
+
+[#2150]
+==== Herkunft
+
+Welche Herkunft soll der Auftragsposition zugeordnet werden? Gib die ID der Herkunft in deine CSV-Datei ein. +
+Herkünfte sind im System mit IDs hinterlegt. Einige Herkünfte sind nicht veränderbar. Du kannst manuell Herkünfte hinzufügen. Herkünfte findest du im Menü *Einrichtung » Aufträge » Auftragsherkunft*.
+
+*_Standardwert_*: Eingestellte Standardherkunft für Auftragseinstellungen
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Herkunft* sowie in der Auftragsübersicht.
+
+[#2160]
+==== Name
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+Welchen Namen hat die Auftragsposition? Gib den Namen in deine CSV-Datei ein. +
+Es wird standardmäßig davon ausgegangen, dass der Name in der Systemsprache eingegeben wird. Namen für Artikel vergibst du im Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » Artikeltab: Texte » Feld: Name*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht* in der *Artikelpositionstabelle* sowie in der Auftragsübersicht.
+
+[#2170]
+==== Attributwert
+
+Welchen Attributwert hat die Aufragsposition? Gib den Namen des Attributwertes in deine CSV-Datei ein. +
+Es wird standardmäßig davon ausgegangen, dass der Attributwert in der Systemsprache eingegeben wird. Attribute können zum Beispiel Farben oder Größen sein. Neue Attribute legst du im Menü *Einrichtung » Artikel » Attribute* an. Beachte dazu den Handbuchabschnitt <<artikel/einstellungen/attribute#, Attribute>>.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht* in der *Artikelpositionstabelle* sowie in der Auftragsübersicht.
+
+[#2180]
+==== Umsatzsteuersatz
+
+Welchen Umsatzsteuersatz hat die Auftragsposition? Gib den Umsatzsteuersatz in deine CSV-Datei ein. +
+Gib den Prozentwert des Steuersatzes ohne Prozentzeichen ein. Ob der Satz kommasepariert oder punktsepariert eingetragen werden muss, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht* sowie in der Auftragsübersicht.
+
+[#2190]
+==== Umsatzsteuerbetrag
+
+Welcher Umsatzsteuerbetrag gilt für die Auftragsposition? Gib den Betrag in deine CSV-Datei ein. +
+
+Es wird standardmäßig der Umsatzsteuerbetrag für die Menge 1 erwartet. Ob der Betrag kommasepariert oder punktsepariert eingetragen werden muss, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht*.
+
+[#2200]
+==== Menge
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+In welcher Anzahl ist die Auftragsposition in dem Auftrag vorhanden? Gib die Menge in deine CSV-Datei ein.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht* sowie in der Auftragsübersicht.
+
+[#2210]
+==== Varianten-ID
+
+Gib die ID der Variante in deine CSV-Datei ein. Die ID findest du unter anderem in der Übersichtstabelle im Menü *Artikel bearbeiten » Artikel*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht* in der *Artikelpositionstabelle* sowie in der Auftragsübersicht.
+
+[#2220]
+==== Position
+
+Gib die Position der Auftragsposition in deine CSV-Datei ein. Die Position gibt die Sortierung der Auftragspositionen innerhalb eines Auftrages wider.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht* in der *Artikelpositionstabelle* sowie in der Auftragsübersicht.
+
+[#2230]
+==== Währung
+
+icon:warning[role="red"] [red]#Pflichtwert#
+
+In welcher Währung ist der Auftrag? Gib den ISO-Code der Währung in deine CSV-Datei ein. +
+Eine Übersicht mit den verfügbaren Währungen in plentymarkets und den entsprechenden ISO-Codes findest du im Handbuchabschnitt <<daten/interne-IDs#60, Währungen>>.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Währung* sowie in der Auftragsübersicht.
+
+[#2240]
+==== Wechselkurs
+
+Gib den Wechselkurs der Auftragswährung in die Standard-Währung in deine CSV-Datei ein. +
+Die Standard-Währung findest du im Menü *Einrichtung » Aufträge » Zahlung » Währungen*.
+
+*_Standardwert_*: Wenn kein Wechselkurs angegeben wird, wird der im Menü *Einrichtung » Aufträge » Zahlung » Währung* eingestellte Wechselkurs übernommen.
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Umrechnungskurs*.
+
+[#2250]
+==== Einkaufspreis
+
+Welchen Einkaufspreis hat die Auftragsposition? Gib den Preis für die Menge 1 in deine CSV-Datei ein. +
+Ob du den Preis punkt- oder kommasepariert eingeben musst, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Der Einkaufspreis wird nicht direkt im Auftrag angezeigt. Er ermöglicht aber das Errechnen der Gewinnspanne, die du im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht » Feld: Gewinnspanne netto* findest.
+
+[#2260]
+==== Bruttopreis
+
+Welchen Bruttopreis hat die Auftragsposition? Gib den Preis für die Menge 1 in deine CSV-Datei ein. +
+Ob du den Preis punkt- oder kommasepariert eingeben musst, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend in der Artikelpositionstabelle im Menü *Aufträge » Aufträge bearbeiten*. Der Gesamtwarenwert brutto wird im Menü *Aufträge » Aufträge bearbeiten » Tab: Übersicht » Feld: Warenwert brutto* angezeigt.
+
+[#2260]
+==== Nettopreis
+
+Welchen Nettopreis hat die Auftragsposition? Gib den Preis für die Menge 1 in deine CSV-Datei ein. +
+Ob du den Preis punkt- oder kommasepariert eingeben musst, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend in der Artikelpositionstabelle im Menü *Aufträge » Aufträge bearbeiten*. Der Gesamtwarenwert netto wird im Menü *Aufträge » Aufträge bearbeiten » Tab: Übersicht » Feld: Warenwert netto* angezeigt.
+
+[#2270]
+==== Preisaufschlag
+
+Hat die Auftragsposition einen Preisaufschlag? Dann gib diesen Preisaufschlag für die Menge 1 in deine CSV-Datei ein. +
+Ob du den Aufschlag punkt- oder kommasepariert eingeben musst, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2280]
+==== Rabatt
+
+Hat die Auftragsposition einen Rabatt? Dann gib diesen Rabatt für die Menge 1 in deine CSV-Datei ein. +
+Ob du den Rabatt punkt- oder kommasepariert eingeben musst, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend in der Artikelpositionstabelle im Menü *Aufträge » Aufträge bearbeiten*.
+
+[#2290]
+==== Prozentualer Rabatt
+
+Gilt für die Auftragsposition ein prozentualer Rabatt? Dann gib diesen prozentualen Rabatt in deine CSV-Datei ein. +
+Ob du den prozentualen Rabatt punkt- oder kommasepariert eingeben musst, hängt von deiner Einstellung im Bereich *Abgleich* des Imports ab.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend in der Artikelpositionstabelle im Menü *Aufträge » Aufträge bearbeiten*.
+
+[#2300]
+=== Auftragspositionseigenschaften
+
+[#2310]
+==== Wert
+
+Welche Eigenschaften hat die Auftragsposition? Gib den Wert in deine CSV-Datei ein und wähle in der Zuordnung den entsprechenden Eigenschaftstyp aus. +
+Du kannst mehrere Eigenschaftstypen hinterlegen. Pro Eigenschaftstyp musst du eine eigene Spalte in deiner CSV-Datei anlegen und die entsprechende Auswahl in der Zuordnung treffen.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+*_Zur Verfügung stehende Eigenschaftstypen_*:
 
 * Lager
 * Gewicht
 * Breite
 * Länge
 * Höhe
-* Externe Token ID
+* Externe Token-ID
 * Externe Artikel-ID
 * Gutscheincode
 * Gutscheintyp
@@ -203,26 +482,51 @@ a|Eigenschaftstyp wählen und anschließend die Spalte wählen, in der die Eigen
 * Artikelstatus
 * Externe Auftragspositions-ID
 
-Eigene Eigenschaftstypen für Auftragspositionen können per link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] oder per link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^]{nbsp}icon:external-link[] erstellt werden. Sie werden jedoch nicht in der UI angezeigt. +
-Um die Eigenschaft Lager in der UI anzuzeigen, wählen Sie im Menü *Einrichtung » Aufträge » Einstellungen* für das Feld Zuordnung des Lagers die Option b). Wählen Sie alternativ Option a) und klicken Sie an den Artikeln auf *Bearbeiten*.
+Eigene Eigenschaftstypen für Auftragspositionen können per link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] oder per link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^] erstellt werden. Sie werden jedoch nicht in der UI angezeigt. +
 
-3+| *Auftragsnotiz*
+[#2320]
+=== Auftragsnotiz
 
-|Text
-|
-|Option *Text* wählen, um den in der Auftragsnotiz enthaltenen Text zu importieren.
+[#2330]
+==== Text
 
-3+| *Adressrelation*
+Gibt es eine Auftragsnotiz zum Auftrag? Gib den Text, der der Auftragsnotiz zugeordnet sein soll, in deine CSV-Datei ein.
 
-|Adress-ID
-|Numerisch
-|Wählen, ob die Adresse die Rechnungsadresse oder die Lieferadresse des Auftrages ist. Anschließend Spalte wählen, die die ID der Adresse enthält. Die Adress-ID dient der Zuordnung zu bereits existierenden Adressen von Kontakten. Wenn es sich um eine neue Adresse handelt, nutzen Sie die Adresszuordnungsfelder.
+*_Standardwert_*: Kein Standardwert
 
-3+| *Auftragseigenschaft*
+*_Zulässige Importwerte_*: Alphanumerisch
 
-|Wert
-|Alphanumerisch
-a|Eigenschaftstyp wählen und anschließend die Spalte wählen, in der die Eigenschaft enthalten ist. Standardmäßig stehen folgende Eigenschaften für Aufträge zur Verfügung: +
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht » Feld: Auftragsnotiz*.
+
+[#2340]
+=== Adressrelation
+
+[#2350]
+==== ID der Adresse
+
+Zum Kontakt existiert bereits eine Adresse? Gib die ID der Adresse in deine CSV-Datei ein und wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder um die *Liederadresse* handelt. +
+Die ID der Adresse findest du unter anderem im Menü *CRM » Kontake » [Kontakt öffnen] » Bereich: Details » Feld: Adressen*. Wenn du eine neue Adresse importieren möchtest, nutze die Zuordnungsfelder unter <<daten/daten-importieren/sync-typen/elasticSync-auftraege#2420, Adresse>>.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht » Felder: Rechnungsanschrift bzw. Lieferanschrift* sowie in der Auftragsübersicht.
+
+[#2360]
+=== Auftragseigenschaft
+
+[#2370]
+==== Wert
+
+Welche Eigenschaften hat der Auftrag? Gib den Wert in deine CSV-Datei ein und wähle in der Zuordnung den entsprechenden Eigenschaftstyp aus. +
+Du kannst mehrere Eigenschaftstypen hinterlegen. Pro Eigenschaftstyp musst du eine eigene Spalte in deiner CSV-Datei anlegen und die entsprechende Auswahl in der Zuordnung treffen.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+*_Zur Verfügung stehende Eigenschaftstypen_*:
 
 * Lager
 * Versandprofil
@@ -233,146 +537,447 @@ a|Eigenschaftstyp wählen und anschließend die Spalte wählen, in der die Eigen
 * Externe Auftrags-ID
 * Kundenzeichen
 * Mahnstufe
-* Verkäuferkonto
+* Verkäufer Konto
 * Markierung
+* Dokumentennummer
 * Umsatzsteuer-Identifikationsnummer
 
-Eigene Eigenschaftstypen für Aufträge können per link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] oder per link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^]{nbsp}icon:external-link[] erstellt werden.
+Eigene Eigenschaftstypen für Aufträge können per link:https://developers.plentymarkets.com/api-doc/Order#element_113[Interface^] oder per link:https://developers.plentymarkets.com/rest-doc#/Order/post_rest_orders_properties_types[REST^] erstellt werden.
 
-3+| *Auftragsdatum*
+[#2380]
+=== Auftragsdatum
 
-|Datum
-|
-|Datumstyp wählen und anschließend die Spalte wählen, in der das Datum enthalten ist. Das Datumsformat in der Spalte muss in dem Datumsformat angegeben sein, dass Sie in den Importoptionen definiert haben.
+[#2390]
+==== Datum
 
-3+| *Auftragsrelation*
+Du möchtest dem Auftrag ein bestimmtes Datum zuordnen? Gib das Datum in dem Format ein, das du in den Einstellungen im Bereich Abgleich in den *Import Optionen* für das Feld *Datumsformat* ausgewählt hast. Wähle in der Zuordnung aus, um welchen Datumstyp es sich handelt.
 
-|Referenz-ID
-|
-a|Auftragsrelation wählen und anschließend die Spalte wählen, in der die Referenz-ID enthalten ist. Folgende Relationen stehen zur Verfügung:
+*_Standardwert_*: Kein Standardwert
 
-* Kontakt - Sender: Die Referenz-ID ist die ID eines bestehenden Kontakts und dieser Kontakt ist Sender des Auftrags
-* Kontakt - Empfänger: Die Referenz-ID ist die ID eines bestehenden Kontakts und dieser Kontakt ist Empfänger des Auftrags
-* Konto - Sender: Die Referenz-ID ist die ID eines bestehenden Kontos und dieses Konto ist Sender des Auftrags
-* Konto - Empfänger: Die Referenz-ID ist die ID eines bestehenden Kontos und dieser Kontos ist Empfänger des Auftrags
-* Lager - Sender: Die Referenz-ID ist die ID eines bestehenden Lagers und dieses Lager ist Sender des Auftrags
-* Lager - Empfänger: Die Referenz-ID ist die ID eines bestehenden Lagers und dieses Lager ist Empfänger des Auftrags
+*_Zulässige Importwerte_*: Numerisch (Format wie im Abgleich gewählt)
 
-2+| *Adresse*
-|Egal, welches Adressfeld gewählt wird, müssen Sie zunächst wählen, ob es zu einer Lieferadresse oder einer Rechnungsadresse gehört.
+*_Zur Verfügung stehende Datumstypen_*:
 
-|Name 1 (Firma)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Firmennamen enthält.
+* Gelöscht am
+* Erstellt am
+* Zahlungseingang
+* zuletzt aktualisiert
+* Warenausgang am
+* Retourniert am
+* Zahlungsziel
+* voraussichtliches Versanddatum
+* voraussichtliches Lieferdatum
 
-|Name 2 (Vorname)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Vornamen enthält.
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht » Feld: Eingabe* sowie in der Auftragsübersicht.
 
-|Name 3 (Nachname)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Nachnamen enthält.
+[#2400]
+=== Auftragsrelation
 
-|Name 4 (Zusatz)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Namenszusatz enthält.
+[#2410]
+==== ID der Referenz
 
-|Adresse 1 (Straße)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Straßennamen enthält.
+Soll dem Auftrag eine bestimmte Relation zugeordnet werden? Gib dafür eine Referenz-ID in deine CSV-Datei ein. +
 
-|Adresse 2 (Hausnummer)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die die Hausnummer enthält.
+*_Standardwert_*: Kein Standardwert
 
-|Adresse 3 (Zusatz)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Adresszusatz enthält.
+*_Zulässige Importwerte_*: Numerisch
 
-|Adresse 4 (Frei)
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die freie Adressinformationen enthält.
+[[table-mapping-orderrelation]]
+[cols="1,1"]
+|===
 
-|Postleitzahl
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die die Postleitzahl enthält.
+|Auswahl in der Zuordnung |Erläuterung
 
-|Stadt
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die den Städtenamen enthält.
+|*Kontakt - Sender*
+|Die einzugebende Referenz-ID ist die ID eines bestehenden Kontakts. Dieser Kontakt wird dann als Sender des Auftrages übernommen. Die ID des Kontaktes findest du im Backend in der Übersichtstabelle im Menü *CRM » Kontakte*.
 
-|Landes-ID
-|Numerisch
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die die ID des Landes enthält. Standardmäßig werden hier die IDs der Lieferländer erwartet. Diese IDs finden Sie im Menü *Einrichtung » Aufträge » Versand » Optionen*.
+|*Kontakt - Empfänger*
+|Die einzugebende Referenz-ID ist die ID eines bestehenden Kontakts. Dieser Kontakt wird dann als Empfänger des Auftrages übernommen. Die ID des Kontaktes findest du im Backend in der Übersichtstabelle im Menü *CRM » Kontakte*.
 
-|Bundesland-ID
-|Numerisch
-|Liste aller Länder, für die Bundesländer verfügbar sind mit den IDs der Bundesländer: link:link:https://www.plentymarkets.eu/documents/category/3507/Bundeslaender.pdf[PDF-Datei mit einer Liste der Bundesländer]{nbsp}icon:external-link[]
+|*Firma - Sender*
+|Die einzugebende Referenz-ID ist die ID einer bestehenden Firma. Diese Firma wird dann als Sender des Auftrages übernommen.  Die ID der Firma findest du im Backend wenn du auf *Bearbeiten* im Bereich *Firma* im Menü *CRM » Kontakte* klickst. Im Header des neuen Fensters steht die ID der Firma.
 
-|USt-IdNr.
-|Alphanumerisch
-|Umsatzsteueridentifikationsnummer eines Kunden angeben
+|*Firma - Empfänger*
+|Die einzugebende Referenz-ID ist die ID einer bestehenden Firma. Diese Firma wird dann als Empfänger des Auftrages übernommen. Die ID der Firma findest du im Backend wenn du auf *Bearbeiten* im Bereich *Firma* im Menü *CRM » Kontakte* klickst. Im Header des neuen Fensters steht die ID der Firma.
 
-|Telefon
-|Numerisch
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die die Telefonnummer enthält.
+|*Lager - Sender*
+|Die einzugebende Referenz-ID ist die ID eines bestehenden Lagers. Dieses Lager wird dann als Sender des Auftrages übernommen. Die ID des Lagers findest du im Backend im Menü *Einrichtung » Waren » Lager » [Lager wählen] » Einstellungen*.
 
-|E-Mail
-|
-|Rechnungsadresse oder Lieferadresse wählen und anschließend die Spalte wählen, die die E-Mail-Adresse enthält.
+|*Lager - Empfänger*
+|Die einzugebende Referenz-ID ist die ID eines bestehenden Lagers. Dieses Lager wird dann als Empfänger des Auftrages übernommen. Die ID des Lagers findest du im Backend im Menü *Einrichtung » Waren » Lager » [Lager wählen] » Einstellungen*.
 
-2+| *Versandpaket*
-|Egal, welche Paketinformationen gewählt werden, zunächst müssen Sie ein Versandpaket wählen, mit dem diese Informationen abgestimmt werden. Versandpakete richten Sie im Menü *Einrichtung » Aufträge » Versand » Versandpakete* ein.
+|===
 
-|Gewicht
-|
-|Versandpaket wählen und anschließend die Spalte wählen, die das Gewicht des Paketes enthält.
+[#2420]
+=== Adresse
 
-|Paketnummer
-|
-a|Versandpaket wählen und anschließend die Spalte wählen, die die Paketnummer enthält. Mehrere Paketnummern können kommasepariert in einer Zeile oder über mehrere Zeilen mit je einer Paketnummer pro Zeile angegeben werden.
+Soll dem Auftrag eine noch nicht bestehende Adresse zugeordnet werden? Dann nutze die zu diesem Bereich gehörenden Zuordnungsfelder und gib die entsprechenden Werte in deine CSV-Datei ein. Bei jedem der Zuordnungsfelder in diesem Bereich musst du auswählen, ob es sich um die *Rechnungsadresse* oder um die *Lieferadresse* handelt. +
+Wenn du eine bestehende Adresse zuordnen möchtest, nutze das Zuordnungsfeld <<daten/daten-importieren/sync-typen/elasticSync-auftraege#2350, ID der Adresse>>.
 
-|Packstückart
-|
-a|Versandpaket wählen und anschließend die Spalte wählen, die die Packstückart enthält. Standardmäßig wird hier die ID der Packstückart erwartet:
+[#2430]
+==== Name 1 (Firma)
 
-* 0 = unverpackt
-* 1 = Ballen
-* 2 = Behälter
-* 3 = Bund
-* 4 = Rollpalette
-* 5 = Colli
-* 6 = Container
-* 7 = Eimer
-* 8 = Fass
-* 9 = Flaschen
-* 10 = Euro-Pool-Flachpalette
-* 11 = Gestell
-* 12 = Gasflasche
-* 13 = Gitterboxpalette
-* 14 = Hobbock
-* 15 = Halbe Palette
-* 16 = Lebensmittelpalette
-* 17 = Holzuntersetzer
-* 18 = IBC Container
-* 19 = Kanne
-* 20 = Korbflasche
-* 21 = Kiste
-* 22 = Kanister
-* 23 = Kundenpalette
-* 24 = Karton
-* 25 = Kombinationsverpackung
-* 26 = Pack
-* 27 = Ring
-* 28 = Rolle
-* 29 = Sack
-* 30 = Stück
-* 31 = Tank
-* 32 = Trommel
-* 34 = Verschlag
-* 35 = Viertelpalette
-* 36 = sonstige Paletten
-* 37 = Kasten
-* 38 = Einwegpalette
-* 39 = Folientüte
+Gib den Firmennamen des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2440]
+==== Name 2 (Vorname)
+
+Gib den Vornamen des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein und. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2450]
+==== Name 3 (Nachname)
+
+Gib den Nachnamen des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2460]
+==== Name 4 (Zusatz)
+
+Gib den Namenszusatz des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2470]
+==== Adresse 1 (Straße)
+
+Gib den Straßennamen des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2480]
+==== Adresse 2 (Hausnummer)
+
+Gib die Hausnummer des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2490]
+==== Adresse 3 (Zusatz)
+
+Gib den Adresszusatz des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2500]
+==== Adresse 4 (Frei)
+
+Gib freie Adressinformationen des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2510]
+==== Postleitzahl
+
+Gib die Postleitzahl des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2520]
+==== Stadt
+
+Gib den Ortsnamen des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein und. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2530]
+==== ID des Landes
+
+Gib die ID des Landes der Adresse des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt. +
+Standardmäßig wird hier die ID des Lieferlandes erwartet. Die plentymarkets Länder-IDs findest du im Menü *Einrichtung » Aufträge » Versand » Optionen*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2540]
+==== ID des Bundeslandes
+
+Gib die ID des Bundeslandes der Adresse des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt. +
+Die plentymarkets Bundesländer-IDs findest du in dieser link:https://cdn02.plentymarkets.com/pmsbpnokwu6a/frontend/ElasticSync_BestPractice/Allgemein/Bundeslaender-Bundesstaaten-Provinzen.pdf[PDF-Datei mit einer Liste der Bundesländer].
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2550]
+==== Umsatzsteuer-ID
+
+Gib die Umsatzsteueridentifikationsnummer des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt. +
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2560]
+==== Telefon
+
+Gib die Telefonnummer des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt. +
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2570]
+==== E-Mail
+
+Gib die E-Mailadresse des Kontaktes, dem der Auftrag zugeordnet werden soll, in deine CSV-Datei ein. Wähle in der Zuordnung aus, ob es sich um die *Rechnungsadresse* oder die *Lieferadresse* handelt. +
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du unter anderem im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Kunde*.
+
+[#2580]
+=== Versandpaket
+
+Sollen dem Auftrag Informationen zum Versand zugeordnet werden? Dann nutze die zu diesem Bereich gehörenden Zuordnungsfelder und gib die entsprechenden Werte in deine CSV-Datei ein. Bei jedem der Zuordnungsfelder in diesem Bereich musst zu zusätzlich auswählen, um welches Versandpaket es sich handelt. +
+Versandpakete richtest du im Backend im Menü *Einrichtung » Aufträge » Versand » Versandpakete* ein. Mehr Informationen zu Versandpaketen findest du im Abschnitt <<fulfillment/versand-vorbereiten#1900, Versandpaket erstellen>> im Handbuch.
+
+[#2590]
+==== Gewicht (g)
+
+Gib das Gewicht des Paketes in Gramm in deine CSV-Datei ein. Wähle in der Zuordnung aus, um welches Versandpaket es sich handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Übersicht » Feld: Gewicht* sowie in der Auftragsübersichtstabelle.
+
+[#2600]
+==== Paketnummer
+
+Gib die Paketnummer des Paketes in deine CSV-Datei ein. Du kannst mehrere Paketnummern kommasepariert in eine Zeile eingeben oder über mehrere Zeilen je eine Paketnummer pro Zeile angeben. Wähle in der Zuordnung aus, um welches Versandpaket es sich handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+Das Ergebnis des Imports findest du im Backend im Menü *Aufträge » Aufträge bearbeiten » [Auftrag öffnen] » Tab: Einstellungen » Feld: Paketnummer*.
+
+[#2610]
+==== Retourenpaketnummer
+
+Gib die Retourenpaketnummer des Paketes in deine CSV-Datei ein. Du kannst mehrere Retourenpaketnummern kommasepariert in eine Zeile eingeben oder über mehrere Zeilen je eine Retourenpaketnummer pro Zeile angeben. Wähle in der Zuordnung aus, um welches Versandpaket es sich handelt. +
+Du findest Retourenpaketnummern im Backend im Menü *Aufträge » Versand-Center » Tab: Retouren*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Alphanumerisch
+
+[#2620]
+==== Packstückart
+
+Gib die ID der Packstückart in deine CSV-Datei ein. Wähle in der Zuordnung aus, um welches Versandpaket es sich handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[[table-mapping-packingunittype]]
+[cols="1,1"]
+|===
+
+|Zulässige Importwerte in CSV-Datei |Ergebnis im Backend
+
+|`0`
+|unverpackt
+
+|`1`
+|Ballen
+
+|`2`
+|Behälter
+
+|`3`
+|Bund
+
+|`4`
+|Rollpalette
+
+|`5`
+|Colli
+
+|`6`
+|Container
+
+|`7`
+|Eimer
+
+|`8`
+|Fass
+
+|`9`
+|Flaschen
+
+|`10`
+|Euro-Pool-Flachpalette
+
+|`11`
+|Gestell
+
+|`12`
+|Gasflasche
+
+|`13`
+|Gitterboxpalette
+
+|`14`
+|Hobbock
+
+|`15`
+|Halbe Palette
+
+|`16`
+|Lebensmittelpalette
+
+|`17`
+|Holzuntersetzer
+
+|`18`
+|IBC Container
+
+|`19`
+|Kanne
+
+|`20`
+|Korbflasche
+
+|`21`
+|Kiste
+
+|`22`
+|Kanister
+
+|`23`
+|Kundenpalette
+
+|`24`
+|Karton
+
+|`25`
+|Kombinationsverpackung
+
+|`26`
+|Pack
+
+|`27`
+|Ring
+
+|`28`
+|Rolle
+
+|`29`
+|Sack
+
+|`30`
+|Stück
+
+|`31`
+|Tank
+
+|`32`
+|Trommel
+
+|`34`
+|Verschlag
+
+|`35`
+|Viertelpalette
+
+|`36`
+|sonstige Paletten
+
+|`37`
+|Kasten
+
+|`38`
+|Einwegpalette
+
+|`39`
+|Folientüte
+
+|===
+
+[#2630]
+==== Paletten-ID
+
+Gib die Paletten-ID in deine CSV-Datei ein. Wähle in der Zuordnung aus, um welches Versandpaket es sich handelt. +
+Die Paletten-ID findest du im Backend im Menü *Aufträge » Paketinhaltsliste*.
+
+*_Standardwert_*: Kein Standardwert
+
+*_Zulässige Importwerte_*: Numerisch
+
+[#2640]
+==== Ist geschlossen
+
+Wähle, ob das Versandpaket geschlossen ist oder nicht. Wähle dann in der Zuordnung aus, um welches Versandpaket es sich handelt.
+
+*_Standardwert_*: Kein Standardwert
+
+[[table-is-closed]]
+[cols="1,1"]
+|====
+|Zulässige Importwerte in CSV-Datei |Erläuterung
+
+|`0`
+|Das Versandpaket ist noch offen. Es können noch Änderungen daran vorgenommen werden.
+
+|`1`
+|Das Versandpaket ist geschlossen. Es können keine Änderungen mehr daran vorgenommen werden.
 |====

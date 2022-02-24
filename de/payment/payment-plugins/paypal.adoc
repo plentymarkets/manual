@@ -1,0 +1,498 @@
+= PayPal
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Zahlungsarten, PayPal, PayPal PLUS, Express-Button, PayPal Ratenzahlung, PayPal-Ratenzahlung, PayPal-Plugin, PayPalplugin, PayPal-Assistent, PayPalassistent, PayPal-Konfiguration, PayPalkonfiguration, Paypalzahlung, Paypal-Zahlung, Paypal-Zahlungsart, Paypalzahlungsart, PayPal-Geschäftskonto, Paypalkonto, Paypal-Konto, Paypalgeschäftskonto, Adressvalidierung, Paypal-Adressvalidierung, paypal-Checkout, PayPal-Wall, Paypal Wall, PayPalwall, PayPal-Banner, PayPal-Plus, PayPal-Webhook, Paypal-Schnittstelle, PayPal-Rückzahlung, Paypalrückzahlung, Paypalexpress, PayPal-Express, Zahlungsplugin, Zahlungs-Plugin, Payment-Plugin, Paymentplugin, Payment-Integration, Paymentintegration, Paymentschnittstelle, Payment-Schnittstelle, Zahlart, Zahlarten, Dispute, PayPal-Dispute, Dispute-Plugin, PayPal Konfliktlösung, PayPal-Konfliktlösung, PayPal Claim
+:description: Integration des PayPal-Plugins.
+:position: 90
+:url: payment/payment-plugins/paypal
+:id: K9UYAY1
+:author: team-order-payment
+
+Mit dem PayPal-Plugin bindest du die *PayPal-Zahlungsarten* in deinen Webshop ein und stellst sie so deinen Kund:innen zur Auswahl. Lade dafür das PayPal-Plugin im link:https://marketplace.plentymarkets.com/paypal_4690[plentyMarketplace^] herunter. Die Einrichtung der Zahlungsarten erfolgt erfolgt über einen Assistenten. Zudem musst du einige grundlegende Einstellungen in deinem plentymarkets System ausführen, damit die Zahlungsarten auch in deinem System aktiviert sind. +
+Die Erklärungen auf dieser Seite finden nach dem Hinzufügen des Plugins Anwendung. Allgemeine Informationen zum Hinzufügen und Installieren von Plugins findest du im Abschnitt <<plugins#, Plugins>> des Handbuchs.
+
+[#10]
+== Voraussetzung: Eröffnung eines PayPal-Geschäftskontos
+
+Für die Nutzung von PayPal benötigst du ein PayPal-Geschäftskonto. Durch die Eröffnung des Kontos erhältst du Informationen sowie Zugangsdaten. Liegen diese nicht vor, kannst du das Plugin nicht einrichten und somit nicht nutzen. Solltest du noch keines haben, link:https://www.paypal.com/de/business[eröffne ein PayPal-Geschäftskonto^].
+
+[#20]
+== Ausführen des Assistenten
+
+[IMPORTANT]
+.Aktivierung in Plugin-Set des Hauptmandanten
+====
+Für die Kontoverknüpfung und die Funktionsweise der Ereignisaktionen muss das PayPal-Plugin in dem Plugin-Set aktiviert sein, das für den Hauptmandanten verwendet wird. Da eine Abhängigkeit zum IO-Plugin besteht, musst du IO für den Bereitstellungsprozess (Speichern im Plugin-Set) aktivieren.
+====
+
+:name-des-assistenten: PayPal
+:name-der-zahlungsart: PayPal
+
+include::../../_includes/textblocks/instructions/ausfuehrung-assistent-zahlungsart.adoc[]
+
+[.collapseBox]
+.*Informationen zur Adressvalidierung*
+--
+
+Im PayPal-Assistenten gibt es im Bereich *Auftragsabwicklung* den Punkt *Adressvalidierung*. Diese ist _automatisch aktiviert_. Zur Deaktivierung der Validierung musst du eine Auswahl treffen. Du kannst die Validierung entweder für alle oder für einzelne Länder deaktivieren. Setze dafür einen Haken (icon:check-square[role="blue"]) bei den Ländern, für die Adressen _nicht validiert_ werden sollen. +
+Wenn die Zahlung auch mit einer unvollständigen Adresse durchgeführt werden soll, solltest du die Adressvalidierung deaktivieren.
+
+Die standardmäßige Validierung ist eine Anforderung von PayPal. Durch die Validierung wird geprüft, ob eine vollständige Adresse vorhanden ist. Es wird nicht geprüft, ob diese Adresse tatsächlich existiert. Nur wenn eine vollständige Adresse vorhanden ist, wird der erfolgreiche Zahlungsabschluss durchgeführt. +
+Die Adressvalidierung von PayPal ist wichtig für die Absicherung beim Versand der Ware. Zudem bietet PayPal den Käufer- und Verkäuferschutz an, der gerade bei der Auftragsabwicklung über PayPal Express entscheidend ist. In diesem Fall wird die Adresse von PayPal selbst übernommen.
+
+--
+
+include::../_textblocks/durchlauf-assistent-multimandanten.adoc[]
+
+[#30]
+== Widgets im ShopBuilder
+
+Der PayPal Express-Button und die PayPal Ratenzahlung Banner stehen im ShopBuilder als Widgets zur Verfügung.
+
+[#40]
+== Template-Container verknüpfen
+
+[IMPORTANT]
+.Information zur Containerverknüpfung
+====
+Die standardmäßig benötigten Container werden während des Einrichtens über den PayPal-Assistenten automatisch für deinen Webshop verknüpft. Ab Version 5.4.0 werden benötigte und optionale Container in dem Plugin-Set verknüpft, in dem der Assistent durchlaufen wird.
+====
+
+Für die Zahlungsart PayPal PLUS, für den PayPal Express-Button und für die PayPal Ratenzahlung Banner stehen dir verschiedene Möglichkeiten zur Verfügung, um sie in deinen WebShop einzubinden. Hierfür sind in den Templates in plentymarkets an relevanten Stellen Container hinterlegt, mit denen zur Individualisierung Contents verknüpft werden.
+
+[.instruction]
+Container verknüpfen:
+
+. Öffne das Menü *Plugins » Plugin-Set-Übersicht*.
+. Öffne das Plugin-Set, das du bearbeiten möchtest.
+. Öffne das Plugin *PayPal*
+. Klicke auf *Container-Verknüpfungen*.
+. Wähle aus der Dropdown-Liste den Datenanbieter, den du verknüpfen möchtest.
+. Wähle den Container, mit dem du den Datenanbieter verknüpfen möchtest. Beachte dazu die Erläuterungen in <<table-paypal-template-container>>.
+. Wiederhole Schritte 5 und 6 für alle Datenanbieter, die du verknüpfen möchtest.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+[[table-paypal-template-container]]
+.Container verknüpfen
+[cols="1,3"]
+|====
+|Content |Erläuterung
+
+2+^| *Allgemein*
+
+| *PayPal Checkout Scripts*
+|Der Container *Checkout: After scripts loaded* muss verknüpft sein.
+
+| *PayPal Confirmation Scripts*
+|Der Container *Script loader: After scripts loaded* muss verknüpft sein.
+
+| *PayPal Express Button Scripts*
+|Der Container *Script loader: After scripts loaded* muss verknüpft sein.
+
+|*PayPal Styles*
+|	Der Container *Template: style* muss verknüpft sein, um die von PayPal benötigten Styles zu verwenden und optimale Funktionalität zu gewährleisten.
+
+|*PayPal Express Button*
+|Optional: Der Express-Button ist universell hinterlegbar, z.B. neben dem Warenkorb (Shopping cart). Er gibt Kund:innen die Möglichkeit, den Inhalt des gesamten Warenkorbs sofort zu kaufen, ohne den Umweg über die Kaufabwicklung zu machen. Hierbei wird er direkt zur Zahlung weitergeleitet. Die Lieferadresse wird von PayPal bereitgestellt.
+
+|*PayPal Ratenzahlung Banner*
+|Optional: Die PayPal Ratenzahlung Banner sind vielseitig hinterlegbar, um die Zahlungsart zu bewerben. Du kannst zwischen einem Grafikbanner (PayPal Installment Graphical Promotion Banner) und einem Textbanner (PayPal Installment Text Promotion Banner) wählen. Es ist keine separate Integration nötig. Im Assistenten können die Banner automatisch auf der Artikelseite, im Warenkorb oder im Checkout verknüpft werden. Zusätzlich stehen die Banner als Widgets für den ShopBuilder zur Verfügung und können somit individuell platziert werden, z.B. auf Landing Pages, auf Artikelseiten, im Warenkorb oder im Checkout.
+
+|*PayPal Reinitialize Payment / PayPal PLUS Reinitialize Payment*
+|Mit *My account: Additional payment information* verknüpfen, um Kund:innen im Mein-Konto-Bereich die Möglichkeit zu geben, nach nicht erfolgreicher Zahlung eine erneute Zahlung durchzuführen. Für PayPal wird die Schaltfläche *Jetzt zahlen* angezeigt, für PayPal PLUS wird die Wall angezeigt. +
+Mit *Order confirmation: Additional payment information* verknüpfen, um Kund:innen in der Bestellbestätigung die Möglichkeit zu geben, nach nicht erfolgreicher Zahlung eine erneute Zahlung durchzuführen. Für PayPal wird die Schaltfläche *Jetzt zahlen* angezeigt, für PayPal PLUS wird die Wall angezeigt.
+
+2+^| *PayPal PLUS*
+
+| [#intable-paypal-plus-wall]*PayPal PLUS Wall*
+|Durch die Verknüpfung mit dem Container *Checkout: Override payment method* ersetzt die PayPal PLUS Wall alle vorher eingestellten Zahlungsarten. Die Zahlungsarten, die zusätzlich zu den standardmäßig in der Wall angebotenen Zahlungsarten PayPal, Lastschrift sowie Kreditkarte eingestellt sind, werden in der Wall unter diesen gemäß ihrer Priorität angezeigt. +
+Innerhalb des Assistenten stehen dir verschiedene Optionen zur Anzeige der PayPal PLUS Wall zur Verfügung: *Wall ersetzt Liste der Zahlungsarten*, *Wall innerhalb der Liste mit Zahlungsarten* oder *Wall in einem Overlay beim Kaufabschluss*. +
+Beachte auch den Abschnitt <<payment/payment-plugins/paypal#50, Weitere Informationen zur PayPal PLUS Wall>>. Dort werden neben zusätzlichen Informationen auch Beschränkungen beschrieben.
+
+|====
+
+[#50]
+=== Weitere Informationen zur PayPal PLUS Wall
+
+In der PayPal PLUS Wall können, neben den PayPal PLUS Zahlungsarten, 10 weitere Zahlungsarten im Checkout ausgegeben werden. +
+Beispielsweise sind für Deutschland die Zahlungsarten PayPal, Lastschrift und Kreditkarte möglich. Insgesamt wäre damit eine maximale Anzahl von 14 Zahlungsarten im Checkout möglich.
+Wenn aber beispielsweise nur PayPal und Kreditkarte im Lieferland zur Verfügung stehen, dann ist die maximale Anzahl auf 12 beschränkt.
+
+Zudem beschränkt die PayPal Plus Wall die maximalen Zeichen für die Namen anderer Zahlungsarten. Die Zeichenanzahl ist auf 25 beschränkt. Wenn ein Name länger als 25 Zeichen ist, dann wird der Name nach dem 25. Zeichen abgeschnitten. +
+Hierbei ist zu beachten, dass Sonderzeichen, bspw. Umlaute, die Anzahl verringert, da die Sonderzeichen in ihrer HTML-Schreibweise ausgegeben werden.
+
+PayPal gibt Folgendes an:
+
+* max. Bildgröße von 100 x 25 px +
+* max. 25 Zeichen für _methodName_ +
+* max. 120 Zeichen für _description_
+
+[#60]
+== Webhook-Benachrichtigungen aktivieren
+
+[TIP]
+.Information zu Webhooks
+====
+Die standardmäßig benötigten Webhooks werden während des Einrichtens über den PayPal-Assistenten automatisch aktiviert. Individuelle Einstellungen zu Webhooks nimmst du im Schritt *Erweiterte Einstellungen* des Assistenten vor.
+====
+
+Dein plentymarkets System und die PayPal-Schnittstelle kommunizieren über sogenannte Webhooks. Bei bestimmten Ereignissen, z.B. dem Eingang einer Zahlung, sendet PayPal Webhook-Benachrichtigungen an plentymarkets. plentymarkets reagiert automatisch auf diese Benachrichtigungen. <<table-activating-webhook-notifications>> enthält zusätzliche Informationen zu den Webhooks.
+
+[[table-activating-webhook-notifications]]
+.Webhook-Benachrichtigungen
+[cols="1,3"]
+|====
+|Webhook |Erläuterung
+
+| *PAYMENT.SALE.COMPLETED*
+|Eine Zahlung ist abgeschlossen. Wenn PayPal diese Benachrichtigung sendet, wird die ausstehende Zahlung in plentymarkets als bezahlt markiert.
+
+| *PAYMENT.SALE.DENIED*
+|Eine Zahlung wurde verweigert. Wenn PayPal diese Benachrichtigung sendet, wird die ausstehende Zahlung in plentymarkets als nicht bezahlt markiert.
+
+| *PAYMENT.SALE.PENDING*
+|Eine ausstehende Zahlung liegt vor. Wenn PayPal diese Benachrichtigung sendet, wird die ausstehende Zahlung in plentymarkets angelegt.
+
+| *PAYMENT.SALE.REFUNDED*
+|Der Händler hat eine Zahlung teilweise oder vollständig erstattet. Wenn PayPal diese Benachrichtigung sendet, wird für die Zahlung eine Gutschrift in plentymarkets angelegt.
+
+| *PAYMENT.SALE.REVERSED*
+|Eine Zahlung wurde von PayPal rückgebucht.
+
+|====
+
+[#80]
+== Kundenklassen und Versandprofile
+
+include::../../_includes/textblocks/instructions/kundenklassen-und-versandprofile.adoc[]
+
+[#90]
+== PayPal-Zahlung automatisch zurückzahlen
+
+Richte eine Ereignisaktion ein, um die Rückzahlung einer Zahlung über PayPal zu automatisieren.
+
+:table-event-procedure: <<table-procedure-paypal-refund>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-paypal-refund]]
+.Ereignisaktion zur automatischen Rückzahlung der PayPal-Zahlung
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Das Ereignis wählen, auf das eine Rückzahlung folgen soll.
+|
+
+| *Filter 1*
+| *Auftrag > Zahlungsart*
+| *Plugin: PayPal* +
+*Plugin: PayPalExpress* +
+*PayPal: PayPalPlus*
+
+| *Aktion*
+| *Plugins > Rückzahlung der PayPal-Zahlung*
+|
+
+|====
+
+Im Anschluss an die Aktion *Rückzahlung der PayPal-Zahlung* stehen dir stehen zwei zusätzliche Ereignisse zur Verfügung, um den weiteren Verlauf des Auftrages abzubilden: *PayPal Rückzahlung erfolgreich* und *PayPal Rückzahlung gescheitert*. Richte optional Ereignisaktionen mit diesen Ereignissen wie oben beschrieben ein.
+
+[#100]
+== Sprachelemente anpassen
+
+Du kannst Benennungen, die das PayPal-Plugin mitbringt, im Menü *CMS » Mehrsprachigkeit* nach deinen Bedürfnissen in allen verfügbaren Systemsprachen anpassen. Gehe dazu wie im Folgenden beschrieben vor.
+
+[.instruction]
+Sprachdateien anpassen:
+
+. Öffne das Menü *CMS » Mehrsprachigkeit.*
+. Wähle auf der linken Seite die *Ausgangssprache* aus der Dropdown-Liste.
+. Wähle auf der rechten Seite die *Zielsprache* aus der Dropdown-Liste.
+. Klappe im Bereich *PayPal* die verschiedenen Sektionen aus.
+. Gib im Bereich der Zielsprache die gewünschten Texte für die einzelnen Sprachelemente ein.
+. Speichere (icon:save[role=green]) die Einstellungen.
+. Stelle das Plugin-Set erneut bereit, um die Änderungen zu übernehmen.
+
+Über die Auswahl *Deutsch* als *Zielsprache*, kannst du die deutschen Benennungen für deinen Webshop anpassen. Die gewählten Benennungen werden dann auch im Backend übernommen, allerdings bleibt der Zusatz _Plugin: PayPal_. So bleibt die Zugehörigkeit einer Zahlungsart nachvollziehbar. Lade das Backend neu, um die Änderungen sehen zu können.
+
+Weitere Informationen zum Bearbeiten von im Webshop angezeigten Texten findest du auf der Handbuchseite <<webshop/ceres-einrichten#231, Webshop-Texte bearbeiten>>.
+
+[#110]
+== FAQ zum PayPal-Plugin
+
+In diesem Abschnitt sind FAQ zum Thema PayPal-Kontoverknüpfung zusammengestellt. Solltest du darüber hinaus Fragen haben, nutze zudem auch das link:https://forum.plentymarkets.com/c/payment[Forum^], um entweder Informationen aus einem bestehenden Thread zu ziehen oder deine Frage an unsere Supporter zu stellen.
+
+[#120]
+=== Konfiguration mit PayPal-Assistent
+
+Bei der Konfiguration von PayPal mit dem Assistenten kann es unter Umständen zu Problemen im Webshop kommen. Dabei hilft das Aktualisieren des PayPal-Plugins:
+
+[qanda]
+Ich möchte das PayPal-Plugin aktualisieren. Wie sollte ich vorgehen?::
+    Wenn du das Update in einer Kopie deines Plugin-Sets vornehmen möchtest, musst du das Backend-Plugin-Set wechseln, das mit deinem Konto verknüpft ist. Wie du das Backend-Plugin-Set wechseln kannst, erfährst du auf der Seite <<plugins/hinzugefuegte-plugins-installieren#, Hinzugefügte Plugins installieren>>. Nach dem erneuten Laden des Backends kannst du den PayPal-Assistenten normal durchlaufen.
+
+[#130]
+=== Erste Hilfe: Probleme mit der PayPal-Kontoverknüpfung
+
+Bei Problemen mit der Kontoverknüpfung ist es empfehlenswert einen anderen <<willkommen/schnelleinstieg/systemvoraussetzungen#100, Browser>> zu verwenden, um diese Fehlerquelle auszuschließen. Des Weiteren sollte grundsätzlich überprüft werden, ob es Probleme mit dem PayPal-Konto gibt. Möglicherweise wurde die E-Mail noch nicht bestätigt, PayPal PLUS wurde für das Konto noch nicht freigeschaltet oder es wurde noch kein Passwort gesetzt. Weitere mögliche Fehlerquellen und deren Lösung werden im Folgenden beschrieben.
+
+[#140]
+==== Was mache ich, wenn bei der Kontoverknüpfung nur die Schaltfläche *Zur PayPal-Einrichtung* angezeigt wird?
+
+Überprüfe zuerst, ob die link:https://marketplace.plentymarkets.com/paypal_4690[aktuelle Version] des PayPal-Plugins in deinem plentymarkets System installiert und bereitgestellt ist. Wie du beim Aktualisieren vorgehst, erfährst du im Handbuchkapitel <<plugins/installierte-plugins-aktualisieren#, Installierte Plugins aktualisieren>>.
+
+[WARNING]
+.Aktivierung und Vorschau des Plugins
+====
+Stelle sicher, dass das PayPal-Plugin zum Zeitpunkt der Kontoverknüpfung bereits im <<plugins/hinzugefuegte-plugins-installieren#, Plugin-Set>> des Hauptmandanten aktiviert und bereitgestellt ist. Ist dies nicht der Fall, kommt es zu Fehlfunktionen. +
+Achtung: Die Plugin-Set Vorschau darf während des Verknüpfens des PayPal-Kontos *nicht* geöffnet sein!
+====
+
+.Rückleitung zu plentymarkets ist nicht möglich
+image::_best-practices/auftragsabwicklung/Payment/assets/PP-Plugin_Fehler_1.png[Plugin Fehlermeldung 1]
+
+[%interactive]
+* *Lösung 1:* Wechsle den Browser und versuche es erneut. plentymarkets unterstützt die Browser Google Chrome und Mozilla Firefox.
+* *Lösung 2:* Es existiert noch eine API-Berechtigung im PayPal-Konto. Entferne die Berechtigung für plentymarkets. Die API-Berechtigung ist link:https://www.paypal.com/cgi-bin/webscr?cmd=_profile-api-list-auths[hier] zu finden.
+
+[WARNING]
+.HINWEIS
+====
+Durch das Entfernen der API-Berechtigung werden alle verknüpften PayPal-Konten im plentymarkets System gelöst. Sollte für den Marktplatz *eBay* ein PayPal-Konto verknüpft sein, muss das entsprechende Konto bei der PayPal-Schnittstelle erneut verknüpft werden.
+====
+
+[#150]
+==== Was mache ich, wenn nach der Weiterleitung ein neues Geschäftskonto eingerichtet werden soll?
+
+.Neues PayPal-Geschäftskonto
+image::payment/assets/paypal-geschaeftskonto-de.png[Geschäftskonto]
+
+Wenn sich dieses Fenster öffnet, überprüfe, ob die Daten im Schritt *Konto* korrekt hinterlegt wurden.
+
+.Kontoeinrichtung im Assistent
+image::payment/assets/paypal-assistent-konto-de.png[Kontoeinrichtung]
+
+* *Kontoverknüpfung*: Wurde die richtige Auswahl getroffen? Neues Konto oder bereits bestehendes Konto.
+* *Neues Konto*: Überprüfe, ob die E-Mail-Adresse des PayPal-Geschäftskontos korrekt eingegeben wurde.
+* *PayPal PLUS freischalten*: Aktiviere diese Option nur, wenn das Konto von PayPal für PayPal PLUS freigeschaltet ist.
+* *PayPal Testumgebung nutzen*: Ist diese Option aktiviert, nutzt du PayPal nicht live, sondern nur im Testmodus. Um PayPal auch tatsächlich zu nutzen, aktiviere diese Option nicht.
+
+[#160]
+=== Probleme mit der PayPal PLUS Wall
+
+Sollte es passieren, dass die PayPal PLUS Wall nicht oder fehlerhaft angezeigt wird, liegt dies oft an einer fehlenden Freischaltung oder Restriktionen der Wall. Beachte dazu auch <<payment/payment-plugins/paypal#50, Weitere Informationen zur PayPal PLUS Wall>>.
+
+[#170]
+==== Was mache ich, wenn die PayPal PLUS Wall wird nicht mehr angezeigt wird?
+
+Wird die PayPal PLUS Wall nicht ausgegeben, überprüfe die folgenden Punkte:
+
+[%interactive]
+
+* Stelle sicher, dass du von PayPal die Freischaltung zur Nutzung von PayPal PLUS hast.
+* Überprüfe die Einstellungen im im PayPal-Assistenten. +
+→ Im Bereich *Konto* des Assistenten muss PayPal PLUS freigeschaltet sein.
+* Überprüfe die <<payment/payment-plugins/paypal#intable-paypal-plus-wall, Container-Verknüpfungen>>. Diese sollten beim Durchlaufen des Assistenten automatisch erstellt werden, können aber auch manuell gesetzt werden.
+* Zur Nutzung von PayPal PLUS muss die <<payment/payment-plugins/paypal#80, Zahlungsart in Kundenklassen erlaubt sein und darf in Versandprofilen nicht gesperrt>> sein.
+
+[#180]
+==== Warum werden nicht alle Zahlungsarten in der PayPal PLUS Wall ausgegeben?
+
+Beachte Folgendes, falls eine Zahlungsart nicht in der PayPal PLUS Wall wiedergegeben wird:
+
+* Zahlungsarten sind abhängig vom Lieferland. So ist z.B. Lastschrift nur für Deutschland freigegeben. Beachte auch <<payment/payment-plugins/paypal#50, Weitere Informationen zur PayPal PLUS Wall>>.
+* Ist eine Zahlungsart nicht freigeschaltet, wende dich direkt an link:https://www.paypal.com/de/business[PayPal] und lasse sie für das entsprechende PayPal-Händlerkonto, das du nutzt, freischalten.
+
+[#190]
+=== Ereignisaktionen und alte PayPal-Schnittstelle
+
+Seit die alten Schnittstellen für alle Plugin-Zahlungsarten nicht mehr unterstützt werden, gilt für Ereignisaktionen generell, dass die Filter aus Filtergruppe *Plugins* sowie die Aktionen aus der Aktionsgruppe *Plugins* für Plugin-Zahlungsarten genutzt werden sollen. Allerdings greift ab Version 5.3.1 des PayPal-Plugins die Aktion *Rückzahlung der PayPal-Zahlung* auch für Zahlungen über die alte PayPal-Schnittstelle. +
+Um andere Änderungen für das PayPal-Plugin einzusehen und Aktualisierungen nicht zu verpassen, kannst du den link:https://marketplace.plentymarkets.com/paypal_4690[Changelog des PayPal-Plugins] nutzen. Generell empfehlen wir die Plugin-Zahlungsarten, die über den link:https://marketplace.plentymarkets.com/plugins/payment/payment-integrationen[plentyMarketplace^] zur Verfügung gestellt werden, zu nutzen.
+
+[#300]
+== PayPal Konfliktlösung
+
+Mit dem *PayPal Dispute-Plugin* integrierst du PayPal Konfliktlösung in dein plentymarkets System und kannst dann direkt aus deinem System heraus Probleme und Konflikte mit deinen Kund:innen bearbeiten und lösen. Dafür werden die plentymarkets Notifications und der Messenger verwendet.
+
+[#320]
+=== Voraussetzungen und Installation
+
+Zur Verwendung von PayPal Konfliktlösung ist es erforderlich, vorher das <<payment/payment-plugins/paypal#10, PayPal-Plugin einzurichten>>. Voraussetzung ist die Nutzung von Version 5.0.0 und höher des PayPal-Plugins. Zudem setzt das PayPal Dispute-Plugin plentyShop LTS in Version 5.0.0 und IO in Version 5.0.0 oder höher voraus.
+
+Installiere zur Verwendung von PayPal Konfliktlösung das link:https://marketplace.plentymarkets.com/paypaldispute_6582[PayPal Dispute-Plugin]. Nach der Installation des Plugins ist der dazugehörige Assistent verfügbar. Mithilfe dieses Assistenten wählst du die PayPal-Konten aus, für die du PayPal Konfliktlösung nutzen möchtest. Gehe nun wie folgt vor, um den Assistenten zu durchlaufen und PayPal Konfliktlösung einzurichten.
+
+[.instruction]
+PayPal Konfliktlösung mit dem Assistenten einrichten:
+
+. Öffne das Menü *Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*.
+. Öffne den Assistenten *PayPal Dispute*.
+. Schließe den Assistenten vollständig ab.
+
+PayPal Konfliktlösung ist in deinem System verfügbar.
+
+[#330]
+=== PayPal Problemlösung in plentymarkets nutzen
+
+Wenn deine Kund:innen Probleme mit der georderten Ware haben und PayPal Konfliktlösung nutzen, um an dich heranzutreten, wirst du dank des PayPal Dispute-Plugins direkt in deinem plentymarkets Backend darüber informiert. Im Menü *CRM » Messenger* siehst du alle Fallbenachrichtigungen. Insgesamt haben deine Kund:innen 4 Möglichkeiten ein Problem zu melden. Je nach Problem und Eskalationsstufe kannst du verschiedene Schritte in plentymarkets vornehmen. Es gibt 2 Eskalationsstufen bei Problemen. Diese 2 Eskalationsstufen sind Dispute und Claim. Die 4 Möglichkeiten deiner Kund:innen sind:
+
+* Artikel nicht erhalten
+* Artikel entspricht nicht der Beschreibung
+* Nicht autorisierte Transaktion
+* Abrechnungsproblem melden
+
+Die Eskalationsstufe Dispute erlaubt zur Klärung des Problems einen einfachen Nachrichtenaustausch mit Kund:innen. Sobald PayPal zur Klärung eingeschaltet wurde, wird der Fall auf die Eskalationsstufe Claim gehoben und einfache Nachrichten werden nicht mehr an PayPal übertragen.
+
+[IMPORTANT]
+.Neue Fälle laden
+====
+Sobald ein Fall im Dispute-Plugin geöffnet ist, wird kein neuer Fall geladen. Schließe deshalb das Tab des Dispute-Plugins immer nach dem du einen Fall bearbeitet hast und öffne erst dann den nächsten Fall.
+====
+
+Die folgende Tabelle erklärt die Möglichkeiten, die dir offenstehen, um auf gemeldete Probleme deiner Kund:innen zur reagieren.
+
+[[table-reactions-to-problems]]
+.Reaktionsmöglichkeiten bei Problemen
+[cols="3,3,3"]
+|====
+|Konfliktfall |Erläuterung |Reaktionsmöglichkeiten
+
+|*Kund:in hat den Artikel nicht erhalten*
+|Es wird gemeldet, dass der Artikel nicht angekommen ist. Das Problem befindet sich zunächst im Eskalationslevel Dispute und du hast 3 Möglichkeiten darauf zu reagieren. Je nachdem wie du reagierst, ergeben sich weitere Schritte.
+|Die 3 grundlegenden Reaktionsmöglichkeiten sind: +
+* Nachricht an Kund:in schreiben +
+* als Konflikt behandeln und die Forderung annehmen +
+* als Konflikt behandeln und PayPal zur Klärung einschalten
+
+|*Kund:in meldet, dass der Artikel nicht wie beschrieben ist*
+|Es wird gemeldet, dass der erhaltene Artikel nicht wie beschrieben ist. Das Problem befindet sich zunächst im Eskalationslevel Dispute und du hast 6 Möglichkeiten darauf zu reagieren. Je nachdem wie du reagierst, ergeben sich weitere Schritte.
+|Die 6 grundlegenden Reaktionsmöglichkeiten sind: +
+* Nachricht and Kund:in schreiben +
+* als Konflikt behandeln und die Forderung annehmen +
+* als Konflikt behandeln und ein Angebot über eine vollständige Rückzahlung mit Rücksendung des Artikels machen +
+* als Konflikt behandeln und eine Teilrückzahlung anbieten +
+* als Konflikt behandeln und ein Ersatzangebot unterbreiten +
+* als Konflikt behandeln und PayPal zur Klärung einschalten
+
+|*Kund:in hat eine nicht autorisierte Transaktion gemeldet*
+|Es wird gemeldet, dass der Artikel nicht gekauft wurde und der Kontozugriff unbefugt war. Das Problem befindet sich von Anfang an im Eskalationslevel Claim, d.h. dein:e Kund:in hat Käuferschutz beantragt. Du hast 2 Möglichkeiten darauf zu reagieren. Je nachdem wie du reagierst, ergeben sich weitere Schritte.
+|Die 2 grundlegenden Reaktionsmöglichkeiten sind: +
+* auf Käuferschutz-Fall reagieren und die Forderung annehmen +
+* auf Käuferschutz-Fall reagieren und Beweise vorlegen
+
+|*Kund:in hat ein Problem mit der Abrechnung gemeldet*
+|Es wird gemeldet, dass die Abrechnung nicht korrekt ist. In diesem Fall wurde entweder gemeldet, dass der abgerechnete Betrag falsch ist oder dass die Abrechnung Teil eines Abonnements war, das bereits storniert ist. In einem solchen Fall erhältst du lediglich eine Benachrichtigung. Du musst dich in dein PayPal-Konto einloggen, um den Fall zu bearbeiten.
+|KEINE - Du musst dich in dein PayPal-Konto einloggen, um den Fall zu bearbeiten.
+|====
+
+[#340]
+==== PayPal Problembenachrichtigungen einsehen
+
+Ob und wieviele Problembenachrichtigungen eingegangen sind, siehst du im Menü *CRM » Messenger*. Nachdem du eine Nachricht geöffnet hast, kannst du Käufer:innen entweder antworten oder eine Konfliktoption von PayPal nutzen. Wenn du im Assistenten die Notifications aktiviert hast, wirst du dadurch über neue Fälle, Updates zu Fällen und die Schließung von Fällen informiert.
+
+[.instruction]
+Nachrichten einsehen:
+
+. Öffne das Menü *CRM » Messenger*.
+. Klicke auf *Suchen* (icon:search[role="blue"]). +
+→ Alle Nachrichten werden geöffnet.
+. Klicke auf die PayPal-Nachricht, auf die du reagieren möchtest. +
+→ Der Nachrichtenverlauf wird geöffnet.
+. Antworte in einer Nachricht oder nutze eine der Konfliktoptionen.
+
+[TIP]
+.Sichtbarkeit ändern
+====
+Die Sichtbarkeit erlaubt einzuschränken, für wen der Nachrichtenverlauf lesbar ist. Alle Nachrichten sind zunächst für *Alle* sichtbar und können nachträglich eingeschränkt werden. Die Einstellung betrifft den gesamten Nachrichtenverlauf.
+====
+
+[[table-editing-progress]]
+.Kennzeichnung des Bearbeitungsfortschritts
+[cols="1,3"]
+|====
+|Symbol |Erläuterung
+
+| *Blauer Kreis*
+|Die Nachricht ist ungelesen.
+
+| *Grünes Häkchen*
+|Der Fall wurde geschlossen oder kann nur direkt im PayPal-Konto bearbeitet werden.
+
+|====
+
+[#350]
+==== Nachricht an Kund:innen schreiben
+
+Wenn du Kund:innen zunächst eine einfache Nachricht zur Klärung des Problems schreiben möchtest kannst du dies nur im Eskalationslevel Dispute machen. Der Nachrichtenverlauf ist nur für dich und deine:n Kund:in. PayPal sieht die Problemen im Level Dispute nicht ein. Gehe folgendermaßen vor, um eine Nachricht Kund:innen zu senden.
+
+[.instruction]
+Nachricht Kund:innen schreiben:
+
+. Öffne das Menü *CRM » Messenger*.
+. Klicke auf *Suchen* (icon:search[role="blue"]). +
+→ Alle Nachrichten werden geöffnet.
+. Klicke auf die PayPal-Nachricht, auf die du reagieren möchtest. +
+→ Der Nachrichtenverlauf wird geöffnet.
+. Klicke auf *Antworten*. +
+→ Ein Texteingabefeld wird geöffnet.
+. Trage deinen Text ein.
+. Klicke auf *Senden*. +
+→ Die Nachricht wird an PayPal übertragen und der Kund:in im eigenen PayPal-Konto angezeigt.
+
+[TIP]
+.Flüstern
+====
+Wenn eine Nachricht geflüstert wird, wird die Nachricht nicht an PayPal übertragen. Flüstern ist für interne Unterhaltungen. Flüstern betrifft nur die einzelne Nachricht.
+====
+
+[#360]
+==== Problem als Konflikt behandeln
+
+Wenn du ein Problem als Konflikt behandelst, öffnet sich das PayPal Dispute Plugin. Hier stehen dir je nach Fall, der gemeldet wurde, unterschiedliche Möglichkeiten zur Verfügung. Die Möglichkeiten entsprechen den Möglichkeiten, die du auch im PayPal-Backend hast.
+
+[.instruction]
+Problem als Konflikt behandeln:
+
+. Öffne das Menü *CRM » Messenger*.
+. Klicke auf *Suchen* (icon:search[role="blue"]). +
+→ Alle Nachrichten werden geöffnet.
+. Klicke auf die PayPal-Nachricht, auf die du reagieren möchtest. +
+→ Der Nachrichtenverlauf wird geöffnet.
+. Klicke unter der Nachricht auf *Konflikt: Auf Fall reagieren*. +
+→ Das Plugin PayPal Dispute wird geöffnet.
+. Wähle eine Option als Reaktion und beachte dabei die Erläuterungen in <<table-responce-options-for-conflicts>>.
+. Trage weitere Informationen ein.
+. Klicke auf *Zu PayPal übermitteln*. +
+→ Die Nachricht wird an PayPal übertragen.
+
+[[table-responce-options-for-conflicts]]
+.Bearbeitungsmöglichkeiten bei Problem als Konflikt behandeln
+[cols="3,3,3"]
+|====
+|Möglichkeit |Erläuterung |Eskalationslevel
+
+|*Forderung annehmen*
+|Bei dieser Option zahlst du dem Kunden die vollständige Summe oder, wenn der Kunde eine Teilsumme gefordert hat, eine Teilsumme zurück. Der Fall ist damit abgeschlossen.
+|Der Fall befindet sich im Eskalationslevel Dispute und wird sofort geschlossen, nachdem die Forderung angenommen wurde.
+
+|*Angebot über eine vollständige Rückzahlung mit Rücksendung des Artikels machen*
+|Du bittest den Kunden den Artikel zurückzusenden und bietest dafür eine vollständige Rückzahlung. Sobald der Käufer das Angebot annimmt und du den Erhalt der Rücksendung bestätigst, ist der Fall erledigt.
+|Der Fall befindet sich im Eskalationslevel Dispute, d.h. du kannst auch einfache Nachrichten mit dem Käufer schreiben.
+
+|*Teilrückzahlung anbieten*
+|Du bietest dem Käufer eine Teilrückzahlung und eventuell Ersatz oder möchtest den Artikel zurück. Sobald der Käufer das Angebot annimmt und eventuell den Erhalt des Ersatzes oder du den Erhalt der Rücksendung bestätigst, ist der Fall erledigt.
+|Der Fall befindet sich im Eskalationslevel Dispute, d.h. du kannst auch einfache Nachrichten mit dem Käufer schreiben.
+
+|*Ersatzangebot anbieten*
+|Du bietest dem Käufer Ersatz. Sobald der Käufer das Angebot annimmt und den Erhalt des Ersatzes bestätigst, ist der Fall erledigt.
+|Der Fall befindet sich im Eskalationslevel Dispute, d.h. du kannst auch einfache Nachrichten mit dem Käufer schreiben.
+
+|*PayPal zur Klärung einschalten*
+|Nachdem der Fall zur Klärung an PayPal übertragen wurde, kannst du die *Forderung annehmen* oder *Beweise vorlegen*.
+|Der Fall wird auf das Eskalationslevel Claim gehoben, d.h. du kannst keine Nachrichten mit dem Käufer mehr schreiben und musst auf die Klärung durch PayPal warten.
+
+|*Beweise vorlegen*
+|Wenn der Kunde sagt, dass er die Zahlung nicht autorisiert hat oder nachdem PayPal zur Klärung eingeschaltet wurde, ist diese Option verfügbar.
+|Der Fall befindet sich im Eskalationslevel Claim, d.h. du kannst keine Nachrichten mit dem Käufer mehr schreiben und musst auf die Klärung durch PayPal warten.
+
+|====
