@@ -1,0 +1,84 @@
+= Warenkorbaktualisierung
+:lang: de
+// include::{includedir}/_header.adoc[]
+:description: Benutzer-Feedback beim Ablegen eines Artikels im Warenkorb per REST-Schnittstelle - Code-Beispiel
+:position: 0
+
+== Warenkorbaktualisierung mit Benutzer-Feedback
+
+Mit der <<cms-syntax/rest-api#, REST-API>> ist es möglich, Elemente im Shop zu aktualisieren, ohne die Seite dafür neu laden zu müssen. In diesem Beispiel wird die REST-API verwendet, um
+die Anzahl der Artikel im Warenkorb zu aktualisieren und die Warenkorbvorschau drei Sekunden einzublenden, nachdem der Kunde einen Artikel in den Warenkorb gelegt hat.
+
+Verwendete REST-URIs:
+
+* <<webshop/webshop-einrichten/_cms-syntax/fallbeispiele/warenkorbaktualisierung#checkout/basketitemslist, POST /rest/checkout/basketitemslist/>>
+* <<webshop/webshop-einrichten/_cms-syntax/fallbeispiele/warenkorbaktualisierung#checkout/basketitemslist, GET /rest/checkout/basketitemslist/>>
+* <<webshop/webshop-einrichten/_cms-syntax/fallbeispiele/warenkorbaktualisierung#itemview/container_itemviewbasketpreviewlist, GET /rest/itemview/container_itemviewbasketpreviewlist/>>
+
+Der in diesem Beispiel gezeigte Code kann nach jeder Schaltfläche eingefügt werden, der im Bereich der ItemView-Templates verwendet wird und
+das CLASS-Attribut mit dem Wert *add_Basket_Item* besitzt.
+
+== Voraussetzungen
+
+Für dieses Fallbeispiel wird Folgendes vorausgesetzt:
+
+* Grundkenntnisse des Frameworks jQuery
+* Verwendung des Designs callisto_light
+
+== Artikel serverseitig ablegen
+
+Ein Artikel wird durch Aufrufen der REST-URI */rest/checkout/basketitemslist/* mit der POST-Methode serverseitig in den Warenkorb gelegt.
+
+Unten findest du ein Beispiel für einen Aufruf, über den ein Artikel per REST an den Server gesendet wird.
+
+[source,plenty]
+----
+include::assets/EX-DE-Artikel-zu-Server-senden.html[]
+
+----
+== Frontend aktualisieren
+
+Nachdem ein Artikel serverseitig in den Warenkorb gelegt wurde, müssen die Elemente im Frontend aktualisiert werden,
+damit dem Kunden die neue Artikelanzahl angezeigt wird. Dazu wird zunächst die neue Anzahl der Artikel im Warenkorb über die REST-Schnittstelle abgefragt.
+
+=== Artikel im Warenkorb berechnen
+
+Mit der REST-URI */rest/checkout/basketitemslist/* wird durch die GET-Methode die aktuelle Anzahl der Artikel im Warenkorb abgefragt.
+
+Verschiedene Artikel können verschiedene Mengen haben. Es ist daher nötig, alle Artikel zu iterieren und die Gesamtmenge zu addieren.
+Die Artikel aus dem Warenkorb befinden sich im _data_-Array des Response-Objekts, das der Success-Funktion übergeben wird. Die Eigenschaft *BasketItemQuantity* beschreibt die Anzahl eines Artikels.
+Nachdem die Anzahl der Artikel im Warenkorb berechnet wurde, wird das jQuery-Element *$('#basket_quantity')*, das die Anzahl der Artikel im Warenkorb anzeigt, aktualisiert.
+
+Unten findest du ein Beispiel für einen REST-Aufruf, um die Anzahl der Artikel im Warenkorb abzufragen und zu addieren.
+
+[source,plenty]
+----
+include::assets/EX-DE-Warenkorbbestand-abfragen.html[]
+
+----
+=== Warenkorbliste aktualisieren
+
+In diesem Schritt wird die veraltete Liste des Warenkorbs durch die neue Liste ersetzt. Der REST-URI */rest/itemview/container_itemviewbasketpreviewlist/* liefert ein HTML-Fragment zurück, das nur noch an der gewünschten Stelle eingefügt werden muss.
+
+Wie im Beispiel zuvor, befindet sich das HTML-Fragment im Response-Objekt, das der Success-Funktion übergeben wird - ebenfalls im _data_-Array.
+Das HTML-Element, das im Design callisto_light die Warenkorbvorschau enthält, kannst du mit dem jQuery-Selektor *$('[data-plenty-remotetabs-id="aside"]')* wählen. Die veraltete Warenkorbliste wird entfernt, indem die jQuery-Funktion empty() auf das zuvor
+gewählte Element angewendet wird. Dadurch ist sichergestellt, dass nicht zwei Warenkorblisten in der Warenkorbvorschau auftauchen. Um die Warenkorbvorschau anschließend
+für wenige Sekunden einzublenden, wird der jQuery-Selektor *$(".isBasketPreview &gt; .dropdown-menu")* verwendet. Für die Zeitverzögerung, um die
+Warenkorbvorschau wieder auszublenden, empfiehlt es sich, die native JavaScript-Funktion *setTimeout()* zu verwenden.
+
+Unten findest du ein Code-Beispiel, um die Warenkorbvorschau zu aktualisieren und den Warenkorb drei Sekunden einzublenden.
+
+[source,plenty]
+----
+include::assets/EX-DE-Warenkorbvorschau-aktualisieren.html[]
+
+----
+== Zusammengefasstes Code-Beispiel
+
+Das folgende Code-Beispiel enthält alle Operationen, die auf dieser Seite behandelt wurden, um die Anzahl der Artikel im Warenkorb und den Warenkorb im Header-Bereich zu aktualisieren und die Warenkorbvorschau für drei Sekunden einzublenden.
+
+[source,plenty]
+----
+include::assets/EX-DE-Benutzer-Feedback-beim-Ablegen-eines-Artikels.html[]
+
+----

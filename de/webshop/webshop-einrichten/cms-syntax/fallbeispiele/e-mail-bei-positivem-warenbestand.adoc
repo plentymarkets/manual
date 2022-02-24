@@ -1,0 +1,131 @@
+= E-Mail bei verfügbarem Artikel
+:lang: de
+// include::{includedir}/_header.adoc[]
+:description: plentymarkets informiert Interessenten, wenn Artikel wieder verfügbar sind
+:position: 0
+
+== E-Mail an Kunden senden, wenn Artikel wieder verfügbar ist
+
+Artikel sind unter Umständen kurzfristig nicht lieferbar. Kunden sollen die Möglichkeit haben, eine E-Mail-Adresse direkt bei nicht lieferbaren Artikeln zu hinterlegen, um informiert zu werden, wenn der Artikel wieder auf Lager ist. Die E-mail soll einmalig versendet werden und nicht jedes Mal, wenn der Netto-Bestand des Artikels positiv wird. In diesem Fallbeispiel zeigen wir dir, wie du dafür vorgehst.
+
+== E-Mail-Vorlage erstellen
+
+Lege zunächst eine <<crm/e-mails-versenden#1200, E-Mail-Vorlage>> an. Der Text dieser E-Mail wird an Kunden versendet, die eine E-Mail-Adresse hinterlegt haben, wenn ein Artikel wieder auf Lager ist. Unten findest du eine Liste möglicher Template-Variablen und -Funktionen für diese E-Mail-Vorlage. Wir stellen dir außerdem einen Beispieltext zur Verfügung, den du an deine Anforderungen anpassen kannst.
+
+Mögliche Template-Variablen und -Funktionen für eine E-Mail-Vorlage zur Artikelverfügbarkeit:
+
+.Mögliche Template-Variablen/-Funktionen für eine E-Mail-Vorlage zur Artikelverfügbarkeit
+[cols="1,3"]
+|====
+|Variable/Funktion |Erläuterung
+
+| *$ItemASIN*
+|Amazon Standard Ident Number (ASIN) des Artikels
+
+| *$ItemEAN*
+|Internationale Artikelnummer (EAN)
+
+| *$ItemImageURL*
+|URL zum Artikelbild
+
+| *$ItemISBN*
+|ISBN-Code des Artikels
+
+| *$ItemModel*
+|Modellbezeichnung des Artikels
+
+| *$ItemName*
+|Artikelname
+
+| *$ItemNumber*
+|Artikelnummer
+
+| *$ItemPrice*
+|Brutto-Artikelpreis
+
+| *$ItemPriceNet*
+|Netto-Artikelpreis
+
+| *$ItemProducerName*
+|Artikelhersteller
+
+| *$VariantName*
+|Artikelvariante
+
+| *{% Link_Item($ItemID) %}*
+|Link zum Artikel im Webshop
+|====
+
+
+Unten findest du einen Beispieltext für eine E-Mail-Vorlage, den du als Muster verwenden und an deine Anforderungen anpassen kansnt. Diesen Text fügst du im Tab *Inhalt » HTML-formatierter Text* der E-Mail-Vorlage ein. Gehe wie unten beschrieben vor, um diesen oder einen anderen Text in der E-Mail-Vorlage zu hinterlegen.
+
+[.instruction]
+Text für E-Mail-Vorlage hinterlegen:
+
+. Lege eine neue <<crm/e-mails-versenden#1200, E-Mail-Vorlage>> im HTML-Format an.
+. Kopiere den Beispieltext (_Nachricht_) in das Tab *E-Mail-Nachricht » Inhalt » HTML-formatierter Text* mit dem Syntax-Editor ein.
+. Passe den Text und die HTML-Formatierung des Beispieltexts an deine Anforderungen an.
+. Füge im Tab *Artikelliste* das darauffolgende Beispiel mit dem Syntax-Editor ein.
+
+[.instruction]
+Nachricht
+
+[source,plenty]
+----
+include::assets/E-Mail-Vorlage-Warenverfuegbarkeit.html[]
+
+----
+[.instruction]
+Artikelliste
+
+[source,plenty]
+----
+include::assets/E-Mail-Vorlage-Warenverfuegbarkeit-Artikelliste.html[]
+
+----
+== E-Mail-Vorlage für automatischen E-Mail-Versand verknüpfen
+
+Nun verknüpfst du die E-Mail-Vorlage mit der Option *Benachrichtigung bei verfügbarem Artikel*. Die Vorlage greift, wenn ein Artikel, bei dem Interessenten eine E-Mail-Adresse hinterlegt haben, wieder lieferbar ist. Gehe dazu wie unten beschrieben vor.
+
+[.instruction]
+E-Mail-Vorlage für automatischen E-Mail-Versand verknüpfen:
+
+. Öffne das Menü *Einrichtung » Mandant » Mandant wählen » E-Mail » Automatischer Versand*.
+. Wähle bei der Option *Benachrichtigung bei verfügbarem Artikel* die E-Mail-Vorlage aus der Dropdown-Liste.
+
+== Beispiel-Code für Formular bearbeiten und einbinden
+
+Nun bindest du ein Formular in dein Design ein, das angezeigt wird, wenn ein Artikel nicht lieferbar ist. Als Minimalanforderung sollte dieses Formular aus einem Eingabefeld und einer Schaltfläche bestehen. In das Feld geben Interessenten eine E-Mail-Adresse ein. Durch Klick auf die Schaltfläche erklärst du dich damit einverstanden, eine E-Mail zu erhalten, wenn der Artikel wieder verfügbar ist. Über den REST-Aufruf */rest/positive_stock_notification/* wird die E-Mail-Adresse gespeichert und alle hinterlegten E-Mail-Adressen benachrichtigt, sobald der Artikel einen positiven Netto-Bestand hat.
+
+Weiter unten findest du einen Beispiel-Code, der für unser Responsive-Design *Callisto Light* optimiert ist. Verwende diesen Code als Basis, um das Formular in dein Design einzubinden. Passe den Code an deine Anforderungen an, bevor du den Code in deinem Webshop verwendest. Gehe wie unten beschrieben vor, um den Beispiel-Code in dein Design einzubinden.
+
+[.instruction]
+Beispiel-Code in Design einbinden:
+
+. Passe den Beispiel-Code unten an deine Anforderungen an.
+. Kopiere den Code in die Zwischenablage (*Strg + C* bzw. *Cmd + C*).
+. Öffne das Menü *CMS » Webdesign* und dort dann *Layout » ItemView » ItemViewSingleItem*.
+. Füge das Code-Beispiel an geeigneter Stelle in das Template ein.
+
+[source,plenty]
+----
+include::assets/EX-DE-REST-positive-stock-notification.html[]
+
+----
+
+Wenn im Menü *Einrichtung » Mandant » Mandant wählen » Artikelansichten » Einstellungen* für die Einstellung *Attribut-Verfügbarkeit* die *Client-Prüfung* aktiviert ist, wird durch das nachfolgende Code-Beispiel das zuvor erzeugte Formular je nach Verfügbarkeit der Variante dynamisch ein- und ausgeblendet.
+
+[.instruction]
+Beispiel-Code in Design einbinden:
+
+. Passe  den Beispiel-Code unten an deine Anforderungen an.
+. Kopiere den Code in die Zwischenablage (*Strg + C* bzw. *Cmd + C*).
+. Öffne das Menü *CMS » Webdesign* und dort dann *Layout » ItemView » ItemViewSingleItem*.
+. Suche nach der Code-Zeile *$(window).on('variationChanged', function(event, variation) {*.
+. Füge das Code-Beispiel unterhalb der Code-Zeile ein.
+
+[source,plenty]
+----
+include::assets/EX-DE-REST-positive-stock-notification-dynamic.html[]
+
+----

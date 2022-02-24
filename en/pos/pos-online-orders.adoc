@@ -1,0 +1,231 @@
+= Processing online orders with plentyPOS
+:lang: en
+include::{includedir}/_header.adoc[]
+:author: team-mobile
+:keywords: POS click and collect, POS click & collect, self-pickup, POS online order, local store pick up, plenty POS
+:position: 15
+:url: pos/pos-online-orders
+:id: DB9REIS
+
+Online orders (also referred to as *Click & Collect*) can come into your system via your online shop, markets or other referrers. There are two different ways to process these orders in plentyPOS. Customers order items online and pay for them either online or in your store. The items are then picked up in your store. Carry out the following steps to prepare your plentyPOS for processing Click & Collect orders.
+
+[IMPORTANT]
+.Required app version
+====
+To process online orders in plentyPOS, version 1.9 or higher of the plentymarkets app must be installed on the <<welcome/quick-start/quick-start-system-requirements#500, appropriate hardware>>.
+====
+
+[#100]
+== Preparing pickup and payment of online orders
+
+The following preparations are necessary in plentyPOS if you want to allow your customers to finalise online orders in your store.
+
+* The order ID is needed to search for orders at the POS. +
+Ensure that your order confirmations contain the order ID. Inform your customers that they need this order ID to pick up their order at your store.
+
+* Train POS users to verify the identity of customers who come to pick up orders that were paid for online. Otherwise your POS users may hand over paid items to the wrong person by mistake.
+
+* Do you use processes and/or event procedures to automatically process orders generated in the online store and/or on markets? Check your event procedures and processes before you offer store pickups. → Make sure that orders are only set to the status *Outgoing items booked* by an event procedure or a process after the customer has picked up the ordered items from the retail outlet.
+
+[IMPORTANT]
+.Check outgoing items in the order
+====
+plentyPOS displays the information that a customer has received the ordered items after the items have been booked out in plentymarkets. → If problems occur and a customer insists that they have not received the items, check the order in the plentymarkets back end. The items may have been booked out too early.
+====
+
+[#150]
+== Important information on online orders
+
+When processing online orders, there are some particularities in comparison to normal orders created at the POS. Thus, note the following information and limitations regarding payment and pickup of online orders at your store:
+
+* Online orders and their data cannot be edited at the POS. POS users can only book payments or save order notes.
+
+* From app version 1.9.10, an invoice document is automatically generated for online orders as soon as a payment for the corresponding order is booked in plentyPOS. The invoice is also generated if outgoing items have not been booked for the order yet. This is a default behaviour that is required due to legal compliance reasons because payments without receipts are not allowed in plentyPOS.
+
+* Online orders can only be paid for at the POS using coupons from app version 1.9.2 and higher using multipurpose coupons. However, coupons can only be used if no payment has been made for the order and no invoice document has been created yet.
+
+* Payments that are booked at the POS to clear online orders do not increase the revenue of the POS. Payments that are not revenue relevant for the POS are saved as POS events of the type *Payment* in the cash journal.
+
+* Down payments or partial payments are not possible for online orders at the POS. Thus, customers always have to make full payments for those orders.
+
+* The option *External order: Book outgoing items automatically* of the POS settings allows you to specify if the order items are booked out of the warehouse automatically after the items have been paid for. For POS that have been created after March 5,2019, this option is activated by default. If you deactivate this option, explain to your POS users in what cases they need to manually book outgoing items.
+
+* Online orders must not be cancelled in plentyPOS, but only in the plentymarkets back end. Go to *Orders » Edit orders* and open the order. Then, manually change the order status to *[8] Cancelled*.
+
+[#200]
+== Preparatory settings for online orders
+
+Click & Collect means the process of ordering items online and picking them up at the store. In plentymarkets, such an order is loaded into plentyPOS and completed at the POS. The following scenarios are possible at the POS:
+
+* The order was placed and paid for online. The goods are picked up in the retail outlet.
+* The order was placed online. The items are picked up and paid for in the retail outlet.
+
+The following chapters show you which preparations you have to make to manage online orders at the POS.
+
+[#300]
+=== Shipping settings
+
+If you already have a POS, you have already created a shipping service provider *Self pickup* and a shipping profile *Self pickup*. However, we recommend that you create a separate shipping service provider and shipping profile for Click & Collect.
+
+[#400]
+==== Creating a shipping service provider for store pickup
+
+Proceed as described below to create a <<fulfilment/preparing-the-shipment#1000, shipping service provider>> for store pickup. In this example, we call this shipping service provider *Store pickup*. Of course, you can also use a different name.
+
+[.instruction]
+Creating a shipping service provider for store pickup:
+
+. Go to *Setup » Orders » Shipping » Settings » Tab: Shipping service provider*.
+. Click on *New* (icon:plus-square[role="green"]). +
+→ A new line is added at the bottom of the overview.
+. In the *Name (en)* row, enter the name *Store pickup*.
+. In the *Name (back end)* row, enter the name *Store pickup*.
+. Select *Self pickup* from the *Shipping service provider* drop-down list.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+[#500]
+==== Creating a shipping profile for store pickup
+
+Next, create a <<fulfilment/preparing-the-shipment#1000, shipping profile>> for store pickup. In this example, we call this shipping profile *Store pickup*. Of course, you can also use a different name.
+
+[.instruction]
+Creating a shipping profile for store pickup:
+
+. Go to *Setup » Orders » Shipping » Settings » Tab: Shipping profiles*.
+. Click on *New* (icon:plus-square[role="green"]).
+. From the drop-down list *Store pickup*, select the shipping service provider you just created.
+. For the *Name (en)* option, enter the name *Store pickup*.
+. For the *Name (back end)* option, enter the name *Store pickup*.
+. Activate the *Client (store)* for which you want to allow store pickups.
+. Activate the *Order referrer*. We recommend the referrers *0 Manual entry* and the *Client (store)*.
+. *Save* (icon:save[role="darkGrey"]) the settings. +
+→ The *Table of shipping charges* tab is displayed. +
+*_Note:_* No shipping costs are usually charged for store pickup. Thus, no shipping costs are saved in this example.
+. *Save* the settings of the *Table of shipping charges* tab without making changes.
+
+[#600]
+==== Activating the shipping profile for store pickup for an item
+
+Now, activate the shipping profile *Store pickup* for the items that can be ordered online and picked up in the store.
+
+[.instruction]
+Activating the shipping profile for store pickup for an item:
+
+. Go to *Item » Edit item*.
+. Open the item.
+. Click on the *Global* tab.
+. Activate the shipping profile *Self pickup*.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+[TIP]
+.Activating the shipping profile for several items
+====
+You can activate the shipping profile for a large number of items simultaneously. To do so, use the <<item/managing-items#155, item group function>>.
+====
+
+[#700]
+=== Activating payment method for payment at pickup
+
+Now, activate the payment method *Cash payment* to allow customers to pay for online orders at the time of pickup at the store.
+
+* Provide the plugin link:https://marketplace.plentymarkets.com/en/plugins/payment/payuponpickup_4757[Pay upon pickup] for the client. By default, the payment method is called Cash payment in the online store. However, you can change the name of the payment method, for example to “Store pickup”.
+
+[#800]
+=== Determine stock movements
+
+As a final step, specify how stock levels of online orders are to be treated when they are picked up at the retail store.
+
+[.instruction]
+Determine stock movements for online orders:
+
+. Go to *Setup » Client » [Select client] » POS*.
+. Open the POS. +
+→ The *Settings* tab opens.
+. The option *External order: Book outgoing items automatically* is activated by default. Thus, items are booked out of the warehouse automatically after the payment has been made. Deactivate the option to book out items only if the POS user taps the *Book outgoing items* button. +
+*_Tip:_* Only deactivate the option if you have a separate pickup station for items, i.e. if you do not hand over items at the POS directly after payment. Educate POS users on when they should tap the button.
+. If items are to be booked out of the sales warehouse of the POS, activate the option *Outgoing items for external orders: Book items out of POS sales warehouse*. +
+If you do not activate the option, the items are booked out of the warehouse that was assigned to the order when the order was created.
+. *Save* (icon:save[role="darkGrey"]) the settings.
+
+If you offer Click & Collect in your online store, you also have to activate the order referrers *Manual entry*, *Client (store)*, and, if used, the specific order referrer for the market used for processing Click & Collect orders.
+
+[#900]
+== Completing online orders
+
+Depending on when customers make a payment, online orders are processed differently in plentyPOS.
+
+Click on the appropriate tab to see instructions for the different cases.
+
+[.tabs]
+====
+Handing over paid items::
++
+--
+
+* A customer has ordered items online. The order was also paid for online. The customer comes to the retail outlet to pick up the ordered items. All items are paid in full.
+
+[IMPORTANT]
+.Checking the customer’s identity
+======
+Ask what rules exist in your retail outlet to ensure that items ordered and paid for online are picked up by the right person.
+======
+
+[.instruction]
+Handing over paid items:
+
+. <<pos/plentymarkets-pos-for-pos-users#500, Find the order>>. +
+→ The order details are loaded into the POS. +
+*_Important:_* Make sure that the customer is the person who has ordered and paid for the items. +
+. Hand over the items.
+. Tap *Book outgoing items*. +
+→ The items are booked out of the warehouse. +
+*_Tip:_* To exit the order without completing it, tap *New order*.
+
+--
+Booking a payment for an online order::
++
+--
+
+* A customer has ordered items online. The customer comes to the retail outlet to pick up and pay for the ordered items on site.
+
+[.instruction]
+Booking a payment for an online order:
+
+. <<pos/plentymarkets-pos-for-pos-users#500, Find the order>>. +
+→ The order details are loaded into the POS. +
+*_Important:_* Make sure that the customer is the person who has placed the order. +
+*_Tip:_* To exit the order without completing it, tap the three dots at the top right of the screen and then on *New order*. Alternatively, tap *Back* at the top left.
+. Book the payment as usual. +
+*_Note:_* From app version 1.9.2 and higher, some online orders can also be paid for using multipurpose coupons. +
+*_Note:_* The order details cannot be edited. You can only take payments and save an order note if necessary.
+. Hand over the items. +
+→ The items are booked out of the warehouse. +
+*_Note:_* If the button *Book outgoing items* is shown after you have booked a payment, the items are only booked out of the warehouse if you tap this button. +
+→ Check with your supervisor in what cases you need to book out items from the warehouse.
+. Tap *New order* to continue with ringing up the next customer at the POS.
+
+--
+Booking invoice payments at the POS::
++
+--
+
+* A customer has bought items on account either online or in the retail outlet. The customer has already received the ordered items. Now they want to pay their invoice on site in the retail outlet.
+
+[.instruction]
+Booking invoice payments at the POS:
+
+. <<pos/plentymarkets-pos-for-pos-users#500, Find the order>>. +
+→ The order details are loaded into the POS. +
+*_Note:_* The order details cannot be changed. +
+*_Tip:_* To exit the order without completing it, tap the three dots at the top right of the screen and then on *New order*. Alternatively, tap *Back* at the top left.
+. Book the cash payment and/or card payment as usual. +
+→ The *Order updated* view opens. +
+. Book the payment as usual. +
+*_Note:_* From app version 1.9.2 and higher, some online orders can also be paid for using multipurpose coupons. +
+→ The order is updated. +
+→ A payment receipt is printed. Otherwise, tap *Print receipt* to print the receipt. +
+*_Tip:_* Tap *Show order* to view the order details.
+. Tap *New order* to continue with ringing up the next customer at the POS.
+
+--
+====

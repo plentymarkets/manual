@@ -1,8 +1,8 @@
-= Best Practice: Fehler Request is throttled
+= Amazon Best Practice: Fehler Request is throttled
 :lang: de
 include::{includedir}/_header.adoc[]
-:author: team-multi-channel
-:keywords: Amazon, Prime, Auftragsablauf, Throttling
+:author: team-plenty-channel
+:keywords: Request is throttled, Amazon, Prime, Throttling
 :position: 300
 :url: maerkte/amazon/best-practices-amazon-fehler-request-throttled
 :id: ASBZ4BY
@@ -14,20 +14,35 @@ Dieses Best Practice behandelt das auftretende Problem der Fehlermeldung: “Req
 
 Für jede sogenannte “Operation” (Auftragsimport, Versandbestätigungen, Bestandsübermittlung/en usw.) existieren bei Amazon Limits für Anfragen (Maximum Request quota), welche, wenn diese überschritten werden, zu einer “Sperrung” der Operation führen. Weitere Anfragen werden von Amazon verworfen. Erst nach einer gewissen Zeit werden nach und nach (The Leaky Bucket Algorithm) wieder Kapazitäten dieser Operation zur Verfügung gestellt und die Übertragung ist erneut möglich.
 
-Wer die genaue Funktionsweise noch einmal nachlesen möchte, kann dies im Englischen unter link:http://docs.developer.amazonservices.com/en_DE/dev_guide/DG_Throttling.html[Throttling: Limits to how often you can submit requests^]{nbsp}icon:external-link[] tun.
+Wer die genaue Funktionsweise noch einmal nachlesen möchte, kann dies im Englischen unter link:http://docs.developer.amazonservices.com/en_DE/dev_guide/DG_Throttling.html[Throttling: Limits to how often you can submit requests^] tun.
 
 [#200]
 ==  Hauptsächliche Ursache des Problems:
 
-Dieses Problem tritt häufig auf, da aufgrund einer Konfiguration im plentymarkets System bei der Nutzung eines europäischen Verkäuferkontos bei Amazon zu viele Anfragen dieses Amazon-Kontos gesendet werden.
+Dieses Problem tritt häufig auf, da aufgrund einer Konfiguration im plentymarkets System bei der Nutzung eines europäischen oder nordamerikanischen Verkäuferkontos bei Amazon zu viele Anfragen dieses Amazon-Kontos gesendet werden.
 
 *_Konkret:_*
 
-Unter *Einrichtung » Märkte » Amazon » Einstellungen* wurden mehrere Amazon-Konten für unterschiedliche Plattformen gespeichert, welche jedoch alle dasselbe europäische Verkäuferkonto “anzielen”. Diese Konten haben immer die gleiche Verkäufer-ID. In jedem / mehreren dieser Konten wurden diverse “Operationen” aktiviert.
+Unter *Einrichtung » Märkte » Amazon » Einstellungen* wurden mehrere Amazon-Konten für unterschiedliche Plattformen gespeichert, welche jedoch alle dasselbe europäische oder nordamerikanische Verkäuferkonto "anzielen". Diese Konten haben immer die gleiche Verkäufer-ID. In jedem / mehreren dieser Konten wurden diverse “Operationen” aktiviert.
 
-Amazon-Plattformen, die meist zu einem europäischen Verkäuferkonto zusammengefasst sind (Stand 15.05.2017):
+Amazon-Plattformen, die meist zu einem europäischen Verkäuferkonto zusammengefasst sind (Stand 01.03.2021):
 
-- Amazon.de , Amazon.fr, Amazon.it, Amazon.es, Amazon.co.uk
+* Amazon.de
+* Amazon.fr
+* Amazon.it
+* Amazon.es
+* Amazon.co.uk
+* Amazon.nl
+* Amazon.pl
+* Amazon.se
+* Amazon.tr
+* Amazon.ae
+
+Amazon-Plattformen, die meist zu einem nordamerikanischen Verkäuferkonto zusammengefasst sind (Stand 01.03.2021):
+
+* Amazon.com
+* Amazon.com.mx
+* Amazon.ca
 
 [IMPORTANT]
 ====
@@ -37,7 +52,7 @@ Es kann ebenfalls zu diesem Problem kommen, wenn ihr weitere externe Programme b
 [#300]
 == Lösung des Problems:
 
-Bei solch einem europäischen Amazon-Verkäuferkonto ist es sinnvoll, wenn ihr in nur einem in plentymarkets gespeicherten Konto (*Einrichtung » Märkte » Amazon » Einstellungen*) diverse “Operationen” aktiviert, da diese sonst für jedes in plentymarkets gespeichertes Konto, welches zu dieser Verkäufer-ID gehört, die Daten zusätzlich übermitteln.
+Bei solch einem europäischen oder nordamerikanischen Amazon-Verkäuferkonto ist es sinnvoll, wenn ihr in nur einem in plentymarkets gespeicherten Konto (*Einrichtung » Märkte » Amazon » Einstellungen*) diverse “Operationen” aktiviert, da diese sonst für jedes in plentymarkets gespeichertes Konto, welches zu dieser Verkäufer-ID gehört, die Daten zusätzlich übermitteln.
 
 [TIP]
 .Operationen, welche nicht “doppelt” / “mehrfach” aktiviert werden sollten und häufig zum oben genannten Fehler führen, sind:
@@ -45,6 +60,7 @@ Bei solch einem europäischen Amazon-Verkäuferkonto ist es sinnvoll, wenn ihr i
 - Auftragsimport
 - Bestandsabgleich
 - Bestandsänderungen
+- Versandbestätigungen
 ====
 
 *_P.S.:_* Bei einem Konto für Amazon.com handelt es sich selbstverständlich nicht um eine Plattform eines europäischen Verkäuferkontos.

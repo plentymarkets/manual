@@ -1,0 +1,145 @@
+= stockManagementStock
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: stockManagementStock, Report, Rohdaten
+:position: 180
+:url: business-entscheidungen/plenty-bi/reports/datenformate/stockmanagementstock
+:id: YBRJGDK
+:author: team-stock
+
+:datenformat: pass:quotes[*stockManagementStock*]
+:daten: Bestände
+:spezifikationen: <<tabelle-spezifikationen-stockmanagementstock>>
+:datenspalten: <<tabelle-datenspalten-stockmanagementstock>>
+
+include::./_textblocks/einleitung.adoc[]
+
+== Technische Spezifikationen
+
+include::./_textblocks/spezifikationen.adoc[]
+
+[[tabelle-spezifikationen-stockmanagementstock]]
+.Technische Spezifikationen des Formats *stockManagementStock*
+[cols=4]
+|====
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|stockManagementStock
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *stockManagementStock-xxx.csv.gz*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 10.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 200.000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2020-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|sms_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|nein
+|Der Export läuft erst dann automatisch im Hintergrund, wenn der Creator zuvor im Menü *Einrichtung » plentyBI » Rohdaten* aktiviert wurde.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|storableFromPlan
+|Speicherung ab Edition
+|plentyBI XS
+|Edition, ab der die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
+|====
+
+== Datenspalten
+
+include::./_textblocks/datenspalten.adoc[]
+
+[[tabelle-datenspalten-stockmanagementstock]]
+.Datenspalten des Formats *stockManagementStock*
+[cols="1,3,3,3"]
+|====
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
+
+|plenty_id
+|INTEGER NOT NULL
+|plenty id
+|ID des plentymarkets Systems
+
+| *sms_id (Primary key)*
+|VARCHAR NOT NULL
+|stock management stock ID
+|Enthält den Primärschlüssel der Datenzeile.
+
+|i_id
+|VARCHAR NOT NULL
+|item id
+|ID des Artikels
+
+|iv_id
+|VARCHAR NOT NULL
+|item variation id
+|ID der Variante
+
+|smw_id
+|VARCHAR NOT NULL
+|stock management warehouse ID
+|ID des Lagers
+
+|sms_physical
+|NUMERIC(8,2)
+|stock management stock physical
+|Menge der Artikel, die sich tatsächlich im Lager befinden (physischer Warenbestand)
+
+|sms_reserved
+|NUMERIC(8,2)
+|stock management stock reserved
+|Menge der reservierten Artikel im Lager (Teilmenge des physischen Warenbestandes)
+
+|sms_net
+|NUMERIC(8,2)
+|stock management stock net
+|Menge der zum Verkauf verfügbaren Artikel im Lager (Physischer Warenbestand minus reservierter Warenbestand = Netto-Warenbestand)
+
+|sms_reordered
+|NUMERIC(8,2)
+|stock management stock reordered
+|Menge der nachbestellten Artikel im Lager, für die noch kein Wareneingang gebucht wurde
+
+|sms_average_purchase_price
+|NUMERIC(10,4)
+|stock management stock average purchase price
+|Durchschnittlicher Einkaufspreis des Artikels, abhängig von den zuvor getroffenen <<warenwirtschaft/wareneingaenge-verwalten#250, Einstellungen zum Einkaufspreis>>.
+
+| *sms_updated_at*
+|TIMESTAMPTZ NOT NULL
+|stock management stock updated at
+|Zeitstempel der letzten Aktualisierung +
+Datumsformat: MM/DD/YYYY HH:MI:SS TZ
+
+|====

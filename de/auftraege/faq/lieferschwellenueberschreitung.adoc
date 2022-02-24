@@ -4,31 +4,48 @@ include::{includedir}/_header.adoc[]
 :position: 50
 :url: auftraege/faq/ueberschreitung-lieferschwelle
 :id: 2SGCUHA
-:keywords: Lieferschwellenüberschreitung, Überschreitung der Lieferschwelle, Lieferschwelle, Steuerkonfiguration, Umsatzsteuer, Umsatzsteuer-ID, Standort, EU-Land, Steuersatz
+:keywords: Lieferschwellenüberschreitung, Überschreitung der Lieferschwelle, Lieferschwelle
 :author: team-order-payment
 
-Du hast die Lieferschwelle in einem EU-Land überschritten und musst nun Aufträge und Rechnungen korrigieren? Dann befolge die unten aufgelisteten Schritte. Gehe dabei sorgfältig vor, da am Steuersatz keine Änderungen mehr möglich sind, sobald er aktiv verwendet wird. Stelle also sicher, dass die richtigen Daten hinterlegt sind.
+Du hast die gemeinsame Lieferschwelle von 10.000 EUR für alle EU-Länder überschritten und musst nun Aufträge und Rechnungen korrigieren? Dann befolge die unten aufgelisteten Schritte. Gehe dabei sorgfältig vor, da am Steuersatz keine Änderungen mehr möglich sind, sobald er aktiv verwendet wird. Stelle also sicher, dass die richtigen Daten hinterlegt sind. +
+Beachte zu dieser Thematik auch das Handbuchkapitel <<auftraege/buchhaltung#525, Lieferschwelle und OSS>>.
 
 * *Schritt 1*: Rechnungen stornieren +
 Erstelle eine <<automatisierung/ereignisaktionen#100, Ereignisaktion>>, so dass bei einem Wechsel in einen bestimmten Status für jeden Auftrag ein Stornobeleg erstellt wird. Filtere alle entsprechenden Aufträge und verschiebe sie in diesen <<auftraege/auftraege-verwalten#1230, gesonderten Status>>. Dadurch werden die Rechnungen storniert und die Aufträge werden entsperrt.
 
 * *Schritt 2*: Neuen Steuersatz erstellen +
-Lege in dem Standort, von dem aus du die Lieferschwelle überschritten hast, einen Steuersatz für das entsprechende Land an. +
-_Beispiel_: Du lieferst von Deutschland aus nach Frankreich und hast in Frankreich die Lieferschwelle überschritten. In diesem Fall legst du im Standort Deutschland eine Steuersatzkonfiguration für Frankreich mit den entsprechenden Steuersätzen an. Denk daran, die richtige Umsatzsteuer-ID zu hinterlegen, in diesem Beispiel die Umsatzsteuer-ID für Frankreich.
+Lege in dem Standort, von dem aus du die Lieferschwelle überschritten hast, jeweils einen Steuersatz für die EU-Länder, in die du versendest, an. Du kannst dies wie folgt beschrieben machen oder den EU-Umsatzsteuerassistenten verwenden. +
+_Beispiel_: Du lieferst von Deutschland aus nach Frankreich, Italien, Polen und Belgien und hast nun die Lieferschwelle überschritten. In diesem Fall brauchst du im Standort Deutschland eine Steuersatzkonfiguration für Frankreich, Italien, Polen und Belgien mit den entsprechenden Steuersätzen. Denk daran, für jedes Land die richtige Umsatzsteuer-ID zu hinterlegen.
 
 [.instruction]
 Neuen Steuersatz erstellen:
 
-. Gehe ins Menü *Einrichtung » Mandant » Mandant wählen » Standorte » Standort wählen » Buchhaltung*.
+. Gehe ins Menü *Einrichtung » Mandant » [Mandant wählen] » Standorte » [Standort wählen] » Buchhaltung*.
 . Wechsle in das Tab *Umsatzsteuersätze*.
 . Klicke auf *Neue Konfiguration*.
 . Wähle ein *Land*.
-. Trage den höchsten Steuersatz in *Steuersatz A* ein. Trage weitere Steuersätze absteigend ein.
+. Trage die *Steuersätze* für das ausgewählte Land ein.
 . Trage deine *Umsatzsteuer-ID* für das entsprechende Land ein.
 . Wähle als Datum, ab dem die Steuersätze gelten sollen, hier das Datum der Lieferschwellenüberschreitung.
 . *Speichere* (icon:save[role="green"]) die Einstellungen.
 
 Gilt die Lieferschwellenüberschreitung für mehrere Mandanten oder Standorte, muss auch dort jeweils ein neuer Steuersatz angelegt werden. Wiederhole in diesem Fall die Instruktion in Schritt 2.
+
+[.collapseBox]
+.*Eingeben der Steuersätze*
+--
+Nutze beim Eintragen der Steuersätze die gleiche Struktur für jedes Land. Zum Beispiel:
+
+*Steuersatz A* = Normalsatz (z.B. Deutschland 19%, Frankreich 20%) +
+*Steuersatz B* = erster ermäßigter Steuersatz (z.B. Deutschland 7%, Frankreich 10%) +
+*Steuersatz C* = zweiter ermäßigter Steuersatz (z.B. Frankreich 5,5%) +
+*Steuersatz D* = stark ermäßigter Steuersatz / Sondersteuersatz (z.B. Frankreich 2,1%)
+
+*_Wichtig_*: +
+- Nachträglich können einer aktiven Konfiguration keine Steuersätze hinzugefügt oder bestehende Einträge geändert werden. +
+- Trage keine doppelten Steuersätze ein, dies führt zu Fehlkonfigurationen. +
+- Nutze die <<auftraege/buchhaltung#620, Zolltarifnummern>>, um die unterschiedliche Besteuerung von Artikeln abzubilden. +
+--
 
 * *Schritt 3*: Auftrag neu berechnen +
 Berechne die gefilterten Aufträge im neu zugewiesenen Status neu, damit der neue Steuersatz für die Berechnung verwendet wird. +

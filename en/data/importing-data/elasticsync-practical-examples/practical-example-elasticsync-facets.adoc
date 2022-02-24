@@ -1,0 +1,200 @@
+= Importing new facets
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: Importing filter, Importing filters, Filter importing, Filters importing, Filter import, Filters import, Import filter, Import filters, Filter-Import, Filters-Import, Import-Filter, Import-Filters, Importing facet, Importing facets, Facet importing, Facets importing, Facet import, Facets import, Import facet, Import facets, Facet-Import, Facets-Import, Import-Facet, Import-Facets, Importing webshop filters, Importing store filters, Importing shop filters, Importing faceted search, Importing search filters
+:position: 45
+:url: data/importing-data/elasticsync-best-practices/facets
+:id: 7W9YV2L
+:author: team-item
+//zuletzt bearbeitet 04.01.2021
+
+Some online shop visitors know exactly what they’re looking for.
+For example, imagine you sell shoes.
+A customer searches for black Nike shoes that cost less than €150.
+Online shop visitors can use search filters to limit which products they see.
+The more products a shop category includes, the more important search filters are.
+
+[TIP]
+.Filters or facets?
+====
+In plentymarkets, search filters are also called _facets_.
+Don’t get confused if someone talks about the so-called _faceted search_.
+This refers to the search filters in the online shop.
+====
+
+[TIP]
+.Requirements
+====
+This page assumes that you already have a basic understanding of the <<data/importing-data/ElasticSync#, import tool>>.
+====
+
+== Practical example: Initial situation
+
+//tag::initialsituation[]
+Imagine you sell shoes in your online shop.
+For example, if customers should be able to search for black Nike shoes, then you’ll need to create the filters “Colour” and “Brand”.
+
+image::data/importing-data/assets/best-practice-facets-initial-situation.png[]
+
+//end::initialsituation[]
+
+[TIP]
+.What about a price filter?
+====
+//tag::pricefilter[]
+Very few settings need to be configured for the price filter.
+You’ll probably be quicker if you <<item/frontend-item-search#20, manually create the price filter>>.
+For this reason, the price filter is not discussed further on this page.
+//end::pricefilter[]
+====
+
+== Setting up the CSV file
+
+//tag::csvfile[]
+[discrete]
+==== Filters
+
+First, transfer the filters into a CSV file.
+This is the file that you’ll import into plentymarkets later.
+In our example, the filters would look like this in the CSV file:
+
+image::data/importing-data/assets/best-practice-facets-filters.png[]
+
+You are free to choose any names for the column headers.
+In this example, I’ve put the following filter information in the columns:
+
+* *Name* = The name of the filter, as it should be displayed in the online shop.
+* *Type* = What sort of facet do you want to create?
+Enter the type into the CSV file.
+This setting can not be changed once you’ve created the facet.
+<<data/importing-data/sync-types/elasticSync-facets#70, Further information about the type>>.
+* *Sorting* = How should the values be sorted within the facet?
+For example, if you’re creating the facet “Brand name”, then you could sort the individual brands alphabetically.
+Enter your preferred sorting method into the CSV file.
+<<data/importing-data/sync-types/elasticSync-facets#60, Further information about the sorting method>>.
+* *SelectionType* = What should happen when customers select multiple filter criteria? Should they see products that fulfil _all of these criteria_ or _any one of the criteria_?
+Enter your preferred selection type into the CSV file.
+<<data/importing-data/sync-types/elasticSync-facets#100, Further information about the selection type>>.
+
+[discrete]
+==== Filter values
+
+Now add the individual values to the filter.
+For example, if you’re creating the filter “Colour”, then you’ll need values like “Blue”, “Red” and “Black”.
+
+image::data/importing-data/assets/best-practice-facets-filtervalues.png[]
+
+[discrete]
+==== Linking filter values
+
+Finally, link each filter value to existing data in your system, i.e. to existing attributes, characteristics, properties, manufacturers or availabilities.
+
+image::data/importing-data/assets/best-practice-facets-filtervaluelinks.png[]
+
+The link consists of two pieces of information:
+
+* *LinkType* = What _sort of back end information_ do you want to link the facet value to?
+Enter the appropriate type into the CSV file.
+<<data/importing-data/sync-types/elasticSync-facets#190, Further information about the link type>>.
+* *LinkID* = What _specific piece of back end information_ do you want to link the facet value to?
+Enter the ID of the back end information into the CSV file.
+<<data/importing-data/sync-types/elasticSync-facets#200, Further information about the ID>>.
+//end::csvfile[]
+
+== Choosing the import settings
+
+//tag::syncsettings[]
+<<data/importing-data/ElasticSync#1210, Create a new import>>.
+Most of the settings can be chosen freely.
+However, since you want to import _facet data_, make sure you’ve set the *Type* to *Facet*.
+//end::syncsettings[]
+
+== Choosing the matching settings
+
+//tag::matching[]
+During the import, plentymarkets will check whether the facet already exists.
+This is done with the help of a so-called matching field.
+
+Since we want to import _new facets_ in this example, configure the settings as follows.
+
+[cols="1,3"]
+|====
+|Setting |Explanation
+
+| *Facet name*
+|Which column of your CSV file lists the facet name? Choose this column here.
+This option is useful if you want to _create new facets_.
+
+| *Import options*
+|Since you’ll be importing new facets, choose the option *Only import new data* or *Import new, update existing data*.
+|====
+//end::matching[]
+
+== Choosing the mapping settings
+
+//tag::mapping[]
+Your CSV file is already filled with a bunch of facet information.
+Now you’ll decide _where in plentymarkets_ each piece of information should appear when you import the file.
+<<data/importing-data/sync-types/elasticSync-facets#20, Take a look at this page>> while you map the columns of your CSV file to the fields in plentymarkets.
+In this example, I’ve configured the settings as follows.
+
+image::data/importing-data/assets/best-practice-facets-mapping.png[]
+
+I created the filters by:
+
+* mapping the *Name* column of my CSV file with the *Facet name / Name* data field in plentymarkets.
+* mapping the *Type* column of my CSV file with the *Facet / Type* data field in plentymarkets.
+* mapping the *Sorting* column of my CSV file with the *Facet / Sorting* data field in plentymarkets.
+* mapping the *SelectionType* column of my CSV file with the *Facet / Selection type* data field in plentymarkets.
+
+I created the filter values by:
+
+* mapping the **ValueName* column of my CSV file with the *Facet value name / Name* data field in plentymarkets.
+
+I created the links by:
+
+* mapping the *LinkType* column of my CSV file with the *Link / Type* data field in plentymarkets.
+* mapping the *LinkID* column of my CSV file with the *Link / Value ID* data field in plentymarkets.
+//end::mapping[]
+
+== Did it work?
+
+//tag::check[]
+Ready to import your filters?
+Start the import and check whether the data was correctly imported into plentymarkets.
+
+[.instruction]
+Starting the import and checking the result:
+
+. Activate the lines that should be imported (icon:toggle-on[role="green"]).
+. Test the import (icon:plugin_stage_deploy[set=plenty]) or start the import (icon:play-circle-o[role="darkGrey"]). +
+*_Note:_* This can take a few minutes.
+. Go to *Setup » Client » Settings » Services » Faceted search*.
+. Open a few filters to check their settings and values.
+//end::check[]
+
+[TIP]
+.Do a trial run
+====
+//tag::testrun[]
+We recommend testing the import (icon:plugin_stage_deploy[set=plenty]) before you start it for the first time.
+This imports the first 10 rows of the file and bypasses the cache.
+It gives you time to check whether the import works correctly. If the import does not perform as expected, you can correct it before importing the entire file.
+//end::testrun[]
+====
+
+[TIP]
+.Resetting the cache
+====
+//tag::cache[]
+Directly within the import, you’ll find the button *Reset cache* (icon:reload[set=plenty]).
+This button allows you to reset the import cache in order to reimport a file that does not contain any changes.
+//end::cache[]
+====
+
+== After the import: webshop settings
+
+Once you’ve imported the filters, you’ll still need to configure a few settings so that the filters appear in the webshop.
+
+* <<item/frontend-item-search#110, Specify which webshop the filters should appear in>>.
+* <<item/frontend-item-search#150, Design the appearance in the webshop>>.

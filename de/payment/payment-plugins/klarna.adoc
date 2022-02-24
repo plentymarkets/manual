@@ -1,0 +1,217 @@
+= Klarna
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Zahlungsarten, Klarna, Klarna-Plugin, Klarnaplugin, Klarna-Händlerkonto, Klarna-Account, Klarna-Registrierung, Klarnaregistrierung, Klarna-Ereignisaktionen, Klarna Payments, Klarna-Payments, Klarna-Checkout, Klarna-Modul, Klarnaversand, Klarna-Versandbestätigung, Klarnastornierung, Klarna-Stornierung, Klarnarückerstattung, Klarna-Rückerstattung, Klarnazahlung, Klarna-Zahlung, Klarna-Zahlungsart, Klarnazahlungsart, Klarnastorno, Klarna-Storno, Klarnarückzahlung, Klarna-Rückzahlung, Klarna-Konfiguration, Klarnakonfiguration, Klarna-Einstellung, Klarnaeinstellung, Klarna-Konfiguration, Klarnakonfiguration, Klarna-Schnittstelle, Klarnaschnittstelle, Zahlungsplugin, Zahlungs-Plugin, Payment-Plugin, Paymentplugin, Payment-Integration, Paymentintegration, Paymentschnittstelle, Payment-Schnittstelle, Zahlart, Zahlarten
+:description: Integration des Klarna-Plugins.
+:position: 40
+:url: payment/payment-plugins/klarna
+:id: 3SGDQQB
+:author: team-order-payment
+
+Mit dem Klarna-Plugin bindest du die *Klarna-Zahlungsarten* in deinen Webshop ein und stellst sie so deinen Kund:innen zur Auswahl. Lade dafür das Klarna-Plugin im link:https://marketplace.plentymarkets.com/klarna_6731[plentyMarketplace^] herunter. Die Einrichtung der Zahlungsarten erfolgt erfolgt über einen Assistenten. Zudem musst du einige grundlegende Einstellungen in deinem plentymarkets System ausführen, damit die Zahlungsarten auch in deinem System aktiviert sind. +
+Die Erklärungen auf dieser Seite finden nach dem Hinzufügen des Plugins Anwendung. Allgemeine Informationen zum Hinzufügen und Installieren von Plugins findest du im Abschnitt <<plugins#, Plugins>> des Handbuchs.
+
+[#10]
+== Voraussetzung: Eröffnung eines Klarna-Händlerkontos
+
+Für die Nutzung von Klarna benötigst du ein link:https://www.klarna.com/de/verkaeufer/[Klarna-Händlerkonto^]. Durch die Eröffnung des Kontos erhältst du Informationen sowie Zugangsdaten. Liegen diese nicht vor, kannst du das Plugin nicht einrichten und somit nicht nutzen. Sofern du noch keine Klarna-Registrierung durchlaufen hast oder deine Klarna-Kundennummer nicht mit Kxxxxxx beginnt, sende eine E-mail an vertrieb@klarna.com.
+
+[#20]
+== Ausführen des Assistenten
+
+:name-des-assistenten: Klarna
+:name-der-zahlungsart: Klarna
+
+include::../../_includes/textblocks/instructions/ausfuehrung-assistent-zahlungsart.adoc[]
+
+include::../_textblocks/durchlauf-assistent-multimandanten.adoc[]
+
+[#40]
+== Kundenklassen und Versandprofile
+
+include::../../_includes/textblocks/instructions/kundenklassen-und-versandprofile.adoc[]
+
+[#50]
+== Ereignisaktionen einrichten
+
+Richte Ereignisaktionen ein, damit alle benötigten Daten automatisch an Klarna versendet werden. Dafür sind 5 Ereignisaktionen erforderlich.
+
+[#60]
+=== Versandbestätigung automatisch senden
+
+Damit die Zahlung bei Klarna aktiviert wird, muss eine Versandbestätigung gesendet werden. Dafür empfehlen wir die folgende Konfigurationen.
+
+:table-event-procedure: <<tabelle-ea-klarna-versandbestätigung>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[tabelle-ea-klarna-versandbestätigung]]
+.Ereignisaktion Versandbestätigung an Klarna senden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Warenausgang gebucht*
+|
+
+| *Filter 2*
+| *Auftrag > Zahlungsart*
+| Alle Zahlungsarten des Klarna-Plugins auswählen.
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Auftrag*
+
+| *Aktion*
+| *Plugins > Plugin: Versandbestätigung an Klarna senden*
+|
+
+|====
+
+[#70]
+=== Stornierung automatisch senden
+
+Im Fall einer Stornierung eines Auftrags muss eine Information an Klarna erfolgen. Dafür empfehlen wir die folgende Konfiguration.
+
+:table-event-procedure: <<tabelle-ea-klarna-stornierung>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[tabelle-ea-klarna-stornierung]]
+.Ereignisaktion Stornierung an Klarna senden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Statuswechsel*
+| Status aus dem stornierten Bereich wählen
+
+| *Filter 2*
+| *Auftrag > Zahlungsart*
+| Alle Zahlungsarten des Klarna-Plugins auswählen.
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Auftrag*
+
+| *Aktion*
+| *Plugins > Plugin: Stornierung an Klarna senden*
+|
+
+|====
+
+[#80]
+=== Rückerstattung automatisch senden
+
+Im Fall einer Rückerstattung muss eine Information an Klarna erfolgen. Dafür empfehlen wir die folgende Konfiguration.
+
+:table-event-procedure: <<tabelle-ea-klarna-rückerstattung>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[tabelle-ea-klarna-rückerstattung]]
+.Ereignisaktion Rückerstattung an Klarna senden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Neue Gutschrift*
+|
+
+| *Filter 2*
+| *Auftrag > Zahlungsart*
+| Alle Zahlungsarten des Klarna-Plugins auswählen.
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Gutschrift*
+
+| *Aktion*
+| *Plugins > Plugin: Rückerstattung Klarna senden*
+|
+
+|====
+
+[#90]
+=== Änderung der Auftragsanschrift automatisch senden
+
+Sollte es zwischen Auftragsanlage und Versand zu einer Änderung der Auftragsanschriften kommen, muss dies an Klarna gemeldet werden. Dafür empfehlen wir die folgende Konfiguration
+
+:table-event-procedure: <<tabelle-ea-klarna-anschriftsänderung>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[tabelle-ea-klarna-anschriftsänderung]]
+.Ereignisaktion Änderung der Auftragsanschrift an Klarna senden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Statuswechsel*
+|
+
+| *Filter 2*
+| *Auftrag > Zahlungsart*
+| Alle Zahlungsarten des Klarna-Plugins auswählen.
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Auftrag*
+
+| *Aktion*
+| *Plugins > Plugin: Änderung der Auftragsanschrift an Klarna senden*
+|
+
+|====
+
+[#100]
+=== Änderung der Artikelpositionen automatisch senden
+
+Sollte es zwischen Auftragsanlage und Versand zu einer Änderung an den Auftragspositionen kommen, muss dies an Klarna gemeldet werden. Dafür empfehlen wir die folgende Konfiguration.
+
+:table-event-procedure: <<tabelle-ea-klarna-artikeländerung>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[tabelle-ea-klarna-artikeländerung]]
+.Ereignisaktion Änderung der Artikelpositionen an Klarna senden
+[cols="1,3,3"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| *Statuswechsel*
+|Status auswählen, bei dem das Ereignis ausgelöst werden soll.
+
+| *Filter 2*
+| *Auftrag > Zahlungsart*
+| Alle Zahlungsarten des Klarna-Plugins auswählen.
+
+| *Filter 1*
+| *Auftrag > Auftragstyp*
+| *Auftrag*
+
+| *Aktion*
+| *Plugins > Plugin: Änderung der Artikelpositionen an Klarna senden*
+|
+
+|====
+
+[#110]
+== Sprachelemente anpassen
+
+Du kannst Benennungen, die das Klarna-Plugin mitbringt, im Menü *CMS » Mehrsprachigkeit* nach deinen Bedürfnissen in allen verfügbaren Systemsprachen anpassen. Gehe dazu wie im Folgenden beschrieben vor.
+
+[.instruction]
+Sprachdateien anpassen:
+
+. Öffne das Menü *CMS » Mehrsprachigkeit.*
+. Wähle auf der linken Seite die *Ausgangssprache* aus der Dropdown-Liste.
+. Wähle auf der rechten Seite die *Zielsprache* aus der Dropdown-Liste.
+. Klappe im Bereich *Klarna* die Sektion *Zahlungsart* aus.
+. Gib im Bereich der Zielsprache die gewünschten Texte für die einzelnen Sprachelemente ein.
+. Speichere (icon:save[role=green]) die Einstellungen.
+. Stelle das Plugin-Set erneut bereit, um die Änderungen zu übernehmen.
+
+Über die Auswahl *Deutsch* als *Zielsprache*, kannst du die deutschen Benennungen für deinen Webshop anpassen. Die gewählten Benennungen werden dann auch im Backend übernommen, allerdings bleibt der Zusatz _Plugin: Klarna_. So bleibt die Zugehörigkeit einer Zahlungsart nachvollziehbar. Lade das Backend neu, um die Änderungen sehen zu können.
+
+Weitere Informationen zum Bearbeiten von im Webshop angezeigten Texten findest du auf der Handbuchseite <<webshop/ceres-einrichten#231, Webshop-Texte bearbeiten>>.

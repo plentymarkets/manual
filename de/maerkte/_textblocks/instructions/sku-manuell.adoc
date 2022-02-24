@@ -1,38 +1,104 @@
-Im Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *» Tab: Varianten-ID im Tab Verfügbarkeit* fügst du, wenn nötig, marktplatzspezifische SKUs hinzu.
+Beim Export der Varianten wird automatisch eine SKU generiert. Optional hast du aber auch die Möglichkeit, marktplatzspezifische SKUs an den Varianten zu speichern, die du auf dem Marktplatz verkaufen möchtest.
 
 ifdef::sku-cdiscount[]
 [IMPORTANT]
 .Automatische SKU-Generierung
 ====
-Wenn im Menü *Einrichtung » Märkte » Cdiscount.com » Tab: Einstellungen* die Einstellung *Produkterstellung anfordern* aktiv ist, werden beim nächtlichen Übertragungsprozess für jede Variante, die exportiert wird automatisch eine SKU generiert, die der Varianten-ID entspricht.
+Wenn im Menü *Einrichtung » Märkte » Cdiscount.com » Tab: Einstellungen* die Einstellung *Produkterstellung anfordern* aktiv ist, wird beim nächtlichen Export automatisch für jede exportierte Variante eine SKU generiert. Diese SKU entspricht der Varianten-ID.
 ====
 
 [IMPORTANT]
 .SKUs von bereits existierenden Produkten
 ====
-Wenn bereits Angebote/Produkte auf Cdiscount manuell oder über andere Softwaresysteme erstellt wurden, dann können diese Produkte mit Varianten in plentymarkets verknüpft werden. Dazu muss in plentymarkets die Kennzeichnung als SKU gespeichert werden, die bei Cdiscount im Händler-Backend bei dem jeweiligen Angebot/Produkt als *Your reference* zu finden ist.
+Vielleicht möchtest du Produkte anbieten, die du bereits manuell oder über andere Softwaresysteme Angebote/Produkte auf Cdiscount erstellt hast. Verknüpfe diese Produkte dann mit deinen Varianten in plentymarkets. Speichere dazu in plentymarkets die Kennzeichnung als SKU, die im Händler-Backend von Cdiscount bei dem jeweiligen Produkt als *Your reference* gespeichert ist.
 ====
 endif::sku-cdiscount[]
 
-ifdef::sku-netto[]
-Wenn du SKUs hinzufügst, gilt die Herkunft *Plus.de* für den Marktplatz Netto Marken-Discount.
-endif::sku-netto[]
-
-[.instruction]
-SKU hinzufügen:
-
-. Öffne das Menü *Artikel » Artikel bearbeiten »* _Artikel öffnen_ *» Tab: Varianten-ID » Tab: Einstellungen*.
+[.tabs]
+====
+SKU manuell speichern::
++
+--
+. Öffne das Menü *Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Varianten-Tab: Einstellungen*.
 . Wechsele in das Tab *Verfügbarkeit*.
 . Klicke im Bereich *SKU* auf *Hinzufügen* (icon:plus-square[role="green"]). +
 → Das Bearbeitungsfenster *Neue SKU* wird angezeigt.
-. Wähle die Herkunft *{referrer-sku}*.
+. Wähle die Herkunft *{referrer-sku}*. +
+ifdef::sku-netto[*_Tipp:_* Die Herkunft *Plus.de* gilt auch für den Marktplatz Netto Marken-Discount.]
 ifdef::sku-account[]
 . Wähle das dazugehörige Marktplatzkonto.
-endif::[]
+endif::sku-account[]
 . Gib die SKU ein.
 . Klicke auf *Hinzufügen* (icon:plus-square[role="green"]). +
 → Die SKU wird gespeichert und angezeigt.
+--
+
+SKU importieren::
++
+--
+
+TIP: Hier werden nur die wichtigsten Einstellungen für den Import beschrieben. Du arbeitest zum ersten Mal mit dem Import-Tool? Dann mache dich zuerst <<daten/daten-importieren/ElasticSync#, mit dem Prinzip des Datenimports in plentymarkets vertraut>>.
+
+* Erstelle eine CSV-Datei mit mindestens den in <<#table-sku-import>> beschriebenen Spalten.
+* Erstelle einen Import mit den folgenden Einstellungen:
+  ** Wähle den Typ *Artikel*.
+  ** Wähle als Abgleichfeld die *Varianten-ID*.
+  ** Ordne die plentymarkets Datenfelder wie in <<#table-sku-import>> beschrieben zu.
+
+[[table-sku-import]]
+.Empfohlene Spalten der Importdatei
+[cols="1a,3a,2a"]
+|======
+|Spalte in CSV-Datei |Erläuterung |plentymarkets Datenfeld für die Zuordnung
+
+| Varianten-ID
+| Gib in dieser Spalte die Varianten-ID ein.
+| *Varianten-ID*
+
+| Marktplatz-ID
+| Gib in dieser Spalte die Herkunft-ID *{referrer-id}* ein.
+| *SKU* > *Marktplatz-ID*
+
+| Account-ID
+|
+ifdef::sku-amazon[]
+Gib in dieser Spalte die ID des Marktplatzkontos ein. +
+*_Tipp:_* Die Konto-ID findest du im Menü +
+*Einrichtung » Märkte » Amazon » Einstellungen*
+endif::sku-amazon[]
+ifdef::sku-ebay[]
+Gib in dieser Spalte die ID des Marktplatzkontos ein. +
+*_Tipp:_* Die Konto-ID findest du im Menü +
+*Einrichtung » Märkte » eBay » Einstellungen » Kontoeinstellungen*
+endif::sku-ebay[]
+ifdef::sku-rakuten[]
+Gib in dieser Spalte die ID des Marktplatzkontos ein. +
+*_Tipp:_* Die Konto-ID findest du im Menü +
+*Einrichtung » Märkte » Rakuten.de*
+endif::sku-rakuten[]
+ifdef::sku-client[]
+Gib in dieser Spalte die plenty-ID des Mandanten ein. +
+*_Tipp:_* Die plenty-ID findest du im Menü +
+*Einrichtung » Mandant » [Mandant wählen] » Einstellungen » Option: Plenty ID*
+endif::sku-client[]
+ifdef::sku-others[Für diesen Marktplatz gibt es keine Marktplatzkonten. Gib deshalb in diese Spalte die Zahl *0* ein.]
+| *SKU* > *Account-ID*
+
+| SKU
+| Gib in dieser Spalte die SKU ein, die du für den Marktplatz an der Variante speichern möchtest.
+| *SKU* > *SKU*
+|======
+--
+====
+'''
 
 ////
 :referrer-sku: xxxx
+:referrer-id: xxx
+// :sku-others:
+// :sku-client:
+// :sku-amazon:
+// :sku-ebay:
+// :sku-rakuten:
+
 ////

@@ -1,0 +1,88 @@
+= Sofortüberweisung von Klarna
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: Zahlungsarten,  Klarna, Sofort, Sofortüberweisung, Klarna-Sofort, Sofortzahlung, Sofort-Zahlung, Sofortüberweisung, Sofort-Geschäftskonto, Sofort-Plugin, Sofortplugin, Sofortüberweisungs-Plugin, Sofortüberweisungsplugin, Sofortüberweisung-Konfiguration, Sofort-Konfiguration, Sofort-Container, Sofortüberweisung-Container, Sofort-Zahlung, Sofortüberweisung-Zahlung, Zahlungsplugin, Zahlungs-Plugin, Payment-Plugin, Paymentplugin, Payment-Integration, Paymentintegration, Paymentschnittstelle, Payment-Schnittstelle, Zahlart, Zahlarten
+:description: Integration des Sofort-Plugins, Klarna-Sofort
+:position: 100
+:url: payment/payment-plugins/sofort
+:id: CT0BWMM
+:author: team-order-payment
+
+Mit dem Sofort-Plugin bindest du die Klarna-Zahlungsart *Sofort* in deinen Webshop ein und stellst sie so deinen Kund:innen zur Auswahl. Lade dafür das Sofort-Plugin im link:https://marketplace.plentymarkets.com/sofort_5050[plentyMarketplace^] herunter. Für die Einrichtung der Zahlungsart musst du einige grundlegende Einstellungen in deinem plentymarkets System ausführen, damit sie auch in deinem System aktiviert ist. +
+Die Erklärungen auf dieser Seite finden nach dem Hinzufügen des Plugins Anwendung. Allgemeine Informationen zum Hinzufügen und Installieren von Plugins findest du im Abschnitt <<plugins#, Plugins>> des Handbuchs.
+
+[IMPORTANT]
+.Voraussetzung
+====
+Das Sofort-Plugin ist für die Nutzung mit plentyShop LTS entwickelt und funktioniert nur mit dessen Logikstruktur oder anderen Template-Plugins.
+====
+
+[#10]
+== Voraussetzung: Eröffnung eines Geschäftskontos
+
+Für die Nutzung von Sofort benötigst du ein link:https://www.sofort.com/payment/users/register[Geschäftskonto^]. Durch die Eröffnung des Kontos erhältst du Informationen sowie Zugangsdaten. Liegen diese nicht vor, kannst du das Plugin nicht einrichten und somit nicht nutzen.
+
+[#20]
+== Zahlungsart einrichten
+
+Bevor du die Funktionen des Sofort-Plugins nutzen kannst, musst du zuerst dein Sofort-Konto mit deinem plentymarkets System verbinden.
+
+[.instruction]
+Sofort-Konto anbinden:
+
+. Öffnen Sie das Menü *Plugins » Plugins-Set-Übersicht » [Plugin-Set wählen]*
+. Öffne das Plugin *Sofort*
+. Öffne im Plugin das Menü *Konfiguration » Grundeinstellungen*. +
+→ Beachte die Erläuterungen in <<table-plugin-settings>>.
+. Gib den Konfigurationsschlüssel ein. +
+→ Diesen Schlüssel erhältst du durch den Registrierungsprozess.
+. Nimm weitere Einstellungen nach Bedarf im Bereich *Erweiterte Einstellungen* vor.
+. *Speichere* (icon:save[role=green]) die Einstellungen.
+
+[[table-plugin-settings]]
+.Container verknüpfen
+[cols="1,3"]
+|====
+|Einstellung |Erläuterung
+
+2+^| *Grundeinstellungen*
+
+| *Zahlungsart aktivieren*
+|Standardmäßig ist hier *Nein* ausgewählt. Zum Aktivieren der Zahlungsart *Ja* auswählen.
+
+| *Konfigurationsschlüssel*
+|Den Konfigurationsschlüssel erhältst du nach der link:https://www.sofort.com/payment/users/register[Registrierung^].
+Ohne korrekte Eingabe wird die Zahlungsart nicht aktiviert. +
+Beispiel für den Aufbau des Konfigurationsschlüssels: {Kundennummer}:{Projekt-ID}:{API-Key}
+
+|*Auftragsstatus in Status 4/5 setzen*
+|Aktiviere diese Option, wenn Aufträge mit der Zahlungsart *Sofort* nach eingegangener Zahlung im System direkt Auftragsstatus 4 (In Versandvorbereitung) oder 5 (Freigabe Versand) erhalten sollen. Ansonsten werden die Aufträge mit Status 3 (Warten auf Zahlung) angelegt. +
+Beachte in diesem Zusammenhang, dass dieser Ablauf greift, sobald die Zahlungen in dein plentymarkets System importiert und den Aufträgen zugeordnet wurden. Die Zahlungen der Zahlungsart Sofort gehen auf deinem Konto ein. Danach importierst du sie in dein System. Du kannst dafür entweder <<payment/payment-plugins/EBICS#, EBICS>> oder einen <<daten/daten-importieren/sync-typen/elasticSync-bankbuchungen#, Buchungsimport>> nutzen. Das bedeutet, dass die Zahlung bereits bestätigt ist, wenn du sie importierst und der Auftrag einen Status zugewiesen bekommt. Mit dieser Einstellung entscheidest du also über den weiteren Ablauf der Auftragsbearbeitung. Ziehe auch in Betracht, dass z.B. Ereignisaktionen auf den ausgewählten Status reagieren.
+
+2+^| *Erweiterte Einstellungen*
+
+| *Grund 1*
+|Legt den Text fest, der als Verwendungszweck bei der Überweisung angegeben wird (max. 27 Zeichen, Sonderzeichen werden ersetzt/gelöscht). Folgende Platzhalter werden mit konkreten Werten ersetzt: +
+transaction_id = Transaktions-ID der Überweisung +
+customer_name = Name der Kund:in +
+customer_email = E-Mail Adresse der Kund:in +
+Standard: transaction_id
+
+| *Grund 2*
+|Legt den Text fest, der als Verwendungszweck bei der Überweisung angegeben wird (max. 27 Zeichen, Sonderzeichen werden ersetzt/gelöscht). Zusätzlich sind folgende Platzhalter möglich: +
+customer_id = Kundennummer +
+customer_company = Firmenname der Kund:in +
+Standard: -
+
+|====
+
+[.collapseBox]
+.*Kein Auftrag im System aber Zahlung vorhanden*
+--
+Es kann vorkommen, dass eine Sofort-Zahlung im System ist, aber der dazugehörige Auftrag fehlt. Dies passiert, wenn Kund:innen nicht korrekt zum Checkout zurückgeleitet wurden. Dieser Workflow ist von Klarna so vorgegeben. Eine Änderung würde eine Anpassung am Plugin erfordern, die dementsprechend von Klarna veranlasst werden müsste.
+--
+
+[#40]
+== Kundenklassen und Versandprofile
+
+include::../../_includes/textblocks/instructions/kundenklassen-und-versandprofile.adoc[]

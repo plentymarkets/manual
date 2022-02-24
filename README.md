@@ -1,3 +1,3 @@
 # manual
 
-To be added
+plentymarkets user manual on knowledge.plentymarkets.com

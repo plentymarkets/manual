@@ -1,0 +1,498 @@
+= PayPal
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: payment method, PayPal, PayPal PLUS, PayPal Express, express-button, PayPal Express checkout, PayPal Installments, PayPal-account, PayPal address validation, paypal checkout, paypal-checkout, paypal wall, paypal-wall, PayPal-webhook, paypal-integration, paypal-plugin, payment-plugin, paypal dispute, dispute, dispute plugin, dispute-plugin
+:description: Integration of the plugin PayPal.
+:position: 100
+:url: payment/payment-plugins/paypal
+:id: K9UYAY1
+:author: team-order-payment
+
+With the PayPal plugin, you integrate the PayPal payment methods in your online shop and make them available to your customers. To do so, download the PayPal plugin from the link:https://marketplace.plentymarkets.com/en/payone_5434[plentyMarketplace^]. Setup of the payment method is done with an assistant. You also have to carry out a few basic settings in your plentymarkets system so that the payment methods are activated in your system. +
+The explanations in this section apply after adding the plugin. You can find more information on adding and installing plugins in the <<plugins# Plugins>> section of the manual.
+
+[#10]
+== Requirement: Opening a PayPal business account
+
+To work with PayPal, you first need a PayPal business account. You get information as well as login details when you open the account. Without these, the plugin cannot be set up and is not usable. If you don’t have one yet, open a link:https://www.paypal.com/de/business[PayPal business acount^] first.
+
+[#20]
+== Completing the assistant
+
+[IMPORTANT]
+.Activating the plugin set in the main client
+====
+For account linking and the functionality of event procedures, the PayPal plugin has to be activated in the plugin set used for the main client. Since there is a dependency on the IO plugin, IO must be active for the deployment process (saving the plugin set).
+====
+
+:name-assistant: PayPal
+:name-payment-method: PayPal
+
+include::../../_includes/textblocks/instructions/completing-assistant-payment-method.adoc[]
+
+[.collapseBox]
+.*Information about address validation*
+--
+
+The PayPal assistant contains the option *Address validation* in the section *Order processing*. This validation is _automatically activated_. You have to select to deactivate the validation. You can either deactivate the validation for selected or for all countries. To do so, check (icon:check-square[role="blue"]) the countries for which addresses are _not to be validated_. +
+If the payment should also be executed with an incomplete address you should deactivate the address validation.
+
+The default validation is a PayPal requirement. The validation checks if there is a complete address. It is not validated whether this is an actually existing address. The payment is only executed successfully if there is a complete address. +
+The PayPal address validation is important for the coverage when shipping goods. Moreover, PayPal offers buyer and customer protection, which is especially important when orders are processed with PayPal Express. In this case, the address is transmitted by PayPal itself.
+
+--
+
+include::../_textblocks/completing-assistant-multi-clients.adoc[]
+
+[#30]
+== ShopBuilder widgets
+
+The PayPal Express Checkout Button and the Banners for PayPal Installment are available as widgets in the ShopBuilder.
+
+[#40]
+== Linking template containers
+
+[IMPORTANT]
+.Information about linking containers
+====
+The containers needed by default are automatically linked during setup with the PayPal assistant. Up from version 5.4.0 on, required as well as optional containers are linked in the same plugin set in which the assistant is completed.
+====
+
+You have different options how to integrate PayPal PLUS, the PayPal Express Checkout button and the Banners for PayPal Installments in your online shop. To do this, the plentymarkets system offers containers at relevant places which can be filled with content to meet your needs.
+
+[.instruction]
+Linking template containers:
+
+. Go to *Plugins » Plugin set overview*.
+. Open the plugin set you want to edit.
+. Open the plugin *PayPal*.
+. Click on *Container links*.
+. From the drop-down list, select the data provider you want to link.
+. Select the container you want to link to the data provider. Pay attention to the explanations given in <<table-paypal-template-container>>.
+. Repeat steps 5 and 6 for all data providers you want to link to containers.
+. *Save* (icon:save[role="green"]) the settings.
+
+[[table-paypal-template-container]]
+.Linking template containers
+[cols="1,3"]
+|====
+|Content |Explanation
+
+2+^| *General*
+
+| *PayPal Checkout Scripts*
+|The container *Checkout: After scripts loaded* has to be linked.
+
+| *PayPal Confirmation Scripts*
+|The container *Script loader: After scripts loaded* has to be linked.
+
+| *PayPal Express Button Scripts*
+|The container *Script loader: After scripts loaded* has to be linked.
+
+|*PayPal Styles*
+|	The container *Template: style* has to be linked to activate the styles required by PayPal and to offer optimal functionality.
+
+|*PayPal Express Checkout button*
+|Optional: The PayPal Express Checkout button can be individually placed, e.g. next to the shopping cart.  By clicking on this button, customers can purchase the content of the shopping cart immediately without going through the regular checkout. Instead, the customer is immediately forwarded to the PayPal payment process. The shipping address is provided by PayPal.
+
+|*Banners for PayPal Installments*
+|Optional: The Banners for PayPal Installments can be placed in many different ways to promote this payment method. You can choose between a graphic banner (PayPal Installment Graphical Promotion Banner) and a text banner (PayPal Installment Text Promotion Banner). A separate integration is not necessary. In the assistant, the banners can automatically be linked to an item page, the cart or the checkout. Additionally, the banners are also available to you as widgets in the ShopBuilder. Thus, they can be placed where they are needed, e.g. on landing pages, item pages, the shopping cart or the checkout.
+
+|*PayPal Reinitialize Payment / PayPal PLUS Reinitialize Payment*
+|A link with the container *My account: Additional payment information* allows the customer to reinitialise the payment in the *My account* area after an unsuccessful transaction. For PayPal, the *Order now* button is displayed, for PayPal PLUS, the Wall is displayed. +
+A link with the container *Order confirmation: Additional payment information* allows the customer to reinitialise the payment in the order confirmation area after an unsuccessful transaction. For PayPal, the *Order now* button is displayed, for PayPal PLUS, the Wall is displayed.
+
+2+^| *PayPal PLUS*
+
+| [#intable-paypal-plus-wall]*PayPal PLUS Wall*
+|A link with the container *Checkout: Override payment method* replaces all previous payment methods with the PayPal PLUS Wall.  Any payment methods offered in addition to those included in the Wall – PayPal, Debit and Credit card – are displayed below these four inside the wall in the order of their priority. +
+In the assistant, different options how to display the PayPal PLUS Wall are available: *Wall replaces the payment list*, *Wall within the payment list* or *Wall in an overlay during the purchase*. +
+Also pay attention to <<payment/payment-plugins/paypal#50, Additional information about the PayPal PLUS Wall>>. Additional information as well as restrictions are described there.
+
+|====
+
+[#50]
+=== Additional information about the PayPal PLUS Wall
+
+Apart from the PayPal PLUS payment methods, 10 further payment methods can be shown in the checkout within the PayPal PLUS Wall. +
+For Germany, for example, the payment methods Debit and Credit card are possible. With this, a maximum of 14 payment methods can be shown in the checkout.
+But if, for example, only PayPal and Credit card are allowed for a certain delivery country, the maximum number is restricted to 12.
+
+Moreover, PayPal PLUS limits the number of characters for the names of the other payment methods. The maximum number of characters is limited to 25.  If a name has more than 25 characters, it is truncated.  +
+Note that special characters, e.g. an umlaut, reduces the number of characters, because they are read out in HTML-style.
+
+PayPal states the following:
+
+* max. image size of 100 x 25 px +
+* max. 25 characters for *methodName* +
+* max. 120 characters for *description*
+
+[#60]
+== Activating webhook notifications
+
+[TIP]
+.Information about webhooks
+====
+The webhooks needed by default are automatically activated during setup with the PayPal assistant. You can carry out individual settings for webhooks in the *Additional settings* step of the assistant.
+====
+
+Your plentymarkets system and the PayPal interface communicate with the help of webhooks. For certain events, such as an incoming payment, PayPal sends a webhook notification to plentymarkets. plentymarkets automatically responds to these notifications.
+
+[[table-activating-webhook-notifications]]
+.Webhook notifications
+[cols="1,3"]
+|====
+|Webhook |Explanation
+
+| *PAYMENT.SALE.COMPLETED*
+|A payment has been completed. When PayPal sends this notification, a pending payment is marked as paid in plentymarkets.
+
+| *PAYMENT.SALE.DENIED*
+|A payment has been denied. When PayPal sends this notification, a pending payment is marked as unpaid in plentymarkets.
+
+| *PAYMENT.SALE.PENDING*
+|There is a pending payment. When PayPal sends this notification, a pending payment is created in plentymarkets.
+
+| *PAYMENT.SALE.REFUNDED*
+|A payment has been partially or completely refunded by the seller. When PayPal sends this notification, a credit note for the payment is created in plentymarkets.
+
+| *PAYMENT.SALE.REVERSED*
+|A payment has been reversed by PayPal.
+
+|====
+
+[#80]
+== Customer classes and shipping profiles
+
+include::../../_includes/textblocks/instructions/customer-class-and-shipping-profile.adoc[]
+
+[#90]
+== Automatically refunding PayPal payments
+
+Set up an event procedure to automatically refund a PayPal payment.
+
+:table-event-procedure: <<table-procedure-paypal-refund>>
+include::../../_includes/textblocks/instructions/EA.adoc[]
+
+[[table-procedure-paypal-refund]]
+.Event procedure for automatically refunding PayPal payments
+[cols="1,3,3"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select the event that should trigger a refund.
+|
+
+| *Filter 1*
+| *Order > Payment method*
+| *Plugin: PayPal* +
+*Plugin: PayPalExpress* +
+*PayPal: PayPalPlus*
+
+| *Procedure*
+| *Plugins > Refunding a PayPal payment*
+|
+
+|====
+
+Following the procedure *Refunding a PayPal payment*, two additional event procedures are available to follow the further process of the order: *PayPal refund successful* and *PayPal refund failed*. You can optionally set up event procedures with these events in the same way as described above.
+
+[#100]
+== Editing text elements
+
+You can edit texts of the plugin in the *CMS » Multilingualism* menu. The texts can be adapted into all available system languages. To do so, proceed as described below.
+
+[.instruction]
+Adapting language files:
+
+. Go to *CMS » Multilingualism*.
+. On the left side, select the *Source language* from the drop-down list.
+. On the right side, select the *Target language* from the drop-down list.
+. Expand the various sections in the *PayPal* area.
+. Enter the text for the individual text elements in the area of the target language.
+. Save (icon:save[role="green"]) the settings.
+. Deploy the plugin set again to apply these changes.
+
+By selecting *German* as the *Target language*, you can adapt the German labels for your online shop. The selected labels are then also applied in the back end, only the addition _Plugin: PayPal_ remains. This way, it remains traceable where a payment method comes from. Reload the back end to see the changes.
+
+Find more information on how to edit online shop texts on the manual page <<online-store/setting-up-ceres#231, Editing online store texts>>.
+
+[#110]
+== FAQ about the PayPal plugin
+
+In this section, FAQ about linking the PayPal with plentymarkets are compiled. Additionally, you can also make use of our link:https://forum.plentymarkets.com/c/payment[Forum^]. You can either look for information in already existing threads or open a new thread and ask our supporters.
+
+[#120]
+=== Configuring PayPal using the assistant
+
+When configuring PayPal with the assistant, problems in the online shop may occur under certain circumstances. Updating the PayPal plugin often helps with this:
+
+[qanda]
+I want to update PayPal. How should I proceed?
+    If you want to update the PayPal plugin in a copy of your plugin set, you have to change the back end plugin set that is linked to your user account. For further information on how to change your back end plugin set, refer to the page <<plugins/installing-added-plugins#, Installing added plugins>>. After reloading your back end, you can complete the assistant.
+
+[#130]
+=== First aid: Problems with linking your PayPal account
+
+If you have problems with linking your PayPal account with plentymarkets, it is advisable to use a different <<welcome/quick-start/quick-start-system-requirements#100, browser,>> just to eliminate this as a source of errors. Moreover, you should make sure that there are no basic problems with your PayPal account itself. Possibly, the email address was not confirmed yet, PayPal PLUS was not activated yet or you did not set a password yet. More possible sources of error and their solutions are described below.
+
+[#140]
+==== What am I to do if I am not redirected to plentymarkets after I activated my PayPal account?
+
+First check whether the  link:https://marketplace.plentymarkets.com/paypal_4690[latest PayPal version] is installed and deployed in your plentymarkets system. How to update plugins is explained in the manual chapter <<plugins/updating-installed-plugins#, Updating installed plugins>>.
+
+[WARNING]
+.Activation and preview of the plugin
+====
+Make sure that the PayPal plugin is already activated and deployed in the plugin set of the main client when you are linking your account with plentymarkets. If this is not the case, malfunctions can occur. +
+Attention: The plugin-set preview must _not_ be open while the PayPal account is linked with plentymarkets.
+====
+
+.Redirection to plentymarkets is not possible
+image::_best-practices/auftragsabwicklung/Payment/assets/PP-Plugin_Fehler_1.png[Plugin Fehlermeldung 1]
+
+[%interactive]
+* *Solution 1*: Change the browser and try again. plentymarkets supports the browsers Google Chrome and Mozilla Firefox.
+* *Solution 2*: There is still an active API right in the PayPal account. Remove the rights for plentymarkets. The API authorisation can be found on the following website: link:https://www.paypal.com/cgi-bin/webscr?cmd=_profile-api-list-auths[].
+
+[WARNING]
+.NOTE
+====
+With removing the API rights, all linked PayPal accounts are disconnected from your plentymarkets system. In case a PayPal account is linked with the market *eBay*, this account has to be linked with the PayPal interface again.
+====
+
+[#150]
+==== What am I to do if I am asked to sign up for a business account again?
+
+.New PayPal business account
+image::payment/assets/paypal-business-account.png[Business account]
+
+If this window opens, check whether the data in the *Account* step were correctly inserted.
+
+.Account setup in assistant
+image::payment/assets/paypal-assistant-account-en.png[Account setup]
+
+* *Adding an account*: Was the right option selected? Add new account or use existing account.
+* *New account*: Check whether the email address of the PayPal business account has been entered correctly.
+* *Activate PayPal PLUS*: Only activate this option if you also signed up for PayPal PLUS with this account.
+* *Use PayPal test environment*: If this option is activated, you don't use PayPal live but only in a test mode. To actually use PayPal, do not activate this option.
+
+[#160]
+=== Problems with the PayPal PLUS Wall
+
+If the PayPal PLUS Wall is not or only incorrectly displayed, the reason often has to do with missing access or restrictions of the Wall itself. Also pay attention to <<payment/payment-plugins/paypal#50, Additional information about the PayPal PLUS Wall>>.
+
+[#170]
+==== What do I do if the PayPal PLUS Wall is not displayed?
+
+If the PayPal PLUS Wall is not displayed, check the following:
+
+[%interactive]
+
+* Make sure that you are allowed by PayPal to use PayPal PLUS.
+* Check the settings in the PayPal assistant. +
+→ PayPal PLUS has to be activated in *Account* step of the assistant.
+* Check the <<payment/payment-plugins/paypal#intable-paypal-plus-wall, container links>>. They should be created automatically by completing the assistant but can also be set manually.
+* In order to use PayPal PLUS the payment method has to be <<payment/payment-plugins/paypal#80, allowed in customer classes and unblocked in shipping profiles>>.
+
+[#180]
+==== Why are not all payment methods displayed in the PayPal PLUS Wall?
+
+Not the following if a payment methods is not shown in the PayPal PLUS Wall:
+
+* Payment methods depend on the delivery country. For example, debit is only cleared for Germany. Also pay attention to <<payment/payment-plugins/paypal#50, Additional information about the PayPal PLUS Wall>>.
+* If a payment method is not cleared, contact  link:https://www.paypal.com/uk/business[PayPal] directly about this. They can activate payment methods for your PayPal business account.
+
+[#190]
+=== Event procedures and the old PayPal integration
+
+Since the old payment integrations are no longer supported, procedures and filters for event procedures have to be selected from the respective plugin groups. However, from version 5.3.1 on of the PayPal plugin, the procedure *Refund PayPal payment* also works for the old PayPal integration. +
+In order to see all changes to the PayPal plugin and to not miss any updates, use the link:https://marketplace.plentymarkets.com/en/paypal_4690[changelog of the PayPal plugins]. In general we recommend to use the plugin payment methods available on the link:https://marketplace.plentymarkets.com/en/plugins/payment/payment-integrations[plentyMarketplace^].
+
+[#300]
+== PayPal Dispute
+
+The *PayPal Dispute plugin* allows you to work on problems and solve conflicts with your customers directly in your plentymarkets system. In plentymarkets, the notifications and the messenger are used for this.
+
+[#320]
+=== Requirements and installation
+
+Using PayPal Dispute requires setting up the <<payment/payment-plugins/paypal#10, PayPal plugin>> first. You need version 5.0.0 or higher of the PayPal plugin. Moreover, required are plentyShop LTS and IO from version 5.0.0 and higher.
+
+Download and install the link:https://marketplace.plentymarkets.com/en/paypaldispute_6582[PayPal Dispute-Plugin] to integrate PayPal Dispute into your plentymarkets system. After the installation of the plugin, the corresponding assistant is available. With the help of this assistant you can add those PayPal accounts for which you want to use PayPal Dispute. Proceed as follows, to complete the assistant and set up PayPal Dispute.
+
+[.instruction]
+Setting up PayPal Dispute with the assistant:
+
+. Go to *Setup » Assistants » Plugins » [select Plugin set]*.
+. Select the assistant *PayPal Dispute*.
+. Complete the assistant.
+
+PayPal Dispute is now set up in your plentymarkets system.
+
+[#330]
+=== Using PayPal dispute in plentymarkets
+
+The advantage of using the PayPal Dispute plugin is that you will be informed about all cases of customers that reported a problem with a merchandise or service to PayPal directly in your plentymarkets back end. Go to *CRM » Messenger* to see all dispute messages. The buyer has 4 options to report a problem. The reactions available to you depend on the problem reported by the customer and on the level of escalation the problem has reached. There are 2 levels of escalation. The first level is called dispute and the second level is called claim. The 4 options available to the buyer are the following:
+
+* Item not received
+* Item not as described
+* Unauthorised activity
+* Billing issue
+
+As long as a problem is still on the first level of escalation, the dispute level, you can still exchange messages with the customer to solve the problem. Once a problem is escalated to PayPal the level of escalation will be set to claim and simple messages will no longer be send to PayPal.
+
+[IMPORTANT]
+.Loading of new cases
+====
+Once you have opened a case in the Dispute plugin no other case will be loaded. This means you need to close the Dispute plugin tab every time you want to open a different case.
+====
+
+The following table explains the options you have when you want to react to new dispute cases.
+
+[[table-reactions-to-problems]]
+.Response options for dispute cases
+[cols="3,3,3"]
+|====
+|Dispute case |Explanation |Response options
+
+|*Customer did not receive the item*
+|Your customer says that he did not receive the item. The case is on dispute level and you have 3 options to respond to it. Depending on your response, there are different options available.
+|You have the following 3 basic response options: +
+* writing a message to the customer +
+* treat as conflict and accept claim +
+* treat as conflict and escalate to PayPal
+
+|*Customer says that the item is not as described*
+|Your customer says that the item he received is not as described. The case is on dispute level and you have 6 options to respond to it. Depending on your response, there are different options available.
+|You have the following 6 basic response options: +
+* writing a message to the customer +
+* treat as conflict and accept claim +
+* treat as conflict and offer a full refund with item return +
+* treat as conflict and offer a partial refund +
+* treat as conflict and offer replacement +
+* treat as conflict and escalate to PayPal
+
+|*Customer reported an unauthorised transaction*
+|The customer says that he did not buy the item and the access to the account was not authorised. The case is on claim level and this means the customer requested buyer protection. Depending on your response, there are different options available.
+|Your 2 basic response options are: +
+* respond to buyer protection case and accept claim +
+* respond to buyer protection case and provide evidence
+
+|*Customer reported a billing issue*
+|Your customer reported that the invoice is not correct. This might be the case if the invoiced amount is not correct or the invoice applies to recurring billing agreement that was cancelled. In these cases you will be informed about the issue, but cannot edit it in plentymarkets. You need to log into your PayPal account to edit the case.
+|NONE - You need to log into your PayPal account to edit the case.
+|====
+
+[#340]
+==== Inspecting PayPal dispute messages
+
+To get an overview of all issues, navigate to *CRM » Messenger*. Once you have opened an issue message you can either answer the buyer or use one of the PayPal response options. If you activated the Notifications in the assistant, you are directly informed about new cases, updates to cases and when cases are closed.
+
+[.instruction]
+See messages:
+
+. Navigate to *CRM » Messenger*.
+. Click on *Search* (icon:search[role="blue"]). +
+→ All messages are listed.
+. Click on the message you want to respond to. +
+→ The message history for this issue opens.
+. Write a message to the buyer or use one of the PayPal response options.
+
+[TIP]
+.Change visibility
+====
+You can use the visibility to restrict who can read the messages of an issue. At first all issues are visible to every user. The visibility can only be restricted after the first message has been received. The setting applies to all messages of an issue.
+====
+
+[[table-editing-progress]]
+.Editing process
+[cols="1,3"]
+|====
+|Icon |Explanation
+
+| *Blue circle*
+|The message is unread.
+
+| *Green check mark*
+|The issue was solved or needs to be edited in your PayPal account.
+
+|====
+
+[#350]
+==== Writing a message to your customer
+
+You want to send a simple message to the customer to solve the issue. You can only write messages as long as an issue is on dispute level. The message history is only between you and your customer. PayPal does not take a closer look at issues on dispute level. Proceed as described below to send a message to the customer.
+
+[.instruction]
+Writing a message to a customer:
+
+. Navigate to *CRM » Messenger*.
+. Click on *Search* (icon:search[role="blue"]). +
+→ All messages are listed.
+. Click on the message you want to respond to. +
+→ The message history for this issue opens.
+. Click on *Reply*. +
+→ An input field opens.
+. Enter your text.
+. Click on *Send*. +
+→ The message is send to PayPal and will be displayed in the customer’s PayPal account.
+
+[TIP]
+.Whisper
+====
+The message is not transmitted to PayPal if you whisper the message. Whispering is for internal conversations. Whispering must be individually set for every message.
+====
+
+[#360]
+==== Using dispute resolution options
+
+The PayPal Dispute plugin opens if you treat an issue as conflict. The resolution options available to you depend on the issue that was reported by the customer. The options are exactly the same as in your PayPal account.
+
+[.instruction]
+Treating an issue as a conflict:
+
+. Navigate to *CRM » Messenger*.
+. Click on *Search* (icon:search[role="blue"]). +
+→ All messages are listed.
+. Click on the message you want to respond to. +
+→ The message history for this issue opens.
+. Click on *Conflict: React to this case* below the customer’s message. +
+→ The PayPal Dispute plugin opens.
+. Choose a response option and take the explanations in <<table-responce-options-for-conflicts>> into consideration.
+. Enter further information.
+. Click on *Send to PayPal*. +
+→ The message is transmitted to PayPal.
+
+[[table-responce-options-for-conflicts]]
+.Response options for conflicts
+[cols="3,3,3"]
+|====
+|Option |Explanation |Level of escalation
+
+|*Accept claim*
+|Choosing this option means that you refund the total amount to the customer or a partial amount if the customer requested a partial refund. This resolves and closes the case.
+|The case is on dispute level and will be closed as soon as you accept the claim.
+
+|*Offer a full refund while requesting the return of the item*
+|You are asking the customer to return the item while sending a full refund. The case will be closed as soon as the buyer accepts your offer and once you confirm the return.
+|The issue is on dispute level and therefore you can write messages with the customer.
+
+|*Offer a partial refund*
+|You are offering a partial refund and in some cases you want the item to be returned or you are offering an additional replacement. The case will be closed as soon as the buyer accepts your offer and once the buyer confirms the receipt of the replacement or once you confirm the return.
+|The issue is on dispute level and therefore you can write messages with the customer.
+
+|*Offer replacement*
+|You are offering a replacement. The case will be closed as soon as the buyer accepts your offer and confirms the receipt of the replacement.
+|The issue is on dispute level and therefore you can write messages with the customer.
+
+|*Escalate to PayPal*
+|Once you have escalated the issue to PayPal the following options will be available. You can either *Accept claim* or *Provide evidence*.
+|The issue will be elevated to claim level. On claim level you can no longer write messages to the customer and therefore you need to wait for PayPal to decide the case.
+
+|*Provide evidence*
+|This option is available if your customer says that the payment was unauthorised or an issue was escalated to PayPal.
+|The issue is only available on claim level. On claim level you can no longer write messages to the customer and therefore you need to wait for PayPal to decide the case.
+
+|====

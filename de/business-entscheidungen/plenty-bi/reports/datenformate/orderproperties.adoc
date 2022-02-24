@@ -1,0 +1,140 @@
+= orderProperties
+:lang: de
+include::{includedir}/_header.adoc[]
+:keywords: orderProperties, Report, Rohdaten
+:position: 120
+:url: business-entscheidungen/plenty-bi/reports/datenformate/orderproperties
+:id: SKCMPG4
+:author: team-order-payment
+
+:datenformat: pass:quotes[*orderProperties*]
+:daten: Eigenschaften von Aufträgen
+:spezifikationen: <<tabelle-spezifikationen-order-properties>>
+:datenspalten: <<tabelle-datenspalten-order-properties>>
+
+include::./_textblocks/einleitung.adoc[]
+
+== Technische Spezifikationen
+
+include::./_textblocks/spezifikationen.adoc[]
+
+[[tabelle-spezifikationen-order-properties]]
+.Technische Spezifikationen des Formats *orderProperties*
+[cols=4]
+|====
+|Eigenschaft |Bedeutung |Wert |Erläuterung
+
+|dataName
+|Name
+|orderProperties
+|Name des Creator-Prozesses und Präfix der erstellten Datei. +
+Dateiname: *orderProperties-xxx.csv.gz*
+
+|fileFormat
+|Dateiformat
+|CSV, GZIP
+|Die Daten werden als per GZIP (RFC 1952) komprimierte CSV-Datei bereitgestellt.
+
+|limitPage
+|Zeilen pro Anfrage
+|bis zu 8.000
+|Die maximale Anzahl der Datenzeilen, die in eine einzelne Datei geschrieben wird.
+
+|limitDay
+|Zeilen pro Tag
+|bis zu 640.000
+|Die maximale Anzahl der Datenzeilen, die insgesamt an einem Tag geschrieben wird.
+
+|earliestPossibleDataDate
+|Frühester Zeitpunkt
+|2020-01-01
+|Zeitpunkt, ab dem die Rohdaten erhoben werden können. Die Daten werden nach dem Datum gefiltert, das in der Spalte *dataUpdatedAtColumnName* enthalten ist.
+
+|filterType
+|Filtertyp
+|lastUpdate
+|Daten werden basierend auf der letzten Aktualisierung gefiltert.
+
+|dataUpdatedAtColumnName
+|Spaltenbezeichnung
+|op_updated_at
+|Name der Spalte, die den Zeitstempel der letzten Aktualisierung der Daten enthält.
+
+|defaultActive
+|Standardmäßig aktiv
+|ja
+|Der Export läuft standardmäßig automatisch im Hintergrund.
+
+|interval
+|Intervall
+|täglich
+|Mit dieser Einstellung werden 1 x pro Tag, gewöhnlich über Nacht, alle seit dem letzten Durchlauf geänderten Daten exportiert.
+
+|storableFromPlan
+|Speicherung ab Edition
+|plentyBI XS
+|Edition, ab der die Daten im Cloud Storage gespeichert werden und via REST abgerufen werden können.
+
+|processableFromPlan
+|Nutzung ab Edition
+|plentyBI L
+|Edition, ab der die Daten an plentyBI Data Warehouse überführt werden, also zur Nutzung, Filterung und Berechnung von Kennzahlen zur Verfügung stehen.
+|====
+
+== Datenspalten
+
+include::./_textblocks/datenspalten.adoc[]
+
+[[tabelle-datenspalten-order-properties]]
+.Datenspalten des Formats *orderProperties*
+[cols="1,3,3,3"]
+|====
+|Spaltenname |Datentyp |Vollständige Bezeichnung |Erläuterung
+
+|plenty_id
+|INTEGER NOT NULL
+|plenty ID
+|ID des plentymarkets Systems
+
+| *op_id (Primary key)*
+|VARCHAR NOT NULL
+|order property ID
+|ID der Eigenschaft des Auftrags +
+Mögliche Werte: +
+1 = Lager +
+2 = Versandprofil +
+3 = Zahlungsart +
+4 = Zahlungsstatus +
+5 = Externes Versandprofil +
+6 = Dokumentensprache (in den Auftragsdokumenten) +
+7 = Externe Auftrags-ID +
+Weitere mögliche Werte sind in unserer link:https://developers.plentymarkets.com/rest-doc/order_order_property/details[Entwicklerdokumentation^] zu finden.
+
+|o_id
+|VARCHAR NOT NULL
+|order ID
+|ID des Auftrags
+
+|op_type_id
+|INTEGER NOT NULL
+|order property type ID
+|ID des Typs der Auftragseigenschaft
+
+|op_value
+|VARCHAR
+|order property value
+|Wert der Eigenschaft des Auftrags
+
+| *op_updated_at*
+|TIMESTAMPTZ NOT NULL
+|order property updated at
+|Zeitstempel der letzten Aktualisierung +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|o_created_at
+|TIMESTAMPTZ
+|order created at
+|Zeitstempel der Erstellung +
+Datumsformat: MM/DD/YY HH:MI:SS TZ
+
+|====

@@ -1,0 +1,187 @@
+= messages
+:lang: en
+include::{includedir}/_header.adoc[]
+:keywords: messages, report, raw data
+:position: 76
+:url: business-decisions/plenty-bi/reports/data-formats/messages
+:id: 3ROK81J
+:author: team-crm
+
+:dataFormat: pass:quotes[*messages*]
+:data: Messages from the messenger
+:specifications: <<table-specifications-messages>>
+:dataColums: <<table-data-columns-messages>>
+
+include::./_textblocks/einleitung-en_gb.adoc[]
+
+== Technical specifications
+
+include::./_textblocks/spezifikationen-en_gb.adoc[]
+
+[[table-specifications-messages]]
+.Technical specifications of the format *messages*
+[cols=4]
+|====
+|Property |Meaning |Value |Explanation
+
+|dataName
+|Name
+|messages
+|Name of the creator process and prefix of the created file. +
+File name: *messages-xxx.csv.gz*
+
+|fileFormat
+|File format
+|CSV, GZIP
+|The data is provided as a GZIP-compressed CSV file (RFC 1952).
+
+|limitPage
+|Lines per request
+|up to 8,000
+|The maximum number of data rows that is written into a single file.
+
+|limitDay
+|Lines per day
+|up to 200,000
+|The maximum number of data rows that is written on one day in total.
+
+|earliestPossibleDataDate
+|Earliest point in time
+|2020-01-01
+|Point in time as of which the raw data can be collected. The data is filtered by the date saved in the *dataUpdatedAtColumnName* column.
+
+|filterType
+|Filter type
+|lastUpdate
+|Data are filtered based on the last update.
+
+|dataUpdatedAtColumnName
+|Column header
+|msg_updated_at
+|Name of the column that contains the time stamp of the last data update.
+
+|defaultActive
+|Activated by default
+|no
+|The data is only exported automatically in the background after you have activated the creator in the *Setup » plentyBI » Raw data* menu.
+
+|interval
+|Interval
+|daily
+|With this setting, all data that has been changed since the last run is exported once a day, usually during the night.
+
+|storableFromPlan
+|Storage starting from edition
+|plentyBI S
+|Minimum fee plan required for saving the data in cloud storage and making it available via REST.
+
+|processableFromPlan
+|Usage starting from edition
+|plentyBI L
+|Minimum fee plan required for making the data available in plentyBI Data Warehouse, i.e. for using, filtering and processing key figures.
+
+|====
+
+== Data columns
+
+include::./_textblocks/datenspalten-en_gb.adoc[]
+
+[[table-data-columns-messages]]
+.Data columns of the format *messages*
+[cols="1,3,3,3"]
+|====
+|Column name |Data type |Full name |Explanation
+
+| *msg_id (Primary key)*
+|VARCHAR NOT NULL
+|message id
+|ID of the message
+
+|msg_parent_id
+|VARCHAR
+|message parent id
+|ID of the parent message
+
+|plenty_id
+|INTEGER NOT NULL
+|plenty id
+|ID of the plentymarkets system
+
+|o_id
+|VARCHAR
+|order id
+|ID of the order
+
+|ac_id
+|VARCHAR NOT NULL
+|account contact id
+|ID of the contact
+// hier ist offensichtlich die ac_id gemeint statt der c_id (=category ID). Jan ist informiert, muss im Code angepasst werden.
+
+|msg_from_type
+|VARCHAR
+|message from type
+|Type of the message +
+Possible values: +
+User +
+Email +
+Contact
+
+|msg_from_value
+|VARCHAR
+|message from value
+|Sender of the message +
+Possible values: +
+User ID +
+Email address +
+Contact ID
+
+|msg_referrer_type
+|VARCHAR
+|message referrer type
+|Referrer of the message +
+Possible values: +
+Back end +
+Plugin +
+REST API +
+System
+
+|msg_minutes
+|INTEGER
+|message minutes
+|Number of minutes saved for the message, e.g.  “30 minutes support”
+
+|msg_chargeable
+|SMALLINT
+|message chargeable
+|Flag that indicates whether the minutes are billed. +
+Possible values: +
+0 = Not to be billed +
+1 = To be billed
+
+|msg_done_at
+|TIMESTAMPTZ
+|message done at
+|Time stamp when the message was closed +
+Date format: MM/DD/YYYY HH:MI:SS TZ
+
+|msg_created_at
+|TIMESTAMPTZ NOT NULL
+|message created at
+|Time stamp of the creation +
+Date format: MM/DD/YYYY HH:MI:SS TZ
+
+| *msg_updated_at*
+|TIMESTAMPTZ NOT NULL
+|message updated at
+|Time stamp of the last update +
+Date format: MM/DD/YYYY HH:MI:SS TZ
+
+
+|msg_deleted_at
+|TIMESTAMPTZ
+|message deleted at
+|Time stamp of the deletion +
+Date format: MM/DD/YYYY HH:MI:SS TZ
+
+|====

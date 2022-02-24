@@ -1,0 +1,333 @@
+= Changelog 10. Juni 2020
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10360
+:startWeekDate: 04. Juni 2020
+:endWeekDate: 10. Juni 2020
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+--
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* In einer Nachbestellung kann die Währung und der Wechselkurs auch nach dem Auslösen der Bestellung angepasst werden.
+
+[discrete]
+=== bol.com
+
+* Mit diesem Update wird jede Übertragung zu bol.com-Angeboten unter Daten » Log festgehalten.
++
+Generell sind die Logs unter dem Identifikator bol.com zu finden. Zusätzlich stehen folgende Suchparameter zur Eingrenzung zur Verfügung:
++
+[cols="1,3"]
+.Referenztyp: action
+|===
+
+|*Referenzwert*
+|*Prozess*
+
+|`CreateOffer`
+|Anlage von Angeboten
+
+|`CheckOfferStatus`
+|Überprüfung der erfolgreichen Anlage von Angeboten
+
+|`DeleteOffer`
+|Löschung von Angeboten
+
+|`UpdateOffer`
+|Aktualisierung der Lieferzeit, des Liefertyps (FBB, FBR), der SKU und des Aktivitätsstatus von Angeboten
+
+|`UpdateOfferPrices`
+|Aktualisierung von Preisen der Angebote
+
+|`UpdateOfferStock`
+|Aktualisierung von Beständen der Angebote
+
+|===
++
+Alle Fehlermeldungen, die durch Fehler im Prozess oder fehlerhafte API-Anfragen verursacht werden, sind außerdem über die Referenztypen `variationId` und `sku` mit entsprechenden Werten zu finden.
++
+Sollte wider Erwarten der Status, den wir von bol.com als Antwort auf unsere Anfrage erhalten, als fehlerhaft markiert sein, werden entsprechende Meldungen in 50er-Schritten gesammelt und zusammen geloggt. Die Nachricht lautet dann `Fehlermeldungen Seite _X_. Öffne für Liste fehlgeschlagener Varianten.`
++
+Erfolgsmeldungen werden in 100er-Schritten gesammelt und sind unter der Nachricht `Erfolgsmeldungen Seite _X_. Öffne für Liste übertragener Varianten.` zu finden.
++
+Beim Klick auf diese Meldungen erhält man die Liste der Einträge mit der jeweiligen Varianten-ID, der SKU und auch der ID des Prozess-Status von bol.com, um dies im Nachgang überprüfen zu können.
+Bei der Aktualisierung von Preisen und Beständen werden in diesen Einträgen zusätzlich die jeweils übertragenen Preise bzw. Bestände festgehalten.
+
+[discrete]
+=== eBay
+
+* Unter *Einrichtung » Listings » Kaufabwicklung* wurde die Option *Offene eBay-Aufträge automatisch zusammenfassen* umbenannt und ihr wurde ein eindeutigerer Name gegeben. Die Option heißt ab nun *Auch Aufträge ohne abgeschlossene Kaufabwicklung importieren*.
++
+An der Funktionalität und an den Werten hat sich nichts verändert. Weitere Informationen zu dieser Funktionalität findest du auf der Handbuchseite <<maerkte/ebay/ebay-einrichten#2600, eBay einrichten>>.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 05.06.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/rNiZG8J96qBYIIuIA2V3zwnMoES.xlsx
+
+include::../../_textblocks/otto-master-file.adoc[]
+
+[discrete]
+=== OTTO market
+
+* Wir haben den Prozess zum Abgleich der Marken von OTTO Market überarbeitet und die Performance verbessert. Zusätzlich wurde das Aktualisierungsintervall von 2-mal wöchentlich auf alle 3 Stunden erhöht.
+
+[discrete]
+=== Service-Center
+
+* Das Service-Center wurde abgeschaltet. Die Funktionen aus dem Service-Center wurden in andere Bereiche umgezogen.
++
+Du findest link:https://forum.plentymarkets.com/t/marketplace-neue-mein-konto-ansicht-new-my-account-view/561718[folgende Funktionalität^] im Mein Konto-Bereich:
+
+** Verträge verwalten
+** Kontaktdaten verwalten
+** Zugangsdaten verwalten
+** Zahlungsarten verwalten
+** Rechnungen einsehen
+
++
+Auch link:https://forum.plentymarkets.com/t/partnersysteme-in-mein-konto-bereich-buchbar-partner-systems-bookable-in-my-account-area/594338/2[Partnersysteme können ab jetzt im Mein Konto-Bereich gebucht^] werden. +
+Domains können ab jetzt im Backend konfiguriert werden. Weitere Informationen dazu findest du auf der Handbuch <<business-entscheidungen/systemadministration/domains#50, Domains>>. +
+SSL-Zertifikate können ab jetzt im Backend bestellt und verwaltet werden. Weitere Informationen dazu findest du auf der Handbuchseite <<business-entscheidungen/systemadministration/ssl-zertifikat_bestellen#, SSL-Zertifikate>> und dem Beitrag link:https://forum.plentymarkets.com/t/leitfaden-ssl-bestellung/214417[Leitfaden: SSL-Bestellung im Forum^]. +
+FTP-Zugänge können ab jetzt im Backend eingerichtet werden. Weitere Informationen dazu findest du auf der Handbuchseite <<daten/ftpz-zugang#_ftp_zugang_einrichten, FTP-Zugang einrichten>>.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* Es kam in der Auftragssuche zu dem Fehler `Inf and NaN cannot be JSON encoded`, wenn eine Position einen Preis von 0 und einen Rabatt hatte. Das wurde behoben.
+
+[discrete]
+=== bol.com
+
+* Im Format *BolItemExport* des Elastischen Exports wurde bei Systemen mit mehreren Mandanten teilweise die Spalte *Product Classification* nicht gefüllt, obwohl die Kategorieverknüpfung unter *Einrichtung » Märkte » bol.com » Kategorieverknüpfung* korrekt gepflegt wurde. Dieses Verhalten wurde nun behoben.
+
+[discrete]
+=== ElasticSearch
+
+* Durch die Suchen & Ersetzen-Funktion geänderte Datenfelder wurden nicht im ElasticSearch-Index aktualisiert. Diesen Fehler haben wir behoben, so dass vorgenommene Änderungen nun auch wieder aktualisiert werden.
+
+[discrete]
+=== Etiketten
+
+* Es lassen sich nun auch Etiketten erstellen, ohne das ein Verkaufspreis für den Standardmandanten mit der Variante verknüpft ist.
+
+[discrete]
+=== Versand
+
+* Aufgrund einer Änderung funktionierte die Versandanmeldung für die Kanalinseln Guernsey und Jersey nicht mehr. Es kam zu einer Fehlermeldung, da die Daten für die Zolldokumente nicht mehr an den Versanddienstleister übertragen wurden. Dieses Fehlverhalten wurde korrigiert.
+
+[discrete]
+=== Warenwirtschaft
+
+* Die Ursache der Fehlermeldung `No criteria registered for filter with Content` im Log wurde behoben.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+== Amazon
+
+* Ab sofort kannst du Variantendaten auch per Katalog an Amazon übertragen. Pro Kombination aus Amazon-Plattform und Flatfile erstellst du einen Katalog.
++
+Beim Erstellen der Kataloge hilft dir der Assistent *Kataloge erstellen - Amazon* im Menü *Einrichtung » Assistenten » Omni-Channel*. In diesem Assistenten nimmst du die Katalogeinstellungen vor und verknüpfst alle Pflichtfelder der gewählten Flatfile. Für diese Pflichtfelder kannst du außerdem bei Bedarf direkt im Assistenten ganz bequem neue Eigenschaften anlegen. Optionale Datenfelder einer Flatfile verknüpfst du im Menü Daten » Kataloge, nachdem du den Assistenten abgeschlossen hast.
++
+Deine Amazon-Kataloge kannst du im Menü *Einrichtung » Märkte » Amazon » Datenaustausch » Datenexport* als CSV-Datei herunterladen. So kannst du zum Beispiel die Verknüpfungen prüfen, bevor du den Export aktivierst.
++
+Beachte, dass Kataloge keine Merkmale und Freitextfelder unterstützen. Nur Eigenschaften können per Katalog an Amazon übertragen werden. Deshalb bleibt der alte Datenexport auch weiterhin verfügbar.
++
+Weitere Informationen zum Erstellen von Katalogen und dem Übertragen der Daten zu Amazon findest du auf der Seite <<maerkte/amazon/variantendaten-exportieren#, Amazon-Variantenexport per Katalog einrichten>>. Wenn du noch keine Erfahrung mit Katalogen hast, kannst du dir auf der Seite <<daten/daten-exportieren/kataloge-verwalten#, Kataloge verwalten>> einen ersten Überblick verschaffen.
+
+[discrete]
+=== Import
+
+* Du kannst ab jetzt das Lademittel im Bereich *Versand* importieren.
+
+[discrete]
+=== OTTO market
+
+* Wir haben einen neuen Prozess für OTTO Market implementiert, der Gutschriftendokumente an den Aufträgen importiert.
++
+Weitere Informationen zu diesem Prozess findest du auf der Seite <<maerkte/otto/otto-market#1400, OTTO market>>.
++
+[IMPORTANT]
+======
+Solltet ihr einen nachträglichen Import wünschen, könnt ihr diese Gutschriftendokumente von OTTO Market durch unsere Supporter importieren lassen. Meldet euch dafür bitte im Forum in der Kategorie link:https://forum.plentymarkets.com/c/multi-channel/Otto-Market[multi-channel:Otto-Market^] mit einer Liste aller plentymarkets Gutschriften-IDs, für die ihr einen nachträglichen Import wünscht.
+======
+
+[discrete]
+=== Prozesse
+
+* In den Prozessen wurden die Möglichkeiten zum Filtern von Aufträgen mit Treueprogramm erweitert. Mit dieser Änderung kann nicht nur allgemein nach Amazon Prime Aufträgen gefiltert werden, sondern nun auch differenziert nach *Amazon SameDay*, *Amazon Prime SameDay*, *Amazon SecondDay* und *Amazon Prime SecondDay*. Die neuen Filtermöglichkeiten stehen in den Prozessbereichen *Auftragssuche*, *Auftragsabwicklung*, *Filter* und *Split* zur Verfügung.
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== bol.com
+
+* Im Menü *Einrichtung » Märkte » bol.com » Einstellungen* wurden folgende Optionen umbenannt:
+** *Client ID (v3)* zu *Client ID*
+** *Client Secret (v3)* zu *Client Secret*
+
++
+In diesem Zuge wurden die Optionen *Public key (v2)* und *Private key (v2)* entfernt.
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Es wurde beim Löschen eines Auftrags teilweise kein Eintrag in den `DeleteLog` geschrieben (REST-Route: `GET /rest/delete_log`). Das wurde behoben.
+* Es gab einen Anzeigefehler in der zweiten Option der Einstellung *Währung des Dokumentes*. Dort stand *Währung des Lieferscheines*. Das wurde geändert in *Währung des Auftrages*.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name
+|Version
+|To-do
+
+|link:https://marketplace.plentymarkets.com/elasticexportbilligerde_4901[billiger.de]
+|1.1.11
+|-
+
+|link:https://marketplace.plentymarkets.com/ceevo_6615[Ceevo^]
+|1.4.5
+|-
+
+|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
+|5.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
+|2.0.21
+|-
+
+|link:https://marketplace.plentymarkets.com/feed4ceres_6097[Feed4Ceres^]
+|3.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportgeizhalsde_4743[Geizhals.de]
+|1.1.7
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportgoogleshopping_4722[Google Shopping^]
+|1.2.11
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportguenstigerde_4745[guenstiger.de]
+|1.0.16
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de^]
+|2.0.9
+|-
+
+|link:https://marketplace.plentymarkets.com/ingenicozvt_5140[IngenicoZVT^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportkelkoode_5041[Kelkoo.de]
+|1.0.8
+|-
+
+|link:https://marketplace.plentymarkets.com/manomano_6287[Manomano]
+|1.1.1
+|-
+
+|link:https://marketplace.plentymarkets.com/mollie_6272[Mollie]
+|1.3.8
+|-
+
+|link:https://marketplace.plentymarkets.com/debit_6362[Lastschrift^]
+|1.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/paymentmethods_6828[Meine Zahlungsarten^]
+|1.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/paymentmethodspro_6829[Meine Zahlungsarten Professional^]
+|1.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/novalnet_5231[Novalnet^]
+|2.0.13
+|-
+
+|link:https://marketplace.plentymarkets.com/plentybasecustomerdisplaypos_6359[plentyBase CustomerDisplayPOS^]
+|0.6.1
+|-
+
+|link:https://marketplace.plentymarkets.com/plentybaseitemcachepos_6313[plentyBase ItemCachePOS^]
+|1.0.4
+|-
+
+|link:https://marketplace.plentymarkets.com/plentybasepackbylight_6367[plentyBase PackByLight^]
+|1.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/simplyletter_5104[Simplyletter^]
+|2.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/verifonezvt_5504[VerifoneZVT^]
+|1.0.2
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+--
+
+====

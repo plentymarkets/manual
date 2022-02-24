@@ -1,151 +1,485 @@
-= Facets
+= Facet
 :lang: en
 include::{includedir}/_header.adoc[]
-:keywords: ElasticSync, import, facets, sync type, sync, faceted search
+:keywords: Importing filter, Importing filters, Filter importing, Filters importing, Filter import, Filters import, Import filter, Import filters, Filter-Import, Filters-Import, Import-Filter, Import-Filters, Importing facet, Importing facets, Facet importing, Facets importing, Facet import, Facets import, Import facet, Import facets, Facet-Import, Facets-Import, Import-Facet, Import-Facets, Importing webshop filters, Importing store filters, Importing shop filters, Importing faceted search, Importing search filters
 :position: 50
 :url: data/importing-data/sync-types/elasticSync-facets
 :id: GJRZ6BN
 :author: team-item
 
- A sync of the type *Facets* allow you to import facet data.
+////
+zuletzt bearbeitet 02.11.2021
+////
 
-[#sync-facets-matching]
-== Fields for matching facets
+//optional - add extra sentences between the brackets in intro-extra-info if you want to have further info in your introduction
+:intro-data: pass:quotes[facets and facet values]
+:intro-extra-info: pass:quotes[]
+:matching-table: <<table-matching-fields-facets>>
+:matching-data: pass:quotes[facet data]
+:mapping-data: pass:quotes[facet data]
+:mapping-default: pass:quotes[your facet]
 
-<<table-matching-fields-facets>> explains the fields that are available for matching facet data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+include::./_textblocks/intro.adoc[]
+
+[TIP]
+.Practical example: Importing new facets
+====
+Imagine you’re new to plentymarkets and you want to import all of your facet data at once. How would that work? Take a look at <<data/importing-data/elasticsync-best-practices/facets#, this practical example>>, which guides you through the process step-by-step.
+====
+
+[#10]
+== Matching fields
+
+include::./_textblocks/matching.adoc[]
 
 [[table-matching-fields-facets]]
 .Matching fields for importing facets
-[cols="1,2"]
+//tag::table[]
+[cols="1,3"]
 |====
 |Setting |Explanation
 
-|Facet ID
-|
+| *Facet ID*
+|Which column of your CSV file lists the facet IDs? Choose this column here.
+This option is useful if you want to _update existing facets_.
 
-|Facet name
-|
+*_Background info_*: Every new facet automatically receives an ID, which can not be changed.
+The ID is used to uniquely identify the facet.
+Because the ID is unique, it’s a good way to check whether the imported data record already exists in plentymarkets.
 
-|Facet value name
-|
+| *Facet value ID*
+|Which column of your CSV file lists the facet value IDs? Choose this column here.
+This option is useful if you want to _update existing facet values_.
+
+*_Background info_*: Every new facet value automatically receives an ID, which can not be changed.
+The ID is used to uniquely identify the facet value.
+Because the ID is unique, it’s a good way to check whether the imported data record already exists in plentymarkets.
+
+| *Facet name*
+|Which column of your CSV file lists the facet name? Choose this column here.
+This option is useful if you want to _create new facets_.
+
+| *Facet value name*
+|Which column of your CSV file lists the facet value name? Choose this column here.
+This option is useful if you want to _create new facet values_.
 |====
+//end::table[]
 
-[#sync-facets-mapping]
-== Fields for mapping facets
+[#20]
+== Mapping fields
 
-<<table-mapping-fields-facets>> explains the fields that are available for mapping facet data. During the import, plentymarkets checks if the imported data record already exists based on the matching field.
+include::./_textblocks/mapping.adoc[]
 
-[[table-mapping-fields-facets]]
-.Mapping fields for importing facets
-[cols="1,1,2"]
+[#30]
+=== Facet
+
+[#40]
+==== CSS class
+
+//tag::facetcssclass[]
+Enter a CSS name into the CSV file.
+This option currently has no function.
+In the future, it will be possible to design the facet with CSS.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Entry field: CSS class>>
+//end::facetcssclass[]
+
+'''
+[#50]
+==== Position
+
+//tag::facetposition[]
+Where should the facet appear in the webshop?
+In other words, which facet should be displayed first, second, third, etc?
+Enter the position number in the CSV file.
+
+*_Default value_*: `1`
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Entry field: Position>>
+//end::facetposition[]
+
+'''
+[#60]
+==== Sorting
+
+//tag::facetsorting[]
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+How should the values be sorted within the facet?
+For example, if you’re creating the facet “Brand name”, then you could sort the individual brands alphabetically.
+
+Enter your preferred sorting method into the CSV file.
+
+*_Default value_*: `position`
+
+[cols="1,1"]
 |====
-|Mapping field |Permitted import values |Explanation
+|Permitted import values in CSV file |Result in the back end
 
-3+| *Facet*
+|`rate`
+|Hit rate
 
-|CSS class
-|Alphanumeric
-|CSS name
-
+|`position`
 |Position
-|Numeric
-|
 
-|Sorting
-|rate +
-position +
-a_z
-a|Sorting search results +
-
-* rate = Relevance +
-* position = Position +
-* a-z = A-Z
-
-|Type
-|dynamic +
-producer +
-price +
-availability
-a|
-* dynamic = Attribute/characteristic (old properties) +
-* producer = Manufacturer +
-* price = Price +
-* availability = Availability
-
-|Minimum number of hits
-|Numeric
-|
-
-|Maximum number of facet values shown
-|Numeric
-|
-
-|Selection type
-|restrict +
-multi
-a|
-* restrict = Only one value can be selected +
-* multi = More than one value can be selected
-
-|Deleting facet
-|0 +
-1
-a|
-* 0 = No +
-* 1 = Yes
-
-3+| *Facet name*
-
-|Name
-|Alphanumeric
-|Create one mapping per language.
-
-3+| *Facet value*
-
-|CSS class
-|
-|
-
-|Position
-|Numeric
-|Position of a facet value in the online store
-
-|Delete facet value
-|0 +
-1
-a|
-* 0 = No +
-* 1 = Yes
-
-3+| *Facet value name*
-
-|Name
-|Alphanumeric
-|Create one mapping per language.
-
-3+| *Link*
-
-|Type
-|character +
- property +
- attribute +
- availability +
- producer
-a|
-* character = Characteristic (old properties) +
-* property = Property (new) +
-* attribute = Attribute +
-* availability = Availability +
-* producer = Manufacturer
-
-|Value ID
-|Numeric
-|
-
-|Delete link
-|0 +
-1
-a|
-* 0 = No +
-* 1 = Yes
+|`a_z`
+|A-Z
 |====
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Drop-down list: Sorting>>
+//end::facetsorting[]
+
+'''
+[#70]
+==== Type
+
+//tag::facettype[]
+icon:warning[role="red"] [red]#Required field# for creating new facets.
+
+What sort of facet do you want to create?
+Allow your customers to filter products by the following criteria: attribute, characteristic, property, brand name, availability, price range.
+
+Enter the appropriate type into the CSV file.
+This setting can not be changed once you’ve created the facet.
+
+*_Default value_*: No default value
+
+[cols="1,1,3"]
+|====
+|Permitted import values in CSV file |Result in the back end |Explanation
+
+|`dynamic`
+|Attribute/characteristic
+|This type can be used for many different scenarios.
+The filter is linked to the attributes, characteristics or properties in your system.
+Example: Choose this type if you want to create the filter “Colour” or “Size”.
+
+|`producer`
+|Manufacturer
+|This type of filter is linked to the manufacturers in your system.
+Example: Choose this type if you want to create the filter “Brand name”.
+
+|`price`
+|Price
+|You do _not_ need to link this type of filter with values.
+Example: Choose this type if you want to create the filter “Price range”.
+Webshop visitors can individually limit the filter from the lowest to the highest price of a category.
+
+|`availability`
+|Availability
+|This type of filter is linked to the availabilities in your system.
+Example: Choose this type if you want customers to filter for items that ship within 24 hours.
+|====
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Field: Type>>
+//end::facettype[]
+
+'''
+[#80]
+==== Minimum number of hits
+
+//tag::facetminimumhits[]
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+Enter a number into the CSV file.
+This is the minimum number of results that a facet value must have, in order for it to be displayed in the online shop.
+Facet values will automatically be invisible in the online shop if they do not return the minimum number of results.
+
+*_Default value_*: `1`
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Entry field: Minimum number of hits>>
+//end::facetminimumhits[]
+
+'''
+[#90]
+==== Maximum number of facet values shown
+
+//tag::facetmaximumvalues[]
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+How many values should be displayed within a facet at maximum?
+Enter a number into the CSV file.
+A maximum of 250 values can be displayed per facet.
+
+*_Default value_*: `50`
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Entry field: Maximum number of facet values shown>>
+//end::facetmaximumvalues[]
+
+'''
+[#100]
+==== Selection type
+
+//tag::selectiontype[]
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+What should happen when customers select multiple filter criteria? Should they see products that fulfil _all of these criteria_ or _any one of the criteria_?
+
+Enter your preferred selection type into the CSV file.
+
+*_Default value_*: `restrict`
+
+[cols="1,1,3"]
+|====
+|Permitted import values in CSV file |Result in the back end |Explanation
+
+|`restrict`
+|Restricting
+|Products will only be displayed if they fulfil _all of the selected criteria_.
+For example, imagine you sell grills.
+Webshop visitors should be able to filter for grills that have a warming rack _and_ a lid _and_ a temperature gauge.
+The results only include products that have all three functions.
+
+|`multi`
+|Multiple
+|Products will be displayed if they fulfil _one of the selected criteria_.
+For example, imagine you sell grills.
+Webshop visitors should be able to filter for grills that were manufactured by the company Weber _or_ Tefal _or_ Coleman.
+|====
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#40, Setup » Client » Settings » Services » Faceted search » Tab: Settings » Drop-down list: Selection type>>
+//end::selectiontype[]
+
+'''
+[#110]
+==== Delete facet
+
+//tag::deletefacet[]
+Do you want to delete the facet?
+
+*_Default value_*: `0`
+
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Facet will _not_ be deleted
+
+|`1`
+|Facet will be deleted
+|====
+//end::deletefacet[]
+
+'''
+[#120]
+=== Facet name
+
+[#130]
+==== Name
+
+//tag::facetname[]
+icon:warning[role="red"] [red]#Required field# for creating new facets
+
+Enter a name for the facet in the CSV file.
+This name is displayed in the online shop.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down list to select the language.
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#50, Setup » Client » Settings » Services » Faceted search » Tab: Name>>
+//end::facetname[]
+
+'''
+[#140]
+=== Facet value
+
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+[#150]
+==== CSS class
+
+//tag::valuecssclass[]
+Enter a CSS name into the CSV file.
+This option currently has no function.
+In the future, it will be possible to design the facet value with CSS.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#60, Setup » Client » Settings » Services » Faceted search » Tab: Values » Tab: Settings » Entry field: CSS class>>
+//end::valuecssclass[]
+
+'''
+[#150]
+==== Position
+
+//tag::valueposition[]
+Where should the facet value appear in the webshop?
+In other words, which facet value should be displayed first, second, third, etc?
+Enter the position number in the CSV file.
+
+*_Default value_*: `1`
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#60, Setup » Client » Settings » Services » Faceted search » Tab: Values » Tab: Settings » Entry field: Position>>
+//end::valueposition[]
+
+'''
+[#150]
+==== Delete facet value
+
+//tag::deletevalue[]
+Do you want to delete the facet value?
+
+*_Default value_*: `0`
+
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Facet value will _not_ be deleted
+
+|`1`
+|Facet value will be deleted
+|====
+//end::deletevalue[]
+
+'''
+[#160]
+=== Facet value name
+
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+[#170]
+==== Name
+
+//tag::valuename[]
+icon:warning[role="red"] [red]#Required field# for creating new facet values
+
+Enter a name for the facet value in the CSV file.
+This name is displayed in the online shop.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Alpha-numeric
+
+[TIP]
+Also use the drop-down list to select the language.
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#60, Setup » Client » Settings » Services » Faceted search » Tab: Values » Tab: Name>>
+//end::valuename[]
+
+'''
+[#180]
+=== Link
+
+icon:exclamation-circle[role="blue"] Not relevant for the type "Price"
+
+[#190]
+==== Type
+
+//tag::linktype[]
+What _sort of back end information_ do you want to link the facet value to?
+Enter the appropriate type into the CSV file.
+
+//das soll Thorsten Brill einbauen
+[IMPORTANT]
+.Selection properties
+====
+It is not currently possible to link the values of selection properties via import.
+This function has not yet been developed.
+Currently, the values of selection properties need to be <<item/frontend-item-search#60, linked manually>>.
+====
+
+*_Default value_*: No default value
+
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`character`
+|Characteristic
+
+|`property`
+|Property
+
+|`attribute`
+|Attribute
+
+|`availability`
+|Availability
+
+|`producer`
+|Manufacturer
+|====
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#60, Setup » Client » Settings » Services » Faceted search » Tab: Values » Tab: Link>>
+//end::linktype[]
+
+'''
+[#200]
+==== Value ID
+
+//tag::linkid[]
+What _specific piece of back end information_ do you want to link the facet value to?
+Enter the ID of the back end information into the CSV file.
+
+*_Default value_*: No default value
+
+*_Permitted import values_*: Numeric
+
+You can find the result of the import in the back end menu: <<item/frontend-item-search#60, Setup » Client » Settings » Services » Faceted search » Tab: Values » Tab: Link>>
+
+[TIP]
+.Where can I look up the IDs?
+====
+* Setup » Item » Characteristics
+* Setup » Settings » Properties » Configuration
+* Setup » Item » Attributes » [Open attribute] » Tab: Values
+* Setup » Item » Availability
+* Setup » Item » Manufacturers
+====
+
+[TIP]
+.How do I link multiple values?
+====
+Imagine you sell t-shirts in all different colours such as “light blue”, “dark blue” and “turquoise”.
+You want all three colours to be found with the blue colour filter.
+In this case, you’ll need to link all three attribute values to the facet value.
+
+* *_Preparation_*: Make sure the facet and facet value already exist in your system (see "Matching").
+* *_CSV file_*: You will create one line per ID that should be linked.
+In other words, the IDs for "light blue", "dark blue" and "turquoise" will be in three separate lines.
+* *_Matching_*: You will use the facet ID and facet value ID, assuming that these values already exist (see "Preparation").
+If the settings are configured like this, then e.g. the attribute value "light blue" will be linked in the first line and "dark blue" will be linked in the second line.
+====
+//end::linkid[]
+
+'''
+[#210]
+==== Delete link
+
+//tag::deletelink[]
+Do you want to delete the link?
+
+*_Default value_*: `0`
+
+[cols="1,1"]
+|====
+|Permitted import values in CSV file |Result in the back end
+
+|`0`
+|Link will _not_ be deleted
+
+|`1`
+|Link will be deleted
+|====
+//end::deletelink[]

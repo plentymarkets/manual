@@ -1,0 +1,341 @@
+= Changelog 08. Juli 2020
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10940
+:id:
+:startWeekDate: 01. Juli 2020
+:endWeekDate: 08. Juli 2020
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+--
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Amazon
+
+* Du kannst ab jetzt über den Assistenten für das Erstellen von Amazon-Katalogen neue, bereits vorkonfigurierte Verkaufspreise und Barcodes in deinem System erstellen. Die neu erstellten Verkaufspreise und Barcodes werden direkt mit dem erstellten Katalog verknüpft.
+
+[discrete]
+=== Kataloge
+
+* Du kannst ab jetzt auch die Meta-Keywords der Artikel im Katalog verknüpfen.
+
+[discrete]
+=== Versandeinstellungen
+
+* Du kannst ab jetzt im Assistent *Versandeinstellungen* neben dem Backendnamen auch den Frontendnamen pro Sprache angeben.
+* Auf den Kacheln und der Tabellenübersicht des Assistenten Versandeinstellungen zeigen wir nun mehr Details. Auf den Kacheln siehst du nun:
+** den Backend-Namen
+** die Region
+** den Versanddienstleister
+
++
+In der Tabellenübersicht siehst du nun:
+** den Backend-Namen
+** die Region
+** den Versanddienstleister
+** den Frontend-Namen
+** die ID des Versandprofils
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Kategorien
+
+* Kategorie-URLs können nicht mehr aus reinen Zahlenkombinationen bestehen.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 03.07.2020
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/AeOYs3ttJq1AdXV9Y9WiVaG03W6.xlsx
+
+include::../../_textblocks/otto-master-file.adoc[]
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Aufträge
+
+* Bei den Warenbewegungen in eine Nachbestellungen, gab es Probleme bei der Auswahl des *Standard-Lagerort*. Die Auswahl wurde nicht gespeichert, und beim Buchen der Warenbewegungen wurde der alte Lagerort genutzt. Dieses Problem ist nun behoben.
+* Bei Anlage eines Auftrags mit einem leerem String als Wechselkurs kam es zu einem internen Serverfehler. Es wird nun in dem Fall der Wechselkurs wieder ermittelt.
+* Wenn die Ereignisaktion *Auftragsdatum auf heute ändern* mit dem Auslöser *Zahlung vollständig* verwendet wurde, wurde das Datum nicht geändert. Das wurde behoben.
+* Sofern die Aktion *Auftragsdatum auf heute setzen* in einer Ereignisaktion mit der Aktion *Rechnung erzeugen* oder die Rechnungserzeugung in einer nachfolgenden Aktion erfolgt, konnte es zu dem Verhalten kommen, dass dieses gesetzte Auftragsdatum für die Rechnungsgenerierung nicht in Betracht gezogen wurde, wodurch die Rechnung mit einem Ust-Satz eines vorherigen Zeitraumes angelegt wurde.
++
+Dieses Verhalten wurde nun behoben, so dass die Rechnungsgenerierung mit dem geänderten Auftragsdatum wieder wie gewohnt funktioniert.
+
+[discrete]
+=== E-Mails
+
+* Die E-Mail Variable `$TotalVAT` wurde nicht immer befüllt. Das wurde behoben.
+
+[discrete]
+=== eBay
+
+* Die Option *eBay-Merkmale zurücksetzen* lässt sich nun in der Listing-Gruppenfunktion wieder korrekt speichern und wird auch nach erneutem Laden der Vorlage nicht entfernt.
+
+[discrete]
+=== Kataloge
+
+* Aufgrund eines Fehlers wurden verknüpfte Felder im Katalog nicht mehr angezeigt. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Import
+
+* Bei der genutzten Option *Datei löschen, nachdem der Import ausgeführt wurde*, wurden die Dateien nicht gelöscht. Diesen Fehler haben wir behoben.
++
+[IMPORTANT]
+.To-Do
+======
+Nicht benötigte Dateien müssen manuell gelöscht werden.
+======
+* Aufgrund eines Fehlers wurden die Zuordnungsfelder doppelt ausgegeben und der Import konnte manuell nicht gestartet werden. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Marktplätze
+
+* Das interne Abrufen der SKUs für die Produktübertragung funktioniert wieder einwandfrei und führt nicht mehr zu dem Fehler, dass es diese SKU bereits im System gibt.
+
+[discrete]
+=== Neckermann.at
+
+* Beim Erstellen der Produkt-XML werden Texte und Namen gekürzt, wenn seitens Neckermann eine Zeichenbegrenzung vorliegt. Hierbei konnte es vorkommen, dass HTML-codierte &-Zeichen (`&amp;`) zerteilt wurden. Dies wiederum sorgte dafür, dass betroffene XML-Attribute (wie `A_BILLING_TEXT`), die diese gekürzte Zeichenkette als Wert erhielten, leer blieben. Dies passierte, weil das &-Zeichen nur HTML-codiert oder innerhalb eines C-DATA-Elements erlaubt ist.
++
+Dieses Verhalten wurde nun behoben, indem die ungültigen Reste des HTML-codierten &-Zeichens am Ende der Zeichenkette entfernt werden.
+
+[discrete]
+=== OTTO
+
+* Die geänderten Mehrwertsteuersätze von 5% bzw. 16% wurden nicht im Artikelexport zu OTTO übernommen. Stattdessen wurde 19% übertragen. Dies wurde nun korrigiert. Bei korrekter Konfiguration der Steuersätze in den Standort-Einstellungen werden dann heute Nacht die Artikel wieder korrekt exportiert.
++
+Dieses Problem betrifft nicht OTTO Market!
+
+[discrete]
+=== Tickets
+
+* In der Aufträge-UI wurden nicht alle Tickets angezeigt, die einer Gastbestellung zugeordnet waren. Dieses Verhalten wurde behoben, sodass ab sofort alle Tickets, die eine Verknüpfung zum Auftrag, zum Kontakt und zu einer Gastbestellung haben, angezeigt werden und aufgerufen werden können.
+
+[discrete]
+=== Warenwirtschaft
+
+* Wenn man neue Lagerorte anlegte, wurden die Positionsnummern der alten Lagerorte geändert und die neu angelegten erhielten nicht die ursprünglich eingegebenen Nummern. Der Fehler wurde jetzt behoben.
+* Wenn man leere Lagerorte löschte, blieben die Artikel/Varianten IDs, die ursprünglich auf diese Lagerorten eingelagert wurden, an diesen Lagerorten gebunden. Dieses Verhalten verhinderte den Wareneingang dieser Artikeln/Varianten. Der Fehler wurde behoben.
+
+[discrete]
+=== Zalando
+
+* Von 18.06.2020 bis 02.07.2020 konnte es vorkommen, dass bei der automatischen Generierung der SKU beim Artikelexport eine SKU auf Basis der Varianten-ID angelegt wurde, obwohl diese SKU bereits existierte. Daraus konnte es sich ergeben, dass zwei Varianten für Zalando die gleiche SKU hatten. Das wiederum konnte dazu führen, dass beim Import eines Auftrags nicht die richtige Variante zugeordnet wurde. Dies betrifft jedoch nur die folgenden Systeme:
+
+** Ältere Systeme, die bereits seit oder vor der plentymarkets Version 6 existieren und auf Zalando verkauften
+** Systeme, bei denen die SKU manuell zugeordnet wurde und sich deswegen der Nummernkreis der SKUs und der Varianten-IDs überschnitten.
+
++
+Dieses Verhalten wurde nun behoben.
++
+[IMPORTANT]
+.To-Do
+======
+. Wenn dein System betroffen sein könnte, prüfe, ob in deinem System SKU doppelt vergeben wurden.
+. Passe doppelte SKU manuell an. Sollte eine der Varianten mit einer betroffenen SKU nicht mehr auf Zalando angeboten werden, dann ändere im Zweifel die SKU dieser Variante.
+======
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Amazon
+
+* Der neue Gutschriftenimport für VCS kann nun auch:
+** Gutschriften erzeugen, in denen nur Versandkosten erstattet werden.
+** Für VCS Amazon interne Gutschriftendokumente erzeugen, für den Fall, dass Amazon in seinen VCS-Bericht keine Gutschriftennummer bereitstellt, weil Amazon dies bei bestimmten Konstellationen nicht muss.
+
+[discrete]
+=== Ticketsystem
+
+* Wir haben im Menü *Einrichtung » CRM » Ticketsystem » Ereignisse* die Ereignisaktion *Neue Nachricht vom Mitarbeiter* erweitert:
+** Der Filter *Gastbestellung* wurde hinzugefügt.
+** In der Aktion *E-Mail versenden* wurde in der Dropdown-Liste die Einstellung *Rechnungsadresse - Auftrag* hinzugefügt, damit die E-Mail an die Rechnungsadresse aus dem Auftrag gesendet wird.
+** Außerdem wurde in der Aktion *E-Mail versenden* die Einstellung *der Kunde* umbenannt in *Kontakt (CRM)*.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Amazon
+
+* Wenn die folgenden zwei Optionen entweder über die Einstellungen oder den Assistenten beide aktiviert sind, werden Gutschriften nicht mehr über die Finances API importiert, sondern über die entsprechenden Berichte für VCS bzw. VCS Lite.
+** Über die Einstellungen (*Einrichtung » Märkte » Amazon » Einstellungen » _Konto öffnen_*):
+. Option *Rechnung erzeugen* mit der Auswahl _VCS Amazon_ oder _VCS plentymarkets_ unter *Tab: Einstellungen » Bereich: Basiseinstellungen*
+. Option *Gutschriftenimport* unter *Einrichtung » Märkte » Amazon » Einstellungen » _Konto öffnen_ » Tab: Auftragseinstellungen » Bereich: Eigener Versand (MFN)*
+** Über den Assistenten (*Einrichtung » Assistenten » Omni-Channel » Amazon Grundeinstellungen » _Konto öffnen_*):
+. Option *Wer soll Rechnungen für Amazon-Bestellungen erzeugen?* mit der Auswahl _Amazon-Rechnungsservice_ oder _plentymarkets Rechnungsservice_ mit Daten von Amazon im Schritt *Automatische Datenübertragung*.
+. Option *Möchtest du FBA-Gutschriften in plentymarkets importieren?* im Schritt *Versand durch Amazon (FBA)*.
+
++
+Das bedeutet, dass die Gutschriften nicht mehr erst über die Finances API importiert und dann im Nachgang korrigiert werden. Stattdessen werden die Gutschriften direkt vollständig und korrekt gemäß VCS-Bericht importiert und die externe Gutschriftennummer ergänzt bzw. das interne Gutschriftendokument erzeugt und zu Amazon hochgeladen.
++
+Es wird natürlich weiterhin vorab geprüft, ob die Gutschrift bereits existiert, weil sie bereits automatisch importiert oder manuell erzeugt wurde. Die Kriterien zur Zuordnung bleiben dabei unverändert, außer dass nach der ersten Zuordnung die Transaktions-ID an der Gutschrift gespeichert wird, um die nächste Zuordnung zu vereinfachen (Order Property Type 79). Falls eine Gutschrift bereits existiert, wird dann nur die Gutschrift korrigiert, wenn eine Abweichung zu den Berichtsdaten vorliegt.
++
+[IMPORTANT]
+.Achtung!
+======
+Eine Gutschrift wird nicht importiert, wenn der entsprechende Auftrag nicht zugeordnet werden konnte. Folgende Voraussetzungen müssen für eine Zuordnung gegeben sein:
+
+. Der ursprüngliche Auftrag muss importiert sein und die Auftragsnummer von Amazon als externe Auftragsnummer hinterlegt sein.
+. Nur bei FBA-Aufträgen: Der Standort des Auftragslagers muss mit dem Versandland aus dem VCS-Bericht übereinstimmen.
+. Die Auftragsartikel müssen anhand einer ID oder SKU aus dem VCS-Bericht zuzuordnen sein.
+* Bei VCS Amazon wird anhand der SKU zugeordnet:
+** Dem Auftragsartikel ist eine Variante zugeordnet, die eine SKU oder zusätzliche SKU für Amazon hat, die der SKU aus dem Bericht entspricht.
+** Der Auftragsartikel wurde nicht zugeordnet, aber im Artikelnamen steht die SKU in eckigen Klammern zu Beginn, z.B. `[02040040-M2_py_sc] Toller Artikelname`.
+* Bei VCS Lite/ VCS plentymarkets wird anhand der Externen Auftragsartikel-ID (Order Property Type 17) zugeordnet, die am Auftrag vorliegen muss.
+. Die Aufträge müssen eine ausreichende Menge der Artikel aufweisen, damit eine Gutschrift möglich ist. Dabei wird ebenfalls berücksichtigt, ob bereits Gutschriften erzeugt werden.
+
+*Beispiel für Punkt 4:*
+Daten aus dem Bericht: SKU 1234, Menge 2
+
+Fälle:
+
+. Auftrag mit SKU 1234, Menge 1 => Keine Zuordnung
+. Auftrag mit SKU 1234, Menge 2 => Zuordnung
+. Auftrag mit SKU 1234, Menge 2 und bereits exitsierende Gutschrift für Menge 1 => keine Zuordnung
+. Auftrag mit SKU 1234, Menge 3 und bereits exitsierende Gutschrift für Menge 1 => Zuordnung
+======
+
+[discrete]
+=== eBay
+
+* Die Preise für das automatische annehmen bzw. ablehnen eines Preisvorschlags werden im Listing nicht mehr in jedem Fall in Euro angegeben. Ab jetzt muss der Preis in der Währung eingegeben werden, die für die eBay-Plattform gilt. Zuvor konnte es durch die Umwandlung vom Euro-Preis zum Plattform-Preis zu Rundungen kommen, die teilweise nicht den gewünschten Wert an eBay übermittelt haben.
++
+[IMPORTANT]
+.To-Do
+======
+Im Zuge des Updates musst du folgende Schritte durchführen:
+
+. Schaue nach bei welchen internationalen Listings du einen Preisvorschlag anbietest.
+. Korrigiere den Preis für das automatische annehmen/ablehnen auf den Wert für die entsprechende Währung.
+. Aktualisiere diese Listings mit der Option *Menge, Preis und Varianten*.
+======
+
+[discrete]
+=== Listings
+
+* Die Werte für die Dauer werden nun in Abhängigkeit vom Listing-Typ und Listing-Marktplatz angezeigt. Vorher wurden immer alle Werte angezeigt.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* Wenn Kontaktinformationen geändert wurden, wurde diese Änderungen nur dann in einer Nachbestellung übernommen, wenn man die Seite aktualisiert hat. Dies wurde nun behoben, die geänderten Daten werden automatisch übernommen.
+* In den Breadcrumbs in der Nachbestellung wurde der gleiche Auftrag manchmal zweimal angezeigt, wodurch zwei gleiche Einträge in den *Details* entstanden sind. Dies wurde nun behoben.
+
+[discrete]
+=== Ereignisaktionen
+* Das Ereignis *Paketnummer* löst nun nicht mehr aus, wenn alle Pakete entfernt werden.
+* Das Ereignis *Paketnummer* löst nun nicht mehr doppelt aus.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name
+|Version
+|To-do
+
+|link:https://marketplace.plentymarkets.com/backmarket_6485[Backmarket^]
+|1.0.10
+|-
+
+|link:https://marketplace.plentymarkets.com/payuponpickup_4757[Barzahlung^]
+|2.0.2
+|-
+
+|link:https://marketplace.plentymarkets.com/d2gpmplugincoronavat_6846[Ceres Corona VAT 2020 Plugin^]
+|1.0.0
+|-
+
+|link:https://marketplace.plentymarkets.com/dpdshippinguk_5121[DPD Shipping UK^]
+|2.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/gaxsys_5992[gaxsys Connector^]
+|2.2.1
+|-
+
+|link:https://marketplace.plentymarkets.com/reviewconverter_6843[Google Shopping Produktbewertungen (Sterne)^]
+|1.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/cfourhtmlwidget_6845[HTML Widget]
+|1.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/wesiocatalog_6759[Kataloggenerator - Kataloge schnell und einfach erstellen^]
+|1.0.1
+|-
+
+|link:https://marketplace.plentymarkets.com/parceloneshipping_6277[ParcelOne Shipping^]
+|1.0.7
+|-
+
+|link:https://marketplace.plentymarkets.com/payever_5623[Payever^]
+|1.9.0
+|-
+
+|link:https://marketplace.plentymarkets.com/trustedshops_4962[Trusted Shops Reviews Toolkit^]
+|2.0.1
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+--
+
+====

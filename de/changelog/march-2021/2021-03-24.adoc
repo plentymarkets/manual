@@ -1,0 +1,348 @@
+= Changelog 24. März 2021
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10730
+:startWeekDate: 18. März 2021
+:endWeekDate: 24. März 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Im letzten Schritt der neuen Auftragsanlage können nun Gutschein-Codes hinzugefügt werden, um diese mit dem Auftrag einzulösen.
+
+[discrete]
+=== CRM
+
+* Ab heute ist es möglich, innerhalb eines Systems mehrere Kontakte mit der selben E-Mail-Adresse zu erlauben, sofern diese unterschiedlichen Mandanten angehören.
++
+Die Einstellungen, welche künftig über den Ceres-Assistenten (mit dem Release der neuen Ceres-Version, bitte Changelog beachten) erfolgen, lassen unterscheiden, ob ein Kontakt mit entsprechendem Login für alle Mandanten gilt oder mehrere identische Kontakte mit unterschiedlichen Logins erzeugt werden können.
++
+Das aktuelle Verhalten - ein Kontakt mit Login für alle Mandanten - bleibt als default bestehen, solange man die Änderungen nicht aktiv im Assistenten vornimmt.
++
+[IMPORTANT]
+.To-Do
+======
+Ehemalige Callisto-Kunden, die auf Ceres gewechselt sind, müssen ihre Einstellungen im Ceres-Assistenten prüfen, weil diese möglicherweise durch die heutige Änderungen aufgehoben werden können.
+======
+
+[discrete]
+=== DHL
+
+* Ab sofort kannst du dich direkt aus dem Integrationen-Assistenten als DHL Geschäftskunde registrieren, sofern du dies noch nicht getan hast. Du findest den Integrationen-Assistenten im Menü *Einrichtung » Assistenten » Grundeinrichtung*. Wir haben dort im Assistentenschritt *Versanddienstleister* einen Link hinzugefügt, der dich direkt auf die passende Website zu DHL weiterleitet.
+
+[discrete]
+=== Fulfillment
+
+* Die Liste der Postleitzahlen für die griechischen Inselregionen wurde systemseitig ergänzt:
+** 18000 - 18099 (Saronische Inseln)
+** 18900 - 18999 (Saronische Inseln)
+** 28000 - 29999 (Ionische Inseln)
+** 31000 - 31999 (Ionische Inseln)
+** 49000 - 49999 (Korfu/Ionische Inseln)
+** 63086 (Berg Athos)
+** 63087 (Berg Athos)
+** 70000 - 74999 (Kreta)
+** 80000 - 85999 (Kythira/Ionische Inseln und Inseln der Ägäis)
+
++
+Die Postleitzahlen für die griechischen Inseln wurden auch zu der Liste der Postleitzahlen für das Festland Griechenland hinzugefügt. Dadurch wird der Inselzuschlag für die griechischen Inseln anhand der Postleitzahl korrekt berechnet, auch wenn der Kunde als Lieferland *Griechenland* gewählt hat.
+
+[discrete]
+=== Prozesse
+
+* Beim Versuch einen Browser-Tab zu schließen oder neu zu laden, während Prozesse ausgeführt werden, erscheint ab sofort eine Warnmeldung. Diese muss bestätigt werden, bevor der Tab geschlossen werden kann.
+
+[discrete]
+=== Zalando
+
+* Unter *Einrichtung » Märkte » Zalando » Einstellungen » Tab: Verarbeitungsberichte* wurden sogenannte Preis-Berichte hinzugefügt. Diese Berichte enthalten die Informationen zum Verarbeitungsstatus aller Preis-Updates, die bei Zalando in den letzten sieben Tagen eingegangen sind.
++
+Bisher konnte nur geprüft werden, dass das Preis-Update zu Zalando übertragen wurde. Es konnte aber nicht sichergestellt werden, dass Zalando das Update akzeptiert hat, da die Verarbeitung asynchron erfolgte. Der Preis-Bericht ermöglicht nun volle Einsicht in den Verarbeitungsstatus. Der Bericht wird dazu einmal täglich über Nacht automatisch aktualisiert. Der Bericht wird pro Zielland generiert, bei dem das Preis-Update aktiviert ist. Zusätzlich ist es möglich, den jeweiligen Bericht in der UI manuell zu generieren bzw. zu aktualisieren.
++
+Weitere Informationen zu den Inhalten des Berichts findest du auf der Handbuchseite <<maerkte/zalando#915, Zalando>>.
++
+Während die Datei generiert wird, wird außerdem für alle Einträge, die seit dem letzten Generieren der Datei (minus einer Stunde als Puffer) in den Status REJECTED, FAILED oder OVERRIDDEN geschoben wurden, ein Fehlerlog geschrieben. Die Log-Einträge sind dann unter Daten » Log mit den folgenden Suchparametern durchsuchbar:
+
+** *Identifikator*: Zalando
+** *Level*: Error
+** Referenzen:
+
+*** *Referenztyp*: action +
+*Referenzwert*: PriceUpdate
+*** *Referenztyp*: ean +
+*Referenzwert*: EAN der Variante
+
++
+Fehler bei der Generierung der Datei sind unter Daten » Log mit den folgenden Suchparametern zu finden:
+
+** *Identifikator*: Zalando
+** *Referenztyp*: action
+** *Referenzwert*: PriceReporting
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* In der Artikelsuche der neuen Auftragsanlage (Beta) wurde bisher die gesamte Zeile in rot angezeigt, wenn der entsprechende Artikel nicht auf Lager war. Dies wurde nun geändert. Die neue Tabellenspalte *Bestandsstatus* gibt durch einen roten Statusbalken an, wenn ein Artikel den Netto-Warenbestand unterschritten hat. Diese neue Tabellenspalte ist eine Standardspalte.
++
+[IMPORTANT]
+.To-Do
+======
+Hast du die Tabelle bereits konfiguriert, wird die neue Spalte nicht automatisch angezeigt, obwohl es eine Standardspalte ist. Du kannst sie über eine erneute Konfiguration der Tabelle hinzufügen.
+======
+* In Artikelpositionstabellen mit mehr als einer Seite wurde immer die erste Seite neu geladen, wenn Änderungen vorgenommen wurden, egal auf welcher Seite diese Änderungen waren. Dies wurde nun behoben. Wenn du etwas anpasst, wird nach dem Reload die Seite der Tabelle angezeigt, auf der du etwas geändert hast.
+* Bearbeitete Einkaufspreise von Artikelpositionen wurden nicht korrekt dargestellt. Dies wurde behoben. Wenn du Einkaufspreise anpasst, wird der neue Preis nach dem Speichern korrekt dargestellt.
+* Das Zahlungseingangsdatum welches am Auftrag gespeichert ist, wurde bisher in Abhängigkeit des Zahlungsstatus aktualisiert. Zukünftig führt eine Änderung des Zahlungsstatus nicht mehr zu einer Aktualisierung des Zahlungseingangsdatum. Das Zahlungseingangsdatum bleibt somit auf dem Eingangsdatum der zugeordneten Zahlung.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 19.03.2021
+:otto-master-link: https://forum.plentymarkets.com/uploads/short-url/8pblth2c044w3kajMN9JgcCrewI.xlsx
+
+include::../_textblocks/otto-master-file.adoc[]
+
+[discrete]
+=== Plugins
+
+* In der Plugin-UI wurden die Breadcrumbs durch eine Seitennavigation ersetzt. Außerdem wurden einige alte Komponenten ausgetauscht. An der Funktionalität hat sich nichts geändert. Folgende Funktionalität wurde an eine andere Stelle umgezogen:
+** Das Verknüpfen von Mandanten mit Plugin-Sets findest du jetzt in der Seitennavigation. Die entsprechenden Schaltflächen wurden aus der Plugin-Set-Übersicht und der Plugin-Set-Detailansicht entfernt.
+** Das Festlegen der Prioritäten von Plugins innerhalb eines Plugin-Sets findest du jetzt in der Seitennavigation. Die entsprechende Schaltfläche wurde aus der Plugin-Set-Detailansicht entfernt.
+** In der Plugin-Set-Detailansicht findest du Sekundäraktionen jetzt unter der Schaltfläche Weitere Aktionen. Die Aktionen zum Aktualisieren von Marketplace-Plugins und dem Pullen von Git-Plugins sind weiterhin direkt erreichbar.
+** Die Funktion Reparieren findest du nun direkt am Plugin unter der Schaltfläche Weitere Aktionen. Der entsprechende Eintrag wurde aus der Plugin-Detailansicht entfernt.
+** Wenn du die Details eines Plugins öffnest, werden auch Einträge angezeigt, die für dieses Plugin nicht zu Verfügung stehen. So gibt es beispielsweise den Eintrag Git auch bei Marketplace-Plugins. Hierbei handelt es sich um eine technologische Einschränkung. Die betroffenen Einträge werden wieder entfernt, nachdem es hier mehr Möglichkeiten gibt.
+
+[discrete]
+=== Zalando
+
+* Die Einstellung Ignoriere Warnungen unter *Einrichtung » Assistenten » Omni-Channel » Zalando Kontoeinstellungen » [Konto öffnen] » Schritt: Preise für [Zielland]* ist nicht mehr ohne Funktion. Bisher wurde unabhängig von dieser Einstellung immer true für das Ignorieren der Warnungen übermittelt. Dadurch war die Preisvalidierung deaktiviert, weil das Ergebnis der Preisvalidierung ohne den Preis-Bericht nicht einsehbar war. Die Einstellung wird jetzt berücksichtigt. Das bedeutet, dass die Preisvalidierung standardmäßig aktiv ist. Im ersten Schritt wird die Preisvalidierung nur für einzelne Systeme aktiviert, um die Validierung nachvollziehen zu können. Später wird die Validierung dann für alle Systeme aktiviert. Es folgt dann ein weiterer Changelog.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Amazon
+
+* Beim Upload der Rechnung konnte es zu einem Fehlverhalten kommen, wenn der Auftrag von einer Plattform kommt, bei deren zugehörigen Konto in plenty die Verkäufer-ID entfernt wurde. In diesem Fall konnte dann die Verbindung per API nicht aufgebaut werden. Konten ohne eingetragene Verkäufer-ID werden jetzt ignoriert und im Zweifel ein Konto für eine andere Plattform mit derselben Mail-Adresse genommen.
++
+[IMPORTANT]
+.To-Do
+======
+Im Zuge des Updates musst du folgende Schritte durchführen:
+
+. Erstelle eine Liste der betroffenen Auftrags-IDs.
+. Gehe zu *Einrichtung » Märkte » Amazon » Datenaustausch » Berichte » Tab: Rechnungen hochladen*.
+. Trage die Auftrags-IDs ein und führe die Aktion durch.
+
+*_Hinweis:_* Der Upload der Rechnungen wird mit drei Stunden Verzögerung durchgeführt und kann abhängig von der aktuell in der Warteschlange eingereihten Rechnungen auch länger dauern.
+======
+
+[discrete]
+=== Assistenten
+
+* Assistenten, welche durch Optionen zusätzliche Schritte aktivieren, sprangen zum letzten Schritt, anstatt zum neu aktivierten Schritt zu wechseln. Dieses Fehlverhalten wurde behoben.
+
+[discrete]
+=== Aufträge
+
+* Bei Aktualisierung von Bestellmerkmalen über die Auftragsdetailansicht konnte es dazu kommen, dass der Preis des Artikels im Auftrag überschrieben wurde. Das führte in Zusammenhang mit Preisen auf Basis der Dimensionen zu Fehlern. Dies wurde behoben.
+* Die Sortierung der Auftragspositionen nach Variantennummer funktionierte nicht korrekt. Dies ist nun behoben.
+
+[discrete]
+=== Import
+
+* Manche Felder von Auftragspositionen, wie Artikelbezeichnung, wurden nicht korrekt aktualisiert. Dies wurde behoben.
+
+[discrete]
+=== Prozesse
+
+* Der Sichtbarkeits-Filter in der Subaktion *Notizen zum Auftrag* hat nicht korrekt funktioniert. Dieser Fehler wurde behoben.
+
+[discrete]
+=== Plugins
+
+* In der Plugin-UI wurden die Breadcrumbs durch eine Seitennavigation ersetzt. Außerdem wurden einige alte Komponenten ausgetauscht. Im Zuge der Änderungen wurden folgende Probleme behoben:
+** Plugin-Sets können wieder nach dem Datum der letzten Bereitstellung sortiert werden.
+** Beim Installieren und Aktualisieren von Plugins werden die Version jetzt absteigend in der richtigen Reihenfolge sortiert.
+** Die Liste der Plugins, die installiert werden können, ist jetzt standardmäßig alphabetisch nach dem angezeigten Namen sortiert.
+** Die Ansicht der Plugin-Konfigurationen bleibt jetzt bestehen, wenn man zwischen verschiedenen Tabs im System hin- und herwechselt.
+
+[discrete]
+=== Zalando
+
+* Bei der Erstellung von Log-Einträgen für Fehlermeldungen für geplante Preise, wurde der statt der Status-Historie des geplanten Preises, die Status-Historie des normalen Preises als Zusatzinformation gespeichert.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Bei der ursprünglichen internen Umstellung der Auftragslogik 6 kam es bei einigen Plugins zu Problemen.
+Diese Plugins wurden daher, übergangsweise, auf die bisherige Logik zurückgestellt bis neue Plugin-Versionen veröffentlicht werden konnten. Die interne Umstellung der Auftragslogik gilt zukünftig nun auch für folgende Plugins:
+** Groupon
+** Allegro
+** Crowdfox
+** Spartoo
+** Priceminister (Rakuten.fr)
+** AvocadoStore
+** Wayfair
+
++
+[IMPORTANT]
+.To-Do
+======
+Es sollte geprüft werden, ob die aktuellste Version der Plugins installiert ist.
+
+Es sollten nach der Umstellung Plugins auf Fehlverhalten geprüft werden.
+======
+* Die neue Einstellung *Verwendeter Warenkorbtyp in der Auftragserstellung* wurde zu den Standardeinstellungen der neuen Auftragsanlage (Beta) hinzugefügt. Damit kannst du entscheiden, welchen Warenkorbtyp du nutzen möchtest. Der Side cart ist standardmäßig ausgewählt, du kannst aber auch die Warenkorbtabelle wählen.
+
+[discrete]
+=== Dokumente
+
+* Die Ausgabe von Barcodes (als Zeichenfolge und als Strichcode) an den Auftragspositionen wurde für alle Auftragsdokumente (Angebot, Gutschrift, Rücksendeschein usw.) aktiviert. Bisher standen Barcodes nur für Rechnung und Lieferscheine zur Verfügung.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Fehler wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Aufträge
+
+* In den Einstellungen für den Auftragsstatus konnte es vorkommen, dass die Status IDs vorangestellt wurden, obwohl diese Einstellung nicht aktiv war. Dieses Problem hat nur die Ansicht in den Einstellungen betroffen.
+* Eine Adresse wurde nicht gespeichert, wenn sie in einem Abonnement angepasst wurde. Dies ist nun behoben.
+* Eine neue Adresse für einen Kontakt anzulegen während die Abonnement UI geöffnet war führte dazu, dass nur die neu angelegte Adresse im Abonnement angezeigt wurde. Dies ist nun behoben. Nach dem Wechsel zum Abonnement werden alle Rechnungs- und Lieferadressen des Kontakts gelistet.
+
+[discrete]
+=== Dokumente
+
+* Der steuerliche Hinweis 1 und 2 wird nur ausgegeben, wenn kein Umsatzsteuersatz des Ziellandes benutzt wird. Das war bei Stornobelegen nicht da Fall, da wurde fälschlicherweise der Hinweis ausgegeben. Dies wurde behoben.
+
+[discrete]
+=== Lagerverwaltung
+
+* Die Symbole für Gruppenfunktion und Aufbau anpassen wurden versehentlich vertauscht.
+* Man konnte den Zweck und den Status eines Lagerortes von der Struktur nicht ändern. Der Fehler wurde nun behoben.
+
+'''
+
+[discrete]
+== Gelöscht
+
+Folgende Funktionalität wurde in den letzten 7 Tagen auf *early* entfernt.
+
+[discrete]
+=== Aufträge
+
+* In der Auftragsdetailansicht wurden einige Funktionen für die Auftragstypen Sammelauftrag und Sammelgutschrift entfernt. Sammelaufträge können nun nicht mehr kopiert werden und der Eintrag wurde entfernt einen Mahnungsbeleg für Sammelaufträge zu generieren. Für Sammelgutschriften wurde die Möglichkeit entfernt Positionen hinzuzufügen oder zu bearbeiten, ebenso wie die Funktionalität Versandprofile und Versandkosten zu setzten. Damit stellen Sammelaufträge und Sammelgutschriften den gleichen Funktionsumfang in der UI bereit.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name
+|Version
+|To-do
+
+|link:https://marketplace.plentymarkets.com/itemavailabilityinfo_6962[Artikelverfügbarkeit Info^]
+|1.6.3
+|-
+
+|link:https://marketplace.plentymarkets.com/ceres_4697[Ceres^]
+|5.0.25
+|-
+
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.6.15
+|-
+
+|link:https://marketplace.plentymarkets.com/elasticexportidealode_4723[idealo.de^]
+|3.1.2
+|-
+
+|link:https://marketplace.plentymarkets.com/addressdoctor_6106[Informatica AddressDoctor^]
+|1.2.16
+|-
+
+|link:https://marketplace.plentymarkets.com/io_4696[IO^]
+|5.0.25
+|-
+
+|link:https://marketplace.plentymarkets.com/metro_6600[Metro^]
+|1.9.3
+|-
+
+|link:https://marketplace.plentymarkets.com/mirakl_6917[Mirakl Connector^]
+|1.1.28
+|-
+
+|link:https://marketplace.plentymarkets.com/multicontentwidget_6082[Multicontent-Widget^]
+|4.4.17
+|-
+
+|link:https://marketplace.plentymarkets.com/plentybase_5053[plentyBase^]
+|1.7.3
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+
+--
+
+====

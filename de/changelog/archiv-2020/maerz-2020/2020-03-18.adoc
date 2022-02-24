@@ -1,0 +1,249 @@
+= Changelog 18. März 2020
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10470
+:id:
+:startWeekDate: 12. März 2020
+:endWeekDate: 18. März 2020
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Wochen für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+--
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Gruppenfunktion und Stapelverarbeitung
+
+* Es ist jetzt möglich unter *Daten » Log* zu ausgeführten Gruppenfunktionen und Stapelverarbeitungen Logeinträge einzusehen. Mit dem Identifikator `GroupActionDataWriter::execute` könnt ihr genau nach diesen Einträgen filtern. Folgende Informationen werden gespeichert:
+** User-ID (UserInfo)
+** Startzeitpunkt/Endzeitpunkt
+** Anzahl an betroffenen Artikeln/Varianten (VariationInfo)
+** die ausgeführte Aktion (Actions)
+** Daten zu den einzelnen Aktionen (DataInfo)
+
++
+Anhand des Endzeitpunktes lässt sich auch erkennen, ob eine Gruppenfunktion oder Stapelverarbeitung abgebrochen wurde. +
+image:changelog/assets/log-gruppenfunktion-stapelverarbeitung.png[width=640, alt=Logeintrag.]
+
+[discrete]
+=== Import
+
+* Ab sofort ist es nicht mehr notwendig bei Erstellung einer neuen Zuordnung eine Positionsnummer zu vergeben. Das System vergibt diese automatisch. Die Reihenfolge könnt ihr weiterhin im Bereich *Einstellungen* anpassen.
+* In der Status-UI haben wir eine Spalte Namens *ID* hinzugefügt. Die einzelnen Importe können nun anhand dieser Nummer besser auseinander gehalten werden.
+
+[discrete]
+=== Messenger
+
+* Im Bereich Messenger des Kontaktdatensatzes wurde eine Stoppuhr hinzugefügt, die zu zählen beginnt, sobald man den Messenger öffnet. In dem Moment, in dem die Nachricht gesendet wird, wird die Stoppuhr automatisch auf 0 zurückgesetzt.
++
+image:changelog/assets/messenger-stoppuhr.png[width=640, alt=Stoppuhr.]
++
+Beim Wechsel von einem Kontaktdatensatz in einen anderen läuft die Uhr im Hintergrund weiter. Du kannst die Stoppuhr jederzeit pausieren und zurücksetzen.
+
+[discrete]
+=== Nachbestellungen
+
+* Es wird nun auch für die Positionen von Nachbestellungen das Lieferdatum ermittelt und angezeigt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Es ist nicht mehr möglich, die Menge von Bundle-Artikeln und ihren Bundle-Bestandteilen nachträglich in der Auftragsbearbeitung zu ändern. Dadurch wird sichergestellt, dass die Menge an Bundle-Artikeln und ihrer Bundle-Bestandteilen zueinander passen.
++
+Um die Menge manuell zu anzupassen, muss das Bundle in der gewünschten Menge dem Auftrag _neu_ hinzugefügt werden.
+* Für die oben genannte Änderung wurde eine neue Systemeinstellung eingeführt, die, wenn sie aktiviert wird, es weiterhin ermöglicht die Mengen von Bundle-Artikel und Bundle-Bestandteilen zu ändern.
++
+Die Einstellung ist zu finden unter *Einrichtung » Aufträge » Einstellungen*. Die Option *Mengenänderung von Bundle-Artikel und Bundle-Bestandteilen erlauben* wird im Standard auf *Nein* stehen und muss aktiv angepasst werden, wenn eine Änderung der Mengen im Auftrag gewollt.
+
+[discrete]
+=== OTTO
+
+:otto-master-date: 13.03.2020
+:otto-master-link: https://plentymarkets-discourse.s3.dualstack.eu-central-1.amazonaws.com/original/3X/1/f/1f4896c4208f67da83de57eb350532b1499eddd0.xlsx
+
+include::../../_textblocks/otto-master-file.adoc[]
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Attributliste unvollständig
+
+* Es kam zu dem Fehler, dass die Attributauflistung unter *Einrichtung » Artikel » Attribute* unvollständig war. Grund war ein Bug in der Paginierung der Liste. Dieser Bug wurde behoben und der Fix verteilt.
+
+[discrete]
+=== Bestellungen
+
+* Bei den Nachbestellungen wurden die Standard-Einstellungen der Umbuchung verwendet. Dieses Verhalten wurde behoben, sodass die korrekten Einstellungen wieder verwendet werden.
+
+[discrete]
+=== Hersteller-IDs
+
+* Wenn man einen Hersteller mit einer bereits vorhandenen ID erstellt, so wird dieser nicht mehr überschrieben. Man erhält stattdessen eine Fehlermeldung in der steht, dass die ID bereits verwendet wird.
+
+[discrete]
+=== Import
+
+* Nutzte man die Option *Datei löschen nachdem der Import ausgeführt wurde*, so wurden die Dateien nicht gelöscht.
+* Aufgrund eines Fehlers konnte man den Sync trotz deaktivierter Zuordnungen ausführen.
+* Aufgrund eines Fehlers funktionierte die Importoption *englische Schreibweise* nicht. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers wurden in einigen Systemen keine Syncs ausgeführt oder es wurden keine Daten importiert. Diesen Fehler haben wir behoben.
+* Aufgrund eines Fehlers wurde die StatusUI nicht korrekt geladen. Diesen Fehler haben wir behoben.
+
+[discrete]
+=== Kontakte
+
+* Bestimmte Eigenschaften unter *CRM » Kontakte* wurden nicht korrekt angezeigt, Eigenschaftswerte wurden in manchen Fällen nicht gespeichert und bei selbst definierten Kundentypen wurden Eigenschaften nicht ausgegeben. Dieses Verhalten wurde behoben.
+
+[discrete]
+=== Retourengrund bei Paketbestandteilen
+
+* Die Übernahme eines Paketes in eine Retoure hat bisher den Retourengrund nicht auf die Paket-Bestandteile der Retoure übertragen, sondern stattdessen denjenigen mit der geringsten Id. Dieser Verhalten wurde insofern geändert, dass der Retourengrund des Paketes auf die Bestandteile übertragen wird.
+
+--
+
+early::
++
+--
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Datenbereinigung
+
+* In der Bereinigungs-UI im Menü *Einrichtung » Einstellungen » Daten » Bereinigung* wurde das neue Eingabefeld *Löschung von Newsletter-Registrierungen (nach Tagen)* hinzugefügt. Hier wird die Löschung der abgelaufenen und nicht bestätigten Newsletter-Anmeldungen nach Tagen eingestellt. Täglich werden Newsletter-Einträge gelöscht, die älter sind als die konfigurierten Tage.
+
+[discrete]
+=== Import
+
+* Für den Sync-Typ *Gutschein-Code* wurden die beiden Zuordnungsfelder *Anzahl der Einlösungen* und *Eingelöster Betrag* hinzugefügt.
+* Für den Sync-Typ *Kontakte, Firmen und Adressen* wurde das Zuordnungsfeld *Ansprechpartner* in den Kontaktoptionen hinzugefügt.
+* Wir haben in der Status-UI eine neue Datumsauswahl implementiert, so dass ihr die Importe einfacher und schneller filtern könnt.
+
+[discrete]
+=== Plugin-Übersicht
+
+* Du kannst ab jetzt die Inhalte deiner Plugin-Sets in der neuen Plugin-UI einsehen. Öffne dazu das Menü *Plugins » Plugin-Set-Übersicht (Alpha)* und klicke auf die Schaltfläche Plugin-Set bearbeiten.
++
+Du kannst momentan folgende Aktionen in der neuen UI ausführen:
+** Plugin-Set-Name ändern
+** Plugin-Set bereitstellen
+** Plugin aktivieren
+** Plugin deaktivieren
+** Konfigurationen aller Plugins in einem Plugin-Set gesammelt exportieren
+** Konfigurationen aller Plugins in einem Plugin-Set gesammelt importieren
+
++
+Wir freuen uns bereits auf dein Feedback. Wenn du die neue UI erkundest und dir etwas auffällt, das gut, schlecht oder auch total unverständlich ist, freuen wir uns auf eine entsprechende Rückmeldung link:https://forum.plentymarkets.com/t/feedback-neue-plugin-ui-feedback-for-new-plugin-ui/579903[im zugehörigen Thema in der Forumskategorie Plugin-Einrichtung^].
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aktionen
+
+* Bei Aktionen (*Einrichtung » Aufträge » Aktionen*), kann nun auch eine tägliche Ausführung zwischen 24 und 7 Uhr gewählt werden.
+
+[discrete]
+=== Benutzerrechte
+
+* Die Benutzerrechte für das Menü *Einrichtung » Mandant » Mandant wählen » E-Mail* wurden angepasst. Bisher war es im Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer* im Bereich *Berechtigungen* nur möglich, eine Berechtigung für den gesamten Bereich *E-Mail* zu setzen. Demnach wurden alle weitere Unterpunkte (Zugangsdaten, Signatur, Infodienst, Newsletter, Vorlagen, Automatischer Versand und HTML-Design) automatisch mit vergeben.
++
+Dieses Verhalten wurde angepasst, sodass du nun für jeden Backend-Benutzer die einzelnen Unterberechtigungen aktivieren bzw. deaktivieren kannst.
++
+Benutzer, die bereits den Bereich *E-Mail* aktiviert hatten, haben diesen Bereich sowie alle dazugehörigen Unterpunkte immer noch aktiviert. Wenn diese Benutzer alle E-Mail-Bereiche bearbeiten können sollen, musst du nichts anpassen.
++
+[IMPORTANT]
+.To-Do
+======
+Für Backend-Benutzer, die nicht alle Berechtigungen im Bereich *E-Mail* bearbeiten können sollen, musst du diese anpassen. Gehe dazu in das Menü *Einrichtung » Einstellungen » Benutzer » Rechte » Benutzer* und öffne den zu bearbeitenden Benutzer und deaktiviere im Bereich *Berechtigungen* die Berechtigungen wie gewünscht.
+======
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Auftragsdokumente
+
+* Bei Auftragsdokumenten ist es in seltenen Konstellation beim Verwenden von zwei oder mehr Mandanten und Dokumenten ohne oder mit gleichem Präfix dazu gekommen, das diese überschrieben wurden. Dieser Fall konnte aber nur eintreten, wenn Dokumente des gleichen Typs zur gleichen Zeit geschrieben wurden. Dies wurde behoben.
+
+[discrete]
+=== Ereignisaktionen
+
+* In der Übersicht der Ereignisaktionen wurde bei einigen Aktionen und Filtern unnötigerweise *not yet implemented* angezeigt. Das wurde entfernt.
+
+[discrete]
+=== Nachbestellungen
+
+* Innerhalb einer Nachbestellung oder Umbuchung gelangt man durch die Betätigung des Links der Artikel-ID in die jeweilige Artikel-Detailsansicht. Über den Tab *Bestand* des Artikels und die dortige Betätigung des Links des physischen Warenbestandes, öffnet die Warenbewegungen der jeweils ausgewählten Variante.
++
+Dieses Verhalten führte bisher zu einem Fehler (Meldung: `Beim Öffnen der Warenbewegung ist ein Fehler aufgetreten.`), der in Zusammenhang mit dem beschriebenen Workflow steht. Es wurde eine Anpassung für beta7 zur Verfügung gestellt, die diesen Fehler behebt, so dass zukünftig die Warenbewegungen der Varianten problemlos geöffnet werden können.
++
+Durch die Anpassung des Fehlverhaltens wird zukünftig bei der Betätigung des Links der Artikel-ID (in der Artikel-Liste der Nachbestellung) nicht mehr der Tab *Global* geöffnet, sondern stattdessen die jeweilige Detailsansicht der Variante.
+
+[discrete]
+=== PO-Lieferschein
+
+* Die PDF-Vorlage beim PO Lieferschein wird nun korrekt erkannt und benutzt.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name
+|Version
+|To-do
+
+|link:https://marketplace.plentymarkets.com/plugins/individualisierung/widgets/comeback_5615[Komm zurück!]
+|1.1.0
+|-
+
+|link:https://marketplace.plentymarkets.com/plugins/payment/sofort_5050[Sofort.^]
+|1.2.3
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+--
+====

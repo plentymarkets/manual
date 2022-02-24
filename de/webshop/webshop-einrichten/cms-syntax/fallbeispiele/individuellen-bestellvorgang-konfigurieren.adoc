@@ -1,0 +1,165 @@
+= Individuellen Bestellvorgang konfigurieren
+:lang: de
+// include::{includedir}/_header.adoc[]
+:keywords: FormOpenCheckout, Container, Individueller Bestellvorgang
+:position: 0
+
+Der Bestellvorgang bezeichnet den Prozess des Kaufens im Webshop von dem Augenblick an, in dem der Kunde einen Artikel in den Warenkorb legt, bis zu dem Moment, in dem der Kunde die Bestellung abschickt. Der individuelle Bestellvorgang ermöglicht dir die volle Kontrolle über das Aussehen, den Funktionsumfang und den Verlauf des Vorgangs. Du kannst in bis zu 10 Schritten festlegen, wie ein Kunde deinen persönlichen Bestellvorgang durchlaufen soll. Zusätzlich kannst du die Schritte *Login*, *Logout*, *Kundenregistrierung*, *Passwort vergessen* und *Bestellbestätigung* selbst gestalten. +
+Auf dieser Seite wird dir anhand des vorkonfigurierten individuellen Bestellvorgangs aus dem Standarddesign *Callisto Light* beschrieben, wie der individuelle Bestellvorgang aufgebaut ist und welche Techniken bei der Gestaltung eingesetzt wurden. Es wird also generell darauf eingegangen wie Anpassungen vorgenommen werden ohne eine konkrete Anpassung vorzunehmen.
+
+== Voraussetzungen
+
+Für die Beschreibungen wird Folgendes vorausgesetzt:
+
+* Benutzung des Individuellen Bestellvorgangs
+* Sicherer Umgang mit dem plentymarkets CMS
+* Erfahrung mit der Einrichtung von Zahlungsdienstleistern (z.B. Paypal, Klarna, Payone)
+
+== Kategorie-Typ: Container
+
+Mit dem individuellen Bestellvorgang wurden Kategorien des Typs *Container* eingeführt. Kategorien dieses Typs besitzen die besondere Fähigkeit auf alle globalen Template-Variablen und Funktionen der Checkout-Templates aus dem Bereich *CMS » Webdesign » Checkout* zurückgreifen zu können. Dadurch ist es möglich den Bestellvorgang mithilfe von Kategorien abzubilden und dabei keinerlei Templates (beispielsweise CheckoutMethodsOfPaymentList) zu verwenden. Die benötigten Daten können über REST-Calls abgerufen werden. Die Kategorien deiner Bestellschritte müssen in den *Design-Einstellungen* eines Designs im Menü *CMS » Webdesign*hinterlegt werden. Eine kurze Einführung wie du die Kategorien hinterlegst, findest du unter <<webshop/webshop-einrichten/cms#webdesign-webdesign-bearbeiten-bestellvorgang-individueller-bestellvorgang, Individueller Bestellvorgang>> in unserem Handbuch.
+
+
+== Aufbau des Individuellen Bestellvorgangs in Callisto Light
+
+Im Standarddesign *Callisto Light* ist der Bestellvorgang in acht Schritte aufgeteilt. Diese acht Schritte sind Kategorien des Typs *Container.* Der erste Schritt ist der Warenkorb selbst, danach folgt die Anmeldung, in der Kunden entscheideen, ob sie als Gast zur Kasse gehen oder als registrierte Benutzer. Danach folgt der Schritt Kasse. Die Kategorie *Kasse* beinhaltet die nachfolgenden vier Bestellschritte und regelt die Abfolge dieser vier Bestellschritte. Die Kategorie *Kasse* wird im individuellen Bestellvorgang des Standarddesigns Callisto Light als Kopfzeile und Fortschrittsanzeige genutzt, anhand derer der Kunde sieht in welchem Schritt sich der Kunde befindet. Die 4 Bestellschritte, deren Abfolge in der Kategorie Kasse geregelt ist, sind die *Bestelldetails*, die *Anschrift*, der Schritt *Zahlung &amp; Versand* sowie die *Bestellübersicht &amp; Kaufabwicklung*. In den Bestelldetails werden beispielsweise Sonderwünsche oder Gutschein-Codes eingetragen. In den 2 anschließenden Schritten müssen die Rechnungs- und Versandadresse und die Auswahl der Zahlungs- und Versandart angegeben werden. Im letzten und abschließenden Schritt wird die Gesamtbestellung zusammengefasst. Der gesamte Vorgang besteht aus Kategorien des Typs *Container*, die hier eine entscheidende Rolle spielen, da nur Kategorien des Typs *Container* Zugriff auf die Template-Variablen und -Funktionen der Checkout-Templates haben. +
+In den Design-Einstellungen, in denen du die Bestellschritte hinzufügst, gibst du auch schon eine Reihenfolge vor, aber in der Kategorie *Kasse* kann diese Reihenfolge noch einmal etwas variiert werden, indem hier die Bestellschritte in einer anderen Reihenfolge aufgerufen werden.
+
+.Fortschrittsanzeige der Bestellschritte
+image::webshop/webshop-einrichten/_cms-syntax/fallbeispiele/assets/DE-CMS-CheckoutIndicator.png[Fortschrittsanzeige der Bestellschritte]
+
+=== Bestellschritte konfigurieren
+
+Damit die oben abgebildete Fortschrittsanzeige der Bestellschritte in deinem Design korrekt arbeitet, müssen die Bestellschritte zunächst in den Design-Einstellungen konfiguriert werden.
+
+. Wähle im plentymarkets Administrationsbereich den Menüpunkt *CMS » Webdesign*
+. Klicke auf das Zahnrad (Einstellungen), um zu den Design-Einstellungen zu gelangen (neues Fenster)
+. Wähle nun *Tab:Mandanten* und wähle in der linken Spalte einen Mandanten aus
+. Wähle in der rechten Seite *Tab:Bestellvorgang* um Bestellschritte zu konfigurieren
+
+=== Bestellschritte verlinken
+
+Im individuellen Bestellvorgang ist es möglich, neben den Bestellschritten, die Seiten für *Login*, *Logout*, *Kundenregistrierung*, *Passwort vergessen* und *Bestellbestätigung*, ebenfalls durch Kategorien, selbst zu gestalten. Kategorien eines Designs findest du im Menü *Artikel » Kategorien* im Ordner deines Designs. Um auf eine einzelne Kategorie zu verlinken, nutzt du die übliche Template-Funktion *Link($_CategoryId)* in Verbindung mit einem *a-Tag*. Für ausgewählte Bereiche gibt es spezielle vordefinierte Template-Funktionen, mit denen auf die hinterlegten Kategorien verwiesen werden kann.
+
+[.instruction]
+Für ausgewählte Bereiche stehen dir vordefinierte Template-Funktionen zur Verfügung:
+
+.vordefinierte Template-Funktionen für Login, Logout, Kundenregistrierung, Passwort vergessen und Bestellbestätigung
+[cols="1,3"]
+|====
+|Funktionsaufruf |Erläuterung
+
+| *Link_CustomerRegistration()*
+|Kundenregistrierung
+
+| *Link_LostPassword()*
+|Passwort vergessen
+
+| *Link_OrderConfirmation()*
+|Bestellbestätigung
+|====
+
+
+Folgendes Code-Beispiel kombiniert die Template-Funktionen *Link* und *Link_CustomerRegistration*
+
+[source,plenty]
+----
+include::assets/EX-DE-Verlinkungen.html[]
+
+----
+
+=== Bestellschritte anzeigen
+
+Im Standarddesign *Callisto Light* werden die Schritte des Bestellvorgangs durch JavaScript ein- und ausgeblendet. Das Laden der Inhalte geschieht bereits wenn die Seite durch den Funktionsaufruf *CategoryContentBody($_CategoryId)* aufgerufen wird. Die Sichtbarkeit der Container-Kategorien wird durch die *plentymarketsCMSTools* über das individuelle Attribut *data-plenty-checkout-id* geregelt, dem die ID des anzuzeigenden Inhalt übergeben wird. +
+Das untenstehende Code-Beispiel zeigt, wie der Inhalt der Kategorien im Callisto Light Design geladen wird.
+
+[source,plenty]
+----
+include::assets/EX-DE-Anzeigelogik-Tabs.html[]
+
+----
+
+=== Zu Bestellschritten springen
+
+Wenn du in den *Design-Einstellungen* unter *Tab:Mandanten » Tab:Bestellvorgang* deine Bestellschritte hinzugefügt hast, ist eine Möglichkeit durch die Bestellschritte zu navigieren, indem du in deinen Kategorien die Template-Funktion *FormOpenCheckout($_htmlID, true)* verwendest. Der Aufruf dieser Template-Funktion beginnt den inkrementellen Durchlauf der im Bestellvorgang hinterlegten Kategorien. +
+Der erste Parameter der Template-Funktion steht für die ID eines klickbaren Elements. Im zweiten Parameter wird angegeben, ob beim Klick des Elements zum nächsten Schritt des Bestellvorgangs gesprungen werden oder der aktive Schritt neu geladen werden soll. Wenn du den Wert *true* einträgst, lädt der Folgeschritt des Bestellvorgangs, während *false* einen Seiten-Reload der aktuellen Seite verursacht.
+
+Code-Beispiel für die Benutzung der Template-Funktion *FormOpenCheckout()*
+
+[source,plenty]
+----
+include::assets/EX-DE-FormOpenCheckout.html[]
+
+----
+
+=== Bestellschritte mithilfe der plentymarketsCMSTools wechseln
+
+Das Standarddesign *Callisto Light* setzt verstärkt auf den Einsatz des Scripts link:https://github.com/plentymarkets/plenty-cms-library[plentymarketsCMSTools.js^]. Das Script ist ein Opensource-Projekt von *plentymarkets* und kann auf GitHub.com geklont und nach Belieben manipuliert werden. +
+Im individuellen Bestellvorgang wird über das individuelle Attribut *data-plenty-checkout-href* die Schaltfläche *Weiter* mit einer Direktive der plentymarketsCMSTools verbunden. Die Direktive inkrementiert den Index der die Sichtbarkeit der Kategorien des Bestellvorgangs regelt.
+
+== Zahlungsdienstleister einbinden
+
+Dienstleister wie Klarna, Paypal oder Amazon Payment verwenden verschiedene Verfahren, um Kaufabwicklungen zu ermöglichen. In einigen Fällen wird ein IFrame eingebunden und in anderen Fällen zur Seite des Dienstleisters weitergeleitet. Das plentymarkets CMS stellt dir Template-Variablen und -Funktionen zur Verfügung, die es dir einfach machen, den jeweiligen Dienstleister für deine Kunden bereit zu stellen. Wenn du in deinem plentymarkets System unter *Einrichtung » Aufträge » Zahlung » Zahlungsarten* einen Zahlungsdienstleister (z.B. Klarna) konfiguriert hast, kannst du die Template-Variable oder -Funktion für die entsprechende Zahlungsart verwenden.
+
+=== Zahlungsarten grundlegend einrichten
+
+Einige Einstellungen sind für jede Zahlungsart gleich und haben zunächst nicht unmittelbar mit der Anzeige im Webshop zu tun. So müssen für jede Zahlungsart Zugangsdaten eingetragen und festgelegt werden, ob die Zahlungsart generell aktiv ist, unter welchen Namen die Zahlungsart angezeigt werden soll, für welche Lieferländer die Zahlungsart erlaubt ist und für welchen Mandanten die Zahlungsart gilt. Je nach Dienstleister sind im Tab *Schnittstelle* unter *Einrichtung » Aufträge » Zahlung » Zahlungsarten* weitere Einstellungen notwendig. +
+Falls dir im ersten Moment keine Zahlungsarten angezeigt werden, achte bitte darauf, dass das Feld *Auch inaktive anzeigen* im unteren Bereich der Seite aktiviert ist.
+
+.Einstellungen der Zahlungsarten
+image::webshop/webshop-einrichten/_cms-syntax/fallbeispiele/assets/DE-CMS-Zahlungsarten.png[Einstellungen der Zahlungsarten]
+
+=== Zahlungsart übertragen
+
+////
+  Mit Template MethodsOfPayment beginnen
+////
+
+Um alle verfügbaren Zahlungsarten auszugeben, wird in *Callisto Light* das Template *CheckoutMethodsOfPayment* verwendet. Im Template wird eine Liste aus Input-Feldern des Typs *radio* erzeugt. +
+Ein OnChange-Event sorgt für die Kommunikation mit dem Server und überträgt die vom Benutzer ausgewählte Zahlungsart, durch den Funktionsaufruf *plenty.CheckoutService.setMethodOfPayment()*. Die Funktion gehört zu den plentymarketsCMStools und führt die nötigen REST-Calls für diese Operation aus.
+
+Der folgende Code ist ein Ausschnitt des Template *CheckoutMethodsOfPayment* und zeigt das OnChange-Event:
+
+[source,plenty]
+----
+include::assets/EX-DE-OnChange-Event.html[]
+
+----
+
+== Bestelldaten durch Validatoren prüfen
+
+Mit den Validatoren des plentymarkets CMS kannst du die Eingaben deiner Kunden im Bestellprozess auf Richtigkeit überprüfen. Alle eingegebenen Daten werden vom Server validiert, bevor die Daten in der Datenbank abgelegt werden. Beispielsweise werden E-Mail-Adressen auf Richtigkeit ihres Formats untersucht oder Eingabefelder wie Straße und Hausnummer auf sinnvolle Ziffern- oder Buchstabenfolgen geprüft. +
+Die Validatoren findest du in deinem plentymarkets System unter *CMS » Webdesign » Layout » Validator*.
+
+[.instruction]
+Folgende Validatoren sind für den Bestellvorgang wichtig:
+
+.Wichtige Validatoren für den Bestellvorgang
+[cols="1,3"]
+|====
+|Validator-Templatenamen |Erläuterung
+
+| *ValidatorCustomerInvoiceAddress*
+|Validiert die Eingaben für die Rechnungsadresse.
+
+| *ValidatorCustomerShippingAddress*
+|Validiert die Eingaben für die Lieferanschrift
+
+| *ValidatorPlaceOrder*
+|Validiert die Eingaben für den letzten Bestellschritt "Übersicht &amp; Vertragsabschluss"
+|====
+
+
+Im Template *ValidatorPlaceOrder* wird unter anderem geprüft, ob Checkboxen für AGB, Datenschutzerklärung oder Newsletter gesetzt sind. In den Templates der Validatoren kann eingestellt werden, welche Daten überprüft werden sollen und welche Meldungen im Fehlerfall angezeigt werden müssen. Nachfolgender Code prüft, ob die AGBs (Terms and Conditions) vom Benutzer akzeptiert wurden bzw. ob die Checkbox angehakt (gecheckt) wurde. Mit dem Aufruf *AddError(16)* wird dafür gesorgt, dass im Fehlerfall eine Meldung mit dem Fehlercode 16 ausgegeben wird.
+[source,plenty]
+----
+include::assets/EX-DE-Validatoren.html[]
+
+----
+
+////
+h2>Fehlt noch</h2>
+<ul>
+<li>Infografik, wie Kategorien + Tools + alles miteinander arbeiten</li>
+</ul
+////
