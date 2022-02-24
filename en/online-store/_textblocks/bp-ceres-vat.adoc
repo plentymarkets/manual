@@ -1,0 +1,165 @@
+= Information on the German VAT reduction (01.07.2020)
+:lang: en
+:keywords: online store, client, Standard, plentyShop LTS, Plugin, Ceres, HowTo, settings, Plugin sets, VAT, reduction
+:position: 100
+:author: team-webshop
+
+On 01 July 2020, the German legal value added tax rate is lowered. This can lead to problematic cases for orders that have been placed prior to 01 July (i.e. for which the former rate is displayed in plentyShop) but which are shipped after 01 July (and which are therefore subject to the reduced rate). In order to remedy these problem cases, we advise you to remove any exlicit references to the applicable VAT rate from the plentyShop and to also remove any references to net prices (for B2C sales) or gross prices (for B2B sales) displayed in plentyShop, since these allow for the calculation of the applied rates. +
+
+You can find further information on the legal circumstances link:https://legal.trustedshops.com/blog/2020/06/12/mehrwertsteuersenkung-ab-1.-juli-darauf-muessen-sie-unbedingt-achten?uuid=311ded301b1da873edd8ab27a986bdb5&utm_source=email&utm_medium=newsletter&utm_campaign=country_de&utm_content=26-2020[in the German blog of Trusted Shops^]. +
+
+If you are currently using your own theme for plentyShop, it is possible that you need to adjust additional sections in the shop, wherever you display prices or VAT rates. Unfortunately, we are not able to cover these individual cases in this Best Practice.
+
+[NOTE]
+====
+You should make the changes detailed below in a copy of your active plugin set. You can then activate the adjusted plugin set copy prior to the date the new rates apply. After you have processed all orders that have been placed prior to 01 July and have been shipped after 01 July, you can switch back to your former plugin set, so that the corresponding prices and VAT rates are once more displayed in plentyShop. You can find further information on working with plugin sets <<plugins/installing-added-plugins#, on this page>>.
+====
+
+
+== CSS adjustments
+
+In order to remove all referenes to net prices from your plentyShop, you need to modify the CSS. The easiest way to do this is to use the link:https://marketplace.plentymarkets.com/plugins/storefront/widgets/cfourcustomcssjs_5143[plugin Custom CSS/JS in the Frontend].
+
+Add this plugin to your plentymarkets system <<plugins/adding-plugins-system#, as described on this page>>. Afterwards, you need to <<plugins/installing-added-plugins#, install the plugin>>. +
+
+After you've installed the plugin, open the plugin settings via the action **Settings** in the line of the Custom CSS plugin. In the tab **Stylesheets**, you will find an input field labeled **CSS**, in which you enter the following code snippet:
+
+[source,plenty]
+----
+include::../assets/vat-css-snippet.txt[]
+
+----
+
+**Save** your changes. *Activate* the plugin in your plugin set.
+
+After saving and publishing your plugin set, net prices will no longer be displayed in your plentyShop.
+
+== Adjustments in the ShopBuilder
+
+You need to make changes to 2 pages in the ShopBuilder: the basket and the checkout. You have to add a code widget to both of these pages.
+
+=== Adding code widgets
+
+In order to remain legally watertight in the transition period, you need to display a message that informs the customer that all prices are to be understood as including the legal VAT (for B2C business) or as excluding legal VAT (for B2B business). In order to display the information in other languages you might have enabled for your plentyShop, you can use two entries from the multilingualism menu. Here, we will use the entry **Ceres::Template.itemInclVAT** for B2C customers and **Ceres::Template.itemExclVAT** for B2B customers. That way, B2C customers will see gross prices with the notification that they are to be understood as including VAT; B2B customers will see net prices with the notification that they are to be understood as excluding VAT. Storing a simple message like "incl. legal VAT" and "excl. legal VAT" suffices; you can customise the texts any way you want.
+
+[instruction]
+. Open the menu *CMS » Multilingualism*.
+. Expand the **Item** section.
+. Check whether the text in the entries **itemInclVAT** and **itemExclVAT** is what you want to display in the store. Adjust them, if necessary.
+. *Save* (icon:save[role="green"]) the settings.
+. *Save* (icon:save[role="green"]) your plugin set in the *Plugins » Plugin set overview* menu.
+
+Open the ShopBuilder in the *CMS » ShopBuiler* menu. You will now have to add a code widget in your contents for the basket and the checkout. Place it below the sums widget. Enter the following code in both of code widgets: +
+
+[source,plenty]
+....
+include::../assets/vat-code-widget-2.txt[]
+
+....
+
+**Save** (icon:save[role="green"]) the changes of your ShopBuilder content.
+
+== Adjusting plentyShop LTS templates
+
+There are 2 places in plentyShop that do not display the VAT information and that cannot be customised with the ShopBuilder: the order history in the My Account area and the basket preview. You can adjust three relatively small sections in the plentyShop LTS code to output the information in these areas as well. The adjustments to the code also use the same text from the multilingual entry that you used in the code widgets in the previous step. +
+
+The 3 adjustments are detailed below. Additionally, we opened a pull rewuest on GitHub, in which you can see the changes to the code. You can find the pull request link:https://github.com/plentymarkets/plugin-ceres/compare/fix%2Fvat_changes?diff=unified&expand=1[here]. Scroll down to find the changes to the files. +
+
+=== Adjusting the order history
+
+In order to display the VAT information in the order history of the My Account area, you need to add a code snippet in a template file. Follow the steps below:
+
+[instruction]
+. Open the *Plugins » Plugin set overview* menu.
+. In the line of your plugin set copy, click on the action *Edit plugin set*. +
+→ The plugin set is opened.
+. In the line of the *plentyShop LTS* plugin, click on the action *Settings*. +
+→ The plentyShop LTS settings are opened.
+. Click on the tab *Files* in the navigation tree on the left. +
+→ The file structure of the plugin is opened.
+. Click on the folder **resources**.
+. Click on the folder **views**.
+. Click on the folder **Checkout**.
+. Click on the folder **Macros**.
+. Click on the file **OrderTotals.twig**. +
+→ The file is opened in the editor.
+. After the `{% endif %}` element in line 186, add the code below in a new line.
+. **Save** (icon:save[role="green"]) your changes.
+
+[source,plenty]
+----
+include::../assets/vat-template-order-history.txt[]
+
+----
+Through these changes, the text you stored in the multilingualism entries **itemInclVAT** and **itemExclVAT** are also displayed in the order history.
+
+
+=== Adjusting the default header
+
+For ShopBuilder contents for which you haven't created your own header, you need to make changes to the default header so that the VAT information is also output in the basket preview. Follow the steps below:
+
+
+[instruction]
+. Open the *Plugins » Plugin set overview* menu.
+. In the line of your plugin set copy, click on the action *Edit plugin set*. +
+→ The plugin set is opened.
+. In the line of the *plentyShop LTS* plugin, click on the action *Settings*. +
+→ The plentyShop LTS settings are opened.
+. Click on the tab *Files* in the navigation tree on the left. +
+→ The file structure of the plugin is opened.
+. Click on the folder **resources**.
+. Click on the folder **views**.
+. Click on the folder **PageDesign**.
+. Click on the folder **Partials**.
+. Click on the folder **Header**.
+. Click on the file **DefaultHeader.twig**. +
+→ The file is opened in the editor.
+. After line 118, add the code below in a new line.
+. **Save** (icon:save[role="green"]) your changes.
+
+[source,plenty]
+----
+include::../assets/vat-template-default-header.txt[]
+
+----
+
+Through these changes, the text you stored in the multilingualism entries **itemInclVAT** and **itemExclVAT** are also displayed in the basket preview of the default header.
+
+
+
+=== Adjust customised ShopBuilder headers
+
+For ShopBuilder contents for which you have created your own header, you need to make changes to the top bar widget so that the VAT information is also output in the basket preview. Follow the steps below:
+
+[instruction]
+. Open the *Plugins » Plugin set overview* menu.
+. In the line of your plugin set copy, click on the action *Edit plugin set*. +
+→ The plugin set is opened.
+. In the line of the *plentyShop LTS* plugin, click on the action *Settings*. +
+→ The plentyShop LTS settings are opened.
+. Click on the tab *Files* in the navigation tree on the left. +
+→ The file structure of the plugin is opened.
+. Click on the folder **resources**.
+. Click on the folder **views**.
+. Click on the folder **Widgets**.
+. Click on the folder **Header**.
+. Click on the file **TopBarWidget.twig**. +
+→ The file is opened in the editor.
+. After line 210, add the code below in a new line.
+. **Save** (icon:save[role="green"]) your changes.
+
+[source,plenty]
+----
+include::../assets/vat-template-custom-header.txt[]
+
+----
+
+Through these changes, the text you stored in the multilingualism entries **itemInclVAT** and **itemExclVAT** are also displayed in the basket preview of the headers you created via the ShopBuilder.
+
+As an alternative, it is also possible to deactivate the basket preview via the widget settings of the top bar widget, thereby eliminating the need for this last adjustment.
+
+
+[NOTE]
+====
+*Repairing* or updating the plentyShop LTS plugin reverts the changes you made to the plentyShop LTS plugin.
+====

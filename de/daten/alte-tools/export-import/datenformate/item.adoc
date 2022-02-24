@@ -1,0 +1,502 @@
+= Item
+:lang: de
+include::{includedir}/_header.adoc[]
+:position: 10180
+:url: daten/export-import/datenformate/item
+:id: 7KTEV56
+:author: team-item
+
+Das Datenformat **Item** enthält alle Datenfelder für Artikeldaten.
+Du erstellst und exportierst das Datenformat im Menü **Daten » Dynamischer Export**.
+Wie du das Datenformat exportierst, ist auf der Handbuchseite <<daten/export-import/daten-exportieren#, Daten exportieren>> beschrieben.
+
+Achte auf die exakte Schreibweise der Datenfelder, da die Daten sonst nicht verarbeitet werden können.
+
+[#10]
+== Wichtige Hinweise
+
+Jeder Artikel ist mit einer Zahl (ID) versehen und somit über das Datenfeld **ItemID** (Artikel-ID) eindeutig bestimmt. Die folgenden drei Szenarien sind für den Export und Import denkbar:
+
+* Wird bei einem Export von Artikelfeldern das Feld **ItemID** nicht mit exportiert und später auch nicht importiert, werden neue Artikel mit einer freien Artikel-ID angelegt.
+* Wird der Datensatz **ItemID** mit exportiert und später wieder importiert, wird der entsprechende Artikel geändert.
+* Werden Artikeldaten mit noch nicht in plentymarkets vorhandenen Artikel-IDs importiert, werden neue Artikel mit diesen Artikel-IDs angelegt.
+
+Wird beim Export die Importaktion **Abgleich** gewählt, werden die Artikeldaten beim Import abgeglichen.
+
+[#20]
+== Das 1:n-Problem
+
+Das Problem 1:n bzw. eins zu n tritt auf, wenn zu einem Artikel mehrere Eigenschaften definiert wurden. Einem Artikel können in plentymarkets folgende Eigenschaften mehrfach zugeordnet werden:
+
+* **Preiszeilen**
+
+Jedes Preisset ist eindeutig durch das Feld **PriceID** bestimmt. Wird diese ID nicht angegeben, wird immer ein neues Preisset ergänzt und die vorhandenen Preise werden gelöscht. Ist die ID vorhanden, wird der existierende Preis geändert.
+
+* **Kategorien**
+
+Ein Artikel kann gleichzeitig in mehreren Kategorien verfügbar sein. Werden beim Import jedoch Kategoriedatenfelder (CategoryLevel) eingefügt, werden alle bisherigen Kategorieverknüpfungen dieses Artikels gelöscht.
+
+[IMPORTANT]
+.Für neue Kategorien Datenformat **Category** verwenden
+====
+Das Erstellen von neuen Kategorien ist mit dem Datenformat **Item** nicht möglich. Du kannst mit dem Datenformat **Item** lediglich neue Kategorieverknüpfungen am Artikel erstellen. Verwende daher das Datenformat <<daten/export-import/datenformate/category#, Category>>, um neue Kategorien zu erstellen.
+====
+
+* **Artikelbilder**
+
+Mit diesem Datenformat können externe Bilder mittels URL importiert werden. Dabei werden vorhandene Artikelbilder ersetzt. Werden mehrere Artikelbilder importiert, müssen diese Artikelbilder kommagetrennt ohne Leerzeichen angegeben werden. Wenn du vorhandene Bilder nicht ersetzen möchtest, importierst du die <<artikel/artikel-verwalten#680, Bilder>> ggf. per FTP-Upload.
+
+[#30]
+== Übersicht der Datenfelder
+
+Tabelle 1 erläutert die Datenfelder des Datenformats **Item** in alphabetischer Reihenfolge sowie die Filteroptionen, die du im Tab **Filter** des Datenformats vornimmst.
+
+.Datenfelder des Datenformats **Item**
+[cols="1,3,3"]
+|====
+|Feldname |Erläuterung |Filter
+
+| **CategoryLevel1Name - CategoryLevel6Name**
+|Kategoriename der jeweiligen Ebene 1 - 6.  +
+Beim Datenimport wird pro Artikel nur eine Kategorieverknüpfung importiert. Bei Artikeln mit mehreren Kategorieebenen werden beim Import bzw. Re-Import ggf. Kategorieebenen gelöscht. Diese Datenfelder daher nicht für den Kategorie-Import verwenden.  +
+Für Kategorien steht das Datenformat **ItemCategories** zur Verfügung.
+|Filter aktivieren und Name der Kategorieebene aus der Dropdown-Liste wählen.
+
+| **CategoryRakuten**
+|Rakuten-Kategorie
+|
+
+| **CategoryYatego**
+|Liste der Yatego-Kategorien für diesen Artikel (kommagetrennt)
+|
+
+| **IsNet**
+| **True** = Preise (ItemPrice) werden netto exportiert.  +
+**False** = Preise (ItemPrice) werden brutto exportiert.
+|
+
+| **ItemAction**
+|Artikelaktion, besonderer Anzeigemodus  +
+**1** = Sonderangebot  +
+**2** = Neuheit  +
+**3** = Top-Artikel
+|
+
+| **ItemAgeRestriction**
+|FSK; Zahlenwerte  +
+**0** = Keine verfügbar  +
+**3** = FSK 3  +
+**6** = FSK 6  +
+**12** = FSK 12  +
+**16** = FSK 16  +
+**18** = FSK 18  +
+**50** = Nicht gekennzeichnet  +
+**88** = Nicht erforderlich  +
+**99** = Noch nicht bekannt
+|
+
+| **ItemAmazonFBA**
+|Amazon-Abwicklung (FBA)  +
+**0** = Nicht verwenden  +
+**1** = AMAZON EU  +
+**2** = AMAZON FE  +
+**3** = AMAZON NA,  +
+**-1** = FBA und SellerCentral
+|
+
+| **ItemAmazonProductType**
+|Amazon-Produktgenre; mögliche Werte, siehe <<daten/export-import/datenformate/item#50, Wertetabelle amazon_product_type>>.
+|Filter aktivieren und Amazon-Produkttyp für den Artikel aus der Dropdown-Liste wählen.
+
+| **ItemAPICondition**
+|Zustand des Artikels; Übertragung mittels API an andere Marktplätze +
+**0** = Neu +
+**1** = Gebraucht wie neu +
+**2** = Gebraucht sehr gut +
+**3** = Gebraucht gut +
+**4** = Gebraucht annehmbar +
+**5** = B-Ware
+|
+
+| **ItemCondition**
+|Artikelzustand +
+**0** = Neu +
+**1** = Gebraucht +
+**2** = Neu und originalverpackt +
+**3** = Neu mit Etikett +
+**4** = B-Ware
+|
+
+| **ItemCustomsTariffNumber**
+|Zolltarifnummer
+|
+
+| **ItemDeepLink**
+|URL des Artikels
+|
+
+| **ItemDraft**
+|Artikelvorlagen-ID; ID einer Kategorie, die als Artikelvorlage definiert wurde.
+|
+
+| **ItemEbayCategory**
+|eBay-Kategorie; wird beim Erstellen eines neuen Listings verwendet.
+|
+
+| **ItemEbayCategory2**
+|eBay-Kategorie 2; wird beim Erstellen eines neuen Listings verwendet.
+|
+
+| **ItemEbayPreset**
+|ID der Listing-Optionen-Vorlage; Einstellungen der Listing-Vorlage werden beim Anlegen neuer Listings verwendet.
+|
+
+| **ItemEbayShopCategory**
+|ID der ersten eBay-Shopkategorie; Wert wird für neue Listings verwendet.
+|
+
+| **ItemEbayShopCategory2**
+|ID der zweiten eBay-Shopkategorie; Wert wird für neue Listings verwendet.
+|
+
+| **ItemFEDAS**
+|FEDAS-Warengruppenschlüssel; Einstellung im Menü **Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Tab: Multi-Channel**.
+|
+
+| **ItemFreeTextField1 - ItemFreeTextField20**
+|Freitextfelder, die im Webshop oder bei eBay angezeigt werden können; Einrichtung im Menü **Artikel » Artikel bearbeiten » [Artikel öffnen] » [Variante öffnen] » Tab: Felder**.
+|
+
+| **ItemID**
+|Eindeutige Artikel-Kennziffer (ID), Zahlwert, max. 2^31
+|Filter aktivieren, Operator wählen und Wert eingeben.
+
+| **ItemImageURL**
+|URL eines Bildes; Format: JPG +
+Bild wird importiert und auf dem plentymarkets Server gesichert. +
+Mehrere URLs mit einem Komma getrennt angeben. +
+**__Hinweis__**: Beim Import von Artikelbildern werden vorhandene Bilder nicht ergänzt, sondern ersetzt.
+|
+
+| **ItemInsertedTimestamp**
+|Datum und Uhrzeit, wann der Artikel angelegt wurde; Format: tt.mm.jjjj hh:mm +
+**__Hinweis__**: Feld ist nur für den Export verfügbar.
+|
+
+| **ItemLastUpdateTimestamp**
+|Letzte Änderung am Artikel; Datum und Uhrzeit. Format: tt.mm.jjjj hh:mm
+|
+
+| **ItemMarking1**
+|Markierung 1 als ID (**1-31**), Symbole. +
+**0** = keine Markierung
+|Filter aktivieren, Operator wählen und Markierung aus der Dropdown-Liste wählen.
+
+| **ItemMarking2**
+|Markierung 2 als ID (**1-11**), Personen-Icons. +
+**0** = keine Markierung
+|Filter aktivieren, Operator wählen und Markierung aus der Dropdown-Liste wählen.
+
+| **ItemModel**
+|Modellbezeichnung des Artikels
+|
+
+| **ItemNoCoupon**
+|Gutschein +
+**0** = Möglich +
+**1** = Verboten +
+**2** = Nur mit Gutschein kaufbar
+|
+
+| **ItemOriginCountry**
+|Herstellerland des Artikels
+|
+
+| **ItemProducer**
+|Hersteller des Artikels. +
+Ein Hersteller wird bei Verwendung dieses Datenformats nicht automatisch im System angelegt, sondern muss als Hersteller im System vorhanden sein. +
+Bei Verwendung dieses Datenfelds ist auf die korrekte Schreibweise der Hersteller zu achten.
+|
+
+| **ItemProducerID**
+|Hersteller-ID des Artikels
+|Filter aktivieren und Hersteller aus der Dropdown-Liste wählen.
+
+| **ItemProductType**
+|Produkttyp +
+**0** = Lagerware +
+**1** = Produktionsware +
+**2** = Colli +
+**3** = Bestellware
+|
+
+| **ItemRevenueAccount**
+|Erlöskonto
+|
+
+| **ItemSCOMinPrice**
+|Alle über diesem Mindestpreis liegenden Second Chance Offers und Preisvorschläge werden automatisch akzeptiert.
+|
+
+| **ItemSerialNumber**
+|Seriennummer des Artikels
+|
+
+| **ItemShippingWithAmazonFBA**
+|<<maerkte/amazon/amazon-einrichten#370, Amazon Multi-Channel>> +
+**1** = Ja +
+**0** = Nein
+|
+
+| **ItemSubscription**
+|Kann der Artikel als Abo bestellt werden? +
+**0** = Nein +
+**1** = Ja
+|
+
+| **ItemTextDescription**
+|Artikelbeschreibung
+|
+
+| **ItemTextKeywords**
+|HTML-Meta-Keywords (Suchwörter); getrennt durch Komma (Wort1,Wort2,Wort3).
+|
+
+| **ItemTextLang**
+|Verfügbare Sprachen: de / en / fr / it / es / tr / nl / pl / nn / da / se / cz (Deutsch, Englisch, Französisch, Italienisch, Spanisch, Türkisch, Niederländisch, Polnisch, Norwegisch, Dänisch, Schwedisch, Tschechisch)
+|
+
+| **ItemTextMeta**
+|Artikelbeschreibung im Quelltext; wichtig für Suchmaschinen
+|
+
+| **ItemTextName**
+|Name des Artikels
+|
+
+| **ItemTextName2** bzw. **ItemTextName3**
+|Weitere Namen des Artikels.
+|
+
+| **ItemTextShort**
+|Artikelkurzbeschreibung; Vorschautext
+|
+
+| **ItemTextTechnicalData**
+|Technische Daten des Artikels
+|
+
+| **ItemTextURLContent**
+|URL-Pfad des Artikels
+|
+
+| **NeckermannProductTypeEpAT**
+|Neckermann-Produkttyp; Enterprise-Version Österreich
+|
+
+| **NeckermannProductTypeCdAT**
+|Neckermann-Produkttyp; Cross-Docking-Version Österreich
+|
+
+| **PrimaryVariationActive**
+| **Y** = Hauptvariante ist aktiv, d.h. die Hauptvariante wird im Webshop und ggf. auf Marktplätzen angeboten. +
+**N** = Hauptvariante ist nicht aktiv. +
+Einstellung **Aktiv** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationAutoStockInvisible**
+| **Y** = Hauptvariante wird automatisch im Webshop unsichtbar gestellt, wenn kein positiver Nettowarenbestand vorhanden ist. +
+**N** = Aktive Hauptvarianten bleiben im Webshop sichtbar, wenn kein positiver Nettowarenbestand vorhanden ist. +
+Einstellung **Nicht verfügbar wenn kein Netto-WB** im Tab **Einstellungen** der Hauptvariante +
+
+|
+
+| **PrimaryVariationAutoStockNoPositiveStockIcon**
+|Verfügbarkeitsbild des Artikels +
+**0** = Muss manuell deaktiviert werden. +
+**1** = Bei keinem Nettowarenbestand ausblenden.
+|
+
+| **PrimaryVariationAutoStockPositiveStockIcon**
+|Verfügbarkeitsbild des Artikels +
+**0** = Hauptvariante muss manuell aktiviert werden. +
+**1** = Hauptvariante wird bei positivem Nettowarenbestand anzeigen.
+|
+
+| **PrimaryVariationAutoStockVisible**
+|Hauptvariante ist automatisch sichtbar im Webshop, wenn Warenbestand vorhanden ist. +
+**0** = Nein +
+**1** = Ja
+|
+
+| **PrimaryVariationAvailability**
+|ID der Verfügbarkeitsstufe der Hauptvariante; Menü **Einrichtung » Artikel » Verfügbarkeit** +
+Einstellung **Verfügbarkeit** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationAvailableUntil**
+|Datum des letzten Tages der Verfügbarkeit der Hauptvariante. +
+Einstellung **Verfügbar bis** im Tab **Einstellungen** der Hauptvariante +
+Format: TT.MM.JJJJ
+|
+
+| **PrimaryVariationCustomNumber**
+|Nummer der Hauptvariante +
+Einstellung **Variantennr.** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationExternalID**
+|Externe ID der Hauptvariante +
+Einstellung **Externe Varianten-ID** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationExtraShippingCharge1**; +
+**PrimaryVariationExtraShippingCharge2**
+|Portoaufschlag der Hauptvariante +
+Einstellungen **Portoaufschlag 1** und **Portoaufschlag 2** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationHeightMM**
+|Höhe der Hauptvariante in Millimetern (mm)
+|
+
+| **PrimaryVariationIntervalOrderQuantity**
+|Mengenintervalle, in denen die Hauptvariante bestellbar ist. Kommawerte sind möglich, um z.B. Bestellungen nach Gewicht oder Länge abzubilden. +
+Einstellung **Intervallbestellmenge** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationLengthMM**
+|Länge der Hauptvariante in Millimetern (mm)
+|
+
+| **PrimaryVariationLimitOrderByStockSelect**
+|Beschränke Hauptvariante auf Warenbestand +
+**0** = Keine Beschränkung +
+**1** = Beschränkung auf Nettowarenbestand +
+**2** = Keinen Warenbestand für diese Hauptvariante führen +
+Einstellung **Beschränkung** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationMainWarehouse**
+|ID des Hauptlagers der Hauptvariante +
+Einstellung **Hauptlager** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationMaximumOrderQuantity**
+|Maximale Bestellmenge der Hauptvariante +
+Einstellung **Max. Bestellmenge** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationMinimumOrderQuantity**
+|Mindestbestellmenge der Hauptvariante +
+Einstellung **Min.-Bestellmenge** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationModel**
+|Modellbezeichnung der Hauptvariante
+|
+
+| **PrimaryVariationName**
+|Name der Hauptvariante +
+Einstellung **Variantenname** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationPurchasePrice**
+|Einkaufspreis (EK netto) der Hauptvariante +
+Einstellung **EK netto** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationReleaseDate**
+|Datum, ab dem die Hauptvariante verfügbar sein wird. +
+Einstellung **Erscheinungsdatum** im Tab **Einstellungen** der Hauptvariante +
+Format: JJJJ-MM-TT hh:mm:ss
+|
+
+| **PrimaryVariationStorageCosts**
+|Lagerkosten der Hauptvariante +
+Einstellung **Lagerkosten netto** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationTransportationCosts**
+|Nettotransportkosten der Hauptvariante
+|
+
+| **PrimaryVariationUnitCombinationContent**
+|In der Einheit enthaltene Anzahl +
+Inhalt des Felds **Inhalt** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationUnitContained**
+|Verpackungseinheit (VPE) +
+Einstellung **VPE** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationUnitID**
+|ID der Einheit der Hauptvariante; Liste der IDs im Menü **Einrichtung » Artikel » Einheiten** +
+Auswahl Dropdown-Liste **Inhalt** im Tab **Einstellungen** der Hauptvariante
+|
+
+| **PrimaryVariationVAT**
+|ID des Mehrwertsteuersatzes der Hauptvariatente; Menü **Einrichtung » Mandant » [Mandant wählen] » Buchhaltung** +
+**0** = Datensatz A +
+**1** = Datensatz B +
+**2** = Datensatz C +
+**3** = Datensatz D
+|
+
+| **PrimaryVariationWeightG**
+|Bruttogewicht der Hauptvariante in Gramm (g)
+|
+
+| **PrimaryVariationWeightNetG**
+|Nettogewicht der Hauptvariante in Gramm (g)
+|
+
+| **PrimaryVariationWidthMM**
+|Breite der Hauptvariante in Millimetern (mm)
+|
+
+| **VariationAttributes**
+|Liste der Attribute und Attributwerte, die mit der Hauptvariante verknüpft sind. +
+Der interne Attributname ist vorangestellt, nach einem Doppelpunkt folgt der interne Name des Attributwerts. Mehrere Attributwerte werden durch Semikolon voneinander getrennt. +
+**__Beispiel:__** Farbe:lila;rot
+|
+|====
+
+[#40]
+== Übersicht der Abgleichfelder
+
+Die in Tabelle 2 aufgelisteten Datenfelder stehen zum <<daten/export-import/daten-importieren#25, Datenabgleich>> zur Verfügung. Es handelt sich um Wahlpflichtfelder. Es muss mindestens ein Datenfeld aus der folgenden Tabelle für den Abgleich gewählt werden. Beim gewählten Datenfeld muss für die **Importaktion** die Option **Abgleich** gewählt werden.
+
+.Datenfelder mit Einstellung auf die Option **Abgleich**
+[cols="1,3"]
+|====
+|Feldname |Erläuterung
+
+| **ItemID**
+|Artikel-ID
+
+| **PrimaryVariationCustomNumber**
+|Nummer der Hauptvariante
+
+| **PrimaryVariationExternalID**
+|Externe ID der Hauptvariante
+|====
+
+[IMPORTANT]
+.Feld ItemID
+====
+Das Feld **ItemID** ist standardmäßig ein Pflichtabgleichfeld, muss jedoch nicht zwingend verwendet werden. Du kannst jedes der Felder verwenden, wobei zum Abgleich eines der Felder ausreicht.
+====
+
+[#45]
+== Übersicht der Aktionen
+
+Im Tab **Aktionen** wählst du, was beim Datenexport ausgeführt werden soll. Aktiviere die Aktion **ItemLastUpdateTimestamp** und wähle die Option **setze aktuelles Datum**. Den Artikeln wird dann beim Import der Zeitstempel der letzten Änderung hinzugefügt.
+
+[#50]
+== Wertetabelle amazon_product_type
+
+include::../../../../maerkte/amazon/_textblocks/instructions/amz-variantenverfuegbarkeit.adoc[tag=produkttyp-export]
+
+include::../../../../maerkte/amazon/_textblocks/instructions/amz-variantenverfuegbarkeit.adoc[tag=produkttyp-note]

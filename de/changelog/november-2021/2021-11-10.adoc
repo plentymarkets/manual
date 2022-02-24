@@ -1,0 +1,244 @@
+= Changelog 10. November 2021
+:lang: de
+include::{includedir}/_header.adoc[]
+:author: kevin-stederoth
+:sectnums!:
+:position: 10650
+:startWeekDate: 04. November 2021
+:endWeekDate: 10. November 2021
+
+Erfahre, was sich in der Woche vom {startWeekDate} bis zum {endWeekDate} bei plentymarkets getan hat. Im Folgenden findest du alle Changelog-Einträge der letzten Woche für stable- und early-Systeme.
+
+Wenn du mehr zu den einzelnen Versionen erfahren oder auf eine andere Version wechseln möchtest, siehe die Handbuchseite <<business-entscheidungen/systemadministration/versionszyklus#, Versionszyklus>>. Um die Informationen, die auf dieser Seite gesammelt sind, in Echtzeit zu erhalten, abonniere die link:https://forum.plentymarkets.com/c/changelog[Kategorie Changelog in unserem Forum^].
+
+Wähle, welchen Changelog du sehen möchtest.
+
+[.tabs]
+====
+stable::
++
+
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Bei der Multi-Order, kann nun unter *Einrichten » Aufträge » Auftragstypen » Multi-Order* die externe Auftragsnummer in den Artikeltext übernommen werden.
++
+image:changelog/multi-order-artikeltext-externe-auftragsnummer.png[width=640, alt=Option externe Auftragsnummer im Menü Multi-Order]
+* Dem Gutschein vom Gutscheintyp *Voucher* wurde eine neue Option für *Nur vorhandene verwenden* hinzugefügt. Bei dieser Option werden nur die vorhandenen Gutscheincodes verwendet, ohne neue Codes zu generieren.
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Im ersten Schritt der neuen Auftragsanlage (beta) wird der *Rabatt in %* jetzt aus der Kundenklasse übernommen, falls dieser dort als *Standardrabatt für manuelle Aufträge* hinterlegt ist.
+
+[discrete]
+=== CRM
+
+* Im EmailBuilder wurde die Variable *Hausnummer* in den folgenden Bereichen hinzugefügt:
+** *Auftrag / Lieferadresse*
+** *Auftrag / Rechnungsadresse*
+** *Kontakt / Lieferadresse*
+** *Kontakt / Rechnungsadresse*
+* Im EmailBuilder wurde die Variable *Name des Auftragstyps* im Bereich *Auftrag* hinzugefügt.
+* Im EmailBuilder wurde die Variable *Artikeltyp* im Bereich *Auftragspositionen (nur für Artikellisten-Widget)* hinzugefügt. Diese Variable gibt den Artikeltypen (Lagerware, Produktionsware, Colli oder Bestellware), der im Artikel im Tab *Global* gespeichert ist, aus.
+
+[discrete]
+=== REST-API
+
+* Es wurde ein neuer Filter `packageNumber` zu der Route `GET /rest/orders` hinzugefügt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *stable* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Wenn ein Gutschein keinen Einfluss auf die Versandkosten hat, dann wird nun bei der Ermittlung der Versandkosten der Gutschein in die Auftragssumme mit eingerechnet.
+
+[discrete]
+=== CRM
+
+* Die Variable *Auftragstyp*, die die ID des Auftragstyps ausgibt, wurde umbenannt in *Auftragstyp-ID*.
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *stable* behoben.
+
+[discrete]
+=== Amazon VCS
+
+* Bei FBA-Aufträgen, bei denen Amazon als Käufer der Ware auftritt, konnte es dazu kommen, dass mehrere Aufträge die gleiche Rechnungsadresse hatten, aber die Umsatzsteuer-ID im VCS-Bericht variierte. Dies führte dazu, dass die Umsatzsteuer-ID an der Adresse immer wieder wechselte und wenn die Aufträge in mehreren VCS-Berichten vorkamen, auch immer wieder die Rechnung storniert, die Umsatzsteuer-ID geändert und eine neue Rechnung erzeugt wurde.
++
+Dies wurde nun korrigiert, indem die Umsatzsteuer-ID an dem vorhandenen Adressdatensatz nicht mehr geändert wird, wenn Amazon der Rechnungsempfänger ist. Stattdessen wird erst geprüft, ob es bereits den gleichen Adressdatensatz mit der richten Umsatzsteuer-ID gibt und wenn ja, dann wird dieser mit dem Auftrag verknüpft. Sollte es noch keinen passenden Adressdatensatz geben, wird ein neuer erzeugt und mit dem Auftrag verknüpft.
+
+[discrete]
+=== Änderungshistorie
+
+* Beim Loggen der Änderungen von Aufträgen wurden alle Daten in der Änderungshistorie geloggt, wenn nur *Auftrag* aktiviert war und alle andere Felder deaktiviert waren. Dies wurde behoben.
+
+[discrete]
+=== Aufträge
+
+* Bei Aufträgen in Fremdwährung konnte es dazu kommen das der bezahlte Betrag von Systemwährung in Fremdwährung erneut umgerechnet wurde, wodurch es passieren konnte das der Auftrag zu einem späteren Zeitpunkt nur noch teil- oder überbezahlt war. Dies wurde behoben.
+
+[discrete]
+=== Auftragsanlase (beta)
+
+* Die am Kontakt hinterlegte standard Zahlungsart wurde nicht in allen Fällen korrekt in die Auftragsanlage (Beta) übernommen, wodurch diese nicht vorausgewählt wurde. Dies wurde behoben.
+
+[discrete]
+=== CRM
+
+* Wenn ein Kontakt mehr als eine primäre Rechnungsadresse gesetzt hatte, wurden die Aufträge des Handelsvertreters zweimal in der Statistik angezeigt. Dieses Verhalten wurde behoben.
+* Vor einiger Zeit haben wir den Editor zum Text-Widget hinzugefügt. Das Problem hierbei war, dass der Editor im Text-Widget nicht verfügbar war in E-Mail-Vorlagen, die erstellt wurden, bevor der Editor hinzugefügt wurden. Dieses Verhalten wurde behoben. Der Editor im Text-Widget ist nun allen E-Mail-Vorlagen verfügbar.
+
+[discrete]
+=== Dokumente
+
+* Wenn die Einstellungen des Nummernkreises von Stornobelegen in verschiedenen Mandanten gleich sind, und die selbe Dokumentnummer für Stornobelege in zwei (oder mehr) Mandanten existiert, so wurden die Daten zur stornierten Rechnung und zum Stornobeleg für eine der Rechnungen falsch ausgegeben. Dies wurde behoben.
+
+[discrete]
+=== OTTO Market
+
+* Beim Export sehr vieler Varianten an OTTO Market konnte es zu langen Laufzeiten im nächtlichen Cron kommen. Dadurch wurden dieser oder folgende Prozesse im Cron abgebrochen. Dieses Problem wurde behoben.
+
+[discrete]
+=== Plugins
+
+* Nach dem Installieren bzw. Aktualisieren von Plugins ist es nicht mehr notwendig, das Backend neu zu laden, damit das Plugin im Plugin-Set angezeigt wird.
+
+[discrete]
+=== Zalando
+
+* Es konnte in bestimmten Fällen vereinzelt dazu kommen, dass unter *Daten » Log* die folgenden Fehlermeldungen nacheinander für den Identifikator *Zalando*, den Referenztyp *action* und den Referenzwert *StockUpdate* zu sehen waren:
+. `Datei X existiert nicht.`
+. `Job-ID für Bestandsaktualisierungsbefehl fehlt.`
+
++
+Hierzu kam es, wenn zwar Varianten gefunden wurden, aber alle als nicht relevant eingestuft wurden. z.B. wenn eine Variante bereits mit Bestand 0 übertragen wurde, dann wird diese nicht nochmal mit dem Bestand 0 übertragen. Es gab also keinerlei negativen Einfluss durch diesen Fehler außer eine verwirrende Fehlermeldung. Diese wird mit diesem Update auch nicht mehr geschrieben bzw. das Verhalten, das dafür sorgte beseitigt.
+
+--
+
+early::
++
+--
+
+[discrete]
+== Neu
+
+Folgende Neuerungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+[discrete]
+=== Aufträge
+
+* Für die folgenden UIs wurde die neue Suchkomponente für Filter hinzugefügt:
+** Bestellungen
+** Abonnement
+** Zahlungsverkehr
+* Wenn eine neue Nachbestellung erstellt wird, erscheint in der Infobox mit dem Wert der Nachbestellung ein Warnhinweis, wenn der Mindestbestellwert für den Lieferanten noch nicht erreicht wurde.
++
+image:changelog/nachbestellung-warnung-mindestbestellwert.png[width=640, alt=Nachbestellung mit Warnhinweis in einem Tooltip]
+
+[discrete]
+=== Auftragsanlage (beta)
+
+* Für die folgenden UIs wurde die neue Suchkomponente für Filter hinzugefügt:
+** Auftragserstellung (beta)
+
+[discrete]
+=== CRM
+
+* Wenn ein neuer Kontakt erstellt wird, wird ab sofort nicht nur der Vorname und der Nachname aus den Adressdetails in die Kontaktdetails übernommen, sondern auch die Anrede.
+
+[discrete]
+=== Kataloge
+
+* Im Auftragsexport über Katalog wurde der Filter *Hauptaufträge ausschließen, wenn Lieferaufträge existieren* hinzugefügt.
+
+'''
+
+[discrete]
+== Geändert
+
+Folgende Änderungen wurden in den letzten 7 Tagen auf *early* veröffentlicht.
+
+
+
+'''
+
+[discrete]
+== Behoben
+
+Folgende Probleme wurden in den letzten 7 Tagen auf *early* behoben.
+
+[discrete]
+=== Kataloge
+
+* Die Auswahl des Barcodes für `variation.barcode` hat gefehlt. Dies wurde nun nachgereicht.
+
+[discrete]
+=== Zahlungen
+
+* Beim Teilen von Zahlungen wurde der Skonto nicht beachtet.
+
+--
+
+Plugin-Updates::
++
+--
+Folgende Plugins wurden in den letzten 7 Tagen in einer neuen Version auf plentyMarketplace veröffentlicht:
+
+.Plugin-Updates
+[cols="2, 1, 2"]
+|===
+|Plugin-Name |Version |To-do
+
+|link:https://marketplace.plentymarkets.com/dotsliderwidget_54878[Dot Slider - Präsentieren Sie mehrere Angebote auf Ihren Bannern^]
+|1.0.3
+|-
+
+|link:https://marketplace.plentymarkets.com/dpdshippingservices_6320[DPD Versand Services^]
+|1.7.3
+|-
+
+|link:https://marketplace.plentymarkets.com/etsy_4689[Etsy^]
+|2.1.10
+|-
+
+|link:https://marketplace.plentymarkets.com/galaxus_4788[Galaxus.ch^]
+|1.12.4
+|-
+
+|link:https://marketplace.plentymarkets.com/googleanalytics_4725[GoogleAnalytics^]
+|1.1.3
+|-
+
+|link:https://marketplace.plentymarkets.com/shopify_4944[Shopify.com^]
+|2.10.0
+|-
+
+|link:https://marketplace.plentymarkets.com/wwqrcodebankinformation_55018[WW-Qr-Code-Widget^]
+|1.0.0
+|-
+
+|===
+
+Wenn du dir weitere neue oder aktualisierte Plugins anschauen möchtest, findest du eine link:https://marketplace.plentymarkets.com/plugins?sorting=variation.createdAt_desc&page=1&items=50[Übersicht direkt auf plentyMarketplace^].
+
+--
+
+====
