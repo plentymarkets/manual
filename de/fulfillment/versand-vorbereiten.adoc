@@ -1600,6 +1600,82 @@ Beachte die Meldungen zu Sendungen, die du später über das <<fulfillment/versa
 Die aktuell gültige, plentymarkets bekannte Tracking-URL von DPD lautet: +
 *+https://tracking.dpd.de/status/de_DE/parcel/[PaketNr]+*
 
+[#dpd-cloud-webservice-log-eintraege]
+[.collapseBox]
+.Log-Einträge für DPD Cloud Webservice (alt)
+--
+In dieser Box findest du Hinweise zu Einträgen, die im Zusammenhang mit der Nutzung von DPD Cloud Webservice im Log im Menü *Daten » API-Log (veraltet)* aufgeführt werden können. Wähle im Tab **Versand Center API-Log** den Vorgang **DPDCloudWebservice**.
+
+include::../_includes/textblocks/instructions/api-log-filter.adoc[]
+
+*CLOUD_USERDATA_NOACCESS*
+
+Dieser Eintrag erfolgt im Log, wenn der Zugriff verweigert wird.
+
+[cols="1,3"]
+|====
+|Meldung |Erläuterung
+
+| **CLOUD_USERDATA_NOACCESS_SHIPMENTSERVICE**
+|Kein Zugriffsrecht auf den Versandservice.
+
+| **CLOUD_USERDATA_NOACCESS_COD**
+|Kein Zugriffsrecht auf den Versandservice **Nachnahme**.
+
+| **CLOUD_USERDATA_NOACCESS_PREDICT**
+|Kein Zugriffsrecht auf den Versandservice **Predict**.
+|====
+
+*CLOUD_ADDRESS*
+
+Dieser Eintrag erfolgt im Log bei fehlerhaften oder fehlenden Adressdaten. Möglich ist auch eine Überschreitung der maximalen Zeichenlänge eines Parameters. In der Tabelle sind einige Beispiele aufgeführt, die Liste ist nicht vollständig.
+
+[cols="1,3"]
+|====
+|Meldung |Erläuterung
+
+| **CLOUD_ADDRESS_PHONE**
+|Telefonnummer falsch oder fehlt. Format: 5 bis 20 Zeichen.
+
+| **CLOUD_ADDRESS_NEEDMAIL**
+|E-Mail fehlt; die Angabe der E-Mail-Adresse des Empfängers ist Pflicht.
+
+| **CLOUD_STATE_STATESHORT**
+|Land nach ISO3166-2 Format: genau 2 Zeichen.
+
+| **CLOUD_ADDRESS_COMPANYANDNAMEEMPTY**
+|Firma oder Name erforderlich.
+
+| **CLOUD_API_ORDER_WEIGHT**
+|Maximales Gewicht überschritten. Maximal können 31,5 kg verschickt werden.
+|====
+
+*CLOUD_API_ORDER*
+
+Dieser Eintrag erfolgt im Log bei Fehlern im Zusammenhang mit der Anmeldung der Versandaufträge.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **CLOUD_API_ORDER_MAXORDERS**
+|Maximale Anzahl der angemeldeten Versandaufträge überschritten. Es ist nicht möglich, mehrere Sendungen gleichzeitig anzumelden.
+
+| **CLOUD_API_ORDER_SHIPSERVICE**
+|Ungültiger Versandservice.
+
+| **CLOUD_API_ORDER_CODAMOUNT**
+|Unzulässiger Nachnahmebetrag. Dieser muss im Bereich zwischen 1.00 und 5000.00 Euro liegen.
+
+| **CLOUD_API_ORDER_EXPRESS_DEU_COUNTRY**
+|Gewählte Express-Option nur für Deutschland möglich.
+
+| **CLOUD_API_ORDER_CODPURPOSE**
+|Nachnahme-Referenz enthält zu viele Zeichen. Es sind maximal 14 Zeichen möglich.
+|====
+
+--
+
 [#3600]
 === DPD Print
 
@@ -2512,6 +2588,147 @@ Anschließend wählst du in der Portotabelle die Region *Deutschland*, das Versa
 Damit du als Händler:in im Vereinigten Königreich über DHL Fulfillment deine Artikel sowohl national als auch international versenden kannst, musst du den <<fulfillment/versand-vorbereiten#800, Versanddienstleister>> erstellen sowie <<fulfillment/versand-vorbereiten#1000, Versandprofil>> und <<fulfillment/versand-vorbereiten#1500, Portotabelle>> einrichten. Dafür müssen <<fulfillment/versand-vorbereiten#100, Lieferländer>> aktiviert und <<fulfillment/versand-vorbereiten#400, Regionen>> erstellt sein.
 
 Anschließend wählst du in der Portotabelle die Region *Vereinigtes Königreich*, das Versandprodukt für den nationalen oder internationalen Versand und aktivierst die Versandservices. Diese Services sind erst in der Portotabelle sichtbar, nachdem du die Einstellungen im Versandprofil gespeichert hast. Beachte auch, dass das Versandprofil am Artikel <<fulfillment/versand-vorbereiten#1800, aktiviert>> sein muss.
+
+[#dhl-fulfillment-log-eintraege]
+[.collapseBox]
+.Log-Einträge für DHL Fulfillment (alt)
+--
+In dieser Box findest du alle Einträge, die im Zusammenhang mit der Nutzung von DHL Fulfillment im Log im Menü *Daten » API-Log (veraltet)* aufgeführt werden können. Es gibt Vorgänge, bei denen Informationen an DHL Fulfillment übertragen werden. Bei Einträgen zu diesen Vorgängen gibt es jeweils 3 Ereignisse und es gibt Vorgänge, bei denen Informationen von DHL Fulfillment abgefragt werden. Bei diesen Vorgängen gibt es ein Ereignis.
+
+include::../_includes/textblocks/instructions/api-log-filter.adoc[]
+
+*DHLFulfillment ItemMaster*
+
+Dieser Eintrag erfolgt im Log bei Anmeldung des Artikelstammes. Der Eintrag selbst sagt noch nichts darüber aus, ob die Artikel tatsächlich erfolgreich übertragen wurden oder nicht. Für diesen Eintrag gibt es 3 mögliche Ereignisse, die über den genauen Status der Übertragung informieren.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Successfully transmitted ItemMaster**
+|Artikelstamm wurde übermittelt. Wie viele Aufträge fehlerfrei angemeldet wurden, wird in einem weiteren Ereignis angezeigt.
+
+| **Could not transmit ItemMaster**
+|Artikelstamm wurde nicht übermittelt.
+
+| **Count ItemMaster: xxx entries done and xxx errors!**
+|Anzahl der Artikel, deren Artikelstamm übertragen wurde und Anzahl der Artikel, deren Artikelstamm nicht übertragen wurde.
+|====
+
+*DHLFulfillment DeliveryAdvice*
+
+Dieser Eintrag erfolgt im Log bei Übertragung einer Vorabinformation über nachbestellte Ware, die demnächst geliefert wird. Der Eintrag selbst sagt noch nichts darüber aus, ob die Vorabinformationen tatsächlich erfolgreich übertragen wurden oder nicht. Für diesen Eintrag gibt es 3 mögliche Ereignisse, die über den genauen Status der Übertragung informieren. Die in der Spalte Paramenter angegebenen Parameter sind Nachbestellungs-IDs.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Successfully transmitted DeliveryAdvices!**
+|Bestellungen wurden übermittelt. Wie viele Bestellungen fehlerfrei angemeldet wurden, wird in einem weiteren Ereignis angezeigt.
+
+| **Could not transmit DeliveryAdvices**
+|Bestellungen wurden nicht übermittelt.
+
+| **Count DeliveryAdvice: xxx entries done and xxx errors!**
+|Anzahl der Bestellungen, die angemeldet wurden und Anzahl der Bestellungen, die nicht angemeldet wurden.
+|====
+
+*DHLFulfillment DeliveryReceipt*
+
+Dieser Eintrag erfolgt im Log bei Abfrage zur Lieferung von Nachbestellungen. Für diesen Eintrag gibt es 1 mögliches Ereignis, das angibt aus wie vielen Nachbestellungen Lieferungen eingegangen sind. Die Information sagt aber nicht aus, dass die Lieferung zu einer Nachbestellung vollständig war. In der <<warenwirtschaft/nachbestellungen-verwalten/nachbestellungen-vornehmen#, Nachbestellung>> selbst wird angezeigt welche Artikel geliefert wurden.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **DHLFulfillment Delivery Receipt! Count Entries: xxx**
+|Anzahl der Nachbestellungen aus denen Lieferungen eingegangen sind.
+|====
+
+*DHLFulfillment StockAdjustment*
+
+Dieser Eintrag erfolgt im Log bei Abfrage der Bestandsbewegungen. Für diesen Eintrag gibt es 1 mögliches Ereignis, das über die Anzahl der Bestandsbewegungen informiert.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Processed StockAdjustment! Count Entries: xxx**
+|Anzahl der Bestandsbewegungen.
+|====
+
+*DHLFulfillment Inventory*
+
+Dieser Eintrag erfolgt im Log bei Abfrage der aktuellen Bestände, auch Inventurabgleich genannt. Für diesen Eintrag gibt es 1 mögliches Ereignis, das die Anzahl der abgeglichen Bestände angibt.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Processed Inventory! Count Entries: xxx**
+|Anzahl der Artikel, bei denen der Bestand abgeglichen wurde.
+|====
+
+*DHLFulfillment Order*
+
+Dieser Eintrag erfolgt im Log beim Anmelden von Aufträgen. Für diesen Eintrag gibt es 3 mögliche Ereignisse, die über den genauen Status der Anmeldung informieren. Die in der Spalte Paramenter angegebenen Parameter sind Auftrags-IDs.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Successfully transmitted Order!**
+|Aufträge wurden übermittelt. Wie viele Aufträge fehlerfrei angemeldet wurden, wird in einem weiteren Ereignis angezeigt.
+
+| **Could not transmit Orders**
+|Aufträge wurden nicht übermittelt.
+
+| **Count Order: xxx entries done and xxx errors!**
+|Genaue Anzahl der Aufträge, die angemeldet wurden und Anzahl der Aufträge, die nicht angemeldet wurden.
+|====
+
+Wenn ein Auftrag nicht angemeldet werden konnte und die Anmeldung erneut vorgenommen wird, ändert plentymarkets beim Anmelden automatisch die ID des Auftrags, da DHL Fulfillment trotz fehlgeschlagener Anmeldung jede Auftrags-ID nur einmal akzeptiert. In der Spalte Parameter wird trotzdem die korrekte Auftrags-ID aus plentymarkets angezeigt. Die Datei, die unter Vorgang angezeigt wird, enthält hingegen die ID, mit der der Auftrag bei DHL Fulfillment angemeldet wurde.
+
+*DHLFulfillment Transport*
+
+Dieser Eintrag erfolgt im Log bei der Abfrage nach versendeten Aufträgen. Für diesen Eintrag gibt es 1 mögliches Ereignis, das über versendet oder nicht informiert. Es kann sein, dass ein Auftrag in mehrere Lieferaufträge gesplittet wird, weil einige Artikel eher verschickt werden oder ein Auftrag wird generell in mehreren Paketen versendet. In der Spalte Paramenter sind Auftrag-IDs und auch IDs der Lieferaufträge aufgeführt. Wenn Lieferäufträge angelegt wurden, werden der Lieferauftrag und der Auftrag durch Schrägstrich (/) getrennt angegeben. Im Beispiel 1957/1956 bedeutet das, dass ein Lieferauftrag mit der ID 1957 zum Auftrag mit der ID 1956 angelegt wurde.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Processed Transport! Count Entries: xxx, Count Errors: xxx**
+| **Count Entries** = Anzahl der Aufträge, die versendet wurden. +
+**Count Errors** = Anzahl der versendeten Aufträge, die keinem Auftrag zugeordnet werden konnten. Gründe hierfür sind vielfältig, z.B. wenn der Auftrag nicht im System gefunden wurde oder wenn nur ein Teil der Ware verschickt wurde und darum der Auftrag noch nicht vollständig versendet wurde. Wenn nur ein Teil der Ware durch DHL Fulfillment versendet wurde, wird ein Lieferauftrag für die bereits versendeten Artikel angelegt.
+|====
+
+*DHLFulfillment OrderReturned*
+
+Dieser Eintrag erfolgt im Log bei der Abfrage von Retouren. Für diesen Eintrag gibt es 1 mögliches Ereignis, das über die abgerufenen Retouren informiert. Die in der Spalte Paramenter angegebenen Parameter sind Auftrag-IDs von Aufträgen zu denen Retouren angelegt wurden.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Processed OrderReturned! Count Entries: xxx, Count Errors: xxx**
+| **Count Entries** = gibt an, wie viele Retouren in plentymarkets angelegt wurden. +
+**Count Errors** = gibt an, zu wie vielen abgerufenen Retouren von DHL Fulfillment keine Retoure in deinem System angelegt werden konnte. Hierfür gibt es verschiedene Ursachen. Eine Möglichkeit ist, dass der Hauptauftrag zu dem die Retoure angelegt werden sollte, nicht gefunden wurde, weil er vielleicht schon gelöscht wurde etc.
+|====
+
+*DHLFulfillment OrderCanceled*
+
+Der Eintrag im Log erfolgt bei der Abfrage von Stornierungen, d.h. die Stornierung kommt von DHL Fulfillment. Gründe für eine Stornierung durch DHL Fulfillment kann u.a. fehlerhafte Ware oder ähnliches sein. Für diesen Eintrag gibt es 1 mögliches Ereignis, das über abgefragte Stornierungen informiert. Die in der Spalte Paramenter angegebenen Parameter sind Auftrag-IDs von Aufträgen zu denen eine Stornierung in deinem System angelegt wurde.
+
+[cols="1,3"]
+|====
+|Ereignis |Erläuterung
+
+| **Processed OrderCanceled! Count Entries: xxx, Count Errors: xxx**
+| **Count Entries** = gibt an, wie viele Stornierungen in plentymarkets angelegt wurden. +
+**Count Errors** = gibt an, zu wie vielen abgerufenen Stornierungen von DHL Fulfillment keine Stornierung in deinem System angelegt werden konnte. Hierfür gibt es verschiedene Ursachen. Eine Möglichkeit ist, dass der Hauptauftrag zu dem die Stornierung angelegt werden sollte, nicht gefunden wurde, weil er vielleicht schon gelöscht wurde etc.
+|====
+
+--
 
 [#5550]
 === eBay Fulfillment by Orange Connex
