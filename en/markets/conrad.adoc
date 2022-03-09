@@ -21,9 +21,42 @@ include::{includedir}/_header.adoc[]
 :category-example: VHS cassettes
 
 
+On this page you will learn how to set up the interface to {market} in plentymarkets. Conrad is a B2B market specialised in electronics, multimedia, household and leisure products.
+
 include::_textblocks/mirakl/mirakl-first-steps.adoc[]
 
-include::_textblocks/mirakl/mirakl-market-setup.adoc[]
+[#api-key]
+== Generating the API key
+
+include::_textblocks/mirakl/mirakl-api-key.adoc[]
+
+[#order-referrer]
+== Activating the order referrer
+
+:market: {market}
+:referrer: {market}
+:referrer-option: {referrer-name}
+:mirakl-order-referrer:
+
+include::_textblocks/instructions/activate-referrer.adoc[]
+
+[#sales-price]
+== Defining a sales price
+
+:referrer-price: {market}
+:mirakl-sales-price:
+
+include::_textblocks/instructions/define-sales-price.adoc[]
+
+[#create-properties]
+== Creating properties
+
+include::_textblocks/mirakl/mirakl-creating-properties.adoc[]
+
+[#complete-market-assistant]
+== Completing the {market} assistant
+
+include::_textblocks/mirakl/mirakl-market-assistant.adoc[]
 
 [#general-information]
 == About automatic data exchange
@@ -40,7 +73,7 @@ include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-catalogue-intro.a
 
 Proceed as described below to create a catalogue in the assistant.
 
-:catalogue-assistant-name: {market} Catalogue
+:catalogue-assistant-name: {assistant-name} Catalog
 :number-of-boxes: Info box
 :mapping-fields: the
 :catalogue-path: pass:quotes[*Setup » Assistants » Plugins » [select plugin set]*]
@@ -53,17 +86,19 @@ include::_textblocks/catalogues/instructions/catalogue-assistant-config.adoc[]
 
 After you have created a catalogue, map the market's data fields to item data saved in plentymarkets. Check the documentation of the sales channel to find out what data the market expects for the individual data fields.
 
+*_Note:_* Mandatory fields which have to be transferred to the market are marked with ***. Those fields have to be mapped with a plentymarkets data field. Otherwise, data cannot be transferred for this field.
+
 [TIP]
 .Using properties
 ====
-Use <<item/managing-items#500, properties>> to export values for marketplace data fields that have no corresponding field in plentymarkets.
+Use <<item/managing-items#500, properties>> to export data for marketplace data fields that have no corresponding setting in plentymarkets.
 ====
 
 include::_textblocks/catalogues/instructions/catalogue-mapping.adoc[]
 
 [IMPORTANT]
 ====
-Do not map plentymarkets data fields to the following marketplace data fields for the market {market}:
+Do _not_ map plentymarkets data fields to the following marketplace data fields for the market {market}:
 
 * Product image 1
 * Product image 2
@@ -89,12 +124,6 @@ The two data fields *Gross content quantity for unit price specification* and *U
 A list with valid values is not available for both data fields. We recommend, however, to map the attribute *Gross content quantity for unit price specification* with the plentymarkets data field *Content quantity* and create a property for the attribute *Unit of unit price specification* and save the values at the variations, for example “g” for *gramme*.
 ====
 ////
-
-[#additional-properties]
-=== Creating additional properties
-
-include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-additional-properties.adoc[]
-
 
 ////
 Prüfen, wo Inhalt hingehört, wenn einkommentiert wird.
@@ -128,6 +157,7 @@ include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
 The marketplace requires specific values for most of the attributes in order to be able to transfer product data. Currently, these values are, however, not yet saved at the variation. +
 *_Example:_* For example, it is not allowed to enter *test* for the attribute *Brand*. You have to transfer the corresponding code in this case - in this example *BRAND_12345678*.
 
+[#attribute-help-tool]
 == Using the attribute help tool
 
 :market-attribute-help-tool: conrad
@@ -154,22 +184,59 @@ include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-product-data-expo
 
 include::_textblocks/instructions/variation-availability.adoc[]
 
-:EP-order-confirmation:
-:EP-order-rejection:
-:EP-shipping-confirmation:
-:EP-cancellation:
-:EP-refund:
+[#automating-order-processing]
+== Automating order processing
 
-include::_textblocks/mirakl/mirakl-EP/mirakl-EP-intro.adoc[]
+Orders from Conrad are automatically imported in your plentymarkets system every 15 minutes. 
+
+This is how orders are processed at Conrad:
+
+* The seller accepts the order via an event procedure. 
+* Conrad collects the payment. 
+* With the payment confirmation, the invoice and delivery address on the order are updated in your plentymarkets system. 
+* Via an event procedure, the shipping service provider as well as the package number are updated on the order in Mirakl. 
+* In the next step, the shipping notification is reported to Conrad via another event procedure.
+* The invoice created by Conrad is imported to the order in your plentymarkets system.
+
+The following order processing steps can be automated by setting up event procedures:
+
+* Inform Conrad that the order was confirmed. <<#order-confirmation-conrad, How?>>
+
+* Inform Conrad that the order was rejected. <<#order-rejection-conrad, How?>>
+
+* Inform Conrad about the shipping confirmation. <<#shipping-confirmation-conrad, How?>>
+
+* Inform Conrad that the order was cancelled. <<#order-cancellation-conrad, How?>>
+
+* Inform Conrad about the refund of an item. <<#refund-conrad, How?>>
+
+include::_textblocks/mirakl/mirakl-EP/mirakl-further-EPs.adoc[]
+
+[#order-confirmation-conrad]
+=== Report order confirmation to Conrad
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-order-confirmation.adoc[]
 
+[#order-rejection-conrad]
+=== Report order rejection to Conrad
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-order-rejection.adoc[]
+
+[#shipping-confirmation-conrad]
+=== Report shipping confirmation to Conrad
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-shipping-confirmation.adoc[]
 
+[#order-cancellation-conrad]
+=== Report order cancellation to Conrad
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-cancellation.adoc[]
+
+[#refund-conrad]
+=== Report refund to Conrad
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-refund.adoc[]
 
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-archive-unconfirmed-orders.adoc[]
+
