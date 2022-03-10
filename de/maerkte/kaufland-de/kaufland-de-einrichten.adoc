@@ -89,6 +89,11 @@ a| * *Ja* = Schnittstelle zu Kaufland.de aktivieren. +
 
 *_Hintergrund:_* Mit der Ereignisaktion <<#shipping-confirmation, Versandbestätigung an Kaufland.de senden>> informierst du {market} automatisch darüber, dass die Artikel eines Auftrags versendet wurden. Wenn die Ereignisaktion nicht ausgeführt werden kann, wird der Auftrag in den Status geschoben, den du für die Einstellung *Auftragsstatus für Aufträge mit fehlgeschlagener Versandbestätigung* gewählt hast.
 
+| *Auftragsstatus für Aufträge mit fehlgeschlagener In-Fulfillment-Bestätigung*
+| In welchen Status sollen Aufträge verschoben werden, für die keine In-Fulfillment-Bestätigung an Kaufland.de gesendet werden konnte?
+
+*_Hintergrund:_* Mit der Ereignisaktion <<#in-fulfillment, In-Fulfillment-Bestätigung an Kaufland.de senden>> informierst du {market} automatisch darüber, dass ein Auftrag an das Lager übergeben wurde. Wenn die Ereignisaktion nicht ausgeführt werden kann, wird der Auftrag in den Status geschoben, den du für die Einstellung *Auftragsstatus für Aufträge mit fehlgeschlagener In-Fulfillment-Bestätigung* gewählt hast.
+
 2+^| Artikeleinstellungen
 
 | *Artikelexport aktivieren*
@@ -104,7 +109,7 @@ Diese Einstellung greift für Artikeldaten und Angebotsdaten.
 | *Bildposition für das Energieeffizienzlabel*
 |Position des Energieeffizienzlabels eingeben. Alle Bilder, die als Energieeffizienzlabel übertragen werden sollen, müssen diese Position haben.
 
-| *Technische Daten zur Artikelbeschreibung  hinzufügen*
+| *Technische Daten zur Artikelbeschreibung hinzufügen*
 |Wählen, ob die technischen Daten, die im Tab *Texte* des Artikels eingegeben sind, zur Artikelbeschreibung bei Kaufland.de hinzugefügt werden sollen. Standardmäßig ist die Option auf *Ja* gestellt.
 
 | *Produktdatei generieren*
@@ -459,10 +464,11 @@ image::maerkte/assets/Kaufland_logo.png[]
 
 Richte <<automatisierung/ereignisaktionen#, Ereignisaktionen>> ein, um {market} automatisch über Änderungen des Auftragsstatus zu informieren. Für {market} sind die folgenden Ereignisaktionen verfügbar:
 
-* Versandbestätigung senden (<<#shipping-confirmation, Wie?>>)
+* Neu: Versandbestätigung senden (<<#shipping-confirmation, Wie?>>)
 * Rechnung generieren (<<#890, Wie?>>)
 * Rechnung bei Kaufland.de hochladen (<<#895, Wie?>>)
 * Stornierung an Kaufland.de senden (<<#900, Wie?>>)
+* Neu: In-Fulfillment-Bestätigung senden (<<#in-fulfillment, Wie?>>)
 
 [#shipping-confirmation]
 === NEU: Versandbestätigung senden
@@ -628,6 +634,45 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *Auftrag > Stornierung an Kaufland.de senden*
 |Grund wählen. +
 *_Hinweis:_* Du kannst bei Kaufland.de einzelne Artikelpositionen stornieren. Allerdings kann der Betrag der Stornierung nicht frei gewählt werden. Du kannst also für jede Auftragsposition nur den kompletten Verkaufspreis erstatten. Nachlässe/Preisreduzierungen sind also nicht möglich.
+|====
+
+[#in-fulfillment]
+=== NEU: In-Fulfillment-Bestätigung senden
+
+Richte eine <<automatisierung/ereignisaktionen#, Ereignisaktion>> ein, um {market} darüber zu informieren, dass ein Auftrag an das Lager übergeben wurde.
+
+:table-event-procedure: <<#in-fulfillment-kaufland>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[in-fulfillment-kaufland]]
+.Ereignisaktion, um In-Fulfillment-Bestätigung an {market} zu senden
+[cols="1,3a,3a"]
+|====
+|Einstellung |Option |Auswahl
+
+| *Ereignis*
+| Ereignis wählen, zum Beispiel:
+
+* *Statuswechsel > [4] In Versandvorbereitung*
+
+_oder_
+
+* *Statuswechsel > [5] Freigabe Versand* +
+|
+
+| *Filter 1*
+| *Auftrag &gt; Auftragstyp*
+| *Auftrag*
+
+| *Filter 2*
+| *Auftrag &gt; Herkunft*
+| *Kaufland.de*
+
+| *Aktion*
+| *Auftrag*
+| *In-Fulfillment-Bestätigung an Kaufland.de senden* +
+*_Hinweis:_* Aufträge, für die keine In-Fulfillment-Bestätigung an {market} gesendet werden konnten, werden in den Status verschoben, den du für die Option *In-Fulfillment-Bestätigung* gewählt hast. Diese Option findest du im Menü *Einrichtung » Märkte » Kaufland.de » Einstellungen*.
 |====
 
 [discrete]

@@ -13,7 +13,7 @@ include::{includedir}/_header.adoc[]
 link:https://www.Kaufland.de/[Kaufland.de^] is one of the largest fixed price markets in Germany. You can sell items from various product categories on Kaufland.de. Kaufland.de also processes payments for you. In other words, you are neither charged with payment costs nor do you have to worry about debt collection. +
 
 ////
-Watch this video tutorial in order to learn how to set up the market Kaufland.de in plentymarkets:
+Wie du den Marktplatz Kaufland.de in plentymarkets einrichtest, erfährst du in diesem Video-Tutorial:
 
 .Setting up Kaufland.de in plentymarkets
 video::331004662[vimeo]
@@ -88,6 +88,11 @@ a| * *Yes* = Activate the interface to Kaufland.de. +
 | Select a status. If no shipping confirmation could be sent to Kaufland.de, the order is moved to this status.
 
 *_Background:_* The event procedure <<#shipping-confirmation, Send shipping confirmation to Kaufland.de>> automatically informs {market} that the items of an order have shipped. If the event procedure cannot be completed, the order is moved to the status that you selected for the setting *Order status for orders with failed shipping confirmations*.
+
+| *Order status for orders with failed in fulfilment confirmations*
+| Select a status. If no in fulfilment confirmation could be sent to Kaufland.de, the order is moved to this status.
+
+*_Background:_* The event procedure <<#in-fulfillment, Send in fulfilment confirmation to Kaufland.de>> automatically informs {market} that an order has been handed over to the warehouse for fulfilment. If the event procedure cannot be completed, the order is moved to the status that you selected for the setting *Order status for orders with failed in fulfilment confirmations*.
 
 2+^| Item settings
 
@@ -232,7 +237,7 @@ Link warehouses with the option *Link warehouses* in the menu *Setup » Markets 
 ====
 
 [#250]
-=== Activating the order referrer
+=== Activating an order referrer
 
 :market: Kaufland.de
 :referrer: Kaufland.de
@@ -373,7 +378,7 @@ include::../_textblocks/instructions/sku-manually.adoc[]
 [#mandatory-fields]
 === Pflichtangaben an Varianten speichern
 
-{market} requires some mandatory information. That means that a variation only can be exported to the market if this mandatory information is saved for the variation. For a functioning export to {market}, the variation has to conform with the following requirements:
+{market} requires some mandatory information. As a result, variations can only be exported to the market if this mandatory information is saved for the variation. For a functioning export to {market}, the variation has to conform with the following requirements:
 
 * A *EAN* or an *ISBN*
 
@@ -459,10 +464,11 @@ image::markets/assets/kaufland_logo.png[]
 
 Set up <<automation/event-procedures#, event procedures>> to automatically inform {market} about changes to the order status. The following event procedures are available for {market}:
 
-* Send shipping confirmation (<<#shipping-confirmation, How?>>)
+* New: Send shipping confirmation (<<#shipping-confirmation, How?>>)
 * Generate invoice (<<#890, How?>>)
 * Upload invoice to Kaufland.de (<<#895, How?>>)
 * Send cancellation to Kaufland.de (<<#900, How?>>)
+* New: Send in fulfilment confirmation (<<#in-fulfillment-confirmation, How?>>)
 
 [#shipping-confirmation]
 === NEW: Send shipping confirmation
@@ -628,6 +634,45 @@ include::../../_includes/textblocks/instructions/EA.adoc[]
 | *Order > Send cancellation to Kaufland.de*
 |Select a reason. +
 *_Note:_* You can cancel individual order items for Kaufland.de. However, you cannot adjust the cancellation amount. As such, you can only refund the full sales price of an order item. You cannot grant discounts or reduce the price of cancelled order items.
+|====
+
+[#in-fulfillment]
+=== NEW: Sending in fulfilment confirmations
+
+Set up an <<automation/event-procedures#, event procedure>> to automatically inform {market} when an order is handed over to the warehouse.
+
+:table-event-procedure: <<#in-fulfillment-kaufland>>
+
+include::../_includes/textblocks/instructions/EA.adoc[]
+
+[[in-fulfillment-kaufland]]
+.Event procedure to send in fulfilment confirmations to {market}
+[cols="1,3a,3a"]
+|====
+|Setting |Option |Selection
+
+| *Event*
+| Select an event, for example:
+
+* *Status change > [4] In preparation for shipping*
+
+_or_
+
+* *Status change > [5] Cleared for shipping* +
+|
+
+| *Filter 1*
+| *Order > Order type*
+| *Order*
+
+| *Filter 2*
+| *Order > Referrer*
+| *Kaufland.de*
+
+| *Procedure*
+| *Order*
+| *Send in fulfilment confirmation to Kaufland.de* +
+*_Note:_* If no in fulfilment confirmation could be sent to {market}, the order is moved to the status that you selected for the option *Order status for orders with failed in fulfilment confirmations*. Go to *Setup » Markets » Kaufland.de » Settings* to set this option.
 |====
 
 [discrete]
