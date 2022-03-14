@@ -1,0 +1,129 @@
+Use the *{assistant-name}* assistant in the *Setup » Assistants » Plugins » [Select plugin set]* menu to set up your {market} account in plentymarkets.
+
+:menu-path: pass:quotes[*Setup » Assistants » Plugins » [Select plugin set]*]
+:number-of-boxes: info box
+include::../instructions/assistant-basic-instructions.adoc[]
+
+[.collapseBox]
+.Options in the assistant
+--
+[[table-{market}-basic-settings-assistant]]
+[width="100%"]
+[cols="1,2a"]
+|======
+|Setting |Explanation
+
+2+^| Step *Authentication*
+
+| API Environment
+a| Select an API environment from the drop-down list. Get in touch with your contact person at {market} to confirm which API environment you should select. +
+*_Note:_* If you switch to another API environment, e.g. from Test to Productive mode, you need to generate a new <<#api-key, API key>>.
+
+| API key
+| Enter the <<#api-key, API key>> that you generated. +
+*_Note:_* If you switch to another API environment, e.g. from Test to Productive mode, you need to generate a new <<#api-key, API key>>.
+
+| Client selection
+| Select the client (shop) that your orders should be assigned to.
+
+2+^| Step *Data exchange*
+
+| Data exchange
+| Select processes for data exchange. This selection determines which data is exchanged between plentymarkets and Mirakl. +
+
+ifdef::mediamarkt[]
+*_Important:_* Do _not_ activate the import and export for order invoices.
+endif::mediamarkt[]
+
+2+^| Step *Refund mapping*
+
+|Refund mapping
+a|
+ifdef::conrad,voelkner[]
+Map the refund reasons of {market} to plentymarkets order statuses.
+
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets order status.
+. From the drop-down list on the right, select one of the {market} refund reasons. +
+The following reasons can be sent to {market}: +
+
+* `15` = Out of stock
+* `16` = Cancelled by client prior to shipping
+* `17` = Item returned
+* `18` = Item not received
+* `19` = Agreement found with the vendor
+endif::conrad,voelkner[]
+
+ifdef::mediamarkt[]
+This setting has no effects to {market}.
+endif::mediamarkt[]
+
+2+^| Step *Cancellation mapping*
+
+| Cancellation mapping
+a|
+Map the cancellation reasons of {market} to plentymarkets order statuses.
+
+. Click on *Add new entry*. +
+→ A new line is inserted.
+. From the drop-down list on the left, select the plentymarkets order status.
+. From the drop-down list on the right, select a {market} cancellation reason. +
+The following reasons can be sent to {market}: +
+
+ifdef::mediamarkt[]
+* `34` = Cancelled by client prior to shipping
+endif::mediamarkt[]
+
+ifdef::conrad,voelkner[]
+* `34` = Cancellation: Wrong item ordered
+* `35` = Cancellation: Unwanted payment method
+* `37` = Cancellation: Delivery time too long
+* `39` = Agreement reached between customer and vendor
+endif::conrad,voelkner[]
+
+2+^| Step *Warehouse selection*
+
+| Warehouse selection
+| Select the warehouse you want to use for stock export. Stock from the selected warehouse in plentymarkets is exported to {market}.
+ifdef::voelkner[]
+For each warehouse, enter the address in the following format: +
+`Name of the warehouse, Any Street 1, 12345 Any Town`
+endif::voelkner[]
+
+2+^| Step *Shipping profile mapping*
+
+| Shipping profile mapping
+| For each shipping profile in plentymarkets, enter the corresponding abbreviation of the shipping service provider. You can find the abbreviations in the Mirakl menu *{mirakl-menu-shipping}*.
+
+2+^| Step *Offer properties mapping*
+
+| Offer properties mapping
+a| From the drop-down list *Logistic class*, select the property *{market} Logistic class*. +
+The *Leadtime to ship* and *Reverse charge* properties are selected by default.
+
+* *Reverse charge*: This is the so-called _Reverse-charge procedure_. You can either transfer `true` or `false`.
+
+* *Leadtime to ship*: The so-called _leadtime-to-ship_ is the time that a seller needs from the order acceptance to the shipping registration. A whole number between 1 and 45 has to be transferred.
+
+* *Logistics class*: This is the connection of a variation with a certain market shipping profile. The shipping profiles of the market are listed in the back end in the *{mirakl-menu-shipping}* menu. The value in brackets is the value that has to be transferred.
+
+* *update-delete*: This is the option to delete an offer. If this field is not filled, *update* will be used automatically.
+
+ifdef::conrad,voelkner[]
+* *product-id-type*: This field does not have to be defined. *SHOP_SKU* is transferred by default.
+endif::conrad,voelkner[]
+
+ifdef::voelkner[]
+* *Base price gross content quantity*: Here you can define the gross content quantity for the base price at the variation.
+
+* *Product base price unit of measurement*: Here you can define the unit of measurement of the base price unit at the variation. Valid values are `KG`, `L`, `M`, `M2` or `M3`.
+endif::voelkner[]
+
+2+^| Step *Offer export settings*
+
+| Offer export settings
+| Here you can define the amount of stock that is exported for variations that are not limited to net stock or for variations where no stock is managed. Offers of those variations are exported once at night.
+
+|======
+--
