@@ -1,0 +1,194 @@
+This chapter contains answers to frequently asked questions.
+The information was last updated on 18/02/2022.
+
+* <<#faq-checklist, _Checklist:_ Why is my variation not exported?>>
+* <<#faq-errors, Item export: Error messages in the log>> +
+  → Only variations that are affected by the error are not exported.
+* <<#faq-xsd-errors, Item export: XSD validation errors in the log>> +
+  → The complete export is stopped.
+
+
+[#faq-checklist]
+=== _Check list:_ Why is my variation not exported?
+
+include::../instructions/checklist-variations.adoc[tag=checklist-intro]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-variation-active]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-availability-active]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-net-stock]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-sales-price]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-catalogue-mapped-one]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-timestamp]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-catalogue-active]
+
+:checklist-log-integration: pass:quotes[*limango*]
+:checklist-log-reference: pass:quotes[*Reference type* » *variationId*]
+
+include::../instructions/checklist-variations.adoc[tag=checklist-check-log]
+
+[#faq-errors]
+=== Item export: Error messages in the log
+
+When this error occurs, variation data is still exported to {market}. Only variations with this error are not exported.
+
+[.collapseBox]
+.Age group muss ausgefüllt sein / Produkt hat kein Feld Altersgruppe
+--
+
+*_Problem:_*
+
+* A value for the age group must be saved for the variation. The values `Babys` (babies), `Kinder` (children) and `Erwachsene` (adults) are possible.
+
+*_Solution:_*
+
+. Open the catalogue and check which plentymarkets properties you mapped to the marketplace data field *Age group*. +
+    *_Tip:_* Map either a property of the type *Selection* or of the type *Text*. You cannot map properties of the type *None*.
+. Open the variation and check the following:
+    * Is the variation linked to this property?
+    * Is a valid value saved for the variation?
+    * If the property is linked to the main variation: Does the inheritance work as intended? +
+    *_Tip:_* Inheritance can only be activated or deactivated for _all_ properties of a variation.
+
+image::markets/assets/limango-age-variation.png[]
+--
+
+[.collapseBox]
+.No valid image found
+--
+*_Problem:_*
+
+* The variation must be linked with at least one image.
+
+*_Solution:_*
+
+* Check that the variation is linked with at least one image. +
+*_Tip:_* <<item/manage-items#94, How to link images to variations.>>
+
+image::markets/assets/limango-images-linked.png[]
+--
+
+[.collapseBox]
+.Size must be filled in
+--
+*_Problem:_*
+
+* The referrer *limango* is not activated for the images.
+
+*_Solution:_*
+
+* Activate the referrer *limango* for the images of the variation that you want to export to *limango*.
+
+image::markets/assets/limango-images-activate-referrer.png[]
+--
+
+[.collapseBox]
+.Size muss ausgefüllt sein
+--
+*_Problem:_*
+
+* No valid size was found for this variation. Most likely, the sizes of the variation do not match the data fields mapped in the catalogue.
+
+*_Solution:_*
+
+. Open the variation and check the following:
+  * What size does the variation have? Is the size defined with an attribute or a property?
+. Open the catalogue and check the following:
+  * Which plentymarkets data field have you mapped to this size for the marketplace data field *Size*?
+  * Is the value of the attribute or property that you mapped also saved for the variation?
+
+*_Tip:_* The value *onesize* must be exported for products without a specific size. Did you do that correctly?
+--
+
+[.collapseBox]
+.Color is not set on the variation
+-- 
+*_Problem:_*
+
+This error message relates to the marketplace data field *Colour value* and/or *Colour*.
+
+*_Solution 1:_*
+
+Check the mapping for the marketplace data field *Colour value*: You have probably mapped an attribute or a property. However, the mapping must be at the level below this one. That means that you have to map the _values_ of a property or an attribute and _not_ the property or attribute itself.
+
+*_Solution 2:_*
+
+Make sure that all property values that you need are mapped to a colour value. In practice, this means:
+
+* Open the catalogue. Check which plentymarkets data fields are mapped to the marketplace data fields *Colour value* and *Colour*.
+* Open the variations with this error message one by one:
+  ** Does the variation have the property value/attribute value for *Colour value*?
+  ** Does the variation have the property value/attribute value for *Colour*?
+* If necessary, map the variation to one of the property values that are mapped in the catalogue.
+--
+
+[#faq-xsd-errors]
+=== Item export: XSD validation errors in the log
+
+When an XSD validation error occurs, _no_ data is exported to {market}. As such, the complete catalogue _is not exported to {market}_. Also important to know: The export stops when the first XSD validation error occurs. This is why there is only one error message for this error in the log. However:
+
+* the same error can occur for other variations.
+* other XSD validation errors my occur.
+
+However, you will only see these additional errors after you have corrected the first XSD validation error and the export has started again.
+
+[.collapseBox]
+.The value has a length of ...; this exceeds the allowed maximum length of ‚80‘.
+--
+
+NOTE: If this error occurs, the complete catalogue _is not exported to {market}_. Also important to know: The export stops when the first XSD validation error occurs. This is why there is only one error message in the log. However, the error might apply to more than one variation.
+
+*_Problem:_*
+
+* The product name of one of the variations is too long.
+
+*_Solution:_*
+
+* The product name can be up to 80 characters long. Ensure that this limit is _not exceeded for any of the variations_ that are activated for {market}. +
+*_Important:_* Spaces are also counted.
+
+--
+
+[.collapseBox]
+.EnergyEfficiency’: Missing child element(s). Expected is one of ( {http://schema.limango.de}EnergyLabel, {http://schema.limango.de}DataSheet
+--
+
+NOTE: If this error occurs, the complete catalogue _is not exported to {market}_. Also important to know: The export stops when the first XSD validation error occurs. This is why there is only one error message in the log. However, the error might apply to more than on variation.
+
+*_Problem:_*
+
+* Lamps and luminaires with light sources not intended to be removed by the end-user must be labelled. The following information must be exported for these products:
+
+* URL to energy label
+* URL to energy data sheet
+
+*_Solution:_*
+
+. Open the catalogue and check which plentymarkets properties you mapped to the marketplace data fields *Energy label URL* and *Energy data sheet URL*.
+*_Tip:_* Map either a property of the type *Selection* or of the type *Text*. You cannot map properties of the type *None*.
+. Check the following for _all_ variations:
+    * Is the variation linked to these properties?
+    * Is a valid value saved for the variation?
+    * If the property is linked to the main variation: Does the inheritance work as intended? +
+    *_Tip:_* Inheritance can only be activated or deactivated for _all_ properties of a variation.
+--
+
+[.collapseBox]
+.message:„Error 1824: in xml file (Line:467), (Column: 0):Element ‚{http://schema.limango.de}Stock‘: ‚10.25‘ is not a valid value of the atomic type ‚xs:nonNegativeInteger‘ Trigger:„cli: artisan cron:run“
+--
+
+NOTE: If this error occurs, the complete catalogue _is not exported to {market}_. Also important to know: The export stops when the first XSD validation error occurs. This is why there is only one error message in the log. However, the error might apply to more than on variation.
+
+*_Problem:_*
+
+The stock can only be specified as whole numbers. However, the stock is probably saved as a decimal number for one or more of your variations.
+
+*_Solution:_*
+
+* Check your variations. Deactivate the referrer {market} for _all_ variations where the stock is saved as a decimal number.
+--

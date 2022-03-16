@@ -21,9 +21,42 @@ include::{includedir}/_header.adoc[]
 :category-example: VHS Kassetten
 
 
+Auf dieser Seite erfährst du, wie du die Schnittstelle zu {market} in plentymarkets einrichtest. Conrad ist ein B2B-Marktplatz, auf dem ein Produktsortiment von Elektronik über Multimedia bis hin zu Haushalts- und Freizeitprodukten angeboten wird.
+
 include::_textblocks/mirakl/mirakl-first-steps.adoc[]
 
-include::_textblocks/mirakl/mirakl-market-setup.adoc[]
+[#api-schluessel]
+== API-Schlüssel erzeugen
+
+include::_textblocks/mirakl/mirakl-api-key.adoc[]
+
+[#auftragsherkunft]
+== Auftragsherkunft aktivieren
+
+:market: {market}
+:referrer: {market}
+:referrer-option: {referrer-name}
+:mirakl-auftragsherkunft:
+
+include::_textblocks/instructions/auftragsherkunft-aktivieren.adoc[]
+
+[#verkaufspreis]
+== Verkaufspreis festlegen
+
+:referrer-price: {market}
+:mirakl-verkaufspreis:
+
+include::_textblocks/instructions/verkaufspreis-festlegen.adoc[]
+
+[#eigenschaften-erstellen]
+== Eigenschaften erstellen
+
+include::_textblocks/mirakl/mirakl-creating-properties.adoc[]
+
+[#marktplatz-assistent-durchlaufen]
+== {market} Assistent durchlaufen
+
+include::_textblocks/mirakl/mirakl-market-assistant.adoc[]
 
 [#allgemeine-informationen]
 == Informationen zum automatischen Datenaustausch
@@ -40,7 +73,7 @@ include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-catalogue-intro.a
 
 Gehe wie im Folgenden beschrieben vor, um einen Katalog im Assistenten zu erstellen.
 
-:catalogue-assistant-name: {market}-Katalog
+:catalogue-assistant-name: {assistant-name} Catalog
 :number-of-boxes: Info-Box
 :mapping-fields: die
 :catalogue-path: pass:quotes[*Einrichtung » Assistenten » Plugins » [Plugin-Set wählen]*]
@@ -53,17 +86,19 @@ include::_textblocks/catalogues/instructions/catalogue-assistant-config.adoc[]
 
 Nachdem du einen Katalog erstellt hast, ordnest du die Datenfelder des Marktplatzes den in plentymarkets gespeicherten Artikeldaten zu. Informationen dazu, welche Daten für welches Datenfeld des Marktplatzes übertragen werden müssen, findest du in der Dokumentation des Marktplatzes.
 
+*_Hinweis:_* Pflichtfelder, die an den Marktplatz übertragen werden müssen, sind mit *** gekennzeichnet. Diesen Feldern muss ein plentymarkets Datenfeld zugeordnet werden, da ansonsten keine Daten für das Feld des Marktplatzes übertragen werden können.
+
 [TIP]
 .Eigenschaften verwenden
 ====
-Verwende <<artikel/einstellungen/eigenschaften#500, Eigenschaften>>, um Werte für Marktplatz-Datenfelder zu übergeben, für die es keine Entsprechung in plentymarkets gibt.
+Verwende <<artikel/einstellungen/eigenschaften#500, Eigenschaften>>, um Daten für Marktplatz-Datenfelder zu übertragen, für die es keine eigene Einstellung in plentymarkets gibt.
 ====
 
 include::_textblocks/catalogues/instructions/catalogue-mapping.adoc[]
 
 [IMPORTANT]
 ====
-Beim Marktplatz {market} darf folgenden Marktplatz-Datenfeldern kein plentymarkets Datenfeld zugeordnet werden:
+Beim Marktplatz {market} darf folgenden Marktplatz-Datenfeldern _kein_ plentymarkets Datenfeld zugeordnet werden:
 
 * Produktbild 1
 * Produktbild 2
@@ -89,11 +124,6 @@ Die beiden Datenfelder *Brutto-Inhaltsmenge für Grundpreisangabe* und *Einheit 
 Für beide Datenfelder gibt es keine Liste von gültigen Werten. Wir empfehlen jedoch dem Attribut *Brutto-Inhaltsmenge für Grundpreisangabe* das plentymarkets Datenfeld *Inhalt Menge* zuzuordnen und für das Attribut *Einheit der Grundpreisangabe* eine Eigenschaft zu erstellen und die Werte an den Varianten zu speichern, zum Beispiel „g“ für *Gramm*.
 ====
 ////
-
-[#weitere-eigenschaften]
-=== Weitere Eigenschaften erstellen
-
-include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-additional-properties.adoc[]
 
 ////
 Prüfen, wo Inhalt hingehört, wenn einkommentiert wird.
@@ -127,6 +157,7 @@ include::_textblocks/catalogues/instructions/catalogue-activation.adoc[]
 Der Marktplatz verlangt für die Übertragung von Produktdaten bei den meisten Attributen spezifische Werte. Diese sind derzeit allerdings noch nicht in dieser Form an der Variante hinterlegt. +
 *_Beispiel:_* Für das Attribut *Brand* ist beispielsweise *test* nicht erlaubt. Hier muss der entsprechende Code übergeben werden - in diesem Beispiel *BRAND_12345678*.
 
+[#attribut-hilfetool]
 == Das Attribut-Hilfetool verwenden
 
 :market-attribute-help-tool: conrad
@@ -153,22 +184,58 @@ include::_textblocks/mirakl/mirakl-synchronisation/mirakl-data-product-data-expo
 
 include::_textblocks/instructions/variantenverfuegbarkeit.adoc[]
 
-:EP-order-confirmation:
-:EP-order-rejection:
-:EP-shipping-confirmation:
-:EP-cancellation:
-:EP-refund:
+[#auftragsabwicklung-automatisieren]
+== Auftragsabwicklung automatisieren
 
-include::_textblocks/mirakl/mirakl-EP/mirakl-EP-intro.adoc[]
+Aufträge, die auf Conrad erzeugt wurden, werden alle 15 Minuten in dein plentymarkets System importiert. 
+
+So läuft die Auftragsabwicklung bei Conrad ab:
+
+* Der Händler akzeptiert den Auftrag über eine Ereignisaktion. 
+* Die Zahlung wird von Conrad eingezogen. 
+* Mit der Zahlungszusicherung werden die Rechnungs- und Lieferadresse am Auftrag in deinem plentymarkets System aktualisiert. 
+* Über eine Ereignisaktion werden Versanddienstleister und Paketnummer am Auftrag in Mirakl aktualisiert. 
+* Im nächsten Schritt wird Conrad über eine weitere Ereignisaktion über den Versand informiert.
+* Die von Conrad erstellte Rechnung wird zum Auftrag in dein plentymarkets System importiert.
+
+Die folgenden Schritte der Auftragsabwicklung kannst du automatisieren, indem du Ereignisaktionen einrichtest:
+
+* Informiere Conrad automatisch darüber, dass der Auftrag bestätigt wurde. <<#auftragsbestaetigung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass der Auftrag abgelehnt wurde. <<#auftragsablehnung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass der Versand bestätigt wurde. <<#versandbestaetigung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass der Auftrag storniert wurde. <<#auftragsstornierung-conrad, Wie?>>
+
+* Informiere Conrad automatisch darüber, dass eine Erstattung für den Auftrag gezahlt wurde. <<#rueckerstattung-conrad, Wie?>>
+
+include::_textblocks/mirakl/mirakl-EP/mirakl-further-EPs.adoc[]
+
+[#auftragsbestaetigung-conrad]
+=== Auftragsbestätigung an Conrad melden
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-order-confirmation.adoc[]
 
+[#auftragsablehnung-conrad]
+=== Auftragsablehnung an Conrad melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-order-rejection.adoc[]
+
+[#versandbestaetigung-conrad]
+=== Versandbestätigung an Conrad melden
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-shipping-confirmation.adoc[]
 
+[#auftragsstornierung-conrad]
+=== Auftragsstornierung an Conrad melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-cancellation.adoc[]
 
+[#rueckerstattung-conrad]
+=== Rückerstattung an Conrad melden
+
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-refund.adoc[]
+
 
 include::_textblocks/mirakl/mirakl-EP/mirakl-EP-archive-unconfirmed-orders.adoc[]
