@@ -114,8 +114,11 @@ The following areas will only be loaded and opened after clicking in the navigat
 * <<#messenger, Messenger>>
 * <<#options, Options>>
 * <<#tickets, Tickets>>
+* <<#quick-access-addresses, Quick access: Addresses>>
+* <<#scheduler, Scheduler>>
 * <<#commission-cost-units, Commission and cost units>>
 * <<#statistics, Statistics>>
+* <<#quick-access-bank-details, Quick access: Bank details>>
 
 [#contact-details]
 === Contact details
@@ -141,9 +144,6 @@ When you open the contact data record, this area is opened by default and the av
 *Last name*
 |Enter the first name and last name of the contact. +
 *_Note:_* These are mandatory fields, if _no_ company is selected.
-
-| *Date of birth*
-|Enter the date of birth of the contact in the format `dd-mm-yyyy` or select the date from the calendar (icon:calendar[]).
 
 | *Type*
 | Select a type. The *Customer*, *Sales representative*, *Supplier*, *Partners*, *Manufacturers* and *Interested party* types can be selected by default. Create <<crm/contacts/preparatory-settings#create-type, further types>> in the *Setup » CRM » Types* menu. +
@@ -176,11 +176,36 @@ For further information about the debtor account, refer to the <<orders/accounti
 |Select the owner for the contact. If you do not want to select an owner, select the empty option. +
 *_Note:_* Only owners for whom the *Customer* option has been activated in the *Owner* tab of their user account in the *Setup » Settings » User » Account » [Open user]* menu can be selected from the drop-down list.
 
-| *Sales representative*
-|Here, you can assign a sales representative to the contact. Enter the first 3 letters of the name. Matching representatives are automatically displayed in a list. By clicking on the name or the ID of the sales representative, the sales representative is assigned to the contact.
+//| *Sales representative*
+//|Here, you can assign a sales representative to the contact. Enter the first 3 letters of the name. Matching representatives are automatically displayed in a list. By clicking on the name or the ID of the sales representative, the sales representative is assigned to the contact.
+
+| *Rating*
+|Save a rating for the contact. This settings serves for internal purposes only. +
+5 yellow stars are the best rating, 5 red stars are the worst rating.
+
+| *Date of birth*
+|Enter the date of birth of the contact in the format `dd-mm-yyyy` or select the date from the calendar (icon:calendar[]).
 
 | *Newsletter*
-|Shows if the contact receives the newsletter. It is _not_ possible to activate this option manually. To deactivate the newsletter subscription for the contact, click on icon:delete[set=material].
+|Shows if the contact receives the newsletter (icon:toggle_on[set=material, role=skyBlue]). To deactivate the newsletter subscription for the contact, click on icon:toggle_off[set=material, role=darkGrey].
+
+| *Allow invoice* / *Allow debit*
+|If you have already allowed the two payment methods *Invoice* and *Debit* in the <<crm/contacts/preparatory-settings#create-customer-class, customer class>>, you _don’t_ need to carry out any settings here. Because: The settings in the customer class have priority over the settings in the contact data record. +
+
+icon:toggle_on[set=material, role=skyBlue] = The contact can pay using this payment method, even if you do _not_ offer this payment method in your plentyShop. +
+icon:toggle_off[set=material, role=darkGrey] = The contact is _not_ allowed to pay with this payment method. +
+
+*_Example:_* A contact who has bought in your online shop multiple times, should be allowed to buy items on invoice. +
+
+Necessary settings: +
+- Go to *Setup » Orders » Payment » Payment methods* and activate the <<payment/managing-payment-methods#65, payment method>> so it is available in the order. +
+*_Important:_* Make sure that _no_ countries of delivery were saved in the settings of the payment method. Otherwise, the payment method would be available to all customers in your plentyShop, which is not desired in this case. +
+
+- The payment method *Invoice* or *Debit* has to be available in at least one <<fulfilment/preparing-the-shipment#1000, shipping profile>>, i.e. the payment method may _not_ be blocked in the shipping profile. +
+
+- Activate the shipping profile for the items. +
+
+Check the necessary settings that are listed here and activate (icon:toggle_on[set=material, role=skyBlue]) the payment method. This allows the contact to use the payment method.
 
 |====
 
@@ -376,12 +401,12 @@ Click on *Options* (icon:more_vert[set=material]) on the top right to create a n
 
 Click on *Configure columns* (icon:settings[set=material]) on the top right and decide which columns to show in the *Orders* area. Click on icon:sort[set=material] to change the order of the columns with drag-and-drop. The following columns are available:
 
-* ID 
-* Status
-* Type
+* Order ID 
+* Order status
+* Order type
 * Invoice number
 * Payment method
-* Invoice sum
+* Gross order value
 
 Click on *Refresh data* (icon:refresh[set=material]) in the top right to refresh the *Orders* area.
 
@@ -490,6 +515,7 @@ This data is used for the invoice address, for example. The order of the options
 | *Telephone*
 |Telephone number of the contact.
 
+
 2+^| *More* 
 
 | *VAT number*
@@ -593,7 +619,7 @@ If no company has been assigned to the contact, you have 2 options:
 
 [[image-link-company-to-contact]]
 .Creating a link to the company
-image:crm/assets/contacts-company-create-link.png[width=640, height=360, alt=Create link to company]
+image::crm/assets/contacts-company-create-link.png[width=640, height=360, alt=Create link to company]
 
 * Click on *Add new company* (icon:add[set=material]) to create a new company that will then be automatically linked with the contact.
 
@@ -734,8 +760,8 @@ Red = The order is not paid yet and payment is overdue. +
 |[#intable-account-payment-due-date]*Payment due date*
 |Date on which payment is due for the order To have a payment due date displayed here, the <<orders/managing-orders#intable-payment-terms-order, payment terms>> of the corresponding order have to be filled in and an invoice has to be created. 
 
-|[#intable-account-amount]*Amount*
-|Invoice amount of the order. 
+|[#intable-account-gross-order-value]*Gross order value*
+|Gross value of the order. 
 
 |[#intable-account-outstanding]*Outstanding*
 |Remaining amount that is due before the order is completely paid for. 
@@ -947,6 +973,11 @@ Click on *Configure columns* (icon:settings[set=material]) to decide which colum
 Click on icon:refresh[set=material] to reload the *Tickets* area.
 Click on *Add new ticket* (icon:add[set=material]) to create a new ticket in the *CRM » Ticket system* menu. The contact is already preselected in the new ticket and the timer within the ticket is automatically started.
 
+[#quick-access-addresses]
+=== Quick access: Addresses
+
+In the icon:map-marker[] *Addresses* area, you can see all addresses that you opened in the <<#addresses, Addresses>> area for this contact. Moreover, click on icon:map-marker[] *New* to easily and quickly create a new address for the contact.
+
 [#scheduler]
 === Scheduler 
 
@@ -1047,6 +1078,11 @@ Depending on which type of statistic you selected, you find further information 
 * <<business-decisions/plenty-bi/statistics#20, Revenue by referrer per order>>
 
 For further information, refer to the <<business-decisions/plenty-bi/statistics#, Statistics>> page of the manual.
+
+[#quick-access-bank-details]
+=== Quick access: Bank details
+
+In the icon:pay_ec[set=plenty] *Bank details* area, you can see all bank data records that you opened in the <<#bank-details, Bank details>> area for this contact. Moreover, click on icon:credit-card[] *New* to easily and quickly create a new bank data record for this contact.
 
 [#download-vcard]
 == Downloading vCard
@@ -1165,10 +1201,10 @@ a| Sends the template selected from the drop-down list to all activated contacts
 |Copies the email addresses of the activated contacts to the <<crm/sending-newsletters#300, email folder>> selected from the drop-down list. The email addresses are listed in the *Setup » CRM » Newsletter » plentymarkets » Email folder* menu. +
 *_Tip_*: You can find a detailed <<#step-by-step, step-by-step guide>> on how to add email addresses to a newsletter folder using the group function below this table.
 
-| *Save payment due date*
-|Saves the entered payment due date in the contact data record of all activated contacts. +
-*_Note_*: If you select contacts here and do _not enter a value_, the values that have been saved so far are _deleted_ for the selected contacts. +
-*_Tip_*: You can find a detailed <<#step-by-step, step-by-step guide>> on how to save the payment due date using the group function below this table.
+//| *Save payment due date*
+//|Saves the entered payment due date in the contact data record of all activated contacts. +
+//*_Note_*: If you select contacts here and do _not enter a value_, the values that have been saved so far are _deleted_ for the selected contacts. +
+  You can find a detailed <<#step-by-step, step-by-step guide>> on how to save the payment due date using the group function below this table.
 
 |====
 
@@ -1244,6 +1280,12 @@ Adding multiple email addresses to a newsletter folder:
 
 --
 
+====
+
+////
+
+ 
+
 Saving the payment due date for multiple contacts::
 +
 --
@@ -1265,7 +1307,7 @@ Saving the payment due date for multiple contacts:
 
 --
 
-====
+////
 
 [#convert-guest-to-regular-account]
 == Converting a guest order into a regular contact data record
