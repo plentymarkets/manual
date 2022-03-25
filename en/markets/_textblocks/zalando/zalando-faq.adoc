@@ -1,0 +1,316 @@
+[#faq-integration]
+[.collapseBox]
+.Integration
+--
+
+[qanda]
+How can I join the Zalando partner program?::
+    Contact link:https://en.zalando.de/zms/zalando-partner-program/?_rfl=de[Zalando^] directly to join the Zalando partner program.
+
+What are the next steps after I have registered for the Zalando partner program?::
+    Contact us in the link:https://forum.plentymarkets.com/t/sammelthema-collective-thread-csv-formular-zum-abgleichen-von-artikeln-silhouetten-csv-form-for-synchronization-of-articles-silhouettes/669460[plentymarkets forum^]. Our support staff will provide you with a CSV file. This file contains the following information: +
+    +
+    * Routes for items
+    * User name and password
+    * Login details for the plentymarkets FTP server for silhouettes +
+    *_Note:_* Zalando sends your silhouettes to this FTP server so that they can be imported into your plentymarkets system. plentymarkets imports these silhouettes every Wednesday. +
+    +
+    Forward the completed form to your Zalando contact. +
+    Complete the assistant *Account settings - Zalando* in your plentymarkets system. +
+    <<#setup, Set up>> the interface to Zalando in your plentymarkets system. +
+    Activate your Zalando account in the assistant. (<<#1500, How?>>)
+
+Where can I get the CSV file for Zalando?::
+    We will provide the file for you in the plentymarkets forum via PM. Write us a message in this link:https://forum.plentymarkets.com/t/sammelthema-collective-thread-csv-formular-zum-abgleichen-von-artikeln-silhouetten-csv-form-for-synchronization-of-articles-silhouettes/669460[forum thread^]. Please also provide your PID if it differs from the PID in your forum user account.
+
+My Zalando account hasn’t been activated yet.::
+    To activate Zalando’s zDirect API interface, your Zalando account must be linked to the plentymarkets developer account. This link is established automatically during the integration. However, plentymarkets also needs to generate additional credentials for the API and then save these credentials in your plentymarkets system. As such, plentymarkets is not allowed to give you access to these credentials. +
+    Ask our support staff to activate your account in link:https://forum.plentymarkets.com/t/sammelthema-aktivierung-neuer-zalando-konten/600409[this thread^] in the plentymarkets forum.
+
+--
+
+[#faq-item-data-export]
+[.collapseBox]
+.Item data export
+--
+
+[qanda]
+Which settings do I have to carry out for an item to be exported to Zalando?::
+    You have to carry out the following settings so that an item can be exported to Zalando: +
+    +
+    * The availabilities *Zalando* and *WEB API* must be activated in the *Availability* tab of a variation. (<<#300, How?>>)
+    * The variation must be *activated*.
+    * The variation has a sales price for Zalando. (<<#350, How?>>)
+    * The items are linked to all mandatory characteristics. (<<#600, Which?>>)
+
+Why aren't my items being exported to Zalando?::
+    Either you have not yet carried out the basic settings for the market or the mandatory fields are not filled. +
+    The mandatory fields for Zalando are listed below: +
+    +
+    * 1 Farbcode (colour code)
+    * Altersgruppe(n) (age group(s))
+    * Geschlecht (gender)
+    * Größenregister (size register)
+    * Hersteller-Code (manufacturer code)
+    * Herstellerfarbe (manufacturer colour)
+    * Jahreszeiten-Code (seasonal code)
+    * Silhouetten-Typ (silhouette type) +
+    +
+    To check whether there are errors for your variations, you can take a look at the reports listed below. Depending on the report, you can check your variations for errors.
+
+Why aren’t my items being updated?::
+    For Zalando, changes to item data, such as text changes, are not automatically imported afterwards. In this case it is necessary to contact Zalando directly.
+
+--
+
+[#faq-reports-error-messages]
+[.collapseBox]
+.Reports and error messages
+--
+
+[qanda]
+Where can I access the reports for Zalando=?::
+    Open the *Setup » Markets » Zalando » Settings » Tab: Processing reports* menu to download the reports.
+
+Export log *zalandoArticleExportLog.txt*::
+    The export log *zalandoArticleExportLog.txt* contains log entries for variations. The export log is generated once every night. The file contains entries for variations that were exported successfully and for variations that could not be exported to Zalando. Here’s how to <<#905, download the export log>>.
+
+Product status reports *ProductErrorReport.csv* and *ProductLiveReport.csv*::
+    Zalando generates the product status reports once during the night. These reports only contain information regarding variations that were successfully exported to Zalando. Here’s how to <<#910, download the product status reports>>. +
+    +
+    * *ProductErrorReport.csv* contains variations that could not be sold on Zalando since the last export. The report is generated once every night.
+    * *ProductLiveReport.csv* contains variations that could be sold on Zalando since the last export as well as stock and price of each variation on the different Zalando channels (DE, FR, etc.) at the time that the file was generated. The report is generated once every night.
+
+--
+
+[#error-messages-article-export-log]
+[.collapseBox]
+.Error messages in the report *zalandoArticleExportLog.txt*
+--
+
+[qanda]
+errors (1234567) (ValueId:12345): silhouetteId::
+    The characteristic *Zalando » Silhouettenname* (silhouette name) for the variation ID (=ValueID) is missing.
+
+errors (1234567) (ValueId:12345): brand::
+    The characteristic *Zalando » Hersteller-Code* (manufacturer code) for the variation ID (=ValueID) is missing.
+
+errors (1234567) (ValueId:12345): ageGroups::
+    The characteristic *Zalando » Altersgruppe* (age group) for the variation ID (=ValueID) is missing.
+
+errors (1234567) (ValueId:12345): sizeRegister::
+    The characteristic *Zalando » Größen-Register* (size register) is missing or was not created correctly. +
+    +
+    * _Scenario 1:_ The characteristic is missing. +
+    The characteristic has to be added and linked to the appropriate size register.
+    * _Scenario 2:_ The characteristic was created. +
+    Keep in mind to comply with the format provided by Zalando. Check if the size register is correct. +
+    *_Note:_* Size registers that were created manually cannot be used for Zalando.
+
+errors (1234567) (ValueId:12345): mainColorCode::
+    The characteristic *Zalando » 1. Farbcode* (colour code) for the variation ID (=ValueID) is missing. +
+    _Exception:_ The variation has a colour attribute. In that case, attribute links are used to manage colours.
+
+errors (1234567) (ValueId:12345): supplierColor::
+    The characteristic *Zalando » Hersteller-Farbe* (manufacturer colour) or the second attribute link is missing or was not properly saved for the variation ID (=ValueID). 
+
+errors (1234567) (ValueId:12345): genders::
+    The characteristic *Zalando » Geschlecht* (gender) for the variation ID (=ValueID) is missing.
+
+errors (1234567) (ValueId:12345): season::
+    The characteristic *Zalando » Jahreszeiten-Code* (seasonal code) for the variation ID (=ValueID) is missing.
+
+errors (1234567) (ValueId:12345): size::
+    The characteristic *Zalando » Geschlecht* (gender) for the variation ID (=ValueID) is missing.
+
+errors (1234567) (ValueId:12345): ean::
+    A *GTIN 13* with the referrer *Zalando* must be saved for the variation in the variation’s *Settings » Barcode* tab. +
+    You can check the settings for the referrer in the *Setup » Item » Barcode* menu.
+
+errors (1234567) (ValueId:12345): image::
+    At least one image with the referrer *Zalando* must be saved for the variation.
+
+--
+
+[#error-messages-product-error-report]
+[.collapseBox]
+.Error messages in the report *ProductErrorReport.csv*
+--
+
+[qanda]
+ZANOS_01 - Please send stock for this article to push it back online::
+    See <<#stock-update-few-variations, How can I update the stock again for a few variations?>>
+
+ZABLO_15 - Article blocked due to old season. Please delete the article from the feed or reach out to the Operations team to adjust the season.::
+    If you can offer this item also in the new season, then you can map the characteristic *Jahreszeiten-Code* (seasonal code) with the new season. If the new season is not displayed, then contact Zalando. The new silhouettes have to be updated at Zalando afterwards. +
+    Also take a look at <<#updating-silhouettes, The silhouettes were not updated/imported in plentymarkets.>>
+
+PSERR_133 - Submitted size isn’t an allowed value for the size chart being submitted by the partner. Or the submitted size isn’t an allowed value for the partner article’s already existing size chart.::
+    You want to transfer a size from a size register which is not activated for you. For example, Zalando assigned the sizes _S-L_ to you, but you tried to list an item in _XL_. Contact Zalando and have the sizes in your size registers adjusted. +
+    Also take a look at <<#updating-silhouettes, The silhouettes were not updated/imported in plentymarkets.>>
+
+PSERR_118 - EAN rejected because the sum of the material composition is not 100%. Please review the sum of material composition within the attribute.::
+    Characteristics are used to save information about the item’s material. Use a characteristic of the type *Text* to specify the item’s material composition in %. +
+    *_Note:_* The sum always has to be 100%. However, the material information has to be indicated in 100,00% for the export to work. Thus, if the item consists of 80% polyester and 20% cotton, you have to enter the following values: +
+    +
+    * polyester: “8000”
+    * cotton: “2000” +
+    +
+    For 100% cotton, the value would be “10000”.
+
+--
+
+[#faq-price-update]
+[.collapseBox]
+.Price synchronisation
+--
+
+[#price-synchronisation]
+[qanda]
+How can I check whether prices were exported?::
+    For an overview of the price updates within the last 7 days and the corresponding processing statuses, you can download reports within the *Setup » Markets » Zalando » Settings » Tab: Processing reports » Tab: Price reports* menu. Note that Zalando only receives prices when they are in the status *Submitted*. You can update the report anytime. However, the time span is fixed. +
+    If you notice that some prices were not updated or if you think that the values which were exported are not correct, you can also check this in the log. Go to *Data » Log*. +
+    Use the following filters: +
+    +
+    * *Integration*: Plenty\\Modules\\Zalando\\Prices\\Services\\PriceUpdateService
+    * *Identifier*: Zalando +
+    +
+    Enter the *variation ID* or the *EAN* as *Reference type*. To do so, enter *variationID* or *ean* as *Reference type* and use the corresponding value as *Reference value*. +
+    Afterwards, open the log entry and click on *Expand all* to look at the request. +
+    Whether Zalando accepted this message can be checked in the response. The response is contained in a separate log. The following screenshot contains a *jobId*: +
+    image::markets/assets/zalando-faq-jobid.png[]
+    Open the *Data » Log* menu and filter for the *jobID*. +
+    image::markets/assets/zalando-faq-job-id-filter.png[]
+    There will be messages like these: +
+    image::markets/assets/zalando-faq-job-id-search-results.png[]
+    Open the log entry shown in the screenshot above: +
+    image::markets/assets/zalando-faq-log-entry-details.png[]
+    The response is contained within the *Description*.
+
+How can I update the prices again for one or more variations?::
+    Adjust the variation’s sales price for Zalando. To do so, slightly change the price, for example change it from  _+ 0.01_ EUR and back (_- 0.01 EUR_). Afterwards, the price will be exported to Zalando within 15 minutes. +
+    You can check the export of prices in the log. Also see <<#price-synchronisation, How can I check price updates?>>.
+    The sales price which is used as standard sales price for Zalando was defined in the assistant *Account settings - Zalando*. 
+
+How can I update the prices again for all variations?::
+    To export all prices to Zalando again, the price synchronisation must be triggered. For example, this can be done in the assistant *Account settings - Zalando* in the *Setup » Assistants » Omni-Channel* menu. You only have to make a change in the *Prices for Germany* and /or *Prices for Austria* section. It doesn’t matter which change you make. You can revert the change afterwards. All prices will be exported to Zalando within 15 minutes afterwards. +
+    You can check the export of prices in the log. Also see <<#price-synchronisation, How can I check price updates?>>. +
+    Note that the export may be delayed if you transfer a lot of variations to different sales channels. This is due to the limitation of API calls set by Zalando. It can happen that data is exported in several packages, and therefore the export takes longer. Variations of one and the same item might also be exported in different packages. Each package contains up to 1000 variations, which make up one request. 20 requests can be sent per minute. Different packages can be distinguished by the *jobId* in the *Data » Log* menu. +
+    Also see <<#price-synchronisation, How can I check price updates?>>.
+
+--
+
+[#faq-stock-update]
+[.collapseBox]
+.Stock update
+--
+
+[#stock-update]
+[qanda]
+How can I check whether stock was exported?::
+    Go to *Data » Log*. +
+    Use the following filters: +
+    +
+    * *Integration*: Plenty\\Modules\\Zalando\\Stock\\Services\\StockUpdateService
+    * *Identifier*: Zalando
+    +
+    Enter the *variation ID* or the *EAN* as reference type. To do so, enter *variationID* or *ean* as *Reference type* and use the corresponding value as *Reference value*. +
+    Afterwards, open the log entry and click on *Expand all* to look at the request. +
+    image::markets/assets/zalando-faq-stock-log-details.png[]
+    The stock which was exported is shown as *quantity*. +
+    Whether Zalando accepted this message can be checked in the response. The response is contained in a separate log. The following screenshot contains a *jobId*: +
+    image::markets/assets/zalando-faq-stock-job-id.png[]
+    Filter for it in the log again. +
+    Check both the marked info message as well as possible error messages. +
+    Why the stock was not exported to Zalando can be seen in the *description*. +
+    The error message _„Request contains duplicate combinations of stock quantities.“_ is usually issued if individual variations were exported twice. To check whether one variation was exported twice, check if one and the same EAN was used multiple times. If this is the case, stock cannot be exported.
+
+    [#stock-update-few-variations]
+How can I update the stock again for one or a few variations?::
+    To update the stock again, you have to adjust the stock of the desired variation. For example, you can change the stock from _- 1 piece_ to _+ 1 piece_. Afterwards, the stock will be exported to Zalando within 15 minutes. +
+    You can check the export of prices in the log. Also see <<#price-synchronisation, How can I check stock updates?>>. +
+    Settings for stock export are carried out when first setting up Zalando with the assistant *Account settings - Zalando*.
+
+How can I update the stock again for all variations?::
+    To export stock again to Zalando, the stock synchronisation must be triggered. You can use the assistant *Account settings - Zalando* to do so. You only have to make a change  in the *Stock for Germany* and/or *Stock for Austria* section. It doesn’t matter which change you make. You can revert the change afterwards. The stock will be exported to Zalando within 15 minutes afterwards. +
+    You can check the export of prices in the log. Also see <<#stock-synchronisation, How can I check stock updates?>>.
+    Note that the export may be delayed if you transfer a lot of variations to different sales channels. This is due to the limitation of API calls set by Zalando. It can happen that data is exported in several packages, and therefore the export takes longer. Variations of one and the same item might also be exported in different packages. Each package contains up to 1000 variations, which make up one request. 20 requests can be sent per minute. Different packages can be distinguished by the *jobId*. +
+    Also see <<#stock-synchronisation, How can I check stock updates?>>.
+
+--
+
+[#faq-order-processing]
+[.collapseBox]
+.Order processing
+--
+
+In some cases, errors can occur during order processing. Possible reasons and frequent errors are described here. +
+
+To check whether an order was processed, you can use the following filters in the *Data » Log* menu. +
+
+* *Identifier*: Zalando
+* *Reference type*: orderId / externalOrderId
+* *Reference value*: your order ID / your external order ID
+
+[qanda]
+Shipping confirmations are missing or were not reported to Zalando. Where can I find corresponding error messages in the log?::
+    If shipping confirmations were not reported to Zalando, open the *Data » Log* menu. +
+    Use the following filters: +
+    +
+    * *Integration*: Plenty\\Modules\\Zalando\\Orders\\Procedures\\OrderShippingProcedure
+    * *Identifier*: Zalando
+    * *Level*: error +
+    +
+    You can also additionally use the order ID or the external order ID as filter, if required. +
+    +
+    * *Reference type*: orderId / externalOrderId
+    * *Reference value*: your order ID / your external order ID
+
+--
+
+[#error-messages-order-processing]
+[.collapseBox]
+.Error messages concerning order processing
+--
+
+[qanda]
+No return number found.::
+    There may be different reasons for this: +
+    +
+    * _First:_ The order has a package number but no return tracking number (return label). +
+    *_Analysis:_* Go to *Orders » Shipping centre* to check this. Return labels are displayed in the *Return labels* tab of the order. +
+    *_Solution:_* If no label exists, a label must be created and a new shipping confirmation must be sent.
+    +
+    * _Second:_ The order has a return label. +
+    *_Analysis:_* Check when the return label was created and when the shipping confirmation was reported to Zalando. If the return label already exists, it may only have been created after the shipping confirmation was reported to Zalando. +
+    *_Solution:_* Trigger the shipping confirmation again by starting the event procedure again. Depending on the event in the event procedure, you should take different actions. If it is not possible to trigger the appropriate event, you can also create a new event procedure with another status.
+
+--
+
+[#faq-general]
+[.collapseBox]
+.General questions
+--
+
+[#updating-silhouettes]
+[qanda]
+The silhouettes were not updated or imported into plentymarkets.::
+    Zalando sends (new) silhouettes to the plentymarkets FTP server so that they can be imported into your plentymarkets system. New silhouettes are updated every Wednesday by plentymarkets and can be converted into characteristics afterwards. +
+    To do so, use the *Converting silhouettes to characteristics* function. If you try to convert silhouettes to characteristics for the first time and the backend looks like this: +
+    image::markets/assets/zalando-faq-silhouettes.png[]
+    Then the reason might be that +
+    +
+    * either Zalando has not yet sent any silhouettes for you _or_
+    * plentymarkets has not yet imported your silhouettes.
+    +
+    If you already have silhouettes in your plentymarkets system and you want to convert them into characteristics, the backend looks like this: +
+    image::markets/assets/zalando-faq-converting-silhouettes.png[]
+    Select the desired groups and click on *convert to characteristics*. +
+    *_Tip:_* Only select the groups which you want to sell items in to keep the number of characteristics at a minimum. +
+    Also see <<#500, Converting silhouettes to characteristics>>.
+
+Where can I find the order documents requested by Zalando?::
+    Any documents requested by Zalando have to be configured according to Zalando’s requirements. The PDF templates are provided by Zalando. +
+    *_Note:_* As Zalando has specific requirements and you can only configure the documents globally, you should create an additional client which you only use for Zalando. This prevents your present settings from being overwritten. You can individually set up the documents afterwards. +
+    You can book an additional client in the *plentymarkets logo (Start) » My account » Contracts* menu. +
+    How to set up you documents is described on the <<orders/order-documents#, Setting up documents>> page.
